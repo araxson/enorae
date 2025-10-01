@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://postgres.nwmcpfioxerzodvbjigw:Aliahmadi-1377@aws-0-us-west-1.pooler.supabase.com:5432/postgres"
+      ],
+      "env": {
+        "PGSSL": "require"
+      }
+    }
+  }
+}

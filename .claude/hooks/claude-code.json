@@ -1,0 +1,35 @@
+{
+  "name": "Enorae Project Hooks",
+  "version": "1.0.0",
+  "description": "Enforces reading of critical project documentation before any Claude Code session",
+  "hooks": {
+    "pre-chat": {
+      "script": "./pre-chat.sh",
+      "description": "Forces reading CLAUDE.md, generates project tree, and reads architecture docs",
+      "required": true,
+      "blocking": true
+    },
+    "pre-commit": {
+      "script": "./pre-commit.sh",
+      "description": "Validates code against project rules before committing",
+      "required": false
+    }
+  },
+  "rules": {
+    "mandatory_files": [
+      "CLAUDE.md",
+      "docs/architecture/project-structure.md",
+      "docs/guides/CONFUSION-PREVENTION.md"
+    ],
+    "forbidden_patterns": [
+      "creating custom database types",
+      "creating custom UI components",
+      "src folders in packages",
+      "missing auth checks in DAL"
+    ],
+    "required_imports": {
+      "database_types": "@enorae/infrastructure",
+      "ui_components": "@enorae/ui"
+    }
+  }
+}
