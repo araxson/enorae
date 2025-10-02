@@ -1,11 +1,17 @@
 {
   "name": "Enorae Project Hooks",
-  "version": "1.0.0",
-  "description": "Enforces reading of critical project documentation before any Claude Code session",
+  "version": "2.0.0",
+  "description": "Enforces reading of ALL critical project documentation before any Claude Code session",
   "hooks": {
     "pre-chat": {
       "script": "./pre-chat.sh",
-      "description": "Forces reading CLAUDE.md, generates project tree, and reads architecture docs",
+      "description": "Forces reading of ALL documentation before starting work",
+      "required": true,
+      "blocking": true
+    },
+    "pre-file-write": {
+      "script": "./pre-file-write.sh",
+      "description": "Validates file operations against documentation rules",
       "required": true,
       "blocking": true
     },
@@ -16,20 +22,72 @@
     }
   },
   "rules": {
-    "mandatory_files": [
+    "mandatory_documentation": [
       "CLAUDE.md",
-      "docs/architecture/project-structure.md",
-      "docs/guides/CONFUSION-PREVENTION.md"
+      "README.md",
+      "docs/index.md",
+      "docs/PROJECT_TREE.md",
+      "docs/02-architecture/overview.md",
+      "docs/02-architecture/project-structure.md",
+      "docs/02-architecture/roles-and-routing.md",
+      "docs/02-architecture/naming-conventions.md",
+      "docs/03-database/schema-overview.md",
+      "docs/03-database/detailed-analysis.md",
+      "docs/03-database/best-practices.md",
+      "docs/04-frontend/component-patterns.md",
+      "docs/04-frontend/state-and-performance.md",
+      "docs/04-frontend/error-handling-and-testing.md",
+      "docs/04-frontend/reference.md"
     ],
-    "forbidden_patterns": [
-      "creating custom database types",
-      "creating custom UI components",
-      "src folders in packages",
-      "missing auth checks in DAL"
+    "forbidden_actions": [
+      "Creating new database tables without permission",
+      "Modifying database schema without explicit request",
+      "Creating custom UI primitives (use shadcn/ui)",
+      "Querying schema tables directly (use public views)",
+      "Using 'any' types",
+      "Missing 'server-only' directive in DAL files",
+      "Missing auth checks in DAL functions",
+      "Using Tables types instead of Views types",
+      "Creating files with suffixes like -v2, -new, -fixed"
     ],
-    "required_imports": {
-      "database_types": "@enorae/infrastructure",
-      "ui_components": "@enorae/ui"
-    }
+    "required_patterns": {
+      "dal_files": {
+        "must_have": [
+          "import 'server-only'",
+          "auth.getUser()",
+          "from('view_name')"
+        ],
+        "must_not_have": [
+          ".schema(",
+          "from 'Tables'",
+          ": any"
+        ]
+      },
+      "type_imports": {
+        "database_types": "@/lib/types/database.types",
+        "ui_components": "@/components/ui/",
+        "supabase_client": "@/lib/supabase/server"
+      },
+      "naming": {
+        "folders": "kebab-case",
+        "components": "kebab-case.tsx",
+        "dal": "[feature].queries.ts",
+        "actions": "[feature].actions.ts",
+        "types": "[feature].types.ts"
+      }
+    },
+    "critical_reminders": [
+      "✅ ALWAYS query from public views (not schema tables)",
+      "✅ ALWAYS use Database['public']['Views'] for types",
+      "✅ ALWAYS add 'server-only' directive in DAL files",
+      "✅ ALWAYS check auth in DAL functions",
+      "✅ ALWAYS wrap auth.uid() in (select ...) for RLS",
+      "✅ ALWAYS use kebab-case for file names",
+      "✅ ALWAYS use shadcn/ui components only",
+      "❌ NEVER create custom database types",
+      "❌ NEVER create custom UI primitives",
+      "❌ NEVER use 'any' types",
+      "❌ NEVER query schema tables directly"
+    ]
   }
 }

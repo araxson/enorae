@@ -1,0 +1,50 @@
+export const plansData = {
+  title: 'Choose Your Plan',
+  plans: [
+    {
+      name: 'Starter',
+      price: '$29',
+      period: '/month',
+      description: 'Perfect for small salons getting started',
+      features: [
+        'Up to 100 appointments/month',
+        '1 salon location',
+        'Basic analytics',
+        'Email support',
+      ],
+      cta: 'Start Free Trial',
+      highlighted: false,
+    },
+    {
+      name: 'Professional',
+      price: '$79',
+      period: '/month',
+      description: 'For growing salons with multiple staff',
+      features: [
+        'Unlimited appointments',
+        'Up to 3 locations',
+        'Advanced analytics',
+        'Priority support',
+        'Inventory management',
+      ],
+      cta: 'Start Free Trial',
+      highlighted: true,
+    },
+    {
+      name: 'Enterprise',
+      price: '$199',
+      period: '/month',
+      description: 'For salon chains and large businesses',
+      features: [
+        'Unlimited everything',
+        'Unlimited locations',
+        'Custom analytics',
+        '24/7 phone support',
+        'API access',
+        'Dedicated account manager',
+      ],
+      cta: 'Contact Sales',
+      highlighted: false,
+    },
+  ],
+} as const

@@ -1,0 +1,123 @@
+import 'server-only'
+import { createClient } from '@/lib/supabase/server'
+import type { Database } from '@/lib/types/database.types'
+
+type BlockedTime = Database['public']['Views']['blocked_times']['Row']
+
+export type BlockedTimeWithRelations = BlockedTime & {
+  staff: { id: string; full_name: string | null } | null
+  salon: { id: string; name: string } | null
+}
+
+/**
+ * Get all blocked times for a specific salon
+ */
+export async function getBlockedTimesBySalon(salonId: string) {
+  const supabase = await createClient()
+
+  // Auth check
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('blocked_times')
+    .select('*')
+    .eq('salon_id', salonId)
+    .order('start_time', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
+/**
+ * Get all blocked times for a specific staff member
+ */
+export async function getBlockedTimesByStaff(staffId: string) {
+  const supabase = await createClient()
+
+  // Auth check
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('blocked_times')
+    .select('*')
+    .eq('staff_id', staffId)
+    .order('start_time', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
+/**
+ * Get upcoming blocked times for a salon
+ */
+export async function getUpcomingBlockedTimes(salonId: string) {
+  const supabase = await createClient()
+
+  // Auth check
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const now = new Date().toISOString()
+
+  const { data, error } = await supabase
+    .from('blocked_times')
+    .select('*')
+    .eq('salon_id', salonId)
+    .gte('start_time', now)
+    .order('start_time', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
+/**
+ * Get a single blocked time by ID
+ */
+export async function getBlockedTimeById(id: string) {
+  const supabase = await createClient()
+
+  // Auth check
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('blocked_times')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+/**
+ * Get salon for current user (for blocked times)
+ */
+export async function getBlockedTimesSalon() {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: salon, error } = await supabase
+    .from('salons')
+    .select('id')
+    .eq('owner_id', user.id)
+    .single()
+
+  if (error || !salon) {
+    throw new Error('No salon found for your account')
+  }
+
+  return salon as { id: string }
+}
