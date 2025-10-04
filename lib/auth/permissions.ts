@@ -153,20 +153,24 @@ export async function getDefaultRoute(): Promise<string> {
  */
 export async function getUserSalonId(): Promise<string | null> {
   const session = await verifySession()
-  if (!session) return null
+
+  if (!session) {
+    return null
+  }
 
   const supabase = await createClient()
 
   // IMPORTANT: Check salon ownership FIRST (business users)
   // Then check staff membership (staff might also own salons)
-  const { data: ownedSalon } = await supabase
+  // NOTE: For owners with multiple salons, we return the first one
+  const { data: ownedSalons } = await supabase
     .from('salons')
     .select('id')
     .eq('owner_id', session.user.id)
-    .maybeSingle<{ id: string }>()
+    .limit(1)
 
-  if (ownedSalon?.id) {
-    return ownedSalon.id
+  if (ownedSalons && ownedSalons.length > 0) {
+    return ownedSalons[0].id
   }
 
   // Check if user is a staff member

@@ -35,32 +35,47 @@ export const getDashboardMetrics = cache(async (salonId: string) => {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
 
-  // Use Promise.all for parallel execution instead of sequential
-  const [
-    { data: appointmentsData, error: appointmentsError },
-    { data: staff, error: staffError },
-    { data: services, error: servicesError }
-  ] = await Promise.all([
-    supabase.from('appointments').select('status').eq('salon_id', salonId),
-    supabase.from('staff').select('id').eq('salon_id', salonId).eq('status', 'active'),
-    supabase.from('services').select('id').eq('salon_id', salonId).eq('is_active', true)
-  ])
+  try {
+    // Use Promise.all for parallel execution instead of sequential
+    const [appointmentsResult, staffResult, servicesResult] = await Promise.all([
+      supabase.from('appointments').select('status').eq('salon_id', salonId),
+      supabase.from('staff').select('id').eq('salon_id', salonId),
+      supabase.from('services').select('id').eq('salon_id', salonId).eq('is_active', true)
+    ])
 
-  if (appointmentsError) throw appointmentsError
-  if (staffError) throw staffError
-  if (servicesError) throw servicesError
+    // Check for errors but continue with partial data if available
+    if (appointmentsResult.error) {
+      console.error('[getDashboardMetrics] Appointments error:', appointmentsResult.error)
+    }
+    if (staffResult.error) {
+      console.error('[getDashboardMetrics] Staff error:', staffResult.error)
+    }
+    if (servicesResult.error) {
+      console.error('[getDashboardMetrics] Services error:', servicesResult.error)
+    }
 
-  const appointments = (appointmentsData || []) as Array<{ status: string | null }>
-  const totalAppointments = appointments.length
-  const confirmedAppointments = appointments.filter(a => a.status === 'confirmed').length
-  const pendingAppointments = appointments.filter(a => a.status === 'pending').length
+    const appointments = (appointmentsResult.data || []) as Array<{ status: string | null }>
+    const totalAppointments = appointments.length
+    const confirmedAppointments = appointments.filter(a => a.status === 'confirmed').length
+    const pendingAppointments = appointments.filter(a => a.status === 'pending').length
 
-  return {
-    totalAppointments,
-    confirmedAppointments,
-    pendingAppointments,
-    totalStaff: staff?.length || 0,
-    totalServices: services?.length || 0,
+    return {
+      totalAppointments,
+      confirmedAppointments,
+      pendingAppointments,
+      totalStaff: staffResult.data?.length || 0,
+      totalServices: servicesResult.data?.length || 0,
+    }
+  } catch (error) {
+    console.error('[getDashboardMetrics] Unexpected error:', error)
+    // Return zero metrics on error instead of throwing
+    return {
+      totalAppointments: 0,
+      confirmedAppointments: 0,
+      pendingAppointments: 0,
+      totalStaff: 0,
+      totalServices: 0,
+    }
   }
 })
 
@@ -69,52 +84,71 @@ export const getRecentAppointments = cache(async (salonId: string, limit: number
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
 
-  // IMPROVED: appointments view already includes customer/staff/salon data
-  const { data, error } = await supabase
-    .from('appointments')
-    .select('*')
-    .eq('salon_id', salonId)
-    .order('created_at', { ascending: false })
-    .limit(limit)
+  try {
+    // IMPROVED: appointments view already includes customer/staff/salon data
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('*')
+      .eq('salon_id', salonId)
+      .order('created_at', { ascending: false })
+      .limit(limit)
 
-  if (error) throw error
-  return data as AppointmentWithDetails[]
+    if (error) {
+      console.error('[getRecentAppointments] Query error:', error)
+      return []
+    }
+
+    return (data || []) as AppointmentWithDetails[]
+  } catch (error) {
+    console.error('[getRecentAppointments] Unexpected error:', error)
+    return []
+  }
 })
 
 /**
  * Get user's salon IDs (supports multi-location for tenant owners)
  */
 export const getUserSalonIds = cache(async (): Promise<string[]> => {
-  const session = await requireAuth()
-  const supabase = await createClient()
+  try {
+    const session = await requireAuth()
+    const supabase = await createClient()
 
-  // Check if user is a tenant owner with multiple salons
-  const { data: tenantData, error: tenantError } = await supabase
-    .from('salon_chains')
-    .select('id')
-    .eq('owner_id', session.user.id)
-    .maybeSingle()
-
-  if (tenantError) throw tenantError
-
-  const chain = tenantData as { id: string } | null
-
-  if (chain) {
-    // Get all salons in chain
-    const { data: chainSalons, error: chainError } = await supabase
-      .from('salons')
+    // Check if user is a tenant owner with multiple salons
+    const { data: tenantData, error: tenantError } = await supabase
+      .from('salon_chains')
       .select('id')
-      .eq('chain_id', chain.id)
+      .eq('owner_id', session.user.id)
+      .maybeSingle()
 
-    if (chainError) throw chainError
+    if (tenantError) {
+      console.error('[getUserSalonIds] Tenant query error:', tenantError)
+    }
 
-    const salons = (chainSalons || []) as Array<{ id: string }>
-    return salons.map(s => s.id)
+    const chain = tenantData as { id: string } | null
+
+    if (chain) {
+      // Get all salons in chain
+      const { data: chainSalons, error: chainError } = await supabase
+        .from('salons')
+        .select('id')
+        .eq('chain_id', chain.id)
+
+      if (chainError) {
+        console.error('[getUserSalonIds] Chain salons query error:', chainError)
+        return []
+      }
+
+      const salons = (chainSalons || []) as Array<{ id: string }>
+      return salons.map(s => s.id)
+    }
+
+    // Otherwise, get user's single salon
+    const salonId = await requireUserSalonId()
+    return [salonId]
+  } catch (error) {
+    console.error('[getUserSalonIds] Unexpected error:', error)
+    return []
   }
-
-  // Otherwise, get user's single salon
-  const salonId = await requireUserSalonId()
-  return [salonId]
 })
 
 /**
@@ -170,21 +204,55 @@ export const getMultiLocationMetrics = cache(async () => {
   const salonIds = await getUserSalonIds()
   const supabase = await createClient()
 
-  // Get aggregated data across all locations
-  const [appointmentsData, staff, services] = await Promise.all([
-    supabase.from('appointments').select('status, salon_id').in('salon_id', salonIds),
-    supabase.from('staff').select('id, salon_id').in('salon_id', salonIds).eq('status', 'active'),
-    supabase.from('services').select('id, salon_id').in('salon_id', salonIds).eq('is_active', true)
-  ])
+  try {
+    // Handle case where user has no salons
+    if (!salonIds || salonIds.length === 0) {
+      return {
+        totalLocations: 0,
+        totalAppointments: 0,
+        confirmedAppointments: 0,
+        pendingAppointments: 0,
+        totalStaff: 0,
+        totalServices: 0,
+      }
+    }
 
-  const appointments = (appointmentsData.data || []) as Array<{ status: string | null; salon_id: string }>
+    // Get aggregated data across all locations
+    const [appointmentsResult, staffResult, servicesResult] = await Promise.all([
+      supabase.from('appointments').select('status, salon_id').in('salon_id', salonIds),
+      supabase.from('staff').select('id, salon_id').in('salon_id', salonIds),
+      supabase.from('services').select('id, salon_id').in('salon_id', salonIds).eq('is_active', true)
+    ])
 
-  return {
-    totalLocations: salonIds.length,
-    totalAppointments: appointments.length,
-    confirmedAppointments: appointments.filter(a => a.status === 'confirmed').length,
-    pendingAppointments: appointments.filter(a => a.status === 'pending').length,
-    totalStaff: staff.data?.length || 0,
-    totalServices: services.data?.length || 0,
+    if (appointmentsResult.error) {
+      console.error('[getMultiLocationMetrics] Appointments error:', appointmentsResult.error)
+    }
+    if (staffResult.error) {
+      console.error('[getMultiLocationMetrics] Staff error:', staffResult.error)
+    }
+    if (servicesResult.error) {
+      console.error('[getMultiLocationMetrics] Services error:', servicesResult.error)
+    }
+
+    const appointments = (appointmentsResult.data || []) as Array<{ status: string | null; salon_id: string }>
+
+    return {
+      totalLocations: salonIds.length,
+      totalAppointments: appointments.length,
+      confirmedAppointments: appointments.filter(a => a.status === 'confirmed').length,
+      pendingAppointments: appointments.filter(a => a.status === 'pending').length,
+      totalStaff: staffResult.data?.length || 0,
+      totalServices: servicesResult.data?.length || 0,
+    }
+  } catch (error) {
+    console.error('[getMultiLocationMetrics] Unexpected error:', error)
+    return {
+      totalLocations: 0,
+      totalAppointments: 0,
+      confirmedAppointments: 0,
+      pendingAppointments: 0,
+      totalStaff: 0,
+      totalServices: 0,
+    }
   }
 })

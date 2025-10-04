@@ -50,7 +50,7 @@ export const verifySession = cache(async (): Promise<Session | null> => {
   }
 
   // Get user role from database
-  const { data: roleData } = await supabase
+  const { data: roleData, error: roleError } = await supabase
     .from('user_roles')
     .select('role')
     .eq('user_id', user.id)
