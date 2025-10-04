@@ -110,14 +110,12 @@ export const getVIPStatus = cache(async () => {
     .from('user_roles')
     .select('role')
     .eq('user_id', session.user.id)
-    .single()
+    .single<{ role: string }>()
 
   if (roleError && roleError.code !== 'PGRST116') throw roleError // Ignore "not found" errors
 
-  const userRole = roleData as { role: string } | null
-
   // GUEST HANDLING: Return default for guest users
-  if (!userRole || userRole.role === 'guest') {
+  if (!roleData || roleData.role === 'guest') {
     return {
       isVIP: false,
       isGuest: true,
@@ -128,7 +126,7 @@ export const getVIPStatus = cache(async () => {
     }
   }
 
-  const isVIP = userRole.role === 'vip_customer'
+  const isVIP = roleData.role === 'vip_customer'
 
   if (!isVIP) {
     return {
@@ -190,14 +188,12 @@ export const checkGuestRole = cache(async () => {
     .from('user_roles')
     .select('role')
     .eq('user_id', session.user.id)
-    .single()
+    .single<{ role: string }>()
 
   if (roleError && roleError.code !== 'PGRST116') throw roleError // Ignore "not found" errors
 
-  const userRole = roleData as { role: string } | null
-
   return {
-    isGuest: !userRole || userRole.role === 'guest',
-    role: userRole?.role || 'guest',
+    isGuest: !roleData || roleData.role === 'guest',
+    role: roleData?.role || 'guest',
   }
 })

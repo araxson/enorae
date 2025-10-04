@@ -165,7 +165,7 @@ export async function getUserSalonId(): Promise<string | null> {
   // NOTE: For owners with multiple salons, we return the first one
   const { data: ownedSalons } = await supabase
     .from('salons')
-    .select('id')
+    .select<'id', { id: string }>('id')
     .eq('owner_id', session.user.id)
     .limit(1)
 
