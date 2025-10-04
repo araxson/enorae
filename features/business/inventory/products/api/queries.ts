@@ -20,6 +20,9 @@ export type ProductWithRelations = Product & {
 
 export type StockLevelWithProduct = StockLevel & {
   product: Product | null
+  current_stock?: number | null
+  available_stock?: number | null
+  product_id?: string | null
 }
 
 export type StockAlertWithProduct = StockAlert & {
@@ -135,13 +138,16 @@ export async function getStockLevels(salonId?: string) {
   // If filtering by salon, first get product IDs for that salon
   let productIds: string[] | undefined
   if (salonId) {
-    const { data: products } = await supabase
+    const { data: products, error: productsError } = await supabase
       .from('products')
       .select('id')
       .eq('salon_id', salonId)
 
-    productIds = products?.map(p => p.id)
-    if (!productIds?.length) return []
+    if (productsError) throw productsError
+
+    const productList = (products || []) as Array<{ id: string }>
+    productIds = productList.map(p => p.id)
+    if (!productIds.length) return []
   }
 
   const query = supabase
@@ -175,13 +181,16 @@ export async function getStockAlerts(salonId?: string) {
   // If filtering by salon, first get product IDs for that salon
   let productIds: string[] | undefined
   if (salonId) {
-    const { data: products } = await supabase
+    const { data: products, error: productsError } = await supabase
       .from('products')
       .select('id')
       .eq('salon_id', salonId)
 
-    productIds = products?.map(p => p.id)
-    if (!productIds?.length) return []
+    if (productsError) throw productsError
+
+    const productList = (products || []) as Array<{ id: string }>
+    productIds = productList.map(p => p.id)
+    if (!productIds.length) return []
   }
 
   const query = supabase
@@ -284,10 +293,14 @@ export async function getLowStockProducts(salonId?: string) {
     productsQuery.eq('salon_id', salonId)
   }
 
-  const { data: products } = await productsQuery
-  if (!products?.length) return []
+  const { data: products, error: productsError } = await productsQuery
 
-  productIds = products.map(p => p.id)
+  if (productsError) throw productsError
+
+  const productList = (products || []) as Array<{ id: string; reorder_point: number | null }>
+  if (!productList.length) return []
+
+  productIds = productList.map(p => p.id)
 
   // Get stock levels for these products
   const { data, error } = await supabase
@@ -303,8 +316,8 @@ export async function getLowStockProducts(salonId?: string) {
 
   // Filter in application layer for low stock
   const lowStockProducts = (data as StockLevelWithProduct[]).filter(stockLevel => {
-    const product = products.find(p => p.id === stockLevel.product_id)
-    const currentStock = stockLevel.current_stock || 0
+    const product = productList.find(p => p.id === stockLevel.product_id)
+    const currentStock = stockLevel.current_stock || stockLevel.available_stock || 0
     const reorderPoint = product?.reorder_point || 0
     return currentStock < reorderPoint
   })

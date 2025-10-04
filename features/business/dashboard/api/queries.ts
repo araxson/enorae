@@ -89,20 +89,27 @@ export const getUserSalonIds = cache(async (): Promise<string[]> => {
   const supabase = await createClient()
 
   // Check if user is a tenant owner with multiple salons
-  const { data: tenantData } = await supabase
+  const { data: tenantData, error: tenantError } = await supabase
     .from('salon_chains')
     .select('id')
     .eq('owner_id', session.user.id)
     .maybeSingle()
 
-  if (tenantData) {
+  if (tenantError) throw tenantError
+
+  const chain = tenantData as { id: string } | null
+
+  if (chain) {
     // Get all salons in chain
-    const { data: chainSalons } = await supabase
+    const { data: chainSalons, error: chainError } = await supabase
       .from('salons')
       .select('id')
-      .eq('chain_id', tenantData.id)
+      .eq('chain_id', chain.id)
 
-    return chainSalons?.map(s => s.id) || []
+    if (chainError) throw chainError
+
+    const salons = (chainSalons || []) as Array<{ id: string }>
+    return salons.map(s => s.id)
   }
 
   // Otherwise, get user's single salon

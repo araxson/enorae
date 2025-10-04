@@ -137,7 +137,7 @@ export async function StaffDashboard() {
             <Box>
               <Group gap="sm" className="items-center">
                 <H1>
-                  {staffProfile.first_name || ''} {staffProfile.last_name || ''}
+                  {staffProfile.full_name || 'Staff Member'}
                 </H1>
                 {getRoleBadge()}
               </Group>
@@ -169,7 +169,7 @@ export async function StaffDashboard() {
           <Box>
             <Group gap="sm" className="items-center">
               <H1>
-                {staffProfile.first_name || ''} {staffProfile.last_name || ''}
+                {staffProfile.full_name || 'Staff Member'}
               </H1>
               {getRoleBadge()}
             </Group>

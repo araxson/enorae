@@ -9,18 +9,18 @@ import { ReviewsTable } from './reviews-table'
 import { ReviewDetailDialog } from './review-detail-dialog'
 
 type Review = {
-  id: string
+  id: string | null
   salon_name?: string | null
   customer_name?: string | null
   customer_email?: string | null
-  rating: number
+  rating: number | null
   review_text?: string | null
-  is_flagged: boolean
+  is_flagged: boolean | null
   flagged_reason?: string | null
   response?: string | null
   response_date?: string | null
-  is_featured: boolean
-  created_at: string
+  is_featured: boolean | null
+  created_at: string | null
 }
 
 type ModerationClientProps = {

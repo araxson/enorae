@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Section, Stack } from '@/components/layout'
 import { H1, Lead } from '@/components/ui/typography'
-import { FileQuestion, Home, Store, ArrowLeft } from 'lucide-react'
+import { FileQuestion, Store, ArrowLeft } from 'lucide-react'
 
 export default function CustomerNotFound() {
   return (
@@ -15,7 +15,7 @@ export default function CustomerNotFound() {
         <Stack gap="md" className="items-center">
           <H1>Page Not Found</H1>
           <Lead className="max-w-md">
-            The page you're looking for doesn't exist or has been moved.
+            The page you&apos;re looking for doesn&apos;t exist or has been moved.
           </Lead>
         </Stack>
 

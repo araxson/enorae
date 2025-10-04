@@ -11,15 +11,17 @@ import { RolesTable } from './roles-table'
 import { AssignRoleForm } from './assign-role-form'
 
 type RoleAssignment = {
-  id: string
-  user_id: string
+  id: string | null
+  user_id: string | null
   user_name?: string | null
   user_email?: string | null
-  role: string
+  role: string | null
   salon_id?: string | null
   salon_name?: string | null
-  is_active: boolean
-  created_at: string
+  is_active: boolean | null
+  created_at: string | null
+  updated_at?: string | null
+  permissions?: string[] | null
 }
 
 type RolesClientProps = {

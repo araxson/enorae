@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type ProfileMetadata = Database['public']['Views']['profiles_metadata']['Row']
+type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row']
 
 export async function getProfileMetadata(profileId: string): Promise<ProfileMetadata | null> {
   const supabase = await createClient()
@@ -17,6 +17,7 @@ export async function getProfileMetadata(profileId: string): Promise<ProfileMeta
   }
 
   const { data, error } = await supabase
+    .schema('identity')
     .from('profiles_metadata')
     .select('*')
     .eq('profile_id', profileId)

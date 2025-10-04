@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
 import { H3, Muted } from '@/components/ui/typography'
 
-interface EmptyStateProps {
+export interface EmptyStateProps {
   icon: LucideIcon
   title: string
   description: string

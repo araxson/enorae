@@ -71,7 +71,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
                     {formatAppointmentTime(appointment.start_time)}
                   </ItemTitle>
                   <ItemDescription>
-                    {appointment.customer?.full_name || 'Unknown Customer'}
+                    {appointment.customer_name || 'Unknown Customer'}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions>

@@ -163,7 +163,7 @@ export async function getUserSalonId(): Promise<string | null> {
     .from('salons')
     .select('id')
     .eq('owner_id', session.user.id)
-    .maybeSingle()
+    .maybeSingle<{ id: string }>()
 
   if (ownedSalon?.id) {
     return ownedSalon.id

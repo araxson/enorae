@@ -5,8 +5,6 @@
  * Provides consistent badge variants, labels, and descriptions
  */
 
-import type { AppointmentStatus } from '@/lib/types/app.types'
-
 export const APPOINTMENT_STATUS_CONFIG = {
   pending: {
     label: 'Pending',

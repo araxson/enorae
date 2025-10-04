@@ -6,10 +6,10 @@ import { Group, Stack } from '@/components/layout'
 import { format } from 'date-fns'
 import { Small } from '@/components/ui/typography'
 import { confirmAppointment, cancelAppointment, completeAppointment } from '../api/mutations'
-import type { AppointmentWithRelations } from '../api/queries'
+import type { AppointmentWithDetails } from '../api/queries'
 
 interface AppointmentsTableProps {
-  appointments: AppointmentWithRelations[]
+  appointments: AppointmentWithDetails[]
 }
 
 const statusConfig = {
@@ -83,13 +83,13 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     )}
                   </TableCell>
                   <TableCell>
-                    {appointment.customer?.full_name ||
-                     appointment.customer?.email ||
+                    {appointment.customer_name ||
+                     appointment.customer_email ||
                      'N/A'}
                   </TableCell>
                   <TableCell>
-                    {appointment.staff?.full_name ||
-                     appointment.staff?.title ||
+                    {appointment.staff_name ||
+                     appointment.staff_title ||
                      'N/A'}
                   </TableCell>
                   <TableCell>

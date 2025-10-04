@@ -121,7 +121,7 @@ export const getStaffCommission = cache(async (staffId: string) => {
     // Today's completed appointments
     supabase
       .from('appointments')
-      .select('total_price, commission_rate')
+      .select('total_price')
       .eq('staff_id', staffId)
       .eq('status', 'completed')
       .gte('start_time', today.start)
@@ -129,7 +129,7 @@ export const getStaffCommission = cache(async (staffId: string) => {
     // Month's completed appointments
     supabase
       .from('appointments')
-      .select('total_price, commission_rate')
+      .select('total_price')
       .eq('staff_id', staffId)
       .eq('status', 'completed')
       .gte('start_time', month.start)
@@ -147,20 +147,14 @@ export const getStaffCommission = cache(async (staffId: string) => {
     }
   }
 
-  const todayAppointments = todayResult.data || []
-  const monthAppointments = monthResult.data || []
+  const todayAppointments = (todayResult.data || []) as Array<{ total_price: number | null }>
+  const monthAppointments = (monthResult.data || []) as Array<{ total_price: number | null }>
 
-  const todayRevenue = todayAppointments.reduce((sum, apt) => sum + (apt.total_price || 0), 0)
-  const todayCommission = todayAppointments.reduce(
-    (sum, apt) => sum + ((apt.total_price || 0) * (apt.commission_rate || 0)) / 100,
-    0
-  )
+  const todayRevenue = todayAppointments.reduce((sum, apt) => sum + Number(apt.total_price || 0), 0)
+  const todayCommission = 0 // TODO: Implement commission calculation when commission_rate is available
 
-  const monthRevenue = monthAppointments.reduce((sum, apt) => sum + (apt.total_price || 0), 0)
-  const monthCommission = monthAppointments.reduce(
-    (sum, apt) => sum + ((apt.total_price || 0) * (apt.commission_rate || 0)) / 100,
-    0
-  )
+  const monthRevenue = monthAppointments.reduce((sum, apt) => sum + Number(apt.total_price || 0), 0)
+  const monthCommission = 0 // TODO: Implement commission calculation when commission_rate is available
 
   return {
     todayRevenue,

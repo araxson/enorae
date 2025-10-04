@@ -106,14 +106,18 @@ export const getVIPStatus = cache(async () => {
   const supabase = await createClient()
 
   // Check if VIP customer
-  const { data: roleData } = await supabase
+  const { data: roleData, error: roleError } = await supabase
     .from('user_roles')
     .select('role')
     .eq('user_id', session.user.id)
     .single()
 
+  if (roleError && roleError.code !== 'PGRST116') throw roleError // Ignore "not found" errors
+
+  const userRole = roleData as { role: string } | null
+
   // GUEST HANDLING: Return default for guest users
-  if (!roleData || roleData.role === 'guest') {
+  if (!userRole || userRole.role === 'guest') {
     return {
       isVIP: false,
       isGuest: true,
@@ -124,7 +128,7 @@ export const getVIPStatus = cache(async () => {
     }
   }
 
-  const isVIP = roleData.role === 'vip_customer'
+  const isVIP = userRole.role === 'vip_customer'
 
   if (!isVIP) {
     return {
@@ -140,17 +144,20 @@ export const getVIPStatus = cache(async () => {
   const { month } = getDateRanges()
 
   // Get VIP-specific metrics
-  const { data: appointments } = await supabase
+  const { data: appointments, error: appointmentsError } = await supabase
     .from('appointments')
     .select('total_price, created_at')
     .eq('customer_id', session.user.id)
     .eq('status', 'completed')
 
-  const lifetimeSpend = appointments?.reduce((sum, apt) => sum + (apt.total_price || 0), 0) || 0
-  const monthlySpend =
-    appointments
-      ?.filter((apt) => apt.created_at && apt.created_at >= month.start)
-      .reduce((sum, apt) => sum + (apt.total_price || 0), 0) || 0
+  if (appointmentsError) throw appointmentsError
+
+  const appointmentList = (appointments || []) as Array<{ total_price: number | null; created_at: string | null }>
+
+  const lifetimeSpend = appointmentList.reduce((sum, apt) => sum + (apt.total_price || 0), 0)
+  const monthlySpend = appointmentList
+    .filter((apt) => apt.created_at && apt.created_at >= month.start)
+    .reduce((sum, apt) => sum + (apt.total_price || 0), 0)
 
   // Calculate loyalty tier based on spending
   let loyaltyTier: 'bronze' | 'silver' | 'gold' | 'platinum' = 'bronze'
@@ -168,7 +175,7 @@ export const getVIPStatus = cache(async () => {
     loyaltyTier,
     lifetimeSpend,
     monthlySpend,
-    memberSince: appointments?.[appointments.length - 1]?.created_at || null,
+    memberSince: appointmentList[appointmentList.length - 1]?.created_at || null,
   }
 })
 
@@ -179,14 +186,18 @@ export const checkGuestRole = cache(async () => {
   const session = await requireAuth()
   const supabase = await createClient()
 
-  const { data: roleData } = await supabase
+  const { data: roleData, error: roleError } = await supabase
     .from('user_roles')
     .select('role')
     .eq('user_id', session.user.id)
     .single()
 
+  if (roleError && roleError.code !== 'PGRST116') throw roleError // Ignore "not found" errors
+
+  const userRole = roleData as { role: string } | null
+
   return {
-    isGuest: !roleData || roleData.role === 'guest',
-    role: roleData?.role || 'guest',
+    isGuest: !userRole || userRole.role === 'guest',
+    role: userRole?.role || 'guest',
   }
 })

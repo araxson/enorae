@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getDashboardMetrics, getRecentAppointments, getUserSalon, getMultiLocationMetrics, getUserSalonIds } from './api/queries'
+import type { AppointmentWithDetails } from './api/queries'
 import { MetricsCards } from './components/metrics-cards'
 import { RecentBookings } from './components/recent-bookings'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -99,7 +100,7 @@ export async function BusinessDashboard() {
     }
   }
 
-  let recentAppointments
+  let recentAppointments: AppointmentWithDetails[]
   try {
     recentAppointments = await getRecentAppointments(salon.id)
   } catch (error) {

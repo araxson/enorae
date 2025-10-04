@@ -13,7 +13,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import type { Database } from '@/lib/types/database.types'
 import { updateSalonContactDetails, type ContactDetailsInput } from '../api/mutations'
 
-type SalonContactDetails = Database['organization']['Tables']['salon_contact_details']['Row']
+type SalonContactDetails = Database['public']['Views']['salon_contact_details']['Row']
 
 interface ContactFormProps {
   salonId: string

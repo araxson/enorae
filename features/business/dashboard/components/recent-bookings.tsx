@@ -52,8 +52,8 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
                 </Group>
                 <Muted>
                   {formatAppointmentTime(appointment.start_time)} •{' '}
-                  {appointment.customer?.full_name || 'Guest'} •{' '}
-                  {appointment.staff?.full_name || 'Staff TBD'}
+                  {appointment.customer_name || 'Guest'} •{' '}
+                  {appointment.staff_name || 'Staff TBD'}
                 </Muted>
               </Stack>
             )

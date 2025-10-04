@@ -19,18 +19,18 @@ import { toast } from 'sonner'
 import { respondToReview } from '../api/mutations'
 
 type Review = {
-  id: string
+  id: string | null
   salon_name?: string | null
   customer_name?: string | null
   customer_email?: string | null
-  rating: number
+  rating: number | null
   review_text?: string | null
-  is_flagged: boolean
+  is_flagged: boolean | null
   flagged_reason?: string | null
   response?: string | null
   response_date?: string | null
-  is_featured: boolean
-  created_at: string
+  is_featured: boolean | null
+  created_at: string | null
 }
 
 type ReviewDetailDialogProps = {
@@ -49,6 +49,11 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
   async function handleSubmitResponse() {
     if (!review || !responseText.trim()) {
       toast.error('Response cannot be empty')
+      return
+    }
+
+    if (!review.id) {
+      toast.error('Invalid review ID')
       return
     }
 
@@ -137,7 +142,7 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
               <P className="text-sm">{review.review_text || 'No text provided'}</P>
             </div>
             <Muted className="text-xs mt-1">
-              Posted on {format(new Date(review.created_at), 'MMMM d, yyyy')}
+              Posted on {review.created_at ? format(new Date(review.created_at), 'MMMM d, yyyy') : 'Unknown date'}
             </Muted>
           </div>
 

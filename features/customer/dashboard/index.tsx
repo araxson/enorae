@@ -200,7 +200,7 @@ export async function CustomerDashboard() {
                           <Stack gap="xs">
                             <Small className="font-medium">{appointmentDate}</Small>
                             <Muted className="text-xs">
-                              {appointment.salon?.business_name ?? 'Salon Unknown'}
+                              {appointment.salon_name ?? 'Salon Unknown'}
                             </Muted>
                           </Stack>
                           <Badge variant={statusVariant} className="capitalize">

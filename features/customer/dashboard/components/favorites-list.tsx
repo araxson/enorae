@@ -12,12 +12,12 @@ import {
   ItemActions,
   ItemSeparator,
 } from '@/components/ui/item'
-import type { FavoriteWithDetails } from '../api/queries'
+import type { CustomerFavoriteView } from '@/lib/types/app.types'
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
 
 interface FavoritesListProps {
-  favorites: FavoriteWithDetails[]
+  favorites: CustomerFavoriteView[]
 }
 
 export function FavoritesList({ favorites }: FavoritesListProps) {
@@ -57,11 +57,10 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
                   </ItemMedia>
                   <ItemContent>
                     <ItemTitle>
-                      {favorite.salon?.business_name || favorite.staff?.full_name || 'Favorite Item'}
+                      {favorite.business_name || 'Favorite Salon'}
                     </ItemTitle>
                     <ItemDescription>
-                      {favorite.staff?.title && `${favorite.staff.title}`}
-                      {favorite.notes && ` • ${favorite.notes}`}
+                      {favorite.category_name || 'No category'}
                     </ItemDescription>
                   </ItemContent>
                 </Item>

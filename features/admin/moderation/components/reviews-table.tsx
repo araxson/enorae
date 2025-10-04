@@ -24,17 +24,17 @@ import { toast } from 'sonner'
 import { flagReview, unflagReview, deleteReview, featureReview } from '../api/mutations'
 
 type Review = {
-  id: string
+  id: string | null
   salon_name?: string | null
   customer_name?: string | null
   customer_email?: string | null
-  rating: number
+  rating: number | null
   review_text?: string | null
-  is_flagged: boolean
+  is_flagged: boolean | null
   flagged_reason?: string | null
   response?: string | null
-  is_featured: boolean
-  created_at: string
+  is_featured: boolean | null
+  created_at: string | null
 }
 
 type ReviewsTableProps = {
@@ -179,7 +179,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
                   </div>
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  {format(new Date(review.created_at), 'MMM d, yyyy')}
+                  {review.created_at ? format(new Date(review.created_at), 'MMM d, yyyy') : 'N/A'}
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -195,24 +195,24 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       {review.is_flagged ? (
-                        <DropdownMenuItem onClick={() => handleUnflag(review.id)}>
+                        <DropdownMenuItem onClick={() => review.id && handleUnflag(review.id)}>
                           <FlagOff className="mr-2 h-4 w-4" />
                           Unflag
                         </DropdownMenuItem>
                       ) : (
-                        <DropdownMenuItem onClick={() => handleFlag(review.id)}>
+                        <DropdownMenuItem onClick={() => review.id && handleFlag(review.id)}>
                           <Flag className="mr-2 h-4 w-4" />
                           Flag
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem
-                        onClick={() => handleToggleFeature(review.id, review.is_featured)}
+                        onClick={() => review.id && handleToggleFeature(review.id, review.is_featured || false)}
                       >
                         <Star className="mr-2 h-4 w-4" />
                         {review.is_featured ? 'Unfeature' : 'Feature'}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => handleDelete(review.id)} className="text-destructive">
+                      <DropdownMenuItem onClick={() => review.id && handleDelete(review.id)} className="text-destructive">
                         <Trash2 className="mr-2 h-4 w-4" />
                         Delete
                       </DropdownMenuItem>

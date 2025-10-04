@@ -60,8 +60,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
                   </ItemTitle>
                   <ItemDescription>
                     <User className="inline h-3 w-3" aria-hidden="true" />{' '}
-                    {appointment.customer?.full_name || 'Unknown Customer'}
-                    {appointment.notes && ` • ${appointment.notes}`}
+                    {appointment.customer_name || 'Unknown Customer'}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions>

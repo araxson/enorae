@@ -15,7 +15,7 @@ import { X } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 import { updateSalonDescription, type DescriptionInput } from '../api/mutations'
 
-type SalonDescription = Database['organization']['Tables']['salon_descriptions']['Row']
+type SalonDescription = Database['public']['Views']['salon_descriptions']['Row']
 
 interface DescriptionFormProps {
   salonId: string

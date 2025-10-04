@@ -376,7 +376,7 @@ import { H1, P, Muted } from '@/components/ui/typography'
 - Folders/files: `kebab-case`
 - DAL: `[feature].queries.ts`
 - Actions: `[feature].actions.ts`
-- NO suffixes: `-v2`, `-new`, `-fixed`
+- NO suffixes or puffix like these: `-v2`, `-new`, `-fixed`, `-enhanced`, `enhanced-` or similar
 
 ### Rule 8: Authentication & RLS
 

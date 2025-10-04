@@ -26,7 +26,7 @@ export const getPlatformMetrics = cache(async () => {
       .select('*')
       .order('date', { ascending: false })
       .limit(1)
-      .maybeSingle()
+      .maybeSingle() as { data: AnalyticsOverview | null; error: unknown }
 
     if (analyticsError) {
       console.error('Error fetching analytics:', analyticsError)

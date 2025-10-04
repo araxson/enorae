@@ -15,7 +15,7 @@ export default function AdminNotFound() {
         <Stack gap="md" className="items-center">
           <H1>Page Not Found</H1>
           <Lead className="max-w-md">
-            The admin page you're looking for doesn't exist or has been moved.
+            The admin page you&apos;re looking for doesn&apos;t exist or has been moved.
           </Lead>
         </Stack>
 

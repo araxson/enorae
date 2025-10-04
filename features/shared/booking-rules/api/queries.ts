@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type BookingRule = Database['public']['Views']['service_booking_rules']['Row']
+type BookingRule = Database['catalog']['Tables']['service_booking_rules']['Row']
 
 export type BookingRuleWithService = BookingRule & {
   service: {

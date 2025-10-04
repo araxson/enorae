@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Stack, Flex } from '@/components/layout'
 import { P, Muted } from '@/components/ui/typography'
 
-import type { ServiceRevenue } from '../api/enhanced-queries'
+import type { ServiceRevenue } from '../api/queries'
 
 type ServiceBreakdownProps = {
   data: ServiceRevenue[]

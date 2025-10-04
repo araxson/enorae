@@ -12,14 +12,18 @@ export async function getUserSalonId(userId: string): Promise<string | null> {
   const supabase = await createClient()
 
   // First check if user owns a salon
-  const { data: ownedSalon } = await supabase
+  const { data: ownedSalon, error: ownedSalonError } = await supabase
     .from('salons')
     .select('id')
     .eq('owner_id', userId)
     .maybeSingle()
 
-  if (ownedSalon?.id) {
-    return ownedSalon.id
+  if (ownedSalonError) throw ownedSalonError
+
+  const salon = ownedSalon as { id: string } | null
+
+  if (salon?.id) {
+    return salon.id
   }
 
   // If not an owner, check if they're staff
@@ -61,27 +65,29 @@ export async function getUserSalonIds(userId: string): Promise<string[]> {
   const salonIds: string[] = []
 
   // Get owned salons
-  const { data: ownedSalons } = await supabase
+  const { data: ownedSalons, error: ownedSalonsError } = await supabase
     .from('salons')
     .select('id')
     .eq('owner_id', userId)
 
-  if (ownedSalons) {
-    salonIds.push(...ownedSalons.map(s => s.id))
-  }
+  if (ownedSalonsError) throw ownedSalonsError
+
+  const salons = (ownedSalons || []) as Array<{ id: string }>
+  salonIds.push(...salons.map(s => s.id))
 
   // Get salons where user is staff
-  const { data: staffProfiles } = await supabase
+  const { data: staffProfiles, error: staffProfilesError } = await supabase
     .from('staff')
     .select('salon_id')
     .eq('user_id', userId)
 
-  if (staffProfiles) {
-    const staffSalonIds = staffProfiles
-      .map(sp => sp.salon_id)
-      .filter((id): id is string => id !== null)
-    salonIds.push(...staffSalonIds)
-  }
+  if (staffProfilesError) throw staffProfilesError
+
+  const profiles = (staffProfiles || []) as Array<{ salon_id: string | null }>
+  const staffSalonIds = profiles
+    .map(sp => sp.salon_id)
+    .filter((id): id is string => id !== null)
+  salonIds.push(...staffSalonIds)
 
   // Return unique salon IDs
   return [...new Set(salonIds)]

@@ -37,10 +37,11 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
             icon={Calendar}
             title="No Upcoming Appointments"
             description="You don't have any upcoming appointments"
-            action={{
-              label: 'Book an Appointment',
-              href: '/customer/salons',
-            }}
+            action={
+              <Button asChild>
+                <Link href="/customer/salons">Book an Appointment</Link>
+              </Button>
+            }
           />
         </CardContent>
       </Card>
@@ -71,7 +72,7 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
                     <ItemDescription>
                       {formatAppointmentTime(appointment.start_time)} •{' '}
                       <MapPin className="inline h-3 w-3" aria-hidden="true" />{' '}
-                      {appointment.salon?.business_name || 'Salon TBD'}
+                      {appointment.salon_name || 'Salon TBD'}
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>

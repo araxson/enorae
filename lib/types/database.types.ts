@@ -4,7 +4,7 @@
  * Auto-generated from Supabase database schema
  *
  * Project ID: nwmcpfioxerzodvbjigw
- * Generated: 2025-10-04 07:20:44
+ * Generated: 2025-10-04 15:29:29
  * Schemas: 27 schemas
  *
  * CRITICAL:

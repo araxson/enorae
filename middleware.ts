@@ -61,7 +61,7 @@ export async function middleware(request: NextRequest) {
 
   if (isAuthRoute) {
     // Use IP address or x-forwarded-for header for rate limiting
-    const ip = request.ip ?? request.headers.get('x-forwarded-for') ?? '127.0.0.1'
+    const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? '127.0.0.1'
     const { success, limit, remaining, reset } = await authRateLimiter.limit(ip)
 
     if (!success) {

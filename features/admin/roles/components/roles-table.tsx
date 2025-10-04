@@ -33,15 +33,17 @@ import { toast } from 'sonner'
 import { revokeRole, deleteRole } from '../api/mutations'
 
 type RoleAssignment = {
-  id: string
-  user_id: string
+  id: string | null
+  user_id: string | null
   user_name?: string | null
   user_email?: string | null
-  role: string
+  role: string | null
   salon_id?: string | null
   salon_name?: string | null
-  is_active: boolean
-  created_at: string
+  is_active: boolean | null
+  created_at: string | null
+  updated_at?: string | null
+  permissions?: string[] | null
 }
 
 type RolesTableProps = {
@@ -56,6 +58,11 @@ export function RolesTable({ roles, canDelete = false }: RolesTableProps) {
 
   async function handleRevoke() {
     if (!actionRole) return
+
+    if (!actionRole.id) {
+      toast.error('Invalid role ID')
+      return
+    }
 
     setIsLoading(true)
     const formData = new FormData()
@@ -76,6 +83,11 @@ export function RolesTable({ roles, canDelete = false }: RolesTableProps) {
 
   async function handleDelete() {
     if (!actionRole) return
+
+    if (!actionRole.id) {
+      toast.error('Invalid role ID')
+      return
+    }
 
     setIsLoading(true)
     const formData = new FormData()
@@ -127,7 +139,7 @@ export function RolesTable({ roles, canDelete = false }: RolesTableProps) {
                   <TableCell>
                     <Badge variant="outline" className="gap-1">
                       <Shield className="h-3 w-3" />
-                      {role.role.replace(/_/g, ' ')}
+                      {role.role?.replace(/_/g, ' ') || 'N/A'}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -145,7 +157,7 @@ export function RolesTable({ roles, canDelete = false }: RolesTableProps) {
                     )}
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {format(new Date(role.created_at), 'MMM d, yyyy')}
+                    {role.created_at ? format(new Date(role.created_at), 'MMM d, yyyy') : 'N/A'}
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>
@@ -194,8 +206,8 @@ export function RolesTable({ roles, canDelete = false }: RolesTableProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Revoke Role</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to revoke the <strong>{actionRole?.role.replace(/_/g, ' ')}</strong> role from{' '}
-              <strong>{actionRole?.user_name || actionRole?.user_email}</strong>? This will deactivate the role but preserve the record.
+              Are you sure you want to revoke the <strong>{actionRole?.role?.replace(/_/g, ' ') || 'Unknown'}</strong> role from{' '}
+              <strong>{actionRole?.user_name || actionRole?.user_email || 'Unknown'}</strong>? This will deactivate the role but preserve the record.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

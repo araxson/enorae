@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Muted } from '@/components/ui/typography'
-import type { DailyEarnings } from '../api/enhanced-queries'
+import type { DailyEarnings } from '../api/queries'
 
 type EarningsChartProps = {
   data: DailyEarnings[]

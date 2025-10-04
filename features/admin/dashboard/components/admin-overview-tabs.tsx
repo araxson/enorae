@@ -98,7 +98,7 @@ export function AdminOverviewTabs({
                   <Stack gap="xs">
                     <Small className="font-medium">{apt.salon_name || 'Unknown Salon'}</Small>
                     <Muted className="text-xs">
-                      {apt.customer_name || 'Unknown Customer'} • {apt.service_name || 'Unknown Service'}
+                      {apt.customer_name || 'Unknown Customer'} • {apt.service_count || 0} service(s)
                     </Muted>
                   </Stack>
                   <Badge variant={apt.status === 'completed' ? 'default' : 'secondary'}>
@@ -154,7 +154,7 @@ export function AdminOverviewTabs({
                   <Stack gap="xs">
                     <Small className="font-medium">{item.product_name || 'Unknown Product'}</Small>
                     <Muted className="text-xs">
-                      {item.salon_name || 'Unknown Salon'} • Stock: {item.current_stock || 0}
+                      {item.salon_name || 'Unknown Salon'} • Stock: {item.total_available || 0}
                     </Muted>
                   </Stack>
                   <Badge variant="destructive">
@@ -178,13 +178,13 @@ export function AdminOverviewTabs({
               {messages.slice(0, 10).map((msg) => (
                 <Box key={msg.id} className="p-3 border rounded-lg">
                   <div className="flex items-center justify-between mb-1">
-                    <Small className="font-medium">{msg.sender_name || 'Unknown Sender'}</Small>
+                    <Small className="font-medium">{msg.subject || 'No Subject'}</Small>
                     <Muted className="text-xs">
                       {msg.created_at ? new Date(msg.created_at).toLocaleDateString() : 'N/A'}
                     </Muted>
                   </div>
                   <Muted className="text-sm line-clamp-1">
-                    To: {msg.recipient_name || 'Unknown Recipient'}
+                    {msg.customer_name || 'Unknown Customer'} • {msg.salon_name || 'Unknown Salon'}
                   </Muted>
                 </Box>
               ))}
@@ -204,13 +204,13 @@ export function AdminOverviewTabs({
               {staff.slice(0, 10).map((member) => (
                 <Box key={member.id} className="flex items-center justify-between p-3 border rounded-lg">
                   <Stack gap="xs">
-                    <Small className="font-medium">{member.staff_name || 'Unknown Staff'}</Small>
+                    <Small className="font-medium">{member.full_name || 'Unknown Staff'}</Small>
                     <Muted className="text-xs">
-                      {member.salon_name || 'Unknown Salon'} • {member.role || 'staff'}
+                      {member.salon_name || 'Unknown Salon'} • {member.title || member.staff_role || 'staff'}
                     </Muted>
                   </Stack>
                   <Badge variant="outline">
-                    {member.total_appointments || 0} appointments
+                    {member.experience_years || 0} years exp
                   </Badge>
                 </Box>
               ))}

@@ -5,6 +5,7 @@ import type { Database } from '@/lib/types/database.types'
 
 type AppointmentService = Database['public']['Views']['appointment_services']['Row']
 type Appointment = Database['public']['Views']['appointments']['Row']
+type DailyMetric = Database['public']['Views']['daily_metrics']['Row']
 
 // Service and staff stats types
 type ServiceStats = {
@@ -60,7 +61,7 @@ export async function getAnalyticsOverview(
   const supabase = await createClient()
 
   // Get daily metrics for the period
-  const { data: metrics, error } = await supabase
+  const response = await supabase
     .from('daily_metrics')
     .select('*')
     .eq('salon_id', salonId)
@@ -68,9 +69,9 @@ export async function getAnalyticsOverview(
     .lte('metric_at', endDate)
     .order('metric_at', { ascending: true })
 
-  if (error) throw error
+  if (response.error) throw response.error
 
-  const dailyMetrics = metrics || []
+  const dailyMetrics: DailyMetric[] = response.data || []
 
   // Calculate totals
   const totalRevenue = dailyMetrics.reduce((sum, m) => sum + (m.total_revenue || 0), 0)
@@ -94,14 +95,15 @@ export async function getAnalyticsOverview(
   const prevStartDate = new Date(new Date(startDate).getTime() - periodLength * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   const prevEndDate = new Date(new Date(startDate).getTime() - 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
-  const { data: prevMetrics } = await supabase
+  const prevResponse = await supabase
     .from('daily_metrics')
     .select('total_revenue')
     .eq('salon_id', salonId)
     .gte('metric_at', prevStartDate)
     .lte('metric_at', prevEndDate)
 
-  const prevRevenue = (prevMetrics || []).reduce((sum, m) => sum + (m.total_revenue || 0), 0)
+  const prevMetrics: DailyMetric[] = prevResponse.data || []
+  const prevRevenue = prevMetrics.reduce((sum, m) => sum + (m.total_revenue || 0), 0)
   const revenueGrowth = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue) * 100 : 0
 
   return {
@@ -146,7 +148,7 @@ export async function getDailyMetricsTimeSeries(
 
   const supabase = await createClient()
 
-  const { data, error } = await supabase
+  const response = await supabase
     .from('daily_metrics')
     .select('*')
     .eq('salon_id', salonId)
@@ -154,9 +156,10 @@ export async function getDailyMetricsTimeSeries(
     .lte('metric_at', endDate)
     .order('metric_at', { ascending: true })
 
-  if (error) throw error
+  if (response.error) throw response.error
 
-  return (data || []).map(m => ({
+  const data: DailyMetric[] = response.data || []
+  return data.map(m => ({
     date: m.metric_at,
     revenue: m.total_revenue || 0,
     serviceRevenue: m.service_revenue || 0,
@@ -276,7 +279,7 @@ export async function getCustomerTrends(salonId: string, startDate: string, endD
 
   const supabase = await createClient()
 
-  const { data, error } = await supabase
+  const response = await supabase
     .from('daily_metrics')
     .select('metric_at, new_customers, returning_customers')
     .eq('salon_id', salonId)
@@ -284,9 +287,10 @@ export async function getCustomerTrends(salonId: string, startDate: string, endD
     .lte('metric_at', endDate)
     .order('metric_at', { ascending: true })
 
-  if (error) throw error
+  if (response.error) throw response.error
 
-  return (data || []).map(m => ({
+  const data: DailyMetric[] = response.data || []
+  return data.map(m => ({
     date: m.metric_at,
     newCustomers: m.new_customers || 0,
     returningCustomers: m.returning_customers || 0,

@@ -123,7 +123,7 @@ export class RateLimitError extends Error {
 export function withRateLimit(config: Omit<RateLimitConfig, 'identifier'>) {
   return function <T extends (...args: unknown[]) => Promise<unknown>>(
     target: T,
-    context: ClassMethodDecoratorContext
+    _context: ClassMethodDecoratorContext
   ): T {
     return (async function (this: unknown, ...args: unknown[]) {
       // Get identifier from context (implement based on your auth system)

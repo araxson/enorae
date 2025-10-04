@@ -4,6 +4,7 @@
  * during long-running dashboard sessions
  */
 
+import * as React from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 /**
@@ -126,16 +127,13 @@ export async function refreshSession() {
  * ```
  */
 export function useSessionRefresh() {
-  if (typeof window === 'undefined') {
-    return
-  }
-
   // Start refresh on mount
   React.useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
     startSessionRefresh()
     return () => stopSessionRefresh()
   }, [])
 }
-
-// For backwards compatibility with React import
-import * as React from 'react'
