@@ -11,7 +11,7 @@ import { Stack, Group } from '@/components/layout'
 import { MapPin, Star, Share2, Info, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
-import { FavoriteButton } from '@/features/favorites/components/favorite-button'
+import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
 import { P, Small } from '@/components/ui/typography'
 
 export interface SalonCardProps {

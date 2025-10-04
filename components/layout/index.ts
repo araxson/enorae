@@ -67,7 +67,17 @@ export type { TouchTargetProps } from './utils/touch-target'
 // Navigation Components
 // ============================================================================
 
-export { PageBreadcrumbs } from './page-breadcrumbs'
+export { DynamicBreadcrumbs } from './dynamic-breadcrumbs'
+export { NavActions } from './nav-actions'
+export { Header } from './header'
+export { Footer } from './footer'
+
+// ============================================================================
+// Dashboard Sidebar
+// ============================================================================
+
+export { PortalSidebar } from './portal-sidebar'
+export type { PortalSidebarProps, MenuItem, MenuSection } from './portal-sidebar'
 
 // ============================================================================
 // Types & Utils

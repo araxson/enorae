@@ -1,4 +1,4 @@
-import { AboutPage, aboutSEO } from '@/features/about'
+import { AboutPage, aboutSEO } from '@/features/marketing/about'
 
 export const metadata = aboutSEO
 

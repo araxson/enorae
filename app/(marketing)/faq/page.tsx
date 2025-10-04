@@ -1,4 +1,4 @@
-import { FAQPage, faqSEO } from '@/features/faq'
+import { FAQPage, faqSEO } from '@/features/marketing/faq'
 
 export const metadata = faqSEO
 

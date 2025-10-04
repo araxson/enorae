@@ -1,5 +1,4 @@
-import { SignupForm } from '@/features/auth'
-import { Center } from '@/components/layout'
+import { SignupPage } from '@/features/shared/auth'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
 export const metadata = genMeta({
@@ -8,10 +7,6 @@ export const metadata = genMeta({
   noIndex: true,
 })
 
-export default function SignupPage() {
-  return (
-    <Center className="min-h-screen">
-      <SignupForm />
-    </Center>
-  )
+export default function Page() {
+  return <SignupPage />
 }

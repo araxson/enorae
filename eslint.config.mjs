@@ -20,6 +20,12 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      // Downgrade no-explicit-any from error to warning for intentional database type workarounds
+      "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
 ];
 
 export default eslintConfig;

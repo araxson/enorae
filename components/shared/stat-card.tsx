@@ -27,17 +27,35 @@ export function StatCard({
   const isNegative = trend === 'down' || (change !== undefined && change < 0)
 
   return (
-    <Card className={cn('w-full', className)}>
+    <Card
+      className={cn(
+        'w-full transition-all hover:shadow-md hover:border-primary/20',
+        className
+      )}
+      role="article"
+      aria-label={`${label}: ${value}`}
+    >
       <CardHeader>
         <Flex direction="row" align="center" justify="between" gap="sm">
-          <CardTitle className="text-sm font-medium">{label}</CardTitle>
-          {icon && <Box className="text-muted-foreground">{icon}</Box>}
+          <CardTitle className="text-sm font-medium" id={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}>
+            {label}
+          </CardTitle>
+          {icon && (
+            <Box className="text-muted-foreground" aria-hidden="true">
+              {icon}
+            </Box>
+          )}
         </Flex>
       </CardHeader>
 
       <CardContent>
         <Stack gap="xs">
-          <div className="text-2xl font-bold">{value}</div>
+          <div
+            className="text-2xl font-bold"
+            aria-describedby={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}
+          >
+            {value}
+          </div>
 
           {(change !== undefined || description) && (
             <Group gap="xs" align="center">
@@ -50,9 +68,11 @@ export function StatCard({
                     isPositive && 'text-green-600 dark:text-green-400',
                     isNegative && 'text-red-600 dark:text-red-400'
                   )}
+                  role="status"
+                  aria-label={`${isPositive ? 'Increased' : 'Decreased'} by ${Math.abs(change)}%`}
                 >
-                  {isPositive && <TrendingUp className="h-3 w-3" />}
-                  {isNegative && <TrendingDown className="h-3 w-3" />}
+                  {isPositive && <TrendingUp className="h-3 w-3" aria-hidden="true" />}
+                  {isNegative && <TrendingDown className="h-3 w-3" aria-hidden="true" />}
                   <Small>
                     {change > 0 && '+'}
                     {change}%

@@ -1,4 +1,4 @@
-import { PricingPage, pricingSEO } from '@/features/pricing'
+import { PricingPage, pricingSEO } from '@/features/marketing/pricing'
 
 export const metadata = pricingSEO
 

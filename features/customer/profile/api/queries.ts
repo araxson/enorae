@@ -1,0 +1,50 @@
+import 'server-only'
+import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
+import type { Database } from '@/lib/types/database.types'
+
+type Profile = Database['public']['Views']['profiles']['Row']
+type Appointment = Database['public']['Views']['appointments']['Row']
+
+export type AppointmentWithRelations = Appointment & {
+  salon: { id: string; name: string | null; location_address: string | null; phone: string | null } | null
+  staff: { id: string; full_name: string | null; title: string | null } | null
+}
+
+export async function getProfile() {
+  // SECURITY: Require authentication
+  const session = await requireAuth()
+
+  const supabase = await createClient()
+
+  // Explicit user filter for security
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', session.user.id)
+    .single()
+
+  if (error) throw error
+  return data as Profile
+}
+
+export async function getUserAppointments() {
+  // SECURITY: Require authentication
+  const session = await requireAuth()
+
+  const supabase = await createClient()
+
+  // Explicit customer filter for security
+  const { data, error } = await supabase
+    .from('appointments')
+    .select(`
+      *,
+      salon:salon_id(id, name, location_address, phone),
+      staff:staff_id(id, full_name, title)
+    `)
+    .eq('customer_id', session.user.id)
+    .order('start_time', { ascending: false })
+
+  if (error) throw error
+  return data as AppointmentWithRelations[]
+}

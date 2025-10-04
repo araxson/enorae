@@ -5,14 +5,12 @@
  * Import from this file to maintain consistency across the app.
  */
 
-import { env } from './env'
-
 /**
  * Application Metadata
  */
 export const APP_NAME = 'Enorae'
 export const APP_DESCRIPTION = 'Modern salon booking platform with role-based portals for customers, staff, business owners, and platform administrators.'
-export const APP_URL = env.NEXT_PUBLIC_APP_URL || 'https://enorae.com'
+export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://enorae.com'
 
 /**
  * Application Version

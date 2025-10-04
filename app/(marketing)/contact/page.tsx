@@ -1,4 +1,4 @@
-import { ContactPage, contactSEO } from '@/features/contact'
+import { ContactPage, contactSEO } from '@/features/marketing/contact'
 
 export const metadata = contactSEO
 

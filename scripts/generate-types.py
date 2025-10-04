@@ -17,7 +17,6 @@ PROJECT_ID = "nwmcpfioxerzodvbjigw"
 # Output locations
 OUTPUTS = [
     PROJECT_ROOT / "lib" / "types" / "database.types.ts",
-    PROJECT_ROOT / "packages" / "database" / "database.types.ts",  # Legacy location
 ]
 
 # All schemas to include (comprehensive list)
@@ -34,7 +33,6 @@ SCHEMAS = [
 
     # Additional application schemas
     "admin",            # Admin functionality
-    "app_realtime",     # Real-time application features
     "archive",          # Archived/historical data
     "audit",            # Audit logs and tracking
     "security",         # Security features

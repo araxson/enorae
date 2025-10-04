@@ -1,0 +1,47 @@
+{
+  "name": "Enorae Project Hooks",
+  "version": "1.0.0",
+  "description": "Enforces CLAUDE.md rules and prevents common AI mistakes",
+  "hooks": [
+    {
+      "hookType": "SessionStart",
+      "description": "Shows project structure and critical reminders at session start",
+      "command": "./.claude/hooks/session-start.sh",
+      "timeout": 5000
+    },
+    {
+      "hookType": "PreToolUse",
+      "description": "Validates file write operations against CLAUDE.md rules",
+      "command": "./.claude/hooks/validate-file-write.sh \"{{file_path}}\"",
+      "toolRegex": "^(Write|Edit)$",
+      "timeout": 3000
+    },
+    {
+      "hookType": "PreToolUse",
+      "description": "Prevents installation of already-installed components and packages",
+      "command": "./.claude/hooks/validate-bash.sh \"{{command}}\"",
+      "toolRegex": "^Bash$",
+      "timeout": 3000
+    }
+  ],
+  "rules": {
+    "forbidden_actions": [
+      "Creating .md files (ABSOLUTE rule)",
+      "Installing shadcn components (all pre-installed)",
+      "Creating tailwind.config files (Tailwind 4 uses CSS)",
+      "Using file suffixes: -v2, -new, -fixed, -old, -temp",
+      "Querying schema tables directly (use public views)",
+      "Using Tables types (use Views types)",
+      "Business logic in pages (must be 5-15 lines)",
+      "Missing 'server-only' in DAL files",
+      "Missing auth checks in DAL functions"
+    ],
+    "enforced_patterns": {
+      "file_naming": "kebab-case for all files",
+      "page_architecture": "5-15 lines, only render feature components",
+      "dal_pattern": "import 'server-only' + auth check + public views",
+      "type_system": "Database['public']['Views']['table']['Row']",
+      "ui_components": "Import from @/components/ui/ (pre-installed)"
+    }
+  }
+}

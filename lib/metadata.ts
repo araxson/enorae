@@ -6,7 +6,7 @@
  */
 
 import type { Metadata } from 'next'
-import { APP_NAME, APP_DESCRIPTION, APP_URL } from './constants'
+import { APP_NAME, APP_DESCRIPTION, APP_URL } from './constants/app.constants'
 
 /**
  * Default metadata for the application

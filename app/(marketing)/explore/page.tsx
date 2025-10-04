@@ -1,4 +1,4 @@
-import { SalonDiscovery } from '@/features/salon-discovery'
+import { SalonDiscovery } from '@/features/customer/discovery'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
 export const metadata = genMeta({

@@ -1,4 +1,4 @@
-import { HomePage } from '@/features/home'
+import { HomePage } from '@/features/marketing/home'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
 export const metadata = genMeta({

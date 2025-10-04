@@ -1,4 +1,4 @@
-import { TermsPage, termsSEO } from '@/features/terms'
+import { TermsPage, termsSEO } from '@/features/marketing/terms'
 
 export const metadata = termsSEO
 

@@ -1,4 +1,4 @@
-import { HowItWorksPage, howItWorksSEO } from '@/features/how-it-works'
+import { HowItWorksPage, howItWorksSEO } from '@/features/marketing/how-it-works'
 
 export const metadata = howItWorksSEO
 

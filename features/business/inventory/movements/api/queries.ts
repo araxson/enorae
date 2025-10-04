@@ -1,0 +1,107 @@
+import 'server-only'
+import { createClient } from '@/lib/supabase/server'
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import type { Database } from '@/lib/types/database.types'
+
+// Types - Use public view
+type StockMovement = Database['public']['Views']['stock_movements']['Row']
+
+export type StockMovementWithDetails = StockMovement & {
+  product?: {
+    id: string
+    name: string
+    sku: string | null
+  } | null
+  from_location?: {
+    id: string
+    name: string
+  } | null
+  to_location?: {
+    id: string
+    name: string
+  } | null
+  performed_by?: {
+    id: string
+    full_name: string | null
+  } | null
+}
+
+/**
+ * Get all stock movements for the user's salon
+ * IMPROVED: Uses nested SELECT to eliminate N×4 pattern (401 → 1 query for 100 movements)
+ */
+export async function getStockMovements(limit = 100): Promise<StockMovementWithDetails[]> {
+  // SECURITY: Require business role
+  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+
+  const supabase = await createClient()
+
+  // Get user's salon with explicit filter
+  const { data: staffProfile } = await supabase
+    .from('staff')
+    .select('salon_id')
+    .eq('user_id', session.user.id)
+    .single<{ salon_id: string }>()
+
+  if (!staffProfile?.salon_id) throw new Error('User salon not found')
+
+  // ✅ FIXED: Single query with nested SELECT for all relations
+  const { data, error } = await supabase
+    .from('stock_movements')
+    .select(`
+      *,
+      product:product_id(id, name, sku),
+      from_location:from_location_id(id, name),
+      to_location:to_location_id(id, name),
+      performed_by:performed_by_id(id, full_name)
+    `)
+    .eq('salon_id', staffProfile.salon_id)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+
+  if (error) throw error
+
+  return (data || []) as unknown as StockMovementWithDetails[]
+}
+
+/**
+ * Get stock movements for a specific product
+ * IMPROVED: Uses nested SELECT to eliminate N×4 pattern (201 → 1 query for 50 movements)
+ */
+export async function getStockMovementsByProduct(
+  productId: string,
+  limit = 50
+): Promise<StockMovementWithDetails[]> {
+  // SECURITY: Require business role
+  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+
+  const supabase = await createClient()
+
+  // Get user's salon with explicit filter
+  const { data: staffProfile } = await supabase
+    .from('staff')
+    .select('salon_id')
+    .eq('user_id', session.user.id)
+    .single<{ salon_id: string }>()
+
+  if (!staffProfile?.salon_id) throw new Error('User salon not found')
+
+  // ✅ FIXED: Single query with nested SELECT for all relations
+  const { data, error } = await supabase
+    .from('stock_movements')
+    .select(`
+      *,
+      product:product_id(id, name, sku),
+      from_location:from_location_id(id, name),
+      to_location:to_location_id(id, name),
+      performed_by:performed_by_id(id, full_name)
+    `)
+    .eq('salon_id', staffProfile.salon_id)
+    .eq('product_id', productId)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+
+  if (error) throw error
+
+  return (data || []) as unknown as StockMovementWithDetails[]
+}

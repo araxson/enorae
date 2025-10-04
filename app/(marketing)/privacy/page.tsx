@@ -1,4 +1,4 @@
-import { PrivacyPage, privacySEO } from '@/features/privacy'
+import { PrivacyPage, privacySEO } from '@/features/marketing/privacy'
 
 export const metadata = privacySEO
 
