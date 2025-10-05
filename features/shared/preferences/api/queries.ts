@@ -19,8 +19,6 @@ export async function getUserPreferences(): Promise<ProfilePreference[]> {
     .from('profiles_preferences')
     .select('*')
     .eq('profile_id', session.user.id)
-    .is('deleted_at', null)
-    .order('preference_key', { ascending: true })
 
   if (error) throw error
   return data || []
@@ -37,13 +35,11 @@ export async function getUserPreference(
 
   const supabase = await createClient()
 
-  // Explicit profile and key filters for security
+  // Get single preference record for profile
   const { data, error } = await supabase
     .from('profiles_preferences')
     .select('*')
     .eq('profile_id', session.user.id)
-    .eq('preference_key', key)
-    .is('deleted_at', null)
     .single()
 
   if (error) {

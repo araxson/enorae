@@ -21,7 +21,7 @@ export const getUserFavorites = cache(async () => {
     .from('customer_favorites')
     .select(`
       *,
-      salon:salon_id(*)
+      salon:salons!inner(*)
     `)
     .eq('customer_id', session.user.id)
     .order('created_at', { ascending: false })
