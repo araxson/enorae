@@ -2,7 +2,8 @@ import { cookies } from 'next/headers'
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
 import { PortalSidebar } from '@/components/layout/portal-sidebar'
-import { DynamicBreadcrumbs, NavActions } from '@/components/layout'
+import { DynamicBreadcrumbs } from '@/components/layout'
+import { UserNav } from '@/components/layout/user-nav'
 import { ADMIN_SIDEBAR_SECTIONS } from '@/lib/constants/sidebar-menus'
 
 export default async function AdminLayout({
@@ -31,7 +32,7 @@ export default async function AdminLayout({
             <DynamicBreadcrumbs />
           </div>
           <div className="ml-auto px-3">
-            <NavActions />
+            <UserNav portal="admin" />
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 px-4 py-6">

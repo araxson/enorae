@@ -69,8 +69,10 @@ export type { TouchTargetProps } from './utils/touch-target'
 
 export { DynamicBreadcrumbs } from './dynamic-breadcrumbs'
 export { NavActions } from './nav-actions'
+export { UserNav } from './user-nav'
 export { Header } from './header'
 export { Footer } from './footer'
+export { ConditionalLayout } from './conditional-layout'
 
 // ============================================================================
 // Dashboard Sidebar

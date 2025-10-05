@@ -3,7 +3,7 @@ import "./globals.css";
 import { defaultMetadata } from "@/lib/metadata";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { Header, Footer } from "@/components/layout";
+import { ConditionalLayout } from "@/components/layout/conditional-layout";
 
 export const metadata: Metadata = defaultMetadata;
 
@@ -17,9 +17,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <ConditionalLayout>{children}</ConditionalLayout>
           </div>
           <Toaster />
         </ThemeProvider>

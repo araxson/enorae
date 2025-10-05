@@ -3,6 +3,7 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/s
 import { Separator } from '@/components/ui/separator'
 import { PortalSidebar } from '@/components/layout/portal-sidebar'
 import { DynamicBreadcrumbs } from '@/components/layout'
+import { UserNav } from '@/components/layout/user-nav'
 import { STAFF_SIDEBAR_SECTIONS } from '@/lib/constants/sidebar-menus'
 
 export default async function StaffLayout({
@@ -22,12 +23,17 @@ export default async function StaffLayout({
       />
       <SidebarInset>
         <header className="bg-background sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator
-            orientation="vertical"
-            className="mr-2 data-[orientation=vertical]:h-4"
-          />
-          <DynamicBreadcrumbs />
+          <div className="flex flex-1 items-center gap-2">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <DynamicBreadcrumbs />
+          </div>
+          <div className="ml-auto">
+            <UserNav portal="staff" />
+          </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4">
           {children}
