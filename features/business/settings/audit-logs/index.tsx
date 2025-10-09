@@ -1,0 +1,29 @@
+import { getUserSalonId } from '@/features/shared/salon/api/queries'
+import { getAuditLogs, getAuditLogStats } from './api/queries'
+import { AuditLogsStats } from './components/audit-logs-stats'
+import { AuditLogsClient } from './components/audit-logs-client'
+import { Stack } from '@/components/layout'
+import { H1, P } from '@/components/ui/typography'
+
+export async function AuditLogs() {
+  const salonId = await getUserSalonId()
+
+  const [logs, stats] = await Promise.all([
+    getAuditLogs(salonId),
+    getAuditLogStats(salonId)
+  ])
+
+  return (
+    <Stack gap="xl">
+      <div>
+        <H1>Security Audit Logs</H1>
+        <P className="text-muted-foreground">
+          Track all system activities and security events
+        </P>
+      </div>
+
+      <AuditLogsStats stats={stats} />
+      <AuditLogsClient initialLogs={logs} />
+    </Stack>
+  )
+}

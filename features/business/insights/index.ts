@@ -14,5 +14,8 @@ export {
   getReactivationOpportunities,
 } from './api/churn-prediction'
 
+// Business Insights Dashboard
+export { BusinessInsights } from './business-insights'
+
 // Customer Insights Dashboard
 export { CustomerInsights } from './customer-insights'

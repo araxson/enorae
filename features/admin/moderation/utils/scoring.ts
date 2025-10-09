@@ -114,9 +114,9 @@ export function estimateFakeLikelihood(input: FakeLikelihoodInput) {
   }
 
   const finalScore = clamp(Math.round(score), 0, 100)
-  const label = finalScore >= 70 ? 'high' : finalScore >= 40 ? 'medium' : 'low'
+  const label: 'high' | 'medium' | 'low' = finalScore >= 70 ? 'high' : finalScore >= 40 ? 'medium' : 'low'
 
-  return { score: finalScore, label as 'high' | 'medium' | 'low' }
+  return { score: finalScore, label }
 }
 
 export function calculateQualityScore(input: QualityScoreInput) {
@@ -134,9 +134,9 @@ export function calculateQualityScore(input: QualityScoreInput) {
   score += input.sentimentScore * 10
 
   const finalScore = clamp(Math.round(score), 0, 100)
-  const label = finalScore >= 75 ? 'high' : finalScore >= 50 ? 'medium' : 'low'
+  const label: 'high' | 'medium' | 'low' = finalScore >= 75 ? 'high' : finalScore >= 50 ? 'medium' : 'low'
 
-  return { score: finalScore, label as 'high' | 'medium' | 'low' }
+  return { score: finalScore, label }
 }
 
 export function computeReviewerReputation(stats: ReputationStats): ReputationResult {

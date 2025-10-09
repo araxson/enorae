@@ -7,14 +7,14 @@ export async function AdminAnalytics() {
   try {
     const snapshot = await getPlatformAnalyticsSnapshot({ windowDays: 120 })
     return (
-      <Section size=\"lg\">
+      <Section size="lg">
         <PlatformAnalyticsDashboard snapshot={snapshot} />
       </Section>
     )
   } catch (error) {
     return (
-      <Section size=\"lg\">
-        <Alert variant=\"destructive\">
+      <Section size="lg">
+        <Alert variant="destructive">
           <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load analytics'}
           </AlertDescription>
