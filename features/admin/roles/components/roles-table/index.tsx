@@ -4,6 +4,7 @@ import type { UserRole } from '@/lib/types/app.types'
 import { RolesTableContent } from './table'
 import { DeleteRoleDialog, RevokeRoleDialog } from './dialogs'
 import { useRoleActions } from './use-role-actions'
+import { EditPermissionsDialog } from '../edit-permissions-dialog'
 
 export type RolesTableProps = {
   roles: UserRole[]
@@ -12,10 +13,12 @@ export type RolesTableProps = {
 
 export function RolesTable({ roles, canDelete = false }: RolesTableProps) {
   const {
-    state: { targetRole, action, isLoading },
+    state: { targetRole, action, isLoading, editRole },
     openRevokeDialog,
     openDeleteDialog,
+    openEditDialog,
     closeDialog,
+    closeEditDialog,
     handleRevoke,
     handleDelete,
   } = useRoleActions()
@@ -27,6 +30,7 @@ export function RolesTable({ roles, canDelete = false }: RolesTableProps) {
         canDelete={canDelete}
         onRevoke={openRevokeDialog}
         onDelete={openDeleteDialog}
+        onEditPermissions={openEditDialog}
       />
 
       <RevokeRoleDialog
@@ -43,6 +47,14 @@ export function RolesTable({ roles, canDelete = false }: RolesTableProps) {
         onOpenChange={(open) => !open && closeDialog()}
         isLoading={isLoading}
         onConfirm={handleDelete}
+      />
+
+      <EditPermissionsDialog
+        role={editRole}
+        open={Boolean(editRole)}
+        onOpenChange={(open) => {
+          if (!open) closeEditDialog()
+        }}
       />
     </>
   )

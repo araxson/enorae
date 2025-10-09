@@ -16,6 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import type { UserRole } from '@/lib/types/app.types'
@@ -25,9 +26,10 @@ type Props = {
   canDelete: boolean
   onRevoke: (role: UserRole) => void
   onDelete: (role: UserRole) => void
+  onEditPermissions: (role: UserRole) => void
 }
 
-export function RolesTableContent({ roles, canDelete, onRevoke, onDelete }: Props) {
+export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEditPermissions }: Props) {
   return (
     <div className="rounded-md border">
       <Table>
@@ -94,6 +96,11 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete }: Prop
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => onEditPermissions(role)}>
+                          <Shield className="mr-2 h-4 w-4" />
+                          Edit Permissions
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
                         {role.is_active ? (
                           <DropdownMenuItem onClick={() => onRevoke(role)}>
                             <ShieldOff className="mr-2 h-4 w-4" />

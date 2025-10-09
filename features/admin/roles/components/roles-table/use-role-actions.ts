@@ -9,13 +9,20 @@ export function useRoleActions() {
   const [targetRole, setTargetRole] = useState<UserRole | null>(null)
   const [action, setAction] = useState<'revoke' | 'delete' | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [editRole, setEditRole] = useState<UserRole | null>(null)
 
   const closeDialog = () => {
     setTargetRole(null)
     setAction(null)
   }
 
-  const performAction = async (mutation: (formData: FormData) => Promise<{ success?: boolean; error?: string }>) => {
+  const closeEditDialog = () => {
+    setEditRole(null)
+  }
+
+  const performAction = async (
+    mutation: (formData: FormData) => Promise<{ success?: boolean; error?: string }>
+  ) => {
     if (!targetRole?.id) {
       toast.error('Invalid role ID')
       return
@@ -44,6 +51,7 @@ export function useRoleActions() {
       targetRole,
       action,
       isLoading,
+      editRole,
     },
     openRevokeDialog: (role: UserRole) => {
       setTargetRole(role)
@@ -53,7 +61,11 @@ export function useRoleActions() {
       setTargetRole(role)
       setAction('delete')
     },
+    openEditDialog: (role: UserRole) => {
+      setEditRole(role)
+    },
     closeDialog,
+    closeEditDialog,
     handleRevoke: () => performAction(revokeRole),
     handleDelete: () => performAction(deleteRole),
   }

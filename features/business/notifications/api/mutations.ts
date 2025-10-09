@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import type { NotificationTemplate } from './queries'
 
 type NotificationChannel = Database['public']['Enums']['notification_channel']
 type NotificationType = Database['public']['Enums']['notification_type']
@@ -209,5 +210,125 @@ export async function sendReviewRequest(
     type: 'review_request',
     channels: ['email', 'in_app'],
     data: appointmentDetails,
+  })
+}
+
+const notificationTemplateSchema = z.object({
+  id: z.string().uuid().optional(),
+  name: z.string().min(1),
+  description: z.string().optional(),
+  channel: z.enum(['email', 'sms', 'push', 'in_app', 'whatsapp']),
+  event: z.enum([
+    'appointment_confirmation',
+    'appointment_reminder',
+    'appointment_cancelled',
+    'appointment_rescheduled',
+    'promotion',
+    'review_request',
+    'loyalty_update',
+    'staff_message',
+    'system_alert',
+    'welcome',
+    'birthday',
+    'other',
+  ]),
+  subject: z.string().optional(),
+  body: z.string().min(10),
+})
+
+export async function upsertNotificationTemplate(template: NotificationTemplate) {
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+
+  const validation = notificationTemplateSchema.safeParse(template)
+  if (!validation.success) {
+    throw new Error(validation.error.errors[0].message)
+  }
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const currentTemplates = (user.user_metadata?.notification_templates as NotificationTemplate[] | undefined) || []
+  const timestamp = new Date().toISOString()
+  const templateId = validation.data.id ?? globalThis.crypto.randomUUID()
+
+  const updatedTemplate: NotificationTemplate = {
+    ...validation.data,
+    id: templateId,
+    updated_at: timestamp,
+    created_at:
+      validation.data.id && currentTemplates.find((existing) => existing.id === validation.data.id)?.created_at
+        ? currentTemplates.find((existing) => existing.id === validation.data.id)!.created_at
+        : timestamp,
+  }
+
+  const nextTemplates = currentTemplates.filter((existing) => existing.id !== templateId)
+  nextTemplates.push(updatedTemplate)
+
+  const { error } = await supabase.auth.updateUser({
+    data: {
+      notification_templates: nextTemplates,
+    },
+  })
+
+  if (error) throw error
+
+  revalidatePath('/business/notifications')
+  return updatedTemplate
+}
+
+export async function deleteNotificationTemplate(templateId: string) {
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const currentTemplates = (user.user_metadata?.notification_templates as NotificationTemplate[] | undefined) || []
+
+  const nextTemplates = currentTemplates.filter((template) => template.id !== templateId)
+
+  const { error } = await supabase.auth.updateUser({
+    data: {
+      notification_templates: nextTemplates,
+    },
+  })
+
+  if (error) throw error
+
+  revalidatePath('/business/notifications')
+  return { success: true }
+}
+
+export async function sendTestNotification(templateId: string) {
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const templates = (user.user_metadata?.notification_templates as NotificationTemplate[] | undefined) || []
+  const template = templates.find((entry) => entry.id === templateId)
+
+  if (!template) {
+    throw new Error('Template not found')
+  }
+
+  return sendNotification({
+    userId: user.id,
+    title: template.subject || template.name,
+    message: template.body.replace(/\{\{(.*?)\}\}/g, (_, placeholder) => `{{${placeholder.trim()}}}`),
+    type: template.event,
+    channels: [template.channel],
+    data: {
+      test: true,
+      triggered_at: new Date().toISOString(),
+    },
   })
 }

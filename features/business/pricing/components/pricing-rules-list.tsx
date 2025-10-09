@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Stack } from '@/components/layout'
-import { Trash2, Edit } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import { togglePricingRuleStatus, deletePricingRule } from '../api/pricing-rules.mutations'
 import { useToast } from '@/hooks/use-toast'
 
@@ -18,6 +18,9 @@ interface PricingRule {
   fixed_adjustment: number | null
   start_time: string | null
   end_time: string | null
+  valid_from: string | null
+  valid_until: string | null
+  customer_segment: string | null
   is_active: boolean
   priority: number
 }
@@ -69,6 +72,8 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
       day_based: 'Day-Based',
       advance_booking: 'Advance Booking',
       demand: 'Demand-Based',
+      seasonal: 'Seasonal Pricing',
+      customer_segment: 'Customer Segment',
     }
     return labels[type] || type
   }
@@ -105,6 +110,12 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
                 )}
                 {rule.start_time && rule.end_time && (
                   <p>Time: {rule.start_time} - {rule.end_time}</p>
+                )}
+                {(rule.valid_from || rule.valid_until) && (
+                  <p>Season: {rule.valid_from || 'now'} → {rule.valid_until || 'ongoing'}</p>
+                )}
+                {rule.customer_segment && (
+                  <p>Segment: {rule.customer_segment.replace(/_/g, ' ')}</p>
                 )}
                 <p>Priority: {rule.priority}</p>
               </div>

@@ -1,4 +1,4 @@
-import { MessageSquare, AlertTriangle, Clock } from 'lucide-react'
+import { MessageSquare, AlertTriangle, Clock, ShieldAlert, Gauge } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { P } from '@/components/ui/typography'
 
@@ -7,6 +7,9 @@ type ModerationStatsProps = {
     totalReviews: number
     flaggedReviews: number
     pendingReviews: number
+    highRiskReviews: number
+    averageSentiment: number
+    averageQuality: number
   }
 }
 
@@ -30,16 +33,36 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
       icon: Clock,
       accent: 'text-orange-500',
     },
+    {
+      label: 'High risk reviews',
+      value: stats.highRiskReviews,
+      icon: ShieldAlert,
+      accent: 'text-rose-500',
+    },
+    {
+      label: 'Avg sentiment',
+      value: stats.averageSentiment.toFixed(2),
+      icon: Gauge,
+      accent: 'text-purple-500',
+    },
+    {
+      label: 'Avg quality score',
+      value: `${stats.averageQuality}%`,
+      icon: Gauge,
+      accent: 'text-sky-500',
+    },
   ] as const
 
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-5">
       {cards.map(({ label, value, icon: Icon, accent }) => (
         <Card key={label}>
           <CardContent className="flex items-start justify-between gap-4 p-4">
             <div className="space-y-1">
               <P className="text-sm text-muted-foreground">{label}</P>
-              <p className="text-2xl font-semibold">{value}</p>
+              <p className="text-2xl font-semibold">
+                {typeof value === 'number' ? value : value}
+              </p>
             </div>
             <Icon className={`h-4 w-4 ${accent}`} />
           </CardContent>

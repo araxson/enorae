@@ -1,9 +1,16 @@
 import 'server-only'
+
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import {
+  analyzeSentiment,
+  calculateQualityScore,
+  computeReviewerReputation,
+  estimateFakeLikelihood,
+} from '../utils/scoring'
 
-type ReviewModeration = Database['public']['Views']['admin_reviews_overview']['Row']
+type ReviewRow = Database['public']['Views']['admin_reviews_overview']['Row']
 type MessageThread = Database['public']['Views']['admin_messages_overview']['Row']
 
 export interface ModerationFilters {
@@ -13,14 +20,37 @@ export interface ModerationFilters {
   date_to?: string
 }
 
+export interface ModerationReview extends ReviewRow {
+  sentimentScore: number
+  sentimentLabel: 'positive' | 'neutral' | 'negative'
+  fakeLikelihoodScore: number
+  fakeLikelihoodLabel: 'low' | 'medium' | 'high'
+  qualityScore: number
+  qualityLabel: 'low' | 'medium' | 'high'
+  reviewerReputation: {
+    score: number
+    label: 'trusted' | 'neutral' | 'risky'
+    totalReviews: number
+    flaggedReviews: number
+  }
+  commentLength: number
+}
+
+interface ReviewerAggregate {
+  totalReviews: number
+  flaggedReviews: number
+}
+
+const REVIEW_LIMIT = 300
+const REVIEWER_SAMPLE_LIMIT = 5000
+
 /**
- * Get reviews for moderation
+ * Get reviews for moderation with derived analytics
  * SECURITY: Platform admin only
  */
 export async function getReviewsForModeration(
   filters?: ModerationFilters
-): Promise<ReviewModeration[]> {
-  // SECURITY: Require platform admin role
+): Promise<ModerationReview[]> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()
@@ -46,17 +76,63 @@ export async function getReviewsForModeration(
     query = query.lte('created_at', filters.date_to)
   }
 
-  const { data, error } = await query.limit(200)
-
+  const { data, error } = await query.limit(REVIEW_LIMIT)
   if (error) throw error
-  return data || []
+
+  const reviews = (data || []) as ReviewRow[]
+  const reviewerIds = Array.from(
+    new Set(reviews.map((review) => review.customer_id).filter(Boolean) as string[])
+  ).slice(0, 500)
+
+  const reviewerStats = await fetchReviewerStats(supabase, reviewerIds)
+
+  return reviews.map((review) => {
+    const commentLength = review.comment?.length ?? 0
+    const sentiment = analyzeSentiment(review.comment || '')
+    const fake = estimateFakeLikelihood({
+      isVerified: review.is_verified ?? null,
+      helpfulCount: review.helpful_count ?? null,
+      commentLength,
+      rating: review.rating ?? null,
+      isFlagged: review.is_flagged ?? null,
+      createdAt: review.created_at,
+    })
+    const quality = calculateQualityScore({
+      commentLength,
+      helpfulCount: review.helpful_count ?? null,
+      hasResponse: review.has_response ?? null,
+      sentimentScore: sentiment.score,
+      isFlagged: review.is_flagged ?? null,
+    })
+
+    const reputationSource = reviewerStats.get(review.customer_id ?? '') ?? {
+      totalReviews: review.customer_id ? 1 : 0,
+      flaggedReviews: review.is_flagged ? 1 : 0,
+    }
+    const reputation = computeReviewerReputation(reputationSource)
+
+    return {
+      ...review,
+      sentimentScore: sentiment.score,
+      sentimentLabel: sentiment.label,
+      fakeLikelihoodScore: fake.score,
+      fakeLikelihoodLabel: fake.label,
+      qualityScore: quality.score,
+      qualityLabel: quality.label,
+      reviewerReputation: {
+        ...reputation,
+        totalReviews: reputationSource.totalReviews,
+        flaggedReviews: reputationSource.flaggedReviews,
+      },
+      commentLength,
+    }
+  })
 }
 
 /**
- * Get flagged reviews
- * SECURITY: Platform admin only
+ * Get flagged reviews only
  */
-export async function getFlaggedReviews(): Promise<ReviewModeration[]> {
+export async function getFlaggedReviews(): Promise<ModerationReview[]> {
   return getReviewsForModeration({ is_flagged: true })
 }
 
@@ -65,7 +141,6 @@ export async function getFlaggedReviews(): Promise<ReviewModeration[]> {
  * SECURITY: Platform admin only
  */
 export async function getMessageThreadsForMonitoring(): Promise<MessageThread[]> {
-  // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()
@@ -80,21 +155,25 @@ export async function getMessageThreadsForMonitoring(): Promise<MessageThread[]>
   return data || []
 }
 
+export interface ModerationStats {
+  totalReviews: number
+  flaggedReviews: number
+  pendingReviews: number
+  highRiskReviews: number
+  averageSentiment: number
+  averageQuality: number
+}
+
 /**
- * Get moderation statistics
+ * Get moderation statistics with high-risk insights
  * SECURITY: Platform admin only
  */
-export async function getModerationStats() {
-  // SECURITY: Require platform admin role
+export async function getModerationStats(): Promise<ModerationStats> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()
 
-  const [
-    { count: totalReviews },
-    { count: flaggedReviews },
-    { count: pendingReviews },
-  ] = await Promise.all([
+  const [totalResult, flaggedResult, pendingResult, highRiskResult, sampleResult] = await Promise.all([
     supabase
       .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
@@ -109,11 +188,68 @@ export async function getModerationStats() {
       .select('*', { count: 'exact', head: true })
       .is('response', null)
       .is('deleted_at', null),
+    supabase
+      .from('salon_reviews')
+      .select('*', { count: 'exact', head: true })
+      .or('is_flagged.eq.true,is_verified.eq.false')
+      .is('deleted_at', null),
+    supabase
+      .from('admin_reviews_overview')
+      .select('comment, helpful_count, has_response, is_flagged')
+      .order('created_at', { ascending: false })
+      .limit(150),
   ])
 
+  const sample = (sampleResult.data || []) as Pick<ReviewRow, 'comment' | 'helpful_count' | 'has_response' | 'is_flagged'>[]
+  let sentimentSum = 0
+  let qualitySum = 0
+
+  sample.forEach((item) => {
+    const sentiment = analyzeSentiment(item.comment || '')
+    const quality = calculateQualityScore({
+      commentLength: item.comment?.length ?? 0,
+      helpfulCount: item.helpful_count ?? null,
+      hasResponse: item.has_response ?? null,
+      sentimentScore: sentiment.score,
+      isFlagged: item.is_flagged ?? null,
+    })
+    sentimentSum += sentiment.score
+    qualitySum += quality.score
+  })
+
+  const divisor = sample.length || 1
+
   return {
-    totalReviews: totalReviews || 0,
-    flaggedReviews: flaggedReviews || 0,
-    pendingReviews: pendingReviews || 0,
+    totalReviews: totalResult.count || 0,
+    flaggedReviews: flaggedResult.count || 0,
+    pendingReviews: pendingResult.count || 0,
+    highRiskReviews: highRiskResult.count || 0,
+    averageSentiment: Number((sentimentSum / divisor).toFixed(2)),
+    averageQuality: Math.round(qualitySum / divisor) || 0,
   }
+}
+
+async function fetchReviewerStats(
+  supabase: ReturnType<typeof createServiceRoleClient>,
+  reviewerIds: string[],
+) {
+  if (!reviewerIds.length) return new Map<string, ReviewerAggregate>()
+
+  const { data, error } = await supabase
+    .from('salon_reviews')
+    .select('customer_id, is_flagged')
+    .in('customer_id', reviewerIds)
+    .limit(REVIEWER_SAMPLE_LIMIT)
+
+  if (error) throw error
+
+  const map = new Map<string, ReviewerAggregate>()
+  for (const row of data || []) {
+    if (!row.customer_id) continue
+    const current = map.get(row.customer_id) ?? { totalReviews: 0, flaggedReviews: 0 }
+    current.totalReviews += 1
+    if (row.is_flagged) current.flaggedReviews += 1
+    map.set(row.customer_id, current)
+  }
+  return map
 }

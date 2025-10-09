@@ -107,11 +107,11 @@
 **Database View**: `salon_metrics`, `operational_metrics`
 **Schema**: `analytics.salon_metrics`
 **Missing Operations**:
-- [ ] Real-time performance dashboard
-- [ ] Comparative metrics (period over period)
-- [ ] Staff performance leaderboards
-- [ ] Service popularity analysis
-- [ ] Revenue forecasting
+- [x] Real-time performance dashboard
+- [x] Comparative metrics (period over period)
+- [x] Staff performance leaderboards
+- [x] Service popularity analysis
+- [x] Revenue forecasting
 
 **Related Database Functions**:
 - `analytics.update_salon_stats()` - Update salon statistics
@@ -137,11 +137,11 @@
 **Database View**: None directly (feature exists in schema)
 **Schema**: `catalog.coupons`
 **Missing Operations**:
-- [ ] Create/manage coupons
-- [ ] Set coupon rules (min purchase, services, dates)
-- [ ] Track coupon usage
-- [ ] Analyze coupon effectiveness
-- [ ] Bulk coupon generation
+- [x] Create/manage coupons
+- [x] Set coupon rules (min purchase, services, dates)
+- [x] Track coupon usage
+- [x] Analyze coupon effectiveness
+- [x] Bulk coupon generation
 
 **Related Database Functions**:
 - `catalog.validate_coupon()` - Validate coupon on use
@@ -166,11 +166,11 @@
 **Database View**: None directly (exists in communication schema)
 **Schema**: `communication.notifications`, `communication.notification_queue`
 **Missing Operations**:
-- [ ] View notification history
-- [ ] Configure notification templates
-- [ ] Set notification preferences per event
-- [ ] Test notification delivery
-- [ ] View delivery status/failures
+- [x] View notification history
+- [x] Configure notification templates
+- [x] Set notification preferences per event
+- [x] Test notification delivery
+- [x] View delivery status/failures
 
 **Related Database Functions**:
 - `communication.send_notification()` - Send notification to user
@@ -199,11 +199,11 @@
 **Database View**: None directly (exists via services)
 **Schema**: `catalog.service_pricing`
 **Missing Operations**:
-- [ ] Dynamic pricing configuration
-- [ ] Time-based pricing (peak hours)
-- [ ] Customer-tier pricing
-- [ ] Seasonal pricing strategies
-- [ ] Bulk pricing updates
+- [x] Dynamic pricing configuration
+- [x] Time-based pricing (peak hours)
+- [x] Customer-tier pricing
+- [x] Seasonal pricing strategies
+- [x] Bulk pricing updates
 
 **Related Database Functions**:
 - `catalog.apply_dynamic_pricing()` - Apply dynamic pricing logic
@@ -230,11 +230,11 @@
 **Database View**: None directly (data from multiple sources)
 **Schema**: Multiple analytics tables
 **Missing Operations**:
-- [ ] Customer segmentation
-- [ ] Lifetime value analysis
-- [ ] Churn prediction
-- [ ] Acquisition channel analysis
-- [ ] Customer cohort analysis
+- [x] Customer segmentation
+- [x] Lifetime value analysis
+- [x] Churn prediction
+- [x] Acquisition channel analysis
+- [x] Customer cohort analysis
 
 **Related Database Functions**:
 - `analytics.calculate_customer_metrics()` - Customer metrics
@@ -262,11 +262,11 @@
 **Database View**: None directly (aggregated from analytics)
 **Schema**: `analytics` schema
 **Missing Operations**:
-- [ ] Service profitability analysis
-- [ ] Service popularity trends
-- [ ] Service duration accuracy
-- [ ] Staff performance by service
-- [ ] Service pairing analysis (upsells)
+- [x] Service profitability analysis
+- [x] Service popularity trends
+- [x] Service duration accuracy
+- [x] Staff performance by service
+- [x] Service pairing analysis (upsells)
 
 **Related Database Functions**:
 - `analytics.refresh_service_performance()` - Refresh service metrics

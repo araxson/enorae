@@ -1,7 +1,16 @@
 'use client'
 
 import { format } from 'date-fns'
-import { MoreVertical, Flag, FlagOff, Star, MessageSquare, Trash2, Eye } from 'lucide-react'
+import {
+  MoreVertical,
+  Flag,
+  FlagOff,
+  Star,
+  MessageSquare,
+  Trash2,
+  Eye,
+  TrendingUp,
+} from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,17 +21,33 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
-import type { Database } from '@/lib/types/database.types'
+import type { ModerationReview } from '../api/queries'
 import type { ReviewActions } from './reviews-table.types'
 
 const DATE_FORMAT = 'MMM d, yyyy'
 
-type Review = Database['public']['Views']['admin_reviews_overview']['Row']
-
 type ReviewsTableRowProps = {
-  review: Review
+  review: ModerationReview
   actions: ReviewActions
-  onViewDetail: (review: Review) => void
+  onViewDetail: (review: ModerationReview) => void
+}
+
+function sentimentVariant(label: ModerationReview['sentimentLabel']) {
+  if (label === 'positive') return 'default' as const
+  if (label === 'neutral') return 'secondary' as const
+  return 'destructive' as const
+}
+
+function riskVariant(label: ModerationReview['fakeLikelihoodLabel']) {
+  if (label === 'high') return 'destructive' as const
+  if (label === 'medium') return 'default' as const
+  return 'outline' as const
+}
+
+function reputationVariant(label: ModerationReview['reviewerReputation']['label']) {
+  if (label === 'trusted') return 'default' as const
+  if (label === 'neutral') return 'secondary' as const
+  return 'destructive' as const
 }
 
 export function ReviewsTableRow({ review, actions, onViewDetail }: ReviewsTableRowProps) {
@@ -45,27 +70,46 @@ export function ReviewsTableRow({ review, actions, onViewDetail }: ReviewsTableR
       </TableCell>
       <TableCell className="max-w-md">
         <p className="text-sm truncate">{review.comment || 'No text'}</p>
+        <p className="text-xs text-muted-foreground">{review.commentLength} chars</p>
       </TableCell>
       <TableCell>
         <div className="flex flex-col gap-1">
-          {review.is_flagged && (
-            <Badge variant="destructive" className="gap-1">
-              <Flag className="h-3 w-3" />
-              Flagged
-            </Badge>
-          )}
-          {review.is_featured && (
-            <Badge variant="default" className="gap-1">
-              <Star className="h-3 w-3" />
-              Featured
-            </Badge>
-          )}
+          <Badge variant={sentimentVariant(review.sentimentLabel)}>
+            {review.sentimentLabel} ({review.sentimentScore})
+          </Badge>
           {review.has_response && (
             <Badge variant="outline" className="gap-1">
               <MessageSquare className="h-3 w-3" />
               Responded
             </Badge>
           )}
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex flex-col gap-1">
+          <Badge variant={riskVariant(review.fakeLikelihoodLabel)}>
+            Risk {review.fakeLikelihoodScore}
+          </Badge>
+          <Badge variant={review.qualityLabel === 'low' ? 'destructive' : 'secondary'} className="gap-1">
+            <TrendingUp className="h-3 w-3" />
+            Quality {review.qualityScore}
+          </Badge>
+          {review.is_flagged && (
+            <Badge variant="destructive" className="gap-1">
+              <Flag className="h-3 w-3" />
+              Flagged
+            </Badge>
+          )}
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex flex-col gap-1">
+          <Badge variant={reputationVariant(review.reviewerReputation.label)}>
+            {review.reviewerReputation.label}
+          </Badge>
+          <span className="text-xs text-muted-foreground">
+            {review.reviewerReputation.totalReviews} reviews · {review.reviewerReputation.flaggedReviews} flagged
+          </span>
         </div>
       </TableCell>
       <TableCell className="text-sm text-muted-foreground">

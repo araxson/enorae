@@ -15,6 +15,12 @@ type ModerationFiltersProps = {
   onSearchChange: (query: string) => void
   statusFilter: string
   onStatusFilterChange: (status: string) => void
+  riskFilter: string
+  onRiskFilterChange: (risk: string) => void
+  sentimentFilter: string
+  onSentimentFilterChange: (sentiment: string) => void
+  reputationFilter: string
+  onReputationFilterChange: (reputation: string) => void
 }
 
 export function ModerationFilters({
@@ -22,6 +28,12 @@ export function ModerationFilters({
   onSearchChange,
   statusFilter,
   onStatusFilterChange,
+  riskFilter,
+  onRiskFilterChange,
+  sentimentFilter,
+  onSentimentFilterChange,
+  reputationFilter,
+  onReputationFilterChange,
 }: ModerationFiltersProps) {
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -46,6 +58,42 @@ export function ModerationFilters({
           <SelectItem value="pending">Pending response</SelectItem>
           <SelectItem value="responded">Has response</SelectItem>
           <SelectItem value="featured">Featured</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select value={riskFilter} onValueChange={onRiskFilterChange}>
+        <SelectTrigger className="w-[160px]">
+          <SelectValue placeholder="Risk level" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All risk levels</SelectItem>
+          <SelectItem value="high">High risk</SelectItem>
+          <SelectItem value="medium">Medium</SelectItem>
+          <SelectItem value="low">Low</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select value={sentimentFilter} onValueChange={onSentimentFilterChange}>
+        <SelectTrigger className="w-[160px]">
+          <SelectValue placeholder="Sentiment" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All sentiments</SelectItem>
+          <SelectItem value="positive">Positive</SelectItem>
+          <SelectItem value="neutral">Neutral</SelectItem>
+          <SelectItem value="negative">Negative</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select value={reputationFilter} onValueChange={onReputationFilterChange}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Reviewer reputation" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All reputation tiers</SelectItem>
+          <SelectItem value="trusted">Trusted</SelectItem>
+          <SelectItem value="neutral">Neutral</SelectItem>
+          <SelectItem value="risky">Risky</SelectItem>
         </SelectContent>
       </Select>
     </div>

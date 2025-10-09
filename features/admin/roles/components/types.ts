@@ -1,0 +1,12 @@
+export type RoleValue =
+  | 'super_admin'
+  | 'platform_admin'
+  | 'tenant_owner'
+  | 'salon_owner'
+  | 'salon_manager'
+  | 'senior_staff'
+  | 'staff'
+  | 'junior_staff'
+  | 'customer'
+  | 'vip_customer'
+  | 'guest'

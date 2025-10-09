@@ -12,16 +12,14 @@ import {
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Stack } from '@/components/layout'
+import { Stack, Flex } from '@/components/layout'
 import { toast } from 'sonner'
 import { assignRole } from '../api/mutations'
+import { PermissionsEditor } from './permissions-editor'
+import { RoleSelector } from './role-selector'
+import { SalonSelector } from './salon-selector'
+import type { RoleTemplate } from '../utils/templates'
+import type { RoleValue } from './types'
 
 type AssignRoleFormProps = {
   open: boolean
@@ -29,7 +27,7 @@ type AssignRoleFormProps = {
   salons: Array<{ id: string; name: string }>
 }
 
-const ROLES_NEEDING_SALON = [
+const ROLES_NEEDING_SALON: RoleValue[] = [
   'tenant_owner',
   'salon_owner',
   'salon_manager',
@@ -41,22 +39,45 @@ const ROLES_NEEDING_SALON = [
 export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [userId, setUserId] = useState('')
-  const [role, setRole] = useState('')
+  const [role, setRole] = useState<RoleValue | ''>('')
   const [salonId, setSalonId] = useState('')
+  const [permissions, setPermissions] = useState<string[]>([])
+  const [templateId, setTemplateId] = useState('')
 
-  // Reset form when dialog closes
   useEffect(() => {
     if (!open) {
       setUserId('')
       setRole('')
       setSalonId('')
+      setPermissions([])
+      setTemplateId('')
     }
   }, [open])
 
-  const needsSalon = ROLES_NEEDING_SALON.includes(role)
+  const needsSalon = role ? ROLES_NEEDING_SALON.includes(role) : false
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  const handleTemplateChange = (template: RoleTemplate | undefined) => {
+    setTemplateId(template?.id ?? '')
+    if (template) {
+      setRole(template.role as RoleValue)
+      setPermissions(template.permissions)
+    }
+  }
+
+  const handleAddPermission = (permission: string) => {
+    if (permissions.includes(permission)) {
+      toast.warning('Permission already added')
+      return
+    }
+    setPermissions((current) => [...current, permission])
+  }
+
+  const handleRemovePermission = (permission: string) => {
+    setPermissions((current) => current.filter((item) => item !== permission))
+  }
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
 
     if (!userId || !role) {
       toast.error('User ID and role are required')
@@ -72,9 +93,8 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
     const formData = new FormData()
     formData.append('userId', userId)
     formData.append('role', role)
-    if (salonId) {
-      formData.append('salonId', salonId)
-    }
+    if (salonId) formData.append('salonId', salonId)
+    if (permissions.length > 0) formData.append('permissions', JSON.stringify(permissions))
 
     const result = await assignRole(formData)
     setIsLoading(false)
@@ -89,89 +109,67 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[560px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
             Assign Role
           </DialogTitle>
           <DialogDescription>
-            Assign a role to a user. Business and staff roles require a salon assignment.
+            Assign a role to a user and optionally configure granular permissions with templates.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <Stack gap="md">
-            <div className="space-y-2">
-              <Label htmlFor="userId">User ID *</Label>
-              <Input
-                id="userId"
-                placeholder="Enter user UUID"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                The UUID of the user to assign the role to
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="role">Role *</Label>
-              <Select value={role} onValueChange={setRole} required>
-                <SelectTrigger id="role">
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="super_admin">Super Admin</SelectItem>
-                  <SelectItem value="platform_admin">Platform Admin</SelectItem>
-                  <SelectItem value="tenant_owner">Tenant Owner</SelectItem>
-                  <SelectItem value="salon_owner">Salon Owner</SelectItem>
-                  <SelectItem value="salon_manager">Salon Manager</SelectItem>
-                  <SelectItem value="senior_staff">Senior Staff</SelectItem>
-                  <SelectItem value="staff">Staff</SelectItem>
-                  <SelectItem value="junior_staff">Junior Staff</SelectItem>
-                  <SelectItem value="customer">Customer</SelectItem>
-                  <SelectItem value="vip_customer">VIP Customer</SelectItem>
-                  <SelectItem value="guest">Guest</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {needsSalon && (
+          <Stack gap="lg">
+            <Stack gap="md">
               <div className="space-y-2">
-                <Label htmlFor="salonId">Salon *</Label>
-                <Select value={salonId} onValueChange={setSalonId} required>
-                  <SelectTrigger id="salonId">
-                    <SelectValue placeholder="Select a salon" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {salons.map((salon) => (
-                      <SelectItem key={salon.id} value={salon.id}>
-                        {salon.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground">
-                  Required for business and staff roles
-                </p>
+                <Label htmlFor="userId">User ID *</Label>
+                <Input
+                  id="userId"
+                  placeholder="Enter user UUID"
+                  value={userId}
+                  onChange={(event) => setUserId(event.target.value)}
+                  required
+                />
+                <p className="text-xs text-muted-foreground">The UUID of the user to assign the role to</p>
               </div>
-            )}
 
-            <div className="flex justify-end gap-3 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={isLoading}
-              >
+              <RoleSelector
+                role={role}
+                onRoleChange={(value) => {
+                  setRole(value)
+                  setTemplateId('')
+                }}
+                templateId={templateId}
+                onTemplateChange={handleTemplateChange}
+              />
+
+              {needsSalon && (
+                <SalonSelector salons={salons} value={salonId} onChange={setSalonId} required />
+              )}
+            </Stack>
+
+            <Stack gap="sm">
+              <Flex align="center" justify="between">
+                <Label>Permissions</Label>
+                <p className="text-xs text-muted-foreground">Templates prefill permissions; add or remove as needed.</p>
+              </Flex>
+              <PermissionsEditor
+                permissions={permissions}
+                onAdd={handleAddPermission}
+                onRemove={handleRemovePermission}
+              />
+            </Stack>
+
+            <Flex justify="end" gap="md">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? 'Assigning...' : 'Assign Role'}
               </Button>
-            </div>
+            </Flex>
           </Stack>
         </form>
       </DialogContent>

@@ -1,5 +1,5 @@
 import { Section } from '@/components/layout'
-import { getAllRoleAssignments, getRoleStats } from './api/queries'
+import { getAllRoleAssignments, getRoleStats, getRoleAuditTimeline } from './api/queries'
 import { RolesClient } from './components/roles-client'
 import { requireAnyRole } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
@@ -9,9 +9,10 @@ export async function AdminRoles() {
   const isSuperAdmin = session.role === 'super_admin'
 
   // Fetch roles and stats in parallel
-  const [roles, stats] = await Promise.all([
+  const [roles, stats, auditEvents] = await Promise.all([
     getAllRoleAssignments(),
     getRoleStats(),
+    getRoleAuditTimeline(50),
   ])
 
   // Fetch salons for role assignment dropdown
@@ -40,6 +41,7 @@ export async function AdminRoles() {
         stats={stats}
         salons={sanitizedSalons}
         canDelete={isSuperAdmin}
+        auditEvents={auditEvents}
       />
     </Section>
   )

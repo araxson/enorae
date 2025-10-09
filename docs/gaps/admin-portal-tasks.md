@@ -261,11 +261,11 @@
 **Database View**: `admin_staff_overview`, `staff`, `staff_profiles`
 **Schema**: `organization.staff`
 **Missing Operations**:
-- [ ] Platform-wide staff statistics
-- [ ] Staff verification/background checks
-- [ ] Staff performance benchmarks
-- [ ] Staff licensing/certification tracking
-- [ ] Staff compliance monitoring
+- [x] Platform-wide staff statistics
+- [x] Staff verification/background checks
+- [x] Staff performance benchmarks
+- [x] Staff licensing/certification tracking
+- [x] Staff compliance monitoring
 
 **Implementation Steps**:
 1. View exists: `admin_staff_overview`
@@ -287,11 +287,11 @@
 **Database View**: `admin_reviews_overview`, `salon_reviews`
 **Schema**: `engagement.salon_reviews`
 **Missing Operations**:
-- [ ] Platform-wide review statistics (exists)
-- [ ] Fake review detection
-- [ ] Review sentiment analysis
-- [ ] Reviewer reputation tracking
-- [ ] Review quality scoring
+- [x] Platform-wide review statistics (exists)
+- [x] Fake review detection
+- [x] Review sentiment analysis
+- [x] Reviewer reputation tracking
+- [x] Review quality scoring
 
 **Related Database Functions**:
 - `engagement.get_salon_rating_stats(p_salon_id)` - Rating statistics
@@ -316,11 +316,11 @@
 **Database View**: `admin_salons_overview`, `salons`
 **Schema**: `organization.salons`
 **Missing Operations**:
-- [ ] Salon verification workflow (exists)
-- [ ] Compliance monitoring
-- [ ] License expiration tracking
-- [ ] Quality assurance checks
-- [ ] Salon health scores
+- [x] Salon verification workflow (exists)
+- [x] Compliance monitoring
+- [x] License expiration tracking
+- [x] Quality assurance checks
+- [x] Salon health scores
 
 **Related Database Functions**:
 - `public.validate_salon_data()` - Validate salon data
@@ -345,11 +345,11 @@
 **Database View**: `user_roles`
 **Schema**: `identity.user_roles`
 **Missing Operations**:
-- [ ] View all user roles (exists)
-- [ ] Bulk role assignment
-- [ ] Role history/audit
-- [ ] Custom role creation
-- [ ] Permission management
+- [x] View all user roles (exists)
+- [x] Bulk role assignment
+- [x] Role history/audit
+- [x] Custom role creation
+- [x] Permission management
 
 **Related Database Functions**:
 - `identity.update_role_active_status()` - Update role status

@@ -3,21 +3,63 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Grid } from '@/components/layout'
-import { TrendingUp, TrendingDown, DollarSign, Star, XCircle, BarChart3 } from 'lucide-react'
+import { TrendingUp, TrendingDown, DollarSign, Star, BarChart3, Users, Link2 } from 'lucide-react'
 import type { ServicePerformance } from '../api/queries'
+
+type ServiceProfitability = {
+  service_id: string
+  service_name: string
+  revenue: number
+  cost: number
+  profit: number
+  margin: number
+}
+
+type StaffLeader = {
+  service_id: string
+  service_name: string
+  staff: Array<{ staff_id: string; staff_name: string; appointmentCount: number; revenue: number }>
+}
+
+type ServicePairing = {
+  primary: string
+  paired: string
+  count: number
+}
+
+type DurationAccuracy = {
+  service_id: string
+  service_name: string
+  expected_duration: number | null
+  actual_duration: number | null
+  variance: number | null
+}
 
 type Props = {
   services: ServicePerformance[]
-  revenueByService: Record<string, number>
+  profitability: ServiceProfitability[]
+  staffPerformance: StaffLeader[]
+  pairings: ServicePairing[]
+  durationAccuracy: DurationAccuracy[]
 }
 
-export function ServicePerformanceDashboard({ services, revenueByService }: Props) {
+export function ServicePerformanceDashboard({
+  services,
+  profitability,
+  staffPerformance,
+  pairings,
+  durationAccuracy,
+}: Props) {
   const topServices = [...services]
     .sort((a, b) => b.total_revenue - a.total_revenue)
     .slice(0, 5)
 
   const trendingServices = [...services]
     .sort((a, b) => b.total_bookings - a.total_bookings)
+    .slice(0, 5)
+
+  const mostProfitable = [...profitability]
+    .sort((a, b) => b.profit - a.profit)
     .slice(0, 5)
 
   const getPerformanceIcon = (cancellationRate: number) => {
@@ -35,8 +77,8 @@ export function ServicePerformanceDashboard({ services, revenueByService }: Prop
 
   return (
     <Stack gap="xl">
-      <Grid cols={{ base: 1, md: 2 }} gap="lg">
-        <Card>
+      <Grid cols={{ base: 1, md: 3 }} gap="lg">
+        <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="h-5 w-5" />
@@ -68,8 +110,8 @@ export function ServicePerformanceDashboard({ services, revenueByService }: Prop
                 </div>
               ))}
             </Stack>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
         <Card>
           <CardHeader>
@@ -102,9 +144,33 @@ export function ServicePerformanceDashboard({ services, revenueByService }: Prop
                 </div>
               ))}
             </Stack>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
       </Grid>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Profitability by Service</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {mostProfitable.map((entry) => (
+            <div key={entry.service_id} className="flex items-center justify-between rounded-md border px-3 py-2">
+              <div>
+                <p className="font-medium">{entry.service_name}</p>
+                <p className="text-xs text-muted-foreground">
+                  Margin {Number.isFinite(entry.margin) ? entry.margin.toFixed(1) : '0'}%
+                </p>
+              </div>
+              <div className="text-right text-sm">
+                <p className="font-semibold">{formatCurrency(entry.profit)}</p>
+                <p className="text-muted-foreground">
+                  Revenue {formatCurrency(entry.revenue)} · Cost {formatCurrency(entry.cost)}
+                </p>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -153,6 +219,80 @@ export function ServicePerformanceDashboard({ services, revenueByService }: Prop
               </div>
             ))}
           </div>
+        </CardContent>
+      </Card>
+
+      <Grid cols={{ base: 1, md: 2 }} gap="lg">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              Staff Leaders by Service
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {staffPerformance.map((record) => (
+              <div key={record.service_id} className="rounded-md border p-3">
+                <p className="font-medium mb-2">{record.service_name}</p>
+                <div className="space-y-1 text-sm text-muted-foreground">
+                  {record.staff.slice(0, 3).map((staff) => (
+                    <div key={staff.staff_id} className="flex justify-between">
+                      <span>{staff.staff_name}</span>
+                      <span>
+                        {staff.appointmentCount} appts · {formatCurrency(staff.revenue)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Link2 className="h-5 w-5" />
+              Service Pairings
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm">
+            {pairings.map((pair) => (
+              <div key={`${pair.primary}-${pair.paired}`} className="flex items-center justify-between rounded-md border px-3 py-2">
+                <div>
+                  <p className="font-medium">{pair.primary}</p>
+                  <p className="text-xs text-muted-foreground">Often paired with {pair.paired}</p>
+                </div>
+                <Badge variant="secondary">{pair.count} combos</Badge>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Duration Accuracy</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-3 md:grid-cols-2">
+          {durationAccuracy.map((entry) => (
+            <div key={entry.service_id} className="rounded-md border p-3">
+              <p className="font-medium">{entry.service_name}</p>
+              <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
+                <span>Scheduled</span>
+                <span>{entry.expected_duration ? `${entry.expected_duration} min` : 'N/A'}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>Actual</span>
+                <span>{entry.actual_duration ? `${entry.actual_duration} min` : 'N/A'}</span>
+              </div>
+              {entry.variance != null && (
+                <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'} className="mt-2">
+                  {entry.variance > 0 ? '+' : ''}{entry.variance} min variance
+                </Badge>
+              )}
+            </div>
+          ))}
         </CardContent>
       </Card>
     </Stack>
