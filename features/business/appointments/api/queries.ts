@@ -1,36 +1,16 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { getUserSalon } from '../../shared/api/salon.queries'
 
 type Appointment = Database['public']['Views']['appointments']['Row']
-type Salon = Database['public']['Views']['salons']['Row']
 
 // IMPROVED: appointments view already includes customer/staff data
 export type AppointmentWithDetails = Appointment
 
-/**
- * Get user's salon
- * IMPROVED: Uses centralized requireUserSalonId() helper
- */
-export async function getUserSalon(): Promise<Salon> {
-  // SECURITY: Require authentication
-  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-  // Get user's salon ID (throws if not found)
-  const salonId = await requireUserSalonId()
-
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('salons')
-    .select('*')
-    .eq('id', salonId)
-    .single()
-
-  if (error) throw error
-  return data as Salon
-}
+// Re-export getUserSalon from shared location
+export { getUserSalon }
 
 export async function getAppointments(salonId: string) {
   // SECURITY: Require authentication

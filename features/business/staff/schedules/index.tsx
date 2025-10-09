@@ -1,5 +1,4 @@
-import { Section, Stack, Box } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
+import { Section, Stack } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getStaffSchedules, getStaffForScheduling } from './api/queries'
 import { SchedulesClient } from './components/schedules-client'
@@ -27,11 +26,6 @@ export async function StaffSchedulesManagement() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <Box>
-          <H1>Staff Schedules</H1>
-          <Lead>Configure weekly work schedules for your staff members</Lead>
-        </Box>
-
         <SchedulesClient initialSchedules={schedules} staffMembers={staffMembers} />
       </Stack>
     </Section>

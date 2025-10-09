@@ -14,15 +14,20 @@ type Service = Database['public']['Views']['services']['Row']
 interface ServicesGridProps {
   services: Service[]
   onEditService?: (service: Service) => void
+  isFiltered?: boolean
 }
 
-export function ServicesGrid({ services, onEditService }: ServicesGridProps) {
+export function ServicesGrid({ services, onEditService, isFiltered = false }: ServicesGridProps) {
   if (services.length === 0) {
     return (
       <EmptyState
         icon={Scissors}
-        title="No services available"
-        description="Add services to start accepting bookings"
+        title={isFiltered ? 'No services found' : 'No services available'}
+        description={
+          isFiltered
+            ? 'Try adjusting your search or filters'
+            : 'Add services to start accepting bookings'
+        }
       />
     )
   }

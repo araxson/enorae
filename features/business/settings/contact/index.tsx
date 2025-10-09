@@ -1,24 +1,13 @@
 import { getUserSalonContactDetails } from './api/queries'
 import { ContactForm } from './components/contact-form'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { createClient } from '@/lib/supabase/server'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
 export async function SalonContactSettings() {
-  // Get user's salon
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-  const supabase = await createClient()
-
-  const { data: salon } = await supabase
-    .from('salons')
-    .select('id')
-    .eq('owner_id', session.user.id)
-    .single<{ id: string }>()
-
-  if (!salon) {
-    throw new Error('No salon found for user')
-  }
+  // Ensure caller is a business user and resolve active salon context
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
 
   const contactDetails = await getUserSalonContactDetails()
 
-  return <ContactForm salonId={salon.id} contactDetails={contactDetails} />
+  return <ContactForm salonId={salonId} contactDetails={contactDetails} />
 }

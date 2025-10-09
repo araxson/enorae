@@ -188,7 +188,7 @@ def analyze_domain_schemas(schemas: Dict):
             print_issue("CRITICAL", f"Missing domain schema: {domain}")
 
 def analyze_rls_issues():
-    """Analyze potential RLS issues from CLAUDE.md patterns"""
+    """Analyze potential RLS issues from claude.md patterns"""
     print_section("RLS POLICY VIOLATIONS (Based on Supabase Docs)")
 
     violations = []

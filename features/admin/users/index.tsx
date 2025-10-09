@@ -1,9 +1,10 @@
 import { Section, Stack, Box, Flex } from '@/components/layout'
-import { H1, P, Lead } from '@/components/ui/typography'
+import { P } from '@/components/ui/typography'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users, UserCheck, UserX, Shield } from 'lucide-react'
 import { getUsersOverview, getUsersWithDetails } from './api/queries'
+import type { AdminUser } from './api/queries'
 import {
   suspendUser,
   reactivateUser,
@@ -21,14 +22,26 @@ export async function UserManagement() {
 
   const [overview, users] = await Promise.all([getUsersOverview(), getUsersWithDetails()])
 
+  type AdminUserRecord = AdminUser & {
+    id?: string | null
+    roles?: string[] | null
+    session_count?: number | null
+  }
+
+  const normalizedUsers = users.map((user) => {
+    const record = user as AdminUserRecord
+
+    return {
+      ...record,
+      id: record.id ?? '',
+      roles: record.roles ?? [],
+      session_count: record.session_count ?? 0,
+    }
+  })
+
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <Box>
-          <H1>User Management</H1>
-          <Lead>Manage platform users, roles, and permissions</Lead>
-        </Box>
-
         {/* Overview Stats */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
@@ -97,7 +110,7 @@ export async function UserManagement() {
         {/* Users Table */}
         <Box>
           <UsersTable
-            users={users}
+            users={normalizedUsers}
             onSuspend={suspendUser}
             onReactivate={reactivateUser}
             onTerminateSessions={terminateAllUserSessions}

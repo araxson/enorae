@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 
@@ -29,14 +29,7 @@ export async function createStockLocation(formData: FormData) {
     const supabase = await createClient()
     // SECURITY: Require authentication
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string }>()
-
-    if (!staffProfile?.salon_id) return { error: 'User salon not found' }
+    const salonId = await requireUserSalonId()
 
     // If setting as default, unset other defaults
     if (data.isDefault) {
@@ -44,14 +37,14 @@ export async function createStockLocation(formData: FormData) {
         .schema('inventory')
         .from('stock_locations')
         .update({ is_default: false })
-        .eq('salon_id', staffProfile.salon_id)
+        .eq('salon_id', salonId)
     }
 
     const { error: insertError } = await supabase
       .schema('inventory')
       .from('stock_locations')
       .insert({
-        salon_id: staffProfile.salon_id,
+        salon_id: salonId,
         name: data.name,
         description: data.description || null,
         is_default: data.isDefault || false,
@@ -85,14 +78,7 @@ export async function updateStockLocation(formData: FormData) {
     const supabase = await createClient()
     // SECURITY: Require authentication
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string }>()
-
-    if (!staffProfile?.salon_id) return { error: 'User salon not found' }
+    const salonId = await requireUserSalonId()
 
     // If setting as default, unset other defaults
     if (data.isDefault) {
@@ -100,7 +86,7 @@ export async function updateStockLocation(formData: FormData) {
         .schema('inventory')
         .from('stock_locations')
         .update({ is_default: false })
-        .eq('salon_id', staffProfile.salon_id)
+        .eq('salon_id', salonId)
         .neq('id', id)
     }
 
@@ -114,7 +100,7 @@ export async function updateStockLocation(formData: FormData) {
         updated_by_id: session.user.id,
       })
       .eq('id', id)
-      .eq('salon_id', staffProfile.salon_id)
+      .eq('salon_id', salonId)
 
     if (updateError) return { error: updateError.message }
 
@@ -133,14 +119,7 @@ export async function deleteStockLocation(formData: FormData) {
     const supabase = await createClient()
     // SECURITY: Require authentication
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string }>()
-
-    if (!staffProfile?.salon_id) return { error: 'User salon not found' }
+    const salonId = await requireUserSalonId()
 
     // Check if location has stock
     const { count } = await supabase
@@ -161,7 +140,7 @@ export async function deleteStockLocation(formData: FormData) {
         updated_by_id: session.user.id,
       })
       .eq('id', id)
-      .eq('salon_id', staffProfile.salon_id)
+      .eq('salon_id', salonId)
 
     if (deleteError) return { error: deleteError.message }
 

@@ -106,8 +106,10 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
 
   if (Object.keys(staffGroups).length === 0) {
     return (
-      <Card className="p-8 text-center">
-        <Muted>No schedules configured yet. Add a schedule above to get started.</Muted>
+      <Card>
+        <CardContent>
+          <Muted>No schedules configured yet. Add a schedule above to get started.</Muted>
+        </CardContent>
       </Card>
     )
   }

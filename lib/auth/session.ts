@@ -1,3 +1,5 @@
+'use server'
+
 /**
  * Secure Session Verification - DAL Pattern
  *
@@ -10,8 +12,6 @@
  * https://supabase.com/docs/guides/auth/server-side/nextjs
  */
 
-import 'server-only'
-import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import type { User } from '@supabase/supabase-js'
@@ -34,7 +34,7 @@ export interface Session {
  *
  * SECURITY: Always use this instead of getSession()
  */
-export const verifySession = cache(async (): Promise<Session | null> => {
+export async function verifySession(): Promise<Session | null> {
   const supabase = await createClient()
 
   // CRITICAL: Use getUser() NOT getSession()
@@ -50,7 +50,7 @@ export const verifySession = cache(async (): Promise<Session | null> => {
   }
 
   // Get user role from database
-  const { data: roleData, error: roleError } = await supabase
+  const { data: roleData } = await supabase
     .from('user_roles')
     .select('role')
     .eq('user_id', user.id)
@@ -64,7 +64,7 @@ export const verifySession = cache(async (): Promise<Session | null> => {
     user,
     role: roleData.role,
   }
-})
+}
 
 /**
  * Require authentication - throws if not authenticated

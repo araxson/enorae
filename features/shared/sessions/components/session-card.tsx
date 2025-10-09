@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
@@ -37,51 +37,53 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
   }
 
   return (
-    <Card className="p-6">
-      <Stack gap="md">
-        <Flex justify="between" align="start">
+    <Card>
+      <CardContent className="space-y-4">
+        <Stack gap="md">
+          <Flex justify="between" align="start">
+            <Stack gap="xs">
+              <Flex gap="sm" align="center">
+                <P className="font-medium">Session {session.id?.substring(0, 8) || 'Unknown'}</P>
+                {session.is_current && (
+                  <Badge variant="default">Current Session</Badge>
+                )}
+                {session.is_suspicious && (
+                  <Badge variant="destructive">Suspicious</Badge>
+                )}
+              </Flex>
+              <Muted>{getActivityStatus(session.updated_at)}</Muted>
+            </Stack>
+
+            {!session.is_current && session.id && (
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => onRevoke(session.id!)}
+                disabled={isRevoking}
+              >
+                {isRevoking ? 'Revoking...' : 'Revoke'}
+              </Button>
+            )}
+          </Flex>
+
           <Stack gap="xs">
-            <Flex gap="sm" align="center">
-              <P className="font-medium">Session {session.id?.substring(0, 8) || 'Unknown'}</P>
-              {session.is_current && (
-                <Badge variant="default">Current Session</Badge>
-              )}
-              {session.is_suspicious && (
-                <Badge variant="destructive">Suspicious</Badge>
-              )}
+            <Flex gap="sm">
+              <Small className="w-24 text-muted-foreground">Created:</Small>
+              <Small>{formatDate(session.created_at)}</Small>
             </Flex>
-            <Muted>{getActivityStatus(session.updated_at)}</Muted>
+
+            <Flex gap="sm">
+              <Small className="w-24 text-muted-foreground">Last Updated:</Small>
+              <Small>{formatDate(session.updated_at)}</Small>
+            </Flex>
+
+            <Flex gap="sm">
+              <Small className="w-24 text-muted-foreground">Status:</Small>
+              <Small>{session.is_active ? 'Active' : 'Inactive'}</Small>
+            </Flex>
           </Stack>
-
-          {!session.is_current && session.id && (
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => onRevoke(session.id!)}
-              disabled={isRevoking}
-            >
-              {isRevoking ? 'Revoking...' : 'Revoke'}
-            </Button>
-          )}
-        </Flex>
-
-        <Stack gap="xs">
-          <Flex gap="sm">
-            <Small className="text-muted-foreground w-24">Created:</Small>
-            <Small>{formatDate(session.created_at)}</Small>
-          </Flex>
-
-          <Flex gap="sm">
-            <Small className="text-muted-foreground w-24">Last Updated:</Small>
-            <Small>{formatDate(session.updated_at)}</Small>
-          </Flex>
-
-          <Flex gap="sm">
-            <Small className="text-muted-foreground w-24">Status:</Small>
-            <Small>{session.is_active ? 'Active' : 'Inactive'}</Small>
-          </Flex>
         </Stack>
-      </Stack>
+      </CardContent>
     </Card>
   )
 }

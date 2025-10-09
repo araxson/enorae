@@ -1,27 +1,14 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { Stack, Flex, Box } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
+import { useMemo, useState } from 'react'
+import { P, Muted } from '@/components/ui/typography'
 import { ModerationStats } from './moderation-stats'
 import { ModerationFilters } from './moderation-filters'
 import { ReviewsTable } from './reviews-table'
 import { ReviewDetailDialog } from './review-detail-dialog'
+import type { Database } from '@/lib/types/database.types'
 
-type Review = {
-  id: string | null
-  salon_name?: string | null
-  customer_name?: string | null
-  customer_email?: string | null
-  rating: number | null
-  review_text?: string | null
-  is_flagged: boolean | null
-  flagged_reason?: string | null
-  response?: string | null
-  response_date?: string | null
-  is_featured: boolean | null
-  created_at: string | null
-}
+type Review = Database['public']['Views']['admin_reviews_overview']['Row']
 
 type ModerationClientProps = {
   reviews: Review[]
@@ -38,20 +25,21 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
   const [viewingReview, setViewingReview] = useState<Review | null>(null)
 
   const filteredReviews = useMemo(() => {
+    const normalizedQuery = searchQuery.toLowerCase()
     return reviews.filter((review) => {
       const matchesSearch =
-        !searchQuery ||
-        review.salon_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        review.customer_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        review.customer_email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        review.review_text?.toLowerCase().includes(searchQuery.toLowerCase())
+        !normalizedQuery ||
+        review.salon_name?.toLowerCase().includes(normalizedQuery) ||
+        review.customer_name?.toLowerCase().includes(normalizedQuery) ||
+        review.customer_email?.toLowerCase().includes(normalizedQuery) ||
+        review.comment?.toLowerCase().includes(normalizedQuery)
 
       const matchesStatus =
         statusFilter === 'all' ||
         (statusFilter === 'flagged' && review.is_flagged) ||
         (statusFilter === 'unflagged' && !review.is_flagged) ||
-        (statusFilter === 'pending' && !review.response) ||
-        (statusFilter === 'responded' && review.response) ||
+        (statusFilter === 'pending' && !review.has_response) ||
+        (statusFilter === 'responded' && review.has_response) ||
         (statusFilter === 'featured' && review.is_featured)
 
       return matchesSearch && matchesStatus
@@ -59,15 +47,13 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
   }, [reviews, searchQuery, statusFilter])
 
   return (
-    <Stack gap="xl">
-      <Flex align="center" justify="between">
-        <Box>
-          <H1>Content Moderation</H1>
-          <P className="text-muted-foreground mt-1">
-            Monitor and moderate user-generated content
-          </P>
-        </Box>
-      </Flex>
+    <div className="space-y-8">
+      <div className="space-y-1">
+        <P className="text-base font-semibold">Content moderation</P>
+        <Muted className="text-sm">
+          Monitor and moderate user-generated content.
+        </Muted>
+      </div>
 
       <ModerationStats stats={stats} />
 
@@ -82,9 +68,9 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
 
       <ReviewDetailDialog
         review={viewingReview}
-        open={!!viewingReview}
+        open={Boolean(viewingReview)}
         onOpenChange={(open) => !open && setViewingReview(null)}
       />
-    </Stack>
+    </div>
   )
 }

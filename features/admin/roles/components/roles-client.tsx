@@ -4,28 +4,15 @@ import { useState, useMemo } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex, Box } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
+import { P, Muted } from '@/components/ui/typography'
 import { RolesStats } from './roles-stats'
 import { RolesFilters } from './roles-filters'
 import { RolesTable } from './roles-table'
 import { AssignRoleForm } from './assign-role-form'
-
-type RoleAssignment = {
-  id: string | null
-  user_id: string | null
-  user_name?: string | null
-  user_email?: string | null
-  role: string | null
-  salon_id?: string | null
-  salon_name?: string | null
-  is_active: boolean | null
-  created_at: string | null
-  updated_at?: string | null
-  permissions?: string[] | null
-}
+import type { UserRole } from '@/lib/types/app.types'
 
 type RolesClientProps = {
-  roles: RoleAssignment[]
+  roles: UserRole[]
   stats: Record<string, { total: number; active: number; inactive: number }>
   salons: Array<{ id: string; name: string }>
   canDelete: boolean
@@ -38,11 +25,16 @@ export function RolesClient({ roles, stats, salons, canDelete }: RolesClientProp
   const [isAssignFormOpen, setIsAssignFormOpen] = useState(false)
 
   const filteredRoles = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase()
+
     return roles.filter((role) => {
       const matchesSearch =
-        !searchQuery ||
-        role.user_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        role.user_email?.toLowerCase().includes(searchQuery.toLowerCase())
+        !normalizedQuery ||
+        role.user_id?.toLowerCase().includes(normalizedQuery) ||
+        role.salon_id?.toLowerCase().includes(normalizedQuery) ||
+        role.permissions?.some((permission) =>
+          permission.toLowerCase().includes(normalizedQuery)
+        )
 
       const matchesRole = roleFilter === 'all' || role.role === roleFilter
 
@@ -59,10 +51,10 @@ export function RolesClient({ roles, stats, salons, canDelete }: RolesClientProp
     <Stack gap="xl">
       <Flex align="center" justify="between">
         <Box>
-          <H1>Role Management</H1>
-          <P className="text-muted-foreground mt-1">
+          <P className="text-base font-semibold">Role Management</P>
+          <Muted className="mt-1">
             Assign and manage user roles across the platform
-          </P>
+          </Muted>
         </Box>
         <Button onClick={() => setIsAssignFormOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />

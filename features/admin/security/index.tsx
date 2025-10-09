@@ -1,5 +1,5 @@
 import { Section, Stack, Box, Flex } from '@/components/layout'
-import { H1, H2, P, Lead } from '@/components/ui/typography'
+import { P, Muted } from '@/components/ui/typography'
 import { Card, CardContent } from '@/components/ui/card'
 import { Shield, Activity, AlertTriangle, UserX } from 'lucide-react'
 import { getSecurityOverview, getAuditLogs, getSecurityEvents } from './api/queries'
@@ -22,11 +22,6 @@ export async function SecurityAudit() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <Box>
-          <H1>Security & Audit Logs</H1>
-          <Lead>Monitor platform activity and security events</Lead>
-        </Box>
-
         {/* Overview Stats */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
@@ -34,7 +29,9 @@ export async function SecurityAudit() {
               <Flex justify="between" align="start">
                 <div>
                   <P className="text-sm text-muted-foreground">Total Audit Logs</P>
-                  <p className="text-2xl font-bold">{overview.totalAuditLogs}</p>
+                  <P className="text-2xl font-semibold text-foreground">
+                    {overview.totalAuditLogs}
+                  </P>
                 </div>
                 <Activity className="h-4 w-4 text-muted-foreground" />
               </Flex>
@@ -46,7 +43,9 @@ export async function SecurityAudit() {
               <Flex justify="between" align="start">
                 <div>
                   <P className="text-sm text-muted-foreground">Security Events</P>
-                  <p className="text-2xl font-bold">{overview.totalSecurityEvents}</p>
+                  <P className="text-2xl font-semibold text-foreground">
+                    {overview.totalSecurityEvents}
+                  </P>
                 </div>
                 <Shield className="h-4 w-4 text-blue-500" />
               </Flex>
@@ -58,7 +57,9 @@ export async function SecurityAudit() {
               <Flex justify="between" align="start">
                 <div>
                   <P className="text-sm text-muted-foreground">Failed Logins</P>
-                  <p className="text-2xl font-bold">{overview.failedLogins}</p>
+                  <P className="text-2xl font-semibold text-foreground">
+                    {overview.failedLogins}
+                  </P>
                 </div>
                 <UserX className="h-4 w-4 text-orange-500" />
               </Flex>
@@ -70,7 +71,9 @@ export async function SecurityAudit() {
               <Flex justify="between" align="start">
                 <div>
                   <P className="text-sm text-muted-foreground">Suspicious Activity</P>
-                  <p className="text-2xl font-bold">{overview.suspiciousActivity}</p>
+                  <P className="text-2xl font-semibold text-foreground">
+                    {overview.suspiciousActivity}
+                  </P>
                 </div>
                 <AlertTriangle className="h-4 w-4 text-red-500" />
               </Flex>
@@ -80,19 +83,17 @@ export async function SecurityAudit() {
 
         {/* Security Events */}
         <Box>
-          <H2>Recent Security Events</H2>
-          <P className="text-muted-foreground mb-4">
+          <P className="text-sm font-semibold uppercase tracking-wide">Recent Security Events</P>
+          <Muted className="mb-4">
             Failed login attempts and suspicious activity
-          </P>
+          </Muted>
           <SecurityEventsTable events={securityEvents} />
         </Box>
 
         {/* Audit Logs */}
         <Box>
-          <H2>Recent Audit Logs</H2>
-          <P className="text-muted-foreground mb-4">
-            All user actions and system events
-          </P>
+          <P className="text-sm font-semibold uppercase tracking-wide">Recent Audit Logs</P>
+          <Muted className="mb-4">All user actions and system events</Muted>
           <AuditLogsTable logs={auditLogs} />
         </Box>
       </Stack>

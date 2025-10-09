@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack, Flex } from '@/components/layout'
+import { Stack, Flex } from '@/components/layout/flex'
 import { H2, P, Muted } from '@/components/ui/typography'
 import { ServerCrash, RefreshCw, Home } from 'lucide-react'
 
@@ -21,6 +22,9 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const router = useRouter()
+  const [isNavigating, startNavigation] = useTransition()
+
   useEffect(() => {
     console.error('[CRITICAL] Root layout error:', error)
   }, [error])
@@ -74,17 +78,30 @@ export default function GlobalError({
             <CardFooter>
               <Flex gap="sm" className="w-full">
                 <Button
-                  onClick={reset}
+                  onClick={() => {
+                    startNavigation(async () => {
+                      await Promise.resolve(reset())
+                    })
+                  }}
                   variant="default"
                   className="flex-1 gap-2"
+                  disabled={isNavigating}
+                  aria-busy={isNavigating}
                 >
                   <RefreshCw className="h-4 w-4" />
                   Try Again
                 </Button>
                 <Button
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => {
+                    startNavigation(() => {
+                      router.replace('/')
+                      router.refresh()
+                    })
+                  }}
                   variant="outline"
                   className="flex-1 gap-2"
+                  disabled={isNavigating}
+                  aria-busy={isNavigating}
                 >
                   <Home className="h-4 w-4" />
                   Home

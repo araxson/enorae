@@ -1,5 +1,4 @@
 import { AppointmentCard } from '@/components/shared'
-import { Grid, Box } from '@/components/layout'
 import { Card, CardContent } from '@/components/ui/card'
 import { Muted } from '@/components/ui/typography'
 import type { Database } from '@/lib/types/database.types'
@@ -25,17 +24,15 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
       <Card>
-        <CardContent>
-          <Box pt="md">
-            <Muted>No appointments yet</Muted>
-          </Box>
+        <CardContent className="py-10 text-center text-muted-foreground">
+          <Muted>No appointments yet</Muted>
         </CardContent>
       </Card>
     )
   }
 
   return (
-    <Grid cols={{ base: 1, md: 2 }} gap="lg">
+    <div className="grid gap-6 sm:grid-cols-2">
       {appointments.map((appointment) => {
         const appointmentDate = appointment.start_time ? new Date(appointment.start_time) : null
         const status = isValidStatus(appointment.status) ? appointment.status : 'pending'
@@ -53,6 +50,6 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
           />
         )
       })}
-    </Grid>
+    </div>
   )
 }

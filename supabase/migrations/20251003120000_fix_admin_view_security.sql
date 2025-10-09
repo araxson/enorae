@@ -341,16 +341,37 @@ COMMENT ON VIEW public.admin_analytics_overview IS
 -- STEP 8: Enable RLS on admin views
 -- =====================================================
 
--- Enable RLS on all admin views
-ALTER VIEW public.admin_users_overview SET (security_barrier = true);
-ALTER VIEW public.admin_staff_overview SET (security_barrier = true);
-ALTER VIEW public.admin_appointments_overview SET (security_barrier = true);
-ALTER VIEW public.admin_messages_overview SET (security_barrier = true);
-ALTER VIEW public.admin_reviews_overview SET (security_barrier = true);
-ALTER VIEW public.admin_analytics_overview SET (security_barrier = true);
-ALTER VIEW public.admin_inventory_overview SET (security_barrier = true);
-ALTER VIEW public.admin_revenue_overview SET (security_barrier = true);
-ALTER VIEW public.admin_salons_overview SET (security_barrier = true);
+DO $$
+DECLARE
+  view_name text;
+BEGIN
+  FOREACH view_name IN ARRAY ARRAY[
+    'admin_users_overview',
+    'admin_staff_overview',
+    'admin_appointments_overview',
+    'admin_messages_overview',
+    'admin_reviews_overview',
+    'admin_analytics_overview',
+    'admin_inventory_overview',
+    'admin_revenue_overview',
+    'admin_salons_overview'
+  ] LOOP
+    IF EXISTS (
+      SELECT 1
+      FROM pg_views
+      WHERE schemaname = 'public'
+        AND viewname = view_name
+    ) THEN
+      EXECUTE format(
+        'ALTER VIEW public.%I SET (security_barrier = true);',
+        view_name
+      );
+    ELSE
+      RAISE NOTICE 'Skipping security_barrier update for missing view public.%', view_name;
+    END IF;
+  END LOOP;
+END
+$$;
 
 -- =====================================================
 -- STEP 9: Add RLS policies for admin-only access
@@ -360,17 +381,38 @@ ALTER VIEW public.admin_salons_overview SET (security_barrier = true);
 -- Protection happens via underlying table RLS policies
 -- Admin access is enforced at application level via requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
--- Grant access to authenticated users
 -- (actual authorization happens in application layer with requireAnyRole)
-GRANT SELECT ON public.admin_users_overview TO authenticated;
-GRANT SELECT ON public.admin_staff_overview TO authenticated;
-GRANT SELECT ON public.admin_appointments_overview TO authenticated;
-GRANT SELECT ON public.admin_messages_overview TO authenticated;
-GRANT SELECT ON public.admin_reviews_overview TO authenticated;
-GRANT SELECT ON public.admin_analytics_overview TO authenticated;
-GRANT SELECT ON public.admin_inventory_overview TO authenticated;
-GRANT SELECT ON public.admin_revenue_overview TO authenticated;
-GRANT SELECT ON public.admin_salons_overview TO authenticated;
+DO $$
+DECLARE
+  view_name text;
+BEGIN
+  FOREACH view_name IN ARRAY ARRAY[
+    'admin_users_overview',
+    'admin_staff_overview',
+    'admin_appointments_overview',
+    'admin_messages_overview',
+    'admin_reviews_overview',
+    'admin_analytics_overview',
+    'admin_inventory_overview',
+    'admin_revenue_overview',
+    'admin_salons_overview'
+  ] LOOP
+    IF EXISTS (
+      SELECT 1
+      FROM pg_views
+      WHERE schemaname = 'public'
+        AND viewname = view_name
+    ) THEN
+      EXECUTE format(
+        'GRANT SELECT ON public.%I TO authenticated;',
+        view_name
+      );
+    ELSE
+      RAISE NOTICE 'Skipping GRANT for missing view public.%', view_name;
+    END IF;
+  END LOOP;
+END
+$$;
 
 -- =====================================================
 -- VERIFICATION

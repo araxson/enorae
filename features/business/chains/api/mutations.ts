@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
@@ -16,6 +17,8 @@ const chainSchema = z.object({
 
 export async function createSalonChain(formData: FormData) {
   try {
+    // SECURITY: Business users only
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const result = chainSchema.safeParse({
       name: formData.get('name'),
       legal_name: formData.get('legal_name'),
@@ -52,6 +55,8 @@ export async function createSalonChain(formData: FormData) {
 
 export async function updateSalonChain(formData: FormData) {
   try {
+    // SECURITY: Business users only
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const id = formData.get('id')?.toString()
     if (!id || !UUID_REGEX.test(id)) return { error: 'Invalid ID' }
 
@@ -89,6 +94,8 @@ export async function updateSalonChain(formData: FormData) {
 
 export async function deleteSalonChain(formData: FormData) {
   try {
+    // SECURITY: Business users only
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const id = formData.get('id')?.toString()
     if (!id || !UUID_REGEX.test(id)) return { error: 'Invalid ID' }
 
@@ -120,9 +127,138 @@ export async function deleteSalonChain(formData: FormData) {
 
     if (deleteError) return { error: deleteError.message }
 
+    revalidatePath('/business/chains')
     revalidatePath('/admin/chains')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to delete chain' }
+  }
+}
+
+/**
+ * Bulk update settings across all chain locations
+ */
+export async function updateChainSettings(formData: FormData) {
+  try {
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const chainId = formData.get('chainId')?.toString()
+    if (!chainId || !UUID_REGEX.test(chainId)) return { error: 'Invalid chain ID' }
+
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return { error: 'Unauthorized' }
+
+    // Verify ownership
+    const { data: chain } = await supabase
+      .from('salon_chains_view')
+      .select('id')
+      .eq('id', chainId)
+      .eq('owner_id', user.id)
+      .single()
+
+    if (!chain) return { error: 'Chain not found or access denied' }
+
+    // Parse settings from form data
+    const bookingLeadTimeHours = formData.get('bookingLeadTimeHours')?.toString()
+    const cancellationHours = formData.get('cancellationHours')?.toString()
+    const isAcceptingBookings = formData.get('isAcceptingBookings')?.toString()
+
+    const updates: Record<string, unknown> = {
+      updated_by_id: user.id,
+    }
+
+    if (bookingLeadTimeHours) updates.booking_lead_time_hours = Number(bookingLeadTimeHours)
+    if (cancellationHours) updates.cancellation_hours = Number(cancellationHours)
+    if (isAcceptingBookings !== null) {
+      updates.is_accepting_bookings = isAcceptingBookings === 'true'
+    }
+
+    // Get all salons in chain
+    const { data: salons } = await supabase
+      .from('salons')
+      .select('id')
+      .eq('chain_id', chainId)
+      .is('deleted_at', null)
+
+    type SalonId = { id: string }
+    const salonList = (salons || []) as SalonId[]
+
+    if (salonList.length === 0) {
+      return { error: 'No salons found in chain' }
+    }
+
+    const salonIds = salonList.map((s) => s.id)
+
+    // Update all salon settings
+    const { error: updateError } = await supabase
+      .schema('organization')
+      .from('salon_settings')
+      .update(updates)
+      .in('salon_id', salonIds)
+
+    if (updateError) return { error: updateError.message }
+
+    revalidatePath('/business/chains')
+    return { success: true, updatedCount: salonList.length }
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : 'Failed to update settings' }
+  }
+}
+
+/**
+ * Assign/reassign a salon to a chain
+ */
+export async function assignSalonToChain(formData: FormData) {
+  try {
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = formData.get('salonId')?.toString()
+    const chainId = formData.get('chainId')?.toString()
+
+    if (!salonId || !UUID_REGEX.test(salonId)) return { error: 'Invalid salon ID' }
+    if (chainId && !UUID_REGEX.test(chainId)) return { error: 'Invalid chain ID' }
+
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return { error: 'Unauthorized' }
+
+    // Verify salon ownership
+    const { data: salon } = await supabase
+      .from('salons')
+      .select('id, owner_id')
+      .eq('id', salonId)
+      .eq('owner_id', user.id)
+      .single()
+
+    if (!salon) return { error: 'Salon not found or access denied' }
+
+    // If chainId provided, verify chain ownership
+    if (chainId) {
+      const { data: chain } = await supabase
+        .from('salon_chains_view')
+        .select('id')
+        .eq('id', chainId)
+        .eq('owner_id', user.id)
+        .single()
+
+      if (!chain) return { error: 'Chain not found or access denied' }
+    }
+
+    // Update salon's chain assignment
+    const { error: updateError } = await supabase
+      .schema('organization')
+      .from('salons')
+      .update({
+        chain_id: chainId || null,
+        updated_by_id: user.id,
+      })
+      .eq('id', salonId)
+
+    if (updateError) return { error: updateError.message }
+
+    revalidatePath('/business/chains')
+    revalidatePath('/business')
+    return { success: true }
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : 'Failed to assign salon' }
   }
 }

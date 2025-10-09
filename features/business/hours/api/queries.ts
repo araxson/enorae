@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 
@@ -20,12 +20,14 @@ function numberToDayName(day: number): DayOfWeek {
  * Get operating hours for a specific salon
  */
 export async function getOperatingHoursBySalon(salonId: string) {
-  // SECURITY: Require business role
+  // SECURITY: Require business role and verify access
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  if (!(await canAccessSalon(salonId))) {
+    throw new Error('Unauthorized: Not your salon')
+  }
 
   const supabase = await createClient()
 
-  // Explicit salon filter for security
   const { data, error } = await supabase
     .from('operating_hours')
     .select('*')
@@ -40,14 +42,16 @@ export async function getOperatingHoursBySalon(salonId: string) {
  * Get operating hours for a specific day
  */
 export async function getOperatingHoursByDay(salonId: string, dayOfWeek: DayOfWeek | number) {
-  // SECURITY: Require business role
+  // SECURITY: Require business role and verify access
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  if (!(await canAccessSalon(salonId))) {
+    throw new Error('Unauthorized: Not your salon')
+  }
 
   const supabase = await createClient()
 
   const dayName = typeof dayOfWeek === 'number' ? numberToDayName(dayOfWeek) : dayOfWeek
 
-  // Explicit salon and day filters for security
   const { data, error } = await supabase
     .from('operating_hours')
     .select('*')
@@ -63,20 +67,8 @@ export async function getOperatingHoursByDay(salonId: string, dayOfWeek: DayOfWe
  * Get salon for current user (for operating hours)
  */
 export async function getOperatingHoursSalon() {
-  // SECURITY: Require authentication
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-  const supabase = await createClient()
-
-  const { data: salon, error } = await supabase
-    .from('salons')
-    .select('id')
-    .eq('owner_id', session.user.id)
-    .single()
-
-  if (error || !salon) {
-    throw new Error('No salon found for your account')
-  }
-
-  return salon as { id: string }
+  // SECURITY: Require authentication and reuse central helper
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
+  return { id: salonId }
 }

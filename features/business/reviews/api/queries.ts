@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 type SalonReview = Database['public']['Views']['salon_reviews_view']['Row']
@@ -11,21 +11,14 @@ export type SalonReviewWithDetails = SalonReview
  * Get all reviews for the user's salon
  */
 export async function getSalonReviews(): Promise<SalonReviewWithDetails[]> {
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
   const supabase = await createClient()
-
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string | null }>()
-
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
     .from('salon_reviews_view')
     .select('*')
-    .eq('salon_id', staffProfile.salon_id)
+    .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
 
   if (error) throw error
@@ -42,6 +35,12 @@ export async function getReviewStats(salonId: string): Promise<{
   pendingResponses: number
   flaggedCount: number
 }> {
+  // SECURITY: Enforce salon access for provided salonId
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  if (!(await canAccessSalon(salonId))) {
+    throw new Error('Unauthorized: Not your salon')
+  }
+
   const supabase = await createClient()
 
   const { data: reviews, error } = await supabase
@@ -80,22 +79,15 @@ export async function getReviewStats(salonId: string): Promise<{
  * Get single review by ID
  */
 export async function getReviewById(id: string): Promise<SalonReviewWithDetails | null> {
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
   const supabase = await createClient()
-
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string | null }>()
-
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
     .from('salon_reviews_view')
     .select('*')
     .eq('id', id)
-    .eq('salon_id', staffProfile.salon_id)
+    .eq('salon_id', salonId)
     .single()
 
   if (error) {

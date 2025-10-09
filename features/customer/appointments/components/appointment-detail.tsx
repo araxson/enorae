@@ -1,10 +1,9 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Section, Stack, Flex } from '@/components/layout'
-import { H2, H3, P, Muted } from '@/components/ui/typography'
+import { H3, P, Muted } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -15,10 +14,24 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { getCustomerAppointmentById, getAppointmentServices } from '../api/queries'
+import { CancelAppointmentDialog } from './cancel-appointment-dialog'
+import { RescheduleRequestDialog } from './reschedule-request-dialog'
 import { Clock, DollarSign } from 'lucide-react'
 
 interface AppointmentDetailProps {
   appointmentId: string
+}
+
+const getStatusVariant = (status: Awaited<ReturnType<typeof getCustomerAppointmentById>>['status']) => {
+  switch (status) {
+    case 'completed':
+    case 'confirmed':
+      return 'default' as const
+    case 'cancelled':
+      return 'destructive' as const
+    default:
+      return 'secondary' as const
+  }
 }
 
 export async function AppointmentDetail({ appointmentId }: AppointmentDetailProps) {
@@ -32,15 +45,15 @@ export async function AppointmentDetail({ appointmentId }: AppointmentDetailProp
   }
 
   return (
-    <Section size="lg">
+    <div className="mx-auto max-w-4xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
       <AppointmentDetailContent appointment={appointment} services={services} />
-    </Section>
+    </div>
   )
 }
 
 function AppointmentDetailContent({
   appointment,
-  services
+  services,
 }: {
   appointment: Awaited<ReturnType<typeof getCustomerAppointmentById>>
   services: Awaited<ReturnType<typeof getAppointmentServices>>
@@ -56,46 +69,43 @@ function AppointmentDetailContent({
   }
 
   return (
-    <Stack gap="xl">
-      <Flex justify="between" align="center">
-        <div>
-          <H2>{appointment.salon_name || 'Unnamed Salon'}</H2>
-          <Muted>{appointment.confirmation_code || 'No code'}</Muted>
-        </div>
-        <Badge variant={
-          appointment.status === 'completed' ? 'default' :
-          appointment.status === 'confirmed' ? 'default' :
-          appointment.status === 'cancelled' ? 'destructive' :
-          'secondary'
-        }>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between gap-2">
+        <Muted>{appointment.confirmation_code || 'No code'}</Muted>
+        <Badge variant={getStatusVariant(appointment.status)} className="capitalize">
           {appointment.status}
         </Badge>
-      </Flex>
+      </div>
 
       <Separator />
 
-      <Card className="p-6">
-        <Stack gap="lg">
-          <div>
-            <H3>Date & Time</H3>
+      <Card>
+        <CardContent className="flex flex-col gap-6">
+          <div className="space-y-2">
+            <H3>Date &amp; time</H3>
             <P>
-              {appointment.start_time && new Date(appointment.start_time).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
+              {appointment.start_time &&
+                new Date(appointment.start_time).toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
             </P>
             <P className="text-muted-foreground">
-              {appointment.start_time && new Date(appointment.start_time).toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-              })} - {appointment.end_time && new Date(appointment.end_time).toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
+              {appointment.start_time &&
+                new Date(appointment.start_time).toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              {' — '}
+              {appointment.end_time &&
+                new Date(appointment.end_time).toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
             </P>
-            <div className="flex items-center gap-2 mt-2">
+            <div className="mt-2 flex items-center gap-2">
               <Clock className="h-4 w-4 text-muted-foreground" />
               <Muted>{appointment.duration_minutes || 0} minutes total</Muted>
             </div>
@@ -104,8 +114,8 @@ function AppointmentDetailContent({
           {appointment.staff_name && (
             <>
               <Separator />
-              <div>
-                <H3>Staff Member</H3>
+              <div className="space-y-1">
+                <H3>Staff member</H3>
                 <P>{appointment.staff_name}</P>
                 {appointment.staff_title && <Muted>{appointment.staff_title}</Muted>}
               </div>
@@ -114,10 +124,10 @@ function AppointmentDetailContent({
 
           <Separator />
 
-          <div>
-            <H3 className="mb-4">Services</H3>
+          <div className="space-y-4">
+            <H3>Services</H3>
             {services.length > 0 ? (
-              <div className="rounded-md border">
+              <div className="overflow-hidden rounded-md border">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -130,7 +140,7 @@ function AppointmentDetailContent({
                     {services.map((service) => (
                       <TableRow key={service.id}>
                         <TableCell>
-                          <div>
+                          <div className="space-y-1">
                             <P className="font-medium">{service.service_name}</P>
                             {service.category_name && (
                               <Muted className="text-xs">{service.category_name}</Muted>
@@ -165,23 +175,31 @@ function AppointmentDetailContent({
                 </Table>
               </div>
             ) : (
-              <P className="text-muted-foreground">{appointment.service_names || 'No services listed'}</P>
+              <P className="text-muted-foreground">
+                {appointment.service_names || 'No services listed'}
+              </P>
             )}
           </div>
-
-        </Stack>
+        </CardContent>
       </Card>
 
-      <Flex gap="md">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <Button asChild variant="outline" className="flex-1">
-          <Link href="/customer/appointments">Back to Appointments</Link>
+          <Link href="/customer/appointments">Back to appointments</Link>
         </Button>
-        {appointment.status === 'confirmed' && (
-          <Button variant="destructive" className="flex-1">
-            Cancel Appointment
-          </Button>
+        {appointment.status === 'confirmed' && appointment.start_time && (
+          <>
+            <RescheduleRequestDialog
+              appointmentId={appointment.id}
+              currentStartTime={appointment.start_time}
+            />
+            <CancelAppointmentDialog
+              appointmentId={appointment.id}
+              startTime={appointment.start_time}
+            />
+          </>
         )}
-      </Flex>
-    </Stack>
+      </div>
+    </div>
   )
 }

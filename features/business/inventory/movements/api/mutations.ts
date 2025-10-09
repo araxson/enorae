@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -35,17 +35,7 @@ export async function createStockMovement(formData: FormData): Promise<ActionRes
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
     const supabase = await createClient()
-
-    // Get user's salon
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { error: 'User salon not found' }
-    }
+    const salonId = await requireUserSalonId()
 
     // Parse input
     const input = {
@@ -76,7 +66,7 @@ export async function createStockMovement(formData: FormData): Promise<ActionRes
       .eq('id', validated.product_id)
       .single<{ salon_id: string | null }>()
 
-    if (!product || product.salon_id !== staffProfile.salon_id) {
+    if (!product || product.salon_id !== salonId) {
       return { error: 'Product not found or access denied' }
     }
 

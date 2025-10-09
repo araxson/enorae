@@ -17,6 +17,9 @@ interface RateLimitEntry {
   resetAt: number
 }
 
+const allowInMemoryRateLimiter = process.env.ALLOW_IN_MEMORY_RATE_LIMIT === 'true'
+let inMemoryLimiterWarningShown = false
+
 class InMemoryRateLimiter {
   private store = new Map<string, RateLimitEntry>()
   private cleanupInterval: NodeJS.Timeout | null = null
@@ -25,6 +28,19 @@ class InMemoryRateLimiter {
     private maxRequests: number,
     private windowMs: number
   ) {
+    if (process.env.NODE_ENV === 'production' && !allowInMemoryRateLimiter) {
+      throw new Error(
+        'In-memory rate limiting is not allowed in production. Configure a distributed rate limiter (e.g. Upstash, Redis) or explicitly set ALLOW_IN_MEMORY_RATE_LIMIT=true to override for testing.'
+      )
+    }
+
+    if (!inMemoryLimiterWarningShown && process.env.NODE_ENV !== 'production') {
+      console.warn(
+        '[rate-limit] Using in-memory rate limiter. Configure ALLOW_IN_MEMORY_RATE_LIMIT=false with a distributed backend before deploying to production.'
+      )
+      inMemoryLimiterWarningShown = true
+    }
+
     // Cleanup expired entries every minute
     this.cleanupInterval = setInterval(() => {
       this.cleanup()

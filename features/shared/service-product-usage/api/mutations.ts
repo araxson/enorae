@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, getUserSalonIds, ROLE_GROUPS } from '@/lib/auth'
 
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -30,20 +30,13 @@ export async function createServiceProductUsage(formData: FormData) {
     const supabase = await createClient()
     // SECURITY: Require authentication
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) return { error: 'User salon not found' }
+    const salonId = await requireUserSalonId()
 
     const { error: insertError } = await supabase
       .schema('inventory')
       .from('service_product_usage')
       .insert({
-        salon_id: staffProfile.salon_id,
+        salon_id: salonId,
         service_id: data.serviceId,
         product_id: data.productId,
         quantity_per_service: data.quantityPerService,
@@ -80,13 +73,22 @@ export async function updateServiceProductUsage(formData: FormData) {
     // SECURITY: Require authentication
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
+    const accessibleSalonIds = await getUserSalonIds()
 
-    if (!staffProfile?.salon_id) return { error: 'User salon not found' }
+    const { data: usageRecord, error: fetchError } = await supabase
+      .schema('inventory')
+      .from('service_product_usage')
+      .select('salon_id')
+      .eq('id', id)
+      .maybeSingle<{ salon_id: string | null }>()
+
+    if (fetchError || !usageRecord?.salon_id) {
+      return { error: 'Usage record not found' }
+    }
+
+    if (!accessibleSalonIds.includes(usageRecord.salon_id)) {
+      return { error: 'Unauthorized: Not your salon' }
+    }
 
     const { error: updateError } = await supabase
       .schema('inventory')
@@ -99,7 +101,7 @@ export async function updateServiceProductUsage(formData: FormData) {
         updated_by_id: session.user.id,
       })
       .eq('id', id)
-      .eq('salon_id', staffProfile.salon_id)
+      .eq('salon_id', usageRecord.salon_id)
 
     if (updateError) return { error: updateError.message }
 
@@ -117,15 +119,9 @@ export async function deleteServiceProductUsage(formData: FormData) {
 
     const supabase = await createClient()
     // SECURITY: Require authentication
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) return { error: 'User salon not found' }
+    const accessibleSalonIds = await getUserSalonIds()
 
     // CRITICAL SECURITY: Verify ownership before deletion
     const { data: usage, error: verifyError } = await supabase
@@ -135,8 +131,8 @@ export async function deleteServiceProductUsage(formData: FormData) {
       .eq('id', id)
       .single<{ salon_id: string | null }>()
 
-    if (verifyError) return { error: 'Usage record not found' }
-    if (!usage || usage.salon_id !== staffProfile.salon_id) {
+    if (verifyError || !usage?.salon_id) return { error: 'Usage record not found' }
+    if (!accessibleSalonIds.includes(usage.salon_id)) {
       return { error: 'Unauthorized: Record does not belong to your salon' }
     }
 
@@ -146,7 +142,7 @@ export async function deleteServiceProductUsage(formData: FormData) {
       .from('service_product_usage')
       .delete()
       .eq('id', id)
-      .eq('salon_id', staffProfile.salon_id)
+      .eq('salon_id', usage.salon_id)
 
     if (deleteError) return { error: deleteError.message }
 

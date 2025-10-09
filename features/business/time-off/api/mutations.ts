@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -22,20 +22,11 @@ export async function approveTimeOffRequest(requestId: string, notes?: string): 
     }
 
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireUserSalonId()
+
     const supabase = await createClient()
 
-    // Get user's salon
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { error: 'Salon not found' }
-    }
-
-    // Verify request belongs to manager's salon
+    // Verify request belongs to a salon the user can access
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
       .from('time_off_requests')
@@ -47,7 +38,7 @@ export async function approveTimeOffRequest(requestId: string, notes?: string): 
       return { error: 'Request not found' }
     }
 
-    if (request.salon_id !== staffProfile.salon_id) {
+    if (!request.salon_id || !(await canAccessSalon(request.salon_id))) {
       return { error: 'Unauthorized: Request not in your salon' }
     }
 
@@ -62,7 +53,7 @@ export async function approveTimeOffRequest(requestId: string, notes?: string): 
         updated_by_id: session.user.id,
       })
       .eq('id', requestId)
-      .eq('salon_id', staffProfile.salon_id)
+      .eq('salon_id', request.salon_id)
 
     if (error) throw error
 
@@ -88,20 +79,11 @@ export async function rejectTimeOffRequest(requestId: string, notes: string): Pr
     }
 
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireUserSalonId()
+
     const supabase = await createClient()
 
-    // Get user's salon
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { error: 'Salon not found' }
-    }
-
-    // Verify request belongs to manager's salon
+    // Verify request belongs to a salon the user can access
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
       .from('time_off_requests')
@@ -113,7 +95,7 @@ export async function rejectTimeOffRequest(requestId: string, notes: string): Pr
       return { error: 'Request not found' }
     }
 
-    if (request.salon_id !== staffProfile.salon_id) {
+    if (!request.salon_id || !(await canAccessSalon(request.salon_id))) {
       return { error: 'Unauthorized: Request not in your salon' }
     }
 
@@ -128,7 +110,7 @@ export async function rejectTimeOffRequest(requestId: string, notes: string): Pr
         updated_by_id: session.user.id,
       })
       .eq('id', requestId)
-      .eq('salon_id', staffProfile.salon_id)
+      .eq('salon_id', request.salon_id)
 
     if (error) throw error
 

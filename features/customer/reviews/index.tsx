@@ -2,8 +2,7 @@ import { redirect } from 'next/navigation'
 import { verifySession } from '@/lib/auth'
 import { getCustomerReviews } from './api/queries'
 import { ReviewsList } from './components/reviews-list'
-import { Section, Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
+import { P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 export async function CustomerReviews() {
@@ -16,19 +15,16 @@ export async function CustomerReviews() {
   const reviews = await getCustomerReviews()
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <div>
-          <H1>My Reviews</H1>
-          <P className="text-muted-foreground">
-            Reviews you&apos;ve written for salons
-          </P>
-        </div>
+    <div className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      <div className="space-y-6">
+        <P className="text-muted-foreground">
+          Reviews you&apos;ve written for salons
+        </P>
 
         <Separator />
 
         <ReviewsList reviews={reviews} />
-      </Stack>
-    </Section>
+      </div>
+    </div>
   )
 }

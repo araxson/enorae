@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Eye, Trash2, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -40,6 +42,7 @@ const STATUS_COLORS = {
 } as const
 
 export function OrderList({ orders, onView }: OrderListProps) {
+  const router = useRouter()
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -53,10 +56,14 @@ export function OrderList({ orders, onView }: OrderListProps) {
     try {
       const result = await deletePurchaseOrder(formData)
       if (result.error) {
-        alert(result.error)
+        toast.error(result.error)
+      } else {
+        toast.success('Purchase order deleted')
+        router.refresh()
       }
-    } catch {
-      alert('Failed to delete order')
+    } catch (error) {
+      console.error('[OrderList] delete error:', error)
+      toast.error('Failed to delete order')
     } finally {
       setIsDeleting(false)
       setDeleteId(null)

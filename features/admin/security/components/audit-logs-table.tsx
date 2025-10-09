@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, Activity } from 'lucide-react'
 import type { AuditLog } from '../api/queries'
@@ -21,12 +21,16 @@ interface AuditLogsTableProps {
 export function AuditLogsTable({ logs }: AuditLogsTableProps) {
   if (logs.length === 0) {
     return (
-      <Card className="flex flex-col items-center justify-center py-12">
-        <Activity className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">No audit logs found</p>
-        <p className="text-sm text-muted-foreground">
-          Audit logs will appear here when users perform actions
-        </p>
+      <Card>
+        <CardContent>
+          <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
+            <Activity className="h-12 w-12 text-muted-foreground" />
+            <p className="text-muted-foreground">No audit logs found</p>
+            <p className="text-sm text-muted-foreground">
+              Audit logs will appear here when users perform actions
+            </p>
+          </div>
+        </CardContent>
       </Card>
     )
   }

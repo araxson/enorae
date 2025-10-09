@@ -1,0 +1,41 @@
+'use client'
+
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Flex } from '@/components/layout/flex'
+import { Muted } from '@/components/ui/typography'
+import { Check, Copy } from 'lucide-react'
+
+export function DigestInfo({ digest, details }: { digest: string; details: string }) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(details)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <Alert>
+      <AlertDescription>
+        <Flex gap="sm" align="center" justify="between">
+          <Muted className="font-mono text-xs">Error ID: {digest}</Muted>
+          <Button variant="ghost" size="sm" onClick={handleCopy} className="h-7 gap-1">
+            {copied ? (
+              <>
+                <Check className="h-3 w-3" />
+                Copied
+              </>
+            ) : (
+              <>
+                <Copy className="h-3 w-3" />
+                Copy
+              </>
+            )}
+          </Button>
+        </Flex>
+      </AlertDescription>
+    </Alert>
+  )
+}

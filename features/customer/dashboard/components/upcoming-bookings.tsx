@@ -1,24 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Separator } from '@/components/ui/separator'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { EmptyState } from '@/components/shared'
-import {
-  Item,
-  ItemGroup,
-  ItemMedia,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-  ItemSeparator,
-} from '@/components/ui/item'
 import type { AppointmentWithDetails } from '@/lib/types/app.types'
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
 import { format } from 'date-fns'
-import { Calendar, MapPin } from 'lucide-react'
+import { Calendar, MapPin, Clock, ChevronRight, Store } from 'lucide-react'
 import Link from 'next/link'
 
 interface UpcomingBookingsProps {
@@ -31,6 +22,7 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
       <Card>
         <CardHeader>
           <CardTitle>Upcoming Appointments</CardTitle>
+          <CardDescription>Your scheduled appointments will appear here</CardDescription>
         </CardHeader>
         <CardContent>
           <EmptyState
@@ -48,47 +40,107 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
     )
   }
 
+  const getInitials = (name: string) => {
+    if (!name) return 'S'
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Upcoming Appointments</CardTitle>
-        <Small>{appointments.length} scheduled</Small>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <div>
+          <CardTitle>Upcoming Appointments</CardTitle>
+          <CardDescription className="mt-1">{appointments.length} scheduled</CardDescription>
+        </div>
+        <Button variant="ghost" size="sm" asChild>
+          <Link href="/customer/appointments">
+            View All
+            <ChevronRight className="ml-1 h-4 w-4" />
+          </Link>
+        </Button>
       </CardHeader>
-      <CardContent>
-        <Stack gap="md">
-          <ItemGroup>
-            {appointments.map((appointment, index) => (
-              <div key={appointment.id}>
-                <Item variant="outline" size="default">
-                  <ItemMedia variant="icon">
-                    <Calendar className="h-4 w-4" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>
-                      {appointment.start_time
-                        ? format(new Date(appointment.start_time), 'EEEE, MMMM d, yyyy')
-                        : 'Date TBD'}
-                    </ItemTitle>
-                    <ItemDescription>
-                      {formatAppointmentTime(appointment.start_time)} •{' '}
-                      <MapPin className="inline h-3 w-3" aria-hidden="true" />{' '}
-                      {appointment.salon_name || 'Salon TBD'}
-                    </ItemDescription>
-                  </ItemContent>
-                  <ItemActions>
-                    <Badge variant={getStatusVariant(appointment.status)}>
-                      {appointment.status || 'pending'}
-                    </Badge>
-                  </ItemActions>
-                </Item>
-                {index < appointments.length - 1 && <ItemSeparator />}
-              </div>
-            ))}
-          </ItemGroup>
-          <Button variant="outline" asChild className="w-full">
-            <Link href="/customer/salons">Book Another</Link>
-          </Button>
-        </Stack>
+      <Separator />
+      <CardContent className="p-0">
+        <ScrollArea className="h-[400px]">
+          <div className="p-6 space-y-4">
+            {appointments.map((appointment, index) => {
+              const salonInitials = getInitials(appointment.salon_name || 'Salon')
+              const appointmentDate = appointment.start_time
+                ? format(new Date(appointment.start_time), 'EEEE, MMMM d, yyyy')
+                : 'Date TBD'
+
+              return (
+                <div key={appointment.id}>
+                  <div className="flex items-start gap-4 group hover:bg-accent/50 -mx-2 p-2 rounded-lg transition-colors">
+                    <Avatar className="h-10 w-10 border-2 border-background">
+                      <AvatarFallback className="bg-gradient-to-br from-pink-500 to-orange-500 text-white text-xs font-semibold">
+                        {salonInitials}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <div className="flex-1 space-y-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium leading-none truncate">
+                          {appointment.salon_name || 'Salon TBD'}
+                        </p>
+                        <Badge variant={getStatusVariant(appointment.status)} className="text-xs">
+                          {appointment.status || 'pending'}
+                        </Badge>
+                      </div>
+
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          <span className="truncate">{appointmentDate}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          <span>{formatAppointmentTime(appointment.start_time)}</span>
+                        </div>
+                        {appointment.salon_name && (
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            <span className="truncate">View location</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                      asChild
+                    >
+                      <Link href={`/customer/appointments/${appointment.id}`}>
+                        View
+                      </Link>
+                    </Button>
+                  </div>
+
+                  {index < appointments.length - 1 && <Separator className="my-4" />}
+                </div>
+              )
+            })}
+          </div>
+        </ScrollArea>
+      </CardContent>
+      <Separator />
+      <CardContent className="pt-4">
+        <Button variant="outline" asChild className="w-full">
+          <Link href="/customer/salons">
+            <Store className="mr-2 h-4 w-4" />
+            Book Another Appointment
+          </Link>
+        </Button>
       </CardContent>
     </Card>
   )

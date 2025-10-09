@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Grid } from '@/components/layout'
 import { H3, P, Muted } from '@/components/ui/typography'
 import { EmptyState } from '@/components/shared/empty-state'
 import { CalendarX } from 'lucide-react'
@@ -16,6 +15,18 @@ interface AppointmentsListProps {
   appointments: Appointment[]
 }
 
+const statusVariant = (status: Appointment['status']) => {
+  switch (status) {
+    case 'completed':
+    case 'confirmed':
+      return 'default' as const
+    case 'cancelled':
+      return 'destructive' as const
+    default:
+      return 'secondary' as const
+  }
+}
+
 export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
@@ -25,7 +36,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
         description="Book your first appointment at a salon"
         action={
           <Button asChild>
-            <Link href="/explore">Browse Salons</Link>
+            <Link href="/explore">Browse salons</Link>
           </Button>
         }
       />
@@ -33,49 +44,46 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
   }
 
   return (
-    <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
+    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {appointments.map((appointment) => (
         <Card key={appointment.id} className="p-6">
-          <Stack gap="md">
-            <div>
+          <div className="flex h-full flex-col gap-4">
+            <div className="space-y-1">
               <H3>{appointment.salon_name || 'Unnamed Salon'}</H3>
               <Muted>{appointment.service_names || 'Service'}</Muted>
             </div>
 
-            <div>
+            <div className="space-y-1">
               <P className="text-sm">
-                {appointment.start_time && new Date(appointment.start_time).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {appointment.start_time &&
+                  new Date(appointment.start_time).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
               </P>
               <P className="text-sm text-muted-foreground">
-                {appointment.start_time && new Date(appointment.start_time).toLocaleTimeString('en-US', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                {appointment.start_time &&
+                  new Date(appointment.start_time).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
               </P>
             </div>
 
-            <Badge className="w-fit" variant={
-              appointment.status === 'completed' ? 'default' :
-              appointment.status === 'confirmed' ? 'default' :
-              appointment.status === 'cancelled' ? 'destructive' :
-              'secondary'
-            }>
+            <Badge variant={statusVariant(appointment.status)} className="w-fit capitalize">
               {appointment.status}
             </Badge>
 
-            <Button asChild variant="outline" className="w-full">
+            <Button asChild variant="outline" className="mt-auto w-full">
               <Link href={`/customer/appointments/${appointment.id}`}>
-                View Details
+                View details
               </Link>
             </Button>
-          </Stack>
+          </div>
         </Card>
       ))}
-    </Grid>
+    </div>
   )
 }

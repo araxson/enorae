@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { z } from 'zod'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
@@ -48,7 +48,7 @@ export async function assignRole(formData: FormData) {
 
     // SECURITY: Require platform admin
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-    const supabase = await createClient()
+    const supabase = createServiceRoleClient()
 
     const { userId, role, salonId } = result.data
 
@@ -140,7 +140,7 @@ export async function revokeRole(formData: FormData) {
 
     // SECURITY: Require platform admin
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-    const supabase = await createClient()
+    const supabase = createServiceRoleClient()
 
     const { error } = await supabase
       .schema('identity')
@@ -178,7 +178,7 @@ export async function deleteRole(formData: FormData) {
 
     // SECURITY: Require SUPER_ADMIN
     await requireAnyRole(['super_admin'])
-    const supabase = await createClient()
+    const supabase = createServiceRoleClient()
 
     const { error } = await supabase
       .schema('identity')

@@ -10,7 +10,7 @@ export async function getCustomerReviews(): Promise<Review[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salon_reviews')
+    .from('salon_reviews_view')
     .select('*')
     .eq('customer_id', session.user.id)
     .order('created_at', { ascending: false })
@@ -24,7 +24,7 @@ export async function getReviewById(id: string): Promise<Review | null> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salon_reviews')
+    .from('salon_reviews_view')
     .select('*')
     .eq('id', id)
     .eq('customer_id', session.user.id)

@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 
@@ -45,16 +45,7 @@ export async function resolveStockAlert(formData: FormData) {
       return { error: 'Unauthorized' }
     }
 
-    // Get user's salon_id from staff_profiles
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string }>()
-
-    if (!staffProfile?.salon_id) {
-      return { error: 'User salon not found' }
-    }
+    const salonId = await requireUserSalonId()
 
     // Get alert with product to verify ownership
     const { data: alert, error: getError } = await supabase
@@ -67,6 +58,7 @@ export async function resolveStockAlert(formData: FormData) {
         )
       `)
       .eq('id', alertId)
+      .eq('salon_id', salonId)
       .single<{ id: string; product: { salon_id: string } | null }>()
 
     if (getError) {
@@ -74,7 +66,7 @@ export async function resolveStockAlert(formData: FormData) {
     }
 
     // Verify ownership via product salon_id
-    if (alert.product?.salon_id !== staffProfile.salon_id) {
+    if (alert.product?.salon_id !== salonId) {
       return { error: 'Unauthorized: Alert not found for your salon' }
     }
 
@@ -89,6 +81,7 @@ export async function resolveStockAlert(formData: FormData) {
         updated_at: new Date().toISOString(),
       })
       .eq('id', alertId)
+      .eq('salon_id', salonId)
 
     if (updateError) {
       return { error: updateError.message }
@@ -136,16 +129,7 @@ export async function unresolveStockAlert(formData: FormData) {
       return { error: 'Unauthorized' }
     }
 
-    // Get user's salon_id from staff_profiles
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string }>()
-
-    if (!staffProfile?.salon_id) {
-      return { error: 'User salon not found' }
-    }
+    const salonId = await requireUserSalonId()
 
     // Get alert with product to verify ownership
     const { data: alert, error: getError } = await supabase
@@ -158,6 +142,7 @@ export async function unresolveStockAlert(formData: FormData) {
         )
       `)
       .eq('id', alertId)
+      .eq('salon_id', salonId)
       .single<{ id: string; product: { salon_id: string } | null }>()
 
     if (getError) {
@@ -165,7 +150,7 @@ export async function unresolveStockAlert(formData: FormData) {
     }
 
     // Verify ownership via product salon_id
-    if (alert.product?.salon_id !== staffProfile.salon_id) {
+    if (alert.product?.salon_id !== salonId) {
       return { error: 'Unauthorized: Alert not found for your salon' }
     }
 
@@ -180,6 +165,7 @@ export async function unresolveStockAlert(formData: FormData) {
         updated_at: new Date().toISOString(),
       })
       .eq('id', alertId)
+      .eq('salon_id', salonId)
 
     if (updateError) {
       return { error: updateError.message }

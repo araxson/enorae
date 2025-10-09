@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Stack } from '@/components/layout'
 import { ScheduleForm } from './schedule-form'
 import { SchedulesGrid } from './schedules-grid'
@@ -12,12 +13,12 @@ type SchedulesClientProps = {
 }
 
 export function SchedulesClient({ initialSchedules, staffMembers }: SchedulesClientProps) {
+  const router = useRouter()
   const [refreshKey, setRefreshKey] = useState(0)
 
   const handleUpdate = () => {
     setRefreshKey((prev) => prev + 1)
-    // Trigger a full page refresh to get updated data
-    window.location.reload()
+    router.refresh()
   }
 
   return (

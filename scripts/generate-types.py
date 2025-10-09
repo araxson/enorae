@@ -157,7 +157,7 @@ def generate_types():
  * - Never use Database['public']['Tables'] for queries
  *
  * @see docs/03-database/best-practices.md
- * @see CLAUDE.md
+ * @see claude.md
  */
 
 """

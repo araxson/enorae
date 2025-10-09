@@ -1,147 +1,162 @@
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Section, Stack, Grid, Box } from '@/components/layout'
 import { H1, H2, H3, Lead, P } from '@/components/ui/typography'
-import { Calendar, Users, Sparkles, TrendingUp, Clock, Shield } from 'lucide-react'
-import Link from 'next/link'
+import { Calendar, Users, Sparkles, TrendingUp, Clock, Shield, Store, Award } from 'lucide-react'
+import { TestimonialCard, StatBadge, TrustBadge } from '@/features/marketing/components/shared'
 
 export function HomePage() {
   return (
-    <>
-      {/* Hero Section */}
-      <Section size="xl" className="pt-20 pb-16 bg-gradient-to-b from-primary/5 to-background">
-        <Stack gap="xl" className="max-w-4xl mx-auto text-center">
-          <Stack gap="md">
-            <H1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Enorae
-            </H1>
-            <Lead className="text-2xl md:text-3xl">
-              Your Beauty Appointments, Simplified
-            </Lead>
-            <P className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              The modern platform connecting clients with premier salons. Book appointments, manage your business, and grow your beauty brand.
-            </P>
-          </Stack>
+    <main className="space-y-0">
+      <section className="bg-gradient-to-b from-primary/5 to-background">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 px-4 pb-16 pt-20 text-center sm:px-6 lg:px-8">
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <H1 className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-5xl font-bold leading-tight text-transparent md:text-6xl">
+                Enorae
+              </H1>
+              <Lead className="text-2xl md:text-3xl">Your Beauty Appointments, Simplified</Lead>
+              <P className="mx-auto max-w-2xl text-lg text-muted-foreground">
+                The modern platform connecting clients with premier salons. Book appointments, manage your business, and grow your beauty brand.
+              </P>
+            </div>
 
-          <Stack gap="sm" className="flex-row justify-center flex-wrap">
-            <Button asChild size="lg" className="text-lg px-8">
-              <Link href="/explore">Find Salons</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg px-8">
-              <Link href="/signup">Get Started Free</Link>
-            </Button>
-          </Stack>
-        </Stack>
-      </Section>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <TrustBadge type="verified" text="500+ Verified Salons" />
+              <TrustBadge type="rated" text="4.8★ Average Rating" />
+              <TrustBadge type="popular" text="10,000+ Happy Customers" />
+              <TrustBadge type="secure" />
+            </div>
 
-      {/* Features Section */}
-      <Section size="xl" className="py-16">
-        <Stack gap="xl">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Button asChild size="lg" className="px-8 text-lg">
+                <Link href="/explore">Find salons</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="px-8 text-lg">
+                <Link href="/signup">Get started free</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-muted/30">
+        <div className="mx-auto grid max-w-6xl gap-6 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4 sm:px-6 lg:px-8">
+          <StatBadge icon={Store} value="500+" label="Partner salons" color="primary" />
+          <StatBadge icon={Users} value="10,000+" label="Active users" color="success" />
+          <StatBadge icon={Calendar} value="50,000+" label="Bookings made" color="secondary" />
+          <StatBadge icon={Award} value="4.8★" label="Average rating" color="warning" />
+        </div>
+      </section>
+
+      <section className="bg-background">
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
-            <H2 className="text-3xl md:text-4xl font-bold">Everything You Need</H2>
-            <P className="text-muted-foreground mt-4">
-              Powerful features for clients and salon businesses
+            <H2 className="text-3xl font-bold md:text-4xl">Everything you need</H2>
+            <P className="mt-4 text-muted-foreground">Powerful features for clients and salon businesses</P>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                icon: Calendar,
+                title: 'Easy booking',
+                description:
+                  'Find and book appointments at your favorite salons in seconds. Real-time availability and instant confirmations.',
+              },
+              {
+                icon: Users,
+                title: 'Staff management',
+                description: 'Manage your team, schedules, and services. Track performance and optimize your salon operations.',
+              },
+              {
+                icon: Sparkles,
+                title: 'Service catalog',
+                description:
+                  "Showcase your services with detailed descriptions, pricing, and duration. Let clients choose what's right for them.",
+              },
+              {
+                icon: TrendingUp,
+                title: 'Business analytics',
+                description:
+                  'Track revenue, appointments, and performance. Make data-driven decisions to grow your business.',
+              },
+              {
+                icon: Clock,
+                title: 'Flexible scheduling',
+                description:
+                  'Set operating hours, block times, and manage staff availability. Full control over your calendar.',
+              },
+              {
+                icon: Shield,
+                title: 'Secure & reliable',
+                description:
+                  'Enterprise-grade security with role-based access control. Your data is safe and always available.',
+              },
+            ].map(({ icon: Icon, title, description }) => (
+              <Card key={title} className="p-6">
+                <div className="flex flex-col gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+                    <Icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <H3 className="text-xl font-semibold">{title}</H3>
+                  <P className="text-sm text-muted-foreground">{description}</P>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-background">
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <H2 className="text-3xl font-bold md:text-4xl">What our users say</H2>
+            <P className="mt-4 text-muted-foreground">Trusted by thousands of customers and salon professionals</P>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <TestimonialCard
+              author="Sarah Johnson"
+              role="Regular customer"
+              content="Enorae makes booking so easy! I can find the perfect salon, book my appointment, and even reschedule if needed - all from my phone."
+              rating={5}
+            />
+            <TestimonialCard
+              author="Michael Chen"
+              role="Salon owner, Luxe Hair Studio"
+              content="Since using Enorae, our bookings have increased by 40%. The platform is intuitive and our clients love how easy it is to book appointments."
+              rating={5}
+            />
+            <TestimonialCard
+              author="Emily Rodriguez"
+              role="Spa manager"
+              content="The analytics dashboard helps us optimize our scheduling and staff allocation. It's been a game-changer for our operations."
+              rating={5}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-primary/5">
+        <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-16 text-center sm:px-6 lg:px-8">
+          <div className="space-y-4">
+            <H2 className="text-3xl font-bold md:text-4xl">Ready to get started?</H2>
+            <P className="text-lg text-muted-foreground">
+              Join thousands of salons and clients using Enorae to streamline their beauty appointments.
             </P>
           </div>
 
-          <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <Stack gap="md">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-primary" />
-                </div>
-                <H3>Easy Booking</H3>
-                <P className="text-muted-foreground">
-                  Find and book appointments at your favorite salons in seconds. Real-time availability and instant confirmations.
-                </P>
-              </Stack>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <Stack gap="md">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Users className="w-6 h-6 text-primary" />
-                </div>
-                <H3>Staff Management</H3>
-                <P className="text-muted-foreground">
-                  Manage your team, schedules, and services. Track performance and optimize your salon operations.
-                </P>
-              </Stack>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <Stack gap="md">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                </div>
-                <H3>Service Catalog</H3>
-                <P className="text-muted-foreground">
-                  Showcase your services with detailed descriptions, pricing, and duration. Let clients choose what&apos;s right for them.
-                </P>
-              </Stack>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <Stack gap="md">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-primary" />
-                </div>
-                <H3>Business Analytics</H3>
-                <P className="text-muted-foreground">
-                  Track revenue, appointments, and performance. Make data-driven decisions to grow your business.
-                </P>
-              </Stack>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <Stack gap="md">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-primary" />
-                </div>
-                <H3>Flexible Scheduling</H3>
-                <P className="text-muted-foreground">
-                  Set operating hours, block times, and manage staff availability. Full control over your calendar.
-                </P>
-              </Stack>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <Stack gap="md">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-primary" />
-                </div>
-                <H3>Secure & Reliable</H3>
-                <P className="text-muted-foreground">
-                  Enterprise-grade security with role-based access control. Your data is safe and always available.
-                </P>
-              </Stack>
-            </Card>
-          </Grid>
-        </Stack>
-      </Section>
-
-      {/* CTA Section */}
-      <Section size="xl" className="py-16 bg-primary/5">
-        <Box className="max-w-3xl mx-auto text-center">
-          <Stack gap="xl">
-            <Stack gap="md">
-              <H2 className="text-3xl md:text-4xl font-bold">Ready to Get Started?</H2>
-              <P className="text-lg text-muted-foreground">
-                Join thousands of salons and clients using Enorae to streamline their beauty appointments
-              </P>
-            </Stack>
-
-            <Stack gap="sm" className="flex-row justify-center flex-wrap">
-              <Button asChild size="lg" className="text-lg px-8">
-                <Link href="/signup">Start Free Trial</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-8">
-                <Link href="/pricing">View Pricing</Link>
-              </Button>
-            </Stack>
-          </Stack>
-        </Box>
-      </Section>
-    </>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Button asChild size="lg" className="px-8 text-lg">
+              <Link href="/signup">Start free trial</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="px-8 text-lg">
+              <Link href="/pricing">View pricing</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+    </main>
   )
 }

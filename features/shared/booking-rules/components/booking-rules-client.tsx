@@ -72,7 +72,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
         ) : (
           <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
             {rules.map((rule) => (
-              <Card key={rule.id} className="hover:shadow-md transition-shadow">
+              <Card key={rule.id}>
                 <CardContent className="p-6">
                   <Stack gap="md">
                     <div>
@@ -136,8 +136,8 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
         )}
 
         {servicesWithoutRules.length > 0 && rules.length > 0 && (
-          <Card className="bg-muted/50">
-            <CardContent className="p-4">
+          <Card>
+            <CardContent>
               <Small className="text-muted-foreground">
                 {servicesWithoutRules.length} service(s) without rules:{' '}
                 {servicesWithoutRules.map((s) => s.name).join(', ')}

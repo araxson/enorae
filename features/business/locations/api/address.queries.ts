@@ -1,5 +1,5 @@
 import 'server-only'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, getSalonContext, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
@@ -7,7 +7,7 @@ type LocationAddress = Database['public']['Views']['location_addresses']['Row']
 
 export async function getLocationAddress(locationId: string): Promise<LocationAddress | null> {
   // SECURITY: Require business user role
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
 
   // Verify location ownership through salon
@@ -17,17 +17,7 @@ export async function getLocationAddress(locationId: string): Promise<LocationAd
     .eq('id', locationId)
     .single<{ salon_id: string | null }>()
 
-  if (!location || !location.salon_id) {
-    throw new Error('Location not found')
-  }
-
-  const { data: salon } = await supabase
-    .from('salons')
-    .select('owner_id')
-    .eq('id', location.salon_id)
-    .single<{ owner_id: string | null }>()
-
-  if (!salon || salon.owner_id !== session.user.id) {
+  if (!location?.salon_id || !(await canAccessSalon(location.salon_id))) {
     throw new Error('Unauthorized: Not your location')
   }
 
@@ -43,21 +33,13 @@ export async function getLocationAddress(locationId: string): Promise<LocationAd
 
 export async function getAllLocationAddresses(): Promise<LocationAddress[]> {
   // SECURITY: Require business user role
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
 
-  // Get user's salons
-  const { data: salons } = await supabase
-    .from('salons')
-    .select('id')
-    .eq('owner_id', session.user.id)
-    .returns<{ id: string }[]>()
-
-  if (!salons || salons.length === 0) {
+  const { accessibleSalonIds: salonIds } = await getSalonContext()
+  if (!salonIds.length) {
     return []
   }
-
-  const salonIds = salons.map(s => s.id)
 
   // Get all locations for user's salons
   const { data: locations } = await supabase

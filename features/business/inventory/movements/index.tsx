@@ -26,13 +26,11 @@ export async function StockMovements() {
       .select('id, name, sku')
       .eq('salon_id', salon.id!)
       .eq('is_active', true)
-      .is('deleted_at', null)
       .order('name'),
     supabase
       .from('stock_locations')
       .select('id, name')
       .eq('salon_id', salon.id!)
-      .is('deleted_at', null)
       .order('name'),
   ])
 

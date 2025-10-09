@@ -1,34 +1,20 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import type { StockLevelWithLocation } from '../../products/api/stock-queries'
 
-type StockLevel = Database['public']['Views']['stock_levels']['Row']
 type StockLocation = Database['public']['Views']['stock_locations']['Row']
-
-export type StockLevelWithLocation = StockLevel & {
-  location_name?: string | null
-}
 
 /**
  * Get user's salon
  * SECURITY: Business users only
  */
 async function getUserSalon() {
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-  const supabase = await createClient()
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
 
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string | null }>()
-
-  if (!staffProfile?.salon_id) {
-    throw new Error('Salon not found')
-  }
-
-  return { id: staffProfile.salon_id }
+  return { id: salonId }
 }
 
 /**

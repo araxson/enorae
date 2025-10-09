@@ -1,0 +1,64 @@
+"use client"
+
+import { useMemo, useState } from 'react'
+
+import type { StaffMemberWithServices, ServiceRow } from './types'
+import { StaffServicesList } from './staff-services-list'
+import { AssignServicesDialog } from './assign-services-dialog'
+
+type StaffServicesManagerProps = {
+  staff: StaffMemberWithServices[]
+  availableServices: ServiceRow[]
+}
+
+export function StaffServicesManager({
+  staff,
+  availableServices,
+}: StaffServicesManagerProps) {
+  const [selectedStaff, setSelectedStaff] = useState<StaffMemberWithServices | null>(null)
+  const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set())
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const filteredStaff = useMemo(() => {
+    if (!searchQuery) return staff
+
+    const query = searchQuery.toLowerCase()
+    return staff.filter((member) => {
+      const nameMatch = member.full_name?.toLowerCase().includes(query)
+      const titleMatch = member.title?.toLowerCase().includes(query)
+      const servicesMatch = member.services.some((service) =>
+        service.service_name?.toLowerCase().includes(query),
+      )
+
+      return nameMatch || titleMatch || servicesMatch
+    })
+  }, [staff, searchQuery])
+
+  return (
+    <>
+      <StaffServicesList
+        staff={staff}
+        filteredStaff={filteredStaff}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onManageStaff={(member) => {
+          setSelectedStaff(member)
+          const ids = member.services
+            .map((service) => service.service_id)
+            .filter((id): id is string => Boolean(id))
+          setSelectedServices(new Set(ids))
+        }}
+      />
+
+      <AssignServicesDialog
+        staff={selectedStaff}
+        availableServices={availableServices}
+        assignedServices={selectedStaff?.services || []}
+        open={!!selectedStaff}
+        onOpenChange={(open) => !open && setSelectedStaff(null)}
+        selectedServices={selectedServices}
+        onSelectedServicesChange={setSelectedServices}
+      />
+    </>
+  )
+}

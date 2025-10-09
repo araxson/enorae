@@ -1,14 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
+import { ActionButton } from '@/components/shared'
 import { updateSalonInfo } from '../api/mutations'
-import { toast } from 'sonner'
 
 interface SalonInfoFormProps {
   salonId: string
@@ -25,26 +23,16 @@ export function SalonInfoForm({
   businessType,
   establishedAt,
 }: SalonInfoFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formRef, setFormRef] = useState<HTMLFormElement | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+  const handleSave = async () => {
+    if (!formRef) return
 
-    try {
-      const formData = new FormData(e.currentTarget)
-      const result = await updateSalonInfo(salonId, formData)
+    const formData = new FormData(formRef)
+    const result = await updateSalonInfo(salonId, formData)
 
-      if (result.error) {
-        toast.error(result.error)
-      } else {
-        toast.success('Business information updated successfully')
-      }
-    } catch (error) {
-      toast.error('Failed to update business information')
-      console.error('Error updating salon info:', error)
-    } finally {
-      setIsSubmitting(false)
+    if (result.error) {
+      throw new Error(result.error)
     }
   }
 
@@ -57,7 +45,7 @@ export function SalonInfoForm({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit}>
+        <form ref={setFormRef}>
           <Stack gap="lg">
             <div>
               <Label htmlFor="business_name">Business Name</Label>
@@ -101,10 +89,13 @@ export function SalonInfoForm({
             </div>
 
             <div className="flex justify-end">
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <ActionButton
+                onAction={handleSave}
+                successMessage="Business information updated successfully"
+                loadingText="Saving..."
+              >
                 Save Changes
-              </Button>
+              </ActionButton>
             </div>
           </Stack>
         </form>

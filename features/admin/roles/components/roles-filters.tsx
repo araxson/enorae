@@ -27,7 +27,7 @@ export function RolesFilters({
       <div className="relative flex-1 min-w-[200px]">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search by user or email..."
+          placeholder="Search by user or salon ID..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           className="pl-8"

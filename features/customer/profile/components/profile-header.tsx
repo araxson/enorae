@@ -1,7 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Stack, Group, Box } from '@/components/layout'
-import { H2, Muted } from '@/components/ui/typography'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { P, Muted } from '@/components/ui/typography'
 import type { Database } from '@/lib/types/database.types'
 
 type Profile = Database['public']['Views']['profiles']['Row']
@@ -13,21 +12,20 @@ interface ProfileHeaderProps {
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
   return (
     <Card>
-      <CardContent>
-        <Box pt="md">
-          <Group gap="md" align="center">
-            <Avatar className="h-20 w-20">
-              <AvatarFallback className="text-2xl">
-                {profile.username?.slice(0, 2).toUpperCase() || 'U'}
-              </AvatarFallback>
-            </Avatar>
+      <CardContent className="flex items-center gap-4 p-6">
+        <Avatar className="h-16 w-16">
+          {profile.avatar_url && <AvatarImage src={profile.avatar_url} />}
+          <AvatarFallback className="text-xl">
+            {profile.username?.slice(0, 2).toUpperCase() || 'U'}
+          </AvatarFallback>
+        </Avatar>
 
-            <Stack gap="xs">
-              <H2>{profile.username || 'User'}</H2>
-              <Muted>Profile ID: {profile.id}</Muted>
-            </Stack>
-          </Group>
-        </Box>
+        <div className="space-y-1">
+          <P className="text-lg font-semibold leading-tight">
+            {profile.full_name || profile.username || 'User'}
+          </P>
+          <Muted className="text-sm">{profile.username ? `@${profile.username}` : `ID: ${profile.id}`}</Muted>
+        </div>
       </CardContent>
     </Card>
   )

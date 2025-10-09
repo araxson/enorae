@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Building2, MapPin, Users } from 'lucide-react'
+import { Building2, Users } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
 type AdminSalon = Database['public']['Views']['admin_salons_overview']['Row']
@@ -30,15 +30,17 @@ export function SalonsTable({ salons }: SalonsTableProps) {
   }
 
   return (
-    <div className="border rounded-lg">
+    <div className="border rounded-lg overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Salon</TableHead>
-            <TableHead>Business Type</TableHead>
-            <TableHead>Tier</TableHead>
-            <TableHead>Locations</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Rating</TableHead>
+            <TableHead>Revenue</TableHead>
+            <TableHead>Bookings</TableHead>
             <TableHead>Staff</TableHead>
+            <TableHead>Tier</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
           </TableRow>
@@ -47,13 +49,16 @@ export function SalonsTable({ salons }: SalonsTableProps) {
           {salons.map((salon) => (
             <TableRow key={salon.id} className="cursor-pointer hover:bg-accent/50">
               <TableCell>
-                <div>
+                <div className="min-w-[200px]">
                   <p className="font-medium">{salon.name}</p>
-                  {salon.business_name && salon.business_name !== salon.name && (
-                    <p className="text-xs text-muted-foreground">{salon.business_name}</p>
+                  {salon.chain_name && (
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Building2 className="h-3 w-3" />
+                      {salon.chain_name}
+                    </p>
                   )}
-                  {salon.slug && (
-                    <p className="text-xs text-muted-foreground">/{salon.slug}</p>
+                  {salon.owner_name && (
+                    <p className="text-xs text-muted-foreground">{salon.owner_name}</p>
                   )}
                 </div>
               </TableCell>
@@ -63,17 +68,31 @@ export function SalonsTable({ salons }: SalonsTableProps) {
               </TableCell>
 
               <TableCell>
-                <Badge variant={salon.subscription_tier === 'premium' ? 'default' : 'outline'}>
-                  {salon.subscription_tier || 'free'}
-                </Badge>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1">
+                    <span className="text-sm font-medium">
+                      {salon.rating_average ? salon.rating_average.toFixed(1) : 'N/A'}
+                    </span>
+                    <span className="text-xs text-muted-foreground">/ 5</span>
+                  </div>
+                  {salon.rating_count && salon.rating_count > 0 && (
+                    <span className="text-xs text-muted-foreground">
+                      {salon.rating_count} reviews
+                    </span>
+                  )}
+                </div>
               </TableCell>
 
               <TableCell>
-                <div className="flex items-center gap-1">
-                  <MapPin className="h-3 w-3 text-muted-foreground" />
-                  {/* TODO: Add location_count to admin_salons_overview view */}
-                  <span className="text-sm">-</span>
-                </div>
+                <span className="text-sm font-medium">
+                  {salon.total_revenue
+                    ? `$${Number(salon.total_revenue).toLocaleString()}`
+                    : '$0'}
+                </span>
+              </TableCell>
+
+              <TableCell>
+                <span className="text-sm">{salon.total_bookings || 0}</span>
               </TableCell>
 
               <TableCell>
@@ -81,6 +100,12 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                   <Users className="h-3 w-3 text-muted-foreground" />
                   <span className="text-sm">{salon.employee_count || 0}</span>
                 </div>
+              </TableCell>
+
+              <TableCell>
+                <Badge variant={salon.subscription_tier === 'premium' ? 'default' : 'outline'}>
+                  {salon.subscription_tier || 'free'}
+                </Badge>
               </TableCell>
 
               <TableCell>

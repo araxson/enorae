@@ -7,7 +7,6 @@ import { deleteBlockedTime } from '../api/mutations'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack, Flex, Box } from '@/components/layout'
 import { H4, P, Small } from '@/components/ui/typography'
 import { Badge } from '@/components/ui/badge'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
@@ -72,49 +71,48 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
   }
 
   return (
-    <Stack gap="md">
+    <div className="space-y-4">
       {blockedTimes.map((blockedTime) => (
         <Card key={blockedTime.id}>
-          <CardContent>
-            <Box p="md">
-              <Flex justify="between" align="start">
-                <Stack gap="xs">
-                  <Flex gap="sm" align="center">
-                    <H4 className="mb-0">
-                      {format(new Date(blockedTime.start_time), 'PPP')}
-                    </H4>
-                    {blockedTime.is_recurring && (
-                      <Badge variant="secondary" className="flex items-center gap-1">
-                        <Repeat className="h-3 w-3" />
-                        {getRecurrenceLabel(blockedTime.recurrence_pattern)}
-                      </Badge>
-                    )}
-                  </Flex>
-                  <Small className="text-muted-foreground">
-                    {format(new Date(blockedTime.start_time), 'p')} -{' '}
-                    {format(new Date(blockedTime.end_time), 'p')}
-                  </Small>
-                  {blockedTime.reason && <P className="mt-2">{blockedTime.reason}</P>}
-                </Stack>
-                <ConfirmDialog
-                  title="Delete Blocked Time?"
-                  description="Are you sure you want to delete this blocked time? This action cannot be undone."
-                  confirmText="Delete"
-                  onConfirm={() => handleDelete(blockedTime.id)}
+          <CardContent className="space-y-3 p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="space-y-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <H4 className="mb-0">
+                    {format(new Date(blockedTime.start_time), 'PPP')}
+                  </H4>
+                  {blockedTime.is_recurring && (
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      <Repeat className="h-3 w-3" />
+                      {getRecurrenceLabel(blockedTime.recurrence_pattern)}
+                    </Badge>
+                  )}
+                </div>
+                <Small className="text-muted-foreground">
+                  {format(new Date(blockedTime.start_time), 'p')} –{' '}
+                  {format(new Date(blockedTime.end_time), 'p')}
+                </Small>
+                {blockedTime.reason && <P className="text-sm text-muted-foreground">{blockedTime.reason}</P>}
+              </div>
+
+              <ConfirmDialog
+                title="Delete blocked time?"
+                description="Are you sure you want to delete this blocked time? This action cannot be undone."
+                confirmText="Delete"
+                onConfirm={() => handleDelete(blockedTime.id)}
+              >
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  disabled={deletingId === blockedTime.id}
                 >
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    disabled={deletingId === blockedTime.id}
-                  >
-                    {deletingId === blockedTime.id ? 'Deleting...' : 'Delete'}
-                  </Button>
-                </ConfirmDialog>
-              </Flex>
-            </Box>
+                  {deletingId === blockedTime.id ? 'Deleting...' : 'Delete'}
+                </Button>
+              </ConfirmDialog>
+            </div>
           </CardContent>
         </Card>
       ))}
-    </Stack>
+    </div>
   )
 }

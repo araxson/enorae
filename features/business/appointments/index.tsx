@@ -1,7 +1,8 @@
 import { getAppointments, getUserSalon } from './api/queries'
-import { AppointmentsTable } from './components/appointments-table'
-import { Section, Stack, Box } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
+import { AppointmentsTableClient } from './components/appointments-table-client'
+import { Section, Stack } from '@/components/layout'
+import { EmptyState } from '@/components/shared'
+import { AlertCircle, Calendar } from 'lucide-react'
 
 export async function AppointmentsManagement() {
   let salon
@@ -10,7 +11,11 @@ export async function AppointmentsManagement() {
   } catch {
     return (
       <Section size="lg">
-        <H1>Please log in to view appointments</H1>
+        <EmptyState
+          icon={AlertCircle}
+          title="Authentication Required"
+          description="Please log in to view appointments"
+        />
       </Section>
     )
   }
@@ -18,8 +23,11 @@ export async function AppointmentsManagement() {
   if (!salon || !salon.id) {
     return (
       <Section size="lg">
-        <H1>No salon found</H1>
-        <Lead>Please create a salon to manage appointments</Lead>
+        <EmptyState
+          icon={Calendar}
+          title="No Salon Found"
+          description="Please create a salon to manage appointments"
+        />
       </Section>
     )
   }
@@ -29,11 +37,7 @@ export async function AppointmentsManagement() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <Box>
-          <H1>Appointments</H1>
-          <Lead>Manage your salon appointments</Lead>
-        </Box>
-        <AppointmentsTable appointments={appointments} />
+        <AppointmentsTableClient appointments={appointments} />
       </Stack>
     </Section>
   )

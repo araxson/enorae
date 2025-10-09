@@ -72,7 +72,8 @@ export function VerifyOTPForm({
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <div className="w-full max-w-md">
+      <Card>
       <CardHeader>
         <div className="flex items-center justify-center mb-4">
           <div className="rounded-full bg-primary/10 p-3">
@@ -134,6 +135,7 @@ export function VerifyOTPForm({
           </Small>
         </Stack>
       </CardFooter>
-    </Card>
+      </Card>
+    </div>
   )
 }

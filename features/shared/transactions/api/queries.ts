@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 type ManualTransaction = Database['public']['Views']['manual_transactions']['Row']
@@ -26,20 +26,15 @@ export type ManualTransactionWithDetails = ManualTransaction & {
  */
 export async function getManualTransactions(limit = 100): Promise<ManualTransactionWithDetails[]> {
   // SECURITY: Require authentication
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+
+  const { accessibleSalonIds } = await getSalonContext()
+  if (!accessibleSalonIds.length) throw new Error('User salon not found')
 
   const supabase = await createClient()
 
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string | null }>()
-
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
-
   // PERFORMANCE: Use join syntax to eliminate N+1 queries (300+ → 1 query)
-  const { data, error} = await supabase
+  const { data, error } = await supabase
     .from('manual_transactions')
     .select(`
       *,
@@ -47,7 +42,7 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
       staff:staff_id(id, full_name),
       customer:customer_id(id, full_name, email)
     `)
-    .eq('salon_id', staffProfile.salon_id)
+    .in('salon_id', accessibleSalonIds)
     .order('transaction_at', { ascending: false })
     .limit(limit)
 
@@ -68,17 +63,12 @@ export async function getManualTransactionById(
   id: string
 ): Promise<ManualTransactionWithDetails | null> {
   // SECURITY: Require authentication
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+
+  const { accessibleSalonIds } = await getSalonContext()
+  if (!accessibleSalonIds.length) throw new Error('User salon not found')
 
   const supabase = await createClient()
-
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string | null }>()
-
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   // ✅ FIXED: Single query with nested SELECT for all relations (consistent with getManualTransactions)
   const { data, error } = await supabase
@@ -90,7 +80,7 @@ export async function getManualTransactionById(
       customer:customer_id(id, full_name, email)
     `)
     .eq('id', id)
-    .eq('salon_id', staffProfile.salon_id)
+    .in('salon_id', accessibleSalonIds)
     .single()
 
   if (error) {

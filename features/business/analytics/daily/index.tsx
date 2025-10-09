@@ -1,6 +1,6 @@
 import { subDays, format } from 'date-fns'
-import { Section, Stack, Flex, Box } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
+import { Section, Stack, Box } from '@/components/layout'
+import { Muted } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { DailyMetricsDashboard } from './components/daily-metrics-dashboard'
 import { getUserSalon } from '@/features/business/staff/api/queries'
@@ -66,14 +66,11 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
     return (
       <Section size="lg">
         <Stack gap="xl">
-          <Flex justify="between" align="start">
-            <Box>
-              <H1>Daily Analytics</H1>
-              <Lead>
-                Performance metrics from {currentDateFrom} to {currentDateTo}
-              </Lead>
-            </Box>
-          </Flex>
+          <Box>
+            <Muted className="text-sm">
+              Performance metrics from {currentDateFrom} to {currentDateTo}
+            </Muted>
+          </Box>
 
           {metrics.length === 0 ? (
             <Alert>

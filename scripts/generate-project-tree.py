@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generate Project Tree Script
-Generates a comprehensive project tree and saves it to docs/PROJECT_TREE.md
+Generates a comprehensive project tree and saves it to docs/project-tree.md
 This runs automatically before every Claude Code session via pre-chat hook
 """
 
@@ -9,11 +9,11 @@ import os
 import sys
 from pathlib import Path
 from datetime import datetime
-from typing import List, Set
+from typing import List, Set, Optional, Tuple
 
 # Configuration
 PROJECT_ROOT = Path(__file__).parent.parent
-OUTPUT_FILE = PROJECT_ROOT / "docs" / "PROJECT_TREE.md"
+OUTPUT_FILE = PROJECT_ROOT / "docs" / "project-tree.md"
 
 # Directories to ignore
 IGNORE_DIRS: Set[str] = {
@@ -63,6 +63,21 @@ SHOW_EXTENSIONS: Set[str] = {
     ".env.example",
 }
 
+# File size guardrails (lines per file)
+DEFAULT_COMPONENT_LIMIT = 200
+DEFAULT_DAL_LIMIT = 200
+DEFAULT_HELPER_LIMIT = 150
+
+# Paths to exclude from size checks
+EXCLUDED_PATHS = {
+    Path("lib/types/database.types.ts"),
+}
+
+# Directories to exclude from size checks (relative to project root)
+EXCLUDED_DIRS = {
+    ("components", "ui"),
+}
+
 
 def should_ignore_dir(dir_name: str, path: Path) -> bool:
     """Check if directory should be ignored"""
@@ -86,6 +101,77 @@ def should_ignore_file(file_name: str) -> bool:
         return True
 
     return False
+
+
+def determine_line_limit(relative_path: Path) -> Optional[int]:
+    """Return maximum allowed lines for a given file, if any"""
+    path_str = str(relative_path)
+    suffix = relative_path.suffix
+    if suffix not in {".ts", ".tsx"}:
+        return None
+
+    if relative_path in EXCLUDED_PATHS:
+        return None
+
+    for excluded_parts in EXCLUDED_DIRS:
+        if relative_path.parts[:len(excluded_parts)] == excluded_parts:
+            return None
+
+    # Data access layer (queries/mutations/actions/loaders)
+    if path_str.endswith(("queries.ts", "queries.tsx", "mutations.ts", "mutations.tsx", "actions.ts", "actions.tsx", "loader.ts", "loader.tsx")):
+        return DEFAULT_DAL_LIMIT
+
+    # Components / hooks / client modules
+    if suffix in {".ts", ".tsx"}:
+        if any(segment in {"components", "hooks"} for segment in relative_path.parts):
+            return DEFAULT_COMPONENT_LIMIT
+        if path_str.endswith(("client.tsx", "client.ts")) or relative_path.name.startswith("use-"):
+            return DEFAULT_COMPONENT_LIMIT
+        if "app" in relative_path.parts and relative_path.name in {"page.tsx", "layout.tsx"}:
+            return DEFAULT_COMPONENT_LIMIT
+
+    # Helpers / utils / lib
+    if any(segment in {"utils", "lib"} for segment in relative_path.parts):
+        return DEFAULT_HELPER_LIMIT
+
+    return None
+
+
+def count_file_lines(path: Path) -> Optional[int]:
+    """Safely count text lines in a file"""
+    try:
+        with path.open("r", encoding="utf-8", errors="ignore") as f:
+            return sum(1 for _ in f)
+    except Exception:
+        return None
+
+
+def find_line_violations() -> List[Tuple[int, int, Path]]:
+    """Locate files that exceed configured line-count limits"""
+    violations: List[Tuple[int, int, Path]] = []
+
+    for item in PROJECT_ROOT.rglob("*"):
+        if any(should_ignore_dir(parent.name, parent) for parent in item.parents):
+            continue
+        if not item.is_file():
+            continue
+        if should_ignore_file(item.name):
+            continue
+
+        rel_path = item.relative_to(PROJECT_ROOT)
+        limit = determine_line_limit(rel_path)
+        if not limit:
+            continue
+
+        line_count = count_file_lines(item)
+        if line_count is None:
+            continue
+
+        if line_count > limit:
+            violations.append((line_count, limit, rel_path))
+
+    violations.sort(key=lambda x: x[0], reverse=True)
+    return violations
 
 
 def get_dir_summary(path: Path) -> dict:
@@ -212,6 +298,7 @@ def generate_markdown_tree() -> str:
 
     # Get statistics
     stats = get_dir_summary(PROJECT_ROOT)
+    violations = find_line_violations()
 
     # Build markdown content
     content = f"""# 🌳 ENORAE PROJECT TREE
@@ -239,6 +326,19 @@ def generate_markdown_tree() -> str:
 
     content += f"""
 
+---
+
+## ⚠️ FILE SIZE VIOLATIONS
+
+"""
+
+    if violations:
+        for lines, limit, rel_path in violations:
+            content += f"- `{rel_path}` &mdash; {lines} lines (limit {limit})\n"
+    else:
+        content += "- None detected 🎉\n"
+
+    content += """
 ---
 
 ## 🗂️ PROJECT STRUCTURE
@@ -287,8 +387,8 @@ enorae/
 ## 🎯 IMPORTANT FILES
 
 ### Root Level
-- `CLAUDE.md` - **MANDATORY** AI Development Guidelines
-- `README.md` - Project overview and setup
+- `claude.md` - **MANDATORY** AI Development Guidelines
+- `readme.md` - Project overview and setup
 - `package.json` - Workspace configuration
 - `tsconfig.json` - TypeScript configuration
 
@@ -399,9 +499,9 @@ enorae/
 ## 🔗 NAVIGATION
 
 - **Main Documentation**: `docs/index.md`
-- **AI Guidelines**: `CLAUDE.md`
-- **Project Setup**: `README.md`
-- **Hook Documentation**: `.claude/hooks/README.md`
+- **AI Guidelines**: `claude.md`
+- **Project Setup**: `readme.md`
+- **Hook Script**: `.claude/hooks/session-start.sh`
 - **This File**: Auto-generated, DO NOT EDIT manually
 
 ---

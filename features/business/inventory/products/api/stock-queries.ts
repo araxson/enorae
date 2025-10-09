@@ -3,10 +3,13 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type StockLevel = Database['public']['Views']['stock_levels']['Row']
+type StockLevelRow = Database['public']['Views']['stock_levels']['Row']
+type ProductRow = Database['public']['Views']['products']['Row']
+type StockLocationRow = Database['public']['Views']['stock_locations']['Row']
 
-export type StockLevelWithLocation = StockLevel & {
-  location_name?: string | null
+export type StockLevelWithLocation = StockLevelRow & {
+  product?: Pick<ProductRow, 'id' | 'name' | 'sku'> | null
+  location?: Pick<StockLocationRow, 'id' | 'name'> | null
 }
 
 /**
@@ -22,9 +25,15 @@ export async function getStockLevels(
 
   const { data, error } = await supabase
     .from('stock_levels')
-    .select('*')
+    .select(
+      `
+        *,
+        product:product_id(id, name, sku),
+        location:location_id(id, name)
+      `
+    )
     .eq('salon_id', salonId)
-    .order('product_name', { ascending: true })
+    .order('updated_at', { ascending: false })
 
   if (error) throw error
 

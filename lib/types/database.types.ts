@@ -4,7 +4,7 @@
  * Auto-generated from Supabase database schema
  *
  * Project ID: nwmcpfioxerzodvbjigw
- * Generated: 2025-10-04 15:29:29
+ * Generated: 2025-10-08 18:39:00
  * Schemas: 27 schemas
  *
  * CRITICAL:
@@ -13,7 +13,7 @@
  * - Never use Database['public']['Tables'] for queries
  *
  * @see docs/03-database/best-practices.md
- * @see CLAUDE.md
+ * @see claude.md
  */
 
 export type Json =
@@ -314,7 +314,7 @@ export type Database = {
           unique_customers: number
         }[]
       }
-      calculate_daily_metrics_v2: {
+      calculate_daily_metrics: {
         Args: { p_date?: string; p_salon_id: string }
         Returns: undefined
       }

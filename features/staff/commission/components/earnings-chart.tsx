@@ -23,8 +23,6 @@ export function EarningsChart({ data }: EarningsChartProps) {
   }
 
   const maxEarnings = Math.max(...data.map((d) => d.earnings))
-  const chartHeight = 200
-
   return (
     <Card>
       <CardHeader>
@@ -32,8 +30,8 @@ export function EarningsChart({ data }: EarningsChartProps) {
         <Muted>Daily revenue from completed appointments</Muted>
       </CardHeader>
       <CardContent>
-        <div className="relative" style={{ height: chartHeight }}>
-          <div className="flex items-end justify-between h-full gap-1">
+        <div className="relative h-52">
+          <div className="flex h-full items-end justify-between gap-1">
             {data.map((day) => {
               const height = maxEarnings > 0 ? (day.earnings / maxEarnings) * 100 : 0
               return (

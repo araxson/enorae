@@ -1,8 +1,10 @@
-import { Section, Stack } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
+import { Section, Stack, Flex } from '@/components/layout'
+import { P, Muted } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { ReviewsList } from './components/reviews-list'
+import { ReviewsClient } from './components/reviews-client'
 import { getAllReviews } from './api/queries'
+import { LastUpdated } from '@/features/admin/shared/components'
+import { Card, CardContent } from '@/components/ui/card'
 
 export async function AdminReviews() {
   let reviews
@@ -21,14 +23,56 @@ export async function AdminReviews() {
     )
   }
 
+  // Calculate moderation stats
+  const flaggedCount = reviews.filter(r => r.is_flagged).length
+  const unverifiedCount = reviews.filter(r => !r.is_verified).length
+  const needsResponseCount = reviews.filter(r => !r.has_response).length
+
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <div>
-          <H1>All Reviews</H1>
-          <Lead>Platform-wide reviews and ratings</Lead>
-        </div>
-        <ReviewsList reviews={reviews} />
+        <Flex justify="end" align="start">
+          <LastUpdated />
+        </Flex>
+
+        {/* Moderation Stats */}
+        <Flex gap="md" className="flex-wrap">
+          {[{
+            label: 'Total Reviews',
+            value: reviews.length,
+            tone: 'text-foreground',
+          },
+          {
+            label: 'Flagged',
+            value: flaggedCount,
+            tone: 'text-destructive',
+          },
+          {
+            label: 'Unverified',
+            value: unverifiedCount,
+            tone: 'text-orange-500',
+          },
+          {
+            label: 'Needs Response',
+            value: needsResponseCount,
+            tone: 'text-blue-500',
+          }].map(stat => (
+            <Card key={stat.label} className="min-w-[160px]">
+              <CardContent className="py-4">
+                <Stack gap="xs">
+                  <Muted className="uppercase tracking-wide text-xs">
+                    {stat.label}
+                  </Muted>
+                  <P className={`text-2xl font-semibold ${stat.tone}`}>
+                    {stat.value}
+                  </P>
+                </Stack>
+              </CardContent>
+            </Card>
+          ))}
+        </Flex>
+
+        <ReviewsClient reviews={reviews} />
       </Stack>
     </Section>
   )

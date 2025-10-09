@@ -17,7 +17,7 @@ This directory contains Python scripts for automating project maintenance tasks,
 
 **Purpose**: Generates a comprehensive, up-to-date project tree structure.
 
-**Output**: `docs/PROJECT_TREE.md` (~10KB)
+**Output**: `docs/project-tree.md` (~10KB)
 
 **Features**:
 - 🌳 Complete directory tree visualization
@@ -151,7 +151,7 @@ python3 scripts/backup-project.py
    python3 "$PROJECT_ROOT/scripts/generate-project-tree.py"
    ```
 
-2. **Claude Reads Tree** (`docs/PROJECT_TREE.md`):
+2. **Claude Reads Tree** (`docs/project-tree.md`):
    - Current file structure
    - Statistics and breakdown
    - Key directories
@@ -166,7 +166,7 @@ python3 scripts/backup-project.py
 
 ---
 
-## 📊 PROJECT_TREE.md Structure
+## 📊 project-tree.md Structure
 
 ### Sections
 
@@ -238,14 +238,14 @@ python3 scripts/generate-project-tree.py
 
 ### DO NOT
 
-- ❌ Edit `docs/PROJECT_TREE.md` manually
-- ❌ Commit stale PROJECT_TREE.md
+- ❌ Edit `docs/project-tree.md` manually
+- ❌ Commit stale project-tree.md
 - ❌ Modify the script without testing
 
 ### DO
 
 - ✅ Let the script run automatically
-- ✅ Review PROJECT_TREE.md after major changes
+- ✅ Review project-tree.md after major changes
 - ✅ Update ignored directories/files in script config
 - ✅ Keep the script simple and fast
 
@@ -278,10 +278,10 @@ Your content here...
 python3 scripts/generate-project-tree.py
 
 # Check output
-cat docs/PROJECT_TREE.md
+cat docs/project-tree.md
 
 # Check file size
-ls -lh docs/PROJECT_TREE.md
+ls -lh docs/project-tree.md
 
 # Verify in hook
 ./.claude/hooks/pre-chat.sh
@@ -304,20 +304,20 @@ scripts/
 ├── generate-project-tree.py    # Main tree generator (THIS SCRIPT)
 ├── generate-types.py            # Type generation
 ├── backup-project.py            # Project backup
-└── README.md                    # This file
+└── readme.md                    # This file
 
 Output:
-└── docs/PROJECT_TREE.md         # Generated tree (auto-updated)
+└── docs/project-tree.md         # Generated tree (auto-updated)
 ```
 
 ---
 
 ## 🔗 Related Documentation
 
-- **Hook Documentation**: `.claude/hooks/README.md`
+- **Hook Script**: `.claude/hooks/session-start.sh`
 - **Pre-Chat Hook**: `.claude/hooks/pre-chat.sh`
 - **Project Index**: `docs/index.md`
-- **AI Guidelines**: `CLAUDE.md`
+- **AI Guidelines**: `claude.md`
 
 ---
 
@@ -332,13 +332,13 @@ Output:
 
 2. **Check output**:
    ```bash
-   cat docs/PROJECT_TREE.md
+   cat docs/project-tree.md
    ```
 
 ### For Claude Code
 
 1. Script runs automatically on session start
-2. Read `docs/PROJECT_TREE.md` for current structure
+2. Read `docs/project-tree.md` for current structure
 3. Use as reference for all file operations
 
 ---

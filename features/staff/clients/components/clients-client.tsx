@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { format } from 'date-fns'
+import { useMemo, useState } from 'react'
 import { Users, Calendar, DollarSign } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
@@ -10,6 +9,8 @@ import type { ClientWithHistory } from '../api/queries'
 import { ClientStats } from './client-stats'
 import { ClientFilters } from './client-filters'
 import { ClientDetailDialog } from './client-detail-dialog'
+import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
+import type { StaffQuickAction, StaffSummary } from '@/features/staff/shared/components/types'
 
 type ClientsClientProps = {
   clients: ClientWithHistory[]
@@ -51,6 +52,42 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
     return sorted
   }, [clients, searchQuery, sortBy])
 
+  const totals = useMemo(() => {
+    const totalRevenue = clients.reduce((acc, client) => acc + (client.total_revenue || 0), 0)
+    const repeatClients = clients.filter((client) => client.total_appointments > 1).length
+    return { totalRevenue, repeatClients }
+  }, [clients])
+
+  const summaries: StaffSummary[] = [
+    {
+      id: 'active-clients',
+      label: 'Active clients',
+      value: clients.length.toString(),
+      helper: 'All time',
+      tone: clients.length > 25 ? 'success' : 'default',
+    },
+    {
+      id: 'repeat-clients',
+      label: 'Repeat clients',
+      value: totals.repeatClients.toString(),
+      helper: 'Booked twice or more',
+      tone: totals.repeatClients > 10 ? 'success' : 'info',
+    },
+    {
+      id: 'revenue',
+      label: 'Total revenue',
+      value: `$${totals.totalRevenue.toFixed(2)}`,
+      helper: 'Lifetime value',
+      tone: 'default',
+    },
+  ]
+
+  const quickActions: StaffQuickAction[] = [
+    { id: 'appointments', label: 'Recent appointments', href: '/staff/appointments', icon: Calendar },
+    { id: 'services', label: 'Service preferences', href: '/staff/services', icon: DollarSign },
+    { id: 'time-off', label: 'Schedule follow-up', href: '/staff/schedule', icon: Users },
+  ]
+
   if (clients.length === 0) {
     return (
       <Card>
@@ -70,43 +107,67 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
   }
 
   return (
-    <Stack gap="xl">
-      <ClientStats clients={filteredAndSortedClients} />
+    <StaffPageShell
+      title="Clients"
+      description="Manage client relationships, understand history, and prepare for upcoming visits."
+      breadcrumbs={[
+        { label: 'Staff', href: '/staff' },
+        { label: 'Clients' },
+      ]}
+      summaries={summaries}
+      quickActions={quickActions}
+      searchPlaceholder="Search clients by name or email…"
+      searchValue={searchQuery}
+      onSearchChange={setSearchQuery}
+      toggles={[
+        { id: 'highlight-recent', label: 'Highlight recent', helper: 'Show a badge for clients seen in the last 30 days', defaultOn: true },
+      ]}
+    >
+      <div className="space-y-6">
+        <ClientStats clients={filteredAndSortedClients} />
 
-      <ClientFilters onSearchChange={setSearchQuery} onSortChange={setSortBy} />
+        <ClientFilters
+          onSortChange={setSortBy}
+          onSearchChange={setSearchQuery}
+          searchValue={searchQuery}
+          showSearch={false}
+        />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredAndSortedClients.map((client) => (
-          <Card
-            key={client.customer_id}
-            className="cursor-pointer hover:bg-accent/50 transition-colors"
-            onClick={() => setSelectedClient(client)}
-          >
-            <CardHeader>
-              <CardTitle className="text-lg">{client.customer_name || 'Walk-in Customer'}</CardTitle>
-              {client.customer_email && <Muted className="text-sm">{client.customer_email}</Muted>}
-            </CardHeader>
-            <CardContent>
-              <Stack gap="sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-muted-foreground" />
-                  <P className="text-sm">{client.total_appointments} appointments</P>
-                </div>
-                {client.total_revenue && client.total_revenue > 0 && (
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="w-4 h-4 text-muted-foreground" />
-                    <P className="text-sm">${Number(client.total_revenue).toFixed(2)} total</P>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {filteredAndSortedClients.map((client) => (
+            <Card
+              key={client.customer_id}
+              className="cursor-pointer transition-colors hover:bg-accent/50"
+              onClick={() => setSelectedClient(client)}
+            >
+              <CardHeader>
+                <CardTitle className="text-lg">{client.customer_name || 'Walk-in Customer'}</CardTitle>
+                {client.customer_email && <Muted className="text-sm">{client.customer_email}</Muted>}
+              </CardHeader>
+              <CardContent>
+                <Stack gap="sm">
+                  <div className="flex items-center gap-2 text-sm">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <P>{client.total_appointments} appointments</P>
                   </div>
-                )}
-                {client.last_appointment_date && (
-                  <div className="text-sm">
-                    <Muted>Last visit: {format(new Date(client.last_appointment_date), 'MMM dd, yyyy')}</Muted>
-                  </div>
-                )}
-              </Stack>
-            </CardContent>
-          </Card>
-        ))}
+                  {client.total_revenue && client.total_revenue > 0 ? (
+                    <div className="flex items-center gap-2 text-sm">
+                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      <P>${Number(client.total_revenue).toFixed(2)} lifetime value</P>
+                    </div>
+                  ) : null}
+                  {client.last_appointment_date ? (
+                    <div className="text-sm">
+                      <Muted>
+                        Last visit: {new Date(client.last_appointment_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </Muted>
+                    </div>
+                  ) : null}
+                </Stack>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
 
       <ClientDetailDialog
@@ -115,6 +176,7 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
         open={!!selectedClient}
         onOpenChange={(open) => !open && setSelectedClient(null)}
       />
-    </Stack>
+    </StaffPageShell>
   )
 }
+

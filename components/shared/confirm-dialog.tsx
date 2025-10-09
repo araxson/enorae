@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
 
 export interface ConfirmDialogProps {
   children: React.ReactNode
@@ -49,16 +50,17 @@ export function ConfirmDialog({
           <AlertDialogCancel onClick={onCancel}>
             {cancelText}
           </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={onConfirm}
-            className={
-              variant === 'destructive'
-                ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
-                : ''
-            }
-          >
-            {confirmText}
-          </AlertDialogAction>
+          {variant === 'destructive' ? (
+            <AlertDialogAction asChild>
+              <Button onClick={onConfirm} variant="destructive">
+                {confirmText}
+              </Button>
+            </AlertDialogAction>
+          ) : (
+            <AlertDialogAction onClick={onConfirm}>
+              {confirmText}
+            </AlertDialogAction>
+          )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

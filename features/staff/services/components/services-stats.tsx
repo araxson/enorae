@@ -1,6 +1,5 @@
 import { Scissors, Star, TrendingUp, Award } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Flex, Box } from '@/components/layout'
 import { P } from '@/components/ui/typography'
 
 type StaffService = {
@@ -17,65 +16,56 @@ type ServicesStatsProps = {
 
 export function ServicesStats({ services }: ServicesStatsProps) {
   const totalServices = services.length
-  const totalPerformed = services.reduce((sum, s) => sum + (s.performed_count || 0), 0)
+  const totalPerformed = services.reduce((sum, service) => sum + (service.performed_count || 0), 0)
+
+  const ratedServices = services.filter(
+    (service) => service.rating_average && service.rating_count && service.rating_count > 0
+  )
   const avgRating =
-    services.reduce((sum, s) => {
-      if (s.rating_average && s.rating_count && s.rating_count > 0) {
-        return sum + s.rating_average
-      }
-      return sum
-    }, 0) / services.filter((s) => s.rating_average && s.rating_count && s.rating_count > 0).length || 0
-  const expertServices = services.filter((s) => s.proficiency_level === 'expert').length
+    ratedServices.reduce((sum, service) => sum + (service.rating_average || 0), 0) /
+      ratedServices.length || 0
+  const expertServices = services.filter((service) => service.proficiency_level === 'expert').length
+
+  const items = [
+    {
+      label: 'Total services',
+      value: totalServices,
+      icon: Scissors,
+      accent: 'text-blue-500',
+    },
+    {
+      label: 'Total performed',
+      value: totalPerformed,
+      icon: TrendingUp,
+      accent: 'text-green-500',
+    },
+    {
+      label: 'Average rating',
+      value: avgRating > 0 ? avgRating.toFixed(1) : '—',
+      icon: Star,
+      accent: 'text-yellow-500',
+    },
+    {
+      label: 'Expert level',
+      value: expertServices,
+      icon: Award,
+      accent: 'text-purple-500',
+    },
+  ] as const
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardContent className="p-4">
-          <Flex justify="between" align="start">
-            <Box>
-              <P className="text-sm text-muted-foreground">Total Services</P>
-              <p className="text-2xl font-bold">{totalServices}</p>
-            </Box>
-            <Scissors className="h-4 w-4 text-blue-500" />
-          </Flex>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="p-4">
-          <Flex justify="between" align="start">
-            <Box>
-              <P className="text-sm text-muted-foreground">Total Performed</P>
-              <p className="text-2xl font-bold">{totalPerformed}</p>
-            </Box>
-            <TrendingUp className="h-4 w-4 text-green-500" />
-          </Flex>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="p-4">
-          <Flex justify="between" align="start">
-            <Box>
-              <P className="text-sm text-muted-foreground">Average Rating</P>
-              <p className="text-2xl font-bold">{avgRating > 0 ? avgRating.toFixed(1) : '-'}</p>
-            </Box>
-            <Star className="h-4 w-4 text-yellow-500" />
-          </Flex>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="p-4">
-          <Flex justify="between" align="start">
-            <Box>
-              <P className="text-sm text-muted-foreground">Expert Level</P>
-              <p className="text-2xl font-bold">{expertServices}</p>
-            </Box>
-            <Award className="h-4 w-4 text-purple-500" />
-          </Flex>
-        </CardContent>
-      </Card>
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {items.map(({ label, value, icon: Icon, accent }) => (
+        <Card key={label}>
+          <CardContent className="flex items-start justify-between gap-4 p-4">
+            <div className="space-y-1">
+              <P className="text-sm text-muted-foreground">{label}</P>
+              <p className="text-2xl font-semibold">{value}</p>
+            </div>
+            <Icon className={`h-4 w-4 ${accent}`} />
+          </CardContent>
+        </Card>
+      ))}
     </div>
   )
 }

@@ -120,8 +120,10 @@ export function AppointmentCard({
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Keep Appointment</AlertDialogCancel>
-                    <AlertDialogAction onClick={onCancel} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                      Yes, Cancel Appointment
+                    <AlertDialogAction asChild>
+                      <Button onClick={onCancel} variant="destructive">
+                        Yes, Cancel Appointment
+                      </Button>
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>

@@ -1,62 +1,174 @@
-import { StatCard } from '@/components/shared'
-import { Grid, Stack, Box } from '@/components/layout'
-import { Separator } from '@/components/ui/separator'
-import { H3 } from '@/components/ui/typography'
-import { Calendar, CheckCircle, Clock, Users, Scissors } from 'lucide-react'
+'use client'
 
-interface MetricsCardsProps {
-  metrics: {
-    totalAppointments: number
-    confirmedAppointments: number
-    pendingAppointments: number
-    totalStaff: number
-    totalServices: number
-  }
+import { useMemo, type ReactNode } from 'react'
+import { Calendar, CheckCircle, Clock, Users, Scissors, DollarSign, TrendingUp, ArrowUpRight } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Small } from '@/components/ui/typography'
+import { Grid, Stack } from '@/components/layout'
+import type { BusinessDashboardMetrics } from '../types'
+import { AppointmentMetricCard, RevenueMetricCard } from './metric-card'
+
+type MetricsCardsProps = {
+  metrics: BusinessDashboardMetrics
 }
 
 export function MetricsCards({ metrics }: MetricsCardsProps) {
+  const confirmationRate = useMemo(() => {
+    if (metrics.totalAppointments === 0) return 0
+    return Math.round((metrics.confirmedAppointments / metrics.totalAppointments) * 100)
+  }, [metrics.confirmedAppointments, metrics.totalAppointments])
+
+  const pendingRate = useMemo(() => {
+    if (metrics.totalAppointments === 0) return 0
+    return Math.round((metrics.pendingAppointments / metrics.totalAppointments) * 100)
+  }, [metrics.pendingAppointments, metrics.totalAppointments])
+
+  const formatCurrency = (amount = 0) =>
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount)
+
+  const revenueMetrics = [
+    metrics.totalRevenue !== undefined && {
+      title: 'Total Revenue',
+      icon: <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />,
+      accent: 'border-l-primary',
+      amountLabel: formatCurrency(metrics.totalRevenue),
+      description: 'All-time earnings',
+    },
+    metrics.last30DaysRevenue !== undefined && {
+      title: 'Last 30 Days',
+      icon: <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />,
+      accent: 'border-l-green-500',
+      amountLabel: formatCurrency(metrics.last30DaysRevenue),
+      description: 'Active revenue stream',
+      highlight: (
+        <Stack gap="xs" className="flex-row items-center">
+          <ArrowUpRight className="h-3 w-3 text-green-600" aria-hidden="true" />
+          <Small className="text-green-600">Momentum trending upward</Small>
+        </Stack>
+      ),
+    },
+  ].filter(Boolean)
+
+  const appointmentMetrics = [
+    {
+      title: 'Total',
+      icon: <Calendar className="h-4 w-4 text-blue-600" aria-hidden="true" />,
+      value: metrics.totalAppointments,
+      progress: 100,
+      description: 'All bookings',
+      accent: 'border-l-blue-500',
+    },
+    {
+      title: 'Confirmed',
+      icon: <CheckCircle className="h-4 w-4 text-green-600" aria-hidden="true" />,
+      value: metrics.confirmedAppointments,
+      progress: confirmationRate,
+      description: `${confirmationRate}% of total`,
+      accent: 'border-l-green-500',
+    },
+    {
+      title: 'Pending',
+      icon: <Clock className="h-4 w-4 text-yellow-600" aria-hidden="true" />,
+      value: metrics.pendingAppointments,
+      progress: pendingRate,
+      description: 'Awaiting confirmation',
+      accent: 'border-l-yellow-500',
+      progressClass: '[&>div]:bg-yellow-600',
+    },
+  ]
+
   return (
     <Stack gap="lg">
-      <Box>
-        <H3>Key Metrics</H3>
-        <Separator className="mt-2" />
-      </Box>
+      <Stack gap="xs">
+        <Small className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Dashboard summary
+        </Small>
+        <Small className="text-muted-foreground">Monitor the metrics your team watches daily.</Small>
+      </Stack>
 
-      <Grid cols={{ base: 1, sm: 2, lg: 3 }} gap="lg">
-        <StatCard
-          label="Total Appointments"
-          value={metrics.totalAppointments}
-          icon={<Calendar className="h-4 w-4" />}
-        />
-
-        <StatCard
-          label="Confirmed"
-          value={metrics.confirmedAppointments}
-          icon={<CheckCircle className="h-4 w-4" />}
-        />
-
-        <StatCard
-          label="Pending"
-          value={metrics.pendingAppointments}
-          icon={<Clock className="h-4 w-4" />}
-        />
-      </Grid>
+      {revenueMetrics.length > 0 && (
+        <Grid cols={{ base: 1, md: 2 }} gap="md">
+          {revenueMetrics.map((metric) => (
+            <RevenueMetricCard key={metric.title} {...metric} />
+          ))}
+        </Grid>
+      )}
 
       <Separator />
 
-      <Grid cols={{ base: 1, sm: 2 }} gap="lg">
-        <StatCard
-          label="Active Staff"
-          value={metrics.totalStaff}
-          icon={<Users className="h-4 w-4" />}
-        />
+      <Stack gap="sm">
+        <Stack className="flex-row items-center justify-between">
+          <Small className="font-medium text-muted-foreground">Appointments Overview</Small>
+          <Badge variant="outline">{confirmationRate}% Confirmed</Badge>
+        </Stack>
+        <Grid cols={{ base: 1, sm: 3 }} gap="md">
+          {appointmentMetrics.map((metric) => (
+            <AppointmentMetricCard key={metric.title} {...metric} />
+          ))}
+        </Grid>
+      </Stack>
 
-        <StatCard
-          label="Services"
-          value={metrics.totalServices}
-          icon={<Scissors className="h-4 w-4" />}
-        />
-      </Grid>
+      <Separator />
+
+      <Stack gap="sm">
+        <Small className="font-medium text-muted-foreground">Resources</Small>
+        <Grid cols={{ base: 1, sm: 2 }} gap="md">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <AppointmentResource
+                title="Staff Members"
+                icon={<Users className="h-4 w-4 text-purple-600" aria-hidden="true" />}
+                value={metrics.totalStaff}
+                accent="border-l-purple-500"
+                description="Active team members"
+              />
+            </TooltipTrigger>
+            <TooltipContent>Ensure coverage across peak hours</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <AppointmentResource
+                title="Services Offered"
+                icon={<Scissors className="h-4 w-4 text-pink-600" aria-hidden="true" />}
+                value={metrics.totalServices}
+                accent="border-l-pink-500"
+                description="Available services"
+              />
+            </TooltipTrigger>
+            <TooltipContent>Audit catalogs to avoid duplicates</TooltipContent>
+          </Tooltip>
+        </Grid>
+      </Stack>
     </Stack>
+  )
+}
+
+type AppointmentResourceProps = {
+  title: string
+  icon: ReactNode
+  value: number
+  description: string
+  accent: string
+}
+
+function AppointmentResource({ title, icon, value, description, accent }: AppointmentResourceProps) {
+  return (
+    <div className={`overflow-hidden rounded-xl border-l-4 ${accent}`}>
+      <div className="flex items-center justify-between space-y-0 border px-4 py-3">
+        <Small className="text-sm font-medium">{title}</Small>
+        {icon}
+      </div>
+      <div className="border border-t-0 px-4 py-3">
+        <div className="text-2xl font-bold">{value}</div>
+        <p className="mt-2 text-xs text-muted-foreground">{description}</p>
+      </div>
+    </div>
   )
 }

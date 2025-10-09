@@ -1,6 +1,5 @@
 import { MessageSquare, AlertTriangle, Clock } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Flex, Box } from '@/components/layout'
 import { P } from '@/components/ui/typography'
 
 type ModerationStatsProps = {
@@ -12,43 +11,40 @@ type ModerationStatsProps = {
 }
 
 export function ModerationStats({ stats }: ModerationStatsProps) {
+  const cards = [
+    {
+      label: 'Total reviews',
+      value: stats.totalReviews,
+      icon: MessageSquare,
+      accent: 'text-blue-500',
+    },
+    {
+      label: 'Flagged reviews',
+      value: stats.flaggedReviews,
+      icon: AlertTriangle,
+      accent: 'text-red-500',
+    },
+    {
+      label: 'Pending response',
+      value: stats.pendingReviews,
+      icon: Clock,
+      accent: 'text-orange-500',
+    },
+  ] as const
+
   return (
     <div className="grid gap-4 md:grid-cols-3">
-      <Card>
-        <CardContent className="p-4">
-          <Flex justify="between" align="start">
-            <Box>
-              <P className="text-sm text-muted-foreground">Total Reviews</P>
-              <p className="text-2xl font-bold">{stats.totalReviews}</p>
-            </Box>
-            <MessageSquare className="h-4 w-4 text-blue-500" />
-          </Flex>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="p-4">
-          <Flex justify="between" align="start">
-            <Box>
-              <P className="text-sm text-muted-foreground">Flagged Reviews</P>
-              <p className="text-2xl font-bold">{stats.flaggedReviews}</p>
-            </Box>
-            <AlertTriangle className="h-4 w-4 text-red-500" />
-          </Flex>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="p-4">
-          <Flex justify="between" align="start">
-            <Box>
-              <P className="text-sm text-muted-foreground">Pending Response</P>
-              <p className="text-2xl font-bold">{stats.pendingReviews}</p>
-            </Box>
-            <Clock className="h-4 w-4 text-orange-500" />
-          </Flex>
-        </CardContent>
-      </Card>
+      {cards.map(({ label, value, icon: Icon, accent }) => (
+        <Card key={label}>
+          <CardContent className="flex items-start justify-between gap-4 p-4">
+            <div className="space-y-1">
+              <P className="text-sm text-muted-foreground">{label}</P>
+              <p className="text-2xl font-semibold">{value}</p>
+            </div>
+            <Icon className={`h-4 w-4 ${accent}`} />
+          </CardContent>
+        </Card>
+      ))}
     </div>
   )
 }

@@ -1,0 +1,60 @@
+import { revalidatePath } from 'next/cache'
+import { createClient } from '@/lib/supabase/server'
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+
+const SCHEDULING_SCHEMA = 'scheduling'
+const SCHEDULES_PATH = '/business/staff/schedules'
+
+export type ActionResponse<T = void> =
+  | { success: true; data: T }
+  | { success: false; error: string }
+
+export type DayOfWeek =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday'
+
+export async function resolveContext() {
+  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const supabase = await createClient()
+
+  const { data: staffProfile } = await supabase
+    .from('staff')
+    .select('salon_id')
+    .eq('user_id', session.user.id)
+    .single<{ salon_id: string | null }>()
+
+  if (!staffProfile?.salon_id) {
+    throw new Error('User salon not found')
+  }
+
+  return { supabase, session, salonId: staffProfile.salon_id }
+}
+
+export async function ensureStaffAccess(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  staffId: string,
+  salonId: string,
+) {
+  const { data: staff } = await supabase
+    .from('staff')
+    .select('salon_id')
+    .eq('id', staffId)
+    .single<{ salon_id: string | null }>()
+
+  if (!staff || staff.salon_id !== salonId) {
+    throw new Error('Staff member not found or access denied')
+  }
+}
+
+export function revalidateSchedules() {
+  revalidatePath(SCHEDULES_PATH)
+}
+
+export function schedulingTable(table: string) {
+  return `${SCHEDULING_SCHEMA}.${table}`
+}

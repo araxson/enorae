@@ -1,0 +1,2 @@
+-- Placeholder seed script for local Supabase resets.
+-- Add deterministic insert statements as features require seeded data.

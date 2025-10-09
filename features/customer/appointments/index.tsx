@@ -2,11 +2,8 @@ import { redirect } from 'next/navigation'
 import { verifySession } from '@/lib/auth'
 import { getCustomerAppointments } from './api/queries'
 import { AppointmentsList } from './components/appointments-list'
-import { Section, Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
+import { P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
-
-export { AppointmentsSkeleton } from './components/appointments-skeleton'
 
 export async function CustomerAppointments() {
   const session = await verifySession()
@@ -18,19 +15,16 @@ export async function CustomerAppointments() {
   const appointments = await getCustomerAppointments()
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <div>
-          <H1>My Appointments</H1>
-          <P className="text-muted-foreground">
-            View and manage your salon appointments
-          </P>
-        </div>
+    <div className="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      <div className="space-y-6">
+        <P className="text-muted-foreground">
+          View and manage your salon appointments
+        </P>
 
         <Separator />
 
         <AppointmentsList appointments={appointments} />
-      </Stack>
-    </Section>
+      </div>
+    </div>
   )
 }

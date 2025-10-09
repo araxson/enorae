@@ -1,40 +1,39 @@
 import { getProfile, getUserAppointments } from './api/queries'
 import { ProfileHeader } from './components/profile-header'
 import { AppointmentsList } from './components/appointments-list'
-import { Section, Stack } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
 import { UsernameForm } from '@/features/shared/profile/components/username-form'
+import { ProfileEditForm } from '@/features/shared/profile/components/profile-edit-form'
+import { MetadataForm } from '@/features/shared/profile-metadata'
+import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export async function CustomerProfile() {
   let profile
   let appointments
+  let metadata
 
   try {
-    // Both functions check auth internally
     profile = await getProfile()
     appointments = await getUserAppointments()
+    metadata = await getCurrentUserMetadata()
   } catch {
     return (
-      <Section size="lg">
-        <H1>Please log in to view your profile</H1>
-      </Section>
+      <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
+        <Alert variant="destructive">
+          <AlertTitle>Authentication required</AlertTitle>
+          <AlertDescription>Please log in to view your profile.</AlertDescription>
+        </Alert>
+      </div>
     )
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <ProfileHeader profile={profile} />
-
-        <UsernameForm currentUsername={profile.username} />
-
-        <div>
-          <H1>My Appointments</H1>
-          <Lead>View and manage your bookings</Lead>
-        </div>
-
-        <AppointmentsList appointments={appointments} />
-      </Stack>
-    </Section>
+    <div className="mx-auto max-w-5xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      <ProfileHeader profile={profile} />
+      <UsernameForm currentUsername={profile.username} />
+      <ProfileEditForm profile={profile} />
+      <MetadataForm metadata={metadata} />
+      <AppointmentsList appointments={appointments} />
+    </div>
   )
 }

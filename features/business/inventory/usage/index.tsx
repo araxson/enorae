@@ -1,20 +1,42 @@
-import { H2, Muted } from '@/components/ui/typography'
-import { getProductUsage } from './api/queries'
+import {
+  getProductUsage,
+  getUsageAnalytics,
+  getUsageTrends,
+  getServiceCostAnalysis,
+  getHighUsageProducts,
+} from './api/queries'
 import { UsageList } from './components/usage-list'
+import { UsageAnalyticsDashboard } from './components/usage-analytics-dashboard'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export async function ProductUsage() {
-  const usage = await getProductUsage()
+  const [usage, analytics, trends, serviceCosts, highUsageProducts] = await Promise.all([
+    getProductUsage(),
+    getUsageAnalytics(),
+    getUsageTrends(30),
+    getServiceCostAnalysis(),
+    getHighUsageProducts(30),
+  ])
 
   return (
-    <div className="space-y-6">
-      <div>
-        <H2>Product Usage</H2>
-        <Muted className="mt-1">
-          Track product consumption and costs
-        </Muted>
-      </div>
+    <Tabs defaultValue="analytics" className="w-full">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="analytics">Analytics & Reports</TabsTrigger>
+        <TabsTrigger value="history">Usage History</TabsTrigger>
+      </TabsList>
 
-      <UsageList usage={usage} />
-    </div>
+      <TabsContent value="analytics" className="mt-6">
+        <UsageAnalyticsDashboard
+          analytics={analytics}
+          trends={trends}
+          serviceCosts={serviceCosts}
+          highUsageProducts={highUsageProducts}
+        />
+      </TabsContent>
+
+      <TabsContent value="history" className="mt-6">
+        <UsageList usage={usage} />
+      </TabsContent>
+    </Tabs>
   )
 }

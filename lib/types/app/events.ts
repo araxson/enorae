@@ -1,0 +1,9 @@
+export type ButtonClickHandler = React.MouseEvent<HTMLButtonElement>
+export type DivClickHandler = React.MouseEvent<HTMLDivElement>
+export type FormSubmitHandler = React.FormEvent<HTMLFormElement>
+export type InputChangeHandler = React.ChangeEvent<HTMLInputElement>
+export type TextAreaChangeHandler = React.ChangeEvent<HTMLTextAreaElement>
+export type SelectChangeHandler = React.ChangeEvent<HTMLSelectElement>
+export type KeyboardHandler = React.KeyboardEvent<HTMLInputElement>
+export type FocusHandler = React.FocusEvent<HTMLInputElement>
+import type React from 'react'

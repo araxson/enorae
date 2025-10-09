@@ -1,5 +1,4 @@
 import { Section, Stack } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { StockLevelsTable } from '../products/components/stock-levels-table'
 import { getStockLevels, getStockLocations } from './api/queries'
@@ -28,13 +27,8 @@ export async function StockLevels() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <div>
-          <H1>Stock Levels</H1>
-          <Lead>Manage stock across all locations</Lead>
-        </div>
-
         <StockLevelsTable
-          stockLevels={stockLevels as never}
+          stockLevels={stockLevels}
           locations={locations.map((loc) => ({
             id: loc.id!,
             name: loc.name || 'Unknown',

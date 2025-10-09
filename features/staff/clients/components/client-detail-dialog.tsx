@@ -9,7 +9,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex, Divider } from '@/components/layout'
+import { Separator } from '@/components/ui/separator'
+import { Stack, Flex } from '@/components/layout'
 import { P, Muted, H3 } from '@/components/ui/typography'
 import { Calendar, DollarSign, Mail, User } from 'lucide-react'
 import type { ClientWithHistory } from '../api/queries'
@@ -92,7 +93,7 @@ export function ClientDetailDialog({
             )}
           </div>
 
-          <Divider />
+          <Separator />
 
           <div>
             <H3 className="mb-4">Appointment History</H3>

@@ -3,7 +3,6 @@
 import { useState, FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Stack, Flex } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Send } from 'lucide-react'
 
@@ -22,8 +21,8 @@ export function MessageComposer({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault()
 
     if (!content.trim()) {
       setError('Message cannot be empty')
@@ -48,10 +47,9 @@ export function MessageComposer({
     }
   }
 
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Send on Ctrl+Enter or Cmd+Enter
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault()
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault()
 
       if (!content.trim()) {
         setError('Message cannot be empty')
@@ -74,43 +72,30 @@ export function MessageComposer({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Stack gap="md">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+    <form onSubmit={handleSubmit} className="space-y-3">
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
-        <Textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          disabled={disabled || isSubmitting}
-          rows={3}
-          className="resize-none"
-        />
+      <Textarea
+        value={content}
+        onChange={(event) => setContent(event.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+        disabled={disabled || isSubmitting}
+        rows={3}
+        className="resize-none"
+      />
 
-        <Flex justify="between" align="center">
-          <span className="text-xs text-muted-foreground">
-            Press Ctrl+Enter to send
-          </span>
-          <Button
-            type="submit"
-            disabled={disabled || isSubmitting || !content.trim()}
-          >
-            {isSubmitting ? (
-              'Sending...'
-            ) : (
-              <>
-                <Send className="h-4 w-4 mr-2" />
-                Send Message
-              </>
-            )}
-          </Button>
-        </Flex>
-      </Stack>
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <span>Press Ctrl+Enter to send</span>
+        <Button type="submit" disabled={disabled || isSubmitting || !content.trim()} className="gap-2">
+          {isSubmitting ? 'Sending...' : <Send className="h-4 w-4" />}
+          {isSubmitting ? null : 'Send message'}
+        </Button>
+      </div>
     </form>
   )
 }

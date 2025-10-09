@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -25,6 +27,7 @@ type CategoryFormProps = {
 }
 
 export function CategoryForm({ category, open, onOpenChange }: CategoryFormProps) {
+  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,12 +42,15 @@ export function CategoryForm({ category, open, onOpenChange }: CategoryFormProps
         : await createProductCategory(formData)
 
       if (result.error) {
-        alert(result.error)
+        toast.error(result.error)
       } else {
+        toast.success(category ? 'Category updated' : 'Category created')
+        router.refresh()
         onOpenChange(false)
       }
-    } catch {
-      alert('Failed to save category')
+    } catch (error) {
+      console.error('[CategoryForm] submit error:', error)
+      toast.error('Failed to save category')
     } finally {
       setIsSubmitting(false)
     }

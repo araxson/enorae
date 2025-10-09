@@ -1,9 +1,31 @@
+# claude.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # 🚀 ENORAE - AI Development Guidelines
 
 > **Salon Booking Platform - Multi-Tenant SaaS**
 > **Stack**: Next.js 15.5.4, React 19, TypeScript 5.6, Supabase, Tailwind CSS 4
 > **Database**: Multi-schema architecture with public views, functions, and RLS policies
 > **UI**: All shadcn/ui components pre-installed
+
+---
+
+## 🛠️ ESSENTIAL COMMANDS
+
+```bash
+# Development
+npm run dev              # Start dev server (Turbopack)
+npm run build            # Build for production (Turbopack)
+npm start                # Start production server
+npm run lint             # Run ESLint
+npm run typecheck        # TypeScript type checking (must pass before commits)
+
+# Database
+npm run db:types         # Generate TypeScript types from Supabase schema
+```
+
+**CRITICAL**: Always run `npm run typecheck` before committing. Build must have 0 TypeScript errors.
 
 ---
 
@@ -291,6 +313,32 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
 ### Rule 4: Data Layer Pattern
 
+**Option A: Using `verifySession()` helper (RECOMMENDED)**
+```typescript
+// features/[portal]/[feature]/api/queries.ts
+import 'server-only'  // MANDATORY - First line
+import { verifySession } from '@/lib/auth/session'
+import { createClient } from '@/lib/supabase/server'
+import type { Database } from '@/lib/types/database.types'
+
+type Entity = Database['public']['Views']['view_name']['Row']
+
+export async function getData(): Promise<Entity[]> {
+  const session = await verifySession()
+  if (!session) throw new Error('Unauthorized')
+
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('view_name')  // Public view
+    .select('*')
+    .eq('user_id', session.user.id)  // Explicit filter
+
+  if (error) throw error
+  return data
+}
+```
+
+**Option B: Direct auth check**
 ```typescript
 // features/[portal]/[feature]/api/queries.ts
 import 'server-only'  // MANDATORY - First line
@@ -314,17 +362,19 @@ export async function getData(): Promise<Entity[]> {
 }
 ```
 
+**Mutations (Server Actions)**
 ```typescript
 // features/[portal]/[feature]/api/mutations.ts
 'use server'  // Server Action
 import { revalidatePath } from 'next/cache'
+import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 
 export async function createItem(formData: FormData) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const session = await verifySession()
+  if (!session) throw new Error('Unauthorized')
 
+  const supabase = await createClient()
   const { error } = await supabase
     .schema('schema_name')  // Schema table for mutations
     .from('table_name')
@@ -334,6 +384,14 @@ export async function createItem(formData: FormData) {
   revalidatePath('/path')
 }
 ```
+
+**Available Auth Helpers** (from `@/lib/auth/session`):
+- `verifySession()` - Returns session or null (cached per request)
+- `requireAuth()` - Throws if not authenticated
+- `requireRole(role)` - Throws if user doesn't have specific role
+- `requireAnyRole([roles])` - Throws if user doesn't have any of the roles
+- `getUserId()` - Convenience helper for user ID
+- `getUserRole()` - Convenience helper for user role
 
 **Checklist**:
 - [ ] `import 'server-only'` in queries.ts
@@ -380,18 +438,38 @@ import { H1, P, Muted } from '@/components/ui/typography'
 
 ### Rule 8: Authentication & RLS
 
+**CRITICAL SECURITY**: Always use `getUser()`, NEVER `getSession()`
+- `getUser()` validates with Supabase servers (secure, 100ms)
+- `getSession()` only reads cookies (can be spoofed, insecure)
+
 ```typescript
-// ✅ Auth check in every DAL function
+// ✅ SECURE - validates with Supabase servers
 const { data: { user } } = await supabase.auth.getUser()
 if (!user) throw new Error('Unauthorized')
+
+// ❌ INSECURE - can be spoofed
+const { data: { session } } = await supabase.auth.getSession() // NEVER USE
 ```
 
+**RLS Performance Optimization**:
 ```sql
--- ✅ Fast RLS (wrap auth.uid)
+-- ✅ Fast RLS (wrap auth.uid) - 94% faster
 create policy "user_access" on table_name
 to authenticated
 using ( (select auth.uid()) = user_id );
+
+-- ❌ Slow RLS (unwrapped) - 171ms vs 9ms
+create policy "user_access" on table_name
+to authenticated
+using ( auth.uid() = user_id );
 ```
+
+**Middleware Security** (see `middleware.ts`):
+- ✅ CVE-2025-29927 protection (blocks x-middleware-subrequest)
+- ✅ Rate limiting on auth routes (10 requests/hour per IP)
+- ✅ Security headers (CSP, X-Frame-Options, etc.)
+- ✅ Session refresh on every request
+- ❌ NO role-based logic in middleware (moved to Server Components)
 
 ---
 
@@ -497,6 +575,103 @@ export function Filters() {
 
 ---
 
+## 🏗️ ARCHITECTURE DEEP-DIVE
+
+### Multi-Portal Architecture
+This is a **single Next.js application** with 4 separate portals using route groups:
+- `app/(marketing)/` - Public landing pages
+- `app/(customer)/` - Customer booking interface
+- `app/(staff)/` - Staff schedule and client management
+- `app/(business)/` - Business owner dashboard
+- `app/(admin)/` - Platform administration
+
+**Each portal has its own**:
+- Layout (`layout.tsx`) with portal-specific navigation
+- Route protection (middleware checks auth, Server Components check roles)
+- Feature modules in `features/[portal]/`
+
+### Data Layer Architecture
+```
+┌─────────────────────────────────────────────────────────┐
+│ Pages (5-15 lines)                                      │
+│ - Only render feature components                        │
+│ - Pass params from URL                                  │
+└────────────────┬────────────────────────────────────────┘
+                 │
+┌────────────────▼────────────────────────────────────────┐
+│ Feature Components (index.tsx)                          │
+│ - Server Components (async)                             │
+│ - Call DAL functions                                    │
+│ - Pass data to client components                        │
+└────────────────┬────────────────────────────────────────┘
+                 │
+┌────────────────▼────────────────────────────────────────┐
+│ Data Access Layer (api/queries.ts, api/mutations.ts)    │
+│ - queries.ts: SELECT operations (import 'server-only')  │
+│ - mutations.ts: INSERT/UPDATE/DELETE ('use server')     │
+│ - Always check auth first                               │
+│ - Query from public views                               │
+│ - Mutate schema tables                                  │
+└────────────────┬────────────────────────────────────────┘
+                 │
+┌────────────────▼────────────────────────────────────────┐
+│ Database (Supabase PostgreSQL)                          │
+│ - 8 domain schemas (organization, catalog, etc.)        │
+│ - Public views for queries (with RLS)                   │
+│ - Schema tables for mutations (with RLS)                │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Database Schema Discovery
+Use Supabase MCP tools to discover available views and tables:
+```typescript
+// List all available views
+await mcp.supabase.list_tables({ schemas: ['public'] })
+
+// Execute queries to explore data
+await mcp.supabase.execute_sql({ query: 'SELECT * FROM view_name LIMIT 1' })
+```
+
+**Why use MCP tools?**
+- ✅ Real-time schema information
+- ✅ Discover available views and columns
+- ✅ Test queries before implementing
+- ✅ Generate TypeScript types
+
+### Type Generation
+Types are generated from Supabase schema using a Python script:
+```bash
+npm run db:types  # Runs: python3 scripts/generate-types.py
+```
+
+Generated file: `lib/types/database.types.ts`
+- Contains all view definitions (NOT table definitions)
+- Enum types for roles, statuses, etc.
+- Always import from `@/lib/types/database.types`
+
+### Component Library (shadcn/ui)
+ALL components are pre-installed. Just import and use:
+```typescript
+// ✅ Direct import (all components exist)
+import { Button, Card, Dialog } from '@/components/ui/...'
+import { Stack, Grid } from '@/components/layout'
+import { H1, P } from '@/components/ui/typography'
+
+// ❌ NEVER run these commands
+npx shadcn@latest add button  // Already installed!
+npm install @radix-ui/react-*  // Already in package.json!
+```
+
+**Available Component Categories**:
+- Forms: Button, Input, Select, Checkbox, Radio, Switch, Textarea, Slider
+- Layout: Card, Tabs, Dialog, Sheet, Drawer, Stack, Grid, Flex, Box, Section
+- Typography: H1, H2, H3, H4, P, Lead, Large, Small, Muted
+- Navigation: Dropdown, Command, Breadcrumb, Menubar
+- Feedback: Alert, Toast, Progress, Skeleton, Badge
+- Data: Table, Avatar, Calendar, Carousel, Chart
+
+---
+
 ## 🎯 PRINCIPLES
 
 1. **Simplicity** - Use what exists
@@ -507,4 +682,4 @@ export function Filters() {
 
 ---
 
-**Version**: 3.0.0 | **Last Updated**: 2025-10-02
+**Version**: 3.1.0 | **Last Updated**: 2025-10-05

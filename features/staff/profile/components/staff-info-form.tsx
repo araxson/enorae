@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Card } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
+import { Card, CardContent } from '@/components/ui/card'
 import { H3, Muted } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -25,13 +24,13 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     setIsSubmitting(true)
     setError(null)
     setSuccess(false)
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(event.currentTarget)
     const result = await updateStaffInfo(formData)
 
     if (result.success) {
@@ -45,71 +44,71 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Stack gap="lg">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
-        {success && (
-          <Alert>
-            <AlertDescription>Profile updated successfully!</AlertDescription>
-          </Alert>
-        )}
+      {success && (
+        <Alert>
+          <AlertDescription>Profile updated successfully!</AlertDescription>
+        </Alert>
+      )}
 
-        <Card className="p-6">
-          <Stack gap="lg">
-            <H3>Professional Information</H3>
+      <Card>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <H3>Professional information</H3>
             <Separator />
+          </div>
 
-            <Stack gap="sm">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                name="title"
-                type="text"
-                defaultValue={profile.title || ''}
-                placeholder="e.g., Senior Stylist, Master Colorist"
-                maxLength={100}
-              />
-              <Muted>Your professional title or role</Muted>
-            </Stack>
+          <div className="space-y-2">
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
+              name="title"
+              type="text"
+              defaultValue={profile.title || ''}
+              placeholder="e.g., Senior Stylist, Master Colorist"
+              maxLength={100}
+            />
+            <Muted>Your professional title or role.</Muted>
+          </div>
 
-            <Stack gap="sm">
-              <Label htmlFor="experienceYears">Years of Experience</Label>
-              <Input
-                id="experienceYears"
-                name="experienceYears"
-                type="number"
-                min="0"
-                max="100"
-                defaultValue={profile.experience_years ?? ''}
-                placeholder="e.g., 5"
-              />
-              <Muted>How many years you&apos;ve been practicing</Muted>
-            </Stack>
+          <div className="space-y-2">
+            <Label htmlFor="experienceYears">Years of experience</Label>
+            <Input
+              id="experienceYears"
+              name="experienceYears"
+              type="number"
+              min="0"
+              max="100"
+              defaultValue={profile.experience_years ?? ''}
+              placeholder="e.g., 5"
+            />
+            <Muted>How many years you&apos;ve been practicing.</Muted>
+          </div>
 
-            <Stack gap="sm">
-              <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                id="bio"
-                name="bio"
-                defaultValue={profile.bio || ''}
-                placeholder="Tell us about yourself, your specialties, and what you're passionate about..."
-                rows={6}
-                maxLength={1000}
-              />
-              <Muted>{profile.bio?.length || 0}/1000 characters</Muted>
-            </Stack>
-          </Stack>
-        </Card>
+          <div className="space-y-2">
+            <Label htmlFor="bio">Bio</Label>
+            <Textarea
+              id="bio"
+              name="bio"
+              defaultValue={profile.bio || ''}
+              placeholder="Tell us about yourself, your specialties, and what you're passionate about..."
+              rows={6}
+              maxLength={1000}
+            />
+            <Muted>{profile.bio?.length || 0}/1000 characters</Muted>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving...' : 'Save Changes'}
-        </Button>
-      </Stack>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Saving...' : 'Save changes'}
+      </Button>
     </form>
   )
 }

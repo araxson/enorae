@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex, Box } from '@/components/layout'
 import { H1, P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { ThreadList } from './thread-list'
@@ -25,21 +24,21 @@ export function MessagingClient({ threads, salonId }: MessagingClientProps) {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
 
   return (
-    <Stack gap="xl">
-      <Flex justify="between" align="start">
-        <Box>
-          <H1>Messages</H1>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="space-y-1">
+          <H1 className="text-2xl font-semibold">Messages</H1>
           <P className="text-muted-foreground">
-            Communicate with salons about your appointments
+            Communicate with salons about your appointments.
           </P>
-        </Box>
+        </div>
         {salonId && (
-          <Button onClick={() => setIsCreateDialogOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            New Conversation
+          <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2">
+            <Plus className="h-4 w-4" />
+            New conversation
           </Button>
         )}
-      </Flex>
+      </div>
 
       <Separator />
 
@@ -52,6 +51,6 @@ export function MessagingClient({ threads, salonId }: MessagingClientProps) {
           salonId={salonId}
         />
       )}
-    </Stack>
+    </div>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { Stack, Flex } from '@/components/layout'
 import { P, Small } from '@/components/ui/typography'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { format } from 'date-fns'
@@ -23,55 +22,44 @@ export function MessageBubble({
 }: MessageBubbleProps) {
   const initials = senderName
     ?.split(' ')
-    .map((n) => n[0])
+    .map((part) => part[0])
     .join('')
     .toUpperCase()
     .slice(0, 2) || '??'
 
   return (
-    <Flex
-      gap="sm"
-      className={cn('w-full', isOwn ? 'justify-end' : 'justify-start')}
-    >
+    <div className={cn('flex w-full gap-3', isOwn ? 'justify-end' : 'justify-start')}>
       {!isOwn && (
         <Avatar className="h-8 w-8">
           <AvatarFallback className="text-xs">{initials}</AvatarFallback>
         </Avatar>
       )}
 
-      <Stack gap="xs" className={cn('max-w-[70%]', isOwn && 'items-end')}>
+      <div className={cn('max-w-[70%] space-y-1', isOwn && 'items-end text-right')}>
         {!isOwn && senderName && (
-          <Small className="text-muted-foreground px-3">{senderName}</Small>
+          <Small className="px-2 text-muted-foreground">{senderName}</Small>
         )}
 
         <div
           className={cn(
-            'rounded-lg px-4 py-2',
-            isOwn
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-muted text-foreground'
+            'rounded-lg px-4 py-2 text-left',
+            isOwn ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
           )}
         >
           <P className="mb-0 whitespace-pre-wrap break-words">{content}</P>
         </div>
 
-        <Flex gap="xs" className="px-3" align="center">
-          <Small className="text-muted-foreground">
-            {format(new Date(timestamp), 'MMM dd, HH:mm')}
-          </Small>
-          {isOwn && (
-            <Small className="text-muted-foreground">
-              {isRead ? '✓✓' : '✓'}
-            </Small>
-          )}
-        </Flex>
-      </Stack>
+        <div className="flex items-center gap-2 px-2 text-xs text-muted-foreground">
+          <Small>{format(new Date(timestamp), 'MMM dd, HH:mm')}</Small>
+          {isOwn && <Small>{isRead ? '✓✓' : '✓'}</Small>}
+        </div>
+      </div>
 
       {isOwn && (
         <Avatar className="h-8 w-8">
           <AvatarFallback className="text-xs">You</AvatarFallback>
         </Avatar>
       )}
-    </Flex>
+    </div>
   )
 }

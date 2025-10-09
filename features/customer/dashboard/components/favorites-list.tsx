@@ -1,6 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
-import { Small, Muted } from '@/components/ui/typography'
+import Link from 'next/link'
+import { Heart } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Small } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import {
   Item,
@@ -9,12 +10,9 @@ import {
   ItemContent,
   ItemTitle,
   ItemDescription,
-  ItemActions,
   ItemSeparator,
 } from '@/components/ui/item'
 import type { CustomerFavoriteView } from '@/lib/types/app.types'
-import { Heart } from 'lucide-react'
-import Link from 'next/link'
 
 interface FavoritesListProps {
   favorites: CustomerFavoriteView[]
@@ -25,16 +23,17 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Your Favorites</CardTitle>
+          <CardTitle>Your favorites</CardTitle>
+          <CardDescription>Save salons to rebook faster next time.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Stack gap="md" className="text-center py-8">
-            <Heart className="h-12 w-12 mx-auto text-muted-foreground" />
-            <Muted>No favorites yet</Muted>
+          <div className="flex flex-col items-center gap-4 py-8 text-center">
+            <Heart className="h-12 w-12 text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">No favorites yet</p>
             <Button variant="outline" asChild>
-              <Link href="/customer/salons">Explore Salons</Link>
+              <Link href="/customer/salons">Explore salons</Link>
             </Button>
-          </Stack>
+          </div>
         </CardContent>
       </Card>
     )
@@ -43,35 +42,33 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Your Favorites</CardTitle>
+        <CardTitle>Your favorites</CardTitle>
         <Small>{favorites.length} saved items</Small>
       </CardHeader>
-      <CardContent>
-        <Stack gap="md">
-          <ItemGroup>
-            {favorites.map((favorite, index) => (
-              <div key={favorite.id}>
-                <Item variant="outline" size="sm">
-                  <ItemMedia variant="icon">
-                    <Heart className="h-4 w-4 fill-primary text-primary" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>
-                      {favorite.business_name || 'Favorite Salon'}
-                    </ItemTitle>
-                    <ItemDescription>
-                      {favorite.category_name || 'No category'}
-                    </ItemDescription>
-                  </ItemContent>
-                </Item>
-                {index < favorites.length - 1 && <ItemSeparator />}
-              </div>
-            ))}
-          </ItemGroup>
-          <Button variant="outline" asChild className="w-full">
-            <Link href="/customer/favorites">View All Favorites</Link>
-          </Button>
-        </Stack>
+      <CardContent className="space-y-4">
+        <ItemGroup>
+          {favorites.map((favorite, index) => (
+            <div key={favorite.id}>
+              <Item variant="outline" size="sm">
+                <ItemMedia variant="icon">
+                  <Heart className="h-4 w-4 fill-primary text-primary" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>
+                    {favorite.business_name || 'Favorite salon'}
+                  </ItemTitle>
+                  <ItemDescription>
+                    {favorite.category_name || 'No category'}
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
+              {index < favorites.length - 1 && <ItemSeparator />}
+            </div>
+          ))}
+        </ItemGroup>
+        <Button variant="outline" asChild className="w-full">
+          <Link href="/customer/favorites">View all favorites</Link>
+        </Button>
       </CardContent>
     </Card>
   )

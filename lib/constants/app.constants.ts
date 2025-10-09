@@ -1,3 +1,5 @@
+import { env } from '@/lib/env'
+
 /**
  * Application Constants
  *
@@ -10,7 +12,7 @@
  */
 export const APP_NAME = 'Enorae'
 export const APP_DESCRIPTION = 'Modern salon booking platform with role-based portals for customers, staff, business owners, and platform administrators.'
-export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://enorae.com'
+export const APP_URL = env.NEXT_PUBLIC_APP_URL ?? env.NEXT_PUBLIC_SITE_URL
 
 /**
  * Application Version
@@ -32,57 +34,6 @@ export const SOCIAL_LINKS = {
  */
 export const CONTACT_EMAIL = 'hello@enorae.com'
 export const SUPPORT_EMAIL = 'support@enorae.com'
-
-/**
- * User Roles
- */
-export const ROLES = {
-  // Platform Admins
-  SUPER_ADMIN: 'super_admin',
-  PLATFORM_ADMIN: 'platform_admin',
-
-  // Business Owners
-  TENANT_OWNER: 'tenant_owner',
-  SALON_OWNER: 'salon_owner',
-  SALON_MANAGER: 'salon_manager',
-
-  // Staff
-  SENIOR_STAFF: 'senior_staff',
-  STAFF: 'staff',
-  JUNIOR_STAFF: 'junior_staff',
-
-  // Customers
-  VIP_CUSTOMER: 'vip_customer',
-  CUSTOMER: 'customer',
-  GUEST: 'guest',
-} as const
-
-/**
- * Role Groups for easier role checking
- */
-export const ROLE_GROUPS = {
-  ADMIN: [ROLES.SUPER_ADMIN, ROLES.PLATFORM_ADMIN],
-  BUSINESS: [ROLES.TENANT_OWNER, ROLES.SALON_OWNER, ROLES.SALON_MANAGER],
-  STAFF: [ROLES.SENIOR_STAFF, ROLES.STAFF, ROLES.JUNIOR_STAFF],
-  CUSTOMER: [ROLES.VIP_CUSTOMER, ROLES.CUSTOMER, ROLES.GUEST],
-} as const
-
-/**
- * Default Routes by Role
- */
-export const DEFAULT_ROUTES = {
-  [ROLES.SUPER_ADMIN]: '/admin',
-  [ROLES.PLATFORM_ADMIN]: '/admin',
-  [ROLES.TENANT_OWNER]: '/business',
-  [ROLES.SALON_OWNER]: '/business',
-  [ROLES.SALON_MANAGER]: '/business',
-  [ROLES.SENIOR_STAFF]: '/staff',
-  [ROLES.STAFF]: '/staff',
-  [ROLES.JUNIOR_STAFF]: '/staff',
-  [ROLES.VIP_CUSTOMER]: '/salons',
-  [ROLES.CUSTOMER]: '/salons',
-  [ROLES.GUEST]: '/salons',
-} as const
 
 /**
  * Appointment Statuses

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { login } from '../api/mutations'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,29 +15,38 @@ import { Small } from '@/components/ui/typography'
 import { PasswordInput } from './password-input'
 
 export function LoginForm() {
+  const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(formData: FormData) {
     setLoading(true)
     setError(null)
-    const result = await login(formData)
-    if (result?.error) {
-      setError(result.error)
-      setLoading(false)
 
-      // IMPROVED: Redirect to OTP verification if email not verified
-      if (result.requiresOTP && result.email) {
-        setTimeout(() => {
-          const redirectUrl = `/auth/verify-otp?email=${encodeURIComponent(result.email!)}&type=email`
-          window.location.href = redirectUrl
-        }, 2000) // Show error message for 2 seconds before redirecting
+    try {
+      const result = await login(formData)
+
+      if (result?.error) {
+        setError(result.error)
+
+        if (result.requiresOTP && result.email) {
+          setTimeout(() => {
+            const redirectUrl = `/auth/verify-otp?email=${encodeURIComponent(result.email!)}&type=email`
+            router.push(redirectUrl)
+          }, 2000)
+        }
       }
+    } catch (error) {
+      console.error('[LoginForm] unexpected error:', error)
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <div className="w-full max-w-md">
+      <Card>
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>
@@ -99,6 +109,7 @@ export function LoginForm() {
           </Stack>
         </CardFooter>
       </form>
-    </Card>
+      </Card>
+    </div>
   )
 }

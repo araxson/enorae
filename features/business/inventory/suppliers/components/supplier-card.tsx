@@ -3,14 +3,12 @@
 import { useState, useTransition } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Stack, Flex, Box } from '@/components/layout'
 import { Small, P, Large } from '@/components/ui/typography'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { deleteSupplier } from '../api/mutations'
-import type { Database } from '@/lib/types/database.types'
-
-type Supplier = Database['inventory']['Tables']['suppliers']['Row']
+import type { Supplier } from '@/lib/types/app.types'
 
 interface SupplierCardProps {
   supplier: Supplier
@@ -33,86 +31,88 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
 
   return (
     <>
-      <Card className="p-4">
-        <Stack gap="sm">
-          <Flex justify="between" align="start">
-            <Box>
-              <Large>{supplier.name}</Large>
-              {supplier.contact_name && (
-                <Small className="text-muted-foreground">
-                  Contact: {supplier.contact_name}
-                </Small>
+      <Card>
+        <CardContent>
+          <Stack gap="sm">
+            <Flex justify="between" align="start">
+              <Box>
+                <Large>{supplier.name}</Large>
+                {supplier.contact_name && (
+                  <Small className="text-muted-foreground">
+                    Contact: {supplier.contact_name}
+                  </Small>
+                )}
+              </Box>
+              <Badge variant={supplier.is_active ? 'default' : 'secondary'}>
+                {supplier.is_active ? 'Active' : 'Inactive'}
+              </Badge>
+            </Flex>
+
+            <Stack gap="xs">
+              {supplier.email && (
+                <Flex gap="sm">
+                  <Small className="text-muted-foreground">Email:</Small>
+                  <Small>{supplier.email}</Small>
+                </Flex>
               )}
-            </Box>
-            <Badge variant={supplier.is_active ? 'default' : 'secondary'}>
-              {supplier.is_active ? 'Active' : 'Inactive'}
-            </Badge>
-          </Flex>
 
-          <Stack gap="xs">
-            {supplier.email && (
-              <Flex gap="sm">
-                <Small className="text-muted-foreground">Email:</Small>
-                <Small>{supplier.email}</Small>
-              </Flex>
-            )}
+              {supplier.phone && (
+                <Flex gap="sm">
+                  <Small className="text-muted-foreground">Phone:</Small>
+                  <Small>{supplier.phone}</Small>
+                </Flex>
+              )}
 
-            {supplier.phone && (
-              <Flex gap="sm">
-                <Small className="text-muted-foreground">Phone:</Small>
-                <Small>{supplier.phone}</Small>
-              </Flex>
-            )}
+              {supplier.website && (
+                <Flex gap="sm">
+                  <Small className="text-muted-foreground">Website:</Small>
+                  <Small>
+                    <a
+                      href={supplier.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline"
+                    >
+                      {supplier.website}
+                    </a>
+                  </Small>
+                </Flex>
+              )}
 
-            {supplier.website && (
-              <Flex gap="sm">
-                <Small className="text-muted-foreground">Website:</Small>
-                <Small>
-                  <a
-                    href={supplier.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    {supplier.website}
-                  </a>
-                </Small>
-              </Flex>
-            )}
+              {supplier.address && (
+                <Box>
+                  <Small className="text-muted-foreground">Address:</Small>
+                  <Small>{supplier.address}</Small>
+                </Box>
+              )}
 
-            {supplier.address && (
-              <Box>
-                <Small className="text-muted-foreground">Address:</Small>
-                <Small>{supplier.address}</Small>
-              </Box>
-            )}
+              {supplier.payment_terms && (
+                <Box>
+                  <Small className="text-muted-foreground">Payment Terms:</Small>
+                  <Small>{supplier.payment_terms}</Small>
+                </Box>
+              )}
 
-            {supplier.payment_terms && (
-              <Box>
-                <Small className="text-muted-foreground">Payment Terms:</Small>
-                <Small>{supplier.payment_terms}</Small>
-              </Box>
-            )}
+              {supplier.notes && (
+                <Box>
+                  <Small className="text-muted-foreground">Notes:</Small>
+                  <Small>{supplier.notes}</Small>
+                </Box>
+              )}
+            </Stack>
 
-            {supplier.notes && (
-              <Box>
-                <Small className="text-muted-foreground">Notes:</Small>
-                <Small>{supplier.notes}</Small>
-              </Box>
-            )}
+            <Flex justify="end" gap="sm">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowDeleteDialog(true)}
+              >
+                {supplier.is_active ? 'Deactivate' : 'Delete'}
+              </Button>
+              <Button size="sm">Edit</Button>
+            </Flex>
           </Stack>
-
-          <Flex justify="end" gap="sm">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setShowDeleteDialog(true)}
-            >
-              {supplier.is_active ? 'Deactivate' : 'Delete'}
-            </Button>
-            <Button size="sm">Edit</Button>
-          </Flex>
-        </Stack>
+        </CardContent>
       </Card>
 
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>

@@ -5,9 +5,9 @@ import { format } from 'date-fns'
 import { Calendar, Clock, CheckCircle, XCircle, Play } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Stack } from '@/components/layout'
 import { P, Muted } from '@/components/ui/typography'
+import { ActionButton } from '@/components/shared'
 import {
   markAppointmentCompleted,
   markAppointmentNoShow,
@@ -36,21 +36,7 @@ const statusConfig: Record<AppointmentStatus, { label: string; variant: 'default
 
 export function AppointmentsList({ appointments, title = 'Appointments', showActions = true }: AppointmentsListProps) {
   const router = useRouter()
-  const [loading, setLoading] = useState<string | null>(null)
   const [selectedAppointment, setSelectedAppointment] = useState<StaffAppointment | null>(null)
-
-  const handleStatusChange = async (appointmentId: string, action: () => Promise<unknown>) => {
-    try {
-      setLoading(appointmentId)
-      await action()
-      router.refresh()
-    } catch (error) {
-      console.error('Error updating appointment:', error)
-      alert('Failed to update appointment')
-    } finally {
-      setLoading(null)
-    }
-  }
 
   if (appointments.length === 0) {
     return (
@@ -82,7 +68,6 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
             const status = appointment.status as AppointmentStatus
             const config = statusConfig[status] || statusConfig.pending
             const isActionable = status === 'confirmed' || status === 'pending' || status === 'in_progress'
-            const isLoading = loading === appointment.id
 
             return (
               <div
@@ -127,45 +112,61 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                 {showActions && isActionable && (
                   <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                     {status === 'pending' && (
-                      <Button
+                      <ActionButton
                         size="sm"
                         variant="outline"
-                        onClick={() => handleStatusChange(appointment.id!, () => confirmAppointment(appointment.id!))}
-                        disabled={isLoading}
+                        onAction={async () => {
+                          await confirmAppointment(appointment.id!)
+                          router.refresh()
+                        }}
+                        successMessage="Appointment confirmed"
+                        loadingText="Confirming..."
                       >
                         <CheckCircle className="w-4 h-4 mr-1" />
                         Confirm
-                      </Button>
+                      </ActionButton>
                     )}
                     {status === 'confirmed' && (
-                      <Button
+                      <ActionButton
                         size="sm"
-                        onClick={() => handleStatusChange(appointment.id!, () => startAppointment(appointment.id!))}
-                        disabled={isLoading}
+                        onAction={async () => {
+                          await startAppointment(appointment.id!)
+                          router.refresh()
+                        }}
+                        successMessage="Appointment started"
+                        loadingText="Starting..."
                       >
                         <Play className="w-4 h-4 mr-1" />
                         Start
-                      </Button>
+                      </ActionButton>
                     )}
                     {status === 'in_progress' && (
                       <>
-                        <Button
+                        <ActionButton
                           size="sm"
-                          onClick={() => handleStatusChange(appointment.id!, () => markAppointmentCompleted(appointment.id!))}
-                          disabled={isLoading}
+                          onAction={async () => {
+                            await markAppointmentCompleted(appointment.id!)
+                            router.refresh()
+                          }}
+                          successMessage="Appointment completed"
+                          loadingText="Completing..."
                         >
                           <CheckCircle className="w-4 h-4 mr-1" />
                           Complete
-                        </Button>
-                        <Button
+                        </ActionButton>
+                        <ActionButton
                           size="sm"
                           variant="destructive"
-                          onClick={() => handleStatusChange(appointment.id!, () => markAppointmentNoShow(appointment.id!))}
-                          disabled={isLoading}
+                          onAction={async () => {
+                            await markAppointmentNoShow(appointment.id!)
+                            router.refresh()
+                          }}
+                          successMessage="Marked as no-show"
+                          loadingText="Updating..."
                         >
                           <XCircle className="w-4 h-4 mr-1" />
                           No Show
-                        </Button>
+                        </ActionButton>
                       </>
                     )}
                   </div>

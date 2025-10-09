@@ -1,9 +1,7 @@
 import { Grid, Box } from '@/components/layout'
 import { P } from '@/components/ui/typography'
 import { SupplierCard } from './supplier-card'
-import type { Database } from '@/lib/types/database.types'
-
-type Supplier = Database['inventory']['Tables']['suppliers']['Row']
+import type { Supplier } from '@/lib/types/app.types'
 
 interface SuppliersGridProps {
   suppliers: Supplier[]

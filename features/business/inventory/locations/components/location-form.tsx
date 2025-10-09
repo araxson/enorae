@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -24,6 +26,7 @@ type LocationFormProps = {
 }
 
 export function LocationForm({ location, open, onOpenChange }: LocationFormProps) {
+  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDefault, setIsDefault] = useState(location?.is_default || false)
 
@@ -40,12 +43,15 @@ export function LocationForm({ location, open, onOpenChange }: LocationFormProps
         : await createStockLocation(formData)
 
       if (result.error) {
-        alert(result.error)
+        toast.error(result.error)
       } else {
+        toast.success(location ? 'Location updated' : 'Location created')
+        router.refresh()
         onOpenChange(false)
       }
-    } catch {
-      alert('Failed to save location')
+    } catch (error) {
+      console.error('[LocationForm] submit error:', error)
+      toast.error('Failed to save location')
     } finally {
       setIsSubmitting(false)
     }

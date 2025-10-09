@@ -1,16 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Small } from '@/components/ui/typography'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import {
-  Item,
-  ItemGroup,
-  ItemMedia,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-  ItemSeparator,
-} from '@/components/ui/item'
+import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Users } from 'lucide-react'
 
 interface UserRoleStatsProps {
@@ -21,68 +13,115 @@ interface UserRoleStatsProps {
 }
 
 const roleLabels: Record<string, string> = {
-  super_admin: 'Super Admin',
-  platform_admin: 'Platform Admin',
-  tenant_owner: 'Tenant Owner',
-  salon_owner: 'Salon Owner',
-  salon_manager: 'Salon Manager',
-  senior_staff: 'Senior Staff',
+  super_admin: 'Super admin',
+  platform_admin: 'Platform admin',
+  tenant_owner: 'Tenant owner',
+  salon_owner: 'Salon owner',
+  salon_manager: 'Salon manager',
+  senior_staff: 'Senior staff',
   staff: 'Staff',
-  junior_staff: 'Junior Staff',
-  vip_customer: 'VIP Customer',
+  junior_staff: 'Junior staff',
+  vip_customer: 'VIP customer',
   customer: 'Customer',
   guest: 'Guest',
 }
 
-const roleColors: Record<string, 'default' | 'destructive' | 'secondary' | 'outline'> = {
-  super_admin: 'destructive',
-  platform_admin: 'destructive',
-  tenant_owner: 'default',
-  salon_owner: 'default',
-  salon_manager: 'default',
-  senior_staff: 'secondary',
-  staff: 'secondary',
-  junior_staff: 'secondary',
-  vip_customer: 'outline',
-  customer: 'outline',
-  guest: 'outline',
+const roleDescriptions: Record<string, string> = {
+  super_admin: 'Full platform access with ability to manage other admins.',
+  platform_admin: 'Oversees global operations and compliance.',
+  tenant_owner: 'Owns a tenant franchise with full salon management rights.',
+  salon_owner: 'Primary contact for a specific salon.',
+  salon_manager: 'Handles day-to-day salon operations.',
+  senior_staff: 'Experienced staff with elevated permissions.',
+  staff: 'Standard staff accounts handling appointments.',
+  junior_staff: 'New staff members with limited privileges.',
+  vip_customer: 'High-value customer segment requiring concierge service.',
+  customer: 'Regular customer accounts.',
+  guest: 'Unverified or pending accounts.',
+}
+
+const progressAccent: Record<string, string> = {
+  super_admin: '[&>div]:bg-rose-500',
+  platform_admin: '[&>div]:bg-rose-500',
+  tenant_owner: '[&>div]:bg-orange-500',
+  salon_owner: '[&>div]:bg-orange-500',
+  salon_manager: '[&>div]:bg-amber-500',
+  senior_staff: '[&>div]:bg-sky-500',
+  staff: '[&>div]:bg-sky-500',
+  junior_staff: '[&>div]:bg-blue-500',
+  vip_customer: '[&>div]:bg-emerald-500',
+  customer: '[&>div]:bg-emerald-500',
+  guest: '[&>div]:bg-slate-400',
 }
 
 export function UserRoleStats({ stats }: UserRoleStatsProps) {
   const sortedRoles = Object.entries(stats.roleCounts).sort(([, a], [, b]) => b - a)
 
+  const topRole = sortedRoles[0]
+  const topRoleLabel = topRole ? roleLabels[topRole[0]] || topRole[0] : null
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>User Distribution</CardTitle>
-        <Small>{stats.totalUsers} total users</Small>
-      </CardHeader>
-      <CardContent>
-        <ItemGroup>
-          {sortedRoles.map(([role, count], index) => {
-            const percentage = ((count / stats.totalUsers) * 100).toFixed(1)
-            return (
-              <div key={role}>
-                <Item variant="outline" size="sm">
-                  <ItemMedia variant="icon">
-                    <Users className="h-4 w-4" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>{roleLabels[role] || role}</ItemTitle>
-                    <ItemDescription>{percentage}% of users</ItemDescription>
-                  </ItemContent>
-                  <ItemActions>
-                    <Badge variant={roleColors[role] || 'outline'}>
-                      {count}
-                    </Badge>
-                  </ItemActions>
-                </Item>
-                {index < sortedRoles.length - 1 && <ItemSeparator />}
-              </div>
-            )
-          })}
-        </ItemGroup>
-      </CardContent>
-    </Card>
+    <div className="h-full">
+      <Card>
+        <CardHeader className="space-y-3">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <CardTitle>User distribution</CardTitle>
+              <CardDescription>
+                Breakdown by platform role with relative share.
+              </CardDescription>
+            </div>
+            <Badge variant="outline" className="gap-1 text-xs">
+              <Users className="h-3 w-3" />
+              {stats.totalUsers.toLocaleString()} users
+            </Badge>
+          </div>
+          {topRoleLabel && (
+            <Badge variant="secondary" className="w-fit text-xs font-semibold">
+              Most common: {topRoleLabel}
+            </Badge>
+          )}
+        </CardHeader>
+
+        <CardContent className="space-y-4">
+          <ScrollArea className="h-[320px] pr-4">
+            <div className="space-y-4">
+              {sortedRoles.map(([role, count]) => {
+                const percentage = stats.totalUsers > 0 ? (count / stats.totalUsers) * 100 : 0
+                const label = roleLabels[role] || role
+                return (
+                  <div key={role} className="space-y-2 rounded-lg border border-border/60 p-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="space-y-1">
+                        <p className="text-sm font-semibold leading-tight">{label}</p>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="text-xs text-muted-foreground">
+                              {roleDescriptions[role] || 'No description available'}
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs text-xs text-muted-foreground">
+                            {roleDescriptions[role] || 'No description available'}
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <Badge variant="outline" className="gap-1 text-xs">
+                        {count.toLocaleString()}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-slate-400'}`} />
+                      <span className="w-14 text-right text-xs font-medium text-muted-foreground">
+                        {percentage.toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

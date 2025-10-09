@@ -1,10 +1,9 @@
 import { requireAuth } from '@/lib/auth'
-import { Section, Stack } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getStaffProfile } from '../appointments/api/queries'
 import { getStaffMemberSchedule } from './api/queries'
-import { ScheduleCalendar } from './components/schedule-calendar'
+import { getBlockedTimesByStaff } from '@/features/shared/blocked-times/api/queries'
+import { StaffScheduleClient } from './components/schedule-client'
 
 export async function StaffSchedule() {
   let staffProfile
@@ -13,40 +12,36 @@ export async function StaffSchedule() {
     staffProfile = await getStaffProfile()
   } catch (error) {
     return (
-      <Section size="lg">
+      <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
         <Alert>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Please log in to view your schedule'}
           </AlertDescription>
         </Alert>
-      </Section>
+      </div>
     )
   }
 
-  if (!staffProfile || !staffProfile.id) {
+  if (!staffProfile || !staffProfile.id || !staffProfile.salon_id) {
     return (
-      <Section size="lg">
+      <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
         <Alert>
           <AlertDescription>Staff profile not found</AlertDescription>
         </Alert>
-      </Section>
+      </div>
     )
   }
 
   const schedules = await getStaffMemberSchedule(staffProfile.id)
+  const blockedTimes = await getBlockedTimesByStaff(staffProfile.id)
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <div>
-          <H1>My Schedule</H1>
-          <Lead>View and manage your weekly availability</Lead>
-        </div>
-
-        <ScheduleCalendar
-          schedules={schedules.map((s) => ({ ...s, staff: staffProfile }))}
-        />
-      </Stack>
-    </Section>
+    <StaffScheduleClient
+      schedules={schedules.map((schedule) => ({ ...schedule, staff: staffProfile }))}
+      staffId={staffProfile.id}
+      salonId={staffProfile.salon_id}
+      blockedTimes={blockedTimes}
+      staffName={staffProfile.full_name}
+    />
   )
 }

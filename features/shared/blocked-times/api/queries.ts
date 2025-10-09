@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 type BlockedTime = Database['public']['Views']['blocked_times']['Row']
@@ -16,6 +16,9 @@ export type BlockedTimeWithRelations = BlockedTime & {
 export async function getBlockedTimesBySalon(salonId: string) {
   // SECURITY: Require business role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  if (!(await canAccessSalon(salonId))) {
+    throw new Error('Unauthorized: Not your salon')
+  }
 
   const supabase = await createClient()
 
@@ -56,6 +59,9 @@ export async function getBlockedTimesByStaff(staffId: string) {
 export async function getUpcomingBlockedTimes(salonId: string) {
   // SECURITY: Require business role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  if (!(await canAccessSalon(salonId))) {
+    throw new Error('Unauthorized: Not your salon')
+  }
 
   const supabase = await createClient()
 
@@ -82,14 +88,18 @@ export async function getBlockedTimeById(id: string) {
 
   const supabase = await createClient()
 
-  // Explicit ID filter for security
-  const { data, error} = await supabase
+  // Fetch and verify ownership/scope
+  const { data, error } = await supabase
     .from('blocked_times')
     .select('*')
     .eq('id', id)
-    .single()
+    .maybeSingle<{ salon_id: string | null }>()
 
   if (error) throw error
+  if (!data?.salon_id || !(await canAccessSalon(data.salon_id))) {
+    throw new Error('Unauthorized: Blocked time not found for your salon')
+  }
+
   return data
 }
 
@@ -98,19 +108,7 @@ export async function getBlockedTimeById(id: string) {
  */
 export async function getBlockedTimesSalon() {
   // SECURITY: Require authentication
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-  const supabase = await createClient()
-
-  const { data: salon, error } = await supabase
-    .from('salons')
-    .select('id')
-    .eq('owner_id', session.user.id)
-    .single()
-
-  if (error || !salon) {
-    throw new Error('No salon found for your account')
-  }
-
-  return salon as { id: string }
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
+  return { id: salonId }
 }

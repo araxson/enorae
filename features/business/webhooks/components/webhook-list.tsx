@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Webhook } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -17,6 +19,7 @@ import type { Database } from '@/lib/types/database.types'
 import { format } from 'date-fns'
 import { WebhookDetailDialog } from './webhook-detail-dialog'
 import { retryAllFailedWebhooks, clearCompletedWebhooks } from '../api/mutations'
+import { ConfirmDialog } from '@/components/shared/confirm-dialog'
 
 type WebhookQueue = Database['communication']['Tables']['webhook_queue']['Row']
 
@@ -32,6 +35,7 @@ const STATUS_COLORS = {
 } as const
 
 export function WebhookList({ webhooks }: WebhookListProps) {
+  const router = useRouter()
   const [selectedWebhook, setSelectedWebhook] = useState<WebhookQueue | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isRetryingAll, setIsRetryingAll] = useState(false)
@@ -46,43 +50,32 @@ export function WebhookList({ webhooks }: WebhookListProps) {
   }
 
   const handleRetryAll = async () => {
-    if (failedCount === 0) return
-
-    const confirmed = confirm(
-      `Are you sure you want to retry all ${failedCount} failed webhook(s)?`
-    )
-
-    if (!confirmed) return
+    if (failedCount === 0 || isRetryingAll) return
 
     setIsRetryingAll(true)
     const result = await retryAllFailedWebhooks()
 
     if (result.success) {
-      setTimeout(() => window.location.reload(), 1000)
-    } else {
-      alert(result.error)
+      toast.success(`Retrying ${failedCount} failed webhook(s)`)
+      router.refresh()
+    } else if (result.error) {
+      toast.error(result.error)
     }
 
     setIsRetryingAll(false)
   }
 
   const handleClearCompleted = async () => {
-    if (completedCount === 0) return
-
-    const confirmed = confirm(
-      'Are you sure you want to clear completed webhooks older than 30 days?'
-    )
-
-    if (!confirmed) return
+    if (completedCount === 0 || isClearing) return
 
     setIsClearing(true)
     const result = await clearCompletedWebhooks()
 
     if (result.success) {
-      alert(`Cleared ${result.data.count} webhook(s)`)
-      setTimeout(() => window.location.reload(), 1000)
-    } else {
-      alert(result.error)
+      toast.success(`Cleared ${result.data.count} webhook(s)`) 
+      router.refresh()
+    } else if (result.error) {
+      toast.error(result.error)
     }
 
     setIsClearing(false)
@@ -101,23 +94,29 @@ export function WebhookList({ webhooks }: WebhookListProps) {
     <>
       <Flex justify="end" gap="sm" className="mb-4">
         {failedCount > 0 && (
-          <Button
-            variant="outline"
-            onClick={handleRetryAll}
-            disabled={isRetryingAll}
+          <ConfirmDialog
+            title="Retry All Failed Webhooks?"
+            description={`Retry ${failedCount} failed webhook${failedCount === 1 ? '' : 's'} now?`}
+            confirmText="Retry"
+            onConfirm={handleRetryAll}
           >
-            {isRetryingAll ? 'Retrying...' : `Retry All Failed (${failedCount})`}
-          </Button>
+            <Button variant="outline" disabled={isRetryingAll}>
+              {isRetryingAll ? 'Retrying...' : `Retry All Failed (${failedCount})`}
+            </Button>
+          </ConfirmDialog>
         )}
 
         {completedCount > 0 && (
-          <Button
-            variant="outline"
-            onClick={handleClearCompleted}
-            disabled={isClearing}
+          <ConfirmDialog
+            title="Clear Completed Webhooks?"
+            description="Remove completed webhooks older than 30 days. This action cannot be undone."
+            confirmText="Clear"
+            onConfirm={handleClearCompleted}
           >
-            {isClearing ? 'Clearing...' : 'Clear Old Completed'}
-          </Button>
+            <Button variant="outline" disabled={isClearing}>
+              {isClearing ? 'Clearing...' : 'Clear Old Completed'}
+            </Button>
+          </ConfirmDialog>
         )}
       </Flex>
 

@@ -1,0 +1,51 @@
+'use client'
+
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Stack, Grid } from '@/components/layout'
+import { Muted } from '@/components/ui/typography'
+
+import type { PricingFormState } from './use-pricing-form'
+
+type CostProfitSectionProps = {
+  state: PricingFormState
+  profitMargin: string
+  onChange: <Key extends keyof PricingFormState>(field: Key, value: PricingFormState[Key]) => void
+}
+
+export function CostProfitSection({ state, profitMargin, onChange }: CostProfitSectionProps) {
+  return (
+    <Card>
+      <CardContent>
+        <Stack gap="lg">
+          <Label className="font-semibold">Cost & Profitability</Label>
+
+          <Grid cols={{ base: 1, md: 2 }} gap="md">
+            <div className="space-y-2">
+              <Label htmlFor="cost">Cost</Label>
+              <Input
+                id="cost"
+                type="number"
+                step="0.01"
+                min="0"
+                value={state.cost}
+                onChange={(event) => onChange('cost', event.target.value)}
+                placeholder="0.00"
+              />
+              <Muted className="text-xs">Cost to provide this service</Muted>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Estimated Profit Margin</Label>
+              <div className="flex h-10 items-center rounded-md border px-3 text-lg font-semibold text-primary">
+                {profitMargin}%
+              </div>
+              <Muted className="text-xs">Auto-calculated from price & cost</Muted>
+            </div>
+          </Grid>
+        </Stack>
+      </CardContent>
+    </Card>
+  )
+}

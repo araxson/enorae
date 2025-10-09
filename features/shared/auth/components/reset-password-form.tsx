@@ -55,7 +55,8 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <div className="w-full max-w-md">
+      <Card>
       <CardHeader>
         <CardTitle>Reset your password</CardTitle>
         <CardDescription>Enter your new password below</CardDescription>
@@ -117,6 +118,7 @@ export function ResetPasswordForm() {
           </Button>
         </CardFooter>
       </form>
-    </Card>
+      </Card>
+    </div>
   )
 }

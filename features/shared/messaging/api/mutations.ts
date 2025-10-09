@@ -165,3 +165,131 @@ export async function markMessagesAsRead(fromUserId: string) {
     return { error: 'Failed to mark messages as read' }
   }
 }
+
+/**
+ * Delete a message (soft delete - only if user is sender)
+ */
+export async function deleteMessage(messageId: string) {
+  try {
+    // Validate ID
+    if (!UUID_REGEX.test(messageId)) {
+      return { error: 'Invalid message ID' }
+    }
+
+    const supabase = await createClient()
+    const session = await requireAuth()
+
+    // Verify ownership before deleting
+    const { data: message, error: fetchError } = await supabase
+      .from('messages')
+      .select('from_user_id')
+      .eq('id', messageId)
+      .single()
+
+    if (fetchError) {
+      return { error: 'Message not found' }
+    }
+
+    if (message.from_user_id !== session.user.id) {
+      return { error: 'Not authorized to delete this message' }
+    }
+
+    // Soft delete - mark as deleted
+    const { error } = await supabase
+      .schema('communication')
+      .from('messages')
+      .update({
+        deleted_at: new Date().toISOString(),
+        deleted_by_id: session.user.id,
+      })
+      .eq('id', messageId)
+      .eq('from_user_id', session.user.id) // Security check
+
+    if (error) {
+      return { error: error.message }
+    }
+
+    revalidatePath('/customer/messages')
+    revalidatePath('/business/messages')
+    revalidatePath('/staff/messages')
+
+    return { success: true, error: null }
+  } catch {
+    return { error: 'Failed to delete message' }
+  }
+}
+
+/**
+ * Archive a message thread
+ */
+export async function archiveThread(threadId: string) {
+  try {
+    // Validate ID
+    if (!UUID_REGEX.test(threadId)) {
+      return { error: 'Invalid thread ID' }
+    }
+
+    const supabase = await createClient()
+    const session = await requireAuth()
+
+    // Update thread status to archived
+    const { error } = await supabase
+      .schema('communication')
+      .from('message_threads')
+      .update({
+        status: 'archived',
+        updated_at: new Date().toISOString(),
+        updated_by_id: session.user.id,
+      })
+      .eq('id', threadId)
+      .or(`customer_id.eq.${session.user.id},salon_id.in.(select id from organization.salons where owner_id = ${session.user.id})`)
+
+    if (error) {
+      return { error: error.message }
+    }
+
+    revalidatePath('/customer/messages')
+    revalidatePath('/business/messages')
+
+    return { success: true, error: null }
+  } catch {
+    return { error: 'Failed to archive thread' }
+  }
+}
+
+/**
+ * Mark a thread as unread
+ */
+export async function markThreadAsUnread(threadId: string) {
+  try {
+    // Validate ID
+    if (!UUID_REGEX.test(threadId)) {
+      return { error: 'Invalid thread ID' }
+    }
+
+    const supabase = await createClient()
+    const session = await requireAuth()
+
+    // Mark all messages in thread as unread for current user
+    const { error } = await supabase
+      .schema('communication')
+      .from('messages')
+      .update({
+        is_read: false,
+        read_at: null,
+      })
+      .eq('context_id', threadId)
+      .eq('to_user_id', session.user.id)
+
+    if (error) {
+      return { error: error.message }
+    }
+
+    revalidatePath('/customer/messages')
+    revalidatePath('/business/messages')
+
+    return { success: true, error: null }
+  } catch {
+    return { error: 'Failed to mark thread as unread' }
+  }
+}

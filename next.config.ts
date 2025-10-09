@@ -51,6 +51,11 @@ const nextConfig: NextConfig = {
     // Enable optimistic client cache
     optimisticClientCache: true,
   },
+
+  webpack: (config) => {
+    config.cache = false
+    return config
+  },
 };
 
 export default nextConfig;

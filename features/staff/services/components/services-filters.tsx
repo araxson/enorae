@@ -2,8 +2,13 @@
 
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Flex } from '@/components/layout'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 type ServicesFiltersProps = {
   searchQuery: string
@@ -13,6 +18,7 @@ type ServicesFiltersProps = {
   proficiencyFilter: string
   onProficiencyFilterChange: (proficiency: string) => void
   categories: string[]
+  showSearch?: boolean
 }
 
 export function ServicesFilters({
@@ -23,25 +29,28 @@ export function ServicesFilters({
   proficiencyFilter,
   onProficiencyFilterChange,
   categories,
+  showSearch = true,
 }: ServicesFiltersProps) {
   return (
-    <Flex gap="md" align="center" className="flex-wrap">
-      <div className="relative flex-1 min-w-[200px]">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search services..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-8"
-        />
-      </div>
+    <div className="flex flex-wrap items-center gap-3">
+      {showSearch ? (
+        <div className="relative flex-1 min-w-[220px]">
+          <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search services..."
+            value={searchQuery}
+            onChange={(event) => onSearchChange(event.target.value)}
+            className="pl-9"
+          />
+        </div>
+      ) : null}
 
       <Select value={categoryFilter} onValueChange={onCategoryFilterChange}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="All Categories" />
+          <SelectValue placeholder="All categories" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Categories</SelectItem>
+          <SelectItem value="all">All categories</SelectItem>
           {categories.map((category) => (
             <SelectItem key={category} value={category}>
               {category}
@@ -51,16 +60,16 @@ export function ServicesFilters({
       </Select>
 
       <Select value={proficiencyFilter} onValueChange={onProficiencyFilterChange}>
-        <SelectTrigger className="w-[150px]">
-          <SelectValue placeholder="All Levels" />
+        <SelectTrigger className="w-[160px]">
+          <SelectValue placeholder="All levels" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Levels</SelectItem>
+          <SelectItem value="all">All levels</SelectItem>
           <SelectItem value="beginner">Beginner</SelectItem>
           <SelectItem value="intermediate">Intermediate</SelectItem>
           <SelectItem value="expert">Expert</SelectItem>
         </SelectContent>
       </Select>
-    </Flex>
+    </div>
   )
 }

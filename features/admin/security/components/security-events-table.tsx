@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, AlertTriangle, AlertCircle } from 'lucide-react'
 import type { SecurityEvent } from '../api/queries'
@@ -21,12 +21,16 @@ interface SecurityEventsTableProps {
 export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
   if (events.length === 0) {
     return (
-      <Card className="flex flex-col items-center justify-center py-12">
-        <Shield className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">No security events found</p>
-        <p className="text-sm text-muted-foreground">
-          Security events will appear here when suspicious activity is detected
-        </p>
+      <Card>
+        <CardContent>
+          <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
+            <Shield className="h-12 w-12 text-muted-foreground" />
+            <p className="text-muted-foreground">No security events found</p>
+            <p className="text-sm text-muted-foreground">
+              Security events will appear here when suspicious activity is detected
+            </p>
+          </div>
+        </CardContent>
       </Card>
     )
   }

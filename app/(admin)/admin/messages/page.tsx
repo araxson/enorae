@@ -1,5 +1,5 @@
 import { AdminMessages } from '@/features/admin/messages'
 
-export default async function AdminMessagesPage() {
+export default async function MessagesPage() {
   return <AdminMessages />
 }

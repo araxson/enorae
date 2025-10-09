@@ -1,13 +1,12 @@
-import { Section, Stack, Box, Flex } from '@/components/layout'
-import { H1, H3, Muted } from '@/components/ui/typography'
+import { Section, Stack, Flex } from '@/components/layout'
+import { H3, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { SuppliersGrid } from './components/suppliers-grid'
 import { getSuppliers } from './api/queries'
-import type { SupplierView } from '@/lib/types/view-extensions'
 
 export async function Suppliers() {
-  const suppliers = await getSuppliers() as SupplierView[]
+  const suppliers = await getSuppliers()
 
   const activeCount = suppliers.filter((s) => s.is_active).length
   const inactiveCount = suppliers.filter((s) => !s.is_active).length
@@ -15,13 +14,7 @@ export async function Suppliers() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <Flex justify="between" align="start">
-          <Box>
-            <H1>Suppliers</H1>
-            <Muted>
-              Manage your inventory suppliers and vendor relationships
-            </Muted>
-          </Box>
+        <Flex justify="end" align="start">
           <Button>Add Supplier</Button>
         </Flex>
 

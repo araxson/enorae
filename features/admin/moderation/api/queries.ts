@@ -1,5 +1,5 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
@@ -23,7 +23,7 @@ export async function getReviewsForModeration(
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   let query = supabase
     .from('admin_reviews_overview')
@@ -68,7 +68,7 @@ export async function getMessageThreadsForMonitoring(): Promise<MessageThread[]>
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
     .from('admin_messages_overview')
@@ -88,7 +88,7 @@ export async function getModerationStats() {
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const [
     { count: totalReviews },

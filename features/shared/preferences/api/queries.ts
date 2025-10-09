@@ -27,9 +27,7 @@ export async function getUserPreferences(): Promise<ProfilePreference[]> {
 /**
  * Get a single preference by key
  */
-export async function getUserPreference(
-  key: string
-): Promise<ProfilePreference | null> {
+export async function getUserPreference(): Promise<ProfilePreference | null> {
   // SECURITY: Require authentication
   const session = await requireAuth()
 

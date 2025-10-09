@@ -29,7 +29,7 @@ export function StatCard({
   return (
     <Card
       className={cn(
-        'w-full transition-all hover:shadow-md hover:border-primary/20',
+        'w-full',
         className
       )}
       role="article"

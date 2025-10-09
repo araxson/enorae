@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
 import { Section, Stack } from '@/components/layout'
-import { H1, Muted } from '@/components/ui/typography'
 import { ProductsTable } from './products-table'
 import { InventoryStats } from './inventory-stats'
 import { StockAlertsList } from './stock-alerts-list'
@@ -16,23 +15,10 @@ import { ProductFormDialog } from './product-form-dialog'
 import type { ProductWithRelations, StockAlertWithProduct } from '../api/queries'
 import type { PurchaseOrderWithDetails } from '../../orders/api/queries'
 import type { Database } from '@/lib/types/database.types'
+import type { StockLevelWithLocation } from '../api/stock-queries'
 
 type ProductCategory = Database['public']['Views']['product_categories']['Row']
 type Supplier = Database['public']['Views']['suppliers']['Row']
-
-// Note: Database types may be out of sync - this reflects actual view structure
-type StockLevelWithLocation = {
-  id: string
-  product_id: string | null
-  location_id: string | null
-  current_stock: number | null
-  reorder_point: number | null
-  min_stock_level: number | null
-  max_stock_level: number | null
-  product_name: string | null
-  sku: string | null
-  location_name: string | null
-}
 
 interface InventoryManagementClientProps {
   salonId: string
@@ -83,12 +69,8 @@ export function InventoryManagementClient({
   return (
     <Section size="lg">
       <Stack gap="xl">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <H1>Inventory Management</H1>
-            <Muted>Manage products, stock levels, and suppliers</Muted>
-          </div>
+        {/* Actions */}
+        <div className="flex items-center justify-end">
           <Button onClick={handleAddProduct}>
             <Plus className="mr-2 h-4 w-4" />
             Add Product

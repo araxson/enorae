@@ -1,4 +1,4 @@
-import { SalonChains } from '@/features/business/chains'
+import { AdminChains } from '@/features/admin/chains'
 
 export const metadata = {
   title: 'Salon Chains',
@@ -6,5 +6,5 @@ export const metadata = {
 }
 
 export default async function SalonChainsPage() {
-  return <SalonChains />
+  return <AdminChains />
 }

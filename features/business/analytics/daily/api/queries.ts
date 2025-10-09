@@ -1,10 +1,10 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { canAccessSalon } from '@/lib/auth/permissions'
 import type { Database } from '@/lib/types/database.types'
 
 type DailyMetric = Database['public']['Views']['daily_metrics']['Row']
-type Salon = Database['public']['Views']['salons']['Row']
 
 export type DailyMetricsWithTrends = DailyMetric & {
   previousPeriod?: DailyMetric | null
@@ -25,18 +25,12 @@ export async function getDailyMetrics(
   dateTo: string
 ): Promise<DailyMetric[]> {
   // SECURITY: Require business role
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()
 
-  // Verify salon ownership
-  const { data: salon } = await supabase
-    .from('salons')
-    .select('*')
-    .eq('id', salonId)
-    .single()
-
-  if (!salon || (salon as Salon).owner_id !== session.user.id) {
+  const authorized = await canAccessSalon(salonId)
+  if (!authorized) {
     throw new Error('Unauthorized')
   }
 
@@ -57,18 +51,12 @@ export async function getDailyMetrics(
  */
 export async function getLatestDailyMetric(salonId: string): Promise<DailyMetric | null> {
   // SECURITY: Require business role
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()
 
-  // Verify salon ownership
-  const { data: salon } = await supabase
-    .from('salons')
-    .select('*')
-    .eq('id', salonId)
-    .single()
-
-  if (!salon || (salon as Salon).owner_id !== session.user.id) {
+  const authorized = await canAccessSalon(salonId)
+  if (!authorized) {
     throw new Error('Unauthorized')
   }
 
@@ -108,18 +96,10 @@ export async function getAggregatedMetrics(
   productRevenue: number
 }> {
   // SECURITY: Require business role
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
-  const supabase = await createClient()
-
-  // Verify salon ownership
-  const { data: salon } = await supabase
-    .from('salons')
-    .select('*')
-    .eq('id', salonId)
-    .single()
-
-  if (!salon || (salon as Salon).owner_id !== session.user.id) {
+  const authorized = await canAccessSalon(salonId)
+  if (!authorized) {
     throw new Error('Unauthorized')
   }
 

@@ -2,47 +2,40 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getBlockedTimesBySalon, getBlockedTimesSalon } from './api/queries'
 import { BlockedTimesList } from './components/blocked-times-list'
 import { BlockedTimeForm } from './components/blocked-time-form'
-import { Section, Stack } from '@/components/layout'
 import { H1, P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 export async function BlockedTimesManagement() {
-  // Get salon from DAL
-  let salon
   try {
-    salon = await getBlockedTimesSalon()
-  } catch (error) {
+    const salon = await getBlockedTimesSalon()
+    const blockedTimes = await getBlockedTimesBySalon(salon.id)
+
     return (
-      <Section size="lg">
-        <Alert>
-          <AlertDescription>
-            {error instanceof Error ? error.message : 'Failed to load salon data'}
-          </AlertDescription>
-        </Alert>
-      </Section>
-    )
-  }
-
-  // Fetch blocked times
-  const blockedTimes = await getBlockedTimesBySalon(salon.id)
-
-  return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <div>
+      <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+        <div className="space-y-2">
           <H1>Blocked Times</H1>
           <P className="text-muted-foreground">
-            Manage blocked time slots to prevent bookings during specific periods
+            Manage blocked time slots to prevent bookings during specific periods.
           </P>
         </div>
 
         <Separator />
 
-        <Stack gap="lg">
+        <div className="space-y-6">
           <BlockedTimeForm salonId={salon.id} />
           <BlockedTimesList blockedTimes={blockedTimes} />
-        </Stack>
-      </Stack>
-    </Section>
-  )
+        </div>
+      </div>
+    )
+  } catch (error) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+        <Alert>
+          <AlertDescription>
+            {error instanceof Error ? error.message : 'Failed to load salon data'}
+          </AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
 }

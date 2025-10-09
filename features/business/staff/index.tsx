@@ -1,9 +1,9 @@
 import { getUserSalon } from './api/queries'
 import { getStaffWithServices, getAvailableServices } from './api/staff-services-queries'
-import { StaffServicesManager } from './components/staff-services-manager'
-import { StaffPerformanceSummary } from './components/staff-performance-summary'
-import { Section, Stack, Box } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
+import { StaffManagementClient } from './components/staff-management-client'
+import { Section, Stack } from '@/components/layout'
+import { EmptyState } from '@/components/shared'
+import { AlertCircle, Users } from 'lucide-react'
 
 export async function StaffManagement() {
   let salon
@@ -12,7 +12,11 @@ export async function StaffManagement() {
   } catch {
     return (
       <Section size="lg">
-        <H1>Please log in to manage staff</H1>
+        <EmptyState
+          icon={AlertCircle}
+          title="Authentication Required"
+          description="Please log in to manage staff"
+        />
       </Section>
     )
   }
@@ -20,8 +24,11 @@ export async function StaffManagement() {
   if (!salon || !salon.id) {
     return (
       <Section size="lg">
-        <H1>No salon found</H1>
-        <Lead>Please create a salon to manage staff</Lead>
+        <EmptyState
+          icon={Users}
+          title="No Salon Found"
+          description="Please create a salon to manage staff"
+        />
       </Section>
     )
   }
@@ -34,15 +41,8 @@ export async function StaffManagement() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <Box>
-          <H1>Staff Management</H1>
-          <Lead>Manage your salon team and assign services</Lead>
-        </Box>
-
-        <StaffPerformanceSummary staff={staffWithServices} />
-
-        <StaffServicesManager
-          staff={staffWithServices}
+        <StaffManagementClient
+          staffWithServices={staffWithServices}
           availableServices={availableServices}
         />
       </Stack>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { sendMessage, markMessagesAsRead } from '../api/mutations'
 import { format } from 'date-fns'
@@ -9,9 +9,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Stack, Flex } from '@/components/layout'
 import { P, Small } from '@/components/ui/typography'
 import { AlertCircle } from 'lucide-react'
+import { Stack } from '@/components/layout'
 
 interface Message {
   id: string
@@ -23,7 +23,7 @@ interface Message {
 }
 
 interface MessageThreadProps {
-  threadId: string  // NOTE: Now represents otherUserId in direct messaging system
+  threadId: string
   messages: Message[]
   currentUserId: string
 }
@@ -34,7 +34,6 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
   const [isSending, setIsSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Mark messages as read when component mounts
   useEffect(() => {
     markMessagesAsRead(threadId)
   }, [threadId])
@@ -46,7 +45,7 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
     setError(null)
 
     const result = await sendMessage({
-      to_user_id: threadId,  // threadId now represents the other user's ID
+      to_user_id: threadId,
       content: newMessage,
     })
 
@@ -61,39 +60,47 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
   }
 
   return (
-    <Stack gap="lg">
-      {/* Messages list */}
-      <Card className="bg-muted/20">
-        <ScrollArea className="h-[600px] p-4">
-          <Stack gap="md">
-            {messages.length === 0 ? (
-              <P className="text-center text-muted-foreground py-8">
-                No messages yet. Start the conversation!
-              </P>
-            ) : (
-              messages.map((message) => {
-                const isOwnMessage = message.from_user_id === currentUserId
-                return (
-                  <Flex key={message.id} justify={isOwnMessage ? 'end' : 'start'}>
-                    <Card className={isOwnMessage ? 'bg-primary text-primary-foreground' : ''}>
-                      <CardContent className="p-3 max-w-md">
-                        <P className="mb-2">{message.content}</P>
-                        <Small className={isOwnMessage ? 'opacity-70' : 'text-muted-foreground'}>
-                          {format(new Date(message.created_at), 'PPp')}
-                        </Small>
-                      </CardContent>
-                    </Card>
-                  </Flex>
-                )
-              })
-            )}
-          </Stack>
-        </ScrollArea>
+    <div className="space-y-6">
+      <Card>
+        <CardContent>
+          <ScrollArea className="h-[600px]">
+            <div className="space-y-3">
+              {messages.length === 0 ? (
+                <P className="py-8 text-center text-muted-foreground">
+                  No messages yet. Start the conversation!
+                </P>
+              ) : (
+                messages.map((message) => {
+                  const isOwnMessage = message.from_user_id === currentUserId
+                  return (
+                    <div
+                      key={message.id}
+                      className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div className={`max-w-[70%] space-y-1 ${isOwnMessage ? 'text-right' : ''}`}>
+                        <div
+                          className={`rounded-lg border px-4 py-2 text-left ${isOwnMessage ? 'bg-primary text-primary-foreground' : 'bg-card text-foreground'}`}
+                        >
+                          <P className="mb-0 whitespace-pre-wrap break-words">{message.content}</P>
+                        </div>
+                        <div
+                          className={`flex items-center gap-2 text-xs text-muted-foreground ${isOwnMessage ? 'justify-end' : ''}`}
+                        >
+                          <Small>{format(new Date(message.created_at), 'PPp')}</Small>
+                          {isOwnMessage && <Small>{message.is_read ? '✓✓' : '✓'}</Small>}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })
+              )}
+            </div>
+          </ScrollArea>
+        </CardContent>
       </Card>
 
-      {/* Message composer */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent>
           <Stack gap="sm">
             {error && (
               <Alert variant="destructive">
@@ -104,18 +111,18 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
             <Textarea
               placeholder="Type your message..."
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
+              onChange={(event) => setNewMessage(event.target.value)}
               rows={3}
               disabled={isSending}
             />
-            <Flex justify="end">
+            <div className="flex justify-end">
               <Button onClick={handleSend} disabled={isSending || !newMessage.trim()}>
-                {isSending ? 'Sending...' : 'Send Message'}
+                {isSending ? 'Sending...' : 'Send message'}
               </Button>
-            </Flex>
+            </div>
           </Stack>
         </CardContent>
       </Card>
-    </Stack>
+    </div>
   )
 }

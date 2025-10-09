@@ -1,3 +1,5 @@
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import {
   getUpcomingAppointments,
   getPastAppointments,
@@ -8,19 +10,31 @@ import {
 import { CustomerMetrics } from './components/customer-metrics'
 import { UpcomingBookings } from './components/upcoming-bookings'
 import { FavoritesList } from './components/favorites-list'
-import { Section, Stack, Box } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
-import { Calendar, Heart, History, Crown, TrendingUp, AlertCircle } from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Group } from '@/components/layout'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Small, Muted } from '@/components/ui/typography'
+import {
+  Calendar,
+  Heart,
+  History,
+  Crown,
+  TrendingUp,
+  AlertCircle,
+} from 'lucide-react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/components/shared'
-import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { RefreshButton, LastUpdated } from '@/components/dashboard'
+import { EmptyState, RefreshButton, LastUpdated } from '@/components/shared'
+import { Small, Muted } from '@/components/ui/typography'
 
 export async function CustomerDashboard() {
   let upcomingAppointments
@@ -40,182 +54,184 @@ export async function CustomerDashboard() {
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
 
-    // Log error for monitoring
     console.error('[CustomerDashboard] Error loading data:', {
       error: errorMessage,
       stack: error instanceof Error ? error.stack : undefined,
       timestamp: new Date().toISOString(),
     })
 
-    // Redirect to login if not authenticated
     if (errorMessage.includes('Authentication required') || errorMessage.includes('Unauthorized')) {
       redirect('/login?redirect=/customer')
     }
 
-    // Show error state
     return (
-      <Section size="lg">
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
         <EmptyState
           icon={AlertCircle}
-          title="Error Loading Dashboard"
-          description="We couldn't load your dashboard data. Please try refreshing the page."
+          title="Error loading dashboard"
+          description="We couldn't load your dashboard data. Please try again."
           action={
             <Button asChild variant="outline">
               <Link href="/customer">Refresh</Link>
             </Button>
           }
         />
-      </Section>
+      </div>
     )
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Box className="flex items-center justify-between">
-          <Box>
-            <Group gap="sm" className="items-center">
-              <H1>Welcome Back!</H1>
-              {vipStatus?.isVIP && (
-                <Badge variant="default" className="gap-1">
-                  <Crown className="h-3 w-3" />
-                  VIP {vipStatus.loyaltyTier?.toUpperCase()}
-                </Badge>
-              )}
-            </Group>
-            <Lead>Manage your appointments and discover new services</Lead>
-          </Box>
-          <Group gap="sm">
-            <LastUpdated />
-            <RefreshButton />
-          </Group>
-        </Box>
+    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-12 pt-6 sm:px-6 lg:px-8">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {vipStatus?.isVIP ? (
+          <Badge variant="default" className="flex items-center gap-1">
+            <Crown className="h-3.5 w-3.5" />
+            VIP {vipStatus.loyaltyTier?.toUpperCase()}
+          </Badge>
+        ) : (
+          <span className="text-sm font-medium text-muted-foreground">
+            Welcome back
+          </span>
+        )}
 
-        {vipStatus?.isVIP && (
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          <LastUpdated />
+          <div className="hidden h-4 w-px bg-border sm:block" />
+          <RefreshButton />
+        </div>
+      </div>
+
+      {vipStatus?.isVIP && (
+        <div className="rounded-xl border border-primary/10">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+            <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2 text-primary">
                 <Crown className="h-5 w-5" />
-                VIP Status
-              </CardTitle>
+                <CardTitle className="text-xl">VIP status</CardTitle>
+              </div>
               <CardDescription>Exclusive benefits and rewards</CardDescription>
             </CardHeader>
             <CardContent>
-              <Group gap="lg">
-                <Box>
-                  <Small className="text-muted-foreground">Loyalty Points</Small>
-                  <div className="text-2xl font-bold">{vipStatus.loyaltyPoints?.toLocaleString() ?? 0}</div>
-                </Box>
-                <Box>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
+                  <Small className="text-muted-foreground">Loyalty points</Small>
+                  <p className="text-2xl font-bold">
+                    {vipStatus.loyaltyPoints?.toLocaleString() ?? 0}
+                  </p>
+                </div>
+                <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
                   <Small className="text-muted-foreground">Tier</Small>
-                  <div className="text-2xl font-bold capitalize">{vipStatus.loyaltyTier ?? 'Standard'}</div>
-                </Box>
-                <Box>
-                  <Small className="text-muted-foreground">Lifetime Spend</Small>
-                  <div className="text-2xl font-bold">${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}</div>
-                </Box>
+                  <p className="text-2xl font-bold capitalize">
+                    {vipStatus.loyaltyTier ?? 'Standard'}
+                  </p>
+                </div>
+                <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
+                  <Small className="text-muted-foreground">Lifetime spend</Small>
+                  <p className="text-2xl font-bold">
+                    ${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}
+                  </p>
+                </div>
                 {vipStatus.monthlySpend !== undefined && (
-                  <Box>
-                    <Small className="text-muted-foreground">This Month</Small>
-                    <div className="text-2xl font-bold flex items-center gap-1">
+                  <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
+                    <Small className="text-muted-foreground">This month</Small>
+                    <p className="flex items-center gap-1 text-2xl font-bold">
                       <TrendingUp className="h-4 w-4 text-green-500" />
                       ${vipStatus.monthlySpend.toLocaleString()}
-                    </div>
-                  </Box>
+                    </p>
+                  </div>
                 )}
-              </Group>
+              </div>
             </CardContent>
           </Card>
-        )}
+        </div>
+      )}
 
-        <CustomerMetrics metrics={metrics} />
+      <CustomerMetrics metrics={metrics} />
 
-        <Tabs defaultValue="upcoming" className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-3" aria-label="Appointment sections">
-            <TabsTrigger value="upcoming" aria-label="View upcoming appointments">
-              <Group gap="xs">
-                <Calendar className="h-4 w-4" aria-hidden="true" />
-                Upcoming
-              </Group>
-            </TabsTrigger>
-            <TabsTrigger value="favorites" aria-label="View favorite salons">
-              <Group gap="xs">
-                <Heart className="h-4 w-4" aria-hidden="true" />
-                Favorites
-              </Group>
-            </TabsTrigger>
-            <TabsTrigger value="history" aria-label="View appointment history">
-              <Group gap="xs">
-                <History className="h-4 w-4" aria-hidden="true" />
-                History
-              </Group>
-            </TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="upcoming" className="w-full space-y-6">
+        <TabsList className="grid w-full max-w-md grid-cols-3">
+          <TabsTrigger value="upcoming" className="gap-2">
+            <Calendar className="h-4 w-4" aria-hidden="true" />
+            <span>Upcoming</span>
+          </TabsTrigger>
+          <TabsTrigger value="favorites" className="gap-2">
+            <Heart className="h-4 w-4" aria-hidden="true" />
+            <span>Favorites</span>
+          </TabsTrigger>
+          <TabsTrigger value="history" className="gap-2">
+            <History className="h-4 w-4" aria-hidden="true" />
+            <span>History</span>
+          </TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="upcoming">
-            <UpcomingBookings appointments={upcomingAppointments} />
-          </TabsContent>
+        <TabsContent value="upcoming">
+          <UpcomingBookings appointments={upcomingAppointments} />
+        </TabsContent>
 
-          <TabsContent value="favorites">
-            <FavoritesList favorites={favorites} />
-          </TabsContent>
+        <TabsContent value="favorites">
+          <FavoritesList favorites={favorites} />
+        </TabsContent>
 
-          <TabsContent value="history">
-            <Card>
-              <CardHeader>
-                <CardTitle>Past Appointments</CardTitle>
-                <Small>{pastAppointments?.length ?? 0} completed</Small>
-              </CardHeader>
-              <CardContent>
-                {!pastAppointments || pastAppointments.length === 0 ? (
-                  <EmptyState
-                    icon={History}
-                    title="No Past Appointments"
-                    description="Your appointment history will appear here"
-                  />
-                ) : (
-                  <Stack gap="sm">
-                    {pastAppointments.map((appointment) => {
-                      if (!appointment?.id) return null
+        <TabsContent value="history">
+          <Card>
+            <CardHeader>
+              <CardTitle>Past appointments</CardTitle>
+              <Small>{pastAppointments?.length ?? 0} completed</Small>
+            </CardHeader>
+            <CardContent>
+              {!pastAppointments || pastAppointments.length === 0 ? (
+                <EmptyState
+                  icon={History}
+                  title="No past appointments"
+                  description="Your appointment history will appear here"
+                />
+              ) : (
+                <div className="space-y-3">
+                  {pastAppointments.map((appointment) => {
+                    if (!appointment?.id) return null
 
-                      const appointmentDate = appointment.start_time
-                        ? new Date(appointment.start_time).toLocaleDateString('en-US', {
-                            weekday: 'short',
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })
-                        : 'Date not available'
+                    const appointmentDate = appointment.start_time
+                      ? new Date(appointment.start_time).toLocaleDateString('en-US', {
+                          weekday: 'short',
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })
+                      : 'Date not available'
 
-                      const status = appointment.status ?? 'completed'
-                      const statusVariant = status === 'completed' ? 'default' :
-                                          status === 'cancelled' ? 'destructive' :
-                                          status === 'no_show' ? 'outline' : 'secondary'
+                    const status = appointment.status ?? 'completed'
+                    const statusVariant =
+                      status === 'completed'
+                        ? 'default'
+                        : status === 'cancelled'
+                        ? 'destructive'
+                        : status === 'no_show'
+                        ? 'outline'
+                        : 'secondary'
 
-                      return (
-                        <Box
-                          key={appointment.id}
-                          className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent/50 transition-colors"
-                        >
-                          <Stack gap="xs">
-                            <Small className="font-medium">{appointmentDate}</Small>
-                            <Muted className="text-xs">
-                              {appointment.salon_name ?? 'Salon Unknown'}
-                            </Muted>
-                          </Stack>
-                          <Badge variant={statusVariant} className="capitalize">
-                            {status.replace('_', ' ')}
-                          </Badge>
-                        </Box>
-                      )
-                    })}
-                  </Stack>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </Stack>
-    </Section>
+                    return (
+                      <div
+                        key={appointment.id}
+                        className="flex items-center justify-between rounded-lg border border-border/60 bg-background/60 p-3 transition-colors hover:bg-accent/40"
+                      >
+                        <div className="flex flex-col gap-1">
+                          <Small className="font-medium">{appointmentDate}</Small>
+                          <Muted className="text-xs">
+                            {appointment.salon_name ?? 'Salon unknown'}
+                          </Muted>
+                        </div>
+                        <Badge variant={statusVariant} className="capitalize">
+                          {status.replace('_', ' ')}
+                        </Badge>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
   )
 }

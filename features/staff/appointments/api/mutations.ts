@@ -3,8 +3,16 @@
 import { revalidatePath } from 'next/cache'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import { z } from 'zod'
 
 export type AppointmentStatus = 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'no_show'
+
+const appointmentNotesSchema = z.object({
+  appointmentId: z.string().uuid(),
+  serviceNotes: z.string().max(1000).optional(),
+  productsUsed: z.array(z.string()).optional(),
+  nextVisitRecommendations: z.string().max(500).optional(),
+})
 
 export async function updateAppointmentStatus(
   appointmentId: string,
@@ -110,4 +118,107 @@ export async function cancelAppointment(appointmentId: string) {
   revalidatePath('/staff/appointments')
   revalidatePath('/staff')
   return { success: true }
+}
+
+/**
+ * Add notes to an appointment after service completion
+ * Notes include service details, products used, and recommendations
+ */
+export async function addAppointmentNotes(
+  data: z.infer<typeof appointmentNotesSchema>
+) {
+  try {
+    const session = await requireAuth()
+    const supabase = await createClient()
+
+    const validation = appointmentNotesSchema.safeParse(data)
+    if (!validation.success) {
+      return { success: false, error: validation.error.errors[0].message }
+    }
+
+    const { appointmentId, serviceNotes, productsUsed, nextVisitRecommendations } = validation.data
+
+    // Verify appointment ownership
+    const { data: appointment } = await supabase
+      .from('appointments')
+      .select('staff_id, customer_id, salon_id')
+      .eq('id', appointmentId)
+      .single<{ staff_id: string; customer_id: string; salon_id: string }>()
+
+    if (!appointment) {
+      return { success: false, error: 'Appointment not found' }
+    }
+
+    const { data: staffProfile } = await supabase
+      .from('staff')
+      .select('id')
+      .eq('user_id', session.user.id)
+      .eq('id', appointment.staff_id)
+      .single<{ id: string }>()
+
+    if (!staffProfile) {
+      return { success: false, error: 'Unauthorized: Cannot add notes to this appointment' }
+    }
+
+    // Store notes in message_threads metadata for appointment
+    const { data: existingThread } = await supabase
+      .from('message_threads')
+      .select('id, metadata')
+      .eq('appointment_id', appointmentId)
+      .single<{ id: string; metadata: any }>()
+
+    const noteData = {
+      service_notes: serviceNotes,
+      products_used: productsUsed || [],
+      next_visit_recommendations: nextVisitRecommendations,
+      created_by: session.user.id,
+      created_at: new Date().toISOString(),
+    }
+
+    if (existingThread?.id) {
+      // Update existing thread with notes
+      const { error } = await supabase
+        .schema('communication')
+        .from('message_threads')
+        .update({
+          metadata: {
+            ...existingThread.metadata,
+            appointment_notes: noteData,
+          },
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', existingThread.id)
+
+      if (error) throw error
+    } else {
+      // Create new thread for appointment notes
+      const { error: threadError } = await supabase
+        .schema('communication')
+        .from('message_threads')
+        .insert({
+          salon_id: appointment.salon_id,
+          customer_id: appointment.customer_id,
+          staff_id: appointment.staff_id,
+          appointment_id: appointmentId,
+          subject: 'Appointment Notes',
+          status: 'open',
+          priority: 'normal',
+          metadata: {
+            appointment_notes: noteData,
+          },
+        })
+
+      if (threadError) throw threadError
+    }
+
+    revalidatePath('/staff/appointments')
+    revalidatePath(`/staff/appointments/${appointmentId}`)
+    return { success: true }
+  } catch (error) {
+    console.error('Error adding appointment notes:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to add appointment notes',
+    }
+  }
 }

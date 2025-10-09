@@ -1,17 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Section, Stack, Grid } from '@/components/layout'
-import { H1, Lead, Small } from '@/components/ui/typography'
+import { Small } from '@/components/ui/typography'
 import { Settings, Shield, Mail, Bell, Database } from 'lucide-react'
 
 export function AdminSettings() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <div>
-          <H1>Platform Settings</H1>
-          <Lead>Configure system-wide settings and preferences</Lead>
-        </div>
-
         <Grid cols={{ base: 1, md: 2 }} gap="lg">
           <Card>
             <CardHeader>

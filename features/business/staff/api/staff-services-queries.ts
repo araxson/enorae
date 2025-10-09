@@ -11,8 +11,12 @@ type Salon = Database['public']['Views']['salons']['Row']
 export type StaffWithServices = {
   id: string
   full_name: string | null
+  email: string | null
   title: string | null
   avatar_url: string | null
+  bio: string | null
+  experience_years: number | null
+  status: string | null
   services: StaffService[]
 }
 
@@ -47,7 +51,6 @@ export async function getStaffWithServices(salonId: string): Promise<StaffWithSe
     .from('staff_services')
     .select('*')
     .in('staff_id', staffIds)
-    .is('deleted_at', null)
 
   if (servicesError) throw servicesError
 
@@ -59,8 +62,12 @@ export async function getStaffWithServices(salonId: string): Promise<StaffWithSe
       return {
         id: staffMember.id!,
         full_name: staffMember.full_name,
+        email: staffMember.email,
         title: staffMember.title,
         avatar_url: staffMember.avatar_url,
+        bio: staffMember.bio,
+        experience_years: staffMember.experience_years,
+        status: staffMember.status,
         services: (staffServices || []).filter(
           (service) => (service as StaffService).staff_id === staffMember.id
         ),
@@ -123,7 +130,6 @@ export async function getStaffServices(staffId: string): Promise<StaffService[]>
     .from('staff_services')
     .select('*')
     .eq('staff_id', staffId)
-    .is('deleted_at', null)
     .order('service_name', { ascending: true })
 
   if (error) throw error

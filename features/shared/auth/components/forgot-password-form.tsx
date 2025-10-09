@@ -43,107 +43,111 @@ export function ForgotPasswordForm() {
 
   if (success) {
     return (
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <div className="flex items-center justify-center mb-4">
-            <div className="rounded-full bg-green-100 p-3">
-              <Mail className="h-6 w-6 text-green-600" />
+      <div className="w-full max-w-md">
+        <Card>
+          <CardHeader>
+            <div className="mb-4 flex items-center justify-center">
+              <div className="rounded-full bg-green-100 p-3">
+                <Mail className="h-6 w-6 text-green-600" />
+              </div>
             </div>
-          </div>
-          <CardTitle className="text-center">Check your email</CardTitle>
-          <CardDescription className="text-center">
-            We&apos;ve sent a password reset link to <strong>{email}</strong>
-          </CardDescription>
-        </CardHeader>
+            <CardTitle className="text-center">Check your email</CardTitle>
+            <CardDescription className="text-center">
+              We&apos;ve sent a password reset link to <strong>{email}</strong>
+            </CardDescription>
+          </CardHeader>
 
-        <CardContent>
-          <Stack gap="md">
-            <Alert className="bg-green-50 border-green-200">
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
-              <AlertDescription className="text-green-800">
-                Click the link in the email to reset your password. The link will expire in 1
-                hour.
-              </AlertDescription>
-            </Alert>
+          <CardContent>
+            <Stack gap="md">
+              <Alert className="border-green-200 bg-green-50">
+                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <AlertDescription className="text-green-800">
+                  Click the link in the email to reset your password. The link will expire in 1
+                  hour.
+                </AlertDescription>
+              </Alert>
 
-            <Small className="text-center text-muted-foreground">
-              Didn&apos;t receive the email? Check your spam folder or{' '}
-              <button
-                type="button"
-                onClick={() => setSuccess(false)}
-                className="text-primary hover:underline"
-              >
-                try again
-              </button>
-            </Small>
-          </Stack>
-        </CardContent>
+              <Small className="text-center text-muted-foreground">
+                Didn&apos;t receive the email? Check your spam folder or{' '}
+                <button
+                  type="button"
+                  onClick={() => setSuccess(false)}
+                  className="text-primary hover:underline"
+                >
+                  try again
+                </button>
+              </Small>
+            </Stack>
+          </CardContent>
 
-        <CardFooter>
-          <Button variant="outline" asChild className="w-full">
-            <Link href="/login">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to login
-            </Link>
-          </Button>
-        </CardFooter>
-      </Card>
+          <CardFooter>
+            <Button variant="outline" asChild className="w-full">
+              <Link href="/login">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to login
+              </Link>
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
     )
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Forgot password?</CardTitle>
-        <CardDescription>
-          Enter your email address and we&apos;ll send you a link to reset your password
-        </CardDescription>
-      </CardHeader>
+    <div className="w-full max-w-md">
+      <Card>
+        <CardHeader>
+          <CardTitle>Forgot password?</CardTitle>
+          <CardDescription>
+            Enter your email address and we&apos;ll send you a link to reset your password
+          </CardDescription>
+        </CardHeader>
 
-      <form action={handleSubmit}>
-        <CardContent>
-          <Stack gap="md">
-            {error && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+        <form action={handleSubmit}>
+          <CardContent>
+            <Stack gap="md">
+              {error && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
 
-            <Stack gap="xs">
-              <Label htmlFor="email">Email address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoFocus
-              />
-              <Small className="text-muted-foreground">
-                We&apos;ll send a password reset link to this email
-              </Small>
+              <Stack gap="xs">
+                <Label htmlFor="email">Email address</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoFocus
+                />
+                <Small className="text-muted-foreground">
+                  We&apos;ll send a password reset link to this email
+                </Small>
+              </Stack>
             </Stack>
-          </Stack>
-        </CardContent>
+          </CardContent>
 
-        <CardFooter>
-          <Stack gap="sm" className="w-full">
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Sending...' : 'Send reset link'}
-            </Button>
+          <CardFooter>
+            <Stack gap="sm" className="w-full">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? 'Sending...' : 'Send reset link'}
+              </Button>
 
-            <Button variant="ghost" asChild className="w-full">
-              <Link href="/login">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to login
-              </Link>
-            </Button>
-          </Stack>
-        </CardFooter>
-      </form>
-    </Card>
+              <Button variant="ghost" asChild className="w-full">
+                <Link href="/login">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to login
+                </Link>
+              </Button>
+            </Stack>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
   )
 }

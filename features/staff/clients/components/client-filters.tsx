@@ -7,29 +7,38 @@ import { Search } from 'lucide-react'
 import { Flex } from '@/components/layout'
 
 type ClientFiltersProps = {
-  onSearchChange: (search: string) => void
+  onSearchChange?: (search: string) => void
   onSortChange: (sort: string) => void
+  searchValue?: string
+  showSearch?: boolean
 }
 
-export function ClientFilters({ onSearchChange, onSortChange }: ClientFiltersProps) {
-  const [search, setSearch] = useState('')
+export function ClientFilters({
+  onSearchChange,
+  onSortChange,
+  searchValue,
+  showSearch = true,
+}: ClientFiltersProps) {
+  const [localSearch, setLocalSearch] = useState(searchValue ?? '')
 
   const handleSearchChange = (value: string) => {
-    setSearch(value)
-    onSearchChange(value)
+    setLocalSearch(value)
+    onSearchChange?.(value)
   }
 
   return (
     <Flex gap="md" className="flex-col sm:flex-row">
-      <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search by name or email..."
-          value={search}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          className="pl-10"
-        />
-      </div>
+      {showSearch ? (
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by name or email..."
+            value={searchValue ?? localSearch}
+            onChange={(event) => handleSearchChange(event.target.value)}
+            className="pl-10"
+          />
+        </div>
+      ) : null}
       <Select onValueChange={onSortChange} defaultValue="appointments">
         <SelectTrigger className="w-full sm:w-[200px]">
           <SelectValue placeholder="Sort by" />

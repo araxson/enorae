@@ -6,6 +6,7 @@ type Salon = Database['public']['Views']['salons']['Row']
 type Service = Database['public']['Views']['services']['Row']
 type Staff = Database['public']['Views']['staff']['Row']
 type SalonReview = Database['public']['Views']['salon_reviews_view']['Row']
+type SalonMedia = Database['public']['Views']['salon_media_view']['Row']
 
 export async function getSalonBySlug(slug: string) {
   const supabase = await createClient()
@@ -81,10 +82,40 @@ export async function getSalonReviews(salonId: string, limit: number = 10) {
     .from('salon_reviews_view')
     .select('*')
     .eq('salon_id', salonId)
-    .is('deleted_at', null)
     .order('created_at', { ascending: false })
     .limit(limit)
 
   if (error) throw error
   return (data || []) as SalonReview[]
+}
+
+export async function getSalonMedia(salonId: string) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('salon_media_view')
+    .select('*')
+    .eq('salon_id', salonId)
+    .single()
+
+  // Return null if not found (no error thrown)
+  if (error && error.code === 'PGRST116') return null
+  if (error) throw error
+  return data as SalonMedia
+}
+
+export async function checkIsFavorited(salonId: string): Promise<boolean> {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return false
+
+  const { data } = await supabase
+    .from('customer_favorites')
+    .select('id')
+    .eq('salon_id', salonId)
+    .eq('customer_id', user.id)
+    .maybeSingle()
+
+  return !!data
 }

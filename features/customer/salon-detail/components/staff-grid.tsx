@@ -5,7 +5,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { Grid, Stack, Group, Box } from '@/components/layout'
 import { H4, Muted, P, Small } from '@/components/ui/typography'
 import { Calendar } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
@@ -20,10 +19,8 @@ export function StaffGrid({ staff }: StaffGridProps) {
   if (staff.length === 0) {
     return (
       <Card>
-        <CardContent>
-          <Box pt="md">
-            <Muted>No staff members available</Muted>
-          </Box>
+        <CardContent className="py-10 text-center text-muted-foreground">
+          No staff members available
         </CardContent>
       </Card>
     )
@@ -32,56 +29,54 @@ export function StaffGrid({ staff }: StaffGridProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Our Team</CardTitle>
+        <CardTitle>Our team</CardTitle>
       </CardHeader>
       <CardContent>
-        <Grid cols={{ base: 1, sm: 2, md: 3 }} gap="md">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {staff.map((member) => (
             <HoverCard key={member.id || ''}>
               <HoverCardTrigger asChild>
-                <Box p="xs" className="hover:bg-muted/50 rounded-lg transition-colors">
-                  <Group gap="sm">
-                    <Avatar>
-                      {member.avatar_url && <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />}
-                      <AvatarFallback>
-                        {member.title?.slice(0, 2).toUpperCase() || 'ST'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <Stack gap="none">
-                      <Small>{member.title || 'Staff Member'}</Small>
-                      {member.bio && (
-                        <Muted className="line-clamp-1">{member.bio}</Muted>
-                      )}
-                    </Stack>
-                  </Group>
-                </Box>
+                <div className="flex items-center gap-3 rounded-lg p-3 transition-colors hover:bg-muted/50">
+                  <Avatar>
+                    {member.avatar_url && (
+                      <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />
+                    )}
+                    <AvatarFallback>
+                      {member.title?.slice(0, 2).toUpperCase() || 'ST'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-1">
+                    <Small>{member.title || 'Staff member'}</Small>
+                    {member.bio && (
+                      <Muted className="line-clamp-1 text-xs">{member.bio}</Muted>
+                    )}
+                  </div>
+                </div>
               </HoverCardTrigger>
-              <HoverCardContent className="w-80">
-                <Stack gap="sm">
-                  <Group gap="sm">
-                    <Avatar className="h-12 w-12">
-                      {member.avatar_url && <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />}
-                      <AvatarFallback>
-                        {member.title?.slice(0, 2).toUpperCase() || 'ST'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <Stack gap="none">
-                      <H4>{member.title || 'Staff Member'}</H4>
-                      {member.bio && <Muted>{member.bio}</Muted>}
-                    </Stack>
-                  </Group>
-                  {member.bio && (
-                    <P>{member.bio}</P>
-                  )}
-                  <Group gap="xs">
-                    <Calendar className="h-3 w-3 text-muted-foreground" />
-                    <Small className="text-muted-foreground">Click to book an appointment</Small>
-                  </Group>
-                </Stack>
+              <HoverCardContent className="w-80 space-y-3">
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-12 w-12">
+                    {member.avatar_url && (
+                      <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />
+                    )}
+                    <AvatarFallback>
+                      {member.title?.slice(0, 2).toUpperCase() || 'ST'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-1">
+                    <H4>{member.title || 'Staff member'}</H4>
+                    {member.bio && <Muted>{member.bio}</Muted>}
+                  </div>
+                </div>
+                {member.bio && <P className="text-sm text-muted-foreground">{member.bio}</P>}
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Calendar className="h-3 w-3" />
+                  <span>Click to book an appointment</span>
+                </div>
               </HoverCardContent>
             </HoverCard>
           ))}
-        </Grid>
+        </div>
       </CardContent>
     </Card>
   )

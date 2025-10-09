@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -58,12 +59,13 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
         : await createServiceCategory(formData)
 
       if (result.error) {
-        alert(result.error)
+        toast.error(result.error)
       } else {
+        toast.success(category ? 'Category updated' : 'Category created')
         onOpenChange(false)
       }
     } catch {
-      alert('Failed to save category')
+      toast.error('Failed to save category')
     } finally {
       setIsSubmitting(false)
     }

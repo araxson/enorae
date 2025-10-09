@@ -1,8 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getSalonById, getAvailableServices, getAvailableStaff } from './api/queries'
 import { BookingForm } from './components/booking-form'
-import { Section, Stack } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
 
 interface BookingProps {
   salonId: string
@@ -26,14 +24,13 @@ export async function Booking({ salonId }: BookingProps) {
   const salonName = salon.name || 'Salon'
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <div>
-          <H1>Book at {salonName}</H1>
-          <Lead>Choose a service and time for your appointment</Lead>
-        </div>
-        <BookingForm salonId={salonId} services={services} staff={staff} />
-      </Stack>
-    </Section>
+    <div className="mx-auto max-w-4xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
+      <BookingForm
+        salonId={salonId}
+        salonName={salonName}
+        services={services}
+        staff={staff}
+      />
+    </div>
   )
 }

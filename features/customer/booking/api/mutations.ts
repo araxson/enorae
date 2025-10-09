@@ -1,5 +1,6 @@
 'use server'
 
+import { randomInt } from 'crypto'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
@@ -21,14 +22,12 @@ function generateConfirmationCode(): string {
   const numbers = '0123456789'
 
   let code = ''
-  // Generate 3 random letters
   for (let i = 0; i < 3; i++) {
-    code += letters.charAt(Math.floor(Math.random() * letters.length))
+    code += letters[randomInt(0, letters.length)]
   }
   code += '-'
-  // Generate 4 random numbers
   for (let i = 0; i < 4; i++) {
-    code += numbers.charAt(Math.floor(Math.random() * numbers.length))
+    code += numbers[randomInt(0, numbers.length)]
   }
 
   return code

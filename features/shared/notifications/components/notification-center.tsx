@@ -1,0 +1,186 @@
+'use client'
+
+import { useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Stack, Flex } from '@/components/layout'
+import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from 'lucide-react'
+import { formatDistanceToNow } from 'date-fns'
+import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '../api/mutations'
+import { useToast } from '@/hooks/use-toast'
+import type { Database } from '@/lib/types/database.types'
+
+type Notification = Database['communication']['Tables']['notification_queue']['Row']
+
+type Props = {
+  notifications: Notification[]
+}
+
+export function NotificationCenter({ notifications }: Props) {
+  const [activeTab, setActiveTab] = useState('all')
+  const { toast } = useToast()
+
+  const filteredNotifications = notifications.filter((n) => {
+    if (activeTab === 'all') return true
+    if (activeTab === 'unread') return n.status === 'pending'
+    if (activeTab === 'read') return n.status === 'delivered'
+    return n.channels?.includes(activeTab)
+  })
+
+  const unreadCount = notifications.filter((n) => n.status === 'pending').length
+
+  const handleMarkAsRead = async (id: string) => {
+    try {
+      await markNotificationAsRead(id)
+      toast({
+        title: 'Marked as read',
+        description: 'Notification has been marked as read',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to mark notification as read',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await markAllNotificationsAsRead()
+      toast({
+        title: 'All marked as read',
+        description: `${unreadCount} notification(s) marked as read`,
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to mark all as read',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteNotification(id)
+      toast({
+        title: 'Deleted',
+        description: 'Notification has been deleted',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to delete notification',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const getChannelIcon = (channels: string[] | null) => {
+    if (!channels || channels.length === 0) return <Bell className="h-4 w-4" />
+    if (channels.includes('email')) return <Mail className="h-4 w-4" />
+    if (channels.includes('sms')) return <MessageSquare className="h-4 w-4" />
+    if (channels.includes('push')) return <Smartphone className="h-4 w-4" />
+    return <Bell className="h-4 w-4" />
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <Flex justify="between" align="center">
+          <div className="flex items-center gap-3">
+            <Bell className="h-5 w-5" />
+            <CardTitle>Notification Center</CardTitle>
+            {unreadCount > 0 && (
+              <Badge variant="destructive">{unreadCount}</Badge>
+            )}
+          </div>
+          {unreadCount > 0 && (
+            <Button variant="outline" size="sm" onClick={handleMarkAllAsRead}>
+              <CheckCheck className="h-4 w-4 mr-2" />
+              Mark all as read
+            </Button>
+          )}
+        </Flex>
+      </CardHeader>
+      <CardContent>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="w-full">
+            <TabsTrigger value="all" className="flex-1">All</TabsTrigger>
+            <TabsTrigger value="unread" className="flex-1">
+              Unread {unreadCount > 0 && `(${unreadCount})`}
+            </TabsTrigger>
+            <TabsTrigger value="read" className="flex-1">Read</TabsTrigger>
+            <TabsTrigger value="email" className="flex-1">Email</TabsTrigger>
+            <TabsTrigger value="sms" className="flex-1">SMS</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value={activeTab}>
+            <Stack gap="sm" className="mt-4">
+              {filteredNotifications.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No notifications</p>
+                </div>
+              ) : (
+                filteredNotifications.map((notification) => (
+                  <Card key={notification.id} className={notification.status === 'pending' ? 'border-primary' : ''}>
+                    <CardContent className="p-4">
+                      <Flex justify="between" align="start" gap="md">
+                        <div className="flex-1">
+                          <Flex align="center" gap="sm" className="mb-2">
+                            {getChannelIcon(notification.channels)}
+                            <h4 className="font-semibold">{notification.title}</h4>
+                            {notification.status === 'pending' && (
+                              <Badge variant="secondary" className="text-xs">New</Badge>
+                            )}
+                          </Flex>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {notification.message}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(new Date(notification.created_at || ''), { addSuffix: true })}
+                          </p>
+                          {notification.channels && notification.channels.length > 0 && (
+                            <div className="flex gap-1 mt-2">
+                              {notification.channels.map((channel) => (
+                                <Badge key={channel} variant="outline" className="text-xs">
+                                  {channel}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <Flex gap="xs">
+                          {notification.status === 'pending' && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleMarkAsRead(notification.id)}
+                            >
+                              <Check className="h-4 w-4" />
+                            </Button>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(notification.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </Flex>
+                      </Flex>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </Stack>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  )
+}

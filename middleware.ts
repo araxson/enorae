@@ -16,9 +16,9 @@
  * - OWASP Rate Limiting Best Practices
  */
 
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { authRateLimiter } from '@/lib/rate-limit'
+import { env } from '@/lib/env'
 
 // Public routes that don't require authentication
 const PUBLIC_ROUTES = [
@@ -57,11 +57,18 @@ export async function middleware(request: NextRequest) {
   // SECURITY: Rate Limiting for Auth Routes
   // ============================================================================
   // Prevent brute force attacks on login/signup
-  const isAuthRoute = AUTH_ROUTES.some((route) => pathname === route || pathname.startsWith(route))
+  const isAuthRoute = AUTH_ROUTES.some((route) => {
+    if (pathname === route) return true
+    const normalizedRoute = route.endsWith('/') ? route : `${route}/`
+    return pathname.startsWith(normalizedRoute)
+  })
 
   if (isAuthRoute) {
-    // Use IP address or x-forwarded-for header for rate limiting
-    const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? '127.0.0.1'
+    const forwardedFor = request.headers.get('x-forwarded-for')
+    const forwardedIp = forwardedFor?.split(',')[0]?.trim()
+    const realIp = request.headers.get('x-real-ip')
+    const cfConnectingIp = request.headers.get('cf-connecting-ip')
+    const ip = forwardedIp ?? realIp ?? cfConnectingIp ?? '127.0.0.1'
     const { success, limit, remaining, reset } = await authRateLimiter.limit(ip)
 
     if (!success) {
@@ -79,41 +86,13 @@ export async function middleware(request: NextRequest) {
   }
 
   // ============================================================================
-  // Session Refresh - Supabase SSR Pattern
+  // Session presence check via Supabase auth cookie
   // ============================================================================
-  let supabaseResponse = NextResponse.next({
+  const response = NextResponse.next({
     request,
   })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          )
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
-
-  // CRITICAL: Use getUser() NOT getSession()
-  // getUser() validates with Supabase servers (secure)
-  // getSession() only reads cookies (can be spoofed)
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const isAuthenticated = hasValidSupabaseSession(request)
 
   // ============================================================================
   // Route Protection - Basic Auth Check Only
@@ -121,9 +100,16 @@ export async function middleware(request: NextRequest) {
   // NOTE: Role-based authorization happens in Server Components (NOT here)
 
   // Check if route is public
-  const isPublicRoute = PUBLIC_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(route)
-  )
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => {
+    if (route === '/') {
+      return pathname === '/'
+    }
+    if (pathname === route) {
+      return true
+    }
+    const normalizedRoute = route.endsWith('/') ? route : `${route}/`
+    return pathname.startsWith(normalizedRoute)
+  })
 
   // Allow public access to salon detail pages (read-only)
   // Note: Salon browsing is now under /customer/salons but requires auth
@@ -131,14 +117,14 @@ export async function middleware(request: NextRequest) {
 
   // Allow public routes
   if (isPublicRoute || isSalonDetailRoute) {
-    return addSecurityHeaders(supabaseResponse)
+    return addSecurityHeaders(response)
   }
 
   // Check if route requires authentication
   const isProtectedRoute = PROTECTED_PORTALS.some((portal) => pathname.startsWith(portal))
 
   // Redirect to login if accessing protected route without auth
-  if (isProtectedRoute && !user) {
+  if (isProtectedRoute && !isAuthenticated) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     url.searchParams.set('redirectTo', pathname)
@@ -146,7 +132,73 @@ export async function middleware(request: NextRequest) {
   }
 
   // Add security headers and return
-  return addSecurityHeaders(supabaseResponse)
+  return addSecurityHeaders(response)
+}
+
+/**
+ * Compute Supabase auth cookie name
+ */
+function getSupabaseAuthCookieName(): string | null {
+  const projectUrl = env.NEXT_PUBLIC_SUPABASE_URL
+  if (!projectUrl) return null
+
+  const match = projectUrl.match(/https?:\/\/([^\.]+)\.supabase\.co/i)
+  if (!match) return null
+
+  return `sb-${match[1]}-auth-token`
+}
+
+/**
+ * Determine if the incoming request has a valid Supabase session cookie
+ */
+function hasValidSupabaseSession(request: NextRequest): boolean {
+  const cookieName = getSupabaseAuthCookieName()
+  if (!cookieName) {
+    return false
+  }
+
+  const cookie = request.cookies.get(cookieName)
+  if (!cookie || !cookie.value) {
+    return false
+  }
+
+  let decoded = cookie.value
+  try {
+    decoded = decodeURIComponent(cookie.value)
+  } catch {
+    decoded = cookie.value
+  }
+
+  try {
+    const parsed = JSON.parse(decoded)
+
+    if (parsed && typeof parsed === 'object') {
+      const accessToken =
+        parsed.access_token || parsed.currentSession?.access_token || parsed.token?.access_token
+
+      if (!accessToken) {
+        return false
+      }
+
+      const expiresAt =
+        parsed.expires_at || parsed.currentSession?.expires_at || parsed.expiresAt || parsed.exp
+
+      if (!expiresAt) {
+        return true
+      }
+
+      const expirySeconds = typeof expiresAt === 'number' ? expiresAt : Number(expiresAt)
+      if (Number.isFinite(expirySeconds)) {
+        return expirySeconds * 1000 > Date.now()
+      }
+
+      return true
+    }
+  } catch {
+    return true
+  }
+
+  return false
 }
 
 /**
@@ -161,7 +213,7 @@ export async function middleware(request: NextRequest) {
  */
 function addSecurityHeaders(response: NextResponse): NextResponse {
   // Generate nonce for CSP
-  const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
+  const nonce = crypto.randomUUID().replace(/-/g, '')
   const isDev = process.env.NODE_ENV === 'development'
 
   // Content Security Policy
@@ -175,7 +227,7 @@ function addSecurityHeaders(response: NextResponse): NextResponse {
     base-uri 'self';
     form-action 'self';
     frame-ancestors 'none';
-    connect-src 'self' ${process.env.NEXT_PUBLIC_SUPABASE_URL} https://api.supabase.com wss://*.supabase.co;
+    connect-src 'self' ${env.NEXT_PUBLIC_SUPABASE_URL} https://api.supabase.com wss://*.supabase.co;
     upgrade-insecure-requests;
   `
     .replace(/\s{2,}/g, ' ')

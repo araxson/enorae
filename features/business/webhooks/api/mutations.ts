@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -19,27 +19,17 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
       return { success: false, error: 'Invalid webhook ID format' }
     }
 
-    const supabase = await createClient()
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
 
-    // Auth check
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-    // Get user's salon
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { success: false, error: 'User salon not found' }
-    }
+    const supabase = (await createClient()).schema('communication')
 
     // Get webhook to verify it exists and check status
     const { data: webhook } = await supabase
       .from('webhook_queue')
       .select('id, status')
       .eq('id', webhookId)
+      .eq('salon_id', salonId)
       .single<{ id: string; status: string | null }>()
 
     if (!webhook) {
@@ -53,7 +43,6 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
 
     // Reset status to pending for retry
     const { error } = await supabase
-      .schema('communication')
       .from('webhook_queue')
       .update({
         status: 'pending',
@@ -61,6 +50,7 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
         updated_at: new Date().toISOString(),
       })
       .eq('id', webhookId)
+      .eq('salon_id', salonId)
 
     if (error) throw error
 
@@ -85,27 +75,17 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
       return { success: false, error: 'Invalid webhook ID format' }
     }
 
-    const supabase = await createClient()
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
 
-    // Auth check
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-    // Get user's salon
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { success: false, error: 'User salon not found' }
-    }
+    const supabase = (await createClient()).schema('communication')
 
     // Verify webhook exists
     const { data: webhook } = await supabase
       .from('webhook_queue')
       .select('id')
       .eq('id', webhookId)
+      .eq('salon_id', salonId)
       .single()
 
     if (!webhook) {
@@ -114,10 +94,10 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
 
     // Delete the webhook
     const { error } = await supabase
-      .schema('communication')
       .from('webhook_queue')
       .delete()
       .eq('id', webhookId)
+      .eq('salon_id', salonId)
 
     if (error) throw error
 
@@ -138,31 +118,20 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
  */
 export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: number }>> {
   try {
-    const supabase = await createClient()
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
 
-    // Auth check
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-    // Get user's salon
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { success: false, error: 'User salon not found' }
-    }
+    const supabase = (await createClient()).schema('communication')
 
     // Reset all failed webhooks to pending
     const { error, count } = await supabase
-      .schema('communication')
       .from('webhook_queue')
       .update({
         status: 'pending',
         last_error: null,
         updated_at: new Date().toISOString(),
       }, { count: 'exact' })
+      .eq('salon_id', salonId)
       .eq('status', 'failed')
 
     if (error) throw error
@@ -187,31 +156,20 @@ export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: 
  */
 export async function clearCompletedWebhooks(): Promise<ActionResponse<{ count: number }>> {
   try {
-    const supabase = await createClient()
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
 
-    // Auth check
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-    // Get user's salon
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { success: false, error: 'User salon not found' }
-    }
+    const supabase = (await createClient()).schema('communication')
 
     // Delete completed webhooks older than 30 days
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
     const { error, count } = await supabase
-      .schema('communication')
       .from('webhook_queue')
       .delete({ count: 'exact' })
       .eq('status', 'sent')
+      .eq('salon_id', salonId)
       .lt('completed_at', thirtyDaysAgo.toISOString())
 
     if (error) throw error

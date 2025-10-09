@@ -21,7 +21,7 @@ type UserWithDetails = {
   deleted_at: string | null
   created_at: string | null
   roles: string[]
-  session_count: number
+  session_count?: number | null
 }
 
 interface UsersTableProps {
@@ -109,8 +109,8 @@ export function UsersTable({
                 </TableCell>
 
                 <TableCell>
-                  <Badge variant={user.session_count > 0 ? 'default' : 'outline'}>
-                    {user.session_count}
+                  <Badge variant={(user.session_count ?? 0) > 0 ? 'default' : 'outline'}>
+                    {user.session_count ?? 0}
                   </Badge>
                 </TableCell>
 

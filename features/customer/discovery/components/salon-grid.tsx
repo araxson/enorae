@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SalonCard } from '@/components/shared'
-import { Grid, Stack } from '@/components/layout'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { H3, Muted } from '@/components/ui/typography'
 import { Search } from 'lucide-react'
 import {
@@ -41,19 +40,23 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
 
   if (salons.length === 0) {
     return (
-      <Card className="p-12 text-center">
-        <Stack gap="md">
-          <Search className="h-12 w-12 mx-auto text-muted-foreground" />
-          <H3>No salons found</H3>
-          <Muted>Try adjusting your search filters or check back later for new salons</Muted>
-        </Stack>
+      <Card>
+        <CardContent>
+          <div className="space-y-3 py-12 text-center">
+            <Search className="mx-auto h-12 w-12 text-muted-foreground" />
+            <H3>No salons found</H3>
+            <Muted>
+              Try adjusting your search filters or check back later for new salons.
+            </Muted>
+          </div>
+        </CardContent>
       </Card>
     )
   }
 
   return (
-    <Stack gap="lg">
-      <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
+    <div className="space-y-8">
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {currentSalons.map((salon) => (
           <SalonCard
             key={salon.id || ''}
@@ -72,7 +75,7 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
             }}
           />
         ))}
-      </Grid>
+      </div>
 
       {totalPages > 1 && (
         <Pagination>
@@ -122,6 +125,6 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
           </PaginationContent>
         </Pagination>
       )}
-    </Stack>
+    </div>
   )
 }

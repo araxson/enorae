@@ -1,7 +1,7 @@
-import { FAQPage, faqSEO } from '@/features/marketing/faq'
+import { FAQPageScreen, faqPageMetadata } from '@/features/marketing/faq/page'
 
-export const metadata = faqSEO
+export const metadata = faqPageMetadata
 
 export default function Page() {
-  return <FAQPage />
+  return <FAQPageScreen />
 }

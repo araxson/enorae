@@ -3,8 +3,6 @@
 import { useState } from 'react'
 import { SalonGrid } from './salon-grid'
 import { SearchFilters } from './search-filters'
-import { Section, Stack, Box } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
 import type { Database } from '@/lib/types/database.types'
 
 type Salon = Database['public']['Views']['salons']['Row']
@@ -19,7 +17,6 @@ export function SalonDiscoveryClient({ initialSalons }: SalonDiscoveryClientProp
   function handleSearch(query: string) {
     let filtered = initialSalons
 
-    // Filter by search query
     if (query.trim()) {
       const lowerQuery = query.toLowerCase()
       filtered = filtered.filter(
@@ -30,22 +27,13 @@ export function SalonDiscoveryClient({ initialSalons }: SalonDiscoveryClientProp
       )
     }
 
-    // Note: Price range filtering would require price data from services
-    // This is a placeholder for when that data is available
-
     setSalons(filtered)
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Box>
-          <H1>Discover Salons</H1>
-          <Lead>Find the perfect salon for your beauty needs</Lead>
-        </Box>
-        <SearchFilters onSearch={handleSearch} />
-        <SalonGrid salons={salons} />
-      </Stack>
-    </Section>
+    <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      <SearchFilters onSearch={handleSearch} />
+      <SalonGrid salons={salons} />
+    </div>
   )
 }

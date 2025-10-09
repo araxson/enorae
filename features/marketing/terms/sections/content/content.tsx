@@ -1,18 +1,17 @@
-import { Section, Stack } from '@/components/layout'
 import { H3, P } from '@/components/ui/typography'
 import { contentData } from './content.data'
 
 export function Content() {
   return (
-    <Section size="lg">
-      <Stack gap="lg" className="max-w-3xl mx-auto">
+    <section className="bg-background">
+      <div className="mx-auto flex max-w-4xl flex-col gap-8 px-4 py-16 sm:px-6 lg:px-8">
         {contentData.sections.map((section) => (
-          <Stack gap="md" key={section.title}>
+          <div key={section.title} className="space-y-3">
             <H3>{section.title}</H3>
-            <P>{section.content}</P>
-          </Stack>
+            <P className="text-muted-foreground">{section.content}</P>
+          </div>
         ))}
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

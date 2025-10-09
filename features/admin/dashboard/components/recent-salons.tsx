@@ -1,23 +1,33 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Small } from '@/components/ui/typography'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { EmptyState } from '@/components/shared'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import {
-  Item,
-  ItemGroup,
-  ItemMedia,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-  ItemSeparator,
-} from '@/components/ui/item'
-import type { SalonView } from '@/lib/types/view-extensions'
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+import type { AdminSalon } from '@/lib/types/app.types'
 import { format } from 'date-fns'
-import { Building2 } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowUpRight, Building2 } from 'lucide-react'
 
 interface RecentSalonsProps {
-  salons: SalonView[]
+  salons: AdminSalon[]
+}
+
+const getInitials = (name?: string | null) => {
+  if (!name) return 'NA'
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return 'NA'
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
+  return `${parts[0]![0]}${parts[1]![0]}`.toUpperCase()
 }
 
 export function RecentSalons({ salons }: RecentSalonsProps) {
@@ -25,45 +35,92 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
     return (
       <EmptyState
         icon={Building2}
-        title="No Salons Yet"
-        description="No salons have been registered on the platform yet"
+        title="No salons yet"
+        description="As soon as salons join the platform they will appear here."
       />
     )
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Recent Salons</CardTitle>
-        <Small>{salons.length} recently added</Small>
-      </CardHeader>
-      <CardContent>
-        <ItemGroup>
-          {salons.map((salon, index) => (
-            <div key={salon.id}>
-              <Item variant="outline" size="default">
-                <ItemMedia variant="icon">
-                  <Building2 className="h-5 w-5" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>{salon.name || 'Unnamed Salon'}</ItemTitle>
-                  <ItemDescription>
-                    {salon.description || 'No description provided'}
-                    {' • Added '}
-                    {salon.created_at ? format(new Date(salon.created_at), 'MMM d, yyyy') : 'Recently'}
-                  </ItemDescription>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant={salon.is_active === true ? 'default' : 'outline'}>
-                    {salon.is_active === true ? 'Active' : 'Inactive'}
-                  </Badge>
-                </ItemActions>
-              </Item>
-              {index < salons.length - 1 && <ItemSeparator />}
+    <div className="h-full">
+      <Card>
+        <CardHeader className="space-y-3">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <CardTitle>Recent salons</CardTitle>
+              <CardDescription>
+                Latest teams that completed onboarding in the last 30 days.
+              </CardDescription>
             </div>
-          ))}
-        </ItemGroup>
-      </CardContent>
-    </Card>
+            <Badge variant="secondary" className="shrink-0">
+              {salons.length} new
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <ScrollArea className="h-[320px] pr-4">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Salon</TableHead>
+                  <TableHead className="hidden xl:table-cell">Onboarded</TableHead>
+                  <TableHead className="text-right">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {salons.slice(0, 8).map((salon) => (
+                  <TableRow key={salon.id} className="last:border-0">
+                    <TableCell>
+                      <div className="flex min-w-0 items-start gap-3">
+                        <Avatar>
+                          <AvatarFallback className="text-xs font-semibold uppercase">
+                            {getInitials(salon.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 space-y-1">
+                          <p className="truncate font-medium leading-tight">
+                            {salon.name || 'Unnamed salon'}
+                          </p>
+                          {(salon.business_name || salon.owner_name) && (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <span className="line-clamp-1 text-xs text-muted-foreground">
+                                  {salon.business_name || salon.owner_name || 'No business name'}
+                                </span>
+                              </TooltipTrigger>
+                              <TooltipContent className="max-w-xs text-xs text-muted-foreground">
+                                {salon.business_name || salon.owner_name || 'No business name'}
+                              </TooltipContent>
+                            </Tooltip>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden text-sm text-muted-foreground xl:table-cell">
+                      {salon.created_at ? format(new Date(salon.created_at), 'MMM d, yyyy') : 'Recently'}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Badge
+                        variant={salon.is_accepting_bookings ? 'default' : 'outline'}
+                        className="justify-end gap-1"
+                      >
+                        {salon.is_accepting_bookings ? 'Accepting bookings' : 'Paused'}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+
+          <Button asChild variant="ghost" size="sm" className="gap-1 px-0 text-xs font-semibold">
+            <Link href="/admin/salons">
+              View all salons
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

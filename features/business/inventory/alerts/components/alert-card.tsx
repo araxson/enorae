@@ -2,7 +2,7 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Stack, Flex, Box } from '@/components/layout'
 import { Small, Large } from '@/components/ui/typography'
 import { resolveStockAlert, unresolveStockAlert } from '../api/mutations'
@@ -61,98 +61,100 @@ export function AlertCard({ alert }: AlertCardProps) {
   }
 
   return (
-    <Card className="p-4">
-      <Stack gap="sm">
-        <Flex justify="between" align="start">
-          <Box>
-            <Large>{alert.product?.name || 'Unknown Product'}</Large>
-            {alert.product?.sku && (
-              <Small className="text-muted-foreground">SKU: {alert.product.sku}</Small>
-            )}
-          </Box>
-          <Flex gap="xs">
-            <Badge variant={getAlertLevelVariant(alert.alert_level || 'low')}>
-              {alert.alert_level?.toUpperCase() || 'UNKNOWN'}
-            </Badge>
-            {alert.is_resolved && (
-              <Badge variant="outline">Resolved</Badge>
-            )}
-          </Flex>
-        </Flex>
-
-        <Stack gap="xs">
-          <Flex gap="sm">
-            <Small className="text-muted-foreground">Type:</Small>
-            <Small>{getAlertTypeLabel(alert.alert_type || '')}</Small>
-          </Flex>
-
-          {alert.current_quantity !== null && (
-            <Flex gap="sm">
-              <Small className="text-muted-foreground">Current:</Small>
-              <Small>
-                {alert.current_quantity} {alert.product?.unit_of_measure || 'units'}
-              </Small>
-            </Flex>
-          )}
-
-          {alert.threshold_quantity !== null && (
-            <Flex gap="sm">
-              <Small className="text-muted-foreground">Threshold:</Small>
-              <Small>
-                {alert.threshold_quantity} {alert.product?.unit_of_measure || 'units'}
-              </Small>
-            </Flex>
-          )}
-
-          {alert.location && (
-            <Flex gap="sm">
-              <Small className="text-muted-foreground">Location:</Small>
-              <Small>{alert.location.name}</Small>
-            </Flex>
-          )}
-
-          {alert.message && (
+    <Card>
+      <CardContent className="space-y-4">
+        <Stack gap="sm">
+          <Flex justify="between" align="start">
             <Box>
-              <Small className="text-muted-foreground">Message:</Small>
-              <Small>{alert.message}</Small>
+              <Large>{alert.product?.name || 'Unknown Product'}</Large>
+              {alert.product?.sku && (
+                <Small className="text-muted-foreground">SKU: {alert.product.sku}</Small>
+              )}
             </Box>
-          )}
-
-          <Flex gap="sm">
-            <Small className="text-muted-foreground">Created:</Small>
-            <Small>{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</Small>
+            <Flex gap="xs">
+              <Badge variant={getAlertLevelVariant(alert.alert_level || 'low')}>
+                {alert.alert_level?.toUpperCase() || 'UNKNOWN'}
+              </Badge>
+              {alert.is_resolved && (
+                <Badge variant="outline">Resolved</Badge>
+              )}
+            </Flex>
           </Flex>
 
-          {alert.resolved_at && (
+          <Stack gap="xs">
             <Flex gap="sm">
-              <Small className="text-muted-foreground">Resolved:</Small>
-              <Small>{new Date(alert.resolved_at).toLocaleDateString()}</Small>
+              <Small className="text-muted-foreground">Type:</Small>
+              <Small>{getAlertTypeLabel(alert.alert_type || '')}</Small>
             </Flex>
-          )}
-        </Stack>
 
-        <Flex justify="end" gap="sm">
-          {!alert.is_resolved ? (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleResolve}
-              disabled={isPending}
-            >
-              {isPending ? 'Resolving...' : 'Resolve'}
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleUnresolve}
-              disabled={isPending}
-            >
-              {isPending ? 'Unresolving...' : 'Reopen'}
-            </Button>
-          )}
-        </Flex>
-      </Stack>
+            {alert.current_quantity !== null && (
+              <Flex gap="sm">
+                <Small className="text-muted-foreground">Current:</Small>
+                <Small>
+                  {alert.current_quantity} {alert.product?.unit_of_measure || 'units'}
+                </Small>
+              </Flex>
+            )}
+
+            {alert.threshold_quantity !== null && (
+              <Flex gap="sm">
+                <Small className="text-muted-foreground">Threshold:</Small>
+                <Small>
+                  {alert.threshold_quantity} {alert.product?.unit_of_measure || 'units'}
+                </Small>
+              </Flex>
+            )}
+
+            {alert.location && (
+              <Flex gap="sm">
+                <Small className="text-muted-foreground">Location:</Small>
+                <Small>{alert.location.name}</Small>
+              </Flex>
+            )}
+
+            {alert.message && (
+              <Box>
+                <Small className="text-muted-foreground">Message:</Small>
+                <Small>{alert.message}</Small>
+              </Box>
+            )}
+
+            <Flex gap="sm">
+              <Small className="text-muted-foreground">Created:</Small>
+              <Small>{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</Small>
+            </Flex>
+
+            {alert.resolved_at && (
+              <Flex gap="sm">
+                <Small className="text-muted-foreground">Resolved:</Small>
+                <Small>{new Date(alert.resolved_at).toLocaleDateString()}</Small>
+              </Flex>
+            )}
+          </Stack>
+
+          <Flex justify="end" gap="sm">
+            {!alert.is_resolved ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleResolve}
+                disabled={isPending}
+              >
+                {isPending ? 'Resolving...' : 'Resolve'}
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleUnresolve}
+                disabled={isPending}
+              >
+                {isPending ? 'Unresolving...' : 'Reopen'}
+              </Button>
+            )}
+          </Flex>
+        </Stack>
+      </CardContent>
     </Card>
   )
 }

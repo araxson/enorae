@@ -1,5 +1,5 @@
 import { Section, Stack, Box } from '@/components/layout'
-import { H1, P, Small } from '@/components/ui/typography'
+import { Small } from '@/components/ui/typography'
 import { AlertsGrid } from './components/alerts-grid'
 import { getStockAlerts } from './api/queries'
 
@@ -12,13 +12,6 @@ export async function StockAlerts() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        <Box>
-          <H1>Stock Alerts</H1>
-          <P className="text-muted-foreground">
-            Monitor and manage inventory alerts for your salon
-          </P>
-        </Box>
-
         <Stack gap="md">
           {unresolvedCount > 0 && (
             <Box className="rounded-lg bg-destructive/10 p-4 border border-destructive/20">

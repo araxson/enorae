@@ -1,7 +1,7 @@
 import { getPurchaseOrders } from './api/queries'
 import { PurchaseOrdersClient } from './components/purchase-orders-client'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 type Supplier = Database['public']['Views']['suppliers']['Row']
@@ -12,20 +12,9 @@ type Product = {
 }
 
 export async function PurchaseOrders() {
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
   const supabase = await createClient()
-
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string }>()
-
-  const salonId = staffProfile?.salon_id
-
-  if (!salonId) {
-    throw new Error('No salon found for user')
-  }
 
   const [orders, suppliers, products] = await Promise.all([
     getPurchaseOrders(),

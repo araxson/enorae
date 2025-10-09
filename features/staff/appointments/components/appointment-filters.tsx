@@ -7,29 +7,38 @@ import { Search } from 'lucide-react'
 import { Flex } from '@/components/layout'
 
 type AppointmentFiltersProps = {
-  onSearchChange: (search: string) => void
+  onSearchChange?: (search: string) => void
   onStatusChange: (status: string) => void
+  searchValue?: string
+  showSearch?: boolean
 }
 
-export function AppointmentFilters({ onSearchChange, onStatusChange }: AppointmentFiltersProps) {
-  const [search, setSearch] = useState('')
+export function AppointmentFilters({
+  onSearchChange,
+  onStatusChange,
+  searchValue,
+  showSearch = true,
+}: AppointmentFiltersProps) {
+  const [localSearch, setLocalSearch] = useState(searchValue ?? '')
 
   const handleSearchChange = (value: string) => {
-    setSearch(value)
-    onSearchChange(value)
+    setLocalSearch(value)
+    onSearchChange?.(value)
   }
 
   return (
     <Flex gap="md" className="flex-col sm:flex-row">
-      <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search by customer name or email..."
-          value={search}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          className="pl-10"
-        />
-      </div>
+      {showSearch ? (
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by customer name or email..."
+            value={searchValue ?? localSearch}
+            onChange={(event) => handleSearchChange(event.target.value)}
+            className="pl-10"
+          />
+        </div>
+      ) : null}
       <Select onValueChange={onStatusChange} defaultValue="all">
         <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Filter by status" />

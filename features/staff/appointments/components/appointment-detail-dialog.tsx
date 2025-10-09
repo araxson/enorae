@@ -8,7 +8,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex, Divider } from '@/components/layout'
+import { Separator } from '@/components/ui/separator'
+import { Stack, Flex } from '@/components/layout'
 import { P, Muted } from '@/components/ui/typography'
 import { Calendar, Clock, User, DollarSign, Mail } from 'lucide-react'
 import type { StaffAppointment, AppointmentStatus } from '../api/queries'
@@ -77,7 +78,7 @@ export function AppointmentDetailDialog({
             </Flex>
           </div>
 
-          <Divider />
+          <Separator />
 
           <div>
             <P className="font-semibold mb-3">Customer Information</P>
@@ -104,7 +105,7 @@ export function AppointmentDetailDialog({
             </Stack>
           </div>
 
-          <Divider />
+          <Separator />
 
           <div>
             <P className="font-semibold mb-3">Service Details</P>

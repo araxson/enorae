@@ -48,7 +48,7 @@ export async function InventoryManagement() {
       suppliers={suppliers}
       stats={stats}
       alerts={alerts}
-      stockLevels={stockLevels as never}
+      stockLevels={stockLevels}
       purchaseOrders={purchaseOrders}
     />
   )
@@ -58,11 +58,10 @@ export function InventoryManagementSkeleton() {
   return (
     <Section size="lg">
       <Stack gap="xl">
-        {/* Skeleton content */}
         <div className="animate-pulse space-y-4">
-          <div className="h-10 bg-muted rounded w-1/3" />
-          <div className="h-32 bg-muted rounded" />
-          <div className="h-96 bg-muted rounded" />
+          <div className="h-10 w-1/3 rounded bg-muted" />
+          <div className="h-32 rounded bg-muted" />
+          <div className="h-96 rounded bg-muted" />
         </div>
       </Stack>
     </Section>

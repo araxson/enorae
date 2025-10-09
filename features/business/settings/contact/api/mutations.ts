@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -35,14 +35,7 @@ export async function updateSalonContactDetails(
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const supabase = await createClient()
 
-    // Verify salon ownership
-    const { data: salon } = await supabase
-      .from('salons')
-      .select('owner_id')
-      .eq('id', salonId)
-      .single<{ owner_id: string | null }>()
-
-    if (!salon || salon.owner_id !== session.user.id) {
+    if (!(await canAccessSalon(salonId))) {
       return { success: false, error: 'Unauthorized: Not your salon' }
     }
 

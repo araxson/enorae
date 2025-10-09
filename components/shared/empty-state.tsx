@@ -1,31 +1,58 @@
 import { type LucideIcon } from 'lucide-react'
-import { Card } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from '@/components/ui/empty'
 
 export interface EmptyStateProps {
   icon: LucideIcon
   title: string
   description: string
   action?: React.ReactNode
+  variant?: 'default' | 'icon'
 }
 
+/**
+ * EmptyState Component
+ *
+ * Used for displaying empty states with optional actions.
+ * Follows shadcn UI patterns for consistency.
+ *
+ * @example
+ * ```tsx
+ * <EmptyState
+ *   icon={Package}
+ *   title="No products yet"
+ *   description="Get started by adding your first product"
+ *   action={<Button onClick={handleAdd}>Add Product</Button>}
+ * />
+ * ```
+ */
 export function EmptyState({
   icon: Icon,
   title,
   description,
   action,
+  variant = 'icon',
 }: EmptyStateProps) {
   return (
-    <Card className="p-12 text-center">
-      <Stack gap="md" className="items-center">
-        <Icon className="h-12 w-12 text-muted-foreground" aria-hidden="true" />
-        <div>
-          <H3>{title}</H3>
-          <Muted>{description}</Muted>
-        </div>
-        {action && <div className="mt-2">{action}</div>}
-      </Stack>
-    </Card>
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant={variant}>
+          <Icon className="h-8 w-8" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyTitle>{title}</EmptyTitle>
+        <EmptyDescription>{description}</EmptyDescription>
+      </EmptyHeader>
+      {action && (
+        <EmptyContent>
+          {action}
+        </EmptyContent>
+      )}
+    </Empty>
   )
 }

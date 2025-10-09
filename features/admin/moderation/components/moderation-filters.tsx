@@ -2,8 +2,13 @@
 
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Flex } from '@/components/layout'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 type ModerationFiltersProps = {
   searchQuery: string
@@ -19,30 +24,30 @@ export function ModerationFilters({
   onStatusFilterChange,
 }: ModerationFiltersProps) {
   return (
-    <Flex gap="md" align="center" className="flex-wrap">
-      <div className="relative flex-1 min-w-[200px]">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+    <div className="flex flex-wrap items-center gap-3">
+      <div className="relative min-w-[220px] flex-1">
+        <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search reviews..."
           value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-8"
+          onChange={(event) => onSearchChange(event.target.value)}
+          className="pl-9"
         />
       </div>
 
       <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="All Reviews" />
+        <SelectTrigger className="w-[200px]">
+          <SelectValue placeholder="All reviews" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Reviews</SelectItem>
-          <SelectItem value="flagged">Flagged Only</SelectItem>
-          <SelectItem value="unflagged">Not Flagged</SelectItem>
-          <SelectItem value="pending">Pending Response</SelectItem>
-          <SelectItem value="responded">Has Response</SelectItem>
+          <SelectItem value="all">All reviews</SelectItem>
+          <SelectItem value="flagged">Flagged only</SelectItem>
+          <SelectItem value="unflagged">Not flagged</SelectItem>
+          <SelectItem value="pending">Pending response</SelectItem>
+          <SelectItem value="responded">Has response</SelectItem>
           <SelectItem value="featured">Featured</SelectItem>
         </SelectContent>
       </Select>
-    </Flex>
+    </div>
   )
 }

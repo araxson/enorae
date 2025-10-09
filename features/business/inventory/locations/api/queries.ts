@@ -1,10 +1,10 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-// Types - Use schema tables (no public view exists)
-type StockLocation = Database['inventory']['Tables']['stock_locations']['Row']
+// COMPLIANCE: Use public view types for SELECTs
+type StockLocation = Database['public']['Views']['stock_locations']['Row']
 
 export type StockLocationWithCounts = StockLocation & {
   product_count?: number
@@ -15,23 +15,15 @@ export type StockLocationWithCounts = StockLocation & {
  */
 export async function getStockLocations(): Promise<StockLocationWithCounts[]> {
   // SECURITY: Require authentication
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()
-
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string }>()
-
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
+  const salonId = await requireUserSalonId()
 
   const { data, error } = await supabase
     .from('stock_locations')
     .select('*')
-    .eq('salon_id', staffProfile.salon_id)
-    .is('deleted_at', null)
+    .eq('salon_id', salonId)
     .order('name', { ascending: true })
 
   if (error) throw error
@@ -61,24 +53,16 @@ export async function getStockLocationById(
   id: string
 ): Promise<StockLocation | null> {
   // SECURITY: Require authentication
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()
-
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string }>()
-
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
+  const salonId = await requireUserSalonId()
 
   const { data, error } = await supabase
     .from('stock_locations')
     .select('*')
     .eq('id', id)
-    .eq('salon_id', staffProfile.salon_id)
-    .is('deleted_at', null)
+    .eq('salon_id', salonId)
     .single()
 
   if (error) throw error

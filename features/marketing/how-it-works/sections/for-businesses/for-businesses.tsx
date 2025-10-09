@@ -1,4 +1,3 @@
-import { Section, Stack, Grid } from '@/components/layout'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { H2, Lead } from '@/components/ui/typography'
 import { Badge } from '@/components/ui/badge'
@@ -6,25 +5,25 @@ import { forBusinessesData } from './for-businesses.data'
 
 export function ForBusinesses() {
   return (
-    <Section size="lg" className="bg-muted/30">
-      <Stack gap="xl">
-        <Stack gap="md" className="max-w-3xl mx-auto text-center">
+    <section className="bg-muted/30">
+      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
           <H2>{forBusinessesData.title}</H2>
-          <Lead>{forBusinessesData.subtitle}</Lead>
-        </Stack>
+          <Lead className="mt-4 text-muted-foreground">{forBusinessesData.subtitle}</Lead>
+        </div>
 
-        <Grid cols={{ base: 1, md: 3 }} gap="lg">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {forBusinessesData.steps.map((step) => (
             <Card key={step.step}>
               <CardHeader>
-                <Badge variant="secondary" className="mb-2">{`Step ${step.step}`}</Badge>
+                <Badge variant="secondary" className="mb-2">Step {step.step}</Badge>
                 <CardTitle>{step.title}</CardTitle>
                 <CardDescription>{step.description}</CardDescription>
               </CardHeader>
             </Card>
           ))}
-        </Grid>
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

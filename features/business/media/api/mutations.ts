@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
 
 // UUID validation
@@ -32,7 +32,7 @@ const removeImageSchema = z.object({
 
 export async function updateSalonMedia(formData: FormData) {
   try {
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const supabase = await createClient()
 
     const salonId = formData.get('salonId') as string
@@ -54,13 +54,7 @@ export async function updateSalonMedia(formData: FormData) {
     }
 
     // Verify ownership
-    const { data: salon } = await supabase
-      .from('salons')
-      .select('owner_id')
-      .eq('id', salonId)
-      .single<{ owner_id: string }>()
-
-    if (!salon || salon.owner_id !== session.user.id) {
+    if (!(await canAccessSalon(salonId))) {
       return { error: 'Unauthorized' }
     }
 
@@ -86,7 +80,7 @@ export async function updateSalonMedia(formData: FormData) {
 
 export async function addGalleryImage(formData: FormData) {
   try {
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const supabase = await createClient()
 
     const salonId = formData.get('salonId') as string
@@ -98,13 +92,7 @@ export async function addGalleryImage(formData: FormData) {
     }
 
     // Verify ownership
-    const { data: salon } = await supabase
-      .from('salons')
-      .select('owner_id')
-      .eq('id', salonId)
-      .single<{ owner_id: string }>()
-
-    if (!salon || salon.owner_id !== session.user.id) {
+    if (!(await canAccessSalon(salonId))) {
       return { error: 'Unauthorized' }
     }
 
@@ -138,7 +126,7 @@ export async function addGalleryImage(formData: FormData) {
 
 export async function removeGalleryImage(formData: FormData) {
   try {
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const supabase = await createClient()
 
     const salonId = formData.get('salonId') as string
@@ -150,13 +138,7 @@ export async function removeGalleryImage(formData: FormData) {
     }
 
     // Verify ownership
-    const { data: salon } = await supabase
-      .from('salons')
-      .select('owner_id')
-      .eq('id', salonId)
-      .single<{ owner_id: string }>()
-
-    if (!salon || salon.owner_id !== session.user.id) {
+    if (!(await canAccessSalon(salonId))) {
       return { error: 'Unauthorized' }
     }
 

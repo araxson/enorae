@@ -1,37 +1,20 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { getUserSalon } from '../../shared/api/salon.queries'
 
 type Staff = Database['public']['Views']['staff']['Row']
-type Salon = Database['public']['Views']['salons']['Row']
 
-/**
- * Get user's salon
- * IMPROVED: Uses centralized requireUserSalonId() helper
- */
-export async function getUserSalon(): Promise<Salon> {
-  // SECURITY: Require business role
-  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
-  // Get user's salon ID (throws if not found)
-  const salonId = await requireUserSalonId()
-
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('salons')
-    .select('*')
-    .eq('id', salonId)
-    .single()
-
-  if (error) throw error
-  return data as Salon
-}
+// Re-export getUserSalon from shared location
+export { getUserSalon }
 
 export async function getStaff(salonId: string) {
   // SECURITY: Require business role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  if (!(await canAccessSalon(salonId))) {
+    throw new Error('Unauthorized: You do not have access to this salon')
+  }
 
   const supabase = await createClient()
 

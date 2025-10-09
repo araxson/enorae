@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -16,27 +16,20 @@ export async function respondToReview(
   response: string
 ): Promise<ActionResponse> {
   try {
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const { user } = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
+
     const supabase = await createClient()
 
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { success: false, error: 'User salon not found' }
-    }
-
-    // Verify the review belongs to this salon
+    // Verify the review belongs to the active salon
     const { data: review } = await supabase
       .from('salon_reviews')
       .select('salon_id')
       .eq('id', reviewId)
+      .eq('salon_id', salonId)
       .single<{ salon_id: string }>()
 
-    if (!review || review.salon_id !== staffProfile.salon_id) {
+    if (!review) {
       return { success: false, error: 'Review not found or access denied' }
     }
 
@@ -46,9 +39,10 @@ export async function respondToReview(
       .update({
         response,
         response_date: new Date().toISOString(),
-        responded_by_id: session.user.id,
+        responded_by_id: user.id,
       })
       .eq('id', reviewId)
+      .eq('salon_id', salonId)
 
     if (error) throw error
 
@@ -71,27 +65,20 @@ export async function flagReview(
   reason: string
 ): Promise<ActionResponse> {
   try {
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
+
     const supabase = await createClient()
 
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { success: false, error: 'User salon not found' }
-    }
-
-    // Verify the review belongs to this salon
+    // Verify the review belongs to the active salon
     const { data: review } = await supabase
       .from('salon_reviews')
       .select('salon_id')
       .eq('id', reviewId)
+      .eq('salon_id', salonId)
       .single<{ salon_id: string }>()
 
-    if (!review || review.salon_id !== staffProfile.salon_id) {
+    if (!review) {
       return { success: false, error: 'Review not found or access denied' }
     }
 
@@ -103,6 +90,7 @@ export async function flagReview(
         flagged_reason: reason,
       })
       .eq('id', reviewId)
+      .eq('salon_id', salonId)
 
     if (error) throw error
 
@@ -125,27 +113,20 @@ export async function toggleFeaturedReview(
   featured: boolean
 ): Promise<ActionResponse> {
   try {
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
+
     const supabase = await createClient()
 
-    const { data: staffProfile } = await supabase
-      .from('staff')
-      .select('salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ salon_id: string | null }>()
-
-    if (!staffProfile?.salon_id) {
-      return { success: false, error: 'User salon not found' }
-    }
-
-    // Verify the review belongs to this salon
+    // Verify the review belongs to the active salon
     const { data: review } = await supabase
       .from('salon_reviews')
       .select('salon_id')
       .eq('id', reviewId)
+      .eq('salon_id', salonId)
       .single<{ salon_id: string }>()
 
-    if (!review || review.salon_id !== staffProfile.salon_id) {
+    if (!review) {
       return { success: false, error: 'Review not found or access denied' }
     }
 
@@ -156,6 +137,7 @@ export async function toggleFeaturedReview(
         is_featured: featured,
       })
       .eq('id', reviewId)
+      .eq('salon_id', salonId)
 
     if (error) throw error
 
@@ -166,6 +148,111 @@ export async function toggleFeaturedReview(
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update review',
+    }
+  }
+}
+
+/**
+ * Update a review response
+ */
+export async function updateReviewResponse(
+  reviewId: string,
+  response: string
+): Promise<ActionResponse> {
+  try {
+    const { user } = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
+
+    const supabase = await createClient()
+
+    // Verify the review belongs to the active salon and has a response
+    const { data: review } = await supabase
+      .from('salon_reviews')
+      .select('salon_id, response')
+      .eq('id', reviewId)
+      .eq('salon_id', salonId)
+      .single<{ salon_id: string; response: string | null }>()
+
+    if (!review) {
+      return { success: false, error: 'Review not found or access denied' }
+    }
+
+    if (!review.response) {
+      return { success: false, error: 'No response exists to update' }
+    }
+
+    const { error } = await supabase
+      .schema('engagement')
+      .from('salon_reviews')
+      .update({
+        response,
+        response_date: new Date().toISOString(),
+        responded_by_id: user.id,
+      })
+      .eq('id', reviewId)
+      .eq('salon_id', salonId)
+
+    if (error) throw error
+
+    revalidatePath('/business/reviews')
+    return { success: true, data: undefined }
+  } catch (error) {
+    console.error('Error updating review response:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to update response',
+    }
+  }
+}
+
+/**
+ * Delete a review response
+ */
+export async function deleteReviewResponse(
+  reviewId: string
+): Promise<ActionResponse> {
+  try {
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
+
+    const supabase = await createClient()
+
+    // Verify the review belongs to the active salon and has a response
+    const { data: review } = await supabase
+      .from('salon_reviews')
+      .select('salon_id, response')
+      .eq('id', reviewId)
+      .eq('salon_id', salonId)
+      .single<{ salon_id: string; response: string | null }>()
+
+    if (!review) {
+      return { success: false, error: 'Review not found or access denied' }
+    }
+
+    if (!review.response) {
+      return { success: false, error: 'No response exists to delete' }
+    }
+
+    const { error } = await supabase
+      .schema('engagement')
+      .from('salon_reviews')
+      .update({
+        response: null,
+        response_date: null,
+        responded_by_id: null,
+      })
+      .eq('id', reviewId)
+      .eq('salon_id', salonId)
+
+    if (error) throw error
+
+    revalidatePath('/business/reviews')
+    return { success: true, data: undefined }
+  } catch (error) {
+    console.error('Error deleting review response:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to delete response',
     }
   }
 }

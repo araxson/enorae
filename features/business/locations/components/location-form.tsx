@@ -15,9 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { createSalonLocation, updateSalonLocation } from '../api/mutations'
-import type { Database } from '@/lib/types/database.types'
-
-type SalonLocation = Database['organization']['Tables']['salon_locations']['Row']
+import type { SalonLocation } from '@/lib/types/app.types'
 
 type LocationFormProps = {
   location?: SalonLocation | null

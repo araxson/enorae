@@ -1,35 +1,27 @@
 import { Section, Stack } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { AppointmentsList } from './components/appointments-list'
-import { getAllAppointments } from './api/queries'
+import { getAppointmentSnapshot } from './api/queries'
+import { AppointmentsDashboard } from './components/appointments-dashboard'
 
 export async function AdminAppointments() {
-  let appointments
-
   try {
-    appointments = await getAllAppointments(100)
+    const snapshot = await getAppointmentSnapshot()
+    return (
+      <Section size="lg">
+        <Stack gap="xl">
+          <AppointmentsDashboard snapshot={snapshot} />
+        </Stack>
+      </Section>
+    )
   } catch (error) {
     return (
       <Section size="lg">
         <Alert variant="destructive">
           <AlertDescription>
-            {error instanceof Error ? error.message : 'Failed to load appointments'}
+            {error instanceof Error ? error.message : 'Failed to load appointment oversight data'}
           </AlertDescription>
         </Alert>
       </Section>
     )
   }
-
-  return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <div>
-          <H1>All Appointments</H1>
-          <Lead>Platform-wide appointments overview</Lead>
-        </div>
-        <AppointmentsList appointments={appointments} />
-      </Stack>
-    </Section>
-  )
 }

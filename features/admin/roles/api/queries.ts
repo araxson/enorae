@@ -1,5 +1,5 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
@@ -13,10 +13,10 @@ export async function getAllRoleAssignments(): Promise<AdminUserRole[]> {
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_user_roles')
+    .from('user_roles')
     .select('*')
     .order('created_at', { ascending: false })
 
@@ -34,10 +34,10 @@ export async function getUserRoleAssignments(
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_user_roles')
+    .from('user_roles')
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
@@ -56,10 +56,10 @@ export async function getSalonRoleAssignments(
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_user_roles')
+    .from('user_roles')
     .select('*')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false})
@@ -76,10 +76,10 @@ export async function getRoleStats() {
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const { data } = await supabase
-    .from('admin_user_roles')
+    .from('user_roles')
     .select('role, is_active')
 
   const stats = (data || []).reduce(

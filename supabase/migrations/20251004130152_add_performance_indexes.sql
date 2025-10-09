@@ -47,10 +47,9 @@ ON engagement.customer_favorites (customer_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_salons_owner 
 ON organization.salons (owner_id);
 
--- Index for salon chain queries
 CREATE INDEX IF NOT EXISTS idx_salons_chain 
-ON organization.salons (salon_chain_id) 
-WHERE salon_chain_id IS NOT NULL;
+ON organization.salons (chain_id) 
+WHERE chain_id IS NOT NULL;
 
 -- =============================================
 -- Performance Analytics
@@ -67,4 +66,3 @@ COMMENT ON INDEX scheduling.idx_appointments_salon_time_status IS
 
 COMMENT ON INDEX scheduling.idx_appointments_staff_completed IS 
   'Optimizes commission calculation queries for completed appointments';
-

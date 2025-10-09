@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Edit2, Trash2, Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -32,6 +34,7 @@ type CategoryListProps = {
 }
 
 export function CategoryList({ categories, onEdit }: CategoryListProps) {
+  const router = useRouter()
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -45,10 +48,14 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
     try {
       const result = await deleteProductCategory(formData)
       if (result.error) {
-        alert(result.error)
+        toast.error(result.error)
+      } else {
+        toast.success('Category deleted')
+        router.refresh()
       }
-    } catch {
-      alert('Failed to delete category')
+    } catch (error) {
+      console.error('[CategoryList] delete error:', error)
+      toast.error('Failed to delete category')
     } finally {
       setIsDeleting(false)
       setDeleteId(null)

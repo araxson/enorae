@@ -1,19 +1,23 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+'use client'
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Stack, Box, Grid } from '@/components/layout'
-import { Small, Muted } from '@/components/ui/typography'
-import { Badge } from '@/components/ui/badge'
-import { DollarSign, Calendar, Star, Package, MessageSquare, Users } from 'lucide-react'
-import type { Database } from '@/lib/types/database.types'
+import { Calendar, DollarSign, MessageSquare, Package, Star, Users } from 'lucide-react'
+import type {
+  AppointmentsOverview,
+  InventoryOverview,
+  MessagesOverview,
+  RevenueOverview,
+  ReviewsOverview,
+  StaffOverview,
+} from './admin-overview-types'
+import { AdminOverviewRevenueTab } from './admin-overview-revenue-tab'
+import { AdminOverviewAppointmentsTab } from './admin-overview-appointments-tab'
+import { AdminOverviewReviewsTab } from './admin-overview-reviews-tab'
+import { AdminOverviewInventoryTab } from './admin-overview-inventory-tab'
+import { AdminOverviewMessagesTab } from './admin-overview-messages-tab'
+import { AdminOverviewStaffTab } from './admin-overview-staff-tab'
 
-type RevenueOverview = Database['public']['Views']['admin_revenue_overview']['Row']
-type AppointmentsOverview = Database['public']['Views']['admin_appointments_overview']['Row']
-type ReviewsOverview = Database['public']['Views']['admin_reviews_overview']['Row']
-type InventoryOverview = Database['public']['Views']['admin_inventory_overview']['Row']
-type MessagesOverview = Database['public']['Views']['admin_messages_overview']['Row']
-type StaffOverview = Database['public']['Views']['admin_staff_overview']['Row']
-
-interface AdminOverviewTabsProps {
+export interface AdminOverviewTabsProps {
   revenue: RevenueOverview[]
   appointments: AppointmentsOverview[]
   reviews: ReviewsOverview[]
@@ -30,193 +34,65 @@ export function AdminOverviewTabs({
   messages,
   staff,
 }: AdminOverviewTabsProps) {
+  const chartWindow = Math.min(revenue.length, 30)
+
   return (
-    <Tabs defaultValue="revenue" className="w-full">
-      <TabsList className="grid w-full grid-cols-6">
-        <TabsTrigger value="revenue" className="gap-1">
-          <DollarSign className="h-4 w-4" />
-          Revenue
-        </TabsTrigger>
-        <TabsTrigger value="appointments" className="gap-1">
-          <Calendar className="h-4 w-4" />
-          Appointments
-        </TabsTrigger>
-        <TabsTrigger value="reviews" className="gap-1">
-          <Star className="h-4 w-4" />
-          Reviews
-        </TabsTrigger>
-        <TabsTrigger value="inventory" className="gap-1">
-          <Package className="h-4 w-4" />
-          Inventory
-        </TabsTrigger>
-        <TabsTrigger value="messages" className="gap-1">
-          <MessageSquare className="h-4 w-4" />
-          Messages
-        </TabsTrigger>
-        <TabsTrigger value="staff" className="gap-1">
-          <Users className="h-4 w-4" />
-          Staff
-        </TabsTrigger>
-      </TabsList>
+    <Tabs defaultValue="revenue" className="w-full gap-6">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <Calendar className="h-3.5 w-3.5" />
+          Data refreshes automatically every 60 seconds
+        </div>
+        <TabsList className="w-full justify-between overflow-x-auto md:w-auto">
+          <TabsTrigger value="revenue" className="gap-1.5">
+            <DollarSign className="h-4 w-4" />
+            Revenue
+          </TabsTrigger>
+          <TabsTrigger value="appointments" className="gap-1.5">
+            <Calendar className="h-4 w-4" />
+            Appointments
+          </TabsTrigger>
+          <TabsTrigger value="reviews" className="gap-1.5">
+            <Star className="h-4 w-4" />
+            Reviews
+          </TabsTrigger>
+          <TabsTrigger value="inventory" className="gap-1.5">
+            <Package className="h-4 w-4" />
+            Inventory
+          </TabsTrigger>
+          <TabsTrigger value="messages" className="gap-1.5">
+            <MessageSquare className="h-4 w-4" />
+            Messages
+          </TabsTrigger>
+          <TabsTrigger value="staff" className="gap-1.5">
+            <Users className="h-4 w-4" />
+            Staff
+          </TabsTrigger>
+        </TabsList>
+      </div>
 
       <TabsContent value="revenue">
-        <Card>
-          <CardHeader>
-            <CardTitle>Revenue Trends</CardTitle>
-            <CardDescription>Platform-wide revenue analytics</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="md">
-              {revenue.slice(0, 10).map((item, idx) => (
-                <Box key={idx} className="p-4 border rounded-lg">
-                  <Small className="text-muted-foreground">
-                    {item.date ? new Date(item.date).toLocaleDateString() : 'N/A'}
-                  </Small>
-                  <div className="text-2xl font-bold">
-                    ${(item.total_revenue || 0).toLocaleString()}
-                  </div>
-                  <Muted className="text-xs">
-                    {item.total_appointments || 0} appointments
-                  </Muted>
-                </Box>
-              ))}
-            </Grid>
-          </CardContent>
-        </Card>
+        <AdminOverviewRevenueTab revenue={revenue} windowSize={chartWindow} />
       </TabsContent>
 
       <TabsContent value="appointments">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Appointments</CardTitle>
-            <CardDescription>Latest platform appointments</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Stack gap="sm">
-              {appointments.slice(0, 10).map((apt) => (
-                <Box key={apt.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <Stack gap="xs">
-                    <Small className="font-medium">{apt.salon_name || 'Unknown Salon'}</Small>
-                    <Muted className="text-xs">
-                      {apt.customer_name || 'Unknown Customer'} • {apt.service_count || 0} service(s)
-                    </Muted>
-                  </Stack>
-                  <Badge variant={apt.status === 'completed' ? 'default' : 'secondary'}>
-                    {apt.status || 'pending'}
-                  </Badge>
-                </Box>
-              ))}
-            </Stack>
-          </CardContent>
-        </Card>
+        <AdminOverviewAppointmentsTab appointments={appointments} />
       </TabsContent>
 
       <TabsContent value="reviews">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Reviews</CardTitle>
-            <CardDescription>Platform review moderation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Stack gap="sm">
-              {reviews.slice(0, 10).map((review) => (
-                <Box key={review.id} className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <Small className="font-medium">{review.salon_name || 'Unknown Salon'}</Small>
-                    <Badge variant="outline">
-                      <Star className="h-3 w-3 mr-1" />
-                      {review.rating || 0}/5
-                    </Badge>
-                  </div>
-                  <Muted className="text-sm line-clamp-2">
-                    {review.comment || 'No comment'}
-                  </Muted>
-                  <Muted className="text-xs mt-1">
-                    By {review.customer_name || 'Anonymous'}
-                  </Muted>
-                </Box>
-              ))}
-            </Stack>
-          </CardContent>
-        </Card>
+        <AdminOverviewReviewsTab reviews={reviews} />
       </TabsContent>
 
       <TabsContent value="inventory">
-        <Card>
-          <CardHeader>
-            <CardTitle>Inventory Alerts</CardTitle>
-            <CardDescription>Low stock and critical alerts</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Stack gap="sm">
-              {inventory.slice(0, 10).map((item) => (
-                <Box key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <Stack gap="xs">
-                    <Small className="font-medium">{item.product_name || 'Unknown Product'}</Small>
-                    <Muted className="text-xs">
-                      {item.salon_name || 'Unknown Salon'} • Stock: {item.total_available || 0}
-                    </Muted>
-                  </Stack>
-                  <Badge variant="destructive">
-                    Low Stock
-                  </Badge>
-                </Box>
-              ))}
-            </Stack>
-          </CardContent>
-        </Card>
+        <AdminOverviewInventoryTab inventory={inventory} />
       </TabsContent>
 
       <TabsContent value="messages">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Messages</CardTitle>
-            <CardDescription>Platform communication activity</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Stack gap="sm">
-              {messages.slice(0, 10).map((msg) => (
-                <Box key={msg.id} className="p-3 border rounded-lg">
-                  <div className="flex items-center justify-between mb-1">
-                    <Small className="font-medium">{msg.subject || 'No Subject'}</Small>
-                    <Muted className="text-xs">
-                      {msg.created_at ? new Date(msg.created_at).toLocaleDateString() : 'N/A'}
-                    </Muted>
-                  </div>
-                  <Muted className="text-sm line-clamp-1">
-                    {msg.customer_name || 'Unknown Customer'} • {msg.salon_name || 'Unknown Salon'}
-                  </Muted>
-                </Box>
-              ))}
-            </Stack>
-          </CardContent>
-        </Card>
+        <AdminOverviewMessagesTab messages={messages} />
       </TabsContent>
 
       <TabsContent value="staff">
-        <Card>
-          <CardHeader>
-            <CardTitle>Staff Performance</CardTitle>
-            <CardDescription>Platform-wide staff overview</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Stack gap="sm">
-              {staff.slice(0, 10).map((member) => (
-                <Box key={member.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <Stack gap="xs">
-                    <Small className="font-medium">{member.full_name || 'Unknown Staff'}</Small>
-                    <Muted className="text-xs">
-                      {member.salon_name || 'Unknown Salon'} • {member.title || member.staff_role || 'staff'}
-                    </Muted>
-                  </Stack>
-                  <Badge variant="outline">
-                    {member.experience_years || 0} years exp
-                  </Badge>
-                </Box>
-              ))}
-            </Stack>
-          </CardContent>
-        </Card>
+        <AdminOverviewStaffTab staff={staff} />
       </TabsContent>
     </Tabs>
   )

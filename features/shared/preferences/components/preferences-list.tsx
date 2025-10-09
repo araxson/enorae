@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Edit2, Trash2, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -45,10 +46,10 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
     try {
       const result = await deleteUserPreference(formData)
       if (result.error) {
-        alert(result.error)
+        toast.error(result.error)
       }
     } catch {
-      alert('Failed to delete preference')
+      toast.error('Failed to delete preference')
     } finally {
       setIsDeleting(false)
       setDeleteId(null)

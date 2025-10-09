@@ -1,7 +1,8 @@
 import { getServices, getUserSalon } from './api/queries'
 import { ServicesManagementClient } from './components/services-management-client'
 import { Section } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
+import { EmptyState } from '@/components/shared'
+import { AlertCircle, Scissors } from 'lucide-react'
 
 export async function ServicesManagement() {
   let salon
@@ -10,7 +11,11 @@ export async function ServicesManagement() {
   } catch {
     return (
       <Section size="lg">
-        <H1>Please log in to manage services</H1>
+        <EmptyState
+          icon={AlertCircle}
+          title="Authentication Required"
+          description="Please log in to manage services"
+        />
       </Section>
     )
   }
@@ -18,8 +23,11 @@ export async function ServicesManagement() {
   if (!salon || !salon.id) {
     return (
       <Section size="lg">
-        <H1>No salon found</H1>
-        <Lead>Please create a salon to manage services</Lead>
+        <EmptyState
+          icon={Scissors}
+          title="No Salon Found"
+          description="Please create a salon to manage services"
+        />
       </Section>
     )
   }

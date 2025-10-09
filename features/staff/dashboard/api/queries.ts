@@ -1,11 +1,24 @@
 import 'server-only'
-import { cache } from 'react'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { StaffView, AppointmentWithDetails } from '@/lib/types/app.types'
 import { getDateRanges } from '@/lib/utils/dates'
 
-export const getStaffProfile = cache(async (): Promise<StaffView | null> => {
+export type StaffMetricsSummary = {
+  todayAppointments: number
+  weekAppointments: number
+  monthCompleted: number
+}
+
+export type StaffCommissionSummary = {
+  todayRevenue: number
+  todayCommission: number
+  monthRevenue: number
+  monthCommission: number
+  appointmentsCompleted: number
+}
+
+export async function getStaffProfile(): Promise<StaffView | null> {
   // SECURITY: Use requireAuth() - validates with Supabase servers
   const session = await requireAuth()
   const supabase = await createClient()
@@ -22,9 +35,9 @@ export const getStaffProfile = cache(async (): Promise<StaffView | null> => {
   }
 
   return data
-})
+}
 
-export const getTodayAppointments = cache(async (staffId: string): Promise<AppointmentWithDetails[]> => {
+export async function getTodayAppointments(staffId: string): Promise<AppointmentWithDetails[]> {
   // SECURITY: Use requireAuth() - validates with Supabase servers
   await requireAuth()
   const supabase = await createClient()
@@ -42,9 +55,9 @@ export const getTodayAppointments = cache(async (staffId: string): Promise<Appoi
 
   if (error) throw error
   return data || []
-})
+}
 
-export const getUpcomingAppointments = cache(async (staffId: string): Promise<AppointmentWithDetails[]> => {
+export async function getUpcomingAppointments(staffId: string): Promise<AppointmentWithDetails[]> {
   // SECURITY: Use requireAuth() - validates with Supabase servers
   await requireAuth()
   const supabase = await createClient()
@@ -64,9 +77,9 @@ export const getUpcomingAppointments = cache(async (staffId: string): Promise<Ap
 
   if (error) throw error
   return data || []
-})
+}
 
-export const getStaffMetrics = cache(async (staffId: string) => {
+export async function getStaffMetrics(staffId: string): Promise<StaffMetricsSummary> {
   // SECURITY: Use requireAuth() - validates with Supabase servers
   await requireAuth()
   const supabase = await createClient()
@@ -104,13 +117,13 @@ export const getStaffMetrics = cache(async (staffId: string) => {
     weekAppointments: weekCount || 0,
     monthCompleted: monthCompleted || 0,
   }
-})
+}
 
 /**
  * Get commission data for staff member
  * PERFORMANCE: Separate queries for today and month data (94% faster than client-side filtering)
  */
-export const getStaffCommission = cache(async (staffId: string) => {
+export async function getStaffCommission(staffId: string): Promise<StaffCommissionSummary> {
   await requireAuth()
   const supabase = await createClient()
 
@@ -163,4 +176,4 @@ export const getStaffCommission = cache(async (staffId: string) => {
     monthCommission,
     appointmentsCompleted: monthAppointments.length,
   }
-})
+}

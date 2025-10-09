@@ -1,0 +1,67 @@
+import { TrendingUp } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Muted } from '@/components/ui/typography'
+
+type Product = {
+  productId: string
+  productName: string
+  productSku: string | null
+  totalQuantity: number
+  salonsCount: number
+}
+
+type TopProductsTableProps = {
+  products: Product[]
+}
+
+export function InventoryTopProductsTable({ products }: TopProductsTableProps) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Product</TableHead>
+          <TableHead className="text-right">Total Quantity</TableHead>
+          <TableHead className="text-right">Salons</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {products.map((product, index) => (
+          <TableRow key={product.productId}>
+            <TableCell>
+              <div className="flex items-center gap-2">
+                {index < 3 && <TrendingUp className="h-4 w-4 text-green-500" />}
+                <div>
+                  <p className="font-medium">{product.productName}</p>
+                  {product.productSku && (
+                    <Muted className="text-xs">SKU: {product.productSku}</Muted>
+                  )}
+                </div>
+              </div>
+            </TableCell>
+            <TableCell className="text-right font-semibold">
+              {product.totalQuantity.toLocaleString()}
+            </TableCell>
+            <TableCell className="text-right">
+              <Badge variant="outline">{product.salonsCount}</Badge>
+            </TableCell>
+          </TableRow>
+        ))}
+        {products.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={3} className="py-8 text-center">
+              <Muted>No product data available</Muted>
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  )
+}

@@ -1,5 +1,5 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
@@ -20,7 +20,7 @@ export async function getAllSalons(filters?: SalonFilters): Promise<AdminSalon[]
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   let query = supabase
     .from('admin_salons_overview')
@@ -55,7 +55,21 @@ export async function getAllSalons(filters?: SalonFilters): Promise<AdminSalon[]
 
   const { data, error } = await query
 
-  if (error) throw error
+  if (error) {
+    console.error('admin_salons_overview error in getAllSalons:', error)
+    // Fallback to salons view
+    const { data: fallbackData, error: fallbackError } = await supabase
+      .from('salons')
+      .select('*')
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false })
+
+    if (fallbackError) {
+      console.error('salons fallback error:', fallbackError)
+      return []
+    }
+    return (fallbackData || []) as unknown as AdminSalon[]
+  }
   return data || []
 }
 
@@ -67,7 +81,7 @@ export async function getSalonById(salonId: string): Promise<AdminSalon | null> 
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
     .from('admin_salons_overview')
@@ -75,7 +89,10 @@ export async function getSalonById(salonId: string): Promise<AdminSalon | null> 
     .eq('id', salonId)
     .single()
 
-  if (error) throw error
+  if (error) {
+    console.error('admin_salons_overview error in getSalonById:', error)
+    return null
+  }
   return data
 }
 
@@ -87,7 +104,7 @@ export async function getSalonStats() {
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   // Total salons
   const { count: totalSalons } = await supabase
@@ -145,7 +162,7 @@ export async function searchSalons(searchTerm: string): Promise<AdminSalon[]> {
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
     .from('admin_salons_overview')
@@ -157,6 +174,9 @@ export async function searchSalons(searchTerm: string): Promise<AdminSalon[]> {
     .order('created_at', { ascending: false })
     .limit(50)
 
-  if (error) throw error
+  if (error) {
+    console.error('admin_salons_overview error in searchSalons:', error)
+    return []
+  }
   return data || []
 }

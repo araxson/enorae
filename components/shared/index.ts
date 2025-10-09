@@ -1,14 +1,25 @@
 /**
- * Shared Compound Components
+ * Shared Components
  *
- * Pre-built components for common patterns across the application.
- * These components compose shadcn/ui primitives with consistent styling.
+ * Cross-portal reusable components used throughout the application.
  */
 
-export { AppointmentCard, type AppointmentCardProps } from './appointment-card'
-export { SalonCard, type SalonCardProps } from './salon-card'
-export { StatCard, type StatCardProps } from './stat-card'
+// Dashboard Components
+export { MetricsGrid } from './metrics-grid'
+export { RefreshButton } from './refresh-button'
+export { LastUpdated } from './last-updated'
+export { PageLoading } from './page-loading'
+
+// UI Components
+export { EmptyState } from './empty-state'
 export { ErrorBoundary } from './error-boundary'
-export { EmptyState, type EmptyStateProps } from './empty-state'
-export { ConfirmDialog, type ConfirmDialogProps } from './confirm-dialog'
-export { DashboardSkeleton } from './dashboard-skeleton'
+export { LoadingWrapper } from './loading-wrapper'
+export { ActionButton } from './action-button'
+export { SearchInput } from './search-input'
+export { DataTableEmpty } from './data-table-empty'
+
+// Feature Components
+export { AppointmentCard } from './appointment-card'
+export { SalonCard } from './salon-card'
+export { StatCard } from './stat-card'
+export { ConfirmDialog } from './confirm-dialog'

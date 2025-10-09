@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Edit2, Trash2, Link } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -44,10 +45,10 @@ export function UsageTable({ usage, onEdit }: UsageTableProps) {
     try {
       const result = await deleteServiceProductUsage(formData)
       if (result.error) {
-        alert(result.error)
+        toast.error(result.error)
       }
     } catch {
-      alert('Failed to delete usage mapping')
+      toast.error('Failed to delete usage mapping')
     } finally {
       setIsDeleting(false)
       setDeleteId(null)

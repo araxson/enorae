@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { signup } from '../api/mutations'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,6 +16,7 @@ import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
 
 export function SignupForm() {
+  const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -42,23 +44,27 @@ export function SignupForm() {
       return
     }
 
-    const result = await signup(formData)
-    if (result?.error) {
-      setError(result.error)
-      setLoading(false)
-    } else if (result?.success && result?.requiresOTP && result?.email) {
-      // IMPROVED: Redirect to OTP verification page
-      const redirectUrl = `/auth/verify-otp?email=${encodeURIComponent(result.email)}&type=email`
-      window.location.href = redirectUrl
-    } else if (result?.success && result?.message) {
-      // Fallback: Show success message
-      setSuccess(result.message)
+    try {
+      const result = await signup(formData)
+      if (result?.error) {
+        setError(result.error)
+      } else if (result?.success && result?.requiresOTP && result?.email) {
+        const redirectUrl = `/auth/verify-otp?email=${encodeURIComponent(result.email)}&type=email`
+        router.push(redirectUrl)
+      } else if (result?.success && result?.message) {
+        setSuccess(result.message)
+      }
+    } catch (error) {
+      console.error('[SignupForm] unexpected error:', error)
+      setError('Something went wrong. Please try again.')
+    } finally {
       setLoading(false)
     }
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <div className="w-full max-w-md">
+      <Card>
       <CardHeader>
         <CardTitle>Create Account</CardTitle>
         <CardDescription>
@@ -156,6 +162,7 @@ export function SignupForm() {
           </Stack>
         </CardFooter>
       </form>
-    </Card>
+      </Card>
+    </div>
   )
 }

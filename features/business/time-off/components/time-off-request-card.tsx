@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Clock, User } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -29,21 +30,24 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
     setIsProcessing(true)
     const result = await onApprove(request.id)
     if (result.error) {
-      alert(result.error)
+      toast.error(result.error)
+    } else {
+      toast.success('Request approved')
     }
     setIsProcessing(false)
   }
 
   const handleReject = async () => {
     if (!request.id || !rejectNotes.trim()) {
-      alert('Please provide a reason for rejection')
+      toast.error('Please provide a reason for rejection')
       return
     }
     setIsProcessing(true)
     const result = await onReject(request.id, rejectNotes)
     if (result.error) {
-      alert(result.error)
+      toast.error(result.error)
     } else {
+      toast.success('Request rejected')
       setShowRejectForm(false)
       setRejectNotes('')
     }

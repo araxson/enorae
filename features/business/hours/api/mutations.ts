@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
 
 // UUID validation regex
@@ -40,28 +41,8 @@ export async function upsertOperatingHours(input: z.infer<typeof operatingHourSc
 
     const supabase = await createClient()
 
-    // Auth check
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) {
-      return { error: 'Unauthorized' }
-    }
-
-    // Verify salon ownership
-    const { data: salon, error: salonError } = await supabase
-      .from('salons')
-      .select('owner_id')
-      .eq('id', validated.salon_id)
-      .limit(1)
-      .single()
-
-    const typedSalon = salon as { owner_id: string | null } | null
-    if (salonError || !typedSalon || !typedSalon.owner_id) {
-      return { error: 'Salon not found' }
-    }
-
-    if (typedSalon.owner_id !== user.id) {
+    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    if (!(await canAccessSalon(validated.salon_id))) {
       return { error: 'Unauthorized: Not your salon' }
     }
 
@@ -84,6 +65,7 @@ export async function upsertOperatingHours(input: z.infer<typeof operatingHourSc
           close_time: validated.close_time,
           is_closed: validated.is_closed,
           updated_at: new Date().toISOString(),
+          updated_by_id: session.user.id,
         })
         .eq('id', existing.id)
         .select()
@@ -108,6 +90,8 @@ export async function upsertOperatingHours(input: z.infer<typeof operatingHourSc
           open_time: validated.open_time,
           close_time: validated.close_time,
           is_closed: validated.is_closed,
+          created_by_id: session.user.id,
+          updated_by_id: session.user.id,
         })
         .select()
         .single()
@@ -147,30 +131,8 @@ export async function bulkUpdateOperatingHours(
       return { error: 'Invalid salon ID' }
     }
 
-    const supabase = await createClient()
-
-    // Auth check
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) {
-      return { error: 'Unauthorized' }
-    }
-
-    // Verify salon ownership
-    const { data: salon, error: salonError } = await supabase
-      .from('salons')
-      .select('owner_id')
-      .eq('id', salonId)
-      .limit(1)
-      .single()
-
-    const typedSalon = salon as { owner_id: string | null } | null
-    if (salonError || !typedSalon || !typedSalon.owner_id) {
-      return { error: 'Salon not found' }
-    }
-
-    if (typedSalon.owner_id !== user.id) {
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    if (!(await canAccessSalon(salonId))) {
       return { error: 'Unauthorized: Not your salon' }
     }
 
@@ -200,3 +162,7 @@ export async function bulkUpdateOperatingHours(
     return { error: 'Failed to update operating hours' }
   }
 }
+
+// Note: Special hours functionality uses operating_hours table with effective_from/effective_until fields
+// TODO: Implement special hours using operating_hours.effective_from and operating_hours.effective_until
+// when the UI is ready to support this feature

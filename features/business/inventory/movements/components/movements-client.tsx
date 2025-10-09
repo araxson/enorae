@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex, Box } from '@/components/layout'
-import { H2, Muted } from '@/components/ui/typography'
+import { Stack, Flex } from '@/components/layout'
 import { MovementList } from './movement-list'
 import { CreateMovementDialog } from './create-movement-dialog'
 import type { StockMovementWithDetails } from '../api/queries'
@@ -20,13 +19,7 @@ export function MovementsClient({ movements, products, locations }: MovementsCli
 
   return (
     <Stack gap="xl">
-      <Flex justify="between" align="start">
-        <Box>
-          <H2>Stock Movements</H2>
-          <Muted className="mt-1">
-            Track all inventory movements and adjustments
-          </Muted>
-        </Box>
+      <Flex justify="end" align="start">
         <Button onClick={() => setIsCreateDialogOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Record Movement

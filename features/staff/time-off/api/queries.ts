@@ -32,7 +32,7 @@ export async function getTimeOffRequests(): Promise<TimeOffRequestWithStaff[]> {
   if (!typedStaff?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
-    .from('time_off_requests')
+    .from('time_off_requests_view')
     .select('*')
     .eq('salon_id', typedStaff.salon_id)
     .is('deleted_at', null)
@@ -59,7 +59,7 @@ export async function getPendingTimeOffRequests(): Promise<TimeOffRequestWithSta
   if (!typedStaff?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
-    .from('time_off_requests')
+    .from('time_off_requests_view')
     .select('*')
     .eq('salon_id', typedStaff.salon_id)
     .eq('status', 'pending')

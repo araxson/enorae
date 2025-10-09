@@ -13,7 +13,7 @@ Perform a comprehensive analysis to identify:
 ## Analysis Process
 
 ### Phase 1: Database Inventory
-1. **Discover all public views** using Supabase MCP tools
+1. **Discover all public views** using Supabase MCP tools (`list_tables`, `execute_sql`)
 2. **Catalog all database functions** across all schemas
 3. **Map table relationships** and foreign keys
 4. **Identify available operations** per schema (discover all schemas dynamically)
@@ -24,6 +24,7 @@ Perform a comprehensive analysis to identify:
    - `app/(business)/business/*`
    - `app/(staff)/staff/*`
    - `app/(admin)/admin/*`
+   - `app/(marketing)/*`
 2. **Scan all features** in features/
    - Map portal → feature → operations
 3. **Catalog existing API operations**
@@ -44,107 +45,91 @@ For each view/table, check if frontend has:
 - [ ] **Update/Edit** - Modify existing records
 - [ ] **Delete** - Remove records
 
-#### Missing Features by Portal
-
-**Customer Portal Gaps**:
-
-
-**Business Portal Gaps**:
-
-
-**Staff Portal Gaps**:
-
-
-**Admin Portal Gaps**:
-
-
-#### Missing Database Function Exposures
-For each schema discovered:
-- List all functions
-- Identify which are called from frontend
-- Calculate exposure percentage
-
-#### Missing Data Relationships in UI
-Check if foreign key relationships are surfaced in the UI
-
-
-### Phase 4: Priority Classification
+#### Priority Classification
 
 Classify each gap by:
-- **Critical**: Core functionality missing (e.g., no way to manage staff schedules)
-- **High**: Important for business operations (e.g., inventory management)
-- **Medium**: Enhances user experience (e.g., advanced filters)
-- **Low**: Nice-to-have features (e.g., export options)
+- **CRITICAL** - Core functionality missing (e.g., no way to manage staff schedules)
+- **HIGH** - Important for business operations (e.g., inventory management)
+- **MEDIUM** - Enhances user experience (e.g., advanced filters)
+- **LOW** - Nice-to-have features (e.g., export options)
 
-### Phase 5: Reporting
+## Output Format
 
-Generate a structured report with:
+Generate **ONE MARKDOWN FILE PER PORTAL** with clean, actionable tasks:
+
+### File Structure
+```
+docs/gaps/
+├── customer-portal-tasks.md
+├── business-portal-tasks.md
+├── staff-portal-tasks.md
+├── admin-portal-tasks.md
+└── marketing-portal-tasks.md
+```
+
+### Template for Each Portal File
 
 ```markdown
-# Database-Frontend Gap Analysis Report
+# [Portal Name] Portal - Implementation Tasks
 
-## Executive Summary
-- Total public views discovered: [count]
-- Views with full CRUD: [count] ([percentage]%)
-- Views with partial implementation: [count] ([percentage]%)
-- Views with no frontend: [count] ([percentage]%)
-- Total database functions: [count]
-- Database functions exposed in frontend: [count] ([percentage]%)
+## Summary
+- Total database views available: [count]
+- Currently implemented: [count]
+- Missing features: [count]
 
-## Critical Gaps
+## CRITICAL Priority Tasks
 
 ### [Feature Name]
-- **Database**: [Schema].[Table/View]
-- **Portal**: [Which portal should own this]
-- **Missing Operations**: [List]
-- **Impact**: [Business impact]
-- **Recommendation**: [Implementation suggestion]
+**Database View**: `view_name`
+**Schema**: `schema.table_name`
+**Missing Operations**:
+- [ ] List/Index view
+- [ ] Detail/Show view
+- [ ] Create operation
+- [ ] Update operation
+- [ ] Delete operation
 
-## Implementation Roadmap
+**Related Database Functions**:
+- `function_name()` - [description]
 
-### Phase 1: Critical (Must-Have)
-1. [Feature] - [Estimated effort]
-2. ...
+**Implementation Steps**:
+1. Create feature structure: `features/[portal]/[feature-name]/`
+2. Add queries file: `api/queries.ts` with auth check
+3. Add mutations file: `api/mutations.ts` with server actions
+4. Create components: `components/[feature-name]-list.tsx`
+5. Create page: `app/([portal])/[portal]/[feature-name]/page.tsx`
+6. Add navigation link to sidebar
 
-### Phase 2: High Priority
-1. [Feature] - [Estimated effort]
-2. ...
+**Data Relationships to Surface**:
+- [Related entity] → [relationship type]
 
-### Phase 3: Medium Priority
-1. [Feature] - [Estimated effort]
-2. ...
+---
 
-### Phase 4: Low Priority (Future)
-1. [Feature] - [Estimated effort]
-2. ...
+## HIGH Priority Tasks
 
-## Detailed Findings
+[Same format as CRITICAL]
 
-### By Portal
-#### Customer Portal
-- ✅ Implemented: [List]
-- ❌ Missing: [List]
+---
 
-#### Business Portal
-- ✅ Implemented: [List]
-- ❌ Missing: [List]
+## MEDIUM Priority Tasks
 
-#### Staff Portal
-- ✅ Implemented: [List]
-- ❌ Missing: [List]
+[Same format as CRITICAL]
 
-#### Admin Portal
-- ✅ Implemented: [List]
-- ❌ Missing: [List]
+---
 
-### By Schema
-[Detailed analysis per schema]
+## LOW Priority Tasks
 
-### Database Functions Not Exposed
-[List functions that exist but aren't called from frontend]
+[Same format as CRITICAL]
 
-## Quick Win Opportunities
-[Features that exist in DB and are easy to add to frontend]
+---
+
+## Quick Wins
+Tasks that are easy to implement with high impact:
+- [ ] [Task name] - [Why it's a quick win]
+
+## Database Functions Not Exposed
+Functions available in the database but not called from frontend:
+- `schema.function_name()` - [description and potential use]
 ```
 
 ## Analysis Tools & Commands
@@ -171,6 +156,15 @@ Use these tools to gather data:
 - Pages must be ultra-thin (5-15 lines)
 - No `any` types allowed
 
-## Output
+## Output Location
 
-Save the detailed report to: `docs/DATABASE_FRONTEND_GAP_ANALYSIS.md`
+Save portal-specific task files to:
+```
+docs/gaps/customer-portal-tasks.md
+docs/gaps/business-portal-tasks.md
+docs/gaps/staff-portal-tasks.md
+docs/gaps/admin-portal-tasks.md
+docs/gaps/marketing-portal-tasks.md
+```
+
+Each file should be clean, scannable, and actionable for Claude Code to implement.

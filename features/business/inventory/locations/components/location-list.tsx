@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Edit2, Trash2, MapPin, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -30,6 +32,7 @@ type LocationListProps = {
 }
 
 export function LocationList({ locations, onEdit }: LocationListProps) {
+  const router = useRouter()
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -43,10 +46,14 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
     try {
       const result = await deleteStockLocation(formData)
       if (result.error) {
-        alert(result.error)
+        toast.error(result.error)
+      } else {
+        toast.success('Location deleted')
+        router.refresh()
       }
-    } catch {
-      alert('Failed to delete location')
+    } catch (error) {
+      console.error('[LocationList] delete error:', error)
+      toast.error('Failed to delete location')
     } finally {
       setIsDeleting(false)
       setDeleteId(null)

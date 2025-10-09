@@ -1,22 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
 import { EmptyState } from '@/components/shared'
-import {
-  Item,
-  ItemGroup,
-  ItemMedia,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-  ItemSeparator,
-} from '@/components/ui/item'
 import type { AppointmentWithDetails } from '@/lib/types/app.types'
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
-import { Clock, User } from 'lucide-react'
+import { Clock, User, CheckCircle } from 'lucide-react'
 
 interface TodayScheduleProps {
   appointments: AppointmentWithDetails[]
@@ -28,6 +19,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
       <Card>
         <CardHeader>
           <CardTitle>Today&apos;s Schedule</CardTitle>
+          <CardDescription>Your appointments for today will appear here</CardDescription>
         </CardHeader>
         <CardContent>
           <EmptyState
@@ -40,39 +32,82 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
     )
   }
 
+  const getInitials = (name: string) => {
+    if (!name) return 'U'
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
+  const completedCount = appointments.filter(a => a.status === 'completed').length
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Today&apos;s Schedule</CardTitle>
-        <Small>{appointments.length} appointments</Small>
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>Today&apos;s Schedule</CardTitle>
+            <CardDescription className="mt-1">{appointments.length} appointments</CardDescription>
+          </div>
+          <Badge variant="secondary" className="gap-1">
+            <CheckCircle className="h-3 w-3" />
+            {completedCount}/{appointments.length}
+          </Badge>
+        </div>
       </CardHeader>
-      <CardContent>
-        <ItemGroup>
-          {appointments.map((appointment, index) => (
-            <div key={appointment.id}>
-              <Item variant="outline" size="default">
-                <ItemMedia variant="icon">
-                  <Clock className="h-4 w-4" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>
-                    {formatAppointmentTime(appointment.start_time)}
-                  </ItemTitle>
-                  <ItemDescription>
-                    <User className="inline h-3 w-3" aria-hidden="true" />{' '}
-                    {appointment.customer_name || 'Unknown Customer'}
-                  </ItemDescription>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant={getStatusVariant(appointment.status)}>
-                    {appointment.status || 'pending'}
-                  </Badge>
-                </ItemActions>
-              </Item>
-              {index < appointments.length - 1 && <ItemSeparator />}
-            </div>
-          ))}
-        </ItemGroup>
+      <Separator />
+      <CardContent className="p-0">
+        <ScrollArea className="h-[350px]">
+          <div className="p-6 space-y-3">
+            {appointments.map((appointment, index) => {
+              const customerInitials = getInitials(appointment.customer_name || 'Unknown')
+              const isCompleted = appointment.status === 'completed'
+              const statusConfig = { variant: getStatusVariant(appointment.status), label: appointment.status || 'pending' }
+
+              return (
+                <div key={appointment.id}>
+                  <div className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
+                    isCompleted ? 'bg-muted/50 opacity-75' : 'bg-background hover:bg-accent/50'
+                  }`}>
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className="flex flex-col items-center gap-1 min-w-[60px]">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <p className="text-sm font-semibold">{formatAppointmentTime(appointment.start_time)}</p>
+                      </div>
+
+                      <Separator orientation="vertical" className="h-10" />
+
+                      <Avatar className="h-8 w-8 border">
+                        <AvatarFallback className="bg-gradient-to-br from-cyan-500 to-blue-500 text-white text-xs">
+                          {customerInitials}
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">
+                          {appointment.customer_name || 'Unknown Customer'}
+                        </p>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <User className="h-3 w-3" />
+                          <span className="truncate">Customer</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Badge variant={statusConfig.variant} className="text-xs shrink-0">
+                      {statusConfig.label}
+                    </Badge>
+                  </div>
+
+                  {index < appointments.length - 1 && <Separator className="my-3" />}
+                </div>
+              )
+            })}
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   )

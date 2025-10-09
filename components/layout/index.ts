@@ -3,83 +3,128 @@
  *
  * A comprehensive, reusable layout system for Next.js + shadcn/ui projects.
  * All components are fully typed, accessible, and responsive.
+ *
+ * @version 3.1.0
+ * @lastUpdated 2025-10-06
  */
 
 // ============================================================================
 // Core Primitives
 // ============================================================================
 
-export { Box } from './primitives/box'
-export type { BoxProps } from './primitives/box'
-
-export { Container } from './primitives/container'
-export type { ContainerProps } from './primitives/container'
-
-export { Section } from './primitives/section'
-export type { SectionProps } from './primitives/section'
-
-export { Spacer } from './primitives/spacer'
-export type { SpacerProps } from './primitives/spacer'
+export {
+  Box,
+  Container,
+  Section,
+  Spacer,
+  type BoxProps,
+  type ContainerProps,
+  type SectionProps,
+  type SpacerProps,
+} from './primitives'
 
 // ============================================================================
 // Flexbox Components
 // ============================================================================
 
-export { Flex } from './flex/flex'
-export type { FlexProps } from './flex/flex'
-
-export { Stack } from './flex/stack'
-export type { StackProps } from './flex/stack'
-
-export { Group } from './flex/group'
-export type { GroupProps } from './flex/group'
+export {
+  Flex,
+  Stack,
+  Group,
+  type FlexProps,
+  type StackProps,
+  type GroupProps,
+} from './flex'
 
 // ============================================================================
 // Grid Components
 // ============================================================================
 
-export { Grid } from './grid/grid'
-export type { GridProps } from './grid/grid'
+export {
+  Grid,
+  type GridProps,
+} from './grid'
 
 // ============================================================================
-// Utility Components
+// Utility Components & Helpers
 // ============================================================================
 
-export { Center } from './utils/center'
-export type { CenterProps } from './utils/center'
-
-export { Divider } from './utils/divider'
-export type { DividerProps } from './utils/divider'
-
-export { VisuallyHidden } from './utils/visually-hidden'
-export type { VisuallyHiddenProps } from './utils/visually-hidden'
-
-export { AspectRatio } from './utils/aspect-ratio'
-export type { AspectRatioProps } from './utils/aspect-ratio'
-
-export { Show, Hide } from './utils/show-hide'
-export type { ShowProps, HideProps } from './utils/show-hide'
-
-export { TouchTarget, isTouchTargetCompliant, touchTargetClasses } from './utils/touch-target'
-export type { TouchTargetProps } from './utils/touch-target'
+export {
+  // Components
+  Center,
+  VisuallyHidden,
+  Show,
+  Hide,
+  TouchTarget,
+  isTouchTargetCompliant,
+  touchTargetClasses,
+  // Types
+  type CenterProps,
+  type VisuallyHiddenProps,
+  type ShowProps,
+  type HideProps,
+  type TouchTargetProps,
+  // Utilities
+  isResponsive,
+  responsiveClasses,
+  spacing,
+  gapClasses,
+  paddingClasses,
+  marginClasses,
+  alignItemsClasses,
+  justifyContentClasses,
+  flexDirectionClasses,
+  flexWrapClasses,
+  displayClasses,
+  positionClasses,
+  overflowClasses,
+  containerSizes,
+  gridColsClasses,
+} from './utils'
 
 // ============================================================================
 // Navigation Components
 // ============================================================================
 
-export { DynamicBreadcrumbs } from './dynamic-breadcrumbs'
-export { NavActions } from './nav-actions'
-export { UserNav } from './user-nav'
-export { Header } from './header'
-export { Footer } from './footer'
-export { ConditionalLayout } from './conditional-layout'
+export {
+  DynamicBreadcrumbs,
+  UserDropdown,
+  MarketingUserNav,
+  NavUser,
+  NavMain,
+  NavSecondary,
+  NavFavorites,
+  MobileNav,
+  getNavIcon,
+  type IconName,
+} from './navigation'
 
 // ============================================================================
-// Dashboard Sidebar
+// Headers
 // ============================================================================
 
-export { PortalSidebar } from './portal-sidebar'
-export type { PortalSidebarProps, MenuItem, MenuSection } from './portal-sidebar'
+export {
+  PortalHeader,
+} from './headers'
+
+// MarketingHeader uses server-only APIs (verifySession)
+// Import directly from file:
+// import { MarketingHeader } from '@/components/layout/headers/marketing-header'
+
+// ============================================================================
+// Sidebars
+// ============================================================================
+
+export { PortalSidebar } from './sidebars/portal-sidebar'
+export type { PortalSidebarProps } from './sidebars/portal-sidebar'
+export type { NavItem, NavSecondaryItem, FavoriteItem } from './sidebars/types'
+
+// ============================================================================
+// Footer
+// ============================================================================
+
+// Footer is a Server Component (uses client-side newsletter form)
+// Import directly from '@/components/layout/footer/footer'
 
 // ============================================================================
 // Types & Utils
@@ -99,28 +144,3 @@ export type {
   ContainerSize,
   GridCols,
 } from './types'
-
-export {
-  isResponsive,
-  responsiveClasses,
-} from './utils/responsive'
-
-// ============================================================================
-// Constants
-// ============================================================================
-
-export {
-  spacing,
-  gapClasses,
-  paddingClasses,
-  marginClasses,
-  alignItemsClasses,
-  justifyContentClasses,
-  flexDirectionClasses,
-  flexWrapClasses,
-  displayClasses,
-  positionClasses,
-  overflowClasses,
-  containerSizes,
-  gridColsClasses,
-} from './utils/classes'

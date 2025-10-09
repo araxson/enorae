@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import {
   Dialog,
   DialogContent,
@@ -10,36 +11,26 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
-import { H4, Small } from '@/components/ui/typography'
-import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { RefreshCw, Trash2 } from 'lucide-react'
-import { format } from 'date-fns'
+import { Stack } from '@/components/layout'
 import type { Database } from '@/lib/types/database.types'
 import { retryWebhook, deleteWebhook } from '../api/mutations'
+import { WebhookStatusSection } from './webhook-status-section'
+import { WebhookPayloadSection } from './webhook-payload-section'
+import { WebhookErrorSection } from './webhook-error-section'
+import { WebhookActionButtons } from './webhook-detail-actions'
+import { Separator } from '@/components/ui/separator'
 
 type WebhookQueue = Database['communication']['Tables']['webhook_queue']['Row']
 
-interface WebhookDetailDialogProps {
+type WebhookDetailDialogProps = {
   webhook: WebhookQueue | null
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-const STATUS_COLORS = {
-  pending: 'secondary',
-  sent: 'default',
-  failed: 'destructive',
-  retrying: 'secondary',
-} as const
-
-export function WebhookDetailDialog({
-  webhook,
-  open,
-  onOpenChange,
-}: WebhookDetailDialogProps) {
+export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDetailDialogProps) {
+  const router = useRouter()
   const [isRetrying, setIsRetrying] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -47,47 +38,46 @@ export function WebhookDetailDialog({
 
   if (!webhook) return null
 
-  const handleRetry = async () => {
-    setIsRetrying(true)
+  const resetAlerts = () => {
     setError(null)
     setSuccess(null)
+  }
+
+  const handleRetry = async () => {
+    setIsRetrying(true)
+    resetAlerts()
 
     const result = await retryWebhook(webhook.id)
 
     if (result.success) {
       setSuccess('Webhook queued for retry')
-      setTimeout(() => {
-        onOpenChange(false)
-        window.location.reload()
-      }, 1500)
-    } else {
+      toast.success('Webhook queued for retry')
+      onOpenChange(false)
+      router.refresh()
+    } else if (result.error) {
       setError(result.error)
+      toast.error(result.error)
     }
 
     setIsRetrying(false)
   }
 
   const handleDelete = async () => {
-    const confirmed = confirm(
-      'Are you sure you want to delete this webhook entry? This action cannot be undone.'
-    )
-
-    if (!confirmed) return
+    if (isDeleting) return
 
     setIsDeleting(true)
-    setError(null)
-    setSuccess(null)
+    resetAlerts()
 
     const result = await deleteWebhook(webhook.id)
 
     if (result.success) {
       setSuccess('Webhook deleted successfully')
-      setTimeout(() => {
-        onOpenChange(false)
-        window.location.reload()
-      }, 1500)
-    } else {
+      toast.success('Webhook deleted successfully')
+      onOpenChange(false)
+      router.refresh()
+    } else if (result.error) {
       setError(result.error)
+      toast.error(result.error)
     }
 
     setIsDeleting(false)
@@ -116,107 +106,29 @@ export function WebhookDetailDialog({
             </Alert>
           )}
 
-          {/* Status & Metadata */}
-          <Stack gap="md">
-            <Flex gap="md" align="center">
-              <H4 className="mb-0">Status</H4>
-              <Badge variant={STATUS_COLORS[webhook.status as keyof typeof STATUS_COLORS]}>
-                {webhook.status}
-              </Badge>
-            </Flex>
-
-            <Stack gap="sm">
-              <Flex gap="sm">
-                <Small className="text-muted-foreground w-32">URL:</Small>
-                <Small className="break-all">{webhook.url}</Small>
-              </Flex>
-
-              <Flex gap="sm">
-                <Small className="text-muted-foreground w-32">Attempts:</Small>
-                <Small>{webhook.attempts || 0}</Small>
-              </Flex>
-
-              <Flex gap="sm">
-                <Small className="text-muted-foreground w-32">Created:</Small>
-                <Small>{format(new Date(webhook.created_at), 'MMM dd, yyyy HH:mm:ss')}</Small>
-              </Flex>
-
-              {webhook.completed_at && (
-                <Flex gap="sm">
-                  <Small className="text-muted-foreground w-32">Completed:</Small>
-                  <Small>{format(new Date(webhook.completed_at), 'MMM dd, yyyy HH:mm:ss')}</Small>
-                </Flex>
-              )}
-
-              {webhook.next_retry_at && (
-                <Flex gap="sm">
-                  <Small className="text-muted-foreground w-32">Next Retry:</Small>
-                  <Small>{format(new Date(webhook.next_retry_at), 'MMM dd, yyyy HH:mm:ss')}</Small>
-                </Flex>
-              )}
-            </Stack>
-          </Stack>
+          <WebhookStatusSection webhook={webhook} />
 
           <Separator />
 
-          {/* Payload */}
-          <Stack gap="sm">
-            <H4>Payload</H4>
-            <div className="bg-muted p-4 rounded-md overflow-x-auto">
-              <pre className="text-xs">
-                <code>{JSON.stringify(webhook.payload, null, 2)}</code>
-              </pre>
-            </div>
-          </Stack>
+          <WebhookPayloadSection payload={webhook.payload} />
 
-          {/* Response - would be shown if webhook_queue had response field */}
-
-          {/* Error */}
           {webhook.last_error && (
             <>
               <Separator />
-              <Stack gap="sm">
-                <H4>Error</H4>
-                <Alert variant="destructive">
-                  <AlertDescription className="break-words">
-                    {webhook.last_error}
-                  </AlertDescription>
-                </Alert>
-              </Stack>
+              <WebhookErrorSection error={webhook.last_error} />
             </>
           )}
         </Stack>
 
         <DialogFooter>
-          <Flex gap="sm" justify="between" className="w-full">
-            <Button
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={isDeleting || isRetrying}
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              {isDeleting ? 'Deleting...' : 'Delete'}
-            </Button>
-
-            <Flex gap="sm">
-              <Button
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                Close
-              </Button>
-
-              {webhook.status === 'failed' && (
-                <Button
-                  onClick={handleRetry}
-                  disabled={isRetrying || isDeleting}
-                >
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  {isRetrying ? 'Retrying...' : 'Retry'}
-                </Button>
-              )}
-            </Flex>
-          </Flex>
+          <WebhookActionButtons
+            onClose={() => onOpenChange(false)}
+            onRetry={handleRetry}
+            onDelete={handleDelete}
+            status={webhook.status}
+            isRetrying={isRetrying}
+            isDeleting={isDeleting}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

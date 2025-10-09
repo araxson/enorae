@@ -24,9 +24,7 @@ import {
 import { Stack } from '@/components/layout'
 import { Muted, Small } from '@/components/ui/typography'
 import { deleteSalonLocation } from '../api/mutations'
-import type { Database } from '@/lib/types/database.types'
-
-type SalonLocation = Database['organization']['Tables']['salon_locations']['Row']
+import type { SalonLocation } from '@/lib/types/app.types'
 
 type LocationListProps = {
   locations: SalonLocation[]

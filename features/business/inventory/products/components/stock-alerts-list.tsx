@@ -1,5 +1,8 @@
 'use client'
 
+import { useTransition } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { AlertTriangle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,11 +17,20 @@ type StockAlertsListProps = {
 }
 
 export function StockAlertsList({ alerts }: StockAlertsListProps) {
-  const handleResolve = async (alertId: string) => {
-    const result = await resolveStockAlert(alertId)
-    if (result.error) {
-      alert(result.error)
-    }
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+
+  const handleResolve = (alertId: string) => {
+    startTransition(async () => {
+      const result = await resolveStockAlert(alertId)
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+
+      toast.success('Alert resolved')
+      router.refresh()
+    })
   }
 
   const getAlertType = (alertType: string) => {
@@ -58,12 +70,12 @@ export function StockAlertsList({ alerts }: StockAlertsListProps) {
       </CardHeader>
       <CardContent>
         <Stack gap="sm">
-          {alerts.map((alert) => {
+          {alerts.map((alert, index) => {
             const alertInfo = getAlertType(alert.alert_type || 'unknown')
 
             return (
               <div
-                key={alert.id || Math.random().toString()}
+                key={alert.id ?? `alert-${index}`}
                 className="flex items-center justify-between p-4 border rounded-lg"
               >
                 <div className="flex-1">
@@ -79,7 +91,8 @@ export function StockAlertsList({ alerts }: StockAlertsListProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => alert.id && handleResolve(alert.id)}
-                  disabled={!alert.id}
+                  disabled={!alert.id || isPending}
+                  aria-busy={isPending}
                 >
                   Resolve
                 </Button>

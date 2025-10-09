@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Stack, Flex } from '@/components/layout'
 import { H2, P, Muted } from '@/components/ui/typography'
@@ -16,6 +17,7 @@ interface SessionListProps {
 }
 
 export function SessionList({ sessions }: SessionListProps) {
+  const router = useRouter()
   const [revokingId, setRevokingId] = useState<string | null>(null)
   const [revokingAll, setRevokingAll] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -32,8 +34,7 @@ export function SessionList({ sessions }: SessionListProps) {
 
     if (result.success) {
       toast.success('Session revoked successfully')
-      // Optimistically remove from UI
-      window.location.reload()
+      router.refresh()
     } else {
       toast.error(result.error)
       setError(result.error)
@@ -53,8 +54,9 @@ export function SessionList({ sessions }: SessionListProps) {
 
     if (result.success) {
       toast.success(`Successfully revoked ${result.data.count} session(s)`)
-      // Reload to refresh the list
-      setTimeout(() => window.location.reload(), 1500)
+      setTimeout(() => {
+        router.refresh()
+      }, 500)
     } else {
       toast.error(result.error)
       setError(result.error)

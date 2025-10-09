@@ -11,6 +11,12 @@ const updateStaffInfoSchema = z.object({
   experienceYears: z.number().int().min(0).max(100).optional().nullable(),
 })
 
+const updateStaffMetadataSchema = z.object({
+  specialties: z.array(z.string()).optional(),
+  certifications: z.array(z.string()).optional(),
+  interests: z.array(z.string()).optional(),
+})
+
 export type ActionResponse<T = void> =
   | { success: true; data: T }
   | { success: false; error: string }
@@ -73,6 +79,134 @@ export async function updateStaffInfo(formData: FormData): Promise<ActionRespons
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update staff information',
+    }
+  }
+}
+
+/**
+ * Update staff metadata (specialties, certifications, interests)
+ */
+export async function updateStaffMetadata(
+  data: z.infer<typeof updateStaffMetadataSchema>
+): Promise<ActionResponse> {
+  try {
+    const session = await requireAuth()
+    const supabase = await createClient()
+
+    const validation = updateStaffMetadataSchema.safeParse(data)
+    if (!validation.success) {
+      return { success: false, error: validation.error.errors[0].message }
+    }
+
+    const { specialties, certifications, interests } = validation.data
+
+    // Get profile_id from user_id
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('user_id', session.user.id)
+      .single<{ id: string }>()
+
+    if (!profile?.id) {
+      return { success: false, error: 'Profile not found' }
+    }
+
+    // Update or create metadata
+    const { error } = await supabase
+      .schema('identity')
+      .from('profiles_metadata')
+      .upsert({
+        profile_id: profile.id,
+        interests: interests || [],
+        tags: [...(specialties || []), ...(certifications || [])],
+        updated_at: new Date().toISOString(),
+      })
+
+    if (error) throw error
+
+    revalidatePath('/staff/profile')
+    return { success: true, data: undefined }
+  } catch (error) {
+    console.error('Error updating staff metadata:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to update metadata',
+    }
+  }
+}
+
+/**
+ * Upload portfolio image for staff
+ */
+export async function uploadPortfolioImage(formData: FormData): Promise<ActionResponse<string>> {
+  try {
+    const session = await requireAuth()
+    const supabase = await createClient()
+
+    const file = formData.get('image') as File
+    if (!file) {
+      return { success: false, error: 'No image provided' }
+    }
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+    if (!validTypes.includes(file.type)) {
+      return { success: false, error: 'Invalid file type. Use JPEG, PNG, or WebP' }
+    }
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      return { success: false, error: 'File too large. Maximum size is 5MB' }
+    }
+
+    // Get staff profile
+    const { data: staff } = await supabase
+      .from('staff')
+      .select('id, salon_id')
+      .eq('user_id', session.user.id)
+      .single<{ id: string; salon_id: string }>()
+
+    if (!staff?.id) {
+      return { success: false, error: 'Staff profile not found' }
+    }
+
+    // Upload to storage
+    const fileName = `${staff.id}/${Date.now()}-${file.name}`
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('staff-portfolios')
+      .upload(fileName, file)
+
+    if (uploadError) throw uploadError
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('staff-portfolios')
+      .getPublicUrl(fileName)
+
+    // Save to salon_media table as portfolio image
+    const { error: mediaError } = await supabase
+      .schema('organization')
+      .from('salon_media')
+      .insert({
+        salon_id: staff.salon_id,
+        media_type: 'image',
+        url: publicUrl,
+        alt_text: `Portfolio image by staff ${staff.id}`,
+        display_order: 0,
+        is_active: true,
+        created_by_id: session.user.id,
+        updated_by_id: session.user.id,
+      })
+
+    if (mediaError) throw mediaError
+
+    revalidatePath('/staff/profile')
+    return { success: true, data: publicUrl }
+  } catch (error) {
+    console.error('Error uploading portfolio image:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to upload image',
     }
   }
 }

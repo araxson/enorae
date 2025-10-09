@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Stack, Box, Flex } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
+import { Stack, Flex } from '@/components/layout'
 import { OrderList } from './order-list'
 import { OrderDetailDialog } from './order-detail-dialog'
 import { CreateOrderForm } from './create-order-form'
@@ -34,13 +33,7 @@ export function PurchaseOrdersClient({
 
   return (
     <Stack gap="xl">
-      <Flex align="center" justify="between">
-        <Box>
-          <H1>Purchase Orders</H1>
-          <P className="text-muted-foreground mt-1">
-            Manage inventory purchase orders
-          </P>
-        </Box>
+      <Flex align="center" justify="end">
         <Button onClick={() => setIsCreateFormOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Create Order

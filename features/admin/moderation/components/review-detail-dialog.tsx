@@ -13,25 +13,12 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Stack, Flex } from '@/components/layout'
 import { P, Muted } from '@/components/ui/typography'
 import { toast } from 'sonner'
 import { respondToReview } from '../api/mutations'
+import type { Database } from '@/lib/types/database.types'
 
-type Review = {
-  id: string | null
-  salon_name?: string | null
-  customer_name?: string | null
-  customer_email?: string | null
-  rating: number | null
-  review_text?: string | null
-  is_flagged: boolean | null
-  flagged_reason?: string | null
-  response?: string | null
-  response_date?: string | null
-  is_featured: boolean | null
-  created_at: string | null
-}
+type Review = Database['public']['Views']['admin_reviews_overview']['Row']
 
 type ReviewDetailDialogProps = {
   review: Review | null
@@ -47,7 +34,7 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
   if (!review) return null
 
   async function handleSubmitResponse() {
-    if (!review || !responseText.trim()) {
+    if (!responseText.trim()) {
       toast.error('Response cannot be empty')
       return
     }
@@ -67,43 +54,44 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
 
     if (result.error) {
       toast.error(result.error)
-    } else {
-      toast.success('Your response has been added to the review.')
-      setIsResponding(false)
-      setResponseText('')
-      onOpenChange(false)
+      return
     }
+
+    toast.success('Your response has been added to the review.')
+    setIsResponding(false)
+    setResponseText('')
+    onOpenChange(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Review Details</DialogTitle>
+          <DialogTitle>Review details</DialogTitle>
         </DialogHeader>
 
-        <Stack gap="lg">
-          {/* Salon & Customer Info */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="space-y-1">
               <Muted className="text-sm">Salon</Muted>
               <P className="font-medium">{review.salon_name || 'Unknown'}</P>
             </div>
-            <div>
+            <div className="space-y-1">
               <Muted className="text-sm">Customer</Muted>
               <P className="font-medium">{review.customer_name || 'Anonymous'}</P>
-              <Muted className="text-xs">{review.customer_email}</Muted>
+              {review.customer_email && (
+                <Muted className="text-xs">{review.customer_email}</Muted>
+              )}
             </div>
           </div>
 
-          {/* Rating & Status */}
-          <div>
-            <Muted className="text-sm mb-2">Rating & Status</Muted>
-            <Flex gap="sm" align="center">
-              <div className="flex items-center gap-1">
+          <div className="space-y-2">
+            <Muted className="text-sm">Rating & status</Muted>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span className="font-bold">{review.rating}</span>
-              </div>
+                <span className="font-semibold">{review.rating}</span>
+              </span>
               {review.is_flagged && (
                 <Badge variant="destructive" className="gap-1">
                   <Flag className="h-3 w-3" />
@@ -116,77 +104,72 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
                   Featured
                 </Badge>
               )}
-              {review.response && (
+              {review.has_response && (
                 <Badge variant="outline" className="gap-1">
                   <MessageSquare className="h-3 w-3" />
                   Responded
                 </Badge>
               )}
-            </Flex>
+            </div>
           </div>
 
-          {/* Flagged Reason */}
           {review.is_flagged && review.flagged_reason && (
-            <div>
-              <Muted className="text-sm mb-1">Flag Reason</Muted>
-              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-                <P className="text-sm text-red-900">{review.flagged_reason}</P>
+            <div className="space-y-1">
+              <Muted className="text-sm">Flag reason</Muted>
+              <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-900">
+                {review.flagged_reason}
               </div>
             </div>
           )}
 
-          {/* Review Text */}
-          <div>
-            <Muted className="text-sm mb-1">Review</Muted>
-            <div className="p-3 bg-muted rounded-md">
-              <P className="text-sm">{review.review_text || 'No text provided'}</P>
+          <div className="space-y-1">
+            <Muted className="text-sm">Review</Muted>
+            <div className="rounded-md bg-muted p-3 text-sm">
+              {review.comment || 'No text provided'}
             </div>
-            <Muted className="text-xs mt-1">
+            <Muted className="text-xs">
               Posted on {review.created_at ? format(new Date(review.created_at), 'MMMM d, yyyy') : 'Unknown date'}
             </Muted>
           </div>
 
-          {/* Existing Response */}
-          {review.response && (
-            <div>
-              <Muted className="text-sm mb-1">Response</Muted>
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
-                <P className="text-sm text-blue-900">{review.response}</P>
+          {review.has_response && (
+            <div className="space-y-1">
+              <Muted className="text-sm">Response</Muted>
+              <div className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
+                Response has been recorded. Response content is not available in this overview.
               </div>
               {review.response_date && (
-                <Muted className="text-xs mt-1">
+                <Muted className="text-xs">
                   Responded on {format(new Date(review.response_date), 'MMMM d, yyyy')}
                 </Muted>
               )}
             </div>
           )}
 
-          {/* Response Form */}
-          {!isResponding && !review.response && (
-            <Button onClick={() => setIsResponding(true)} variant="outline">
-              <MessageSquare className="h-4 w-4 mr-2" />
-              Add Response
+          {!isResponding && !review.has_response && (
+            <Button onClick={() => setIsResponding(true)} variant="outline" className="gap-2">
+              <MessageSquare className="h-4 w-4" />
+              Add response
             </Button>
           )}
 
           {isResponding && (
             <div className="space-y-3">
-              <div>
-                <Label htmlFor="response">Your Response</Label>
+              <div className="space-y-2">
+                <Label htmlFor="response">Your response</Label>
                 <Textarea
                   id="response"
-                  placeholder="Enter your response to this review..."
                   value={responseText}
-                  onChange={(e) => setResponseText(e.target.value)}
+                  onChange={(event) => setResponseText(event.target.value)}
+                  placeholder="Enter your response to this review..."
                   rows={4}
                   maxLength={1000}
                 />
-                <Muted className="text-xs mt-1">
-                  {responseText.length}/1000 characters
-                </Muted>
+                <Muted className="text-xs">{responseText.length}/1000 characters</Muted>
               </div>
-              <Flex gap="sm" justify="end">
+              <div className="flex justify-end gap-2">
                 <Button
+                  type="button"
                   variant="outline"
                   onClick={() => {
                     setIsResponding(false)
@@ -197,12 +180,12 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
                   Cancel
                 </Button>
                 <Button onClick={handleSubmitResponse} disabled={isLoading}>
-                  {isLoading ? 'Submitting...' : 'Submit Response'}
+                  {isLoading ? 'Submitting...' : 'Submit response'}
                 </Button>
-              </Flex>
+              </div>
             </div>
           )}
-        </Stack>
+        </div>
       </DialogContent>
     </Dialog>
   )

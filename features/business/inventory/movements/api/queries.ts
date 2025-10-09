@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 // Types - Use public view
@@ -32,18 +32,10 @@ export type StockMovementWithDetails = StockMovement & {
  */
 export async function getStockMovements(limit = 100): Promise<StockMovementWithDetails[]> {
   // SECURITY: Require business role
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()
-
-  // Get user's salon with explicit filter
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string }>()
-
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
+  const salonId = await requireUserSalonId()
 
   // ✅ FIXED: Single query with nested SELECT for all relations
   const { data, error } = await supabase
@@ -55,7 +47,7 @@ export async function getStockMovements(limit = 100): Promise<StockMovementWithD
       to_location:to_location_id(id, name),
       performed_by:performed_by_id(id, full_name)
     `)
-    .eq('salon_id', staffProfile.salon_id)
+    .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
     .limit(limit)
 
@@ -73,18 +65,10 @@ export async function getStockMovementsByProduct(
   limit = 50
 ): Promise<StockMovementWithDetails[]> {
   // SECURITY: Require business role
-  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()
-
-  // Get user's salon with explicit filter
-  const { data: staffProfile } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .eq('user_id', session.user.id)
-    .single<{ salon_id: string }>()
-
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
+  const salonId = await requireUserSalonId()
 
   // ✅ FIXED: Single query with nested SELECT for all relations
   const { data, error } = await supabase
@@ -96,7 +80,7 @@ export async function getStockMovementsByProduct(
       to_location:to_location_id(id, name),
       performed_by:performed_by_id(id, full_name)
     `)
-    .eq('salon_id', staffProfile.salon_id)
+    .eq('salon_id', salonId)
     .eq('product_id', productId)
     .order('created_at', { ascending: false })
     .limit(limit)

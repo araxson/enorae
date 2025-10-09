@@ -270,17 +270,14 @@ pnpm db:types         # Generate TypeScript types from Supabase
 
 ### Start Here
 - 📘 **[Documentation Index](./docs/INDEX.md)** - Complete docs navigation
-- 🤖 **[CLAUDE.md](./CLAUDE.md)** - AI development guidelines (**MANDATORY**)
+- 🤖 **[claude.md](./claude.md)** - AI development guidelines (**MANDATORY**)
 
 ### Core Documentation
 | Document | Description | Size |
 |----------|-------------|------|
-| [COMPLETE_PROJECT_TREE.md](./docs/COMPLETE_PROJECT_TREE.md) | Full project structure with all files & folders | 51KB |
-| [NAMING_CONVENTIONS.md](./docs/NAMING_CONVENTIONS.md) | File & folder naming rules | 20KB |
-| [FINAL_ARCHITECTURE.md](./docs/FINAL_ARCHITECTURE.md) | System architecture & design decisions | 28KB |
-| [ROLE_BASED_ROUTING.md](./docs/ROLE_BASED_ROUTING.md) | 11 roles, 4 portals, middleware implementation | 12KB |
-| [FRONTEND_BEST_PRACTICES.md](./docs/FRONTEND_BEST_PRACTICES.md) | Component patterns, DAL, Server Actions | 48KB |
-| [SUPABASE_BEST_PRACTICES.md](./docs/SUPABASE_BEST_PRACTICES.md) | RLS optimization, query patterns | 22KB |
+| [project-tree.md](./docs/project-tree.md) | Full project structure with all files & folders | 51KB |
+| [supabase-testing-best-practices.md](./docs/supabase-testing-best-practices.md) | Supabase testing guidelines & stubs | 7KB |
+| [testing-guide.md](./testing-guide.md) | Testing workflow and command reference | 11KB |
 
 ---
 

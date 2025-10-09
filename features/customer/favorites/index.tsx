@@ -1,21 +1,19 @@
 import { getUserFavorites } from './api/queries'
 import { FavoritesList } from './components/favorites-list'
-import { Section, Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
+import { P } from '@/components/ui/typography'
 
 export async function Favorites() {
   const favorites = await getUserFavorites()
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Stack gap="sm">
-          <H1>My Favorite Salons</H1>
+    <div className="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      <div className="space-y-6">
+        <div className="space-y-2">
           <P>Quick access to your favorite salons and services</P>
-        </Stack>
+        </div>
 
         <FavoritesList favorites={favorites} />
-      </Stack>
-    </Section>
+      </div>
+    </div>
   )
 }

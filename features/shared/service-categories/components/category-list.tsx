@@ -71,53 +71,48 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
   const subcategories = categories.filter((c) => c.parent_id)
 
   const renderCategory = (category: ServiceCategoryWithCounts, isSubcategory = false) => (
-    <Card key={category.id} className={isSubcategory ? 'ml-8 border-l-4 border-l-primary/30' : ''}>
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <CardTitle className="text-lg flex items-center gap-2">
-              {isSubcategory && <span className="text-muted-foreground">↳</span>}
-              {/* TODO: Add icon_name field to database schema */}
-              {/* {category.icon_name && (
-                <span className="text-xl">{category.icon_name}</span>
-              )} */}
-              {category.name}
-            </CardTitle>
-            {/* TODO: Add description field to database schema */}
-            {/* {category.description && (
-              <CardDescription className="mt-1">
-                {category.description}
-              </CardDescription>
-            )} */}
+    <div
+      key={category.id}
+      className={isSubcategory ? 'ml-8 border-l-4 border-l-primary/30 pl-4' : ''}
+    >
+      <Card>
+        <CardHeader>
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                {isSubcategory && <span className="text-muted-foreground">↳</span>}
+                {category.name}
+              </CardTitle>
+            </div>
+            <Badge variant="secondary">
+              {category.service_count || 0} services
+            </Badge>
           </div>
-          <Badge variant="secondary">
-            {category.service_count || 0} services
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex gap-2">
-          {onEdit && (
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-2">
+            {onEdit && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onEdit(category)}
+              >
+                <Edit2 className="mr-2 h-4 w-4" />
+                Edit
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onEdit(category)}
+              onClick={() => setDeleteId(category.id)}
             >
-              <Edit2 className="h-4 w-4 mr-2" />
-              Edit
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete
             </Button>
-          )}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setDeleteId(category.id)}
-          >
-            <Trash2 className="h-4 w-4 mr-2" />
-            Delete
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 
   return (

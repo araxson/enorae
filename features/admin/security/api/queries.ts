@@ -1,8 +1,11 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import type { Database } from '@/lib/types/database.types'
 
-export type AuditLog = {
+type AuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
+
+export interface AuditLog {
   id: string
   event_type: string
   user_id: string | null
@@ -16,7 +19,7 @@ export type AuditLog = {
   user_name?: string | null
 }
 
-export type SecurityEvent = {
+export interface SecurityEvent {
   id: string
   event_type: string
   severity: string
@@ -26,6 +29,45 @@ export type SecurityEvent = {
   created_at: string
   user_email?: string | null
 }
+
+const NORMALIZED_SEVERITY_FALLBACK = 'info'
+
+const normalizeIp = (value: AuditLogRow['ip_address']): string | null => {
+  if (typeof value === 'string') {
+    return value
+  }
+  if (Array.isArray(value)) {
+    const first = value.find((entry) => typeof entry === 'string')
+    return first ?? null
+  }
+  return null
+}
+
+const toAuditLog = (row: AuditLogRow): AuditLog => ({
+  id: row.id,
+  event_type: row.event_type ?? row.action,
+  user_id: row.user_id,
+  resource_type: row.entity_type,
+  resource_id: row.entity_id,
+  event_data: (row.metadata as Record<string, unknown> | null) ?? null,
+  ip_address: normalizeIp(row.ip_address),
+  user_agent: row.user_agent,
+  created_at: row.created_at,
+  user_email: null,
+  user_name: null,
+})
+
+const toSecurityEvent = (row: AuditLogRow): SecurityEvent => ({
+  id: row.id,
+  event_type: row.event_type ?? row.action,
+  severity: row.severity ?? NORMALIZED_SEVERITY_FALLBACK,
+  user_id: row.user_id,
+  ip_address: normalizeIp(row.ip_address),
+  event_details: (row.metadata as Record<string, unknown> | null) ?? null,
+  created_at: row.created_at,
+  user_email: null,
+})
+
 
 /**
  * Get audit logs with optional filters
@@ -40,20 +82,12 @@ export async function getAuditLogs(filters?: {
   // SECURITY: Require platform admin
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   // Query from public audit_logs view
-  let query = supabase.from('audit_logs').select(`
-    id,
-    event_type,
-    user_id,
-    resource_type,
-    resource_id,
-    event_data,
-    ip_address,
-    user_agent,
-    created_at
-  `)
+  const auditSchema = supabase.schema('audit')
+
+  let query = auditSchema.from('audit_logs').select('*')
 
   if (filters?.eventType) {
     query = query.eq('event_type', filters.eventType)
@@ -76,20 +110,11 @@ export async function getAuditLogs(filters?: {
   const { data, error } = await query
 
   if (error) {
-    // If view doesn't exist or schema mismatch, return empty array
     console.error('Audit logs query error:', error)
     return []
   }
 
-  // Type guard: only return if data has expected structure
-  if (!data || !Array.isArray(data)) return []
-
-  // Filter out any error objects and type cast
-  const filtered = (data as unknown[]).filter(
-    (item): item is AuditLog =>
-      item !== null && typeof item === 'object' && !('error' in item)
-  )
-  return filtered
+  return (data ?? []).map(toAuditLog)
 }
 
 /**
@@ -104,18 +129,12 @@ export async function getSecurityEvents(filters?: {
   // SECURITY: Require platform admin
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   // Query from public audit_logs view (security events are in audit_logs)
-  let query = supabase.from('audit_logs').select(`
-    id,
-    event_type:action,
-    severity,
-    user_id,
-    ip_address,
-    event_details:details,
-    created_at
-  `)
+  const auditSchema = supabase.schema('audit')
+
+  let query = auditSchema.from('audit_logs').select('*')
 
   if (filters?.severity) {
     query = query.eq('severity', filters.severity)
@@ -134,20 +153,11 @@ export async function getSecurityEvents(filters?: {
   const { data, error } = await query
 
   if (error) {
-    // If view doesn't exist or schema mismatch, return empty array
     console.error('Security events query error:', error)
     return []
   }
 
-  // Type guard: only return if data has expected structure
-  if (!data || !Array.isArray(data)) return []
-
-  // Filter out any error objects and type cast
-  const filtered = (data as unknown[]).filter(
-    (item): item is SecurityEvent =>
-      item !== null && typeof item === 'object' && !('error' in item)
-  )
-  return filtered
+  return (data ?? []).map(toSecurityEvent)
 }
 
 /**

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 // NOTE: Using Table type for Update because View includes computed fields
@@ -21,11 +22,7 @@ export async function updateAppointmentStatus(
   appointmentId: string,
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
 ) {
-  const supabase = await createClient()
-
-  // Auth check
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   // Validate input
   const validation = updateStatusSchema.safeParse({ appointmentId, status })
@@ -33,21 +30,7 @@ export async function updateAppointmentStatus(
     throw new Error(validation.error.errors[0].message)
   }
 
-  // CRITICAL SECURITY FIX: Verify ownership before allowing update
-  // First, get the user's salon(s)
-  const { data: userSalons, error: salonError } = await supabase
-    .from('salons')
-    .select('id')
-    .eq('owner_id', user.id)
-
-  if (salonError) throw salonError
-  if (!userSalons || userSalons.length === 0) {
-    throw new Error('No salon found for user')
-  }
-
-  const salonIds = (userSalons as Array<{ id: string | null }>)
-    .filter(s => s.id !== null)
-    .map(s => s.id as string)
+  const supabase = await createClient()
 
   // Verify the appointment belongs to one of the user's salons
   const { data: appointment, error: appointmentError } = await supabase
@@ -60,7 +43,12 @@ export async function updateAppointmentStatus(
   if (!appointment) throw new Error('Appointment not found')
 
   const appointmentSalonId = (appointment as { salon_id: string | null }).salon_id
-  if (!appointmentSalonId || !salonIds.includes(appointmentSalonId)) {
+  if (!appointmentSalonId) {
+    throw new Error('Appointment salon not found')
+  }
+
+  const authorized = await canAccessSalon(appointmentSalonId)
+  if (!authorized) {
     throw new Error('Unauthorized: Appointment does not belong to your salon')
   }
 

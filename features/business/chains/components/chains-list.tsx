@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Edit2, Trash2, Building2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Edit2, Trash2, Building2, Eye } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -31,6 +32,7 @@ type ChainsListProps = {
 }
 
 export function ChainsList({ chains, onEdit }: ChainsListProps) {
+  const router = useRouter()
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -83,30 +85,45 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
                   )}
                 </div>
                 <Badge variant="secondary">
-                  {chain.salon_count || 0} salons
+                  {chain.salon_count || 0} locations
                 </Badge>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex gap-2">
-                {onEdit && (
+              <div className="space-y-3">
+                {chain.total_staff_count !== null && chain.total_staff_count > 0 && (
+                  <div className="text-sm text-muted-foreground">
+                    {chain.total_staff_count} staff members
+                  </div>
+                )}
+                <div className="flex gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => onEdit(chain)}
+                    onClick={() => router.push(`/business/chains/${chain.id}`)}
                   >
-                    <Edit2 className="h-4 w-4 mr-2" />
-                    Edit
+                    <Eye className="h-4 w-4 mr-2" />
+                    View
                   </Button>
-                )}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setDeleteId(chain.id)}
-                >
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
-                </Button>
+                  {onEdit && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onEdit(chain)}
+                    >
+                      <Edit2 className="h-4 w-4 mr-2" />
+                      Edit
+                    </Button>
+                  )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setDeleteId(chain.id)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>

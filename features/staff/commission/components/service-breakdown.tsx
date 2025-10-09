@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Stack, Flex } from '@/components/layout'
 import { P, Muted } from '@/components/ui/typography'
+import { Progress } from '@/components/ui/progress'
 
 import type { ServiceRevenue } from '../api/queries'
 
@@ -48,12 +49,7 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
                     <Muted className="text-xs">{percentage.toFixed(1)}%</Muted>
                   </div>
                 </Flex>
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div
-                    className="bg-primary h-2 rounded-full transition-all"
-                    style={{ width: `${percentage}%` }}
-                  />
-                </div>
+                <Progress value={percentage} className="h-2" />
               </div>
             )
           })}

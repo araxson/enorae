@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -41,17 +41,11 @@ export async function updateLocationAddress(
       .eq('id', locationId)
       .single<{ salon_id: string | null }>()
 
-    if (!location || !location.salon_id) {
+    if (!location?.salon_id) {
       return { success: false, error: 'Location not found' }
     }
 
-    const { data: salon } = await supabase
-      .from('salons')
-      .select('owner_id')
-      .eq('id', location.salon_id)
-      .single<{ owner_id: string | null }>()
-
-    if (!salon || salon.owner_id !== session.user.id) {
+    if (!(await canAccessSalon(location.salon_id))) {
       return { success: false, error: 'Unauthorized: Not your location' }
     }
 
@@ -105,7 +99,7 @@ export async function updateLocationAddress(
 export async function deleteLocationAddress(locationId: string): Promise<ActionResponse> {
   try {
     // SECURITY: Require business user role
-    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const supabase = await createClient()
 
     // Verify location ownership through salon
@@ -115,17 +109,11 @@ export async function deleteLocationAddress(locationId: string): Promise<ActionR
       .eq('id', locationId)
       .single<{ salon_id: string | null }>()
 
-    if (!location || !location.salon_id) {
+    if (!location?.salon_id) {
       return { success: false, error: 'Location not found' }
     }
 
-    const { data: salon } = await supabase
-      .from('salons')
-      .select('owner_id')
-      .eq('id', location.salon_id)
-      .single<{ owner_id: string | null }>()
-
-    if (!salon || salon.owner_id !== session.user.id) {
+    if (!(await canAccessSalon(location.salon_id))) {
       return { success: false, error: 'Unauthorized: Not your location' }
     }
 

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
 
 export type ActionResponse<T = void> =
@@ -14,6 +15,13 @@ const usernameSchema = z.object({
     .min(3, 'Username must be at least 3 characters')
     .max(50, 'Username must be less than 50 characters')
     .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, hyphens, and underscores'),
+})
+
+const profileUpdateSchema = z.object({
+  full_name: z.string().min(1, 'Full name is required').max(100).optional(),
+  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number').optional().or(z.literal('')),
+  bio: z.string().max(500, 'Bio must be less than 500 characters').optional(),
+  date_of_birth: z.string().optional(),
 })
 
 /**
@@ -79,6 +87,127 @@ export async function updateUsername(formData: FormData): Promise<ActionResponse
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update username',
+    }
+  }
+}
+
+/**
+ * Update user profile information
+ * Available to all authenticated users
+ */
+export async function updateProfile(formData: FormData): Promise<ActionResponse> {
+  try {
+    const session = await requireAuth()
+    const supabase = await createClient()
+
+    // Validate input
+    const result = profileUpdateSchema.safeParse({
+      full_name: formData.get('full_name'),
+      phone: formData.get('phone'),
+      bio: formData.get('bio'),
+      date_of_birth: formData.get('date_of_birth'),
+    })
+
+    if (!result.success) {
+      return { success: false, error: result.error.errors[0].message }
+    }
+
+    const updateData = result.data
+
+    // Update profile
+    const { error: updateError } = await supabase
+      .schema('identity')
+      .from('profiles')
+      .update({
+        ...updateData,
+        updated_at: new Date().toISOString(),
+        updated_by_id: session.user.id,
+      })
+      .eq('id', session.user.id)
+
+    if (updateError) throw updateError
+
+    revalidatePath('/customer/profile')
+    revalidatePath('/staff/profile')
+    revalidatePath('/business/profile')
+
+    return { success: true, data: undefined }
+  } catch (error) {
+    console.error('Error updating profile:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to update profile',
+    }
+  }
+}
+
+/**
+ * Upload user avatar
+ * Available to all authenticated users
+ */
+export async function uploadAvatar(formData: FormData): Promise<ActionResponse<{ url: string }>> {
+  try {
+    const session = await requireAuth()
+    const supabase = await createClient()
+
+    const file = formData.get('avatar') as File
+
+    if (!file) {
+      return { success: false, error: 'No file provided' }
+    }
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+    if (!validTypes.includes(file.type)) {
+      return { success: false, error: 'Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed.' }
+    }
+
+    // Validate file size (5MB max)
+    const maxSize = 5 * 1024 * 1024
+    if (file.size > maxSize) {
+      return { success: false, error: 'File size must be less than 5MB' }
+    }
+
+    // Upload to storage
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${session.user.id}/${Date.now()}.${fileExt}`
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(fileName, file, {
+        upsert: true,
+      })
+
+    if (uploadError) throw uploadError
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(uploadData.path)
+
+    // Update profile with avatar URL
+    const { error: updateError } = await supabase
+      .schema('identity')
+      .from('profiles')
+      .update({
+        avatar_url: publicUrl,
+        updated_at: new Date().toISOString(),
+        updated_by_id: session.user.id,
+      })
+      .eq('id', session.user.id)
+
+    if (updateError) throw updateError
+
+    revalidatePath('/customer/profile')
+    revalidatePath('/staff/profile')
+    revalidatePath('/business/profile')
+
+    return { success: true, data: { url: publicUrl } }
+  } catch (error) {
+    console.error('Error uploading avatar:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to upload avatar',
     }
   }
 }
