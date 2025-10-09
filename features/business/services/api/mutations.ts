@@ -1,3 +1,4 @@
+'use server';
 export {
   createService,
   type ServiceFormData,
