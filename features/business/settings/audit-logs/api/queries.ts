@@ -1,4 +1,4 @@
-import 'server-only'
+import 'server-only';
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 
@@ -9,8 +9,8 @@ export interface AuditLog {
   action: string
   entity_type: string
   entity_id: string | null
-  old_values: Record<string, any> | null
-  new_values: Record<string, any> | null
+  old_values: Record<string, unknown> | null
+  new_values: Record<string, unknown> | null
   ip_address: string | null
   user_agent: string | null
   request_id: string | null
@@ -28,7 +28,7 @@ export interface SecurityAuditLog {
   ip_address: string | null
   user_agent: string | null
   request_id: string | null
-  metadata: Record<string, any> | null
+  metadata: Record<string, unknown> | null
   created_at: string
 }
 

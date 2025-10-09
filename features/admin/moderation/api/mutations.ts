@@ -1,3 +1,4 @@
+'use server';
 export { flagReview } from './mutations/flag-review.mutation'
 export { unflagReview } from './mutations/unflag-review.mutation'
 export { respondToReview } from './mutations/respond-to-review.mutation'

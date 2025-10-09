@@ -1,3 +1,4 @@
+'use server';
 export { createProduct } from './mutations/create-product.mutation'
 export { updateProduct } from './mutations/update-product.mutation'
 export { deleteProduct } from './mutations/delete-product.mutation'

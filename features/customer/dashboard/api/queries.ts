@@ -1,3 +1,4 @@
+import 'server-only';
 export { getUpcomingAppointments, getPastAppointments } from './appointments.queries'
 export { getFavorites } from './favorites.queries'
 export { getCustomerMetrics } from './metrics.queries'

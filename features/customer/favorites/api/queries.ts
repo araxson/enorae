@@ -1,3 +1,4 @@
+import 'server-only';
 'use server'
 
 import { createClient } from '@/lib/supabase/server'

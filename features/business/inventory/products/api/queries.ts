@@ -1,3 +1,4 @@
+import 'server-only';
 export { getProducts, getProduct, getLowStockProducts } from './queries/products'
 export { getProductCategories } from './queries/categories'
 export { getStockLevels, getStockAlerts } from './queries/stock'

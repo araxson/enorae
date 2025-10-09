@@ -1,3 +1,4 @@
+import 'server-only';
 export { getPlatformAnalyticsSnapshot } from './platform-analytics.queries'
 export { getAllAppointments } from './appointments-overview.queries'
 export { getAllSalons } from './salons-overview.queries'

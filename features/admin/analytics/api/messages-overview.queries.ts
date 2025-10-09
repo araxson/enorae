@@ -1,3 +1,4 @@
+import 'server-only';
 import { requireAdminClient } from './admin-analytics-shared'
 import type { AdminMessageRow } from './admin-analytics-types'
 
