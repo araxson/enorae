@@ -7,7 +7,7 @@ import {
   ensureBusinessUser,
   generateUniqueServiceSlug,
   type SupabaseServerClient,
-} from '../utils/supabase'
+} from './shared'
 import { deriveBookingDurations, derivePricingMetrics } from '../utils/calculations'
 import type {
   ServiceFormData,

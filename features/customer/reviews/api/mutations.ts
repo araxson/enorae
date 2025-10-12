@@ -3,18 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { z } from 'zod'
-
-const reviewSchema = z.object({
-  salonId: z.string().uuid(),
-  appointmentId: z.string().uuid().optional(),
-  rating: z.number().int().min(1).max(5),
-  title: z.string().min(1).max(200).optional(),
-  comment: z.string().min(10).max(2000),
-  serviceQualityRating: z.number().int().min(1).max(5).optional(),
-  cleanlinessRating: z.number().int().min(1).max(5).optional(),
-  valueRating: z.number().int().min(1).max(5).optional(),
-})
+import { ZodError } from 'zod'
+import { reviewSchema } from '@/lib/validations/customer/reviews'
 
 type ActionResult = {
   success?: boolean
@@ -63,7 +53,7 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
 
     return { success: true }
   } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (error instanceof ZodError) {
       return { error: error.errors[0].message }
     }
     return { error: error instanceof Error ? error.message : 'Failed to create review' }
@@ -80,16 +70,18 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
       .from('salon_reviews')
       .select('customer_id, created_at, salon_id')
       .eq('id', id)
+      .eq('customer_id', session.user.id)
       .single()
 
-    if (fetchError) throw fetchError
-
-    if (!review) {
-      return { error: 'Review not found' }
+    if (fetchError) {
+      if (fetchError.code === 'PGRST116') {
+        return { error: 'Review not found or not authorized' }
+      }
+      throw fetchError
     }
 
-    if (review.customer_id !== session.user.id) {
-      return { error: 'Not authorized to edit this review' }
+    if (!review) {
+      return { error: 'Review not found or not authorized' }
     }
 
     // Check 7-day edit window
@@ -135,7 +127,7 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
 
     return { success: true }
   } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (error instanceof ZodError) {
       return { error: error.errors[0].message }
     }
     return { error: error instanceof Error ? error.message : 'Failed to update review' }

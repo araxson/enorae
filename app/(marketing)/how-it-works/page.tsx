@@ -1,6 +1,6 @@
-import { HowItWorksPage, howItWorksSEO } from '@/features/marketing/how-it-works'
+import { HowItWorksPage, howItWorksMetadata } from '@/features/marketing/how-it-works'
 
-export const metadata = howItWorksSEO
+export const metadata = howItWorksMetadata
 
 export default function Page() {
   return <HowItWorksPage />

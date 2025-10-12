@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator'
 import { Container, Grid, Stack, Flex } from '@/components/layout'
 import { H3, P, Small, Muted } from '@/components/ui/typography'
 import { Sparkles, Mail, MapPin, Phone } from 'lucide-react'
-import { NewsletterForm } from '@/features/marketing/components/shared'
+import { NewsletterForm } from '@/components/marketing'
 
 const footerLinks = {
   product: [

@@ -14,6 +14,7 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { CreditCard, CheckCircle2, XCircle } from 'lucide-react'
 import { updateChainSubscription } from '../api/mutations'
+import { Textarea } from '@/components/ui/textarea'
 
 interface ChainSubscriptionProps {
   chainId: string
@@ -32,13 +33,17 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
   const [selectedTier, setSelectedTier] = useState(currentTier || 'free')
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [reason, setReason] = useState('')
 
   const handleUpdateSubscription = async () => {
     setIsLoading(true)
     setMessage(null)
 
     try {
-      const result = await updateChainSubscription({ chainId, subscriptionTier: selectedTier })
+      const result = await updateChainSubscription({ chainId, subscriptionTier: selectedTier, reason })
+      if ('error' in result) {
+        throw new Error(result.error)
+      }
       setMessage({ type: 'success', text: result.message })
     } catch (error) {
       setMessage({
@@ -102,6 +107,18 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
               ))}
             </SelectContent>
           </Select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium" htmlFor="subscription-reason">
+            Reason (optional)
+          </label>
+          <Textarea
+            id="subscription-reason"
+            value={reason}
+            onChange={(event) => setReason(event.target.value)}
+            placeholder="Add context for this change (optional, max 500 characters)"
+          />
         </div>
 
         <Button

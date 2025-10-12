@@ -38,9 +38,9 @@ export function FavoriteNotesButton({ salonId, salonName, initialNotes }: Favori
     setLoading(true)
     const result = await toggleFavorite(salonId, notes)
 
-    if (result.error) {
+    if (!result.success) {
       toast.error(result.error)
-    } else if (result.success) {
+    } else {
       toast.success('Notes saved successfully')
       setOpen(false)
     }

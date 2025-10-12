@@ -17,8 +17,8 @@ import { toast } from 'sonner'
 import { bulkAssignRoles } from '../api/mutations'
 import { RoleSelector } from './role-selector'
 import { SalonSelector } from './salon-selector'
-import type { RoleTemplate } from '../utils/templates'
-import { ROLE_PERMISSION_TEMPLATES } from '../utils/templates'
+import type { RoleTemplate } from './role-templates'
+import { ROLE_PERMISSION_TEMPLATES } from './role-templates'
 import type { RoleValue } from './types'
 
 interface BulkAssignDialogProps {
@@ -99,16 +99,18 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
     const result = await bulkAssignRoles(formData)
     setIsSubmitting(false)
 
-    if ('error' in result && result.error) {
+    if (!result.success) {
       toast.error(result.error)
       return
     }
 
-    const successCount = 'success' in result ? result.success : 0
-    const failureCount = 'failed' in result ? result.failed : 0
+    const { success: successCount, failed: failureCount, errors } = result.data
 
     if (failureCount > 0) {
       toast.warning(`Assigned ${successCount} roles. ${failureCount} failed.`)
+      if (errors.length) {
+        console.warn('[bulkAssignRoles] Failed assignments:', errors)
+      }
     } else {
       toast.success(`Assigned ${successCount} roles successfully.`)
     }

@@ -35,7 +35,9 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
   const [rating, setRating] = useState(review.rating || 3)
 
   // Calculate if within edit window (7 days)
-  const daysSince = (Date.now() - new Date(review.created_at).getTime()) / (1000 * 60 * 60 * 24)
+  const daysSince = review.created_at
+    ? (Date.now() - new Date(review.created_at).getTime()) / (1000 * 60 * 60 * 24)
+    : 999
   const canEdit = daysSince <= 7
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +46,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
     setError(null)
 
     const formData = new FormData(e.currentTarget)
-    const result = await updateReview(review.id, formData)
+    const result = await updateReview(review?.id || '', formData)
 
     if (result.success) {
       setOpen(false)

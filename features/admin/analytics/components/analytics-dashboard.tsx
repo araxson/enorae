@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw } from 'lucide-react'
-import { Stack } from '@/components/layout'
+import { Grid, Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { H2, Muted, P } from '@/components/ui/typography'
 import { cn } from '@/lib/utils'
@@ -89,15 +89,15 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
         retention={data.retention}
       />
 
-      <div className="grid gap-4 xl:grid-cols-[2fr,1fr]">
+      <Grid gap="sm" className="xl:grid-cols-[2fr,1fr]">
         <GrowthTrendPanel series={data.growth.series} timeframe={data.timeframe} />
         <AcquisitionPanel acquisition={data.acquisition} />
-      </div>
+      </Grid>
 
-      <div className="grid gap-4 xl:grid-cols-2">
+      <Grid gap="sm" className="xl:grid-cols-2">
         <RetentionPanel retention={data.retention} />
         <FeatureUsagePanel featureUsage={data.featureUsage} />
-      </div>
+      </Grid>
 
       <PerformanceBenchmarksTable performance={data.performance} />
     </Stack>

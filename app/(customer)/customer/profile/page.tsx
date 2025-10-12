@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
 import { CustomerProfile } from '@/features/customer/profile'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
@@ -7,6 +9,10 @@ export const metadata = genMeta({
   noIndex: true,
 })
 
-export default async function ProfilePage() {
-  return <CustomerProfile />
+export default function CustomerProfilePage() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <CustomerProfile />
+    </Suspense>
+  )
 }

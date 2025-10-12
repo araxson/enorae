@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { UserPreferences } from '@/features/shared/preferences'
+import { StaffSettingsPage } from '@/features/staff/settings'
 
 export const metadata: Metadata = {
   title: 'User Preferences | Staff',
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default async function StaffPreferencesPage() {
-  return <UserPreferences />
+  return <StaffSettingsPage />
 }

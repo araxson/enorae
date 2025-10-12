@@ -34,6 +34,36 @@ export interface CustomerRelationship {
   favorite_service: string
 }
 
+type StaffServiceWithPricing = {
+  service_id: string
+  services: {
+    name: string | null
+    service_pricing: Array<{
+      price: number | null
+    }> | null
+  } | null
+}
+
+type StaffAppointment = {
+  id: string
+  status: string | null
+  customer_id: string
+  created_at: string
+}
+
+type CompletedAppointmentSummary = {
+  id: string
+}
+
+type AppointmentWithCustomerProfile = {
+  customer_id: string
+  created_at: string
+  profiles: {
+    display_name: string | null
+    email: string | null
+  } | null
+}
+
 export async function getStaffPerformanceMetrics(
   staffId?: string,
   startDate?: string,
@@ -59,23 +89,25 @@ export async function getStaffPerformanceMetrics(
 
   if (apptError) throw apptError
 
-  const totalAppointments = appointments?.length || 0
-  const completedAppointments = appointments?.filter(a => a.status === 'completed').length || 0
-  const cancelledAppointments = appointments?.filter(a => a.status === 'cancelled').length || 0
-  const noShowAppointments = appointments?.filter(a => a.status === 'no_show').length || 0
+  const appointmentRows = (appointments as StaffAppointment[] | null) ?? []
 
-  const uniqueCustomers = new Set(appointments?.map(a => a.customer_id)).size
+  const totalAppointments = appointmentRows.length
+  const completedAppointments = appointmentRows.filter(a => a.status === 'completed').length
+  const cancelledAppointments = appointmentRows.filter(a => a.status === 'cancelled').length
+  const noShowAppointments = appointmentRows.filter(a => a.status === 'no_show').length
+
+  const uniqueCustomers = new Set(appointmentRows.map(a => a.customer_id)).size
 
   // Calculate repeat customers (customers with more than 1 appointment)
-  const customerCounts = appointments?.reduce((acc, a) => {
+  const customerCounts = appointmentRows.reduce<Record<string, number>>((acc, a) => {
     acc[a.customer_id] = (acc[a.customer_id] || 0) + 1
     return acc
-  }, {} as Record<string, number>) || {}
+  }, {})
 
   const repeatCustomers = Object.values(customerCounts).filter(count => count > 1).length
 
   // Get revenue data from appointment services
-  const appointmentIds = appointments?.map(a => a.id) || []
+  const appointmentIds = appointmentRows.map(a => a.id)
 
   let totalRevenue = 0
   if (appointmentIds.length > 0) {
@@ -150,8 +182,9 @@ export async function getStaffRevenueBreakdown(
 
   // Aggregate revenue by service
   const revenueMap = new Map<string, { name: string; count: number; revenue: number; prices: number[] }>()
+  const staffServiceRows = (staffServices as unknown as StaffServiceWithPricing[] | null) ?? []
 
-  staffServices?.forEach((ss: any) => {
+  staffServiceRows.forEach((ss: StaffServiceWithPricing) => {
     const serviceId = ss.service_id
     const serviceName = ss.services?.name || 'Unknown Service'
     const price = Number(ss.services?.service_pricing?.[0]?.price || 0)
@@ -219,7 +252,9 @@ export async function getStaffCustomerRelationships(
     services: string[]
   }>()
 
-  appointments?.forEach((appt: any) => {
+  const customerAppointments = (appointments as unknown as AppointmentWithCustomerProfile[] | null) ?? []
+
+  customerAppointments.forEach((appt: AppointmentWithCustomerProfile) => {
     const customerId = appt.customer_id
     const customerName = appt.profiles?.display_name || appt.profiles?.email || 'Unknown Customer'
 

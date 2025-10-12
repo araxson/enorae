@@ -1,5 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 export interface SalonSearchResult {
   id: string
@@ -26,7 +27,20 @@ export interface SearchFilters {
   limit?: number
 }
 
+interface ServiceWithSalon {
+  id: string
+  name: string | null
+  salons: {
+    name: string | null
+    slug: string | null
+    address: {
+      city?: string | null
+    } | null
+  } | null
+}
+
 export async function searchSalons(filters: SearchFilters): Promise<SalonSearchResult[]> {
+  await requireAuth()
   const supabase = await createClient()
 
   const {
@@ -38,18 +52,19 @@ export async function searchSalons(filters: SearchFilters): Promise<SalonSearchR
   } = filters
 
   // Use the search_salons RPC function
-  const { data, error } = await supabase.rpc('search_salons', {
-    search_term: searchTerm || null,
-    city: city || null,
-    state: state || null,
-    is_verified_filter: isVerified ?? null,
-    limit_count: limit,
-  })
+  const { data, error } = await supabase
+    .rpc('search_salons', {
+      search_term: searchTerm || null,
+      city: city || null,
+      state: state || null,
+      is_verified_filter: isVerified ?? null,
+      limit_count: limit,
+    })
 
   if (error) throw error
 
   // Filter by rating if specified
-  let results = data || []
+  let results = (data ?? []) as SalonSearchResult[]
   if (filters.minRating) {
     results = results.filter((salon: SalonSearchResult) =>
       salon.rating_average >= (filters.minRating || 0)
@@ -63,6 +78,7 @@ export async function searchSalonsWithFuzzyMatch(
   searchTerm: string,
   limit = 10
 ): Promise<SalonSearchResult[]> {
+  await requireAuth()
   const supabase = await createClient()
 
   // First, get all salons
@@ -76,10 +92,11 @@ export async function searchSalonsWithFuzzyMatch(
   // Calculate similarity for each salon
   const salonsWithSimilarity = await Promise.all(
     (salons || []).map(async (salon) => {
-      const { data: similarity } = await supabase.rpc('text_similarity', {
-        text1: searchTerm.toLowerCase(),
-        text2: salon.name.toLowerCase(),
-      })
+      const { data: similarity } = await supabase
+        .rpc('text_similarity', {
+          text1: searchTerm.toLowerCase(),
+          text2: salon.name.toLowerCase(),
+        })
 
       return {
         ...salon,
@@ -99,6 +116,8 @@ export async function getSalonSearchSuggestions(
   searchTerm: string,
   limit = 5
 ): Promise<{ name: string; slug: string }[]> {
+  await requireAuth()
+
   if (!searchTerm || searchTerm.length < 2) {
     return []
   }
@@ -118,6 +137,7 @@ export async function getSalonSearchSuggestions(
 }
 
 export async function getPopularCities(): Promise<{ city: string; count: number }[]> {
+  await requireAuth()
   const supabase = await createClient()
 
   // Get all salons to extract cities
@@ -145,6 +165,7 @@ export async function getPopularCities(): Promise<{ city: string; count: number 
 }
 
 export async function getAvailableStates(): Promise<string[]> {
+  await requireAuth()
   const supabase = await createClient()
 
   const { data: salons, error } = await supabase
@@ -167,6 +188,7 @@ export async function getAvailableStates(): Promise<string[]> {
 }
 
 export async function getFeaturedSalons(limit = 6): Promise<SalonSearchResult[]> {
+  await requireAuth()
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -185,6 +207,7 @@ export async function getNearbyServices(
   salonId: string,
   limit = 5
 ): Promise<{ id: string; name: string; salon_name: string; salon_slug: string }[]> {
+  await requireAuth()
   const supabase = await createClient()
 
   // Get the salon's city
@@ -216,12 +239,12 @@ export async function getNearbyServices(
   if (error) throw error
 
   // Filter by same city
-  const nearbyServices = (services || [])
-    .filter((service: any) => service.salons?.address?.city === salon.address.city)
+  const nearbyServices = ((services || []) as unknown as ServiceWithSalon[])
+    .filter((service: ServiceWithSalon) => service.salons?.address?.city === salon.address.city)
     .slice(0, limit)
-    .map((service: any) => ({
+    .map((service: ServiceWithSalon) => ({
       id: service.id,
-      name: service.name,
+      name: service.name || 'Unknown Service',
       salon_name: service.salons?.name || 'Unknown',
       salon_slug: service.salons?.slug || '',
     }))

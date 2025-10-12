@@ -1,5 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 type Salon = Database['public']['Views']['salons']['Row']
@@ -9,10 +10,8 @@ type SalonReview = Database['public']['Views']['salon_reviews_view']['Row']
 type SalonMedia = Database['public']['Views']['salon_media_view']['Row']
 
 export async function getSalonBySlug(slug: string) {
+  await requireAuth()
   const supabase = await createClient()
-
-  // Optional auth check - enriches data if user is logged in
-  await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('salons')
@@ -26,10 +25,8 @@ export async function getSalonBySlug(slug: string) {
 }
 
 export async function getSalonMetadataBySlug(slug: string) {
+  await requireAuth()
   const supabase = await createClient()
-
-  // Optional auth check - enriches data if user is logged in
-  await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('salons')
@@ -42,10 +39,8 @@ export async function getSalonMetadataBySlug(slug: string) {
 }
 
 export async function getSalonServices(salonId: string) {
+  await requireAuth()
   const supabase = await createClient()
-
-  // Optional auth check - enriches data if user is logged in
-  await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('services')
@@ -59,10 +54,8 @@ export async function getSalonServices(salonId: string) {
 }
 
 export async function getSalonStaff(salonId: string) {
+  await requireAuth()
   const supabase = await createClient()
-
-  // Optional auth check - enriches data if user is logged in
-  await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('staff')
@@ -76,6 +69,7 @@ export async function getSalonStaff(salonId: string) {
 }
 
 export async function getSalonReviews(salonId: string, limit: number = 10) {
+  await requireAuth()
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -90,6 +84,7 @@ export async function getSalonReviews(salonId: string, limit: number = 10) {
 }
 
 export async function getSalonMedia(salonId: string) {
+  await requireAuth()
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -105,17 +100,16 @@ export async function getSalonMedia(salonId: string) {
 }
 
 export async function checkIsFavorited(salonId: string): Promise<boolean> {
+  const session = await requireAuth()
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return false
-
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('customer_favorites')
     .select('id')
     .eq('salon_id', salonId)
-    .eq('customer_id', user.id)
+    .eq('customer_id', session.user.id)
     .maybeSingle()
 
+  if (error) throw error
   return !!data
 }

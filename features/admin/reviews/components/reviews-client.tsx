@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { ReviewsList } from './reviews-list'
-import { SearchBar } from '@/features/admin/shared/components'
+import { SearchBar } from '@/features/admin/admin-common/components'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import type { Database } from '@/lib/types/database.types'
 import { Stack } from '@/components/layout'

@@ -2,8 +2,8 @@
 
 import { useCallback, useMemo, useState } from 'react'
 import { CalendarDays, History, Clock3 } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/shared/components/types'
+import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 import type { StaffAppointment } from '../api/queries'
 import { AppointmentStats } from './appointment-stats'
 import { AppointmentFilters } from './appointment-filters'

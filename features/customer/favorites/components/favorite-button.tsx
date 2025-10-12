@@ -26,11 +26,12 @@ export function FavoriteButton({ salonId, initialFavorited = false, variant = 'd
     setLoading(true)
     const result = await toggleFavorite(salonId)
 
-    if (result.error) {
+    if (!result.success) {
       toast.error(result.error)
-    } else if (result.success) {
-      setFavorited(result.favorited || false)
-      toast.success(result.favorited ? 'Added to favorites' : 'Removed from favorites')
+    } else {
+      const nextFavorited = result.data.favorited
+      setFavorited(nextFavorited)
+      toast.success(nextFavorited ? 'Added to favorites' : 'Removed from favorites')
     }
 
     setLoading(false)

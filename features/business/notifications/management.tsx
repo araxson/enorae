@@ -10,7 +10,7 @@ import { NotificationOverviewCards } from './components/notification-overview-ca
 import { NotificationHistoryTable } from './components/notification-history-table'
 import { NotificationTemplatesManager } from './components/notification-templates-manager'
 import { NotificationPreferencesForm } from './components/notification-preferences-form'
-import { NotificationTestPanel } from './components/notification-test-panel'
+import { NotificationPreviewPanel } from './components/notification-preview-panel'
 
 export async function BusinessNotificationManagement() {
   const [history, stats, templates, preferences] = await Promise.all([
@@ -36,7 +36,7 @@ export async function BusinessNotificationManagement() {
           channels={stats.channels}
         />
 
-        <NotificationTestPanel templates={templates} />
+        <NotificationPreviewPanel templates={templates} />
 
         <NotificationTemplatesManager templates={templates} />
 

@@ -10,7 +10,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AppointmentServicesManager } from './appointment-services-manager'
 import { AppointmentServiceProgress } from './appointment-service-progress'
-import type { AppointmentServiceDetails } from '../api/appointment-services.queries'
+import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
 
 interface AppointmentDetailDialogProps {
   appointmentId: string

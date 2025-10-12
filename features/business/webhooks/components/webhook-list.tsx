@@ -21,7 +21,7 @@ import { WebhookDetailDialog } from './webhook-detail-dialog'
 import { retryAllFailedWebhooks, clearCompletedWebhooks } from '../api/mutations'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
 
-type WebhookQueue = Database['communication']['Tables']['webhook_queue']['Row']
+type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
 
 type WebhookListProps = {
   webhooks: WebhookQueue[]
@@ -141,10 +141,10 @@ export function WebhookList({ webhooks }: WebhookListProps) {
             >
               <TableCell>
                 <div className="text-sm">
-                  {format(new Date(webhook.created_at), 'MMM dd, yyyy')}
+                  {webhook.created_at ? format(new Date(webhook.created_at), 'MMM dd, yyyy') : '-'}
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {format(new Date(webhook.created_at), 'HH:mm:ss')}
+                  {webhook.created_at ? format(new Date(webhook.created_at), 'HH:mm:ss') : '-'}
                 </div>
               </TableCell>
               <TableCell>

@@ -61,7 +61,9 @@ export async function geocodeAllAddresses(salonId: string) {
 
   // Note: In production, you'd use Google Geocoding API here
   // For now, we'll just mark them as needing manual geocoding
-  for (const location of locations || []) {
+  const locationRows = (locations ?? []) as Array<{ id: string }>
+
+  for (const location of locationRows) {
     results.failed++
     results.errors.push(`Location ${location.id} needs manual geocoding`)
   }

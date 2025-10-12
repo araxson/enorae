@@ -1,6 +1,6 @@
 import 'server-only';
-export { getUpcomingAppointments, getPastAppointments } from './appointments.queries'
-export { getFavorites } from './favorites.queries'
-export { getCustomerMetrics } from './metrics.queries'
-export { getVIPStatus } from './vip.queries'
-export { checkGuestRole } from './roles.queries'
+export { getUpcomingAppointments, getPastAppointments } from './queries/appointments'
+export { getFavorites } from './queries/favorites'
+export { getCustomerMetrics } from './queries/metrics'
+export { getVIPStatus } from './queries/vip'
+export { checkGuestRole } from './queries/roles'

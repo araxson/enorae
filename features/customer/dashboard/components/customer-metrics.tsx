@@ -25,6 +25,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       accent: 'bg-blue-500/10 text-blue-600',
       progress: metrics.upcomingAppointments > 0 ? 100 : 0,
       progressClass: '[&>div]:bg-blue-600',
+      showHearts: undefined,
     },
     {
       label: 'Completed',
@@ -37,6 +38,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
           ? Math.round((metrics.completedAppointments / totalActivity) * 100)
           : 0,
       progressClass: '[&>div]:bg-green-600',
+      showHearts: undefined,
     },
     {
       label: 'Favorites',
@@ -44,9 +46,11 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       description: 'Saved salons',
       icon: Heart,
       accent: 'bg-pink-500/10 text-pink-600',
+      progress: undefined,
+      progressClass: undefined,
       showHearts: metrics.favorites,
     },
-  ] as const
+  ]
 
   return (
     <section className="space-y-4">

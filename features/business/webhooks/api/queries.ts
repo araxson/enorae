@@ -3,8 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-
-type WebhookQueue = Database['communication']['Tables']['webhook_queue']['Row']
+type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
 
 /**
  * Get webhook queue entries for the user's salon
@@ -14,11 +13,11 @@ export async function getWebhookQueue(limit = 100): Promise<WebhookQueue[]> {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
 
-  const supabase = (await createClient()).schema('communication')
+  const supabase = await createClient()
 
   // Explicit salon filter for security
   const { data, error } = await supabase
-    .from('webhook_queue')
+    .from('communication_webhook_queue')
     .select('*')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
@@ -38,11 +37,11 @@ export async function getWebhookQueueById(
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
 
-  const supabase = (await createClient()).schema('communication')
+  const supabase = await createClient()
 
   // Explicit salon and ID filters for security
   const { data, error } = await supabase
-    .from('webhook_queue')
+    .from('communication_webhook_queue')
     .select('*')
     .eq('id', id)
     .eq('salon_id', salonId)

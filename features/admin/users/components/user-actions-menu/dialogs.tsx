@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 
 const WarningText = ({ children }: { children: React.ReactNode }) => (
   <span className="text-destructive font-semibold">{children}</span>
@@ -96,10 +97,25 @@ export function TerminateSessionsDialog({
   )
 }
 
-type DeleteDialogProps = DialogProps & { enabled: boolean }
+type DeleteDialogProps = DialogProps & {
+  enabled: boolean
+  reason: string
+  onReasonChange: (value: string) => void
+}
 
-export function DeleteUserDialog({ open, onOpenChange, isLoading, onConfirm, userName, enabled }: DeleteDialogProps) {
+export function DeleteUserDialog({
+  open,
+  onOpenChange,
+  isLoading,
+  onConfirm,
+  userName,
+  enabled,
+  reason,
+  onReasonChange,
+}: DeleteDialogProps) {
   if (!enabled) return null
+
+  const isReasonValid = reason.trim().length >= 10
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -114,12 +130,27 @@ export function DeleteUserDialog({ open, onOpenChange, isLoading, onConfirm, use
             be lost. This should only be done for GDPR compliance or legal requests.
           </AlertDialogDescription>
         </AlertDialogHeader>
+        <div className="space-y-2">
+          <label className="text-sm font-medium" htmlFor="delete-user-reason">
+            Reason (minimum 10 characters)
+          </label>
+          <Textarea
+            id="delete-user-reason"
+            value={reason}
+            onChange={(event) => onReasonChange(event.target.value)}
+            placeholder="Provide the rationale for this permanent deletion"
+            autoFocus
+          />
+          {!isReasonValid && (
+            <p className="text-sm text-destructive">Please provide a reason of at least 10 characters.</p>
+          )}
+        </div>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
               onClick={onConfirm}
-              disabled={isLoading}
+              disabled={isLoading || !isReasonValid}
               variant="destructive"
             >
               {isLoading ? 'Deleting...' : 'Delete Permanently'}

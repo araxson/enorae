@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { getUserSalon } from '../../shared/api/salon.queries'
+import { getUserSalon } from '@/features/business/business-common/api/queries'
 
 type Service = Database['public']['Views']['services']['Row']
 

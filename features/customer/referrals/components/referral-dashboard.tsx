@@ -186,7 +186,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
             ) : (
               <div className="text-center py-8">
                 <p className="text-muted-foreground mb-4">
-                  You don't have a referral code yet
+                  You don&apos;t have a referral code yet
                 </p>
                 <Button onClick={handleGenerateCode} disabled={isGenerating}>
                   {isGenerating ? 'Generating...' : 'Generate Referral Code'}

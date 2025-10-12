@@ -6,8 +6,9 @@ import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { CheckCircle2, Circle, Clock, XCircle } from 'lucide-react'
-import { updateServiceStatus } from '../api/appointment-services.mutations'
-import type { AppointmentServiceDetails } from '../api/appointment-services.queries'
+import { updateServiceStatus } from '../api/mutations'
+import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
+import { useToast } from '@/hooks/use-toast'
 
 interface AppointmentServiceProgressProps {
   appointmentId: string
@@ -21,6 +22,7 @@ export function AppointmentServiceProgress({
   onUpdate,
 }: AppointmentServiceProgressProps) {
   const [updatingId, setUpdatingId] = useState<string | null>(null)
+  const { toast } = useToast()
 
   const stats = {
     total: services.length,
@@ -41,13 +43,25 @@ export function AppointmentServiceProgress({
 
       const result = await updateServiceStatus(formData)
 
-      if (result.error) {
-        alert(result.error)
+      if ('error' in result) {
+        toast({
+          variant: 'destructive',
+          title: 'Unable to update service status',
+          description: result.error,
+        })
       } else {
+        toast({
+          title: 'Service updated',
+          description: 'The service status was updated successfully.',
+        })
         onUpdate()
       }
     } catch (error) {
-      alert('Failed to update service status')
+      toast({
+        variant: 'destructive',
+        title: 'Failed to update service status',
+        description: error instanceof Error ? error.message : 'Please try again later.',
+      })
     } finally {
       setUpdatingId(null)
     }

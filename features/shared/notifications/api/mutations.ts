@@ -68,7 +68,7 @@ export async function sendNotification(
   type: string,
   title: string,
   message: string,
-  data?: Record<string, any>,
+  data?: Record<string, unknown>,
   channels?: string[]
 ) {
   const supabase = await createClient()

@@ -1,4 +1,4 @@
-import { ProductCategories } from '@/features/business/inventory/categories'
+import { ProductCategories } from '@/features/business/inventory-categories'
 
 export const metadata = {
   title: 'Product Categories',

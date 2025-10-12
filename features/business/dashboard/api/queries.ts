@@ -1,6 +1,6 @@
 import 'server-only';
 export type { SalonView, AppointmentWithDetails } from './types'
 
-export { getUserSalon, getUserSalonIds } from './salon.queries'
-export { getDashboardMetrics, getBusinessDashboardData, getMultiLocationMetrics } from './metrics.queries'
-export { getRecentAppointments } from './appointments.queries'
+export { getUserSalon, getUserSalonIds } from './queries/salon'
+export { getDashboardMetrics, getBusinessDashboardData, getMultiLocationMetrics } from './queries/metrics'
+export { getRecentAppointments } from './queries/appointments'

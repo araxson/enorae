@@ -1,4 +1,4 @@
-import { ManualTransactions } from '@/features/shared/transactions'
+import { ManualTransactions } from '@/features/business/transactions'
 
 export const metadata = {
   title: 'Manual Transactions',

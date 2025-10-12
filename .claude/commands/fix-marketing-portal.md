@@ -1,119 +1,215 @@
 ---
-description: Deep analysis and UX fixes for marketing portal
+description: Fix issues found in Marketing Portal analysis systematically
 ---
 
-# Marketing Portal - Deep Analysis & Fix
+# Fix Marketing Portal Issues
 
-**Portal:** `/app/(marketing)` - Public landing pages and marketing site
+You are fixing issues from the Marketing Portal deep analysis.
 
-## Task
+## Context
 
-Perform a **comprehensive deep analysis** of the marketing portal UX and fix all issues using senior developer ULTRATHINK methodology.
+The Marketing Portal analysis created 9 files in `docs/marketing-portal/`:
+- `00_SUMMARY.md` - Executive summary
+- `01_PAGES_ANALYSIS.md` - Pages layer
+- `02_QUERIES_ANALYSIS.md` - Queries layer
+- `03_MUTATIONS_ANALYSIS.md` - Mutations layer
+- `04_COMPONENTS_ANALYSIS.md` - Components layer
+- `05_TYPES_ANALYSIS.md` - Type Safety layer
+- `06_VALIDATION_ANALYSIS.md` - Validation layer
+- `07_SECURITY_ANALYSIS.md` - Security layer
+- `08_UX_ANALYSIS.md` - UX layer
 
-### Phase 1: Analysis (30 minutes)
+## Your Task
 
-1. **Analyze all marketing routes** in `app/(marketing)/`
-2. **Review landing page components**
-3. **Check public data views** - What data is accessible to unauthenticated users?
-4. **Examine conversion funnels** - Homepage → Explore → Signup flow
-5. **Identify SEO issues** - Metadata, structured data, sitemap
-6. **Find critical bugs** - Crashes, broken links, missing images
-7. **Check performance** - Loading times, image optimization, Core Web Vitals
-8. **Review marketing effectiveness** - CTAs, social proof, trust signals
+Fix issues from the Marketing Portal analysis systematically and safely.
 
-### Phase 2: Document Findings
+## 🤖 AUTONOMOUS EXECUTION MODE
 
-Create **`MARKETING_PORTAL_ANALYSIS.md`** with:
-- Current state assessment (routes, pages, components)
-- Conversion funnel analysis
-- Critical issues found (bugs, crashes, broken links)
-- Missing marketing features
-- SEO gaps
-- Performance issues
-- Trust signal opportunities
-- Prioritized recommendations (CRITICAL → HIGH → MEDIUM → LOW)
+**CRITICAL INSTRUCTIONS - READ FIRST:**
 
-### Phase 3: Fix Critical Issues
+1. **NO QUESTIONS ALLOWED**: Do not ask the user ANY questions. Work autonomously.
+2. **NO PROGRESS UPDATES**: Do not stop to tell the user what you plan to do next.
+3. **PROCESS ALL LAYERS**: Always fix ALL layers (1-8) with ALL severity levels in a single run.
+4. **MARKDOWN TODO LIST REQUIRED**:
+   - Create a markdown file `docs/marketing-portal/fix-progress.md` at the start
+   - Add all issues from all layers to this file
+   - Mark each task with `- [ ]` when pending, `- [x]` when completed
+   - Update the file after EACH issue is fully fixed
+5. **COMPLETE FULLY**: Only mark a task as done when it is 100% complete and verified.
+6. **NO INTERRUPTIONS**: Continue working until ALL issues across ALL layers are fixed.
 
-Apply ULTRATHINK methodology to fix:
-- ✅ Any crashes or 404 errors
-- ✅ Broken navigation or links
-- ✅ Missing metadata (titles, descriptions)
-- ✅ Slow loading pages
-- ✅ Mobile responsiveness issues
-- ✅ Broken queries for public data
-- ✅ Empty states on explore/search
-- ✅ Signup/login flow issues
+### All Layers Override
 
-### Phase 4: Enhance Marketing Effectiveness
+- Process every layer (1-8) in a single run; treat severity as `all`.
+- Skip Step 1 entirely—do not ask the user to choose scope or severity.
+- When reporting results in Step 7, remove the "Next Steps" subsection.
+- Continue fixing until all layers and severities are covered without pausing for additional instructions.
 
-Add high-value features:
-- Hero section with clear value proposition
-- Social proof (reviews, ratings, testimonials)
-- Trust signals (verified salons, badges)
-- Feature highlights
-- Salon showcase with search
-- SEO optimization (metadata, structured data)
-- Call-to-action buttons
-- Newsletter signup
-- FAQ section
+## STEP 1: Ask User for Scope
 
-### Phase 5: Create Reusable Components
+Ask the user:
+```
+Which Marketing Portal issues should I fix?
 
-Build marketing-specific components:
-- `components/marketing/` directory
-- Hero sections
-- Feature cards
-- Testimonial displays
-- CTA buttons
-- Social proof badges
-- Newsletter forms
-- FAQ accordions
+1. Layer (1-8 or "all"):
+   - 1: Pages
+   - 2: Queries
+   - 3: Mutations
+   - 4: Components
+   - 5: Type Safety
+   - 6: Validation
+   - 7: Security
+   - 8: UX
 
-### Phase 6: Document & Test
+2. Severity (critical/high/medium/low/all):
+```
 
-Create **`MARKETING_PORTAL_IMPROVEMENTS.md`** with:
-- All changes implemented
-- Before/after comparisons
-- New components created
-- SEO improvements
-- Performance metrics
-- Build status
-- Testing checklist
+## STEP 2: Read Analysis File(s)
 
-## Success Criteria
+Based on layer input, read:
+- Layer 1: `docs/marketing-portal/01_PAGES_ANALYSIS.md`
+- Layer 2: `docs/marketing-portal/02_QUERIES_ANALYSIS.md`
+- Layer 3: `docs/marketing-portal/03_MUTATIONS_ANALYSIS.md`
+- Layer 4: `docs/marketing-portal/04_COMPONENTS_ANALYSIS.md`
+- Layer 5: `docs/marketing-portal/05_TYPES_ANALYSIS.md`
+- Layer 6: `docs/marketing-portal/06_VALIDATION_ANALYSIS.md`
+- Layer 7: `docs/marketing-portal/07_SECURITY_ANALYSIS.md`
+- Layer 8: `docs/marketing-portal/08_UX_ANALYSIS.md`
+- All: Read `00_SUMMARY.md` first, then relevant layer files
 
-- ✅ No crashes or errors
-- ✅ All pages load quickly (<3s)
-- ✅ Mobile responsive
-- ✅ SEO optimized (metadata, structured data)
-- ✅ Clear conversion paths
-- ✅ Social proof visible
-- ✅ Trust signals present
-- ✅ Build successful
-- ✅ TypeScript errors resolved
-- ✅ Comprehensive documentation
+## STEP 3: Extract Issues
 
-## Constraints
+From the analysis file, extract all issues matching the severity filter. Each issue has:
+- Issue number and title
+- Severity level
+- File path with line numbers
+- Current code snippet
+- Required fix code
+- Steps to fix
+- Acceptance criteria
 
-- Follow project architecture (CLAUDE.md)
-- Use existing shadcn/ui components
-- Type safety (no `any` types)
-- Client components: `'use client'` (mostly)
-- Public data only (no auth required)
-- Fast loading (optimize images, lazy load)
-- SEO-friendly (proper metadata, semantic HTML)
+## STEP 4: Create TODO Lists
 
-## Output
+Create TWO todo lists:
 
-1. `MARKETING_PORTAL_ANALYSIS.md` - Deep analysis document
-2. `MARKETING_PORTAL_IMPROVEMENTS.md` - Implementation summary
-3. Enhanced marketing pages
-4. New reusable components in `components/marketing/`
-5. All critical issues fixed
-6. Build passing successfully
-7. SEO improvements documented
+**A. Markdown File** (Primary tracking - REQUIRED):
+Create `docs/marketing-portal/fix-progress.md`:
+```markdown
+# Marketing Portal Fix Progress
+
+## Layer 1: Pages
+- [ ] Issue #1: [Title] ([file:line])
+- [ ] Issue #2: [Title] ([file:line])
+
+## Layer 2: Queries
+- [ ] Issue #3: [Title] ([file:line])
+...
+
+## Layer 8: UX
+- [ ] Issue #N: [Title] ([file:line])
+
+## Verification
+- [ ] Run typecheck and verify (0 errors)
+```
+
+**B. TodoWrite Tool** (Secondary - for UI):
+Also use TodoWrite to create a fix plan for the UI:
+```
+1. Fix Issue #1: [Title] ([file:line])
+2. Fix Issue #2: [Title] ([file:line])
+...
+N. Run typecheck and verify
+```
+
+## STEP 5: Fix Issues One by One
+
+For EACH issue:
+
+1. **Read the target file** completely (required by Edit tool)
+2. **Verify issue exists** (code may have changed since analysis)
+3. **Apply the fix** using Edit tool
+   - Use exact "Required Fix" from analysis
+   - Follow "Steps to Fix" from analysis
+   - Meet all "Acceptance Criteria"
+4. **Mark TODO as completed** immediately
+5. **Move to next issue**
+
+**CRITICAL**:
+- Fix ONE issue at a time
+- Mark completed immediately after each fix
+- Read file before editing
+- NO batching or skipping
+- NO changes beyond analysis scope
+
+## STEP 6: Verify All Fixes
+
+After fixing all issues:
+```bash
+npm run typecheck
+```
+
+If errors:
+- Fix TypeScript errors
+- Mark verification todo as completed
+
+## STEP 7: Report Results
+
+Provide summary:
+```markdown
+## Marketing Portal Fix Summary
+
+**Layer**: [number/name]
+**Severity**: [filter]
+
+### Issues Fixed: X/X
+
+1. ✅ Issue #1 - features/marketing/[...]:line - [description]
+2. ✅ Issue #2 - features/marketing/[...]:line - [description]
+
+### Skipped: X
+
+1. ⏭️ Issue #X - [reason - e.g., already fixed, not reproducible]
+
+### Verification
+
+- [x] TypeScript: 0 errors
+- [x] All acceptance criteria met
+
+### Next Steps
+
+[Recommend next layer or severity level to fix based on 00_SUMMARY.md priorities]
+```
+
+## Safety Checklist
+
+Before each fix:
+- [ ] Analysis file read
+- [ ] Issue understood
+- [ ] Target file read
+- [ ] Issue confirmed to exist
+- [ ] Fix approach clear
+- [ ] Acceptance criteria known
+
+After each fix:
+- [ ] TODO marked completed
+- [ ] Fix matches analysis requirement
+- [ ] No unintended changes
+
+After all fixes:
+- [ ] TypeScript passes (0 errors)
+- [ ] All acceptance criteria met
+- [ ] Summary provided
+
+## Important Notes
+
+- **Portal**: Marketing only (features/marketing/, app/(marketing)/)
+- **Always use TodoWrite** for progress tracking
+- **One at a time** - never batch fixes
+- **Read before edit** - required by tool
+- **Verify criteria** for each fix
+- **Run typecheck** after all fixes
+- **Stay in scope** - only fix analyzed issues
 
 ---
 
-**Approach:** Think like a senior developer. Find the issues first, then fix them comprehensively. Document everything.
+**Remember**: Systematic, methodical, one issue at a time.

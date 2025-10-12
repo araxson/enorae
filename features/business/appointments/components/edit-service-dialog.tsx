@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -18,14 +18,20 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { updateAppointmentService } from '../api/appointment-services.mutations'
-import type { AppointmentServiceDetails } from '../api/appointment-services.queries'
+import { useToast } from '@/hooks/use-toast'
+import { updateAppointmentService } from '../api/mutations'
+import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
 
 interface EditServiceDialogProps {
   service: AppointmentServiceDetails
   isOpen: boolean
   onClose: () => void
   onSuccess: () => void
+}
+
+type StaffOption = {
+  id: string
+  name: string
 }
 
 export function EditServiceDialog({
@@ -35,7 +41,8 @@ export function EditServiceDialog({
   onSuccess,
 }: EditServiceDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [staff, setStaff] = useState<any[]>([])
+  const [isLoadingStaff, setIsLoadingStaff] = useState(false)
+  const [staff, setStaff] = useState<StaffOption[]>([])
   const [formData, setFormData] = useState({
     staffId: service.staff_id || '',
     startTime: service.start_time
@@ -45,57 +52,119 @@ export function EditServiceDialog({
     durationMinutes: service.duration_minutes?.toString() || '',
     status: service.status || 'pending',
   })
+  const { toast } = useToast()
 
   useEffect(() => {
-    // Reset form when service changes
     setFormData({
       staffId: service.staff_id || '',
-      startTime: service.start_time
-        ? new Date(service.start_time).toTimeString().slice(0, 5)
-        : '',
+      startTime: service.start_time ? new Date(service.start_time).toTimeString().slice(0, 5) : '',
       endTime: service.end_time ? new Date(service.end_time).toTimeString().slice(0, 5) : '',
       durationMinutes: service.duration_minutes?.toString() || '',
       status: service.status || 'pending',
     })
   }, [service])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  useEffect(() => {
+    if (!isOpen || !service.appointment_id) {
+      return
+    }
 
+    let isMounted = true
+
+    const loadStaff = async () => {
+      setIsLoadingStaff(true)
+      try {
+        const response = await fetch(
+          `/api/business/appointments/${service.appointment_id}/service-options`
+        )
+
+        if (!response.ok) {
+          throw new Error(`Failed to load staff options (${response.status})`)
+        }
+
+        const data: { staff?: StaffOption[] } = await response.json()
+        if (!isMounted) return
+
+        setStaff(data.staff ?? [])
+      } catch (error) {
+        console.error('Failed to load staff options:', error)
+        if (isMounted) {
+          toast({
+            variant: 'destructive',
+            title: 'Unable to load staff',
+            description:
+              error instanceof Error ? error.message : 'Please try again shortly.',
+          })
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingStaff(false)
+        }
+      }
+    }
+
+    void loadStaff()
+
+    return () => {
+      isMounted = false
+    }
+  }, [isOpen, service.appointment_id, toast])
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
     setIsSubmitting(true)
+
     try {
       const data = new FormData()
       data.append('appointmentServiceId', service.id || '')
       if (formData.staffId) data.append('staffId', formData.staffId)
+
       if (formData.startTime) {
-        // Convert time to full datetime
-        const startDate = service.start_time
-          ? new Date(service.start_time)
-          : new Date()
+        const startDate = service.start_time ? new Date(service.start_time) : new Date()
         const [hours, minutes] = formData.startTime.split(':')
-        startDate.setHours(parseInt(hours), parseInt(minutes))
+        startDate.setHours(Number(hours), Number(minutes), 0, 0)
         data.append('startTime', startDate.toISOString())
       }
+
       if (formData.endTime) {
-        // Convert time to full datetime
         const endDate = service.end_time ? new Date(service.end_time) : new Date()
         const [hours, minutes] = formData.endTime.split(':')
-        endDate.setHours(parseInt(hours), parseInt(minutes))
+        endDate.setHours(Number(hours), Number(minutes), 0, 0)
         data.append('endTime', endDate.toISOString())
       }
-      if (formData.durationMinutes)
+
+      if (formData.durationMinutes) {
         data.append('durationMinutes', formData.durationMinutes)
-      if (formData.status) data.append('status', formData.status)
+      }
+
+      if (formData.status) {
+        data.append('status', formData.status)
+      }
 
       const result = await updateAppointmentService(data)
 
-      if (result.error) {
-        alert(result.error)
-      } else {
-        onSuccess()
+      if ('error' in result) {
+        toast({
+          variant: 'destructive',
+          title: 'Unable to update service',
+          description: result.error,
+        })
+        return
       }
+
+      toast({
+        title: 'Service updated',
+        description: 'Appointment service changes were saved.',
+      })
+
+      onSuccess()
     } catch (error) {
-      alert('Failed to update service')
+      console.error('Failed to update appointment service:', error)
+      toast({
+        variant: 'destructive',
+        title: 'Failed to update service',
+        description: 'Please try again in a moment.',
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -126,20 +195,26 @@ export function EditServiceDialog({
               onValueChange={(value) =>
                 setFormData((prev) => ({ ...prev, staffId: value }))
               }
+              disabled={isLoadingStaff}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select staff member" />
+                <SelectValue placeholder={isLoadingStaff ? 'Loading staff...' : 'Select staff member'} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">Any available</SelectItem>
-                {staff.map((member) => (
-                  <SelectItem key={member.id} value={member.id}>
-                    {member.name}
-                  </SelectItem>
-                ))}
-                {staff.length === 0 && service.staff_name && (
+                {staff.length > 0 ? (
+                  staff.map((member) => (
+                    <SelectItem key={member.id} value={member.id}>
+                      {member.name}
+                    </SelectItem>
+                  ))
+                ) : service.staff_name ? (
                   <SelectItem value={service.staff_id || ''}>
                     {service.staff_name}
+                  </SelectItem>
+                ) : (
+                  <SelectItem value="no-staff" disabled>
+                    {isLoadingStaff ? 'Loading staff...' : 'No staff available'}
                   </SelectItem>
                 )}
               </SelectContent>
@@ -153,8 +228,8 @@ export function EditServiceDialog({
                 id="startTime"
                 type="time"
                 value={formData.startTime}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, startTime: e.target.value }))
+                onChange={(event) =>
+                  setFormData((prev) => ({ ...prev, startTime: event.target.value }))
                 }
               />
             </div>
@@ -165,8 +240,8 @@ export function EditServiceDialog({
                 id="endTime"
                 type="time"
                 value={formData.endTime}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, endTime: e.target.value }))
+                onChange={(event) =>
+                  setFormData((prev) => ({ ...prev, endTime: event.target.value }))
                 }
               />
             </div>
@@ -179,8 +254,8 @@ export function EditServiceDialog({
               type="number"
               min="1"
               value={formData.durationMinutes}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, durationMinutes: e.target.value }))
+              onChange={(event) =>
+                setFormData((prev) => ({ ...prev, durationMinutes: event.target.value }))
               }
             />
           </div>

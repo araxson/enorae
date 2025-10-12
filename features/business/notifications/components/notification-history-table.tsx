@@ -6,10 +6,10 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import type { Database } from '@/lib/types/database.types'
 import { formatDistanceToNow, format } from 'date-fns'
 
-type NotificationEntry = Database['communication']['Tables']['notification_queue']['Row']
+import type { NotificationEntry } from '../types'
+
 type NotificationHistoryTableProps = {
   history: NotificationEntry[]
 }
@@ -71,7 +71,7 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
                 </TableCell>
                 <TableCell>
                   <div className="flex flex-wrap gap-1">
-                    {(entry.channels || []).map((channel) => (
+                    {(entry.channels || []).map((channel: string) => (
                       <Badge key={channel} variant="outline" className="capitalize">
                         {channel}
                       </Badge>

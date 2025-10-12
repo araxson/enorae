@@ -1,4 +1,4 @@
-import { ServicePricing } from '@/features/shared/service-pricing'
+import { ServicePricing } from '@/features/business/service-pricing'
 
 export const metadata = {
   title: 'Service Pricing',

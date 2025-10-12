@@ -49,108 +49,192 @@ export function StaffTable({ staff }: StaffTableProps) {
   }
 
   return (
-    <div className="rounded-lg border overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Staff member</TableHead>
-            <TableHead className="min-w-[140px]">Role</TableHead>
-            <TableHead className="min-w-[140px]">Salon</TableHead>
-            <TableHead className="min-w-[120px]">Background</TableHead>
-            <TableHead className="min-w-[120px]">Certifications</TableHead>
-            <TableHead className="min-w-[160px]">Performance</TableHead>
-            <TableHead className="min-w-[140px]">Compliance</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {staff.map((member) => (
-            <TableRow key={member.id}>
-              <TableCell>
-                <div className="flex flex-col gap-1">
-                  <span className="font-medium">{member.fullName || member.title || 'Unnamed staff'}</span>
-                  <span className="text-xs text-muted-foreground">
-                    Experience: {member.experienceYears} yrs
-                  </span>
-                  {member.metrics.lastAppointmentAt && (
-                    <span className="text-xs text-muted-foreground">
-                      Last appointment: {formatDate(member.metrics.lastAppointmentAt)}
-                    </span>
-                  )}
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className="space-y-1">
-                  <Badge variant="outline" className="capitalize">
-                    {member.staffRole?.replace(/_/g, ' ') || '—'}
-                  </Badge>
-                  {member.title && (
-                    <span className="block text-xs text-muted-foreground">{member.title}</span>
-                  )}
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className="space-y-1">
-                  <span className="text-sm font-medium">{member.salonName || '—'}</span>
-                  {member.salonSlug && (
-                    <span className="text-xs text-muted-foreground">{member.salonSlug}</span>
-                  )}
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className="space-y-1">
-                  {renderBackgroundBadge(member.background.status)}
-                  <span className="block text-xs text-muted-foreground">
-                    Checked {formatDate(member.background.lastCheckedAt)}
-                  </span>
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className="space-y-1">
-                  <Badge variant="secondary">{member.certifications.length}</Badge>
-                  {member.certifications.slice(0, 2).map((certification) => (
-                    <span key={certification} className="block text-xs text-muted-foreground truncate">
-                      {certification.replace(/^cert:/i, '')}
-                    </span>
-                  ))}
-                  {member.certifications.length > 2 && (
-                    <span className="text-xs text-muted-foreground">+{member.certifications.length - 2} more</span>
-                  )}
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className="space-y-1">
-                  <span className="text-sm font-semibold">
-                    {member.metrics.completedAppointments}/{member.metrics.totalAppointments} completed
-                  </span>
-                  <span className="block text-xs text-muted-foreground">
-                    No-shows {member.compliance.noShowRate > 0 ? `${Math.round(member.compliance.noShowRate * 100)}%` : '0%'}
-                  </span>
-                  <span className="block text-xs text-muted-foreground">
-                    Avg rating {member.metrics.averageRating ? member.metrics.averageRating.toFixed(2) : '—'}
-                  </span>
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className="space-y-1">
-                  <StaffRiskBadge staff={member} />
-                  <span className="block text-xs text-muted-foreground">
-                    Score {member.compliance.score}
-                  </span>
-                  <span className="block text-xs text-muted-foreground">
-                    Completion {Math.round(member.compliance.completionRate * 100)}%
-                  </span>
-                </div>
-              </TableCell>
+    <>
+      <div className="hidden md:block rounded-lg border overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Staff member</TableHead>
+              <TableHead className="min-w-[140px]">Role</TableHead>
+              <TableHead className="min-w-[140px]">Salon</TableHead>
+              <TableHead className="min-w-[120px]">Background</TableHead>
+              <TableHead className="min-w-[120px]">Certifications</TableHead>
+              <TableHead className="min-w-[160px]">Performance</TableHead>
+              <TableHead className="min-w-[140px]">Compliance</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {staff.map((member) => (
+              <TableRow key={member.id}>
+                <TableCell>
+                  <div className="flex flex-col gap-1">
+                    <span className="font-medium">{member.fullName || member.title || 'Unnamed staff'}</span>
+                    <span className="text-xs text-muted-foreground">
+                      Experience: {member.experienceYears} yrs
+                    </span>
+                    {member.metrics.lastAppointmentAt && (
+                      <span className="text-xs text-muted-foreground">
+                        Last appointment: {formatDate(member.metrics.lastAppointmentAt)}
+                      </span>
+                    )}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="space-y-1">
+                    <Badge variant="outline" className="capitalize">
+                      {member.staffRole?.replace(/_/g, ' ') || '—'}
+                    </Badge>
+                    {member.title && (
+                      <span className="block text-xs text-muted-foreground">{member.title}</span>
+                    )}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="space-y-1">
+                    <span className="text-sm font-medium">{member.salonName || '—'}</span>
+                    {member.salonSlug && (
+                      <span className="text-xs text-muted-foreground">{member.salonSlug}</span>
+                    )}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="space-y-1">
+                    {renderBackgroundBadge(member.background.status)}
+                    <span className="block text-xs text-muted-foreground">
+                      Checked {formatDate(member.background.lastCheckedAt)}
+                    </span>
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="space-y-1">
+                    <Badge variant="secondary">{member.certifications.length}</Badge>
+                    {member.certifications.slice(0, 2).map((certification) => {
+                      const label = certification.replace(/^cert:/i, '')
+                      return (
+                        <span
+                          key={certification}
+                          className="block text-xs text-muted-foreground truncate"
+                          title={label}
+                        >
+                          {label}
+                        </span>
+                      )
+                    })}
+                    {member.certifications.length > 2 && (
+                      <span className="text-xs text-muted-foreground">+{member.certifications.length - 2} more</span>
+                    )}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="space-y-1">
+                    <span className="text-sm font-semibold">
+                      {member.metrics.completedAppointments}/{member.metrics.totalAppointments} completed
+                    </span>
+                    <span className="block text-xs text-muted-foreground">
+                      No-shows{' '}
+                      {member.compliance.noShowRate > 0
+                        ? `${Math.round(member.compliance.noShowRate * 100)}%`
+                        : '0%'}
+                    </span>
+                    <span className="block text-xs text-muted-foreground">
+                      Avg rating {member.metrics.averageRating ? member.metrics.averageRating.toFixed(2) : '—'}
+                    </span>
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="space-y-1">
+                    <StaffRiskBadge staff={member} />
+                    <span className="block text-xs text-muted-foreground">
+                      Score {member.compliance.score}
+                    </span>
+                    <span className="block text-xs text-muted-foreground">
+                      Completion {Math.round(member.compliance.completionRate * 100)}%
+                    </span>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="md:hidden space-y-4">
+        {staff.map((member) => (
+          <div key={member.id} className="rounded-lg border p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-semibold">{member.fullName || member.title || 'Unnamed staff'}</p>
+                <p className="text-xs text-muted-foreground">Experience: {member.experienceYears} yrs</p>
+                {member.metrics.lastAppointmentAt && (
+                  <p className="text-xs text-muted-foreground">
+                    Last appointment: {formatDate(member.metrics.lastAppointmentAt)}
+                  </p>
+                )}
+              </div>
+              <StaffRiskBadge staff={member} />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <span className="font-medium block">Role</span>
+                <span className="text-muted-foreground capitalize">
+                  {member.staffRole?.replace(/_/g, ' ') || '—'}
+                </span>
+              </div>
+              <div>
+                <span className="font-medium block">Salon</span>
+                <span className="text-muted-foreground" title={member.salonName ?? undefined}>
+                  {member.salonName || '—'}
+                </span>
+              </div>
+              <div>
+                <span className="font-medium block">Background</span>
+                {renderBackgroundBadge(member.background.status)}
+                <span className="block text-xs text-muted-foreground">
+                  Checked {formatDate(member.background.lastCheckedAt)}
+                </span>
+              </div>
+              <div>
+                <span className="font-medium block">Certifications</span>
+                <Badge variant="secondary">{member.certifications.length}</Badge>
+                {member.certifications.slice(0, 2).map((certification) => {
+                  const label = certification.replace(/^cert:/i, '')
+                  return (
+                    <span key={certification} className="block text-xs text-muted-foreground truncate" title={label}>
+                      {label}
+                    </span>
+                  )
+                })}
+              </div>
+              <div>
+                <span className="font-medium block">Performance</span>
+                <span className="block text-muted-foreground">
+                  {member.metrics.completedAppointments}/{member.metrics.totalAppointments} completed
+                </span>
+                <span className="block text-xs text-muted-foreground">
+                  No-shows{' '}
+                  {member.compliance.noShowRate > 0
+                    ? `${Math.round(member.compliance.noShowRate * 100)}%`
+                    : '0%'}
+                </span>
+                <span className="block text-xs text-muted-foreground">
+                  Avg rating {member.metrics.averageRating ? member.metrics.averageRating.toFixed(2) : '—'}
+                </span>
+              </div>
+              <div>
+                <span className="font-medium block">Compliance Score</span>
+                <span className="text-muted-foreground">{member.compliance.score}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   )
 }

@@ -1,6 +1,11 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { TimeOffRequestsClient } from './components/time-off-requests-client'
-import { getTimeOffRequests, getPendingTimeOffRequests } from './api/queries'
+import {
+  getTimeOffRequests,
+  getPendingTimeOffRequests,
+  getTimeOffBalance,
+  getTeamTimeOffCalendar
+} from './api/queries'
 import { getStaffProfile } from '../appointments/api/queries'
 
 export async function TimeOffRequests() {
@@ -31,9 +36,11 @@ export async function TimeOffRequests() {
     )
   }
 
-  const [allRequests, pendingRequests] = await Promise.all([
+  const [allRequests, pendingRequests, balance, teamCalendar] = await Promise.all([
     getTimeOffRequests(),
     getPendingTimeOffRequests(),
+    getTimeOffBalance(),
+    getTeamTimeOffCalendar(),
   ])
 
   return (
@@ -41,6 +48,8 @@ export async function TimeOffRequests() {
       staffId={staffProfile.id}
       allRequests={allRequests}
       pendingRequests={pendingRequests}
+      balance={balance}
+      teamCalendar={teamCalendar}
     />
   )
 }

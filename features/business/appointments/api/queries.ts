@@ -1,8 +1,9 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { canAccessSalon } from '@/lib/auth/permissions/salon-access'
 import type { Database } from '@/lib/types/database.types'
-import { getUserSalon } from '../../shared/api/salon.queries'
+import { getUserSalon } from '@/features/business/business-common/api/queries'
 
 type Appointment = Database['public']['Views']['appointments']['Row']
 
@@ -15,6 +16,9 @@ export { getUserSalon }
 export async function getAppointments(salonId: string) {
   // SECURITY: Require authentication
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  if (!(await canAccessSalon(salonId))) {
+    throw new Error('Unauthorized: Not your salon')
+  }
 
   const supabase = await createClient()
 
@@ -32,6 +36,9 @@ export async function getAppointments(salonId: string) {
 export async function getAppointmentsByStatus(salonId: string, status: string) {
   // SECURITY: Require authentication
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  if (!(await canAccessSalon(salonId))) {
+    throw new Error('Unauthorized: Not your salon')
+  }
 
   const supabase = await createClient()
 

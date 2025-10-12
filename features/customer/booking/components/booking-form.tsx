@@ -24,18 +24,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Progress } from '@/components/ui/progress'
 import { Small } from '@/components/ui/typography'
 import { AlertCircle, CheckCircle2, Loader2, XCircle } from 'lucide-react'
-import type { Database } from '@/lib/types/database.types'
-import { checkStaffAvailability } from '@/features/business/appointments/api/availability-functions'
-
-type Service = Database['public']['Views']['services']['Row']
-type Staff = Database['public']['Views']['staff']['Row']
-
-interface BookingFormProps {
-  salonId: string
-  salonName: string
-  services: Service[]
-  staff: Staff[]
-}
+import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
+import type { BookingFormProps, Service, Staff } from '../types'
 
 export function BookingForm({ salonId, salonName, services, staff }: BookingFormProps) {
   const [error, setError] = useState<string | null>(null)
@@ -106,7 +96,13 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
           setAvailabilityMessage('Staff member is available for the selected time.')
         } else {
           setAvailabilityStatus('unavailable')
-          setAvailabilityMessage('Staff member has a conflict at the selected time.')
+          // Show specific reason if available
+          if (result.reason) {
+            const blockTypeLabel = result.blockType ? `(${result.blockType})` : ''
+            setAvailabilityMessage(`Time blocked ${blockTypeLabel}: ${result.reason}`)
+          } else {
+            setAvailabilityMessage('Staff member has a conflict at the selected time.')
+          }
         }
       } catch (availabilityError) {
         if (checkId !== latestCheckRef.current) {

@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Grid, Stack, Flex } from '@/components/layout'
 import { P, Muted } from '@/components/ui/typography'
 import { Star, TrendingUp } from 'lucide-react'
-import type { StaffWithServices } from '../api/staff-services-queries'
+import type { StaffWithServices } from '../api/queries'
 
 interface StaffPerformanceSummaryProps {
   staff: StaffWithServices[]

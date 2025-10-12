@@ -49,7 +49,18 @@ export async function getLoyaltyTransactions(limit = 50) {
     .limit(limit)
 
   if (error) throw error
-  return data as LoyaltyTransaction[]
+  const rows = (data ?? []) as Array<Partial<LoyaltyTransaction>>
+
+  return rows
+    .filter((row): row is LoyaltyTransaction => Boolean(row.id && row.points !== undefined && row.type && row.description && row.created_at))
+    .map((row) => ({
+      id: row.id,
+      points: row.points,
+      type: row.type,
+      description: row.description,
+      appointment_id: row.appointment_id ?? null,
+      created_at: row.created_at,
+    }))
 }
 
 export async function calculateLoyaltyValue() {

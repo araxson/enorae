@@ -19,23 +19,31 @@ export function useUserActionsMenu({
   onReactivate,
   onTerminateSessions,
   onDelete,
+  onLoadingChange,
 }: Pick<
   UserActionsMenuProps,
-  'userId' | 'userName' | 'onSuspend' | 'onReactivate' | 'onTerminateSessions' | 'onDelete'
+  'userId' | 'userName' | 'onSuspend' | 'onReactivate' | 'onTerminateSessions' | 'onDelete' | 'onLoadingChange'
 >) {
   const router = useRouter()
   const [dialogs, setDialogs] = useState(initialDialogs)
   const [isLoading, setIsLoading] = useState(false)
+  const [deleteReason, setDeleteReason] = useState('')
 
   const closeDialogs = () => setDialogs(initialDialogs)
   const setDialog = (key: keyof typeof dialogs, value: boolean) =>
-    setDialogs((current) => ({ ...current, [key]: value }))
+    setDialogs((current) => {
+      if (key === 'delete' && !value) {
+        setDeleteReason('')
+      }
+      return { ...current, [key]: value }
+    })
 
   const performAction = async (
     action: (formData: FormData) => Promise<UserActionResult>,
     onSuccessMessage: string,
     payload?: (formData: FormData) => void
   ) => {
+    onLoadingChange?.(true, userId)
     setIsLoading(true)
     const formData = new FormData()
     formData.append('userId', userId)
@@ -43,12 +51,14 @@ export function useUserActionsMenu({
 
     const result = await action(formData)
     setIsLoading(false)
+    onLoadingChange?.(false, userId)
 
     if (result.error) {
       toast.error(result.error)
     } else {
       toast.success(onSuccessMessage)
       closeDialogs()
+      setDeleteReason('')
       router.refresh()
     }
   }
@@ -63,11 +73,16 @@ export function useUserActionsMenu({
       }),
     handleReactivate: () => performAction(onReactivate, 'User reactivated successfully'),
     handleTerminateSessions: () => performAction(onTerminateSessions, 'All sessions terminated'),
-    handleDelete: () =>
+    deleteReason,
+    setDeleteReason,
+    handleDelete: (reason: string) =>
       onDelete
-        ? performAction(onDelete, 'User deleted permanently')
+        ? performAction(onDelete, 'User deleted permanently', (formData) => {
+            formData.append('reason', reason)
+          })
         : Promise.resolve(),
     userName,
     onDelete,
+    onLoadingChange,
   }
 }

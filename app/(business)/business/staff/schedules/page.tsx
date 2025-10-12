@@ -1,4 +1,4 @@
-import { StaffSchedulesManagement } from '@/features/business/staff/schedules'
+import { StaffSchedulesManagement } from '@/features/business/staff-schedules'
 
 export const metadata = {
   title: 'Staff Schedules',

@@ -1,30 +1,47 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, CalendarCheck2, CalendarClock } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/shared/components/types'
-import { P, Small } from '@/components/ui/typography'
+import { Plus, CalendarCheck2, CalendarClock, PieChart, Users } from 'lucide-react'
+import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import { P, Small, H3 } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
 import { RequestCard } from './request-card'
 import { CreateRequestDialog } from './create-request-dialog'
-import type { TimeOffRequestWithStaff } from '../api/queries'
+import type { TimeOffRequestWithStaff, TimeOffBalance, TeamTimeOffCalendar } from '../api/queries'
 
 interface TimeOffRequestsClientProps {
   staffId: string
   allRequests: TimeOffRequestWithStaff[]
   pendingRequests: TimeOffRequestWithStaff[]
+  balance: TimeOffBalance
+  teamCalendar: TeamTimeOffCalendar[]
 }
 
 export function TimeOffRequestsClient({
   staffId,
   allRequests,
   pendingRequests,
+  balance,
+  teamCalendar,
 }: TimeOffRequestsClientProps) {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<'all' | 'pending'>('all')
+  const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'balance' | 'team'>('all')
+
+  const usagePercent = (balance.used_days / balance.total_days) * 100
+  const pendingPercent = (balance.pending_days / balance.total_days) * 100
 
   const summaries: StaffSummary[] = [
+    {
+      id: 'remaining',
+      label: 'Days remaining',
+      value: balance.remaining_days.toString(),
+      helper: `${balance.used_days} used, ${balance.pending_days} pending`,
+      tone: balance.remaining_days < 5 ? 'warning' : 'success',
+    },
     {
       id: 'pending',
       label: 'Pending requests',
@@ -61,6 +78,8 @@ export function TimeOffRequestsClient({
       tabs={[
         { value: 'all', label: 'All requests', icon: CalendarCheck2, badge: allRequests.length ? allRequests.length.toString() : undefined },
         { value: 'pending', label: 'Pending', icon: CalendarClock, badge: pendingRequests.length ? pendingRequests.length.toString() : undefined },
+        { value: 'balance', label: 'Balance', icon: PieChart },
+        { value: 'team', label: 'Team calendar', icon: Users },
       ]}
       activeTab={activeTab}
       onTabChange={(value) => setActiveTab(value as typeof activeTab)}
@@ -79,27 +98,115 @@ export function TimeOffRequestsClient({
           </Button>
         </div>
 
-        {pendingRequests.length > 0 && (
-          <div className="rounded-lg border bg-secondary/10 p-4">
-            <Small className="font-semibold">
-              {pendingRequests.length} pending request(s) awaiting review
-            </Small>
+        {activeTab === 'balance' && (
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Time Off Balance ({balance.year})</CardTitle>
+                <CardDescription>Your annual time off allocation and usage</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <P className="text-2xl font-bold">{balance.total_days}</P>
+                    <Small className="text-muted-foreground">Total</Small>
+                  </div>
+                  <div>
+                    <P className="text-2xl font-bold text-blue-600">{balance.used_days}</P>
+                    <Small className="text-muted-foreground">Used</Small>
+                  </div>
+                  <div>
+                    <P className="text-2xl font-bold text-green-600">{balance.remaining_days}</P>
+                    <Small className="text-muted-foreground">Remaining</Small>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Used: {balance.used_days} days</span>
+                    <span>{usagePercent.toFixed(0)}%</span>
+                  </div>
+                  <Progress value={usagePercent} className="h-2" />
+                </div>
+                {balance.pending_days > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Pending approval: {balance.pending_days} days</span>
+                      <span>{pendingPercent.toFixed(0)}%</span>
+                    </div>
+                    <Progress value={pendingPercent} className="h-2" />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
         )}
 
-        {displayedRequests.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-2 rounded-lg border bg-background py-12 text-center">
-            <P className="text-muted-foreground">No time-off requests yet</P>
-            <P className="text-sm text-muted-foreground">
-              Click the New request button to submit a time-off request
-            </P>
+        {activeTab === 'team' && (
+          <div className="space-y-4">
+            <H3>Team Time Off Calendar</H3>
+            {teamCalendar.length === 0 ? (
+              <Card>
+                <CardContent className="py-12 text-center">
+                  <P className="text-muted-foreground">No upcoming team time off</P>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid gap-4">
+                {teamCalendar.map((entry, idx) => (
+                  <Card key={`${entry.staff_id}-${idx}`}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="text-base">{entry.staff_name}</CardTitle>
+                          {entry.staff_title && (
+                            <CardDescription>{entry.staff_title}</CardDescription>
+                          )}
+                        </div>
+                        <Badge variant={entry.status === 'approved' ? 'default' : 'secondary'}>
+                          {entry.status}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between text-sm">
+                        <div>
+                          <P className="font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</P>
+                          <Small className="text-muted-foreground capitalize">{entry.request_type.replace('_', ' ')}</Small>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {displayedRequests.map((request) => (
-              <RequestCard key={request.id} request={request} isStaffView />
-            ))}
-          </div>
+        )}
+
+        {(activeTab === 'all' || activeTab === 'pending') && (
+          <>
+            {pendingRequests.length > 0 && activeTab === 'all' && (
+              <div className="rounded-lg border bg-secondary/10 p-4">
+                <Small className="font-semibold">
+                  {pendingRequests.length} pending request(s) awaiting review
+                </Small>
+              </div>
+            )}
+
+            {displayedRequests.length === 0 ? (
+              <div className="flex flex-col items-center justify-center gap-2 rounded-lg border bg-background py-12 text-center">
+                <P className="text-muted-foreground">No time-off requests yet</P>
+                <P className="text-sm text-muted-foreground">
+                  Click the New request button to submit a time-off request
+                </P>
+              </div>
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {displayedRequests.map((request) => (
+                  <RequestCard key={request.id} request={request} isStaffView />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
 

@@ -10,6 +10,7 @@ import { ReviewDetailDialog } from './review-detail-dialog'
 import type { ModerationReview, ModerationStats as ModerationStatsType } from '../api/queries'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Grid } from '@/components/layout'
 
 interface ModerationClientProps {
   reviews: ModerationReview[]
@@ -96,7 +97,7 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
         onReputationFilterChange={setReputationFilter}
       />
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <Grid cols={{ base: 1, lg: 2 }} gap="sm">
         <InsightCard
           title="High risk reviews"
           emptyLabel="No high risk reviews"
@@ -113,9 +114,9 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
           items={trustedReviewers}
           renderBadge={(review) => (
             <Badge variant="outline">Reputation {review.reviewerReputation.score}</Badge>
-          )}
+          )} 
         />
-      </div>
+      </Grid>
 
       <ReviewsTable reviews={filteredReviews} onViewDetail={setViewingReview} />
 

@@ -1,6 +1,7 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+
+import { requireSessionContext } from './session-context'
 
 // FIXED: Use identity.sessions view (application sessions, not auth.sessions)
 type Session = Database['public']['Views']['sessions']['Row']
@@ -16,10 +17,7 @@ export type SessionWithDevice = SessionWithMetadata
  * IMPROVED: Uses identity.sessions view (application sessions)
  */
 export async function getUserSessions(): Promise<SessionWithMetadata[]> {
-  const supabase = await createClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { supabase, user } = await requireSessionContext()
 
   // ✅ FIXED: Query identity.sessions via public view (application sessions)
   const { data, error } = await supabase
@@ -31,15 +29,10 @@ export async function getUserSessions(): Promise<SessionWithMetadata[]> {
     .order('updated_at', { ascending: false })
 
   if (error) throw error
-
-  // Get current Supabase auth session to mark the matching application session
-  const { data: { session: currentSession } } = await supabase.auth.getSession()
-
-  // Mark current session based on session_token matching
   const sessions = data || []
   return sessions.map((session: Session) => ({
     ...session,
-    is_current: currentSession?.access_token === session.session_token,
+    is_current: false, // Note: is_current field not available in view
   }))
 }
 
@@ -48,10 +41,7 @@ export async function getUserSessions(): Promise<SessionWithMetadata[]> {
  * IMPROVED: Uses identity.sessions view
  */
 export async function getSessionCount(): Promise<number> {
-  const supabase = await createClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { supabase, user } = await requireSessionContext()
 
   // ✅ FIXED: Query identity.sessions via public view
   const { count, error } = await supabase

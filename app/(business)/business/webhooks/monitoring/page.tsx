@@ -1,4 +1,4 @@
-import { WebhookMonitoring } from '@/features/business/webhooks/monitoring'
+import { WebhookMonitoring } from '@/features/business/webhooks-monitoring'
 
 export const metadata = {
   title: 'Webhook Monitoring',

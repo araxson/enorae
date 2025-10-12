@@ -45,6 +45,7 @@ export async function getTrendInsights(salonId: string): Promise<TrendInsight[]>
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
   const { data: metrics, error } = await supabase
+    .schema('analytics')
     .from('daily_metrics')
     .select('*')
     .eq('salon_id', salonId)
@@ -121,6 +122,7 @@ export async function getBusinessRecommendations(salonId: string): Promise<Busin
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
   const { data: metrics } = await supabase
+    .schema('analytics')
     .from('daily_metrics')
     .select('*')
     .eq('salon_id', salonId)
@@ -248,6 +250,7 @@ export async function getAnomalyAlerts(salonId: string): Promise<AnomalyAlert[]>
 
   // Get recent metrics with anomaly scores
   const { data: metrics } = await supabase
+    .schema('analytics')
     .from('daily_metrics')
     .select('*')
     .eq('salon_id', salonId)
@@ -298,6 +301,7 @@ export async function getGrowthOpportunities(salonId: string) {
 
   // Get operational metrics
   const { data: operational } = await supabase
+    .schema('analytics')
     .from('operational_metrics')
     .select('*')
     .eq('salon_id', salonId)

@@ -1,4 +1,4 @@
-import { DailyAnalytics } from '@/features/business/analytics/daily'
+import { DailyAnalytics } from '@/features/business/daily-analytics'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
 export const metadata = genMeta({

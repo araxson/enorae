@@ -26,7 +26,7 @@ import {
   bulkConfirmAppointments,
   bulkCompleteAppointments,
   bulkNoShowAppointments,
-} from '../api/bulk-operations.mutations'
+} from '../api/mutations'
 
 interface BulkActionsMenuProps {
   selectedIds: string[]

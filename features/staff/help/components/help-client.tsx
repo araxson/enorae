@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import { Bookmark } from 'lucide-react'
-import type { StaffQuickAction, StaffSummary } from '@/features/staff/shared/components/types'
-import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
+import type { StaffQuickAction, StaffSummary } from '@/features/staff/staff-common/components/types'
+import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import { HelpResourceBrowser } from './help-resource-browser'
 import { HelpLearningHubCard } from './help-learning-hub-card'
 import { HelpCategoryAccordion } from './help-category-accordion'
@@ -25,8 +25,8 @@ type LearningTrack = {
 }
 
 interface StaffHelpClientProps {
-  summaries: readonly StaffSummary[]
-  quickActions: readonly StaffQuickAction[]
+  summaries: StaffSummary[]
+  quickActions: StaffQuickAction[]
   resourceCategories: readonly ResourceCategory[]
   learningTracks: readonly LearningTrack[]
 }

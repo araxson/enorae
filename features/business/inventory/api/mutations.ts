@@ -1,0 +1,12 @@
+'use server'
+
+export * as inventoryAlertMutations from '@/features/business/inventory-alerts/api/mutations'
+export * as inventoryCategoryMutations from '@/features/business/inventory-categories/api/mutations'
+export * as inventoryLocationMutations from '@/features/business/inventory-locations/api/mutations'
+export * as inventoryMovementMutations from '@/features/business/inventory-movements/api/mutations'
+export * as inventoryOrderMutations from '@/features/business/inventory-purchase-orders/api/mutations'
+export * as inventoryProductMutations from '@/features/business/inventory-products/api/mutations'
+export * as inventoryStockLevelMutations from '@/features/business/inventory-stock-levels/api/mutations'
+export * as inventorySupplierMutations from '@/features/business/inventory-suppliers/api/mutations'
+export * as inventoryUsageMutations from '@/features/business/inventory-usage/api/mutations'
+export * from './batch-mutations'

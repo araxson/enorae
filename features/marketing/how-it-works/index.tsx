@@ -1,0 +1,7 @@
+export * from './components'
+export { howItWorksMetadata } from './components/how-it-works-metadata'
+export * from './api/queries'
+export { Hero } from './components/sections/hero'
+export { ForBusinesses } from './components/sections/for-businesses'
+export { ForCustomers } from './components/sections/for-customers'
+export { CTA } from './components/sections/cta'

@@ -3,16 +3,11 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { z } from 'zod'
+import { rescheduleSchema } from '@/lib/validations/customer/appointments'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
   | { success: false; error: string }
-
-const rescheduleSchema = z.object({
-  newStartTime: z.string().datetime(),
-  reason: z.string().optional(),
-})
 
 /**
  * Cancel an appointment

@@ -9,9 +9,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import { P, Muted } from '@/components/ui/typography'
+import { Separator } from '@/components/ui/separator'
+import { P, Muted, H2, Small } from '@/components/ui/typography'
+import { Stack, Group } from '@/components/layout'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
-import { MapPin } from 'lucide-react'
+import { MapPin, Star } from 'lucide-react'
+import {
+  AmenitiesBadges,
+  SpecialtiesTags,
+  ContactInfo,
+  SocialLinks,
+  SalonStats,
+} from '@/features/shared/customer-common/components'
 import type { Database } from '@/lib/types/database.types'
 
 type Salon = Database['public']['Views']['salons']['Row']
@@ -76,12 +85,15 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           )}
         </div>
 
-        <div className="space-y-4 px-6 py-6">
+        <Stack gap="lg" className="px-6 py-6">
+          {/* Header with name and favorite button */}
           <div className="flex items-start justify-between gap-4">
-            <div className="flex-1 space-y-2">
-              <P className="text-2xl font-semibold leading-tight">{salon.name}</P>
-              {salon.business_type && <P className="text-muted-foreground">{salon.business_type}</P>}
-            </div>
+            <Stack gap="sm" className="flex-1">
+              <H2>{salon.name}</H2>
+              {salon.short_description && (
+                <P className="text-muted-foreground">{salon.short_description}</P>
+              )}
+            </Stack>
             {salon.id && (
               <FavoriteButton
                 salonId={salon.id}
@@ -91,13 +103,81 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
             )}
           </div>
 
-          {salon.business_name && (
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <MapPin className="h-4 w-4" />
-              <Muted>{salon.business_name}</Muted>
-            </div>
+          {/* Rating and Location */}
+          <Group gap="md">
+            {salon.rating && (
+              <Group gap="xs">
+                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <Small className="font-medium">{Number(salon.rating).toFixed(1)}</Small>
+                {salon.review_count && (
+                  <Small className="text-muted-foreground">
+                    ({salon.review_count} {salon.review_count === 1 ? 'review' : 'reviews'})
+                  </Small>
+                )}
+              </Group>
+            )}
+            {salon.full_address && (
+              <Group gap="xs">
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <Small className="text-muted-foreground">{salon.full_address}</Small>
+              </Group>
+            )}
+          </Group>
+
+          <Separator />
+
+          {/* Description */}
+          {salon.description && (
+            <Stack gap="sm">
+              <P className="font-medium">About</P>
+              <P className="text-muted-foreground">{salon.description}</P>
+            </Stack>
           )}
-        </div>
+
+          {/* Stats */}
+          <SalonStats staffCount={salon.staff_count} servicesCount={salon.services_count} />
+
+          {/* Specialties */}
+          {salon.specialties && salon.specialties.length > 0 && (
+            <Stack gap="sm">
+              <P className="font-medium">Specialties</P>
+              <SpecialtiesTags specialties={salon.specialties} />
+            </Stack>
+          )}
+
+          {/* Amenities */}
+          {salon.amenities && salon.amenities.length > 0 && (
+            <Stack gap="sm">
+              <P className="font-medium">Amenities</P>
+              <AmenitiesBadges amenities={salon.amenities} />
+            </Stack>
+          )}
+
+          <Separator />
+
+          {/* Contact and Social */}
+          <div className="grid gap-6 md:grid-cols-2">
+            <Stack gap="sm">
+              <P className="font-medium">Contact</P>
+              <ContactInfo
+                phone={salon.phone}
+                email={salon.email}
+                websiteUrl={salon.website_url}
+              />
+            </Stack>
+            {(salon.instagram_url || salon.facebook_url || salon.twitter_url || salon.tiktok_url) && (
+              <Stack gap="sm">
+                <P className="font-medium">Social Media</P>
+                <SocialLinks
+                  instagramUrl={salon.instagram_url}
+                  facebookUrl={salon.facebook_url}
+                  twitterUrl={salon.twitter_url}
+                  tiktokUrl={salon.tiktok_url}
+                />
+              </Stack>
+            )}
+          </div>
+        </Stack>
       </CardContent>
       </Card>
     </div>

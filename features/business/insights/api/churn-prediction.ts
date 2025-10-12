@@ -3,6 +3,20 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
+type AppointmentSummary = {
+  id: string
+  customer_id?: string
+  start_time: string | null
+  status: string | null
+}
+
+type ProfileSummary = {
+  id: string
+  full_name: string | null
+  email?: string | null
+  phone?: string | null
+}
+
 /**
  * Predict customer churn risk
  */
@@ -17,12 +31,14 @@ export async function predictChurnRisk(customerId: string) {
     .from('appointments')
     .select('id, start_time, status')
     .eq('customer_id', customerId)
-    .eq('salon_id', salonId)
+    .eq('salon_id', salonId || '')
     .order('start_time', { ascending: false })
 
   if (error) throw error
 
-  if (!appointments || appointments.length === 0) {
+  const appointmentRecords = (appointments ?? []) as AppointmentSummary[]
+
+  if (appointmentRecords.length === 0) {
     return {
       riskLevel: 'unknown',
       riskScore: 0,
@@ -32,29 +48,32 @@ export async function predictChurnRisk(customerId: string) {
   }
 
   const now = new Date()
-  const completedAppointments = appointments.filter((a) => a.status === 'completed')
+  const completedAppointments = appointmentRecords.filter((a) => a.status === 'completed')
+  const completedWithDates = completedAppointments.filter(
+    (apt): apt is typeof apt & { start_time: string } => Boolean(apt.start_time)
+  )
 
   // Calculate churn factors
-  const lastVisit = completedAppointments[0]
-    ? new Date(completedAppointments[0].start_time)
+  const lastVisit = completedWithDates[0]
+    ? new Date(completedWithDates[0].start_time)
     : null
   const daysSinceLastVisit = lastVisit
     ? (now.getTime() - lastVisit.getTime()) / (1000 * 60 * 60 * 24)
     : Infinity
 
-  const cancelledCount = appointments.filter((a) => a.status === 'cancelled').length
-  const noShowCount = appointments.filter((a) => a.status === 'no_show').length
+  const cancelledCount = appointmentRecords.filter((a) => a.status === 'cancelled').length
+  const noShowCount = appointmentRecords.filter((a) => a.status === 'no_show').length
   const totalVisits = completedAppointments.length
 
   // Calculate average days between visits
   let totalDays = 0
-  for (let i = 1; i < completedAppointments.length; i++) {
-    const prev = new Date(completedAppointments[i].start_time)
-    const curr = new Date(completedAppointments[i - 1].start_time)
+  for (let i = 1; i < completedWithDates.length; i++) {
+    const prev = new Date(completedWithDates[i].start_time)
+    const curr = new Date(completedWithDates[i - 1].start_time)
     totalDays += (prev.getTime() - curr.getTime()) / (1000 * 60 * 60 * 24)
   }
   const avgDaysBetweenVisits =
-    completedAppointments.length > 1 ? totalDays / (completedAppointments.length - 1) : 0
+    completedWithDates.length > 1 ? totalDays / (completedWithDates.length - 1) : 0
 
   // Churn risk scoring
   let riskScore = 0
@@ -93,8 +112,8 @@ export async function predictChurnRisk(customerId: string) {
   }
 
   // Factor 4: Visit frequency declining
-  if (completedAppointments.length >= 3) {
-    const recentVisits = completedAppointments.slice(0, 3)
+  if (completedWithDates.length >= 3) {
+    const recentVisits = completedWithDates.slice(0, 3)
     let recentTotalDays = 0
     for (let i = 1; i < recentVisits.length; i++) {
       const prev = new Date(recentVisits[i].start_time)
@@ -160,7 +179,7 @@ export async function getAtRiskCustomers(limit: number = 20) {
   const { data: appointments, error } = await supabase
     .from('appointments')
     .select('customer_id, start_time, status')
-    .eq('salon_id', salonId)
+    .eq('salon_id', salonId || '')
     .eq('status', 'completed')
     .gte(
       'start_time',
@@ -169,7 +188,9 @@ export async function getAtRiskCustomers(limit: number = 20) {
 
   if (error) throw error
 
-  if (!appointments || appointments.length === 0) {
+  const appointmentRecords = (appointments ?? []) as AppointmentSummary[]
+
+  if (appointmentRecords.length === 0) {
     return []
   }
 
@@ -177,7 +198,8 @@ export async function getAtRiskCustomers(limit: number = 20) {
   const customerLastVisit = new Map<string, Date>()
   const customerVisitCount = new Map<string, number>()
 
-  for (const apt of appointments) {
+  for (const apt of appointmentRecords) {
+    if (!apt.start_time || !apt.customer_id) continue
     const visitDate = new Date(apt.start_time)
     if (
       !customerLastVisit.has(apt.customer_id) ||
@@ -222,8 +244,10 @@ export async function getAtRiskCustomers(limit: number = 20) {
 
   if (profileError) throw profileError
 
+  const profileRecords = (profiles ?? []) as Array<ProfileSummary>
+
   return atRiskCustomers.slice(0, limit).map((item) => {
-    const profile = profiles?.find((p) => p.id === item.customerId)
+    const profile = profileRecords.find((p) => p.id === item.customerId)
     return {
       id: item.customerId,
       name: profile?.full_name || 'Unknown',
@@ -248,7 +272,7 @@ export async function getReactivationOpportunities() {
   const { data: appointments, error } = await supabase
     .from('appointments')
     .select('customer_id, start_time')
-    .eq('salon_id', salonId)
+    .eq('salon_id', salonId || '')
     .eq('status', 'completed')
     .gte(
       'start_time',
@@ -261,7 +285,9 @@ export async function getReactivationOpportunities() {
 
   if (error) throw error
 
-  if (!appointments || appointments.length === 0) {
+  const appointmentRecords = (appointments ?? []) as AppointmentSummary[]
+
+  if (appointmentRecords.length === 0) {
     return {
       totalOpportunities: 0,
       customers: [],
@@ -270,7 +296,8 @@ export async function getReactivationOpportunities() {
 
   // Find customers with their last visit in this range
   const customerLastVisit = new Map<string, Date>()
-  for (const apt of appointments) {
+  for (const apt of appointmentRecords) {
+    if (!apt.start_time || !apt.customer_id) continue
     const visitDate = new Date(apt.start_time)
     if (
       !customerLastVisit.has(apt.customer_id) ||
@@ -289,10 +316,12 @@ export async function getReactivationOpportunities() {
 
   if (profileError) throw profileError
 
+  const profileRecords = (profiles ?? []) as Array<ProfileSummary>
+
   const now = new Date()
   const customers = customerIds.map((customerId) => {
     const lastVisit = customerLastVisit.get(customerId)!
-    const profile = profiles?.find((p) => p.id === customerId)
+    const profile = profileRecords.find((p) => p.id === customerId)
     const daysSinceLastVisit = (now.getTime() - lastVisit.getTime()) / (1000 * 60 * 60 * 24)
 
     return {

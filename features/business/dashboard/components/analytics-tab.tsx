@@ -13,7 +13,7 @@ import {
   ServicePopularityChart,
   CustomerInsightsCard,
   OperationalMetricsDashboard,
-} from '@/features/business/shared/components'
+} from '@/features/business/business-common/components'
 import { Stack, Grid } from '@/components/layout'
 
 interface AnalyticsTabProps {

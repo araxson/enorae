@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Shield } from 'lucide-react'
 import {
   Dialog,
@@ -43,6 +43,8 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
   const [salonId, setSalonId] = useState('')
   const [permissions, setPermissions] = useState<string[]>([])
   const [templateId, setTemplateId] = useState('')
+  const [errors, setErrors] = useState<{ userId?: string; role?: string; salonId?: string }>({})
+  const userIdRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (!open) {
@@ -51,6 +53,7 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
       setSalonId('')
       setPermissions([])
       setTemplateId('')
+      setErrors({})
     }
   }, [open])
 
@@ -79,13 +82,21 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
 
+    const nextErrors: typeof errors = {}
+
     if (!userId || !role) {
-      toast.error('User ID and role are required')
-      return
+      if (!userId) nextErrors.userId = 'User ID is required'
+      if (!role) nextErrors.role = 'Role selection is required'
     }
 
     if (needsSalon && !salonId) {
-      toast.error('This role requires a salon assignment')
+      nextErrors.salonId = 'Please select a salon for this role'
+    }
+
+    setErrors(nextErrors)
+
+    if (Object.keys(nextErrors).length > 0) {
+      toast.error('Please resolve the highlighted fields before submitting.')
       return
     }
 
@@ -99,7 +110,7 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
     const result = await assignRole(formData)
     setIsLoading(false)
 
-    if (result.error) {
+    if (!result.success) {
       toast.error(result.error)
     } else {
       toast.success('The role has been assigned successfully.')
@@ -109,7 +120,15 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[560px]">
+      <DialogContent
+        className="sm:max-w-[560px]"
+        onOpenAutoFocus={(event) => {
+          if (userIdRef.current) {
+            userIdRef.current.focus()
+            event.preventDefault()
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
@@ -126,13 +145,16 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
               <div className="space-y-2">
                 <Label htmlFor="userId">User ID *</Label>
                 <Input
+                  ref={userIdRef}
                   id="userId"
                   placeholder="Enter user UUID"
                   value={userId}
                   onChange={(event) => setUserId(event.target.value)}
                   required
+                  aria-invalid={Boolean(errors.userId)}
                 />
                 <p className="text-xs text-muted-foreground">The UUID of the user to assign the role to</p>
+                {errors.userId && <p className="text-xs text-destructive">{errors.userId}</p>}
               </div>
 
               <RoleSelector
@@ -140,13 +162,26 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
                 onRoleChange={(value) => {
                   setRole(value)
                   setTemplateId('')
+                  setErrors((current) => ({ ...current, role: undefined }))
                 }}
                 templateId={templateId}
                 onTemplateChange={handleTemplateChange}
               />
+              {errors.role && <p className="text-xs text-destructive">{errors.role}</p>}
 
               {needsSalon && (
-                <SalonSelector salons={salons} value={salonId} onChange={setSalonId} required />
+                <>
+                  <SalonSelector
+                    salons={salons}
+                    value={salonId}
+                    onChange={(value) => {
+                      setSalonId(value)
+                      setErrors((current) => ({ ...current, salonId: undefined }))
+                    }}
+                    required
+                  />
+                  {errors.salonId && <p className="text-xs text-destructive">{errors.salonId}</p>}
+                </>
               )}
             </Stack>
 

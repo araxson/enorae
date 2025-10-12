@@ -87,6 +87,7 @@ const ExpensiveComponent = withMemoization(
 
 ```typescript
 import { MemoizedList } from '@/lib/performance/react-optimizations'
+import { AppointmentCard } from '@/features/shared/appointments'
 
 <MemoizedList
   items={appointments}

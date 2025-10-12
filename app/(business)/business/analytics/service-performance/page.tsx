@@ -1,4 +1,4 @@
-import { ServicePerformance } from '@/features/business/analytics/service-performance'
+import { ServicePerformance } from '@/features/business/service-performance-analytics'
 
 export const metadata = {
   title: 'Service Performance Analytics',

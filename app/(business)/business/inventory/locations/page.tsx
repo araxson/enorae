@@ -1,4 +1,4 @@
-import { StockLocations } from '@/features/business/inventory/locations'
+import { StockLocations } from '@/features/business/inventory-locations'
 
 export const metadata = {
   title: 'Stock Locations',

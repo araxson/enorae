@@ -1,5 +1,5 @@
 'use server';
-export * from './login.mutations'
-export * from './password.mutations'
-export * from './otp.mutations'
+export * from './internal/login'
+export * from './internal/password'
+export * from './internal/otp'
 export * from './types'

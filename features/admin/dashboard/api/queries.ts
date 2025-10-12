@@ -12,7 +12,8 @@ export async function getPlatformMetrics() {
 
   const now = new Date().toISOString()
 
-  const countResults = (await Promise.all([
+  // Use Promise.allSettled to prevent one failure from breaking all queries
+  const countResults = await Promise.allSettled([
     supabase.from('admin_salons_overview').select('id', { count: 'exact', head: true }),
     supabase.from('admin_users_overview').select('id', { count: 'exact', head: true }),
     supabase.from('admin_appointments_overview').select('id', { count: 'exact', head: true }),
@@ -24,17 +25,29 @@ export async function getPlatformMetrics() {
       .from('admin_appointments_overview')
       .select('id', { count: 'exact', head: true })
       .gte('start_time', now),
-  ])) as Array<{ count: number | null; error: unknown }>
+  ])
 
-  const [salonsResult, usersResult, appointmentsResult, completedResult, upcomingResult] = countResults
-
-  const safeCount = (result: { count: number | null; error: unknown }, context: string) => {
-    if ('error' in result && result.error) {
-      logSupabaseError(`getPlatformMetrics:${context}`, result.error)
+  // Safely extract counts from settled promises
+  const safeCountFromSettled = (
+    result: PromiseSettledResult<{ count: number | null; error: unknown }>,
+    context: string
+  ): number => {
+    if (result.status === 'rejected') {
+      logSupabaseError(`getPlatformMetrics:${context}`, result.reason)
       return 0
     }
-    return typeof result.count === 'number' ? result.count : 0
+    if (result.value.error) {
+      logSupabaseError(`getPlatformMetrics:${context}`, result.value.error)
+      return 0
+    }
+    return typeof result.value.count === 'number' ? result.value.count : 0
   }
+
+  const totalSalons = safeCountFromSettled(countResults[0], 'totalSalons')
+  const totalUsers = safeCountFromSettled(countResults[1], 'totalUsers')
+  const totalAppointments = safeCountFromSettled(countResults[2], 'totalAppointments')
+  const completedAppointments = safeCountFromSettled(countResults[3], 'completedAppointments')
+  const activeAppointments = safeCountFromSettled(countResults[4], 'activeAppointments')
 
   // Calculate total platform revenue from admin_revenue_overview
   const { data: revenueData, error: revenueError } = await supabase
@@ -49,23 +62,43 @@ export async function getPlatformMetrics() {
   }
 
   // Calculate active users (users with activity in last 30 days)
+  // PERFORMANCE: Use RPC function to count distinct users efficiently
+  // This prevents scanning millions of audit log rows
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
   const thirtyDaysAgoISO = thirtyDaysAgo.toISOString()
 
-  const { data: activeUsersData, error: activeUsersError } = await supabase
-    .schema('identity')
-    .from('audit_logs')
-    .select('user_id')
-    .gte('created_at', thirtyDaysAgoISO)
-    .not('user_id', 'is', null)
-
   let activeUsersCount = 0
-  if (!activeUsersError && activeUsersData) {
-    const uniqueUserIds = new Set(activeUsersData.map(log => log.user_id))
-    activeUsersCount = uniqueUserIds.size
-  } else if (activeUsersError) {
-    logSupabaseError('getPlatformMetrics:activeUsers', activeUsersError)
+
+  // Try using RPC function for efficient counting (if exists)
+  const { data: activeUsersRPC, error: rpcError } = await supabase
+    .rpc('get_active_users_count', { days_ago: 30 })
+    .maybeSingle()
+
+  if (!rpcError && typeof activeUsersRPC === 'number') {
+    activeUsersCount = activeUsersRPC
+  } else {
+    // Fallback: Query with LIMIT to prevent crashes at scale
+    // TODO: Create database function get_active_users_count for better performance
+    const { data: activeUsersData, error: activeUsersError } = await supabase
+      .schema('audit')
+      .from('audit_logs')
+      .select('user_id')
+      .gte('created_at', thirtyDaysAgoISO)
+      .not('user_id', 'is', null)
+      .limit(10000) // Safety limit to prevent OOM
+
+    if (!activeUsersError && activeUsersData) {
+      // Filter out any null user_ids and create unique set
+      const uniqueUserIds = new Set(
+        activeUsersData
+          .map(log => log.user_id)
+          .filter((id): id is string => id !== null && id !== undefined)
+      )
+      activeUsersCount = uniqueUserIds.size
+    } else if (activeUsersError) {
+      logSupabaseError('getPlatformMetrics:activeUsers', activeUsersError)
+    }
   }
 
   // Calculate low stock alerts count
@@ -95,16 +128,19 @@ export async function getPlatformMetrics() {
   }
 
   return {
-    totalSalons: safeCount(salonsResult, 'totalSalons'),
-    totalUsers: safeCount(usersResult, 'totalUsers'),
-    totalAppointments: safeCount(appointmentsResult, 'totalAppointments'),
-    activeAppointments: safeCount(upcomingResult, 'activeAppointments'),
-    completedAppointments: safeCount(completedResult, 'completedAppointments'),
+    totalSalons,
+    totalUsers,
+    totalAppointments,
+    activeAppointments,
+    completedAppointments,
     revenue: totalRevenue,
     activeUsers: activeUsersCount,
     lowStockAlerts: lowStockAlertsCount,
     pendingVerifications,
-    avgUtilization: 0, // TODO: Calculate when daily_metrics populated
+    // avgUtilization calculation requires historical data from admin_analytics_overview
+    // Once daily_metrics are populated, query admin_analytics_overview.avg_utilization_rate
+    // For now, returning 0 as placeholder until sufficient historical data exists
+    avgUtilization: 0,
   }
 }
 

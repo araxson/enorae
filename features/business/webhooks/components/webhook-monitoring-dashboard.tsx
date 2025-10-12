@@ -6,12 +6,20 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Stack } from '@/components/layout'
 import { RefreshCw, AlertCircle, CheckCircle, Clock, Activity } from 'lucide-react'
-import type { WebhookStats, WebhookDeliveryLog } from '../api/monitoring.queries'
+import type { WebhookStats, WebhookDeliveryLog } from '../api/queries/monitoring'
 
 interface WebhookMonitoringDashboardProps {
   stats: WebhookStats
-  failedWebhooks: any[]
+  failedWebhooks: FailedWebhook[]
   deliveryLogs?: WebhookDeliveryLog[]
+}
+
+interface FailedWebhook {
+  id: string
+  url: string
+  event_type: string
+  error_message: string | null
+  created_at: string
 }
 
 export function WebhookMonitoringDashboard({
@@ -199,7 +207,7 @@ export function WebhookMonitoringDashboard({
                       </p>
                     )}
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <span>{new Date(log.created_at).toLocaleString()}</span>
+                      <span>{log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A'}</span>
                       {log.delivery_time_ms && (
                         <span>{log.delivery_time_ms}ms</span>
                       )}

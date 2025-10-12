@@ -165,7 +165,7 @@ export async function addAppointmentNotes(
       .from('message_threads')
       .select('id, metadata')
       .eq('appointment_id', appointmentId)
-      .single<{ id: string; metadata: any }>()
+      .single<{ id: string; metadata: Record<string, unknown> | null }>()
 
     const noteData = {
       service_notes: serviceNotes,
@@ -182,7 +182,7 @@ export async function addAppointmentNotes(
         .from('message_threads')
         .update({
           metadata: {
-            ...existingThread.metadata,
+            ...(existingThread.metadata ?? {}),
             appointment_notes: noteData,
           },
           updated_at: new Date().toISOString(),

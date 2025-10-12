@@ -3,6 +3,7 @@ import type { NavItem, NavSecondaryItem } from '@/components/layout/sidebars/typ
 export const STAFF_MENUS = {
   default: [
     { title: 'Dashboard', url: '/staff', icon: 'layoutDashboard' },
+    { title: 'Notifications', url: '/staff/notifications', icon: 'bell' },
     { title: 'My Appointments', url: '/staff/appointments', icon: 'calendar' },
     { title: 'My Schedule', url: '/staff/schedule', icon: 'clock' },
     { title: 'My Services', url: '/staff/services', icon: 'scissors' },

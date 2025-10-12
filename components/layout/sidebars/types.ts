@@ -5,6 +5,7 @@ export interface NavItem {
   url: string
   icon: IconName
   isActive?: boolean
+  badge?: number
   items?: {
     title: string
     url: string
@@ -15,6 +16,7 @@ export interface NavSecondaryItem {
   title: string
   url: string
   icon: IconName
+  badge?: number
 }
 
 export interface FavoriteItem {

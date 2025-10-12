@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { revokeRole, deleteRole } from '../../api/mutations'
+import type { RoleActionResponse } from '../../api/mutations'
 import type { UserRole } from '@/lib/types/app.types'
 
 export function useRoleActions() {
@@ -21,7 +22,7 @@ export function useRoleActions() {
   }
 
   const performAction = async (
-    mutation: (formData: FormData) => Promise<{ success?: boolean; error?: string }>
+    mutation: (formData: FormData) => Promise<RoleActionResponse>
   ) => {
     if (!targetRole?.id) {
       toast.error('Invalid role ID')
@@ -34,7 +35,7 @@ export function useRoleActions() {
     const result = await mutation(formData)
     setIsLoading(false)
 
-    if (result.error) {
+    if (!result.success) {
       toast.error(result.error)
     } else {
       toast.success(

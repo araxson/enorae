@@ -13,7 +13,11 @@ import { AlertCircle, Upload, User } from 'lucide-react'
 import { updateProfile, uploadAvatar } from '../api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
-type Profile = Database['public']['Views']['profiles']['Row']
+type Profile = Database['public']['Views']['profiles']['Row'] & {
+  // TODO: These fields should be added to the profiles view
+  date_of_birth?: string | null
+  bio?: string | null
+}
 
 interface ProfileEditFormProps {
   profile: Profile

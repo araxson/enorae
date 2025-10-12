@@ -1,4 +1,4 @@
-import { BookingRules } from '@/features/shared/booking-rules'
+import { BookingRules } from '@/features/business/booking-rules'
 
 export const metadata = {
   title: 'Booking Rules',

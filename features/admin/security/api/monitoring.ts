@@ -1,7 +1,10 @@
 'use server'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import type { Database } from '@/lib/types/database.types'
+
+type AuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
 
 /**
  * Get security events with filtering
@@ -16,9 +19,10 @@ export async function getSecurityEvents(filters: {
   limit?: number
 }) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   let query = supabase
+    .schema('audit')
     .from('audit_logs')
     .select('*')
     .order('created_at', { ascending: false })
@@ -61,9 +65,10 @@ export async function getSecurityEvents(filters: {
  */
 export async function getCriticalSecurityEvents(limit: number = 50) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
+    .schema('audit')
     .from('audit_logs')
     .select('*')
     .in('severity', ['error', 'critical'])
@@ -80,12 +85,13 @@ export async function getCriticalSecurityEvents(limit: number = 50) {
  */
 export async function getFailedAuthAttempts(hoursBack: number = 24) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const cutoffDate = new Date()
   cutoffDate.setHours(cutoffDate.getHours() - hoursBack)
 
   const { data, error } = await supabase
+    .schema('audit')
     .from('audit_logs')
     .select('*')
     .eq('event_category', 'security')
@@ -123,12 +129,13 @@ export async function getFailedAuthAttempts(hoursBack: number = 24) {
  */
 export async function getAdminActivitySummary(daysBack: number = 7) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const cutoffDate = new Date()
   cutoffDate.setDate(cutoffDate.getDate() - daysBack)
 
   const { data, error } = await supabase
+    .schema('audit')
     .from('audit_logs')
     .select('*')
     .in('event_category', ['identity', 'security', 'business'])
@@ -181,13 +188,14 @@ export async function getAdminActivitySummary(daysBack: number = 7) {
  */
 export async function getSystemHealthMetrics() {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   // Get error rate in last hour
   const oneHourAgo = new Date()
   oneHourAgo.setHours(oneHourAgo.getHours() - 1)
 
   const { data: recentLogs } = await supabase
+    .schema('audit')
     .from('audit_logs')
     .select('is_success')
     .gte('created_at', oneHourAgo.toISOString())
@@ -217,7 +225,7 @@ export async function getSystemHealthMetrics() {
  */
 export async function getDataIntegrityAlerts() {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-  const supabase = await createClient()
+  const supabase = createServiceRoleClient()
 
   const alerts: Array<{ type: string; message: string; severity: string }> = []
 
@@ -250,14 +258,28 @@ export async function getDataIntegrityAlerts() {
   }
 
   // Check for salons without settings
-  const { data: salonsWithoutSettings } = await supabase.rpc('execute_sql', {
-    query: `
-      SELECT COUNT(*) as count
-      FROM organization.salons s
-      LEFT JOIN organization.salon_settings ss ON s.id = ss.salon_id
-      WHERE ss.salon_id IS NULL
-    `,
-  })
+  const { data: salonRows } = await supabase
+    .schema('organization')
+    .from('salons')
+    .select('id')
+
+  const { data: settingsRows } = await supabase
+    .schema('organization')
+    .from('salon_settings')
+    .select('salon_id')
+
+  const salonIds = new Set((salonRows ?? []).map((row) => row.id))
+  const settingsIds = new Set((settingsRows ?? []).map((row) => row.salon_id).filter(Boolean) as string[])
+
+  const salonsMissingSettings = Array.from(salonIds).filter((id) => !settingsIds.has(id)).length
+
+  if (salonsMissingSettings > 0) {
+    alerts.push({
+      type: 'missing_salon_settings',
+      message: `${salonsMissingSettings} salons without settings`,
+      severity: 'info',
+    })
+  }
 
   return {
     total_alerts: alerts.length,

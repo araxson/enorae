@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { UUID_REGEX } from '../utils/schemas'
-import { ensurePlatformAdmin, getSupabaseClient } from '../utils/supabase'
+import { ensurePlatformAdmin, getSupabaseClient } from './shared'
 
 /**
  * Approve salon and make it live on the platform

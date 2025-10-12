@@ -1,4 +1,5 @@
 import { memo, useMemo, useCallback, type ReactNode } from 'react'
+export { useVirtualization } from './use-virtualization'
 
 /**
  * Memoized list component to prevent unnecessary re-renders
@@ -129,52 +130,6 @@ export function withMemoization<P extends object>(
   arePropsEqual?: (prevProps: P, nextProps: P) => boolean
 ) {
   return memo(Component, arePropsEqual)
-}
-
-/**
- * Virtualization helper for large lists
- * Returns visible items based on scroll position
- */
-export function useVirtualization<T>({
-  items,
-  containerHeight,
-  itemHeight,
-  scrollTop,
-  overscan = 3,
-}: {
-  items: T[]
-  containerHeight: number
-  itemHeight: number
-  scrollTop: number
-  overscan?: number
-}): {
-  virtualItems: Array<{ index: number; item: T; style: React.CSSProperties }>
-  totalHeight: number
-} {
-  return useMemo(() => {
-    const totalHeight = items.length * itemHeight
-    const visibleStart = Math.floor(scrollTop / itemHeight)
-    const visibleEnd = Math.ceil((scrollTop + containerHeight) / itemHeight)
-
-    const start = Math.max(0, visibleStart - overscan)
-    const end = Math.min(items.length, visibleEnd + overscan)
-
-    const virtualItems = []
-    for (let index = start; index < end; index++) {
-      virtualItems.push({
-        index,
-        item: items[index],
-        style: {
-          position: 'absolute',
-          top: index * itemHeight,
-          height: itemHeight,
-          width: '100%',
-        } as React.CSSProperties,
-      })
-    }
-
-    return { virtualItems, totalHeight }
-  }, [items, containerHeight, itemHeight, scrollTop, overscan])
 }
 
 /**

@@ -1,15 +1,11 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Stack } from '@/components/layout'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
+import { H2, P } from '@/components/ui/typography'
 import {
   Activity,
   Building2,
@@ -21,6 +17,9 @@ import {
   Users,
 } from 'lucide-react'
 
+/**
+ * Input metrics required to render the platform KPIs surface.
+ */
 interface PlatformMetricsProps {
   metrics: {
     totalSalons: number
@@ -37,6 +36,9 @@ interface PlatformMetricsProps {
 const formatNumber = (value: number) => value.toLocaleString()
 const formatCurrency = (value: number) => `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 
+/**
+ * Displays platform-level KPIs in a responsive grid of metric cards.
+ */
 export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
   const activeRate = metrics.totalAppointments > 0
     ? Math.round((metrics.activeAppointments / metrics.totalAppointments) * 100)
@@ -181,13 +183,13 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
   ] as const
 
   return (
-    <section className="space-y-4">
+    <Stack as="section" gap="sm">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold tracking-tight">Platform metrics</h2>
-          <p className="text-sm text-muted-foreground">
+          <H2 className="text-lg font-semibold tracking-tight">Platform metrics</H2>
+          <P className="text-sm text-muted-foreground">
             Core KPIs refresh every minute so you can respond quickly.
-          </p>
+          </P>
         </div>
         <Badge variant="outline" className="gap-1 text-xs">
           <TrendingUp className="h-3 w-3" />
@@ -209,9 +211,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
             </CardHeader>
 
             <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground">
+              <P className="text-sm text-muted-foreground">
                 {description}
-              </p>
+              </P>
 
               <div>
                 <Progress value={progressValue} className={`h-1.5 ${progressClassName}`} />
@@ -222,6 +224,6 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
           </Card>
         ))}
       </div>
-    </section>
+    </Stack>
   )
 }

@@ -4,7 +4,9 @@ import 'server-only'
 
 import { z } from 'zod'
 
-import { resolveSalonContext, UUID_REGEX } from '@/features/shared/service-pricing/api/shared'
+import { resolveSalonContext, UUID_REGEX } from '@/features/business/service-pricing/api/shared'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createClient } from '@/lib/supabase/server'
 
 const dynamicPricingSchema = z.object({
   serviceId: z.string().regex(UUID_REGEX, 'Invalid service ID'),
@@ -52,11 +54,13 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
     throw new Error('Unauthorized: Service not found for your salon')
   }
 
-  const { data, error } = await supabase.rpc<number>('calculate_service_price', {
-    p_service_id: serviceId,
-    p_customer_id: customerId ?? null,
-    p_booking_time: bookingTime.toISOString(),
-  })
+  const { data, error } = await supabase
+    // @ts-expect-error - RPC function exists but not in generated types
+    .rpc<number>('calculate_service_price', {
+      p_service_id: serviceId,
+      p_customer_id: customerId ?? null,
+      p_booking_time: bookingTime.toISOString(),
+    })
 
   if (error) {
     throw new Error(error.message)

@@ -9,7 +9,6 @@ import type {
   RateLimitViolation,
   SecurityEvent,
   SecurityIncident,
-  SecurityMetric,
   SuspiciousSession,
 } from './types'
 
@@ -18,11 +17,16 @@ type AccessMonitoringRow = Database['security']['Tables']['access_monitoring']['
 type SessionSecurityRow = Database['security']['Tables']['session_security']['Row']
 type RateLimitTrackingRow = Database['security']['Tables']['rate_limit_tracking']['Row']
 type RateLimitRuleRow = Database['security']['Tables']['rate_limit_rules']['Row']
-type SecurityAuditLogRow = Database['security']['Tables']['security_audit_log']['Row']
-type SecurityMetricRow =
-  Database['security']['Functions']['get_security_metrics']['Returns'][number]
+type SecurityAuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
 
-export type { AuditLogRow, AccessMonitoringRow, SessionSecurityRow, RateLimitTrackingRow, RateLimitRuleRow, SecurityAuditLogRow, SecurityMetricRow }
+export type {
+  AuditLogRow,
+  AccessMonitoringRow,
+  SessionSecurityRow,
+  RateLimitTrackingRow,
+  RateLimitRuleRow,
+  SecurityAuditLogRow,
+}
 
 export const normalizeIp = (value: unknown): string | null => {
   if (typeof value === 'string') return value
@@ -38,19 +42,6 @@ export const normalizeIp = (value: unknown): string | null => {
   }
   return null
 }
-
-export const toMetric = (row: SecurityMetricRow): SecurityMetric => ({
-  key: row.metric_name ?? 'unknown_metric',
-  label: (row.metric_name ?? 'Unknown Metric')
-    .split(/[_-]/)
-    .filter(Boolean)
-    .map((segment) => segment[0]?.toUpperCase() + segment.slice(1))
-    .join(' '),
-  value: Number(row.metric_value ?? 0),
-  status: (row.status ?? 'unknown') as SecurityMetric['status'],
-  threshold: Number.isFinite(row.threshold as number) ? Number(row.threshold) : null,
-  trend: row.trend_value ? Number(row.trend_value) : null,
-})
 
 export const toAccessAttempt = (row: AccessMonitoringRow): AccessAttempt => ({
   id: row.id,

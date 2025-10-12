@@ -34,8 +34,8 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
               <TableRow>
                 <TableHead>Chain Name</TableHead>
                 <TableHead className="text-right">Total Salons</TableHead>
-                <TableHead className="text-right">Verified</TableHead>
-                <TableHead className="text-right">Unverified</TableHead>
+                <TableHead className="text-right">Active</TableHead>
+                <TableHead className="text-right">Paused</TableHead>
                 <TableHead>Compliance Rate</TableHead>
                 <TableHead>Issues</TableHead>
               </TableRow>

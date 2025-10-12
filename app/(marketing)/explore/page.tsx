@@ -1,4 +1,4 @@
-import { SalonDiscovery } from '@/features/customer/discovery'
+import { MarketingExplore } from '@/features/marketing/explore'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
 export const metadata = genMeta({
@@ -8,5 +8,5 @@ export const metadata = genMeta({
 })
 
 export default async function ExplorePage() {
-  return <SalonDiscovery />
+  return <MarketingExplore />
 }

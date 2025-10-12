@@ -1,9 +1,7 @@
-import { createClient } from '@supabase/supabase-js'
-
-import type { Database } from '@/lib/types/database.types'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { env } from '@/lib/env'
 
-let cachedClient: ReturnType<typeof createClient<Database>> | null = null
+let cachedClient: SupabaseClient<any, any, any> | null = null
 let cachedKey: string | null = null
 
 export function createServiceRoleClient() {
@@ -14,12 +12,12 @@ export function createServiceRoleClient() {
   }
 
   if (!cachedClient || cachedKey !== env.SUPABASE_SERVICE_ROLE_KEY) {
-    cachedClient = createClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
+    cachedClient = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
       },
-    })
+    }) as SupabaseClient<any, any, any>
     cachedKey = env.SUPABASE_SERVICE_ROLE_KEY
   }
 

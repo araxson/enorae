@@ -6,6 +6,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { basicDetailsSchema, metadataSchema, preferencesSchema } from './schemas'
 import type { Json } from '@/lib/types/database.types'
+import type { PostgrestError } from '@supabase/supabase-js'
 
 export interface ActionResponse {
   success: boolean
@@ -157,15 +158,24 @@ export async function updateProfilePreferencesAction(payload: unknown): Promise<
   return success('Preferences updated')
 }
 
+type IdentityAnonymizeUserArgs = { p_user_id: string }
+
+type IdentityRpcClient = ReturnType<typeof createServiceRoleClient> & {
+  rpc: (
+    fn: 'identity.anonymize_user',
+    args: IdentityAnonymizeUserArgs,
+  ) => Promise<{ data: null; error: PostgrestError | null }>
+}
+
 export async function anonymizeProfileAction(profileId: string): Promise<ActionResponse> {
   if (!profileId) {
     return failure('Invalid profile identifier')
   }
 
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-  const supabase = createServiceRoleClient()
+  const supabase = createServiceRoleClient() as IdentityRpcClient
 
-  const { error } = await (supabase as any).rpc('identity.anonymize_user', { p_user_id: profileId })
+  const { error } = await supabase.rpc('identity.anonymize_user', { p_user_id: profileId })
 
   if (error) {
     console.error('[AdminProfile] Failed to anonymize user', error)

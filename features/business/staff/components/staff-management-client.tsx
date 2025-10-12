@@ -8,7 +8,7 @@ import { Stack, Flex } from '@/components/layout'
 import { StaffPerformanceSummary } from './staff-performance-summary'
 import { StaffServicesManager } from './staff-services-manager'
 import { StaffFormDialog } from './staff-form-dialog'
-import type { StaffWithServices } from '../api/staff-services-queries'
+import type { StaffWithServices } from '../api/queries'
 import type { Database } from '@/lib/types/database.types'
 
 type Service = Database['public']['Views']['services']['Row']

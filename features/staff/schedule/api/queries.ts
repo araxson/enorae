@@ -146,3 +146,78 @@ export async function getScheduleSalon() {
 
   return salon as { id: string }
 }
+
+/**
+ * Get all staff for shift swap options
+ */
+export async function getAvailableStaffForSwap(salonId: string, excludeStaffId: string) {
+  await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
+
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('staff')
+    .select('id, full_name, title, user_id')
+    .eq('salon_id', salonId)
+    .eq('status', 'active')
+    .neq('id', excludeStaffId)
+    .order('full_name')
+
+  if (error) throw error
+  return data || []
+}
+
+export interface ScheduleConflict {
+  has_conflict: boolean
+  conflicting_schedules: StaffSchedule[]
+  conflicting_appointments: {
+    id: string
+    start_time: string
+    end_time: string
+    customer_name: string | null
+  }[]
+}
+
+/**
+ * Get detailed schedule conflicts including appointments
+ */
+export async function getScheduleConflicts(
+  staffId: string,
+  workDate: string,
+  startTime: string,
+  endTime: string,
+  excludeScheduleId?: string
+): Promise<ScheduleConflict> {
+  await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
+
+  const supabase = await createClient()
+
+  // Check schedule conflicts
+  let scheduleQuery = supabase
+    .from('staff_schedules')
+    .select('*')
+    .eq('staff_id', staffId)
+    .gte('effective_from', workDate)
+    .or(`effective_until.is.null,effective_until.gte.${workDate}`)
+
+  if (excludeScheduleId) {
+    scheduleQuery = scheduleQuery.neq('id', excludeScheduleId)
+  }
+
+  const { data: schedules } = await scheduleQuery
+
+  // Check appointment conflicts
+  const { data: appointments } = await supabase
+    .from('appointments')
+    .select('id, start_time, end_time, customer_name')
+    .eq('staff_id', staffId)
+    .gte('start_time', `${workDate}T${startTime}`)
+    .lte('start_time', `${workDate}T${endTime}`)
+    .in('status', ['confirmed', 'pending'])
+
+  return {
+    has_conflict: (schedules?.length || 0) > 0 || (appointments?.length || 0) > 0,
+    conflicting_schedules: schedules || [],
+    conflicting_appointments: appointments || [],
+  }
+}

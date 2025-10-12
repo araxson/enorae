@@ -1,6 +1,6 @@
-import { PrivacyPage, privacySEO } from '@/features/marketing/privacy'
+import { PrivacyPage, privacyMetadata } from '@/features/marketing/privacy'
 
-export const metadata = privacySEO
+export const metadata = privacyMetadata
 
 export default function Page() {
   return <PrivacyPage />

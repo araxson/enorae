@@ -12,11 +12,11 @@ import {
 } from './api/queries'
 import { AnalyticsOverviewCards } from './components/analytics-overview'
 import { getUserRole } from '@/lib/auth'
-import { DateRangeHeader } from './sections/date-range-header'
-import { TopPerformersSection } from './sections/top-performers-section'
-import { CustomerInsightsSection } from './sections/customer-insights-section'
-import { CohortsTable } from './sections/cohorts-table'
-import { ChainAnalyticsSection } from './sections/chain-analytics-section'
+import { DateRangeHeader } from './components/sections/date-range-header'
+import { TopPerformersSection } from './components/sections/top-performers-section'
+import { CustomerInsightsSection } from './components/sections/customer-insights-section'
+import { CohortsTable } from './components/sections/cohorts-table'
+import { ChainAnalyticsSection } from './components/sections/chain-analytics-section'
 
 type EnhancedAnalyticsProps = {
   startDate?: string

@@ -2,6 +2,13 @@
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import type { Database } from '@/lib/types/database.types'
+
+type DailyMetricsRow = Database['public']['Views']['daily_metrics']['Row']
+type AdminSalonRow = Database['public']['Views']['admin_salons_overview']['Row']
+type AdminAppointmentRow = Database['public']['Views']['admin_appointments_overview']['Row']
+type ProfileRow = Database['public']['Views']['profiles']['Row']
+type ReviewRow = Database['public']['Views']['salon_reviews']['Row']
 
 /**
  * Get platform-wide metrics overview
@@ -36,10 +43,11 @@ export async function getUserGrowthMetrics(startDate: string, endDate: string) {
 
   const { data, error } = await supabase
     .from('profiles')
-    .select('created_at, user_id')
+    .select('created_at')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
     .order('created_at')
+    .returns<ProfileRow[]>()
 
   if (error) throw error
   if (!data) return []
@@ -65,13 +73,14 @@ export async function getRevenueMetrics(startDate: string, endDate: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('manual_transactions')
-    .select('*')
-    .gte('created_at', startDate)
-    .lte('created_at', endDate)
+    .from('daily_metrics')
+    .select('metric_at, salon_id, total_revenue, service_revenue, product_revenue')
+    .gte('metric_at', startDate)
+    .lte('metric_at', endDate)
+    .returns<DailyMetricsRow[]>()
 
   if (error) throw error
-  if (!data) {
+  if (!data || data.length === 0) {
     return {
       total_revenue: 0,
       transaction_count: 0,
@@ -80,39 +89,36 @@ export async function getRevenueMetrics(startDate: string, endDate: string) {
     }
   }
 
-  const totalRevenue = data.reduce((sum, t) => sum + (t.amount || 0), 0)
-  const transactionCount = data.length
+  const totals = data.reduce(
+    (acc, metric) => {
+      const service = Number(metric.service_revenue) || 0
+      const product = Number(metric.product_revenue) || 0
+      const total = Number(metric.total_revenue) || service + product
 
-  // Group by salon
-  const bySalon = data.reduce((acc: Record<string, { amount: number; count: number }>, t) => {
-    const salonId = t.salon_id || 'unknown'
-    if (!acc[salonId]) {
-      acc[salonId] = { amount: 0, count: 0 }
-    }
-    acc[salonId].amount += t.amount || 0
-    acc[salonId].count += 1
-    return acc
-  }, {})
+      acc.total += total
+      acc.count += 1
 
-  // Group by payment method
-  const byPaymentMethod = data.reduce(
-    (acc: Record<string, { amount: number; count: number }>, t) => {
-      const method = t.payment_method || 'unknown'
-      if (!acc[method]) {
-        acc[method] = { amount: 0, count: 0 }
+      const salonKey = metric.salon_id ?? 'unknown'
+      if (!acc.bySalon[salonKey]) {
+        acc.bySalon[salonKey] = { amount: 0, count: 0 }
       }
-      acc[method].amount += t.amount || 0
-      acc[method].count += 1
+      acc.bySalon[salonKey].amount += total
+      acc.bySalon[salonKey].count += 1
+
       return acc
     },
-    {}
+    {
+      total: 0,
+      count: 0,
+      bySalon: {} as Record<string, { amount: number; count: number }>,
+    }
   )
 
   return {
-    total_revenue: totalRevenue,
-    transaction_count: transactionCount,
-    by_salon: bySalon,
-    by_payment_method: byPaymentMethod,
+    total_revenue: totals.total,
+    transaction_count: totals.count,
+    by_salon: totals.bySalon,
+    by_payment_method: {},
   }
 }
 
@@ -124,19 +130,11 @@ export async function getSalonPerformanceMetrics() {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
-    .select(
-      `
-      id,
-      name,
-      rating,
-      review_count,
-      appointment_count,
-      status
-    `
-    )
-    .order('rating', { ascending: false })
+    .from('admin_salons_overview')
+    .select('id, name, rating_average, rating_count, total_bookings, total_revenue, subscription_tier')
+    .order('rating_average', { ascending: false })
     .limit(50)
+    .returns<AdminSalonRow[]>()
 
   if (error) throw error
 
@@ -151,10 +149,11 @@ export async function getAppointmentMetrics(startDate: string, endDate: string) 
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('appointments')
-    .select('id, status, created_at, salon_id')
+    .from('admin_appointments_overview')
+    .select('id, status, salon_id, created_at')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
+    .returns<AdminAppointmentRow[]>()
 
   if (error) throw error
   if (!data) {
@@ -198,6 +197,7 @@ export async function getReviewMetrics(startDate: string, endDate: string) {
     .select('*')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
+    .returns<ReviewRow[]>()
 
   if (error) throw error
   if (!data || data.length === 0) {
@@ -235,9 +235,10 @@ export async function getActiveUserMetrics(daysBack: number = 30) {
   cutoffDate.setDate(cutoffDate.getDate() - daysBack)
 
   const { data: activeUsers, error } = await supabase
-    .from('appointments')
+    .from('admin_appointments_overview')
     .select('customer_id')
     .gte('created_at', cutoffDate.toISOString())
+    .returns<AdminAppointmentRow[]>()
 
   if (error) throw error
   if (!activeUsers) {

@@ -9,8 +9,8 @@ import type { ClientWithHistory } from '../api/queries'
 import { ClientStats } from './client-stats'
 import { ClientFilters } from './client-filters'
 import { ClientDetailDialog } from './client-detail-dialog'
-import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
-import type { StaffQuickAction, StaffSummary } from '@/features/staff/shared/components/types'
+import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
+import type { StaffQuickAction, StaffSummary } from '@/features/staff/staff-common/components/types'
 
 type ClientsClientProps = {
   clients: ClientWithHistory[]
@@ -179,4 +179,3 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
     </StaffPageShell>
   )
 }
-

@@ -16,6 +16,7 @@ export async function getUserPreferences(): Promise<ProfilePreference[]> {
 
   // Explicit profile filter for security
   const { data, error } = await supabase
+    .schema('identity')
     .from('profiles_preferences')
     .select('*')
     .eq('profile_id', session.user.id)
@@ -35,6 +36,7 @@ export async function getUserPreference(): Promise<ProfilePreference | null> {
 
   // Get single preference record for profile
   const { data, error } = await supabase
+    .schema('identity')
     .from('profiles_preferences')
     .select('*')
     .eq('profile_id', session.user.id)

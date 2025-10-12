@@ -78,6 +78,8 @@ export function MessagesTable({ threads }: MessagesTableProps) {
               const rowKey =
                 thread.id ??
                 `${thread.salon_id ?? 'salon'}-${thread.customer_id ?? 'customer'}-${thread.last_message_at ?? thread.created_at}`
+              const customerUnread = thread.unread_count_customer ?? 0
+              const staffUnread = thread.unread_count_staff ?? 0
 
               return (
                 <TableRow key={rowKey} className={rowHighlight}>
@@ -87,8 +89,8 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                       <span>
-                        Messages:&nbsp;
-                        {thread.message_count ?? '–'}
+                        Recent messages:&nbsp;
+                        {thread.recentMessageCount}
                       </span>
                       <span>
                         Thread ID:&nbsp;
@@ -139,13 +141,13 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
-                      {thread.unread_count_customer > 0 ? (
-                        <Badge variant="outline">C: {thread.unread_count_customer}</Badge>
+                      {customerUnread > 0 ? (
+                        <Badge variant="outline">C: {customerUnread}</Badge>
                       ) : null}
-                      {thread.unread_count_staff > 0 ? (
-                        <Badge variant="outline">S: {thread.unread_count_staff}</Badge>
+                      {staffUnread > 0 ? (
+                        <Badge variant="outline">S: {staffUnread}</Badge>
                       ) : null}
-                      {thread.unread_count_customer === 0 && thread.unread_count_staff === 0 ? (
+                      {customerUnread === 0 && staffUnread === 0 ? (
                         <Muted className="text-xs">—</Muted>
                       ) : null}
                     </div>

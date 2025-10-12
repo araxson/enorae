@@ -10,11 +10,12 @@ interface ChainHierarchyProps {
 }
 
 export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'N/A'
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     })
   }
 
@@ -61,23 +62,23 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      {salon.rating ? (
+                      {salon.ratingAverage !== null ? (
                         <div className="flex items-center justify-end gap-1">
                           <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span className="font-medium">{salon.rating.toFixed(1)}</span>
+                          <span className="font-medium">{salon.ratingAverage.toFixed(1)}</span>
                         </div>
                       ) : (
                         <span className="text-muted-foreground">N/A</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right">{salon.total_reviews}</TableCell>
+                    <TableCell className="text-right">{salon.ratingCount}</TableCell>
                     <TableCell>
-                      <Badge variant={salon.is_verified ? 'default' : 'secondary'}>
-                        {salon.is_verified ? 'Verified' : 'Pending'}
+                      <Badge variant={salon.isAcceptingBookings ? 'default' : 'secondary'}>
+                        {salon.isAcceptingBookings ? 'Accepting' : 'Paused'}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(salon.created_at)}
+                      {formatDate(salon.createdAt)}
                     </TableCell>
                   </TableRow>
                 ))

@@ -1,4 +1,4 @@
-import { ServiceProductUsage } from '@/features/shared/service-product-usage'
+import { ServiceProductUsage } from '@/features/business/service-product-usage'
 
 export const metadata = {
   title: 'Service Product Usage',

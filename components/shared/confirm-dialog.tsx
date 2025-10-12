@@ -14,7 +14,7 @@ import {
 import { Button } from '@/components/ui/button'
 
 export interface ConfirmDialogProps {
-  children: React.ReactNode
+  children?: React.ReactNode
   title: string
   description: string
   confirmText?: string
@@ -22,6 +22,9 @@ export interface ConfirmDialogProps {
   variant?: 'default' | 'destructive'
   onConfirm: () => void | Promise<void>
   onCancel?: () => void
+  isOpen?: boolean
+  onClose?: () => void
+  isLoading?: boolean
 }
 
 export function ConfirmDialog({
@@ -33,7 +36,48 @@ export function ConfirmDialog({
   variant = 'destructive',
   onConfirm,
   onCancel,
+  isOpen,
+  onClose,
+  isLoading = false,
 }: ConfirmDialogProps) {
+  const handleCancel = () => {
+    onCancel?.()
+    onClose?.()
+  }
+
+  // Controlled mode (when isOpen is provided)
+  if (isOpen !== undefined) {
+    return (
+      <AlertDialog open={isOpen} onOpenChange={onClose}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{title}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {description}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleCancel} disabled={isLoading}>
+              {cancelText}
+            </AlertDialogCancel>
+            {variant === 'destructive' ? (
+              <AlertDialogAction asChild>
+                <Button onClick={onConfirm} variant="destructive" disabled={isLoading}>
+                  {confirmText}
+                </Button>
+              </AlertDialogAction>
+            ) : (
+              <AlertDialogAction onClick={onConfirm} disabled={isLoading}>
+                {confirmText}
+              </AlertDialogAction>
+            )}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    )
+  }
+
+  // Trigger mode (when children is provided)
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

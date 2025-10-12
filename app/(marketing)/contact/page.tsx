@@ -1,6 +1,6 @@
-import { ContactPage, contactSEO } from '@/features/marketing/contact'
+import { ContactPage, contactMetadata } from '@/features/marketing/contact'
 
-export const metadata = contactSEO
+export const metadata = contactMetadata
 
 export default function Page() {
   return <ContactPage />

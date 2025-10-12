@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
 import { ReferralProgram } from '@/features/customer/referrals'
 
 export const metadata = {
@@ -5,10 +7,10 @@ export const metadata = {
   description: 'Refer friends and earn bonus points for every successful signup',
 }
 
-export default async function ReferralsPage() {
+export default function ReferralProgramPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+    <Suspense fallback={<PageLoading />}>
       <ReferralProgram />
-    </div>
+    </Suspense>
   )
 }

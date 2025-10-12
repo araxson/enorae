@@ -54,7 +54,7 @@ export function BlockedTimeForm({
       block_type: (formData.get('block_type') as string) || 'manual',
       start_time: new Date(formData.get('start_time') as string).toISOString(),
       end_time: new Date(formData.get('end_time') as string).toISOString(),
-      reason: (formData.get('reason') as string) || null,
+      reason: (formData.get('reason') as string) || undefined,
       is_recurring: isRecurring,
       recurrence_pattern: isRecurring ? recurrencePattern : undefined,
     })

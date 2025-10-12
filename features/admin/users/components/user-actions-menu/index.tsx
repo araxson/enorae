@@ -19,6 +19,8 @@ export function UserActionsMenu(props: UserActionsMenuProps) {
     handleReactivate,
     handleTerminateSessions,
     handleDelete,
+    deleteReason,
+    setDeleteReason,
     userName,
     onDelete,
   } = useUserActionsMenu(props)
@@ -63,7 +65,9 @@ export function UserActionsMenu(props: UserActionsMenuProps) {
         open={dialogs.delete}
         onOpenChange={(open) => setDialog('delete', open)}
         isLoading={isLoading}
-        onConfirm={handleDelete}
+        reason={deleteReason}
+        onReasonChange={setDeleteReason}
+        onConfirm={() => handleDelete(deleteReason)}
         userName={userName}
       />
     </>

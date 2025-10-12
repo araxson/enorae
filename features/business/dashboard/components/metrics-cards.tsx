@@ -95,7 +95,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
 
       {revenueMetrics.length > 0 && (
         <Grid cols={{ base: 1, md: 2 }} gap="md">
-          {revenueMetrics.map((metric) => (
+          {revenueMetrics.filter((m): m is Exclude<typeof m, false> => Boolean(m)).map((metric) => (
             <RevenueMetricCard key={metric.title} {...metric} />
           ))}
         </Grid>

@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import {
@@ -9,6 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
+import { Flex } from '@/components/layout'
+
+declare global {
+  interface WindowEventMap {
+    'admin:clearFilters': CustomEvent<void>
+  }
+}
 
 type ModerationFiltersProps = {
   searchQuery: string
@@ -35,8 +44,33 @@ export function ModerationFilters({
   reputationFilter,
   onReputationFilterChange,
 }: ModerationFiltersProps) {
+  const clearFilters = () => {
+    onSearchChange('')
+    onStatusFilterChange('all')
+    onRiskFilterChange('all')
+    onSentimentFilterChange('all')
+    onReputationFilterChange('all')
+  }
+
+  useEffect(() => {
+    const handleClear = () => clearFilters()
+    window.addEventListener('admin:clearFilters', handleClear)
+    return () => window.removeEventListener('admin:clearFilters', handleClear)
+  }, [
+    onSearchChange,
+    onStatusFilterChange,
+    onRiskFilterChange,
+    onSentimentFilterChange,
+    onReputationFilterChange,
+  ])
+
   return (
     <div className="flex flex-wrap items-center gap-3">
+      <Flex justify="end" className="w-full">
+        <Button variant="ghost" size="sm" onClick={clearFilters}>
+          Clear all filters
+        </Button>
+      </Flex>
       <div className="relative min-w-[220px] flex-1">
         <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input

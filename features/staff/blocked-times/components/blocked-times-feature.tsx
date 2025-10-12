@@ -1,0 +1,71 @@
+'use client'
+
+import { useState } from 'react'
+import { Plus, List, Calendar } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Stack, Flex } from '@/components/layout'
+import { H1 } from '@/components/ui/typography'
+import { BlockedTimesList } from './blocked-times-list'
+import { BlockedTimesCalendar } from './blocked-times-calendar'
+import { BlockedTimeDialog } from './blocked-time-dialog'
+import type { BlockedTime } from '../types'
+
+interface BlockedTimesFeatureProps {
+  blockedTimes: BlockedTime[]
+}
+
+export function BlockedTimesFeature({ blockedTimes }: BlockedTimesFeatureProps) {
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingBlockedTime, setEditingBlockedTime] = useState<BlockedTime | undefined>()
+  const [activeTab, setActiveTab] = useState('list')
+
+  const handleEdit = (blockedTime: BlockedTime) => {
+    setEditingBlockedTime(blockedTime)
+    setDialogOpen(true)
+  }
+
+  const handleCreate = () => {
+    setEditingBlockedTime(undefined)
+    setDialogOpen(true)
+  }
+
+  return (
+    <Stack gap="lg">
+      <Flex justify="between" align="center">
+        <H1>Blocked Times</H1>
+        <Button onClick={handleCreate}>
+          <Plus className="mr-2 h-4 w-4" />
+          Add Blocked Time
+        </Button>
+      </Flex>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="list">
+            <List className="mr-2 h-4 w-4" />
+            List View
+          </TabsTrigger>
+          <TabsTrigger value="calendar">
+            <Calendar className="mr-2 h-4 w-4" />
+            Calendar View
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="list">
+          <BlockedTimesList blockedTimes={blockedTimes} onEdit={handleEdit} />
+        </TabsContent>
+
+        <TabsContent value="calendar">
+          <BlockedTimesCalendar blockedTimes={blockedTimes} />
+        </TabsContent>
+      </Tabs>
+
+      <BlockedTimeDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        blockedTime={editingBlockedTime}
+      />
+    </Stack>
+  )
+}

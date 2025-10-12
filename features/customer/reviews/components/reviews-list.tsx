@@ -1,16 +1,14 @@
 'use client'
 
+import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { EmptyState } from '@/components/shared/empty-state'
 import { H3, P, Muted } from '@/components/ui/typography'
+import { Star } from 'lucide-react'
 import { EditReviewDialog } from './edit-review-dialog'
 import { DeleteReviewDialog } from './delete-review-dialog'
-import type { Database } from '@/lib/types/database.types'
-
-type Review = Database['public']['Views']['salon_reviews_view']['Row']
-
-interface ReviewsListProps {
-  reviews: Review[]
-}
+import type { ReviewsListProps, Review } from '../types'
 
 function StarRating({ rating }: { rating: number | null }) {
   const validRating = rating ?? 0
@@ -34,14 +32,16 @@ function StarRating({ rating }: { rating: number | null }) {
 export function ReviewsList({ reviews }: ReviewsListProps) {
   if (reviews.length === 0) {
     return (
-      <Card>
-        <CardContent>
-          <div className="space-y-3 py-12 text-center">
-            <H3>No reviews yet</H3>
-            <Muted>Leave a review after your next appointment.</Muted>
-          </div>
-        </CardContent>
-      </Card>
+      <EmptyState
+        icon={Star}
+        title="No reviews yet"
+        description="Share feedback after your next appointment to help others discover great salons."
+        action={
+          <Button asChild>
+            <Link href="/customer/appointments">View upcoming appointments</Link>
+          </Button>
+        }
+      />
     )
   }
 

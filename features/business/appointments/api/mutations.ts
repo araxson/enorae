@@ -79,3 +79,24 @@ export async function confirmAppointment(appointmentId: string) {
 export async function completeAppointment(appointmentId: string) {
   return updateAppointmentStatus(appointmentId, 'completed')
 }
+
+export {
+  addServiceToAppointment,
+  updateAppointmentService,
+  removeServiceFromAppointment,
+  updateServiceStatus,
+  adjustServicePricing,
+} from './internal/appointment-services'
+
+export {
+  batchUpdateAppointmentStatus,
+  batchAssignStaff,
+  batchReschedule,
+} from './internal/batch'
+
+export {
+  bulkCancelAppointments,
+  bulkConfirmAppointments,
+  bulkCompleteAppointments,
+  bulkNoShowAppointments,
+} from './internal/bulk-operations'

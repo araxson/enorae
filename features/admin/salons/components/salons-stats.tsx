@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Flex } from '@/components/layout'
-import { P } from '@/components/ui/typography'
+import { H3, P } from '@/components/ui/typography'
 import { Building2, CheckCircle, ShieldAlert, Gauge } from 'lucide-react'
 
 interface SalonsStatsProps {
@@ -54,7 +54,7 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
             <Flex justify="between" align="center">
               <div>
                 <P className="text-sm text-muted-foreground">{label}</P>
-                <p className="text-2xl font-semibold">{value}</p>
+                <H3 className="text-2xl font-semibold">{value}</H3>
               </div>
               <Icon className={`h-4 w-4 ${tone}`} />
             </Flex>
@@ -67,7 +67,7 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
           <Flex justify="between" align="center">
             <div>
               <P className="text-sm text-muted-foreground">Average compliance</P>
-              <p className="text-2xl font-semibold">{stats.averageCompliance}%</p>
+              <H3 className="text-2xl font-semibold">{stats.averageCompliance}%</H3>
             </div>
             <Gauge className="h-4 w-4 text-purple-500" />
           </Flex>

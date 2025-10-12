@@ -31,8 +31,8 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
   const [error, setError] = useState<string | null>(null)
 
   const handleDelete = async () => {
-    if (!review.salon_id) {
-      setError('Salon ID not found')
+    if (!review.salon_id || !review.id) {
+      setError('Review ID or Salon ID not found')
       return
     }
 

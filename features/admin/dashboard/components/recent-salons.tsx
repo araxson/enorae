@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import type { AdminSalon } from '@/lib/types/app.types'
-import { format } from 'date-fns'
+import { safeFormatDate } from './admin-overview-utils'
 import Link from 'next/link'
 import { ArrowUpRight, Building2 } from 'lucide-react'
 
@@ -22,12 +22,23 @@ interface RecentSalonsProps {
   salons: AdminSalon[]
 }
 
-const getInitials = (name?: string | null) => {
-  if (!name) return 'NA'
-  const parts = name.trim().split(/\s+/).filter(Boolean)
+const getInitials = (name?: string | null): string => {
+  if (!name || typeof name !== 'string') return 'NA'
+  const trimmed = name.trim()
+  if (!trimmed) return 'NA'
+
+  const parts = trimmed.split(/\s+/).filter(Boolean)
   if (parts.length === 0) return 'NA'
-  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
-  return `${parts[0]![0]}${parts[1]![0]}`.toUpperCase()
+  if (parts.length === 1) {
+    const firstPart = parts[0]
+    return firstPart ? firstPart.slice(0, 2).toUpperCase() : 'NA'
+  }
+
+  const firstInitial = parts[0]?.[0]
+  const secondInitial = parts[1]?.[0]
+  if (!firstInitial || !secondInitial) return 'NA'
+
+  return `${firstInitial}${secondInitial}`.toUpperCase()
 }
 
 export function RecentSalons({ salons }: RecentSalonsProps) {
@@ -97,7 +108,7 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
                       </div>
                     </TableCell>
                     <TableCell className="hidden text-sm text-muted-foreground xl:table-cell">
-                      {salon.created_at ? format(new Date(salon.created_at), 'MMM d, yyyy') : 'Recently'}
+                      {safeFormatDate(salon.created_at, 'MMM d, yyyy', 'Recently')}
                     </TableCell>
                     <TableCell className="text-right">
                       <Badge

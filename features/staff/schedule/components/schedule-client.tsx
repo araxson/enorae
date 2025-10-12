@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import { CalendarCheck2, CalendarX2 } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/shared/components/types'
+import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 import { ScheduleManagementClient } from './schedule-management-client'
 import { BlockedTimeForm } from '@/features/shared/blocked-times/components/blocked-time-form'
 import { BlockedTimesList } from '@/features/shared/blocked-times/components/blocked-times-list'

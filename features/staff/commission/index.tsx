@@ -1,6 +1,13 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getStaffProfile } from '../appointments/api/queries'
-import { getStaffCommission, getDailyEarnings, getServiceBreakdown } from './api/queries'
+import {
+  getStaffCommission,
+  getDailyEarnings,
+  getServiceBreakdown,
+  getCommissionRates,
+  getPayoutSchedule,
+  getServiceCommissionBreakdown,
+} from './api/queries'
 import { CommissionClient } from './components/commission-client'
 
 export async function StaffCommission() {
@@ -35,17 +42,22 @@ export async function StaffCommission() {
   const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString()
   const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString()
 
-  const [commission, dailyEarnings, serviceBreakdown] = await Promise.all([
+  const [commission, dailyEarnings, serviceBreakdown, commissionRates, payoutSchedule] = await Promise.all([
     getStaffCommission(staff.id),
     getDailyEarnings(staff.id, 30),
-    getServiceBreakdown(staff.id, startOfMonth, endOfMonth),
+    getServiceCommissionBreakdown(staff.id, startOfMonth, endOfMonth),
+    getCommissionRates(staff.id),
+    getPayoutSchedule(staff.id),
   ])
 
   return (
     <CommissionClient
+      staffId={staff.id}
       commission={commission}
       dailyEarnings={dailyEarnings}
       serviceBreakdown={serviceBreakdown}
+      commissionRates={commissionRates}
+      payoutSchedule={payoutSchedule}
     />
   )
 }

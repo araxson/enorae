@@ -40,7 +40,7 @@ export function CreateThreadDialog({ open, onOpenChange, salonId }: CreateThread
     const result = await createThread({
       salon_id: salonId,
       subject: subject.trim(),
-      message: message.trim(),
+      priority: 'normal',
     })
 
     setIsSubmitting(false)

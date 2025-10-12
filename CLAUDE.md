@@ -176,7 +176,8 @@ features/
 - **Navigation**: Menu, Dropdown, Command, Breadcrumb
 - **Feedback**: Alert, Toast, Progress, Skeleton, Badge
 - **Data**: Table, Avatar, Calendar, Carousel, Chart
-- **Shared**: AppointmentCard, SalonCard, StatCard
+- **Shared**: StatCard
+- **Features Shared**: AppointmentCard, SalonCard
 
 ---
 

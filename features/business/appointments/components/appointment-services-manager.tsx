@@ -9,8 +9,9 @@ import { Plus, Trash2, Edit } from 'lucide-react'
 import { AddServiceDialog } from './add-service-dialog'
 import { EditServiceDialog } from './edit-service-dialog'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
-import { removeServiceFromAppointment } from '../api/appointment-services.mutations'
-import type { AppointmentServiceDetails } from '../api/appointment-services.queries'
+import { removeServiceFromAppointment } from '../api/mutations'
+import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
+import { useToast } from '@/hooks/use-toast'
 
 interface AppointmentServicesManagerProps {
   appointmentId: string
@@ -29,6 +30,7 @@ export function AppointmentServicesManager({
   const [editingService, setEditingService] = useState<AppointmentServiceDetails | null>(null)
   const [deletingService, setDeletingService] = useState<AppointmentServiceDetails | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const { toast } = useToast()
 
   const formatCurrency = (amount: number | null) => {
     if (!amount) return '$0.00'
@@ -71,14 +73,26 @@ export function AppointmentServicesManager({
 
       const result = await removeServiceFromAppointment(formData)
 
-      if (result.error) {
-        alert(result.error)
+      if ('error' in result) {
+        toast({
+          variant: 'destructive',
+          title: 'Unable to remove service',
+          description: result.error,
+        })
       } else {
+        toast({
+          title: 'Service removed',
+          description: `${deletingService.service_name ?? 'Service'} was removed from the appointment.`,
+        })
         onUpdate()
         setDeletingService(null)
       }
     } catch (error) {
-      alert('Failed to remove service')
+      toast({
+        variant: 'destructive',
+        title: 'Failed to remove service',
+        description: 'Please try again in a moment.',
+      })
     } finally {
       setIsDeleting(false)
     }

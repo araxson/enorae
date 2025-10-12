@@ -13,7 +13,7 @@ import { StaffStats } from './staff-stats'
 import { StaffFilters, type RiskFilter } from './staff-filters'
 import { StaffTable } from './staff-table'
 import { StaffRiskBadge } from './staff-risk-badge'
-import type { BackgroundStatus } from '../utils/metrics'
+import type { BackgroundStatus } from '../api/internal/staff-dashboard/metrics'
 
 function InsightList({ title, description, items }: { title: string; description: string; items: StaffWithMetrics[] }) {
   return (

@@ -21,6 +21,7 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { createStaffSchedule, updateStaffSchedule, deleteStaffSchedule } from '../api/mutations'
 import type { StaffScheduleWithStaff } from '../api/queries'
+import type { DayOfWeek } from '../api/staff-schedules/constants'
 
 interface ScheduleManagementClientProps {
   schedules: StaffScheduleWithStaff[]
@@ -32,32 +33,41 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
   const [isPending, startTransition] = useTransition()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingSchedule, setEditingSchedule] = useState<StaffScheduleWithStaff | null>(null)
-  const [formData, setFormData] = useState({
+
+  type ScheduleFormState = {
+    day_of_week: DayOfWeek
+    start_time: string
+    end_time: string
+    break_start: string
+    break_end: string
+    is_active: boolean
+  }
+
+  const dayOptions: readonly DayOfWeek[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const
+  const isDayOfWeek = (value: string): value is DayOfWeek => dayOptions.some((option) => option === value)
+
+  const DEFAULT_FORM_STATE: ScheduleFormState = {
     day_of_week: 'monday',
     start_time: '09:00',
     end_time: '17:00',
     break_start: '',
     break_end: '',
     is_active: true,
-  })
+  }
+
+  const [formData, setFormData] = useState<ScheduleFormState>({ ...DEFAULT_FORM_STATE })
 
   const handleAdd = () => {
     setEditingSchedule(null)
-    setFormData({
-      day_of_week: 'monday',
-      start_time: '09:00',
-      end_time: '17:00',
-      break_start: '',
-      break_end: '',
-      is_active: true,
-    })
+    setFormData({ ...DEFAULT_FORM_STATE })
     setIsDialogOpen(true)
   }
 
   const handleEdit = (schedule: StaffScheduleWithStaff) => {
     setEditingSchedule(schedule)
+    const nextDay = schedule.day_of_week ?? ''
     setFormData({
-      day_of_week: schedule.day_of_week || 'monday',
+      day_of_week: isDayOfWeek(nextDay) ? nextDay : 'monday',
       start_time: schedule.start_time || '09:00',
       end_time: schedule.end_time || '17:00',
       break_start: schedule.break_start || '',
@@ -79,7 +89,7 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
     startTransition(async () => {
       if (editingSchedule?.id) {
         await updateStaffSchedule(editingSchedule.id, {
-          day_of_week: formData.day_of_week as any,
+          day_of_week: formData.day_of_week,
           start_time: formData.start_time,
           end_time: formData.end_time,
           break_start: formData.break_start || null,
@@ -120,7 +130,11 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
               <Label htmlFor="day_of_week">Day of Week</Label>
               <Select
                 value={formData.day_of_week}
-                onValueChange={(value) => setFormData({ ...formData, day_of_week: value })}
+                onValueChange={(value) => {
+                  if (isDayOfWeek(value)) {
+                    setFormData({ ...formData, day_of_week: value })
+                  }
+                }}
               >
                 <SelectTrigger>
                   <SelectValue />

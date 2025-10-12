@@ -2,7 +2,7 @@
 
 import type { Session } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
-import { assertSalonAccess, ensureBusinessUser, type SupabaseServerClient } from '../utils/supabase'
+import { assertSalonAccess, ensureBusinessUser, type SupabaseServerClient } from './shared'
 
 type PermanentlyDeleteServiceOptions = {
   supabase?: SupabaseServerClient

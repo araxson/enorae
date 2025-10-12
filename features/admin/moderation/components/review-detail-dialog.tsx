@@ -42,10 +42,11 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
   const [responseText, setResponseText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  if (!review) return null
-
-  const metricCards = useMemo<DetailCardDefinition[]>(
-    () => [
+  const metricCards = useMemo<DetailCardDefinition[]>(() => {
+    if (!review) {
+      return []
+    }
+    return [
       {
         title: 'Sentiment analysis',
         badge: (
@@ -82,11 +83,17 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
         ),
         description: `${review.reviewerReputation.totalReviews} reviews · ${review.reviewerReputation.flaggedReviews} flagged`,
       },
-    ],
-    [review]
-  )
+    ]
+  }, [review])
+
+  if (!review) return null
 
   async function handleSubmitResponse() {
+    if (!review) {
+      toast.error('Review data is unavailable')
+      return
+    }
+
     if (!responseText.trim()) {
       toast.error('Response cannot be empty')
       return

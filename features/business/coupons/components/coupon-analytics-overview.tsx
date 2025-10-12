@@ -7,8 +7,8 @@ import { DollarSign, CalendarClock, Award, Activity } from 'lucide-react'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { format } from 'date-fns'
-import type { CouponAnalyticsSnapshot } from '../api/coupon-validation.queries'
-import { buildCouponEffectiveness } from '../api/coupon-validation.queries'
+import type { CouponAnalyticsSnapshot } from '../api/queries/coupon-validation'
+import { buildCouponEffectiveness } from '../api/queries/coupon-validation'
 
 type CouponAnalyticsOverviewProps = {
   analytics: CouponAnalyticsSnapshot
@@ -168,7 +168,9 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
                       <span className="text-sm font-medium">{coupon.description}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {format(new Date(coupon.valid_until), 'MMM d, yyyy')}
+                      {coupon.valid_until
+                        ? format(new Date(coupon.valid_until), 'MMM d, yyyy')
+                        : 'No expiry date'}
                     </p>
                   </div>
                   <Badge variant="outline">{coupon.stats.totalUses} uses</Badge>

@@ -1,4 +1,4 @@
-import { SalonBusinessInfo } from '@/features/business/settings/salon'
+import { SalonBusinessInfo } from '@/features/business/settings-salon'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

@@ -10,9 +10,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { format } from 'date-fns'
 import type { RevenueOverview } from './admin-overview-types'
-import { formatCurrency } from './admin-overview-utils'
+import { formatCurrency, safeFormatDate } from './admin-overview-utils'
 
 type RevenueTabProps = {
   revenue: RevenueOverview[]
@@ -75,10 +74,10 @@ export function AdminOverviewRevenueTab({ revenue, windowSize }: RevenueTabProps
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rows.map((item) => (
-                <TableRow key={`${item.date}-${item.total_revenue}`}>
+              {rows.map((item, index) => (
+                <TableRow key={`${item.date}-${item.total_revenue}-${index}`}>
                   <TableCell className="font-medium">
-                    {item.date ? format(new Date(item.date), 'MMM d, yyyy') : 'N/A'}
+                    {safeFormatDate(item.date, 'MMM d, yyyy')}
                   </TableCell>
                   <TableCell className="text-right">
                     {formatCurrency(item.total_revenue)}

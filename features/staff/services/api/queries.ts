@@ -23,7 +23,6 @@ export async function getStaffServices(staffId: string): Promise<StaffService[]>
     .from('staff_services')
     .select('*')
     .eq('staff_id', staffId)
-    .eq('is_available', true)
     .order('service_name', { ascending: true })
 
   if (error) throw error

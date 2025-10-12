@@ -42,11 +42,11 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
             <CardContent className="space-y-4 p-6">
               <div className="space-y-2">
                 <H3>{salon.name || 'Unnamed salon'}</H3>
-                {(salon.business_name || salon.business_type) && (
+                {salon.full_address && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <MapPin className="h-4 w-4" />
                     <Muted className="text-sm">
-                      {salon.business_name || salon.business_type || 'No business details'}
+                      {salon.full_address}
                     </Muted>
                   </div>
                 )}

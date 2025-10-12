@@ -1,14 +1,16 @@
-import { Notifications } from '@/features/shared/notifications'
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
+import { Notifications } from '@/features/customer/notifications'
 
 export const metadata = {
   title: 'Notifications',
   description: 'View and manage your notifications',
 }
 
-export default async function NotificationsPage() {
+export default function CustomerNotificationsPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+    <Suspense fallback={<PageLoading />}>
       <Notifications />
-    </div>
+    </Suspense>
   )
 }

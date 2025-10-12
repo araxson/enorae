@@ -20,6 +20,15 @@ export type ActionResponse<T = void> =
   | { success: true; data: T }
   | { success: false; error: string }
 
+type ThreadMetadata = Record<string, unknown> & {
+  notes?: Array<{
+    id: string
+    content: string
+    created_by: string
+    created_at: string
+  }>
+}
+
 /**
  * Send a message to a client
  * Creates or uses existing thread
@@ -169,7 +178,7 @@ export async function addClientNote(
       .eq('salon_id', staff.salon_id)
       .eq('customer_id', customerId)
       .eq('staff_id', staff.id)
-      .single<{ id: string; metadata: any }>()
+      .single<{ id: string; metadata: ThreadMetadata | null }>()
 
     if (existingThread?.id) {
       threadId = existingThread.id
@@ -190,7 +199,7 @@ export async function addClientNote(
         .schema('communication')
         .from('message_threads')
         .update({
-          metadata: { ...existingThread.metadata, notes: updatedNotes },
+          metadata: { ...(existingThread.metadata ?? {}), notes: updatedNotes },
           updated_at: new Date().toISOString(),
         })
         .eq('id', threadId)
@@ -268,10 +277,10 @@ export async function updateClientPreferences(
       .eq('salon_id', staff.salon_id)
       .eq('customer_id', customerId)
       .eq('staff_id', staff.id)
-      .single<{ id: string; metadata: any }>()
+      .single<{ id: string; metadata: ThreadMetadata | null }>()
 
-    const updatedMetadata = {
-      ...(existingThread?.metadata || {}),
+    const updatedMetadata: ThreadMetadata = {
+      ...(existingThread?.metadata ?? {}),
       preferences: {
         ...preferences,
         updated_by: session.user.id,

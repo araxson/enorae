@@ -7,7 +7,7 @@ import {
   assignServiceToStaff,
   bulkAssignServices,
   unassignServiceFromStaff,
-} from '../../api/staff-services-mutations'
+} from '@/features/business/staff-services/api/mutations'
 import type { StaffMemberWithServices } from './types'
 
 type AssignedService = {

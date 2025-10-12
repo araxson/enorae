@@ -3,6 +3,21 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
+type AppointmentSummary = {
+  id: string
+  customer_id: string
+  start_time: string | null
+  end_time?: string | null
+  status?: string | null
+  total_price?: number | null
+}
+
+type ProfileSummary = {
+  id: string
+  full_name: string | null
+  email?: string | null
+}
+
 /**
  * Calculate Customer Lifetime Value (CLV)
  */
@@ -12,10 +27,10 @@ export async function calculateCustomerLifetimeValue(customerId: string) {
 
   const supabase = await createClient()
 
-  // Get all completed appointments for customer
+  // Get all completed appointments for customer with total_price
   const { data: appointments, error } = await supabase
     .from('appointments')
-    .select('id, start_time, end_time')
+    .select('id, start_time, end_time, total_price')
     .eq('customer_id', customerId)
     .eq('salon_id', salonId)
     .eq('status', 'completed')
@@ -23,7 +38,9 @@ export async function calculateCustomerLifetimeValue(customerId: string) {
 
   if (error) throw error
 
-  if (!appointments || appointments.length === 0) {
+  const appointmentRows = (appointments ?? []) as AppointmentSummary[]
+
+  if (appointmentRows.length === 0) {
     return {
       totalRevenue: 0,
       averageOrderValue: 0,
@@ -34,26 +51,29 @@ export async function calculateCustomerLifetimeValue(customerId: string) {
     }
   }
 
-  // Calculate total revenue (would need to join with payments/transactions)
-  // For now, estimate based on appointment count
-  const visitCount = appointments.length
-  const avgSpendPerVisit = 75 // TODO: Calculate from actual transaction data
-
-  const totalRevenue = visitCount * avgSpendPerVisit
+  // Calculate total revenue from actual appointment prices
+  const visitCount = appointmentRows.length
+  const totalRevenue = appointmentRows.reduce((sum, apt) => sum + (apt.total_price || 0), 0)
+  const avgSpendPerVisit = visitCount > 0 ? totalRevenue / visitCount : 0
 
   // Calculate average days between visits
   let totalDays = 0
-  for (let i = 1; i < appointments.length; i++) {
-    const prev = new Date(appointments[i - 1].start_time)
-    const curr = new Date(appointments[i].start_time)
+  for (let i = 1; i < appointmentRows.length; i++) {
+    const prevStart = appointmentRows[i - 1].start_time
+    const currStart = appointmentRows[i].start_time
+    if (!prevStart || !currStart) continue
+    const prev = new Date(prevStart)
+    const curr = new Date(currStart)
     totalDays += (curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24)
   }
   const avgDaysBetweenVisits =
-    appointments.length > 1 ? totalDays / (appointments.length - 1) : 0
+    appointmentRows.length > 1 ? totalDays / (appointmentRows.length - 1) : 0
 
   // Calculate customer tenure
-  const firstVisit = new Date(appointments[0].start_time)
-  const lastVisit = new Date(appointments[appointments.length - 1].start_time)
+  const firstVisitStart = appointmentRows[0].start_time
+  const lastVisitStart = appointmentRows[appointmentRows.length - 1].start_time
+  const firstVisit = firstVisitStart ? new Date(firstVisitStart) : new Date()
+  const lastVisit = lastVisitStart ? new Date(lastVisitStart) : new Date()
   const tenureDays = (lastVisit.getTime() - firstVisit.getTime()) / (1000 * 60 * 60 * 24)
 
   // Project future value (simple model: visits per year * avg spend * 3 years)
@@ -95,7 +115,9 @@ export async function getRetentionMetrics(
 
   if (error) throw error
 
-  if (!appointments || appointments.length === 0) {
+  const appointmentRows = (appointments ?? []) as AppointmentSummary[]
+
+  if (appointmentRows.length === 0) {
     return {
       totalCustomers: 0,
       newCustomers: 0,
@@ -107,7 +129,8 @@ export async function getRetentionMetrics(
 
   // Group appointments by customer
   const customerVisits = new Map<string, Date[]>()
-  for (const apt of appointments) {
+  for (const apt of appointmentRows) {
+    if (!apt.start_time) continue
     if (!customerVisits.has(apt.customer_id)) {
       customerVisits.set(apt.customer_id, [])
     }
@@ -152,7 +175,9 @@ export async function getCustomerCohorts() {
 
   if (firstVisitsError) throw firstVisitsError
 
-  if (!firstVisits || firstVisits.length === 0) {
+  const firstVisitRows = (firstVisits ?? []) as AppointmentSummary[]
+
+  if (firstVisitRows.length === 0) {
     return []
   }
 
@@ -166,7 +191,8 @@ export async function getCustomerCohorts() {
     }
   >()
 
-  for (const visit of firstVisits) {
+  for (const visit of firstVisitRows) {
+    if (!visit.start_time) continue
     const cohortMonth = new Date(visit.start_time).toISOString().substring(0, 7) // YYYY-MM
     if (!cohortMap.has(cohortMonth)) {
       cohortMap.set(cohortMonth, {
@@ -206,7 +232,9 @@ export async function getCustomerSegments() {
 
   if (error) throw error
 
-  if (!appointments || appointments.length === 0) {
+  const appointmentRows = (appointments ?? []) as AppointmentSummary[]
+
+  if (appointmentRows.length === 0) {
     return {
       champions: 0,
       loyalCustomers: 0,
@@ -227,7 +255,8 @@ export async function getCustomerSegments() {
     }
   >()
 
-  for (const apt of appointments) {
+  for (const apt of appointmentRows) {
+    if (!apt.start_time) continue
     const visitDate = new Date(apt.start_time)
     if (!customerData.has(apt.customer_id)) {
       customerData.set(apt.customer_id, {
@@ -289,32 +318,38 @@ export async function getTopCustomers(limit: number = 10) {
 
   const supabase = await createClient()
 
-  // Get appointment counts per customer
+  // Get appointment counts and revenue per customer
   const { data: appointments, error } = await supabase
     .from('appointments')
-    .select('customer_id, id')
+    .select('customer_id, id, total_price')
     .eq('salon_id', salonId)
     .eq('status', 'completed')
 
   if (error) throw error
 
-  if (!appointments || appointments.length === 0) {
+  const appointmentRows = (appointments ?? []) as AppointmentSummary[]
+
+  if (appointmentRows.length === 0) {
     return []
   }
 
-  // Count visits per customer
-  const customerVisits = new Map<string, number>()
-  for (const apt of appointments) {
-    customerVisits.set(apt.customer_id, (customerVisits.get(apt.customer_id) || 0) + 1)
+  // Count visits and calculate revenue per customer
+  const customerData = new Map<string, { visitCount: number; totalRevenue: number }>()
+  for (const apt of appointmentRows) {
+    const data = customerData.get(apt.customer_id) || { visitCount: 0, totalRevenue: 0 }
+    data.visitCount++
+    data.totalRevenue += apt.total_price || 0
+    customerData.set(apt.customer_id, data)
   }
 
   // Sort by visit count
-  const topCustomerIds = Array.from(customerVisits.entries())
-    .sort((a, b) => b[1] - a[1])
+  const topCustomerIds = Array.from(customerData.entries())
+    .sort((a, b) => b[1].visitCount - a[1].visitCount)
     .slice(0, limit)
-    .map(([customerId, visitCount]) => ({
+    .map(([customerId, data]) => ({
       customerId,
-      visitCount,
+      visitCount: data.visitCount,
+      totalRevenue: data.totalRevenue,
     }))
 
   // Get customer details
@@ -328,16 +363,18 @@ export async function getTopCustomers(limit: number = 10) {
 
   if (profileError) throw profileError
 
+  const profileRows = (profiles ?? []) as Array<ProfileSummary>
+
   // Combine data
   return topCustomerIds
     .map((item) => {
-      const profile = profiles?.find((p) => p.id === item.customerId)
+      const profile = profileRows.find((p) => p.id === item.customerId)
       return {
         id: item.customerId,
         name: profile?.full_name || 'Unknown',
         email: profile?.email || '',
         visitCount: item.visitCount,
-        estimatedValue: item.visitCount * 75, // TODO: Calculate from actual data
+        estimatedValue: item.totalRevenue,
       }
     })
     .filter((c) => c.name !== 'Unknown')

@@ -1,5 +1,4 @@
-import { getUserSalon } from './api/queries'
-import { getStaffWithServices, getAvailableServices } from './api/staff-services-queries'
+import { getUserSalon, getStaffWithServices, getAvailableServices } from './api/queries'
 import { StaffManagementClient } from './components/staff-management-client'
 import { Section, Stack } from '@/components/layout'
 import { EmptyState } from '@/components/shared'

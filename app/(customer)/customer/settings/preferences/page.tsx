@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
 import { UserPreferences } from '@/features/shared/preferences'
 
 export const metadata = {
@@ -5,6 +7,10 @@ export const metadata = {
   description: 'Manage your personal preferences',
 }
 
-export default async function UserPreferencesPage() {
-  return <UserPreferences />
+export default function UserPreferencesRoute() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <UserPreferences />
+    </Suspense>
+  )
 }

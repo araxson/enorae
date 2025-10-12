@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { getUserSalon } from '../../shared/api/salon.queries'
+import { getUserSalon } from '@/features/business/business-common/api/queries'
 
 type Staff = Database['public']['Views']['staff']['Row']
 
@@ -53,3 +53,9 @@ export async function getStaffById(staffId: string): Promise<Staff | null> {
   if (error) throw error
   return data
 }
+
+export {
+  getStaffWithServices,
+  getAvailableServices,
+  getStaffServices,
+} from './internal/staff-services'

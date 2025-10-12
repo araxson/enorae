@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { z } from 'zod'
+import { favoriteSchema } from '@/lib/validations/customer/favorites'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -12,34 +12,29 @@ export type ActionResponse<T = void> =
 // UUID validation regex
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-const favoriteSchema = z.object({
-  salonId: z.string().regex(UUID_REGEX, 'Invalid salon ID format'),
-  notes: z.string().max(500).optional().nullable(),
-})
-
-export async function toggleFavorite(salonId: string, notes?: string | null) {
+export async function toggleFavorite(
+  salonId: string,
+  notes?: string | null
+): Promise<ActionResponse<{ favorited: boolean }>> {
   try {
+    const session = await requireAuth()
     const supabase = await createClient()
     const engagement = supabase.schema('engagement')
-
-    // Auth check
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return { error: 'You must be logged in to save favorites' }
-    }
 
     // Validate input
     const validation = favoriteSchema.safeParse({ salonId, notes })
     if (!validation.success) {
-      return { error: validation.error.errors[0].message }
+      return { success: false, error: validation.error.errors[0].message }
     }
 
+    const { salonId: validatedSalonId, notes: validatedNotes } = validation.data
+
     // Check if already favorited
-    const { data: existing, error: queryError } = await engagement
+    const { data: existing, error: queryError } = await supabase
       .from('customer_favorites')
       .select('id, notes')
-      .eq('customer_id', user.id)
-      .eq('salon_id', salonId)
+      .eq('customer_id', session.user.id)
+      .eq('salon_id', validatedSalonId)
       .maybeSingle()
 
     if (queryError && queryError.code !== 'PGRST116') {
@@ -51,54 +46,57 @@ export async function toggleFavorite(salonId: string, notes?: string | null) {
 
     if (typedExisting?.id) {
       // If notes provided, update the favorite instead of removing
-      if (notes !== undefined) {
+      if (validatedNotes !== undefined) {
         const { error } = await engagement
           .from('customer_favorites')
           .update({
-            notes,
+            notes: validatedNotes,
             updated_at: new Date().toISOString(),
           })
           .eq('id', typedExisting.id)
-          .eq('customer_id', user.id)
+          .eq('customer_id', session.user.id)
 
         if (error) throw error
 
         revalidatePath('/customer/favorites')
         revalidatePath('/customer/salons')
-        return { success: true, favorited: true }
-      } else {
-        // Remove favorite - SECURITY: Verify ownership
-        const { error } = await engagement
-          .from('customer_favorites')
-          .delete()
-          .eq('id', typedExisting.id)
-          .eq('customer_id', user.id)
-
-        if (error) throw error
-
-        revalidatePath('/customer/favorites')
-        revalidatePath('/customer/salons')
-        return { success: true, favorited: false }
+        return { success: true, data: { favorited: true } }
       }
-    } else {
-      // Add favorite
+
+      // Remove favorite - SECURITY: Verify ownership
       const { error } = await engagement
         .from('customer_favorites')
-        .insert({
-          customer_id: user.id,
-          salon_id: salonId,
-          notes: notes || null,
-        })
+        .delete()
+        .eq('id', typedExisting.id)
+        .eq('customer_id', session.user.id)
 
       if (error) throw error
 
       revalidatePath('/customer/favorites')
       revalidatePath('/customer/salons')
-      return { success: true, favorited: true }
+      return { success: true, data: { favorited: false } }
     }
+
+    // Add favorite
+    const { error } = await engagement
+      .from('customer_favorites')
+      .insert({
+        customer_id: session.user.id,
+        salon_id: validatedSalonId,
+        notes: validatedNotes || null,
+      })
+
+    if (error) throw error
+
+    revalidatePath('/customer/favorites')
+    revalidatePath('/customer/salons')
+    return { success: true, data: { favorited: true } }
   } catch (error) {
     console.error('Toggle favorite error:', error)
-    return { error: 'An unexpected error occurred. Please try again.' }
+    return {
+      success: false,
+      error: 'An unexpected error occurred. Please try again.',
+    }
   }
 }
 

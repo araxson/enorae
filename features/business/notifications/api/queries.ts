@@ -4,10 +4,31 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type NotificationEntry = Database['communication']['Tables']['notification_queue']['Row']
+type MessageRow = Database['public']['Views']['messages']['Row']
+type NotificationEntry = {
+  id: string
+  user_id: string
+  channels: string[]
+  status: string | null
+  created_at: string | null
+  scheduled_for: string | null
+  sent_at: string | null
+  notification_type: string | null
+  payload: NotificationPayload
+}
 type NotificationStatus = Database['public']['Enums']['notification_status']
 type NotificationChannel = Database['public']['Enums']['notification_channel']
 type NotificationType = Database['public']['Enums']['notification_type']
+type NotificationPayload = {
+  content: MessageRow['content']
+  metadata?: MessageRow['metadata']
+}
+type NotificationPreferencesMetadata = {
+  email?: Partial<Record<NotificationType, boolean>>
+  sms?: Partial<Record<NotificationType, boolean>>
+  in_app?: Partial<Record<NotificationType, boolean>>
+  push?: Record<string, boolean>
+}
 
 export type NotificationTemplate = {
   id: string
@@ -60,9 +81,10 @@ export async function getUnreadCount() {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase.rpc('get_unread_count', {
-    p_user_id: user.id,
-  })
+  const { data, error } = await supabase
+    .rpc('get_unread_count', {
+      p_user_id: user.id,
+    })
 
   if (error) throw error
 
@@ -81,9 +103,10 @@ export async function getUnreadCounts() {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase.rpc('get_unread_counts', {
-    p_user_id: user.id,
-  })
+  const { data, error } = await supabase
+    .rpc('get_unread_counts', {
+      p_user_id: user.id,
+    })
 
   if (error) throw error
 
@@ -132,7 +155,8 @@ export async function getNotificationPreferences() {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const metadataPreferences = (user.user_metadata?.notification_preferences as Record<string, any>) || {}
+  const metadataPreferences =
+    (user.user_metadata?.notification_preferences as NotificationPreferencesMetadata | undefined) || {}
 
   return {
     email: { ...defaultPreferences.email, ...(metadataPreferences.email || {}) },
@@ -188,16 +212,33 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Note: communication_notification_queue table doesn't exist yet
+  // Using messages table with system context as a workaround for notification history
   const { data, error } = await supabase
-    .schema('communication')
-    .from('notification_queue')
-    .select('*')
-    .eq('user_id', user.id)
+    .from('messages')
+    .select('id, created_at, content, context_type')
+    .eq('to_user_id', user.id)
+    .eq('context_type', 'system')
     .order('created_at', { ascending: false })
     .limit(limit)
 
-  if (error) throw error
-  return (data || []) as NotificationEntry[]
+  if (error) {
+    console.error('[getNotificationHistory] Error:', error)
+    return []
+  }
+
+  // Map messages to NotificationEntry format
+  return (data || []).map(msg => ({
+    id: msg.id,
+    user_id: user.id,
+    channels: ['in_app'],
+    status: 'delivered',
+    created_at: msg.created_at,
+    scheduled_for: null,
+    sent_at: msg.created_at,
+    notification_type: 'system_alert',
+    payload: { content: msg.content },
+  }))
 }
 
 export async function getNotificationStatistics() {

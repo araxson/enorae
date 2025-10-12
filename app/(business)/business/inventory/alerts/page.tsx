@@ -1,4 +1,4 @@
-import { StockAlerts } from '@/features/business/inventory/alerts'
+import { StockAlerts } from '@/features/business/inventory-alerts'
 
 export const metadata = {
   title: 'Stock Alerts',

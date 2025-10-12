@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getAppointmentSnapshot } from '@/features/admin/appointments/api/oversight.queries'
+import { getAppointmentSnapshot } from '@/features/admin/appointments/api/queries'
 
 export async function GET() {
   try {

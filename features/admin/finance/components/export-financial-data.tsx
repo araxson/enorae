@@ -28,14 +28,14 @@ export function ExportFinancialData() {
     setIsLoading(true)
     setMessage(null)
     try {
-      const result = await exportFinancialDataToCSV({
+      await exportFinancialDataToCSV({
         startDate,
         endDate,
         includeTransactions,
         includeRevenueSummary
       })
 
-      setMessage({ type: 'success', text: result.message || 'Your export is ready' })
+      setMessage({ type: 'success', text: 'Your export is ready' })
     } catch (error) {
       setMessage({
         type: 'error',

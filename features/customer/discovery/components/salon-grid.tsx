@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SalonCard } from '@/components/shared'
+import { SalonCard } from '@/features/shared/salons'
+import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
 import { Card, CardContent } from '@/components/ui/card'
 import { H3, Muted } from '@/components/ui/typography'
 import { Search } from 'lucide-react'
@@ -57,24 +58,58 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
   return (
     <div className="space-y-8">
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        {currentSalons.map((salon) => (
-          <SalonCard
-            key={salon.id || ''}
-            salonId={salon.id || undefined}
-            name={salon.name || 'Unnamed Salon'}
-            description={salon.business_type || undefined}
-            image={undefined}
-            location={salon.business_name || 'Location not specified'}
-            rating={4.5}
-            reviewCount={0}
-            onBook={() => {
-              router.push(`/salons/${salon.slug}`)
-            }}
-            onViewDetails={() => {
-              router.push(`/salons/${salon.slug}`)
-            }}
-          />
-        ))}
+        {currentSalons.map((salon) => {
+          // Build proper location string from address data
+          const location = salon.full_address ||
+            (salon.city && salon.state_province ? `${salon.city}, ${salon.state_province}` : null) ||
+            'Location not specified'
+
+          // Use real ratings from database
+          const rating = salon.rating ? Number(salon.rating) : undefined
+          const reviewCount = salon.review_count || 0
+
+          // Use logo or cover image if available
+          const image = salon.logo_url || salon.cover_image_url || undefined
+
+          // Use short description, fallback to full description
+          const description = salon.short_description || salon.description || undefined
+          const initialFavorited = Boolean(
+            (salon as { is_favorited?: boolean }).is_favorited,
+          )
+
+          return (
+            <SalonCard
+              key={salon.id || ''}
+              salonId={salon.id || undefined}
+              name={salon.name || 'Unnamed Salon'}
+              description={description}
+              image={image}
+              location={location}
+              rating={rating}
+              reviewCount={reviewCount}
+              isAcceptingBookings={salon.is_accepting_bookings ?? true}
+              amenities={salon.amenities}
+              specialties={salon.specialties}
+              staffCount={salon.staff_count}
+              servicesCount={salon.services_count}
+              onBook={() => {
+                router.push(`/salons/${salon.slug}`)
+              }}
+              onViewDetails={() => {
+                router.push(`/salons/${salon.slug}`)
+              }}
+              favoriteAction={
+                salon.id ? (
+                  <FavoriteButton
+                    salonId={salon.id}
+                    initialFavorited={initialFavorited}
+                    variant="icon"
+                  />
+                ) : null
+              }
+            />
+          )
+        })}
       </div>
 
       {totalPages > 1 && (

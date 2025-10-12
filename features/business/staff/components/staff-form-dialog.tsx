@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { createStaffMember, updateStaffMember } from '../api/mutations'
-import type { StaffWithServices } from '../api/staff-services-queries'
+import type { StaffWithServices } from '../api/queries'
 import { useStaffFormState } from './use-staff-form-state'
 import { StaffFormFields } from './staff-form-fields'
 

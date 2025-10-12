@@ -9,9 +9,13 @@ import { P, Muted } from '@/components/ui/typography'
 import { StaffInfoForm } from './staff-info-form'
 import { MetadataForm } from '@/features/shared/profile-metadata/components/metadata-form'
 import { UsernameForm } from '@/features/shared/profile/components/username-form'
+import { ProfilePhotoUpload } from './profile-photo-upload'
+import { CertificationsEditor } from './certifications-editor'
+import { SpecialtiesEditor } from './specialties-editor'
+import { PortfolioGallery } from './portfolio-gallery'
 import type { Database } from '@/lib/types/database.types'
-import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/shared/components/types'
+import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 
 type StaffProfile = Database['public']['Views']['staff']['Row']
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row'] | null
@@ -184,8 +188,19 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
             </TabsContent>
 
             <TabsContent value="edit" className="space-y-6">
+              <ProfilePhotoUpload
+                currentPhotoUrl={metadata?.avatar_url || profile.avatar_url}
+                userName={profile.full_name || undefined}
+              />
               <UsernameForm currentUsername={username} />
               <StaffInfoForm profile={profile} />
+              <SpecialtiesEditor
+                initialSpecialties={metadata?.tags?.filter((tag: string) => !tag.includes('certification:')) || []}
+              />
+              <CertificationsEditor
+                initialCertifications={metadata?.tags?.filter((tag: string) => tag.includes('certification:'))?.map((tag: string) => tag.replace('certification:', '')) || []}
+              />
+              <PortfolioGallery portfolioImages={[]} />
               <MetadataForm metadata={metadata} />
             </TabsContent>
           </Tabs>

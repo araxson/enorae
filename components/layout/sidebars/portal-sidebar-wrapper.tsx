@@ -3,7 +3,8 @@ import type { PortalSidebarProps } from './portal-sidebar'
 import type { FavoriteItem } from './types'
 import { getMenuForUser } from '@/lib/menu/get-menu-for-user'
 import { verifySession, type Session } from '@/lib/auth/session'
-import { getUserFavorites } from '@/features/customer/favorites/api/queries'
+import { getCustomerFavoritesSummary } from '@/features/shared/customer-common/api/queries'
+import { getUnreadNotificationsCount } from '@/features/shared/notifications/api/queries'
 
 export interface PortalSidebarWrapperProps {
   portal: 'customer' | 'business' | 'staff' | 'admin'
@@ -42,18 +43,29 @@ export async function PortalSidebarWrapper({
     navSecondary = menu.navSecondary
 
     if (portal === 'customer') {
-      const rawFavorites = await getUserFavorites()
-      favorites = rawFavorites.map((favorite) => {
-        const slugOrId = favorite.salon?.slug ?? favorite.salon_id ?? ''
-        const url = slugOrId ? `/customer/salons/${slugOrId}` : '/customer/favorites'
+      const shortcuts = await getCustomerFavoritesSummary(session.user.id)
+      favorites = shortcuts.map((shortcut) => ({
+        name: shortcut.name,
+        url: shortcut.url,
+        icon: 'star' as const,
+        salonId: shortcut.salonId,
+      }))
+    }
 
-        return {
-          name: favorite.salon?.name ?? 'Favorite Salon',
-          url,
-          icon: 'star',
-          salonId: favorite.salon_id ?? undefined,
+    // Add unread notification badge for staff portal
+    if (portal === 'staff') {
+      try {
+        const unreadCount = await getUnreadNotificationsCount()
+        if (unreadCount > 0) {
+          navMain = navMain.map(item =>
+            item.url === '/staff/notifications'
+              ? { ...item, badge: unreadCount }
+              : item
+          )
         }
-      })
+      } catch (error) {
+        console.error('Error fetching unread count:', error)
+      }
     }
   }
 

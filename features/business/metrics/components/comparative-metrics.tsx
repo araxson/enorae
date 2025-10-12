@@ -1,10 +1,10 @@
 'use client'
 
-import { ArrowDownRight, ArrowUpRight, Equals } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, Equal } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Grid } from '@/components/layout'
 import { Small, Muted } from '@/components/ui/typography'
-import type { MetricsComparison } from '../utils/analytics'
+import type { MetricsComparison } from '../api/analytics'
 
 type MetricKey = keyof MetricsComparison
 
@@ -37,7 +37,7 @@ function changeIndicator(change: number) {
   if (change < -1) {
     return { icon: <ArrowDownRight className="h-4 w-4 text-rose-500" />, tone: 'text-rose-600' }
   }
-  return { icon: <Equals className="h-4 w-4 text-muted-foreground" />, tone: 'text-muted-foreground' }
+  return { icon: <Equal className="h-4 w-4 text-muted-foreground" />, tone: 'text-muted-foreground' }
 }
 
 export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: ComparativeMetricsProps) {

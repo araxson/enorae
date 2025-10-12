@@ -10,9 +10,22 @@ import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from
 import { formatDistanceToNow } from 'date-fns'
 import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '../api/mutations'
 import { useToast } from '@/hooks/use-toast'
-import type { Database } from '@/lib/types/database.types'
+import type { Json } from '@/lib/types/database.types'
 
-type Notification = Database['communication']['Tables']['notification_queue']['Row']
+// TODO: communication_notification_queue view doesn't exist yet
+type Notification = {
+  id: string
+  user_id: string
+  channels: string[]
+  status: string | null
+  created_at: string | null
+  scheduled_for: string | null
+  sent_at: string | null
+  notification_type: string | null
+  payload: Json | null
+  title?: string
+  message?: string
+}
 
 type Props = {
   notifications: Notification[]

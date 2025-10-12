@@ -15,6 +15,48 @@ const chainSchema = z.object({
   legal_name: z.string().max(200).optional().or(z.literal('')),
 })
 
+const optionalBoundedInt = (max: number, fieldLabel: string) =>
+  z
+    .preprocess(
+      (value) => {
+        if (value === undefined || value === null) return undefined
+        if (typeof value === 'string') {
+          const trimmed = value.trim()
+          if (trimmed === '') return undefined
+          const parsed = Number(trimmed)
+          return Number.isFinite(parsed) ? parsed : Number.NaN
+        }
+        if (typeof value === 'number') return value
+        return Number.NaN
+      },
+      z
+        .number()
+        .int(`${fieldLabel} must be a whole number`)
+        .min(0, `${fieldLabel} cannot be negative`)
+        .max(max, `${fieldLabel} cannot exceed ${max}`),
+    )
+    .optional()
+
+const optionalBoolean = z
+  .preprocess((value) => {
+    if (value === undefined || value === null) return undefined
+    if (typeof value === 'string') {
+      if (value.trim() === '') return undefined
+      if (value === 'true') return true
+      if (value === 'false') return false
+    }
+    if (typeof value === 'boolean') return value
+    return value
+  }, z.boolean({ invalid_type_error: 'isAcceptingBookings must be true or false' }))
+  .optional()
+
+const chainSettingsSchema = z.object({
+  chainId: z.string().regex(UUID_REGEX, 'Invalid chain ID'),
+  bookingLeadTimeHours: optionalBoundedInt(720, 'Booking lead time'),
+  cancellationHours: optionalBoundedInt(168, 'Cancellation window'),
+  isAcceptingBookings: optionalBoolean,
+})
+
 export async function createSalonChain(formData: FormData) {
   try {
     // SECURITY: Business users only
@@ -141,8 +183,23 @@ export async function deleteSalonChain(formData: FormData) {
 export async function updateChainSettings(formData: FormData) {
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-    const chainId = formData.get('chainId')?.toString()
-    if (!chainId || !UUID_REGEX.test(chainId)) return { error: 'Invalid chain ID' }
+    const payloadResult = chainSettingsSchema.safeParse({
+      chainId: formData.get('chainId')?.toString(),
+      bookingLeadTimeHours: formData.get('bookingLeadTimeHours')?.toString(),
+      cancellationHours: formData.get('cancellationHours')?.toString(),
+      isAcceptingBookings: formData.get('isAcceptingBookings')?.toString(),
+    })
+
+    if (!payloadResult.success) {
+      return { error: payloadResult.error.errors[0]?.message ?? 'Invalid settings payload' }
+    }
+
+    const {
+      chainId,
+      bookingLeadTimeHours,
+      cancellationHours,
+      isAcceptingBookings,
+    } = payloadResult.data
 
     const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -158,19 +215,20 @@ export async function updateChainSettings(formData: FormData) {
 
     if (!chain) return { error: 'Chain not found or access denied' }
 
-    // Parse settings from form data
-    const bookingLeadTimeHours = formData.get('bookingLeadTimeHours')?.toString()
-    const cancellationHours = formData.get('cancellationHours')?.toString()
-    const isAcceptingBookings = formData.get('isAcceptingBookings')?.toString()
-
     const updates: Record<string, unknown> = {
       updated_by_id: user.id,
     }
 
-    if (bookingLeadTimeHours) updates.booking_lead_time_hours = Number(bookingLeadTimeHours)
-    if (cancellationHours) updates.cancellation_hours = Number(cancellationHours)
-    if (isAcceptingBookings !== null) {
-      updates.is_accepting_bookings = isAcceptingBookings === 'true'
+    if (bookingLeadTimeHours !== undefined) {
+      updates.booking_lead_time_hours = bookingLeadTimeHours
+    }
+
+    if (cancellationHours !== undefined) {
+      updates.cancellation_hours = cancellationHours
+    }
+
+    if (isAcceptingBookings !== undefined) {
+      updates.is_accepting_bookings = isAcceptingBookings
     }
 
     // Get all salons in chain

@@ -1,15 +1,15 @@
-import 'server-only';
-'use server'
+import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type FavoriteRow = Database['engagement']['Tables']['customer_favorites']['Row']
-type AdminSalon = Database['public']['Views']['admin_salons_overview']['Row']
+type FavoriteRow = Database['public']['Views']['customer_favorites']['Row']
+
+type SalonView = Database['public']['Views']['salons']['Row']
 
 export type FavoriteWithSalon = FavoriteRow & {
-  salon: Pick<AdminSalon, 'id' | 'name' | 'slug' | 'business_name' | 'business_type' | 'is_accepting_bookings'> | null
+  salon: Pick<SalonView, 'id' | 'name' | 'slug' | 'rating' | 'review_count' | 'full_address' | 'logo_url' | 'is_accepting_bookings'> | null
 }
 
 export async function getUserFavorites() {
@@ -17,17 +17,15 @@ export async function getUserFavorites() {
   const session = await requireAuth()
 
   const supabase = await createClient()
-  const engagement = supabase.schema('engagement')
-
-  const { data, error } = await engagement
+  const { data, error } = await supabase
     .from('customer_favorites')
-    .select('id, salon_id, notes, created_at, updated_at, customer_id, service_id, staff_id')
+    .select('*')
     .eq('customer_id', session.user.id)
     .order('created_at', { ascending: false })
 
   if (error) throw error
 
-  const favorites = (data || []) as FavoriteRow[]
+  const favorites: FavoriteRow[] = data ?? []
 
   const salonIds = Array.from(
     new Set(favorites.map((favorite) => favorite.salon_id).filter((id): id is string => Boolean(id)))
@@ -37,8 +35,8 @@ export async function getUserFavorites() {
 
   if (salonIds.length > 0) {
     const { data: salonRows, error: salonError } = await supabase
-      .from('admin_salons_overview')
-      .select('id, name, slug, business_name, business_type, is_accepting_bookings')
+      .from('salons')
+      .select('id, name, slug, rating, review_count, full_address, logo_url, is_accepting_bookings')
       .in('id', salonIds)
 
     if (salonError) throw salonError
@@ -64,16 +62,13 @@ export async function checkIsFavorite(salonId: string) {
   const session = await requireAuth()
 
   const supabase = await createClient()
-  if (!session.user) return false
-
   // OPTIMIZED: Use head: true to check existence without fetching data
-  const engagement = supabase.schema('engagement')
-
-  const { count } = await engagement
+  const { count, error } = await supabase
     .from('customer_favorites')
     .select('id', { count: 'exact', head: true })
     .eq('customer_id', session.user.id)
     .eq('salon_id', salonId)
 
+  if (error) throw error
   return (count ?? 0) > 0
 }

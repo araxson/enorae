@@ -21,7 +21,7 @@ import { WebhookErrorSection } from './webhook-error-section'
 import { WebhookActionButtons } from './webhook-detail-actions'
 import { Separator } from '@/components/ui/separator'
 
-type WebhookQueue = Database['communication']['Tables']['webhook_queue']['Row']
+type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
 
 type WebhookDetailDialogProps = {
   webhook: WebhookQueue | null
@@ -44,6 +44,7 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
   }
 
   const handleRetry = async () => {
+    if (!webhook.id) return
     setIsRetrying(true)
     resetAlerts()
 
@@ -63,7 +64,7 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
   }
 
   const handleDelete = async () => {
-    if (isDeleting) return
+    if (isDeleting || !webhook.id) return
 
     setIsDeleting(true)
     resetAlerts()
@@ -115,7 +116,7 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
           {webhook.last_error && (
             <>
               <Separator />
-              <WebhookErrorSection error={webhook.last_error} />
+              <WebhookErrorSection error={webhook.last_error || 'None'} />
             </>
           )}
         </Stack>
@@ -125,7 +126,7 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
             onClose={() => onOpenChange(false)}
             onRetry={handleRetry}
             onDelete={handleDelete}
-            status={webhook.status}
+            status={webhook.status || 'pending'}
             isRetrying={isRetrying}
             isDeleting={isDeleting}
           />

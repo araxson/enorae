@@ -22,13 +22,16 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import type { ModerationReview } from '../api/queries'
-import type { ReviewActions } from './reviews-table.types'
 
 const DATE_FORMAT = 'MMM d, yyyy'
 
 type ReviewsTableRowProps = {
   review: ModerationReview
-  actions: ReviewActions
+  loadingId: string | null
+  onFlag: (review: ModerationReview) => void
+  onUnflag: (review: ModerationReview) => void
+  onToggleFeature: (review: ModerationReview) => void
+  onDelete: (review: ModerationReview) => void
   onViewDetail: (review: ModerationReview) => void
 }
 
@@ -50,9 +53,25 @@ function reputationVariant(label: ModerationReview['reviewerReputation']['label'
   return 'destructive' as const
 }
 
-export function ReviewsTableRow({ review, actions, onViewDetail }: ReviewsTableRowProps) {
+export function ReviewsTableRow({
+  review,
+  loadingId,
+  onFlag,
+  onUnflag,
+  onToggleFeature,
+  onDelete,
+  onViewDetail,
+}: ReviewsTableRowProps) {
+  const reviewId = review.id ?? ''
+  const isLoading = loadingId === reviewId
+
   return (
-    <TableRow>
+    <TableRow className={isLoading ? 'relative opacity-60 pointer-events-none' : 'relative'} aria-busy={isLoading}>
+      {isLoading && (
+        <div className="absolute inset-0 bg-background/70 flex items-center justify-center text-xs font-medium text-muted-foreground">
+          Processing…
+        </div>
+      )}
       <TableCell>
         <div className="font-medium">{review.salon_name || 'Unknown'}</div>
       </TableCell>
@@ -118,8 +137,9 @@ export function ReviewsTableRow({ review, actions, onViewDetail }: ReviewsTableR
       <TableCell>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" disabled={actions.loadingId === review.id}>
+            <Button variant="ghost" size="sm" disabled={isLoading}>
               <MoreVertical className="h-4 w-4" />
+              <span className="sr-only">Review actions</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -129,22 +149,22 @@ export function ReviewsTableRow({ review, actions, onViewDetail }: ReviewsTableR
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {review.is_flagged ? (
-              <DropdownMenuItem onClick={() => actions.unflag(review.id!)}>
+              <DropdownMenuItem onClick={() => onUnflag(review)}>
                 <FlagOff className="mr-2 h-4 w-4" />
                 Unflag
               </DropdownMenuItem>
             ) : (
-              <DropdownMenuItem onClick={() => actions.flag(review.id!)}>
+              <DropdownMenuItem onClick={() => onFlag(review)}>
                 <Flag className="mr-2 h-4 w-4" />
                 Flag
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem onClick={() => actions.toggleFeature(review.id!, review.is_featured || false)}>
+            <DropdownMenuItem onClick={() => onToggleFeature(review)}>
               <Star className="mr-2 h-4 w-4" />
               {review.is_featured ? 'Unfeature' : 'Feature'}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => actions.remove(review.id!)} variant="destructive">
+            <DropdownMenuItem onClick={() => onDelete(review)} className="text-destructive">
               <Trash2 className="mr-2 h-4 w-4" />
               Delete
             </DropdownMenuItem>

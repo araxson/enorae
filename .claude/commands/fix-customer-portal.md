@@ -1,111 +1,215 @@
 ---
-description: Deep analysis and UX fixes for customer portal
+description: Fix issues found in Customer Portal analysis systematically
 ---
 
-# Customer Portal - Deep Analysis & Fix
+# Fix Customer Portal Issues
 
-**Portal:** `/app/(customer)` - Customer-facing booking and discovery features
+You are fixing issues from the Customer Portal deep analysis.
 
-## Task
+## Context
 
-Perform a **comprehensive deep analysis** of the customer portal UX and fix all issues using senior developer ULTRATHINK methodology.
+The Customer Portal analysis created 9 files in `docs/customer-portal/`:
+- `00_SUMMARY.md` - Executive summary
+- `01_PAGES_ANALYSIS.md` - Pages layer
+- `02_QUERIES_ANALYSIS.md` - Queries layer
+- `03_MUTATIONS_ANALYSIS.md` - Mutations layer
+- `04_COMPONENTS_ANALYSIS.md` - Components layer
+- `05_TYPES_ANALYSIS.md` - Type Safety layer
+- `06_VALIDATION_ANALYSIS.md` - Validation layer
+- `07_SECURITY_ANALYSIS.md` - Security layer
+- `08_UX_ANALYSIS.md` - UX layer
 
-### Phase 1: Analysis (30 minutes)
+## Your Task
 
-1. **Analyze all customer portal routes** in `app/(customer)/`
-2. **Review all customer features** in `features/customer/`
-3. **Check database views usage** - Are we using all available data from views?
-4. **Examine customer-facing components** - Any missing features or broken UX?
-5. **Identify data utilization** - What % of available columns are displayed?
-6. **Find critical bugs** - Permission errors, crashes, empty states, broken queries
-7. **Check UX patterns** - Search, filters, sorting, loading states, error handling
-8. **Review customer journey** - Discovery → Browse → Book → Review flow
+Fix issues from the Customer Portal analysis systematically and safely.
 
-### Phase 2: Document Findings
+## 🤖 AUTONOMOUS EXECUTION MODE
 
-Create **`CUSTOMER_PORTAL_ANALYSIS.md`** with:
-- Current state assessment (routes, features, components)
-- Database views available vs utilized
-- Critical issues found (bugs, crashes, permission errors)
-- Missing high-impact features
-- UX gaps (search, filters, empty states)
-- Data visibility issues
-- Prioritized recommendations (CRITICAL → HIGH → MEDIUM → LOW)
+**CRITICAL INSTRUCTIONS - READ FIRST:**
 
-### Phase 3: Fix Critical Issues
+1. **NO QUESTIONS ALLOWED**: Do not ask the user ANY questions. Work autonomously.
+2. **NO PROGRESS UPDATES**: Do not stop to tell the user what you plan to do next.
+3. **PROCESS ALL LAYERS**: Always fix ALL layers (1-8) with ALL severity levels in a single run.
+4. **MARKDOWN TODO LIST REQUIRED**:
+   - Create a markdown file `docs/customer-portal/fix-progress.md` at the start
+   - Add all issues from all layers to this file
+   - Mark each task with `- [ ]` when pending, `- [x]` when completed
+   - Update the file after EACH issue is fully fixed
+5. **COMPLETE FULLY**: Only mark a task as done when it is 100% complete and verified.
+6. **NO INTERRUPTIONS**: Continue working until ALL issues across ALL layers are fixed.
 
-Apply ULTRATHINK methodology to fix:
-- ✅ Any crashes or permission errors
-- ✅ Empty views or fallback logic needed
-- ✅ Broken queries (wrong columns, missing filters)
-- ✅ Missing search/filter functionality
-- ✅ Underutilized database columns
-- ✅ Poor data display (show ratings, reviews, availability)
-- ✅ Missing loading/error states
-- ✅ Customer journey blockers
+### All Layers Override
 
-### Phase 4: Enhance UX
+- Process every layer (1-8) in a single run; treat severity as `all`.
+- Skip Step 1 entirely—do not ask the user to choose scope or severity.
+- When reporting results in Step 7, remove the "Next Steps" subsection.
+- Continue fixing until all layers and severities are covered without pausing for additional instructions.
 
-Add high-value features:
-- Search bars for discovery
-- Filters (location, price, rating, availability)
-- Better salon cards (show more data)
-- Service detail displays
-- Booking flow improvements
-- Review/rating displays
-- Favorites management
-- Appointment management enhancements
+## STEP 1: Ask User for Scope
 
-### Phase 5: Create Reusable Components
+Ask the user:
+```
+Which Customer Portal issues should I fix?
 
-Build customer-specific components:
-- `components/customer/` directory
-- Reusable search/filter components
-- Salon card enhancements
-- Service cards
-- Appointment cards
-- Review displays
+1. Layer (1-8 or "all"):
+   - 1: Pages
+   - 2: Queries
+   - 3: Mutations
+   - 4: Components
+   - 5: Type Safety
+   - 6: Validation
+   - 7: Security
+   - 8: UX
 
-### Phase 6: Document & Test
+2. Severity (critical/high/medium/low/all):
+```
 
-Create **`CUSTOMER_PORTAL_IMPROVEMENTS.md`** with:
-- All changes implemented
-- Before/after comparisons
-- New components created
-- Performance improvements
-- Build status
-- Testing checklist
+## STEP 2: Read Analysis File(s)
 
-## Success Criteria
+Based on layer input, read:
+- Layer 1: `docs/customer-portal/01_PAGES_ANALYSIS.md`
+- Layer 2: `docs/customer-portal/02_QUERIES_ANALYSIS.md`
+- Layer 3: `docs/customer-portal/03_MUTATIONS_ANALYSIS.md`
+- Layer 4: `docs/customer-portal/04_COMPONENTS_ANALYSIS.md`
+- Layer 5: `docs/customer-portal/05_TYPES_ANALYSIS.md`
+- Layer 6: `docs/customer-portal/06_VALIDATION_ANALYSIS.md`
+- Layer 7: `docs/customer-portal/07_SECURITY_ANALYSIS.md`
+- Layer 8: `docs/customer-portal/08_UX_ANALYSIS.md`
+- All: Read `00_SUMMARY.md` first, then relevant layer files
 
-- ✅ No crashes or errors
-- ✅ All database views properly utilized
-- ✅ Search and filters working
-- ✅ Customer journey smooth
-- ✅ Build successful
-- ✅ TypeScript errors resolved
-- ✅ Comprehensive documentation
-- ✅ Reusable components created
+## STEP 3: Extract Issues
 
-## Constraints
+From the analysis file, extract all issues matching the severity filter. Each issue has:
+- Issue number and title
+- Severity level
+- File path with line numbers
+- Current code snippet
+- Required fix code
+- Steps to fix
+- Acceptance criteria
 
-- Follow project architecture (CLAUDE.md)
-- Use existing shadcn/ui components
-- Type safety (no `any` types)
-- Server components: `import 'server-only'`
-- Client components: `'use client'`
-- Query views, mutate schemas
-- Ultra-thin pages (5-15 lines)
+## STEP 4: Create TODO Lists
 
-## Output
+Create TWO todo lists:
 
-1. `CUSTOMER_PORTAL_ANALYSIS.md` - Deep analysis document
-2. `CUSTOMER_PORTAL_IMPROVEMENTS.md` - Implementation summary
-3. Enhanced customer portal features
-4. New reusable components in `components/customer/`
-5. All critical issues fixed
-6. Build passing successfully
+**A. Markdown File** (Primary tracking - REQUIRED):
+Create `docs/customer-portal/fix-progress.md`:
+```markdown
+# Customer Portal Fix Progress
+
+## Layer 1: Pages
+- [ ] Issue #1: [Title] ([file:line])
+- [ ] Issue #2: [Title] ([file:line])
+
+## Layer 2: Queries
+- [ ] Issue #3: [Title] ([file:line])
+...
+
+## Layer 8: UX
+- [ ] Issue #N: [Title] ([file:line])
+
+## Verification
+- [ ] Run typecheck and verify (0 errors)
+```
+
+**B. TodoWrite Tool** (Secondary - for UI):
+Also use TodoWrite to create a fix plan for the UI:
+```
+1. Fix Issue #1: [Title] ([file:line])
+2. Fix Issue #2: [Title] ([file:line])
+...
+N. Run typecheck and verify
+```
+
+## STEP 5: Fix Issues One by One
+
+For EACH issue:
+
+1. **Read the target file** completely (required by Edit tool)
+2. **Verify issue exists** (code may have changed since analysis)
+3. **Apply the fix** using Edit tool
+   - Use exact "Required Fix" from analysis
+   - Follow "Steps to Fix" from analysis
+   - Meet all "Acceptance Criteria"
+4. **Mark TODO as completed** immediately
+5. **Move to next issue**
+
+**CRITICAL**:
+- Fix ONE issue at a time
+- Mark completed immediately after each fix
+- Read file before editing
+- NO batching or skipping
+- NO changes beyond analysis scope
+
+## STEP 6: Verify All Fixes
+
+After fixing all issues:
+```bash
+npm run typecheck
+```
+
+If errors:
+- Fix TypeScript errors
+- Mark verification todo as completed
+
+## STEP 7: Report Results
+
+Provide summary:
+```markdown
+## Customer Portal Fix Summary
+
+**Layer**: [number/name]
+**Severity**: [filter]
+
+### Issues Fixed: X/X
+
+1. ✅ Issue #1 - features/customer/[...]:line - [description]
+2. ✅ Issue #2 - features/customer/[...]:line - [description]
+
+### Skipped: X
+
+1. ⏭️ Issue #X - [reason - e.g., already fixed, not reproducible]
+
+### Verification
+
+- [x] TypeScript: 0 errors
+- [x] All acceptance criteria met
+
+### Next Steps
+
+[Recommend next layer or severity level to fix based on 00_SUMMARY.md priorities]
+```
+
+## Safety Checklist
+
+Before each fix:
+- [ ] Analysis file read
+- [ ] Issue understood
+- [ ] Target file read
+- [ ] Issue confirmed to exist
+- [ ] Fix approach clear
+- [ ] Acceptance criteria known
+
+After each fix:
+- [ ] TODO marked completed
+- [ ] Fix matches analysis requirement
+- [ ] No unintended changes
+
+After all fixes:
+- [ ] TypeScript passes (0 errors)
+- [ ] All acceptance criteria met
+- [ ] Summary provided
+
+## Important Notes
+
+- **Portal**: Customer only (features/customer/, app/(customer)/)
+- **Always use TodoWrite** for progress tracking
+- **One at a time** - never batch fixes
+- **Read before edit** - required by tool
+- **Verify criteria** for each fix
+- **Run typecheck** after all fixes
+- **Stay in scope** - only fix analyzed issues
 
 ---
 
-**Approach:** Think like a senior developer. Find the issues first, then fix them comprehensively. Document everything.
+**Remember**: Systematic, methodical, one issue at a time.

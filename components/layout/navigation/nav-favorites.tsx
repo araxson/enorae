@@ -51,7 +51,7 @@ export function NavFavorites({
     startTransition(() => {
       void toggleFavorite(salonId)
         .then((result) => {
-          if (result?.error) {
+          if (!result.success) {
             toast.error(result.error)
             return
           }

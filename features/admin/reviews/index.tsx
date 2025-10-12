@@ -3,7 +3,7 @@ import { P, Muted } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ReviewsClient } from './components/reviews-client'
 import { getAllReviews } from './api/queries'
-import { LastUpdated } from '@/features/admin/shared/components'
+import { LastUpdated } from '@/features/admin/admin-common/components'
 import { Card, CardContent } from '@/components/ui/card'
 
 export async function AdminReviews() {

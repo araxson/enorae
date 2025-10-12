@@ -1,25 +1,20 @@
 import { Stack } from '@/components/layout'
 import { H1, P } from '@/components/ui/typography'
-import { getCouponAnalytics } from './api/coupon-validation.queries'
+import { getCouponAnalytics, getCouponServiceOptions } from './api/queries'
 import { CouponForm } from './components/coupon-form'
 import { CouponsList } from './components/coupons-list'
 import { CouponAnalyticsOverview } from './components/coupon-analytics-overview'
 import { BulkCouponGenerator } from './components/bulk-coupon-generator'
-import { getUserSalon } from '../shared/api/salon.queries'
+import { getUserSalon } from '@/features/business/business-common/api/queries'
 
 export async function CouponManagement() {
   const salon = await getUserSalon()
+  if (!salon?.id) {
+    throw new Error('Salon not found')
+  }
+
   const analytics = await getCouponAnalytics(salon.id)
-
-  const { createClient } = await import('@/lib/supabase/server')
-  const supabase = await createClient()
-  const { data: servicesData } = await supabase
-    .from('services')
-    .select('id, name')
-    .eq('salon_id', salon.id)
-    .eq('is_active', true)
-
-  const services = (servicesData || []) as Array<{ id: string; name: string }>
+  const services = await getCouponServiceOptions(salon.id)
 
   return (
     <Stack gap="xl">

@@ -36,7 +36,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
         description="Book your first appointment at a salon"
         action={
           <Button asChild>
-            <Link href="/explore">Browse salons</Link>
+            <Link href="/customer/salons">Browse salons</Link>
           </Button>
         }
       />

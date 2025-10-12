@@ -15,14 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { Database } from '@/lib/types/database.types'
-
-type Service = Database['public']['Views']['services']['Row']
-
-interface ServicesManagementClientProps {
-  salon: { id: string }
-  services: Service[]
-}
+import type { Service, ServicesManagementClientProps } from '../types'
 
 export function ServicesManagementClient({ salon, services }: ServicesManagementClientProps) {
   const router = useRouter()

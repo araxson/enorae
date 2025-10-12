@@ -4,15 +4,19 @@ import { RevenueChart } from './components/revenue-chart'
 import { ComparativeMetrics } from './components/comparative-metrics'
 import { RevenueForecastCard } from './components/revenue-forecast-card'
 import { Stack, Grid } from '@/components/layout'
-import { StaffPerformanceCard, ServicePopularityChart } from '@/features/business/shared/components'
+import { StaffPerformanceCard, ServicePopularityChart } from '@/features/business/business-common/components'
 import { getTopStaff, getTopServices } from '@/features/business/analytics/api/queries'
-import { getUserSalon } from '@/features/business/shared/api/salon.queries'
-import { buildPeriodComparisons, buildRevenueForecast } from './utils/analytics'
-import { OperationalDashboard } from './operational/components/operational-dashboard'
-import { getOperationalMetrics } from './operational/api/queries'
+import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { buildPeriodComparisons, buildRevenueForecast } from './api/analytics'
+import { OperationalDashboard } from '@/features/business/metrics-operational/components/operational-dashboard'
+import { getOperationalMetrics } from '@/features/business/metrics-operational/api/queries'
 
 export async function SalonMetrics() {
   const salon = await getUserSalon()
+
+  if (!salon?.id) {
+    throw new Error('Salon not found')
+  }
 
   const endDate = new Date()
   const startDate = new Date(endDate)

@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
 import { SalonDiscovery } from '@/features/customer/discovery'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
@@ -7,6 +9,10 @@ export const metadata = genMeta({
   keywords: ['browse salons', 'find salon', 'beauty services', 'hair salons', 'spa services'],
 })
 
-export default async function SalonsPage() {
-  return <SalonDiscovery />
+export default function SalonDiscoveryPage() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <SalonDiscovery />
+    </Suspense>
+  )
 }

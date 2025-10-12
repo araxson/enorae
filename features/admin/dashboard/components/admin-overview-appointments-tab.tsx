@@ -2,9 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
-import { format } from 'date-fns'
 import type { AppointmentsOverview } from './admin-overview-types'
-import { appointmentStatusVariant, formatCurrency } from './admin-overview-utils'
+import { appointmentStatusVariant, safeFormatDate } from './admin-overview-utils'
 
 type AppointmentsTabProps = {
   appointments: AppointmentsOverview[]
@@ -61,9 +60,11 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
                 <Separator className="my-3" />
                 <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
                   <span>
-                    Created {apt.created_at ? format(new Date(apt.created_at), 'MMM d, yyyy') : 'recently'}
+                    Created {safeFormatDate(apt.created_at, 'MMM d, yyyy', 'recently')}
                   </span>
-                  <span>Revenue {formatCurrency(apt.revenue)}</span>
+                  <span>
+                    Scheduled {safeFormatDate(apt.start_time, 'MMM d, yyyy p', 'TBD')}
+                  </span>
                 </div>
               </div>
             ))}

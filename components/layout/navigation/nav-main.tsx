@@ -18,6 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
+import { Badge } from '@/components/ui/badge'
 import { getNavIcon, type IconName } from './icon-map'
 
 interface NavItem {
@@ -25,6 +26,7 @@ interface NavItem {
   url: string
   icon: IconName
   isActive?: boolean
+  badge?: number
   items?: {
     title: string
     url: string
@@ -67,6 +69,11 @@ export function NavMain({
                         <div className="flex w-full items-center gap-2">
                           <Icon className="size-4" />
                           <span className="flex-1 truncate text-left">{item.title}</span>
+                          {item.badge && item.badge > 0 && (
+                            <Badge variant="default" className="h-5 min-w-5 px-1 text-xs">
+                              {item.badge > 99 ? '99+' : item.badge}
+                            </Badge>
+                          )}
                         </div>
                         <SidebarMenuAction
                           asChild
@@ -104,7 +111,12 @@ export function NavMain({
                   >
                     <Link href={item.url}>
                       <Icon className="size-4" />
-                      <span>{item.title}</span>
+                      <span className="flex-1">{item.title}</span>
+                      {item.badge && item.badge > 0 && (
+                        <Badge variant="default" className="ml-auto h-5 min-w-5 px-1 text-xs">
+                          {item.badge > 99 ? '99+' : item.badge}
+                        </Badge>
+                      )}
                     </Link>
                   </SidebarMenuButton>
                 )}

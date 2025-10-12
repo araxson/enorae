@@ -1,7 +1,8 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+
+import { requireSessionContext } from './session-context'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -19,25 +20,23 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
       return { success: false, error: 'Invalid session ID format' }
     }
 
-    const supabase = await createClient()
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return { success: false, error: 'Unauthorized' }
-    }
-
-    // Get current session to prevent self-revocation
-    const { data: { session: currentSession } } = await supabase.auth.getSession()
+    const { supabase, user } = await requireSessionContext()
 
     // Check if trying to revoke current session
-    const { data: targetSession } = await supabase
+    const { data: targetSession, error: targetError } = await supabase
       .from('sessions')
-      .select('session_token')
+      .select('id, is_current, is_active')
       .eq('id', sessionId)
       .eq('user_id', user.id)
-      .single<{ session_token: string }>()
+      .maybeSingle<{ id: string; is_current: boolean | null; is_active: boolean | null }>()
 
-    if (targetSession && currentSession?.access_token === targetSession.session_token) {
+    if (targetError) throw targetError
+
+    if (!targetSession) {
+      return { success: false, error: 'Session not found' }
+    }
+
+    if (targetSession.is_current) {
       return { success: false, error: 'Cannot revoke current session. Use sign out instead.' }
     }
 
@@ -74,15 +73,19 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
  */
 export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: number }>> {
   try {
-    const supabase = await createClient()
+    const { supabase, user } = await requireSessionContext()
 
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return { success: false, error: 'Unauthorized' }
-    }
+    // Resolve the current session from the secure view to avoid token comparison
+    const { data: currentSession, error: currentError } = await supabase
+      .from('sessions')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('is_active', true)
+      .eq('is_current', true)
+      .maybeSingle<{ id: string }>()
 
-    // Get current session
-    const { data: { session: currentSession } } = await supabase.auth.getSession()
+    if (currentError) throw currentError
+
     if (!currentSession) {
       return { success: false, error: 'No active session' }
     }
@@ -98,7 +101,7 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
       })
       .eq('user_id', user.id)
       .eq('is_active', true)
-      .neq('session_token', currentSession.access_token)
+      .neq('id', currentSession.id)
       .select('id')
 
     if (error) throw error

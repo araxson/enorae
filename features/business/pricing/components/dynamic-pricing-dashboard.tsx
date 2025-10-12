@@ -45,7 +45,7 @@ interface DynamicPricingDashboardProps {
   rules: PricingRule[]
   scenarios: PricingScenario[]
   insights: PricingInsight[]
-  services: any[]
+  services: { id: string }[]
 }
 
 export function DynamicPricingDashboard({

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { updateSalonSchema, UUID_REGEX } from '../utils/schemas'
-import { ensurePlatformAdmin, getSupabaseClient } from '../utils/supabase'
+import { ensurePlatformAdmin, getSupabaseClient } from './shared'
 
 export async function updateSalon(formData: FormData) {
   try {

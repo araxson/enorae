@@ -8,6 +8,30 @@ import type { Database } from '@/lib/types/database.types'
 
 type ProfilePreference = Database['identity']['Tables']['profiles_preferences']['Row']
 
+type NotificationSettings = {
+  email_appointments?: boolean
+  email_promotions?: boolean
+  sms_reminders?: boolean
+  push_enabled?: boolean
+}
+
+const parseNotificationPreferences = (value: ProfilePreference['preferences']): NotificationSettings => {
+  if (!value || typeof value !== 'object') {
+    return {}
+  }
+  const source = value as Record<string, unknown>
+  const notifications = typeof source.notifications === 'object' && source.notifications !== null
+    ? (source.notifications as Record<string, unknown>)
+    : {}
+
+  return {
+    email_appointments: typeof notifications.email_appointments === 'boolean' ? notifications.email_appointments : undefined,
+    email_promotions: typeof notifications.email_promotions === 'boolean' ? notifications.email_promotions : undefined,
+    sms_reminders: typeof notifications.sms_reminders === 'boolean' ? notifications.sms_reminders : undefined,
+    push_enabled: typeof notifications.push_enabled === 'boolean' ? notifications.push_enabled : undefined,
+  }
+}
+
 type UserPreferencesClientProps = {
   initialPreferences: ProfilePreference[]
 }
@@ -15,13 +39,7 @@ type UserPreferencesClientProps = {
 export function UserPreferencesClient({ initialPreferences }: UserPreferencesClientProps) {
   const firstPref = initialPreferences[0]
 
-  const notificationPrefs = {
-    email_appointments: (firstPref?.preferences as any)?.notifications?.email_appointments,
-    email_promotions: (firstPref?.preferences as any)?.notifications?.email_promotions,
-    sms_reminders: (firstPref?.preferences as any)?.notifications?.sms_reminders,
-    push_enabled: (firstPref?.preferences as any)?.notifications?.push_enabled,
-  }
-
+  const notificationPrefs = parseNotificationPreferences(firstPref?.preferences)
   const advancedPrefs = {
     timezone: firstPref?.timezone,
     locale: firstPref?.locale,

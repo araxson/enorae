@@ -75,7 +75,7 @@ export function AdvancedSearchClient({
 
   const formatRating = (rating: number) => rating.toFixed(1)
 
-  const formatAddress = (address: any) => {
+  const formatAddress = (address: { city?: string | null; state?: string | null } | null | undefined) => {
     const parts = []
     if (address?.city) parts.push(address.city)
     if (address?.state) parts.push(address.state)

@@ -1,6 +1,6 @@
-import { TermsPage, termsSEO } from '@/features/marketing/terms'
+import { TermsPage, termsMetadata } from '@/features/marketing/terms'
 
-export const metadata = termsSEO
+export const metadata = termsMetadata
 
 export default function Page() {
   return <TermsPage />

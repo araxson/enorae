@@ -84,10 +84,7 @@ export async function getAuditLogs(filters?: {
 
   const supabase = createServiceRoleClient()
 
-  // Query from public audit_logs view
-  const auditSchema = supabase.schema('audit')
-
-  let query = auditSchema.from('audit_logs').select('*')
+  let query = supabase.schema('audit').from('audit_logs').select('*')
 
   if (filters?.eventType) {
     query = query.eq('event_type', filters.eventType)
@@ -131,10 +128,7 @@ export async function getSecurityEvents(filters?: {
 
   const supabase = createServiceRoleClient()
 
-  // Query from public audit_logs view (security events are in audit_logs)
-  const auditSchema = supabase.schema('audit')
-
-  let query = auditSchema.from('audit_logs').select('*')
+  let query = supabase.schema('audit').from('audit_logs').select('*')
 
   if (filters?.severity) {
     query = query.eq('severity', filters.severity)

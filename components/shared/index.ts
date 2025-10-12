@@ -17,9 +17,8 @@ export { LoadingWrapper } from './loading-wrapper'
 export { ActionButton } from './action-button'
 export { SearchInput } from './search-input'
 export { DataTableEmpty } from './data-table-empty'
+export { NotFoundPage } from './not-found-page'
 
 // Feature Components
-export { AppointmentCard } from './appointment-card'
-export { SalonCard } from './salon-card'
 export { StatCard } from './stat-card'
 export { ConfirmDialog } from './confirm-dialog'

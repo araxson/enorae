@@ -147,7 +147,7 @@ function ReviewCard({ review }: { review: SalonReview }) {
   )
 }
 
-export function SalonReviews({ reviews }: Omit<SalonReviewsProps, 'salonId'>) {
+export function SalonReviews({ reviews }: SalonReviewsProps) {
   if (reviews.length === 0) {
     return (
       <Card>

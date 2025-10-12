@@ -1,4 +1,4 @@
-import { ServiceCategories } from '@/features/shared/service-categories'
+import { ServiceCategories } from '@/features/business/service-categories'
 
 export const metadata = {
   title: 'Service Categories',

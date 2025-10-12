@@ -16,11 +16,7 @@ export async function processRefund(data: {
 }) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  // TODO: Implement refund processing
-  // This would require schema changes to support refund tracking
-
-  revalidatePath('/admin/finance')
-  return { success: true, message: 'Refund processing queued' }
+  throw new Error('processRefund is not implemented for the Admin Portal yet.')
 }
 
 /**
@@ -34,11 +30,7 @@ export async function flagTransaction(data: {
 }) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  // TODO: Implement transaction flagging
-  // This would require a flagged_transactions table or similar
-
-  revalidatePath('/admin/finance')
-  return { success: true, message: 'Transaction flagged for review' }
+  throw new Error('flagTransaction is not implemented for the Admin Portal yet.')
 }
 
 /**
@@ -52,18 +44,7 @@ export async function exportFinancialDataToCSV(data: {
 }) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  // This would typically generate a CSV file
-  // For now, we'll just return success
-  // In a real implementation, this would:
-  // 1. Query the data
-  // 2. Format as CSV
-  // 3. Store in cloud storage or return as download
-
-  revalidatePath('/admin/finance')
-  return {
-    success: true,
-    message: 'Export queued successfully. You will receive a download link shortly.'
-  }
+  throw new Error('exportFinancialDataToCSV is not implemented for the Admin Portal yet.')
 }
 
 /**
@@ -77,9 +58,5 @@ export async function bulkUpdateTransactionStatus(data: {
 }) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  // TODO: Implement bulk transaction status updates
-  // This would require a status field in the manual_transactions table
-
-  revalidatePath('/admin/finance')
-  return { success: true, message: `${data.transactionIds.length} transactions updated` }
+  throw new Error('bulkUpdateTransactionStatus is not implemented for the Admin Portal yet.')
 }

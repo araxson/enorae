@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getSecurityMonitoringSnapshot } from '@/features/admin/security-monitoring/api/security-monitoring.queries'
+import { getSecurityMonitoringSnapshot } from '@/features/admin/security-monitoring/api/queries'
 
 export async function GET(request: Request) {
   const url = new URL(request.url)

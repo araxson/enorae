@@ -5,8 +5,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Bell, LifeBuoy } from 'lucide-react'
-import type { StaffQuickAction, StaffSummary } from '@/features/staff/shared/components/types'
-import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
+import type { StaffQuickAction, StaffSummary } from '@/features/staff/staff-common/components/types'
+import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import { SupportGuidesCard } from './support-guides-card'
 import { SupportContactCard } from './support-contact-card'
 import { SupportTicketCard } from './support-ticket-card'
@@ -78,7 +78,7 @@ export function StaffSupportClient({
       }
     >
       <div className="space-y-6">
-        <Alert variant="warning">
+        <Alert variant="default">
           <Bell className="h-4 w-4" />
           <AlertTitle>System note</AlertTitle>
           <AlertDescription>

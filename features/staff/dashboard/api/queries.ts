@@ -3,6 +3,10 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { StaffView, AppointmentWithDetails } from '@/lib/types/app.types'
 import { getDateRanges } from '@/lib/utils/dates'
+import { getClientRetentionMetrics, type ClientRetentionMetrics } from '@/features/staff/clients/api/queries'
+
+export type { ClientRetentionMetrics }
+export { getClientRetentionMetrics }
 
 export type StaffMetricsSummary = {
   todayAppointments: number
@@ -13,6 +17,8 @@ export type StaffMetricsSummary = {
 export type StaffCommissionSummary = {
   todayRevenue: number
   todayCommission: number
+  weekRevenue: number
+  weekCommission: number
   monthRevenue: number
   monthCommission: number
   appointmentsCompleted: number
@@ -127,10 +133,10 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
   await requireAuth()
   const supabase = await createClient()
 
-  const { today, month } = getDateRanges()
+  const { today, week, month } = getDateRanges()
 
   // PERFORMANCE FIX: Use separate optimized queries instead of filtering in JavaScript
-  const [todayResult, monthResult] = await Promise.all([
+  const [todayResult, weekResult, monthResult] = await Promise.all([
     // Today's completed appointments
     supabase
       .from('appointments')
@@ -139,6 +145,14 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
       .eq('status', 'completed')
       .gte('start_time', today.start)
       .lte('start_time', today.end),
+    // Week's completed appointments
+    supabase
+      .from('appointments')
+      .select('total_price')
+      .eq('staff_id', staffId)
+      .eq('status', 'completed')
+      .gte('start_time', week.start)
+      .lte('start_time', week.end),
     // Month's completed appointments
     supabase
       .from('appointments')
@@ -149,11 +163,13 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
       .lte('start_time', month.end),
   ])
 
-  if (todayResult.error || monthResult.error) {
-    console.error('Error fetching commission data:', todayResult.error || monthResult.error)
+  if (todayResult.error || weekResult.error || monthResult.error) {
+    console.error('Error fetching commission data:', todayResult.error || weekResult.error || monthResult.error)
     return {
       todayRevenue: 0,
       todayCommission: 0,
+      weekRevenue: 0,
+      weekCommission: 0,
       monthRevenue: 0,
       monthCommission: 0,
       appointmentsCompleted: 0,
@@ -161,10 +177,14 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
   }
 
   const todayAppointments = (todayResult.data || []) as Array<{ total_price: number | null }>
+  const weekAppointments = (weekResult.data || []) as Array<{ total_price: number | null }>
   const monthAppointments = (monthResult.data || []) as Array<{ total_price: number | null }>
 
   const todayRevenue = todayAppointments.reduce((sum, apt) => sum + Number(apt.total_price || 0), 0)
   const todayCommission = 0 // TODO: Implement commission calculation when commission_rate is available
+
+  const weekRevenue = weekAppointments.reduce((sum, apt) => sum + Number(apt.total_price || 0), 0)
+  const weekCommission = 0 // TODO: Implement commission calculation when commission_rate is available
 
   const monthRevenue = monthAppointments.reduce((sum, apt) => sum + Number(apt.total_price || 0), 0)
   const monthCommission = 0 // TODO: Implement commission calculation when commission_rate is available
@@ -172,6 +192,8 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
   return {
     todayRevenue,
     todayCommission,
+    weekRevenue,
+    weekCommission,
     monthRevenue,
     monthCommission,
     appointmentsCompleted: monthAppointments.length,

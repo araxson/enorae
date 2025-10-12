@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -9,10 +10,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
-import type { BackgroundStatus } from '../utils/metrics'
+import { Button } from '@/components/ui/button'
+import { Stack, Flex } from '@/components/layout'
+import type { BackgroundStatus } from '../api/internal/staff-dashboard/metrics'
+
+declare global {
+  interface WindowEventMap {
+    'admin:clearFilters': CustomEvent<void>
+  }
+}
 
 export type RiskFilter = 'all' | 'low' | 'medium' | 'high'
+
+const riskFilterValues: readonly RiskFilter[] = ['all', 'low', 'medium', 'high'] as const
+const isRiskFilter = (value: string): value is RiskFilter => riskFilterValues.some((option) => option === value)
 
 type StaffFiltersProps = {
   search: string
@@ -37,8 +48,28 @@ export function StaffFilters({
   onBackgroundFilterChange,
   roleOptions,
 }: StaffFiltersProps) {
+  const clearFilters = () => {
+    onSearchChange('')
+    onRiskFilterChange('all')
+    onRoleFilterChange('all')
+    onBackgroundFilterChange('all')
+  }
+
+  useEffect(() => {
+    const handleClear = () => clearFilters()
+    window.addEventListener('admin:clearFilters', handleClear)
+    return () => {
+      window.removeEventListener('admin:clearFilters', handleClear)
+    }
+  }, [onSearchChange, onRiskFilterChange, onRoleFilterChange, onBackgroundFilterChange])
+
   return (
     <div className="rounded-lg border p-4">
+      <Flex justify="end" className="mb-3">
+        <Button type="button" variant="ghost" size="sm" onClick={clearFilters}>
+          Clear all filters
+        </Button>
+      </Flex>
       <Stack gap="md">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <div className="space-y-2">
@@ -53,7 +84,11 @@ export function StaffFilters({
 
           <div className="space-y-2">
             <Label>Compliance risk</Label>
-            <Select value={riskFilter} onValueChange={(value) => onRiskFilterChange(value as RiskFilter)}>
+            <Select value={riskFilter} onValueChange={(value) => {
+              if (isRiskFilter(value)) {
+                onRiskFilterChange(value)
+              }
+            }}>
               <SelectTrigger>
                 <SelectValue placeholder="All" />
               </SelectTrigger>

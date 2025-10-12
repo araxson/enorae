@@ -4,7 +4,7 @@
  * Auto-generated from Supabase database schema
  *
  * Project ID: nwmcpfioxerzodvbjigw
- * Generated: 2025-10-08 18:39:00
+ * Generated: 2025-10-11 05:04:58
  * Schemas: 27 schemas
  *
  * CRITICAL:
@@ -7923,6 +7923,191 @@ export type Database = {
           },
         ]
       }
+      communication_message_threads: {
+        Row: {
+          appointment_id: string | null
+          created_at: string | null
+          customer_id: string | null
+          id: string | null
+          last_message_at: string | null
+          last_message_by_id: string | null
+          metadata: Json | null
+          priority: Database["public"]["Enums"]["thread_priority"] | null
+          salon_id: string | null
+          staff_id: string | null
+          status: Database["public"]["Enums"]["thread_status"] | null
+          subject: string | null
+          unread_count_customer: number | null
+          unread_count_staff: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string | null
+          last_message_at?: string | null
+          last_message_by_id?: string | null
+          metadata?: Json | null
+          priority?: Database["public"]["Enums"]["thread_priority"] | null
+          salon_id?: string | null
+          staff_id?: string | null
+          status?: Database["public"]["Enums"]["thread_status"] | null
+          subject?: string | null
+          unread_count_customer?: number | null
+          unread_count_staff?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string | null
+          last_message_at?: string | null
+          last_message_by_id?: string | null
+          metadata?: Json | null
+          priority?: Database["public"]["Enums"]["thread_priority"] | null
+          salon_id?: string | null
+          staff_id?: string | null
+          status?: Database["public"]["Enums"]["thread_status"] | null
+          subject?: string | null
+          unread_count_customer?: number | null
+          unread_count_staff?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_message_threads_salon"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_salon"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_threads_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "admin_appointments_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_threads_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communication_messages: {
+        Row: {
+          content: string | null
+          context_id: string | null
+          context_type: string | null
+          created_at: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string | null
+          id: string | null
+          is_deleted: boolean | null
+          is_edited: boolean | null
+          is_read: boolean | null
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content?: string | null
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string | null
+          id?: string | null
+          is_deleted?: boolean | null
+          is_edited?: boolean | null
+          is_read?: boolean | null
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string | null
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string | null
+          id?: string | null
+          is_deleted?: boolean | null
+          is_edited?: boolean | null
+          is_read?: boolean | null
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      communication_webhook_queue: {
+        Row: {
+          attempts: number | null
+          completed_at: string | null
+          created_at: string | null
+          headers: Json | null
+          id: string | null
+          last_error: string | null
+          max_attempts: number | null
+          next_retry_at: string | null
+          payload: Json | null
+          status: string | null
+          updated_at: string | null
+          url: string | null
+        }
+        Insert: {
+          attempts?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          headers?: Json | null
+          id?: string | null
+          last_error?: string | null
+          max_attempts?: number | null
+          next_retry_at?: string | null
+          payload?: Json | null
+          status?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Update: {
+          attempts?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          headers?: Json | null
+          id?: string | null
+          last_error?: string | null
+          max_attempts?: number | null
+          next_retry_at?: string | null
+          payload?: Json | null
+          status?: string | null
+          updated_at?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       customer_favorites: {
         Row: {
           business_name: string | null
@@ -9753,6 +9938,264 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      security_access_monitoring: {
+        Row: {
+          action: string | null
+          created_at: string | null
+          id: string | null
+          ip_address: unknown | null
+          is_granted: boolean | null
+          resource_id: string | null
+          resource_type: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action?: string | null
+          created_at?: string | null
+          id?: string | null
+          ip_address?: unknown | null
+          is_granted?: boolean | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string | null
+          created_at?: string | null
+          id?: string | null
+          ip_address?: unknown | null
+          is_granted?: boolean | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      security_incident_logs: {
+        Row: {
+          action: string | null
+          created_at: string | null
+          entity_id: string | null
+          entity_type: string | null
+          error_message: string | null
+          event_category: string | null
+          event_type: string | null
+          id: string | null
+          impersonator_id: string | null
+          ip_address: unknown | null
+          is_success: boolean | null
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          request_id: string | null
+          salon_id: string | null
+          severity: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          event_category?: string | null
+          event_type?: string | null
+          id?: string | null
+          impersonator_id?: string | null
+          ip_address?: unknown | null
+          is_success?: boolean | null
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          request_id?: string | null
+          salon_id?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string | null
+          created_at?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          event_category?: string | null
+          event_type?: string | null
+          id?: string | null
+          impersonator_id?: string | null
+          ip_address?: unknown | null
+          is_success?: boolean | null
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          request_id?: string | null
+          salon_id?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_logs_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      security_rate_limit_rules: {
+        Row: {
+          applies_to: string | null
+          block_duration_seconds: number | null
+          created_at: string | null
+          created_by_id: string | null
+          description: string | null
+          endpoint: string | null
+          id: string | null
+          is_active: boolean | null
+          max_requests: number | null
+          metadata: Json | null
+          method: string | null
+          priority: number | null
+          role_filter: Database["public"]["Enums"]["role_type"] | null
+          rule_name: string | null
+          updated_at: string | null
+          updated_by_id: string | null
+          window_seconds: number | null
+        }
+        Insert: {
+          applies_to?: string | null
+          block_duration_seconds?: number | null
+          created_at?: string | null
+          created_by_id?: string | null
+          description?: string | null
+          endpoint?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          max_requests?: number | null
+          metadata?: Json | null
+          method?: string | null
+          priority?: number | null
+          role_filter?: Database["public"]["Enums"]["role_type"] | null
+          rule_name?: string | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+          window_seconds?: number | null
+        }
+        Update: {
+          applies_to?: string | null
+          block_duration_seconds?: number | null
+          created_at?: string | null
+          created_by_id?: string | null
+          description?: string | null
+          endpoint?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          max_requests?: number | null
+          metadata?: Json | null
+          method?: string | null
+          priority?: number | null
+          role_filter?: Database["public"]["Enums"]["role_type"] | null
+          rule_name?: string | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+          window_seconds?: number | null
+        }
+        Relationships: []
+      }
+      security_rate_limit_tracking: {
+        Row: {
+          blocked_until: string | null
+          created_at: string | null
+          endpoint: string | null
+          identifier: string | null
+          identifier_type: string | null
+          last_blocked_at: string | null
+          last_request_at: string | null
+          metadata: Json | null
+          request_count: number | null
+          updated_at: string | null
+          user_agent: string | null
+          window_start_at: string | null
+        }
+        Insert: {
+          blocked_until?: string | null
+          created_at?: string | null
+          endpoint?: string | null
+          identifier?: string | null
+          identifier_type?: string | null
+          last_blocked_at?: string | null
+          last_request_at?: string | null
+          metadata?: Json | null
+          request_count?: number | null
+          updated_at?: string | null
+          user_agent?: string | null
+          window_start_at?: string | null
+        }
+        Update: {
+          blocked_until?: string | null
+          created_at?: string | null
+          endpoint?: string | null
+          identifier?: string | null
+          identifier_type?: string | null
+          last_blocked_at?: string | null
+          last_request_at?: string | null
+          metadata?: Json | null
+          request_count?: number | null
+          updated_at?: string | null
+          user_agent?: string | null
+          window_start_at?: string | null
+        }
+        Relationships: []
+      }
+      security_session_security: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          ip_address: unknown | null
+          is_blocked: boolean | null
+          last_activity_at: string | null
+          session_id: string | null
+          suspicious_score: number | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          ip_address?: unknown | null
+          is_blocked?: boolean | null
+          last_activity_at?: string | null
+          session_id?: string | null
+          suspicious_score?: number | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          ip_address?: unknown | null
+          is_blocked?: boolean | null
+          last_activity_at?: string | null
+          session_id?: string | null
+          suspicious_score?: number | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       service_categories_view: {
         Row: {

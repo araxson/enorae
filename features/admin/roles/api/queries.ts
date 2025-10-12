@@ -111,22 +111,25 @@ export async function getRoleAuditTimeline(limit = 100): Promise<RoleAuditEvent[
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .schema('identity')
+    .schema('audit')
     .from('audit_logs')
     .select('id, created_at, action, user_id, entity_id, metadata, event_type, event_category, impersonator_id')
     .or('action.ilike.role%,event_type.ilike.%role%')
     .order('created_at', { ascending: false })
     .limit(limit)
+    .returns<Database['audit']['Tables']['audit_logs']['Row'][]>()
 
   if (error) throw error
 
-  return (data || []).map((row) => ({
+  const rows = data ?? []
+
+  return rows.map((row) => ({
     id: row.id,
     createdAt: row.created_at,
     action: row.action,
     userId: row.user_id,
     actorId: row.impersonator_id,
     entityId: row.entity_id,
-    metadata: row.metadata as Record<string, unknown> | null,
+    metadata: (row.metadata as Record<string, unknown> | null) ?? null,
   }))
 }

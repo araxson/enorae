@@ -58,7 +58,7 @@ export function EditPermissionsDialog({ role, open, onOpenChange }: EditPermissi
     const result = await updateRolePermissions(formData)
     setIsLoading(false)
 
-    if (result.error) {
+    if (!result.success) {
       toast.error(result.error)
     } else {
       toast.success('Permissions updated successfully.')

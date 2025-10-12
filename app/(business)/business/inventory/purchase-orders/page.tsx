@@ -1,4 +1,4 @@
-import { PurchaseOrders } from '@/features/business/inventory/orders'
+import { PurchaseOrders } from '@/features/business/inventory-purchase-orders'
 
 export const metadata = {
   title: 'Purchase Orders',

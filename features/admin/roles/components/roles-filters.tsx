@@ -1,9 +1,17 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Flex } from '@/components/layout'
+import { Button } from '@/components/ui/button'
+
+declare global {
+  interface WindowEventMap {
+    'admin:clearFilters': CustomEvent<void>
+  }
+}
 
 type RolesFiltersProps = {
   searchQuery: string
@@ -22,6 +30,18 @@ export function RolesFilters({
   statusFilter,
   onStatusFilterChange,
 }: RolesFiltersProps) {
+  const clearFilters = () => {
+    onSearchChange('')
+    onRoleFilterChange('all')
+    onStatusFilterChange('all')
+  }
+
+  useEffect(() => {
+    const handleClear = () => clearFilters()
+    window.addEventListener('admin:clearFilters', handleClear)
+    return () => window.removeEventListener('admin:clearFilters', handleClear)
+  }, [onSearchChange, onRoleFilterChange, onStatusFilterChange])
+
   return (
     <Flex gap="md" align="center" className="flex-wrap">
       <div className="relative flex-1 min-w-[200px]">
@@ -64,6 +84,10 @@ export function RolesFilters({
           <SelectItem value="inactive">Inactive</SelectItem>
         </SelectContent>
       </Select>
+
+      <Button variant="ghost" size="sm" onClick={clearFilters}>
+        Clear all filters
+      </Button>
     </Flex>
   )
 }

@@ -1,5 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 type Service = Database['public']['Views']['services']['Row']
@@ -7,10 +8,8 @@ type Staff = Database['public']['Views']['staff']['Row']
 type Salon = Database['public']['Views']['salons']['Row']
 
 export async function getSalonById(salonId: string) {
+  await requireAuth()
   const supabase = await createClient()
-
-  // Optional auth check - enriches data if user is logged in
-  await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('salons')
@@ -24,10 +23,8 @@ export async function getSalonById(salonId: string) {
 }
 
 export async function getSalonMetadata(salonId: string) {
+  await requireAuth()
   const supabase = await createClient()
-
-  // Optional auth check - enriches data if user is logged in
-  await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('salons')
@@ -40,10 +37,8 @@ export async function getSalonMetadata(salonId: string) {
 }
 
 export async function getAvailableServices(salonId: string) {
+  await requireAuth()
   const supabase = await createClient()
-
-  // Optional auth check - enriches data if user is logged in
-  await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('services')
@@ -58,10 +53,8 @@ export async function getAvailableServices(salonId: string) {
 }
 
 export async function getAvailableStaff(salonId: string) {
+  await requireAuth()
   const supabase = await createClient()
-
-  // Optional auth check - enriches data if user is logged in
-  await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('staff')

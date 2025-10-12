@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { getCustomerAppointmentById, getAppointmentServices } from '../api/queries'
+import { getCustomerAppointmentById, getAppointmentServices, getAppointmentProductUsage } from '../api/queries'
 import { CancelAppointmentDialog } from './cancel-appointment-dialog'
 import { RescheduleRequestDialog } from './reschedule-request-dialog'
 import { Clock, DollarSign } from 'lucide-react'
@@ -22,7 +22,7 @@ interface AppointmentDetailProps {
   appointmentId: string
 }
 
-const getStatusVariant = (status: Awaited<ReturnType<typeof getCustomerAppointmentById>>['status']) => {
+const getStatusVariant = (status: string | null) => {
   switch (status) {
     case 'completed':
     case 'confirmed':
@@ -35,9 +35,10 @@ const getStatusVariant = (status: Awaited<ReturnType<typeof getCustomerAppointme
 }
 
 export async function AppointmentDetail({ appointmentId }: AppointmentDetailProps) {
-  const [appointment, services] = await Promise.all([
+  const [appointment, services, productUsage] = await Promise.all([
     getCustomerAppointmentById(appointmentId),
     getAppointmentServices(appointmentId),
+    getAppointmentProductUsage(appointmentId),
   ])
 
   if (!appointment) {
@@ -46,7 +47,7 @@ export async function AppointmentDetail({ appointmentId }: AppointmentDetailProp
 
   return (
     <div className="mx-auto max-w-4xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
-      <AppointmentDetailContent appointment={appointment} services={services} />
+      <AppointmentDetailContent appointment={appointment} services={services} productUsage={productUsage} />
     </div>
   )
 }
@@ -54,9 +55,11 @@ export async function AppointmentDetail({ appointmentId }: AppointmentDetailProp
 function AppointmentDetailContent({
   appointment,
   services,
+  productUsage,
 }: {
   appointment: Awaited<ReturnType<typeof getCustomerAppointmentById>>
   services: Awaited<ReturnType<typeof getAppointmentServices>>
+  productUsage: Awaited<ReturnType<typeof getAppointmentProductUsage>>
 }) {
   if (!appointment) return null
 
@@ -73,7 +76,7 @@ function AppointmentDetailContent({
       <div className="flex items-center justify-between gap-2">
         <Muted>{appointment.confirmation_code || 'No code'}</Muted>
         <Badge variant={getStatusVariant(appointment.status)} className="capitalize">
-          {appointment.status}
+          {appointment.status ?? 'pending'}
         </Badge>
       </div>
 
@@ -183,11 +186,57 @@ function AppointmentDetailContent({
         </CardContent>
       </Card>
 
+      {productUsage.length > 0 && (
+        <Card>
+          <CardContent className="flex flex-col gap-4">
+            <div className="space-y-4">
+              <H3>Products Used</H3>
+              <div className="overflow-hidden rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Product</TableHead>
+                      <TableHead className="text-right">Quantity</TableHead>
+                      <TableHead className="text-right">Cost</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {productUsage.map((product) => (
+                      <TableRow key={product.id}>
+                        <TableCell>
+                          <div className="space-y-1">
+                            <P className="font-medium">{product.product_name || 'Unknown Product'}</P>
+                            {product.product_description && (
+                              <Muted className="text-xs">{product.product_description}</Muted>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <span className="text-sm">
+                            {product.quantity_used} {product.unit_of_measure || 'unit(s)'}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right font-medium">
+                          {formatCurrency(product.cost_at_time)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <Muted className="text-xs">
+                These are professional products used during your appointment.
+              </Muted>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="flex flex-col gap-3 sm:flex-row">
         <Button asChild variant="outline" className="flex-1">
           <Link href="/customer/appointments">Back to appointments</Link>
         </Button>
-        {appointment.status === 'confirmed' && appointment.start_time && (
+        {appointment.status === 'confirmed' && appointment.start_time && appointment.id && (
           <>
             <RescheduleRequestDialog
               appointmentId={appointment.id}

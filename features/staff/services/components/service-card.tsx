@@ -1,7 +1,21 @@
-import { Clock, DollarSign, Star, TrendingUp } from 'lucide-react'
+'use client'
+
+import { useState } from 'react'
+import { Clock, DollarSign, Star, TrendingUp, MoreVertical, Power } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { P, Muted } from '@/components/ui/typography'
+import { useToast } from '@/hooks/use-toast'
+import { toggleServiceAvailability, updateServiceProficiency } from '../api/mutations'
 
 type StaffService = {
   id: string
@@ -13,6 +27,7 @@ type StaffService = {
   performed_count?: number | null
   rating_average?: number | null
   rating_count?: number | null
+  is_available?: boolean | null
 }
 
 type ServiceCardProps = {
@@ -33,18 +48,99 @@ function getProficiencyColor(level?: string | null) {
 }
 
 export function ServiceCard({ service }: ServiceCardProps) {
+  const [isUpdating, setIsUpdating] = useState(false)
+  const { toast } = useToast()
+
+  const handleToggleAvailability = async () => {
+    setIsUpdating(true)
+    try {
+      await toggleServiceAvailability(service.id, !(service.is_available ?? true))
+      toast({
+        title: 'Service updated',
+        description: `Service ${service.is_available ? 'disabled' : 'enabled'} successfully`,
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to update service',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+
+  const handleUpdateProficiency = async (level: 'beginner' | 'intermediate' | 'advanced' | 'expert') => {
+    setIsUpdating(true)
+    try {
+      await updateServiceProficiency(service.id, level)
+      toast({
+        title: 'Proficiency updated',
+        description: `Service proficiency set to ${level}`,
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to update proficiency',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+
   return (
-    <Card>
+    <Card className={service.is_available === false ? 'opacity-60' : ''}>
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-lg">{service.service_name}</CardTitle>
-          {service.proficiency_level && (
-            <Badge variant={getProficiencyColor(service.proficiency_level)} className="capitalize">
-              {service.proficiency_level}
-            </Badge>
-          )}
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-lg">{service.service_name}</CardTitle>
+              {service.is_available === false && (
+                <Badge variant="outline" className="text-xs">
+                  Unavailable
+                </Badge>
+              )}
+            </div>
+            {service.category_name && <Muted className="text-sm">{service.category_name}</Muted>}
+          </div>
+          <div className="flex items-center gap-2">
+            {service.proficiency_level && (
+              <Badge variant={getProficiencyColor(service.proficiency_level)} className="capitalize">
+                {service.proficiency_level}
+              </Badge>
+            )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" disabled={isUpdating}>
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Service actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleToggleAvailability}>
+                  <Power className="mr-2 h-4 w-4" />
+                  {service.is_available === false ? 'Enable' : 'Disable'} service
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Update proficiency</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => handleUpdateProficiency('beginner')}>
+                  Beginner
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleUpdateProficiency('intermediate')}>
+                  Intermediate
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleUpdateProficiency('advanced')}>
+                  Advanced
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleUpdateProficiency('expert')}>
+                  Expert
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-        {service.category_name && <Muted className="text-sm">{service.category_name}</Muted>}
       </CardHeader>
       <CardContent className="space-y-3">
         {service.effective_duration && (

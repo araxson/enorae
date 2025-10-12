@@ -1,3 +1,3 @@
 import 'server-only';
-export { getAppointmentSnapshot } from './oversight.queries'
+export { getAppointmentSnapshot } from './queries/oversight'
 export type { AppointmentSnapshot } from './types'

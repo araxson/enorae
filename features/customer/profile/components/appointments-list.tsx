@@ -1,4 +1,4 @@
-import { AppointmentCard } from '@/components/shared'
+import { AppointmentCard } from '@/features/shared/appointments'
 import { Card, CardContent } from '@/components/ui/card'
 import { Muted } from '@/components/ui/typography'
 import type { Database } from '@/lib/types/database.types'

@@ -22,6 +22,7 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { MoreHorizontal, CheckCircle2, XCircle, Trash2, Power, PowerOff, CreditCard } from 'lucide-react'
 import { verifyChain, updateChainActiveStatus, updateChainSubscription, deleteChain } from '../api/mutations'
+import { Textarea } from '@/components/ui/textarea'
 
 interface ChainActionsProps {
   chainId: string
@@ -36,35 +37,50 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
   const [action, setAction] = useState<'verify' | 'unverify' | 'activate' | 'deactivate' | 'delete' | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [reason, setReason] = useState('')
+  const [reasonError, setReasonError] = useState<string | null>(null)
 
   const handleAction = async () => {
     if (!action) return
 
+    if (reason.trim().length < 10) {
+      setReasonError('Please provide a reason with at least 10 characters.')
+      return
+    }
+
     setIsLoading(true)
     setMessage(null)
+    setReasonError(null)
 
     try {
       let result
 
       switch (action) {
         case 'verify':
-          result = await verifyChain({ chainId, isVerified: true })
+          result = await verifyChain({ chainId, isVerified: true, reason })
           break
         case 'unverify':
-          result = await verifyChain({ chainId, isVerified: false })
+          result = await verifyChain({ chainId, isVerified: false, reason })
           break
         case 'activate':
-          result = await updateChainActiveStatus({ chainId, isActive: true })
+          result = await updateChainActiveStatus({ chainId, isActive: true, reason })
           break
         case 'deactivate':
-          result = await updateChainActiveStatus({ chainId, isActive: false })
+          result = await updateChainActiveStatus({ chainId, isActive: false, reason })
           break
         case 'delete':
-          result = await deleteChain({ chainId, reason: 'Admin action' })
+          result = await deleteChain({ chainId, reason })
           break
+        default:
+          result = null
       }
 
-      setMessage({ type: 'success', text: result?.message || 'Action completed successfully' })
+      if (result && 'error' in result && result.error) {
+        setMessage({ type: 'error', text: result.error })
+      } else if (result && 'message' in result) {
+        setMessage({ type: 'success', text: result.message })
+        setReason('')
+      }
     } catch (error) {
       setMessage({
         type: 'error',
@@ -80,6 +96,8 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
   const openDialog = (actionType: typeof action) => {
     setAction(actionType)
     setShowDialog(true)
+    setReason('')
+    setReasonError(null)
   }
 
   const getActionText = () => {
@@ -162,6 +180,20 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
               <strong className="mt-2 block">Chain: {chainName}</strong>
             </AlertDialogDescription>
           </AlertDialogHeader>
+          <div className="space-y-2">
+            <label className="text-sm font-medium" htmlFor="chain-reason">
+              Reason (required)
+            </label>
+            <Textarea
+              id="chain-reason"
+              value={reason}
+              onChange={(event) => setReason(event.target.value)}
+              placeholder="Provide context for this action (minimum 10 characters)"
+              aria-invalid={Boolean(reasonError)}
+              autoFocus
+            />
+            {reasonError && <p className="text-sm text-destructive">{reasonError}</p>}
+          </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleAction} disabled={isLoading}>

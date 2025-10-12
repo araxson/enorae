@@ -69,7 +69,7 @@ export function LocationForm({ location, open, onOpenChange }: LocationFormProps
 
           <div className="grid gap-4 py-4">
             {location && (
-              <input type="hidden" name="id" value={location.id} />
+              <input type="hidden" name="id" value={location.id || ''} />
             )}
 
             <div className="grid gap-2">
@@ -77,7 +77,7 @@ export function LocationForm({ location, open, onOpenChange }: LocationFormProps
               <Input
                 id="name"
                 name="name"
-                defaultValue={location?.name}
+                defaultValue={location?.name ?? ''}
                 required
                 maxLength={200}
                 placeholder="Main Branch"
@@ -89,7 +89,7 @@ export function LocationForm({ location, open, onOpenChange }: LocationFormProps
               <Input
                 id="slug"
                 name="slug"
-                defaultValue={location?.slug}
+                defaultValue={location?.slug ?? ''}
                 required
                 maxLength={200}
                 placeholder="main-branch"

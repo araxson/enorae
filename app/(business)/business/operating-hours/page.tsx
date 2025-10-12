@@ -1,4 +1,4 @@
-import { OperatingHoursManagement } from '@/features/business/hours'
+import { OperatingHoursManagement } from '@/features/business/operating-hours'
 
 export const metadata = {
   title: 'Operating Hours',

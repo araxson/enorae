@@ -8,4 +8,5 @@ export type UserActionsMenuProps = {
   onReactivate: (formData: FormData) => Promise<UserActionResult>
   onTerminateSessions: (formData: FormData) => Promise<UserActionResult>
   onDelete?: (formData: FormData) => Promise<UserActionResult>
+  onLoadingChange?: (loading: boolean, userId: string) => void
 }

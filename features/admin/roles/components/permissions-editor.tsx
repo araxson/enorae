@@ -44,8 +44,13 @@ export function PermissionsEditor({ permissions, onAdd, onRemove }: PermissionsE
           {permissions.map((permission) => (
             <Badge key={permission} variant="secondary" className="flex items-center gap-1">
               {permission}
-              <button type="button" onClick={() => onRemove(permission)} className="ml-1 text-muted-foreground hover:text-foreground">
-                <X className="h-3 w-3" />
+              <button
+                type="button"
+                onClick={() => onRemove(permission)}
+                className="ml-1 text-muted-foreground hover:text-foreground"
+                aria-label={`Remove permission ${permission}`}
+              >
+                <X className="h-3 w-3" aria-hidden="true" />
               </button>
             </Badge>
           ))}

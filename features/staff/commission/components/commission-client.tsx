@@ -2,18 +2,21 @@
 
 import { useMemo, useState } from 'react'
 import { DollarSign, TrendingUp, Calendar, PieChart } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/shared/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/shared/components/types'
+import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Muted, P } from '@/components/ui/typography'
-import type { StaffCommissionSummary, DailyEarnings, ServiceRevenue } from '../api/queries'
+import type { CommissionData, DailyEarnings, ServiceRevenue, CommissionRate, PayoutSchedule } from '../api/queries'
 import { EarningsChart } from './earnings-chart'
 import { ServiceBreakdown } from './service-breakdown'
 
-interface CommissionClientProps {
-  commission: StaffCommissionSummary
+export interface CommissionClientProps {
+  staffId: string
+  commission: CommissionData
   dailyEarnings: DailyEarnings[]
   serviceBreakdown: ServiceRevenue[]
+  commissionRates: CommissionRate[]
+  payoutSchedule: PayoutSchedule[]
 }
 
 export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }: CommissionClientProps) {

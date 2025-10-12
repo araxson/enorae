@@ -1,4 +1,4 @@
-import { ProductUsage } from '@/features/business/inventory/usage'
+import { ProductUsage } from '@/features/business/inventory-usage'
 
 export const metadata = {
   title: 'Product Usage',

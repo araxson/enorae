@@ -4,6 +4,7 @@ import { randomInt } from 'crypto'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 import { bookingSchema } from '@/lib/validations/booking'
 import type { Database } from '@/lib/types/database.types'
 
@@ -35,12 +36,8 @@ function generateConfirmationCode(): string {
 
 export async function createBooking(formData: FormData) {
   try {
+    const session = await requireAuth()
     const supabase = await createClient()
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return { error: 'You must be logged in to book an appointment' }
-    }
 
     // Validate input
     const rawData = {
@@ -140,7 +137,7 @@ export async function createBooking(formData: FormData) {
 
     const appointmentData: AppointmentInsert = {
       salon_id: salonId,
-      customer_id: user.id,
+      customer_id: session.user.id,
       staff_id: validation.data.staffId,
       start_time: startTime.toISOString(),
       end_time: endTime.toISOString(),
