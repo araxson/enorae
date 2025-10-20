@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
-import { H3 } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 import { ArrayInput } from './array-input'
@@ -19,7 +18,7 @@ export function RecognitionSection({ awards, certifications, onAwardsChange, onC
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>Awards & Certifications</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Awards & Certifications</h3>
           <Separator />
 
           <ArrayInput

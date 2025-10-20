@@ -1,6 +1,5 @@
 import { getUserFavorites } from './api/queries'
 import { FavoritesList } from './components/favorites-list'
-import { P } from '@/components/ui/typography'
 
 export async function Favorites() {
   const favorites = await getUserFavorites()
@@ -9,7 +8,7 @@ export async function Favorites() {
     <div className="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
       <div className="space-y-6">
         <div className="space-y-2">
-          <P>Quick access to your favorite salons and services</P>
+          <p className="leading-7">Quick access to your favorite salons and services</p>
         </div>
 
         <FavoritesList favorites={favorites} />

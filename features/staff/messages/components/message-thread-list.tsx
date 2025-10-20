@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { archiveThread } from '../api/mutations'
 import type { MessageThread } from '../types'
 
@@ -30,7 +29,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
     return (
       <Card className="p-8 text-center">
         <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-        <P className="text-muted-foreground">No messages found</P>
+        <p className="leading-7 text-muted-foreground">No messages found</p>
       </Card>
     )
   }
@@ -43,7 +42,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
             <Flex justify="between" align="start">
               <Stack gap="sm" className="flex-1">
                 <Flex align="center" gap="sm">
-                  <H3>{thread.subject}</H3>
+                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{thread.subject}</h3>
                   {thread.unread_count_staff && thread.unread_count_staff > 0 && (
                     <Badge variant="default">
                       {thread.unread_count_staff} unread
@@ -60,13 +59,13 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                 </Flex>
 
                 {thread.customer_name && (
-                  <P className="text-sm">Customer: {thread.customer_name}</P>
+                  <p className="leading-7 text-sm">Customer: {thread.customer_name}</p>
                 )}
 
                 {thread.last_message_at && (
-                  <Muted>
+                  <p className="text-sm text-muted-foreground">
                     Last message: {format(new Date(thread.last_message_at || ''), 'PPp')}
-                  </Muted>
+                  </p>
                 )}
               </Stack>
 

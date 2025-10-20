@@ -92,7 +92,7 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
           {Object.entries(state).map(([channel, events]) => (
             <Card key={channel} className="border-muted">
               <CardHeader>
-                <CardTitle className="text-base font-semibold">
+                <CardTitle>
                   {channelCopy[channel]?.label || channel.toUpperCase()}
                 </CardTitle>
                 <CardDescription>

@@ -13,7 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { P, Muted } from '@/components/ui/typography'
 import { useToast } from '@/hooks/use-toast'
 import { toggleServiceAvailability, updateServiceProficiency } from '../api/mutations'
 
@@ -95,14 +94,14 @@ export function ServiceCard({ service }: ServiceCardProps) {
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <CardTitle className="text-lg">{service.service_name}</CardTitle>
+              <CardTitle>{service.service_name}</CardTitle>
               {service.is_available === false && (
                 <Badge variant="outline" className="text-xs">
                   Unavailable
                 </Badge>
               )}
             </div>
-            {service.category_name && <Muted className="text-sm">{service.category_name}</Muted>}
+            {service.category_name && <p className="text-sm text-muted-foreground text-sm">{service.category_name}</p>}
           </div>
           <div className="flex items-center gap-2">
             {service.proficiency_level && (
@@ -146,27 +145,27 @@ export function ServiceCard({ service }: ServiceCardProps) {
         {service.effective_duration && (
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-muted-foreground" />
-            <P className="text-sm">{service.effective_duration} minutes</P>
+            <p className="leading-7 text-sm">{service.effective_duration} minutes</p>
           </div>
         )}
         {service.effective_price && (
           <div className="flex items-center gap-2">
             <DollarSign className="h-4 w-4 text-muted-foreground" />
-            <P className="text-sm">${service.effective_price}</P>
+            <p className="leading-7 text-sm">${service.effective_price}</p>
           </div>
         )}
         {service.performed_count != null && service.performed_count > 0 && (
           <div className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            <Muted className="text-sm">Performed {service.performed_count} times</Muted>
+            <p className="text-sm text-muted-foreground text-sm">Performed {service.performed_count} times</p>
           </div>
         )}
         {service.rating_average && service.rating_count && service.rating_count > 0 && (
           <div className="flex items-center gap-2">
             <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
-            <P className="text-sm">
+            <p className="leading-7 text-sm">
               {service.rating_average.toFixed(1)} ({service.rating_count} reviews)
-            </P>
+            </p>
           </div>
         )}
       </CardContent>

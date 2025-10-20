@@ -16,7 +16,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Stack } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import { toast } from 'sonner'
 
 import type { AdjustSelection } from './types'
@@ -71,10 +70,10 @@ export function AdjustStockDialog({
             <input type="hidden" name="locationId" value={selection?.locationId || ''} />
 
             <div>
-              <P className="text-sm mb-2">
+              <p className="leading-7 text-sm mb-2">
                 Current Quantity:{' '}
                 <span className="font-semibold">{selection?.currentQuantity || 0}</span>
-              </P>
+              </p>
             </div>
 
             <div>

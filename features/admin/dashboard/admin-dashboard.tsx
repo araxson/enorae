@@ -130,7 +130,7 @@ export async function AdminDashboardPage() {
               </Breadcrumb>
 
               <div className="space-y-1">
-                <CardTitle className="text-2xl font-semibold tracking-tight">
+                <CardTitle>
                   Platform control center
                 </CardTitle>
                 <CardDescription>

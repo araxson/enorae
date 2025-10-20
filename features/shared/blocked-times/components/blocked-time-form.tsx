@@ -18,7 +18,6 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { H3, Muted } from '@/components/ui/typography'
 import { AlertCircle, Repeat } from 'lucide-react'
 
 interface BlockedTimeFormProps {
@@ -78,7 +77,7 @@ export function BlockedTimeForm({
   return (
     <Card>
       <CardHeader>
-        <H3>Block time slot</H3>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Block time slot</h3>
       </CardHeader>
       <form onSubmit={handleSubmit} className="space-y-6">
         <CardContent className="space-y-4">
@@ -154,7 +153,7 @@ export function BlockedTimeForm({
                     <SelectItem value="weekends">Weekends only</SelectItem>
                   </SelectContent>
                 </Select>
-                <Muted className="text-xs">
+                <p className="text-sm text-muted-foreground text-xs">
                   {recurrencePattern === 'daily' && 'Repeats every day at the same time.'}
                   {recurrencePattern === 'weekly' && 'Repeats every week on the same day.'}
                   {recurrencePattern === 'biweekly' && 'Repeats every two weeks on the same day.'}
@@ -162,7 +161,7 @@ export function BlockedTimeForm({
                   {recurrencePattern === 'yearly' && 'Repeats every year on the same date.'}
                   {recurrencePattern === 'weekdays' && 'Repeats every weekday (Mon–Fri).'}
                   {recurrencePattern === 'weekends' && 'Repeats every weekend (Sat–Sun).'}
-                </Muted>
+                </p>
               </div>
             )}
           </div>

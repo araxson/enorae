@@ -1,10 +1,11 @@
+import { cn } from "@/lib/utils";
+
 'use client'
 
 import type { ReactNode, ComponentType } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex, Group } from '@/components/layout'
-import { H3, Muted, Small } from '@/components/ui/typography'
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import { formatCurrency, formatPercentage, calculateGrowthRate } from '../utils/formatters'
 
@@ -118,7 +119,7 @@ export function RevenueCard({
   return (
     <Card role="article" aria-label={`${title} revenue metric`} className={cardClasses}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
         {IconComponent && (
           <IconComponent className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
         )}
@@ -127,9 +128,9 @@ export function RevenueCard({
         <Stack gap={compact ? 'xs' : 'sm'}>
           {/* Primary amount */}
           <Group gap="xs" align="baseline">
-            <H3 className={compact ? 'text-2xl' : 'text-3xl font-bold'}>
+            <h3 className={cn('scroll-m-20 text-2xl font-semibold tracking-tight', compact ? 'text-2xl' : 'text-3xl font-bold')}>
               {formattedAmount}
-            </H3>
+            </h3>
             {growthRate !== undefined && (
               <Badge
                 variant={growthRate >= 0 ? 'default' : 'destructive'}
@@ -153,11 +154,11 @@ export function RevenueCard({
               ) : (
                 <ArrowDownRight className="h-3 w-3 text-red-600" aria-hidden="true" />
               )}
-              <Small
-                className={`text-xs ${growthRate >= 0 ? 'text-green-600' : 'text-red-600'}`}
+              <small
+                className={cn('text-sm font-medium leading-none', `text-xs ${growthRate >= 0 ? 'text-green-600' : 'text-red-600'}`)}
               >
                 {growthRate >= 0 ? 'Growth' : 'Decline'} vs. previous period
-              </Small>
+              </small>
             </Flex>
           )}
 
@@ -167,10 +168,10 @@ export function RevenueCard({
               <Stack gap="xs">
                 {breakdown.map((item) => (
                   <Flex key={item.label} justify="between" align="center">
-                    <Muted className="text-xs">{item.label}</Muted>
-                    <Small className="font-medium">
+                    <p className="text-sm text-muted-foreground text-xs">{item.label}</p>
+                    <small className="text-sm font-medium leading-none font-medium">
                       {formatCurrency(item.amount, { currency })}
-                    </Small>
+                    </small>
                   </Flex>
                 ))}
               </Stack>
@@ -178,7 +179,7 @@ export function RevenueCard({
           )}
 
           {/* Subtitle */}
-          {subtitle && <Muted className="text-xs">{subtitle}</Muted>}
+          {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
         </Stack>
       </CardContent>
     </Card>

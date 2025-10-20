@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
-import { H3 } from '@/components/ui/typography'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -17,7 +16,7 @@ export function AdditionalInfoSection({ address }: Props) {
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>Additional Information</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Additional Information</h3>
           <Separator />
 
           <Stack gap="sm">

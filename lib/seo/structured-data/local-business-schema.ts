@@ -1,4 +1,4 @@
-import { APP_URL } from '@/lib/constants/app.constants'
+import { APP_URL } from '@/lib/constants'
 import type { StructuredDataProps } from './schema-types'
 
 export type SalonSchemaInput = {

@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import { verifySession } from '@/lib/auth'
 import { getCustomerAppointments } from './api/queries'
 import { AppointmentsList } from './components/appointments-list'
-import { P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 export async function CustomerAppointments() {
@@ -17,9 +16,9 @@ export async function CustomerAppointments() {
   return (
     <div className="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
       <div className="space-y-6">
-        <P className="text-muted-foreground">
+        <p className="leading-7 text-muted-foreground">
           View and manage your salon appointments
-        </P>
+        </p>
 
         <Separator />
 

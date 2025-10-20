@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Group } from '@/components/layout'
-import { H4, Muted } from '@/components/ui/typography'
 import { EmptyState } from '@/components/shared/empty-state'
 import { Users } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
@@ -45,8 +44,8 @@ export function StaffList({ staff }: StaffListProps) {
               </Avatar>
 
               <Stack gap="xs" className="flex-1">
-                <H4 className="text-base">{member.title || 'Staff Member'}</H4>
-                {member.bio && <Muted className="line-clamp-2">{member.bio}</Muted>}
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-base">{member.title || 'Staff Member'}</h4>
+                {member.bio && <p className="text-sm text-muted-foreground line-clamp-2">{member.bio}</p>}
               </Stack>
 
               <Badge variant="default">

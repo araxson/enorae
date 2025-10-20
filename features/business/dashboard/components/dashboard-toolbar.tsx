@@ -17,7 +17,6 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { Stack, Group } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import { DashboardCommandButton } from './dashboard-command-button'
 import { DashboardPreferencesSheet } from './dashboard-preferences-sheet'
 import { DashboardQuickFiltersDrawer } from './dashboard-quick-filters-drawer'
@@ -60,9 +59,9 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
           </Avatar>
           <Stack gap="xs">
             <span className="text-sm font-semibold text-foreground">{salonName}</span>
-            <Small className="text-muted-foreground">
+            <small className="text-sm font-medium leading-none text-muted-foreground">
               Review bookings, revenue, and reputation signals at a glance.
-            </Small>
+            </small>
           </Stack>
           {isTenantOwner && totalLocations ? (
             <Badge variant="secondary" className="gap-1">
@@ -89,7 +88,7 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
 
       <Group className="flex-wrap items-center justify-between gap-3">
         <Group gap="sm" className="items-center">
-          <Small className="font-medium text-muted-foreground">Timeframe</Small>
+          <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Timeframe</small>
           <Select value={timeframe} onValueChange={(value) => setTimeframe(value as typeof timeframe)}>
             <SelectTrigger className="w-[160px]">
               <SelectValue placeholder="Select timeframe" />

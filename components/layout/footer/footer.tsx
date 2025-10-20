@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
 import { Container, Grid, Stack, Flex } from '@/components/layout'
-import { H3, P, Small, Muted } from '@/components/ui/typography'
 import { Sparkles, Mail, MapPin, Phone } from 'lucide-react'
 import { NewsletterForm } from '@/components/marketing'
 
@@ -54,28 +53,28 @@ export function Footer() {
                   Enorae
                 </span>
               </Link>
-              <P className="text-sm text-muted-foreground">
+              <p className="leading-7 text-sm text-muted-foreground">
                 Your Beauty Appointments, Simplified. The modern platform connecting clients with premier salons.
-              </P>
+              </p>
               <Stack gap="xs">
                 <Flex gap="xs" align="center">
                   <Mail className="h-4 w-4 text-muted-foreground" />
-                  <Small className="text-muted-foreground">support@enorae.com</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">support@enorae.com</small>
                 </Flex>
                 <Flex gap="xs" align="center">
                   <Phone className="h-4 w-4 text-muted-foreground" />
-                  <Small className="text-muted-foreground">1-800-ENORAE</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">1-800-ENORAE</small>
                 </Flex>
                 <Flex gap="xs" align="center">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <Small className="text-muted-foreground">San Francisco, CA</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">San Francisco, CA</small>
                 </Flex>
               </Stack>
             </Stack>
 
             {/* Product Links */}
             <Stack gap="md">
-              <H3 className="text-sm font-semibold">Product</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-sm font-semibold">Product</h3>
               <Stack gap="xs">
                 {footerLinks.product.map((link) => (
                   <Link
@@ -91,7 +90,7 @@ export function Footer() {
 
             {/* Company Links */}
             <Stack gap="md">
-              <H3 className="text-sm font-semibold">Company</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-sm font-semibold">Company</h3>
               <Stack gap="xs">
                 {footerLinks.company.map((link) => (
                   <Link
@@ -107,7 +106,7 @@ export function Footer() {
 
             {/* Legal & Resources */}
             <Stack gap="md">
-              <H3 className="text-sm font-semibold">Legal</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-sm font-semibold">Legal</h3>
               <Stack gap="xs">
                 {footerLinks.legal.map((link) => (
                   <Link
@@ -141,9 +140,9 @@ export function Footer() {
             align="center"
             className="flex-col md:flex-row gap-4"
           >
-            <Muted className="text-sm">
+            <p className="text-sm text-muted-foreground text-sm">
               © {currentYear} Enorae. All rights reserved.
-            </Muted>
+            </p>
             <Flex gap="md">
               <Link
                 href="https://twitter.com"
@@ -151,7 +150,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Small>Twitter</Small>
+                <small className="text-sm font-medium leading-none">Twitter</small>
               </Link>
               <Link
                 href="https://instagram.com"
@@ -159,7 +158,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Small>Instagram</Small>
+                <small className="text-sm font-medium leading-none">Instagram</small>
               </Link>
               <Link
                 href="https://linkedin.com"
@@ -167,7 +166,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Small>LinkedIn</Small>
+                <small className="text-sm font-medium leading-none">LinkedIn</small>
               </Link>
             </Flex>
           </Flex>

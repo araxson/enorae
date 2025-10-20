@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Group, Box, Flex } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import {
   Table,
   TableBody,
@@ -99,7 +98,7 @@ export function ProductsTable({ products, onEdit }: ProductsTableProps) {
                 <Box py="lg" className="text-center">
                   <Stack gap="xs" align="center" className="text-muted-foreground">
                     <Package className="h-8 w-8" />
-                    <P>No products found</P>
+                    <p className="leading-7">No products found</p>
                   </Stack>
                 </Box>
               </TableCell>

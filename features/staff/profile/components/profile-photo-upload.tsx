@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { uploadPortfolioImage } from '../api/mutations'
 
 interface ProfilePhotoUploadProps {
@@ -49,7 +48,7 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
   return (
     <Card className="p-6">
       <Stack gap="md">
-        <H3>Profile Photo</H3>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Profile Photo</h3>
 
         <Flex align="center" gap="lg">
           <Avatar className="h-24 w-24">
@@ -86,9 +85,9 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
               </label>
             </div>
 
-            <Muted className="text-xs">
+            <p className="text-sm text-muted-foreground text-xs">
               Supported formats: JPEG, PNG, WebP (Max 5MB)
-            </Muted>
+            </p>
 
             {error && (
               <p className="text-sm text-destructive">{error}</p>

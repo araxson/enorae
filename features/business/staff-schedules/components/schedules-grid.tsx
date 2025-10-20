@@ -14,7 +14,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Grid } from '@/components/layout'
-import { Muted, P } from '@/components/ui/typography'
 import { toast } from 'sonner'
 import { deleteStaffSchedule, toggleScheduleActive } from '../api/mutations'
 import type { StaffScheduleWithDetails } from '../api/queries'
@@ -108,7 +107,7 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
     return (
       <Card>
         <CardContent>
-          <Muted>No schedules configured yet. Add a schedule above to get started.</Muted>
+          <p className="text-sm text-muted-foreground">No schedules configured yet. Add a schedule above to get started.</p>
         </CardContent>
       </Card>
     )
@@ -148,11 +147,11 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
                       <TableCell>{formatTime(schedule.end_time)}</TableCell>
                       <TableCell>
                         {schedule.break_start && schedule.break_end ? (
-                          <P className="text-sm">
+                          <p className="leading-7 text-sm">
                             {formatTime(schedule.break_start)} - {formatTime(schedule.break_end)}
-                          </P>
+                          </p>
                         ) : (
-                          <Muted className="text-sm">No break</Muted>
+                          <p className="text-sm text-muted-foreground text-sm">No break</p>
                         )}
                       </TableCell>
                       <TableCell>

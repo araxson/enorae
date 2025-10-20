@@ -2,8 +2,6 @@ import Link from 'next/link'
 import { ArrowLeft, FileQuestion, Home } from 'lucide-react'
 import { Section, Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
-import { H1, Lead } from '@/components/ui/typography'
-
 type NotFoundPageProps = {
   title: string
   description: string
@@ -29,8 +27,8 @@ export function NotFoundPage({
         </div>
 
         <Stack gap="md" className="items-center">
-          <H1>{title}</H1>
-          <Lead className="max-w-md">{description}</Lead>
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{title}</h1>
+          <p className="text-xl text-muted-foreground max-w-md">{description}</p>
         </Stack>
 
         <div className="flex gap-4">

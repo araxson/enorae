@@ -4,8 +4,6 @@ import { Star, MessageSquare, Flag, TrendingUp } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Grid, Stack, Flex } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
-
 type ReviewsStatsProps = {
   stats: {
     totalReviews: number
@@ -23,7 +21,7 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
     <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="md">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Average Rating</CardTitle>
+          <CardTitle>Average Rating</CardTitle>
           <Star className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -42,48 +40,48 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
               ))}
             </div>
           </div>
-          <P className="text-xs text-muted-foreground mt-2">{stats.totalReviews} total reviews</P>
+          <p className="leading-7 text-xs text-muted-foreground mt-2">{stats.totalReviews} total reviews</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Pending Responses</CardTitle>
+          <CardTitle>Pending Responses</CardTitle>
           <MessageSquare className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.pendingResponses}</div>
-          <P className="text-xs text-muted-foreground mt-2">
+          <p className="leading-7 text-xs text-muted-foreground mt-2">
             {stats.totalReviews > 0
               ? `${Math.round((stats.pendingResponses / stats.totalReviews) * 100)}% of reviews`
               : 'No reviews yet'}
-          </P>
+          </p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Flagged Reviews</CardTitle>
+          <CardTitle>Flagged Reviews</CardTitle>
           <Flag className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.flaggedCount}</div>
-          <P className="text-xs text-muted-foreground mt-2">Require moderation</P>
+          <p className="leading-7 text-xs text-muted-foreground mt-2">Require moderation</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Rating Distribution</CardTitle>
+          <CardTitle>Rating Distribution</CardTitle>
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <Stack gap="xs">
             {stats.ratingDistribution.map((dist) => (
               <Flex key={dist.rating} gap="sm" align="center">
-                <Muted className="text-xs w-8">{dist.rating} ★</Muted>
+                <p className="text-sm text-muted-foreground text-xs w-8">{dist.rating} ★</p>
                 <Progress value={(dist.count / maxCount) * 100} className="flex-1 h-2" />
-                <Muted className="text-xs w-8 text-right">{dist.count}</Muted>
+                <p className="text-sm text-muted-foreground text-xs w-8 text-right">{dist.count}</p>
               </Flex>
             ))}
           </Stack>

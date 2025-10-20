@@ -10,7 +10,6 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { Separator } from '@/components/ui/separator'
-import { P, Muted, H2, Small } from '@/components/ui/typography'
 import { Stack, Group } from '@/components/layout'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
 import { MapPin, Star } from 'lucide-react'
@@ -89,9 +88,9 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {/* Header with name and favorite button */}
           <div className="flex items-start justify-between gap-4">
             <Stack gap="sm" className="flex-1">
-              <H2>{salon.name}</H2>
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">{salon.name}</h2>
               {salon.short_description && (
-                <P className="text-muted-foreground">{salon.short_description}</P>
+                <p className="leading-7 text-muted-foreground">{salon.short_description}</p>
               )}
             </Stack>
             {salon.id && (
@@ -108,18 +107,18 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
             {salon.rating && (
               <Group gap="xs">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <Small className="font-medium">{Number(salon.rating).toFixed(1)}</Small>
+                <small className="text-sm font-medium leading-none font-medium">{Number(salon.rating).toFixed(1)}</small>
                 {salon.review_count && (
-                  <Small className="text-muted-foreground">
+                  <small className="text-sm font-medium leading-none text-muted-foreground">
                     ({salon.review_count} {salon.review_count === 1 ? 'review' : 'reviews'})
-                  </Small>
+                  </small>
                 )}
               </Group>
             )}
             {salon.full_address && (
               <Group gap="xs">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
-                <Small className="text-muted-foreground">{salon.full_address}</Small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">{salon.full_address}</small>
               </Group>
             )}
           </Group>
@@ -129,8 +128,8 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {/* Description */}
           {salon.description && (
             <Stack gap="sm">
-              <P className="font-medium">About</P>
-              <P className="text-muted-foreground">{salon.description}</P>
+              <p className="leading-7 font-medium">About</p>
+              <p className="leading-7 text-muted-foreground">{salon.description}</p>
             </Stack>
           )}
 
@@ -140,7 +139,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {/* Specialties */}
           {salon.specialties && salon.specialties.length > 0 && (
             <Stack gap="sm">
-              <P className="font-medium">Specialties</P>
+              <p className="leading-7 font-medium">Specialties</p>
               <SpecialtiesTags specialties={salon.specialties} />
             </Stack>
           )}
@@ -148,7 +147,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {/* Amenities */}
           {salon.amenities && salon.amenities.length > 0 && (
             <Stack gap="sm">
-              <P className="font-medium">Amenities</P>
+              <p className="leading-7 font-medium">Amenities</p>
               <AmenitiesBadges amenities={salon.amenities} />
             </Stack>
           )}
@@ -158,7 +157,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {/* Contact and Social */}
           <div className="grid gap-6 md:grid-cols-2">
             <Stack gap="sm">
-              <P className="font-medium">Contact</P>
+              <p className="leading-7 font-medium">Contact</p>
               <ContactInfo
                 phone={salon.phone}
                 email={salon.email}
@@ -167,7 +166,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
             </Stack>
             {(salon.instagram_url || salon.facebook_url || salon.twitter_url || salon.tiktok_url) && (
               <Stack gap="sm">
-                <P className="font-medium">Social Media</P>
+                <p className="leading-7 font-medium">Social Media</p>
                 <SocialLinks
                   instagramUrl={salon.instagram_url}
                   facebookUrl={salon.facebook_url}

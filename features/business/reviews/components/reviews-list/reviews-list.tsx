@@ -5,8 +5,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex } from '@/components/layout'
 import { Card, CardContent } from '@/components/ui/card'
-import { P } from '@/components/ui/typography'
-
 import type { SalonReviewWithDetails } from '../../api/queries'
 import { ReviewCard } from './review-card'
 import { useReviewsList } from './use-reviews-list'
@@ -25,7 +23,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           <Card>
             <CardContent>
               <div className="py-8 text-center">
-                <P className="text-muted-foreground">No reviews yet</P>
+                <p className="leading-7 text-muted-foreground">No reviews yet</p>
               </div>
             </CardContent>
           </Card>
@@ -53,9 +51,9 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                 <CardContent>
                   <Stack gap="sm" className="pt-4">
                     <Flex gap="sm" align="center">
-                      <P className="font-medium">{state.selectedReview.customer_name || 'Anonymous'}</P>
+                      <p className="leading-7 font-medium">{state.selectedReview.customer_name || 'Anonymous'}</p>
                     </Flex>
-                    {state.selectedReview.comment && <P className="text-sm">{state.selectedReview.comment}</P>}
+                    {state.selectedReview.comment && <p className="leading-7 text-sm">{state.selectedReview.comment}</p>}
                   </Stack>
                 </CardContent>
               </Card>

@@ -22,7 +22,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Stack } from '@/components/layout'
-import { Muted, Small } from '@/components/ui/typography'
 import { deleteSalonLocation } from '../api/mutations'
 import type { SalonLocation } from '@/lib/types/app.types'
 
@@ -86,11 +85,11 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                     <div className="flex items-start gap-2">
                       <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
                       <Stack gap="xs">
-                        <Muted>/{location.slug}</Muted>
+                        <p className="text-sm text-muted-foreground">/{location.slug}</p>
                         {location.is_active ? (
-                          <Small className="text-green-600">Active</Small>
+                          <small className="text-sm font-medium leading-none text-green-600">Active</small>
                         ) : (
-                          <Muted>Inactive</Muted>
+                          <p className="text-sm text-muted-foreground">Inactive</p>
                         )}
                       </Stack>
                     </div>

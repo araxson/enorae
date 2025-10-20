@@ -1,5 +1,4 @@
 import { Section, Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import { CustomerInsightsCard } from '@/features/business/business-common/components/customer-insights-card'
 import { CohortsTable } from '@/features/business/analytics/components/sections/cohorts-table'
 import { SegmentationOverview } from './components/segmentation-overview'
@@ -33,10 +32,10 @@ export async function CustomerAnalytics() {
     <Section size="lg">
       <Stack gap="xl">
         <div>
-          <H1>Customer Intelligence</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Customer Intelligence</h1>
+          <p className="leading-7 text-muted-foreground">
             Deep dive into lifetime value, retention, and churn risk to focus on the right customers.
-          </P>
+          </p>
         </div>
 
         <CustomerInsightsCard

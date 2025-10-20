@@ -22,7 +22,6 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Progress } from '@/components/ui/progress'
-import { Small } from '@/components/ui/typography'
 import { AlertCircle, CheckCircle2, Loader2, XCircle } from 'lucide-react'
 import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
 import type { BookingFormProps, Service, Staff } from '../types'
@@ -146,13 +145,13 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
       <CardHeader className="space-y-4">
         <div className="space-y-1">
           <CardTitle>Book an appointment</CardTitle>
-          <Small className="text-muted-foreground">{salonName}</Small>
+          <small className="text-sm font-medium leading-none text-muted-foreground">{salonName}</small>
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <Small className="font-medium text-muted-foreground">Progress</Small>
-            <Small className="font-medium text-muted-foreground">{progress}%</Small>
+            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Progress</small>
+            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">{progress}%</small>
           </div>
           <Progress value={progress} className="h-2" />
         </div>

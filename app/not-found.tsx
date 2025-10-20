@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Section, Stack } from '@/components/layout'
 import { Home, Search } from 'lucide-react'
 
@@ -9,14 +9,17 @@ export default function NotFound() {
     <Section size="lg">
       <Stack gap="xl" className="items-center justify-center min-h-[60vh]">
         <Card className="w-full max-w-md text-center">
-          <CardHeader>
-            <CardTitle className="text-6xl font-bold">404</CardTitle>
+          <CardHeader className="space-y-2">
+            <div className="text-6xl font-bold">404</div>
+            <CardTitle>Page not found</CardTitle>
+            <CardDescription>
+              The page you&apos;re looking for doesn&apos;t exist or has been moved.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Stack gap="sm">
-              <h2 className="text-2xl font-semibold">Page Not Found</h2>
               <p className="text-sm text-muted-foreground">
-                The page you&apos;re looking for doesn&apos;t exist or has been moved.
+                Check the URL or head back to the dashboard to continue exploring salons.
               </p>
             </Stack>
           </CardContent>

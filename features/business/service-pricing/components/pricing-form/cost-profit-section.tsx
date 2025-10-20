@@ -4,8 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Stack, Grid } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
-
 import type { PricingFormState } from './use-pricing-form'
 
 type CostProfitSectionProps = {
@@ -33,7 +31,7 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
                 onChange={(event) => onChange('cost', event.target.value)}
                 placeholder="0.00"
               />
-              <Muted className="text-xs">Cost to provide this service</Muted>
+              <p className="text-sm text-muted-foreground text-xs">Cost to provide this service</p>
             </div>
 
             <div className="space-y-2">
@@ -41,7 +39,7 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
               <div className="flex h-10 items-center rounded-md border px-3 text-lg font-semibold text-primary">
                 {profitMargin}%
               </div>
-              <Muted className="text-xs">Auto-calculated from price & cost</Muted>
+              <p className="text-sm text-muted-foreground text-xs">Auto-calculated from price & cost</p>
             </div>
           </Grid>
         </Stack>

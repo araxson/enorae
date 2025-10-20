@@ -2,7 +2,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
-import { P, Muted, Small } from '@/components/ui/typography'
 import type { SessionWithDevice } from '../api/queries'
 
 interface SessionCardProps {
@@ -43,7 +42,7 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
           <Flex justify="between" align="start">
             <Stack gap="xs">
               <Flex gap="sm" align="center">
-                <P className="font-medium">Session {session.id?.substring(0, 8) || 'Unknown'}</P>
+                <p className="leading-7 font-medium">Session {session.id?.substring(0, 8) || 'Unknown'}</p>
                 {session.is_current && (
                   <Badge variant="default">Current Session</Badge>
                 )}
@@ -51,7 +50,7 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
                   <Badge variant="destructive">Suspicious</Badge>
                 )}
               </Flex>
-              <Muted>{getActivityStatus(session.updated_at)}</Muted>
+              <p className="text-sm text-muted-foreground">{getActivityStatus(session.updated_at)}</p>
             </Stack>
 
             {!session.is_current && session.id && (
@@ -68,18 +67,18 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
 
           <Stack gap="xs">
             <Flex gap="sm">
-              <Small className="w-24 text-muted-foreground">Created:</Small>
-              <Small>{formatDate(session.created_at)}</Small>
+              <small className="text-sm font-medium leading-none w-24 text-muted-foreground">Created:</small>
+              <small className="text-sm font-medium leading-none">{formatDate(session.created_at)}</small>
             </Flex>
 
             <Flex gap="sm">
-              <Small className="w-24 text-muted-foreground">Last Updated:</Small>
-              <Small>{formatDate(session.updated_at)}</Small>
+              <small className="text-sm font-medium leading-none w-24 text-muted-foreground">Last Updated:</small>
+              <small className="text-sm font-medium leading-none">{formatDate(session.updated_at)}</small>
             </Flex>
 
             <Flex gap="sm">
-              <Small className="w-24 text-muted-foreground">Status:</Small>
-              <Small>{session.is_active ? 'Active' : 'Inactive'}</Small>
+              <small className="text-sm font-medium leading-none w-24 text-muted-foreground">Status:</small>
+              <small className="text-sm font-medium leading-none">{session.is_active ? 'Active' : 'Inactive'}</small>
             </Flex>
           </Stack>
         </Stack>

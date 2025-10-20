@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Muted } from '@/components/ui/typography'
 import type { SupplierOverviewItem } from '../api/queries'
 import { formatCurrency } from './inventory-utils'
 
@@ -45,7 +44,7 @@ export function InventorySupplierTable({ suppliers }: InventorySupplierTableProp
                 {supplier.activeAlerts > 0 ? (
                   <Badge variant="destructive">{supplier.activeAlerts}</Badge>
                 ) : (
-                  <Muted>—</Muted>
+                  <p className="text-sm text-muted-foreground">—</p>
                 )}
               </TableCell>
             </TableRow>
@@ -53,7 +52,7 @@ export function InventorySupplierTable({ suppliers }: InventorySupplierTableProp
           {suppliers.length === 0 && (
             <TableRow>
               <TableCell colSpan={6} className="py-8 text-center">
-                <Muted>No suppliers available</Muted>
+                <p className="text-sm text-muted-foreground">No suppliers available</p>
               </TableCell>
             </TableRow>
           )}

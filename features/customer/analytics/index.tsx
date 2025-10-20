@@ -1,5 +1,4 @@
 import { Section, Stack, Box } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import { getCustomerMetrics } from './api/queries'
 import { MetricsDashboard } from './components/metrics-dashboard'
 
@@ -13,10 +12,10 @@ export function CustomerAnalyticsPage() {
     <Section size="lg">
       <Stack gap="xl">
         <Box>
-          <H1>My Analytics</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">My Analytics</h1>
+          <p className="leading-7 text-muted-foreground">
             Track your appointments, spending, and favorite services
-          </P>
+          </p>
         </Box>
 
         <CustomerAnalytics />

@@ -1,5 +1,4 @@
 import { Section, Stack, Box, Flex } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { Card, CardContent } from '@/components/ui/card'
 import { Shield, Activity, AlertTriangle, UserX } from 'lucide-react'
 import { getSecurityOverview, getAuditLogs, getSecurityEvents } from '../api/queries'
@@ -27,10 +26,10 @@ export async function AdminSecurityClient() {
             <CardContent className="p-6">
               <Flex justify="between" align="start">
                 <div>
-                  <P className="text-sm text-muted-foreground">Total Audit Logs</P>
-                  <P className="text-2xl font-semibold text-foreground">
+                  <p className="leading-7 text-sm text-muted-foreground">Total Audit Logs</p>
+                  <p className="leading-7 text-2xl font-semibold text-foreground">
                     {overview.totalAuditLogs}
-                  </P>
+                  </p>
                 </div>
                 <Activity className="h-4 w-4 text-muted-foreground" />
               </Flex>
@@ -41,10 +40,10 @@ export async function AdminSecurityClient() {
             <CardContent className="p-6">
               <Flex justify="between" align="start">
                 <div>
-                  <P className="text-sm text-muted-foreground">Security Events</P>
-                  <P className="text-2xl font-semibold text-foreground">
+                  <p className="leading-7 text-sm text-muted-foreground">Security Events</p>
+                  <p className="leading-7 text-2xl font-semibold text-foreground">
                     {overview.totalSecurityEvents}
-                  </P>
+                  </p>
                 </div>
                 <Shield className="h-4 w-4 text-blue-500" />
               </Flex>
@@ -55,10 +54,10 @@ export async function AdminSecurityClient() {
             <CardContent className="p-6">
               <Flex justify="between" align="start">
                 <div>
-                  <P className="text-sm text-muted-foreground">Failed Logins</P>
-                  <P className="text-2xl font-semibold text-foreground">
+                  <p className="leading-7 text-sm text-muted-foreground">Failed Logins</p>
+                  <p className="leading-7 text-2xl font-semibold text-foreground">
                     {overview.failedLogins}
-                  </P>
+                  </p>
                 </div>
                 <UserX className="h-4 w-4 text-orange-500" />
               </Flex>
@@ -69,10 +68,10 @@ export async function AdminSecurityClient() {
             <CardContent className="p-6">
               <Flex justify="between" align="start">
                 <div>
-                  <P className="text-sm text-muted-foreground">Suspicious Activity</P>
-                  <P className="text-2xl font-semibold text-foreground">
+                  <p className="leading-7 text-sm text-muted-foreground">Suspicious Activity</p>
+                  <p className="leading-7 text-2xl font-semibold text-foreground">
                     {overview.suspiciousActivity}
-                  </P>
+                  </p>
                 </div>
                 <AlertTriangle className="h-4 w-4 text-red-500" />
               </Flex>
@@ -81,16 +80,16 @@ export async function AdminSecurityClient() {
         </div>
 
         <Box>
-          <P className="text-sm font-semibold uppercase tracking-wide">Recent Security Events</P>
-          <Muted className="mb-4">
+          <p className="leading-7 text-sm font-semibold uppercase tracking-wide">Recent Security Events</p>
+          <p className="text-sm text-muted-foreground mb-4">
             Failed login attempts and suspicious activity
-          </Muted>
+          </p>
           <SecurityEventsTable events={securityEvents} />
         </Box>
 
         <Box>
-          <P className="text-sm font-semibold uppercase tracking-wide">Recent Audit Logs</P>
-          <Muted className="mb-4">All user actions and system events</Muted>
+          <p className="leading-7 text-sm font-semibold uppercase tracking-wide">Recent Audit Logs</p>
+          <p className="text-sm text-muted-foreground mb-4">All user actions and system events</p>
           <AuditLogsTable logs={auditLogs} />
         </Box>
       </Stack>

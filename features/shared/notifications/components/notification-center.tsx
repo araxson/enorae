@@ -121,14 +121,14 @@ export function NotificationCenter({ notifications }: Props) {
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="w-full">
-            <TabsTrigger value="all" className="flex-1">All</TabsTrigger>
-            <TabsTrigger value="unread" className="flex-1">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="unread">
               Unread {unreadCount > 0 && `(${unreadCount})`}
             </TabsTrigger>
-            <TabsTrigger value="read" className="flex-1">Read</TabsTrigger>
-            <TabsTrigger value="email" className="flex-1">Email</TabsTrigger>
-            <TabsTrigger value="sms" className="flex-1">SMS</TabsTrigger>
+            <TabsTrigger value="read">Read</TabsTrigger>
+            <TabsTrigger value="email">Email</TabsTrigger>
+            <TabsTrigger value="sms">SMS</TabsTrigger>
           </TabsList>
 
           <TabsContent value={activeTab}>

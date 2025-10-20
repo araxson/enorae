@@ -11,7 +11,6 @@ import { Switch } from '@/components/ui/switch'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Stack, Flex, Grid } from '@/components/layout'
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
-import { H3, P } from '@/components/ui/typography'
 import { AlertCircle } from 'lucide-react'
 
 interface OperatingHour {
@@ -85,10 +84,10 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
   return (
     <Card>
       <CardHeader>
-        <H3>Weekly Operating Hours</H3>
-        <P className="text-muted-foreground">
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Weekly Operating Hours</h3>
+        <p className="leading-7 text-muted-foreground">
           Set your salon&apos;s operating hours for each day of the week
-        </P>
+        </p>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent>

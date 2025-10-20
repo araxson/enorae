@@ -1,15 +1,14 @@
 import { Star, Flag, MessageSquare } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { P, Muted } from '@/components/ui/typography'
 import type { ModerationReview } from '../api/queries'
 import type { ReactNode } from 'react'
 
 export function InfoBlock({ label, value, helper }: { label: string; value: string; helper?: string | null }) {
   return (
     <div className="space-y-1">
-      <Muted className="text-sm">{label}</Muted>
-      <P className="font-medium">{value}</P>
-      {helper && <Muted className="text-xs">{helper}</Muted>}
+      <p className="text-sm text-muted-foreground text-sm">{label}</p>
+      <p className="leading-7 font-medium">{value}</p>
+      {helper && <p className="text-sm text-muted-foreground text-xs">{helper}</p>}
     </div>
   )
 }
@@ -17,9 +16,9 @@ export function InfoBlock({ label, value, helper }: { label: string; value: stri
 export function DetailCard({ title, badge, description }: { title: string; badge: ReactNode; description?: string }) {
   return (
     <div className="rounded-lg border p-3">
-      <P className="text-sm font-medium">{title}</P>
+      <p className="leading-7 text-sm font-medium">{title}</p>
       <div className="mt-2 flex items-center gap-2 text-sm">{badge}</div>
-      {description && <Muted className="mt-1 block text-xs text-muted-foreground">{description}</Muted>}
+      {description && <p className="text-sm text-muted-foreground mt-1 block text-xs text-muted-foreground">{description}</p>}
     </div>
   )
 }
@@ -59,7 +58,7 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
 
   return (
     <div className="space-y-1">
-      <Muted className="text-sm">Rating & status</Muted>
+      <p className="text-sm text-muted-foreground text-sm">Rating & status</p>
       <div className="flex flex-wrap items-center gap-2">{badges}</div>
     </div>
   )
@@ -75,7 +74,7 @@ export function Panel({ title, children, tone }: { title: string; children: Reac
 
   return (
     <div className="space-y-1">
-      <Muted className="text-sm">{title}</Muted>
+      <p className="text-sm text-muted-foreground text-sm">{title}</p>
       <div className={`rounded-md border p-3 text-sm ${toneClasses}`}>{children}</div>
     </div>
   )

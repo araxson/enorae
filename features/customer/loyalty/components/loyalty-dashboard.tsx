@@ -37,7 +37,7 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
         <Card>
           <CardHeader>
             <Flex justify="between" align="center">
-              <CardTitle className="text-lg">Total Points</CardTitle>
+              <CardTitle>Total Points</CardTitle>
               <Star className="h-5 w-5 text-yellow-500" />
             </Flex>
           </CardHeader>
@@ -52,7 +52,7 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
         <Card>
           <CardHeader>
             <Flex justify="between" align="center">
-              <CardTitle className="text-lg">Current Tier</CardTitle>
+              <CardTitle>Current Tier</CardTitle>
               <Trophy className="h-5 w-5 text-purple-500" />
             </Flex>
           </CardHeader>
@@ -69,7 +69,7 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
         <Card>
           <CardHeader>
             <Flex justify="between" align="center">
-              <CardTitle className="text-lg">Lifetime Earned</CardTitle>
+              <CardTitle>Lifetime Earned</CardTitle>
               <TrendingUp className="h-5 w-5 text-green-500" />
             </Flex>
           </CardHeader>

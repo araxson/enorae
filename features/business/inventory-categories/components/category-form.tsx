@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Stack, Box } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import {
   Dialog,
   DialogContent,
@@ -108,9 +107,9 @@ export function CategoryForm({ category, open, onOpenChange }: CategoryFormProps
                   min="0"
                   defaultValue={category?.display_order || 0}
                 />
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   Lower numbers appear first in lists
-                </Small>
+                </small>
               </Stack>
             </Stack>
           </Box>

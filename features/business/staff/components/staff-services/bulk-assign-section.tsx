@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { P } from '@/components/ui/typography'
 import type { ServiceRow } from './types'
 
 type BulkAssignSectionProps = {
@@ -25,9 +24,9 @@ export function BulkAssignSection({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <P className="text-sm font-medium">
+        <p className="leading-7 text-sm font-medium">
           Select services ({selectedServices.size} selected)
-        </P>
+        </p>
         <div className="flex gap-2">
           <Button
             variant="outline"

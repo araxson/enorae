@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw } from 'lucide-react'
 import { Stack } from '@/components/layout'
-import { H2, Muted, P } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { SecurityMonitoringSnapshot } from '../api/types'
@@ -72,21 +71,21 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
     <Stack gap="xl">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <H2 className="mb-1">Real-Time Security Overview</H2>
-          <Muted className="block text-sm text-muted-foreground">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-1">Real-Time Security Overview</h2>
+          <p className="block text-sm text-muted-foreground">
             Streaming telemetry from Supabase security logs. Last updated {lastUpdatedLabel}.
-          </Muted>
+          </p>
           {error && (
-            <P className="mt-2 text-sm text-destructive">
+            <p className="leading-7 mt-2 text-sm text-destructive">
               {error}
-            </P>
+            </p>
           )}
         </div>
 
         <div className="flex items-center gap-3">
-          <Muted className="text-xs uppercase tracking-wide text-muted-foreground">
+          <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
             Auto-refresh 15s
-          </Muted>
+          </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
             <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
             Refresh

@@ -20,7 +20,7 @@ export function InventorySummaryCards({ summary }: SummaryCardsProps) {
     <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="md">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Products</CardTitle>
+          <CardTitle>Total Products</CardTitle>
           <Package className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -31,7 +31,7 @@ export function InventorySummaryCards({ summary }: SummaryCardsProps) {
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Inventory Value</CardTitle>
+          <CardTitle>Inventory Value</CardTitle>
           <DollarSign className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -42,7 +42,7 @@ export function InventorySummaryCards({ summary }: SummaryCardsProps) {
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Low Stock Alerts</CardTitle>
+          <CardTitle>Low Stock Alerts</CardTitle>
           <AlertTriangle className="h-4 w-4 text-yellow-500" />
         </CardHeader>
         <CardContent>
@@ -53,7 +53,7 @@ export function InventorySummaryCards({ summary }: SummaryCardsProps) {
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Critical Alerts</CardTitle>
+          <CardTitle>Critical Alerts</CardTitle>
           <AlertTriangle className="h-4 w-4 text-red-500" />
         </CardHeader>
         <CardContent>

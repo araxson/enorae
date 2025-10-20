@@ -4,7 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Stack, Grid } from '@/components/layout'
-import { H3 } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 type PrimitiveValue = string | null | undefined
@@ -21,7 +20,7 @@ export function WebsiteBookingSection({ initialValues }: WebsiteBookingSectionPr
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>Website & Booking</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Website & Booking</h3>
           <Separator />
 
           <Grid cols={{ base: 1, md: 2 }} gap="lg">

@@ -45,7 +45,7 @@ const mutation = useMutation({
 
 #### useMemo for expensive computations
 ```typescript
-import { useMemoizedSort, useMemoizedFilter } from '@/lib/performance/react-optimizations'
+import { useMemoizedSort, useMemoizedFilter } from '@/lib/performance'
 
 // Sort appointments
 const sortedAppointments = useMemoizedSort(
@@ -72,7 +72,7 @@ const handleClick = useCallback((id: string) => {
 ### 2. Component Memoization
 
 ```typescript
-import { withMemoization } from '@/lib/performance/react-optimizations'
+import { withMemoization } from '@/lib/performance'
 
 const ExpensiveComponent = withMemoization(
   function ExpensiveComponent({ data }) {
@@ -86,7 +86,7 @@ const ExpensiveComponent = withMemoization(
 ### 3. List Rendering
 
 ```typescript
-import { MemoizedList } from '@/lib/performance/react-optimizations'
+import { MemoizedList } from '@/lib/performance'
 import { AppointmentCard } from '@/features/shared/appointments'
 
 <MemoizedList
@@ -99,7 +99,7 @@ import { AppointmentCard } from '@/features/shared/appointments'
 ### 4. Virtualization for Large Lists
 
 ```typescript
-import { useVirtualization } from '@/lib/performance/react-optimizations'
+import { useVirtualization } from '@/lib/performance'
 
 const { virtualItems, totalHeight } = useVirtualization({
   items: largeDataSet,
@@ -122,7 +122,7 @@ return (
 ### 5. Debouncing
 
 ```typescript
-import { useDebouncedCallback } from '@/lib/performance/react-optimizations'
+import { useDebouncedCallback } from '@/lib/performance'
 
 const debouncedSearch = useDebouncedCallback((query: string) => {
   searchCustomers(query)
@@ -173,7 +173,7 @@ import Image from 'next/image'
 
 ### Development Mode
 ```typescript
-import { PerformanceMonitor } from '@/lib/performance/react-optimizations'
+import { PerformanceMonitor } from '@/lib/performance'
 
 <PerformanceMonitor name="AppointmentsList">
   <AppointmentsList appointments={appointments} />

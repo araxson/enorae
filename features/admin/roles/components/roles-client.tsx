@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react'
 import { Plus, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex, Box } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { RolesStats } from './roles-stats'
 import { RolesFilters } from './roles-filters'
 import { RolesTable } from './roles-table'
@@ -54,10 +53,10 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
     <Stack gap="xl">
       <Flex align="center" justify="between">
         <Box>
-          <P className="text-base font-semibold">Role Management</P>
-          <Muted className="mt-1">
+          <p className="leading-7 text-base font-semibold">Role Management</p>
+          <p className="text-sm text-muted-foreground mt-1">
             Assign roles, manage permissions, and monitor historical changes.
-          </Muted>
+          </p>
         </Box>
         <Flex gap="sm">
           <Button variant="outline" onClick={() => setIsBulkDialogOpen(true)}>

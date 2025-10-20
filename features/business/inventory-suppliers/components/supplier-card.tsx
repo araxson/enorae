@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack, Flex, Box } from '@/components/layout'
-import { Small, P, Large } from '@/components/ui/typography'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { deleteSupplier } from '../api/mutations'
 import type { Supplier } from '@/lib/types/app.types'
@@ -39,11 +38,11 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
           <Stack gap="sm">
             <Flex justify="between" align="start">
               <Box>
-                <Large>{supplier.name}</Large>
+                <span className="text-lg font-semibold">{supplier.name}</span>
                 {supplier.contact_name && (
-                  <Small className="text-muted-foreground">
+                  <small className="text-sm font-medium leading-none text-muted-foreground">
                     Contact: {supplier.contact_name}
-                  </Small>
+                  </small>
                 )}
               </Box>
               <Badge variant={supplier.is_active ? 'default' : 'secondary'}>
@@ -54,22 +53,22 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
             <Stack gap="xs">
               {supplier.email && (
                 <Flex gap="sm">
-                  <Small className="text-muted-foreground">Email:</Small>
-                  <Small>{supplier.email}</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Email:</small>
+                  <small className="text-sm font-medium leading-none">{supplier.email}</small>
                 </Flex>
               )}
 
               {supplier.phone && (
                 <Flex gap="sm">
-                  <Small className="text-muted-foreground">Phone:</Small>
-                  <Small>{supplier.phone}</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Phone:</small>
+                  <small className="text-sm font-medium leading-none">{supplier.phone}</small>
                 </Flex>
               )}
 
               {supplier.website && (
                 <Flex gap="sm">
-                  <Small className="text-muted-foreground">Website:</Small>
-                  <Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Website:</small>
+                  <small className="text-sm font-medium leading-none">
                     <a
                       href={supplier.website}
                       target="_blank"
@@ -78,28 +77,28 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
                     >
                       {supplier.website}
                     </a>
-                  </Small>
+                  </small>
                 </Flex>
               )}
 
               {supplier.address && (
                 <Box>
-                  <Small className="text-muted-foreground">Address:</Small>
-                  <Small>{supplier.address}</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Address:</small>
+                  <small className="text-sm font-medium leading-none">{supplier.address}</small>
                 </Box>
               )}
 
               {supplier.payment_terms && (
                 <Box>
-                  <Small className="text-muted-foreground">Payment Terms:</Small>
-                  <Small>{supplier.payment_terms}</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Payment Terms:</small>
+                  <small className="text-sm font-medium leading-none">{supplier.payment_terms}</small>
                 </Box>
               )}
 
               {supplier.notes && (
                 <Box>
-                  <Small className="text-muted-foreground">Notes:</Small>
-                  <Small>{supplier.notes}</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Notes:</small>
+                  <small className="text-sm font-medium leading-none">{supplier.notes}</small>
                 </Box>
               )}
             </Stack>
@@ -125,10 +124,10 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
               {supplier.is_active ? 'Deactivate' : 'Delete'} Supplier
             </DialogTitle>
           </DialogHeader>
-          <P>
+          <p className="leading-7">
             Are you sure you want to {supplier.is_active ? 'deactivate' : 'delete'}{' '}
             <strong>{supplier.name}</strong>?
-          </P>
+          </p>
           <DialogFooter>
             <Button
               variant="outline"

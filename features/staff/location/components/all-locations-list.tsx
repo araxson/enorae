@@ -1,7 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex, Grid } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { MapPin } from 'lucide-react'
 import type { StaffLocationDetail } from '../types'
 
@@ -14,7 +13,7 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
   if (locations.length === 0) {
     return (
       <Card className="p-8 text-center">
-        <Muted>No locations found</Muted>
+        <p className="text-sm text-muted-foreground">No locations found</p>
       </Card>
     )
   }
@@ -33,7 +32,7 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
           <Card key={location.id} className="p-4">
             <Stack gap="sm">
               <Flex align="center" gap="sm">
-                <H3 className="text-base">{location.location_name || location.name}</H3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">{location.location_name || location.name}</h3>
                 {isCurrent && (
                   <Badge variant="default" className="text-xs">Your Location</Badge>
                 )}
@@ -45,14 +44,14 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
               {address && (
                 <Flex align="start" gap="sm">
                   <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                  <Muted className="text-xs">{address}</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">{address}</p>
                 </Flex>
               )}
 
               {location.phone_number && (
-                <Muted className="text-xs">
+                <p className="text-sm text-muted-foreground text-xs">
                   {location.phone_number}
-                </Muted>
+                </p>
               )}
             </Stack>
           </Card>

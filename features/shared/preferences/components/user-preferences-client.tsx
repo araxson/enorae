@@ -1,7 +1,6 @@
 'use client'
 
 import { Stack } from '@/components/layout'
-import { H2, Muted } from '@/components/ui/typography'
 import { NotificationPreferencesForm } from './notification-preferences-form'
 import { AdvancedPreferencesForm } from './advanced-preferences-form'
 import type { Database } from '@/lib/types/database.types'
@@ -49,10 +48,10 @@ export function UserPreferencesClient({ initialPreferences }: UserPreferencesCli
   return (
     <div className="space-y-6">
       <div>
-        <H2>User Preferences</H2>
-        <Muted className="mt-1">
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">User Preferences</h2>
+        <p className="text-sm text-muted-foreground mt-1">
           Manage your personal preferences and settings
-        </Muted>
+        </p>
       </div>
 
       <Stack gap="xl">

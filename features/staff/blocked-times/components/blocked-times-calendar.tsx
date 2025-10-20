@@ -5,7 +5,6 @@ import { format, startOfWeek, addDays, isSameDay, parseISO } from 'date-fns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Grid, Box } from '@/components/layout'
-import { Muted, P } from '@/components/ui/typography'
 import { Calendar, Clock, Ban } from 'lucide-react'
 import type { BlockedTime } from '../types'
 
@@ -44,13 +43,13 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Calendar className="h-5 w-5" />
-          Weekly Schedule
-        </CardTitle>
-        <Muted className="text-xs">
+          <CardTitle>Weekly Schedule</CardTitle>
+        </div>
+        <p className="text-xs text-muted-foreground">
           Week of {format(weekDays[0], 'MMM d')} - {format(weekDays[6], 'MMM d, yyyy')}
-        </Muted>
+        </p>
       </CardHeader>
       <CardContent>
         <Grid cols={{ base: 1, sm: 2, lg: 7 }} gap="sm">
@@ -63,12 +62,12 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                 <CardContent className="p-3">
                   <Stack gap="sm">
                     <Box>
-                      <P className="text-sm font-semibold">
+                      <p className="text-sm font-semibold text-foreground">
                         {format(day, 'EEE')}
-                      </P>
-                      <Muted className="text-xs">
+                      </p>
+                      <p className="text-xs text-muted-foreground">
                         {format(day, 'MMM d')}
-                      </Muted>
+                      </p>
                     </Box>
 
                     {/* Appointments */}
@@ -79,20 +78,20 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                             <div className="flex items-start gap-1">
                               <Clock className="h-3 w-3 mt-0.5 flex-shrink-0 text-blue-600 dark:text-blue-400" />
                               <div className="flex-1 min-w-0">
-                                <Muted className="text-xs truncate">
+                                <p className="text-xs text-muted-foreground truncate">
                                   {apt.start_time ? format(parseISO(apt.start_time), 'h:mm a') : 'TBD'}
-                                </Muted>
-                                <Muted className="text-xs truncate">
+                                </p>
+                                <p className="text-xs text-muted-foreground truncate">
                                   {apt.customer_name || 'Customer'}
-                                </Muted>
+                                </p>
                               </div>
                             </div>
                           </Box>
                         ))}
                         {dayApts.length > 3 && (
-                          <Muted className="text-xs">
+                          <p className="text-xs text-muted-foreground">
                             +{dayApts.length - 3} more
-                          </Muted>
+                          </p>
                         )}
                       </Stack>
                     )}
@@ -105,30 +104,28 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                             <div className="flex items-start gap-1">
                               <Ban className="h-3 w-3 mt-0.5 flex-shrink-0 text-red-600 dark:text-red-400" />
                               <div className="flex-1 min-w-0">
-                                <Muted className="text-xs truncate">
+                                <p className="text-xs text-muted-foreground truncate">
                                   {bt.start_time ? format(parseISO(bt.start_time), 'h:mm a') : 'TBD'}
                                   {bt.end_time && ` - ${format(parseISO(bt.end_time), 'h:mm a')}`}
-                                </Muted>
-                                <Muted className="text-xs truncate">
+                                </p>
+                                <p className="text-xs text-muted-foreground truncate">
                                   {bt.reason || bt.block_type || 'Blocked'}
-                                </Muted>
+                                </p>
                               </div>
                             </div>
                           </Box>
                         ))}
                         {blocked.length > 2 && (
-                          <Muted className="text-xs">
+                          <p className="text-xs text-muted-foreground">
                             +{blocked.length - 2} more
-                          </Muted>
+                          </p>
                         )}
                       </Stack>
                     )}
 
                     {/* Empty state */}
                     {blocked.length === 0 && dayApts.length === 0 && (
-                      <Muted className="text-xs text-center py-2">
-                        No events
-                      </Muted>
+                      <p className="py-2 text-center text-xs text-muted-foreground">No events</p>
                     )}
 
                     {/* Day summary */}
@@ -157,11 +154,11 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
         <div className="flex gap-4 mt-4 pt-4 border-t">
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <Muted className="text-xs">Appointments</Muted>
+            <span className="text-xs text-muted-foreground">Appointments</span>
           </div>
           <div className="flex items-center gap-2">
             <Ban className="h-4 w-4 text-red-600 dark:text-red-400" />
-            <Muted className="text-xs">Blocked Times</Muted>
+            <span className="text-xs text-muted-foreground">Blocked Times</span>
           </div>
         </div>
       </CardContent>

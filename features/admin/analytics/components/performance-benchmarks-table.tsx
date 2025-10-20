@@ -21,7 +21,7 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle className="text-base font-semibold">Performance Benchmarks</CardTitle>
+        <CardTitle>Performance Benchmarks</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-4 text-sm md:grid-cols-3">

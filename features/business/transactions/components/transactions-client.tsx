@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Plus, Download, FileText } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex, Box } from '@/components/layout'
-import { H2, Muted } from '@/components/ui/typography'
 import { TransactionsList } from './transactions-list'
 import { CreateTransactionDialog } from './create-transaction-dialog'
 import { TransactionsReportDialog } from './transactions-report-dialog'
@@ -59,10 +58,10 @@ export function TransactionsClient({
     <Stack gap="xl">
       <Flex justify="between" align="start">
         <Box>
-          <H2>Manual Transactions</H2>
-          <Muted className="mt-1">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Manual Transactions</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Track manual financial transactions and adjustments
-          </Muted>
+          </p>
         </Box>
         <Flex gap="sm">
           <Button variant="outline" onClick={() => setIsReportDialogOpen(true)}>

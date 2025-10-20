@@ -5,8 +5,6 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Grid, Stack } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
-
 import type { PricingFormState } from './use-pricing-form'
 
 type TaxCommissionSectionProps = {
@@ -34,7 +32,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
                 onChange={(event) => onChange('taxRate', event.target.value)}
                 placeholder="0.00"
               />
-              <Muted className="text-xs">Sales tax percentage</Muted>
+              <p className="text-sm text-muted-foreground text-xs">Sales tax percentage</p>
             </div>
 
             <div className="space-y-2">
@@ -49,7 +47,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
                 onChange={(event) => onChange('commissionRate', event.target.value)}
                 placeholder="0.00"
               />
-              <Muted className="text-xs">Staff commission percentage</Muted>
+              <p className="text-sm text-muted-foreground text-xs">Staff commission percentage</p>
             </div>
           </Grid>
 
@@ -74,7 +72,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
               placeholder="USD"
               maxLength={3}
             />
-            <Muted className="text-xs">ISO currency code (e.g., USD, EUR)</Muted>
+            <p className="text-sm text-muted-foreground text-xs">ISO currency code (e.g., USD, EUR)</p>
           </div>
         </Stack>
       </CardContent>

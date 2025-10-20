@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Flex } from '@/components/layout/flex'
-import { Muted } from '@/components/ui/typography'
 import { Check, Copy } from 'lucide-react'
 
 export function DigestInfo({ digest, details }: { digest: string; details: string }) {
@@ -20,7 +19,7 @@ export function DigestInfo({ digest, details }: { digest: string; details: strin
     <Alert>
       <AlertDescription>
         <Flex gap="sm" align="center" justify="between">
-          <Muted className="font-mono text-xs">Error ID: {digest}</Muted>
+          <p className="text-sm text-muted-foreground font-mono text-xs">Error ID: {digest}</p>
           <Button variant="ghost" size="sm" onClick={handleCopy} className="h-7 gap-1">
             {copied ? (
               <>

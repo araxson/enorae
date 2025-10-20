@@ -2,7 +2,6 @@
 
 import { Card } from '@/components/ui/card'
 import { Grid, Stack, Box } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { DollarSign, Calendar, CheckCircle2, XCircle, TrendingUp } from 'lucide-react'
 import type { CustomerMetrics } from '../api/queries'
 
@@ -48,10 +47,10 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
             <Card key={stat.title} className="p-6">
               <Stack gap="sm">
                 <div className="flex justify-between items-start">
-                  <Muted className="text-sm">{stat.title}</Muted>
+                  <p className="text-sm text-muted-foreground text-sm">{stat.title}</p>
                   <Icon className={`h-5 w-5 ${stat.color}`} />
                 </div>
-                <P className="text-3xl font-bold">{stat.value}</P>
+                <p className="leading-7 text-3xl font-bold">{stat.value}</p>
               </Stack>
             </Card>
           )
@@ -64,13 +63,13 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
           <Stack gap="md">
             <div className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-primary" />
-              <H3>Favorite Services</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Favorite Services</h3>
             </div>
             <Stack gap="sm">
               {metrics.favoriteServices.map((service, index) => (
                 <div key={index} className="flex justify-between items-center py-2 border-b last:border-0">
-                  <P>{service.service}</P>
-                  <Muted>{service.count} {service.count === 1 ? 'booking' : 'bookings'}</Muted>
+                  <p className="leading-7">{service.service}</p>
+                  <p className="text-sm text-muted-foreground">{service.count} {service.count === 1 ? 'booking' : 'bookings'}</p>
                 </div>
               ))}
             </Stack>
@@ -82,23 +81,23 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
       {metrics.recentActivity.length > 0 && (
         <Card className="p-6">
           <Stack gap="md">
-            <H3>Recent Activity</H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Recent Activity</h3>
             <Stack gap="sm">
               {metrics.recentActivity.map((appointment) => (
                 <div key={appointment.id} className="flex justify-between items-start py-3 border-b last:border-0">
                   <Box>
-                    <P className="font-medium">
+                    <p className="leading-7 font-medium">
                       {Array.isArray(appointment.service_names) && appointment.service_names.length > 0
                         ? appointment.service_names.join(', ')
                         : 'Service'}
-                    </P>
-                    <Muted className="text-sm">{appointment.salon_name || 'Salon'}</Muted>
+                    </p>
+                    <p className="text-sm text-muted-foreground text-sm">{appointment.salon_name || 'Salon'}</p>
                   </Box>
                   <Box className="text-right">
-                    <P className="text-sm">
+                    <p className="leading-7 text-sm">
                       {appointment.start_time ? new Date(appointment.start_time).toLocaleDateString() : 'N/A'}
-                    </P>
-                    <Muted className="text-xs capitalize">{appointment.status}</Muted>
+                    </p>
+                    <p className="text-sm text-muted-foreground text-xs capitalize">{appointment.status}</p>
                   </Box>
                 </div>
               ))}

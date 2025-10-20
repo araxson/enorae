@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Section, Stack } from '@/components/layout'
-import { H1, Lead } from '@/components/ui/typography'
 import { FileQuestion, Store, ArrowLeft } from 'lucide-react'
 
 export default function CustomerNotFound() {
@@ -13,10 +12,10 @@ export default function CustomerNotFound() {
         </div>
 
         <Stack gap="md" className="items-center">
-          <H1>Page Not Found</H1>
-          <Lead className="max-w-md">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Page Not Found</h1>
+          <p className="text-xl text-muted-foreground max-w-md">
             The page you&apos;re looking for doesn&apos;t exist or has been moved.
-          </Lead>
+          </p>
         </Stack>
 
         <div className="flex gap-4">

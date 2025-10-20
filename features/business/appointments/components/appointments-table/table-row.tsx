@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { Group, Stack } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import type { AppointmentWithDetails } from '../../api/queries'
 import { STATUS_CONFIG } from './status-config'
 
@@ -28,7 +27,7 @@ export function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCan
         {appointmentDate ? (
           <Stack gap="xs">
             <div>{format(appointmentDate, 'MMM dd, yyyy')}</div>
-            <Small className="text-muted-foreground">{format(appointmentDate, 'h:mm a')}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">{format(appointmentDate, 'h:mm a')}</small>
           </Stack>
         ) : (
           'No date'

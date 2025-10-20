@@ -68,7 +68,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
               <div className="space-y-1">
                 <CardDescription>{label}</CardDescription>
-                <CardTitle className="text-2xl font-semibold tracking-tight">
+                <CardTitle>
                   {value}
                 </CardTitle>
               </div>

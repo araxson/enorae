@@ -4,7 +4,6 @@ import { useState, useTransition } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex, Box } from '@/components/layout'
-import { H2, Muted } from '@/components/ui/typography'
 import { RolesList } from './roles-list'
 import { AssignRoleDialog } from './assign-role-dialog'
 import { EditRoleDialog } from './edit-role-dialog'
@@ -55,10 +54,10 @@ export function RolesClient({ roles, availableStaff, salonId }: RolesClientProps
     <Stack gap="xl">
       <Flex justify="between" align="start">
         <Box>
-          <H2>User Roles Management</H2>
-          <Muted className="mt-1">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">User Roles Management</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Assign and manage roles for your team members
-          </Muted>
+          </p>
         </Box>
         <Button onClick={() => setIsAssignDialogOpen(true)} disabled={isPending}>
           <Plus className="h-4 w-4 mr-2" />

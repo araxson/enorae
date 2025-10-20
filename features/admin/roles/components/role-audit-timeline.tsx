@@ -16,7 +16,7 @@ export function RoleAuditTimeline({ events }: RoleAuditTimelineProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Recent role changes</CardTitle>
+        <CardTitle>Recent role changes</CardTitle>
         <p className="text-xs text-muted-foreground">
           Audit log of role assignments, updates, and revocations captured by the platform.
         </p>

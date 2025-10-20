@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
 import { resolveStockAlert } from '../api/mutations'
 import type { StockAlertWithProduct } from '../api/queries'
 
@@ -53,7 +52,7 @@ export function StockAlertsList({ alerts }: StockAlertsListProps) {
           <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
             <CheckCircle className="h-12 w-12 text-green-500" />
             <p>No active stock alerts</p>
-            <Muted>All products are adequately stocked</Muted>
+            <p className="text-sm text-muted-foreground">All products are adequately stocked</p>
           </div>
         </CardContent>
       </Card>
@@ -84,7 +83,7 @@ export function StockAlertsList({ alerts }: StockAlertsListProps) {
                     <Badge variant={alertInfo.variant}>{alertInfo.label}</Badge>
                   </div>
                   {alert.message && (
-                    <Muted>{alert.message}</Muted>
+                    <p className="text-sm text-muted-foreground">{alert.message}</p>
                   )}
                 </div>
                 <Button

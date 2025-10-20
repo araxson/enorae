@@ -1,5 +1,4 @@
 import { Grid, Box } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import { AlertCard } from './alert-card'
 import type { StockAlertWithProduct } from '../api/queries'
 
@@ -11,7 +10,7 @@ export function AlertsGrid({ alerts }: AlertsGridProps) {
   if (alerts.length === 0) {
     return (
       <Box className="text-center py-12">
-        <P className="text-muted-foreground">No stock alerts found</P>
+        <p className="leading-7 text-muted-foreground">No stock alerts found</p>
       </Box>
     )
   }

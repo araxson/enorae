@@ -2,7 +2,6 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { MapPin, Phone, Mail, ExternalLink, Clock } from 'lucide-react'
 import type { StaffLocationDetail } from '../types'
 
@@ -29,7 +28,7 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
         <Flex align="start" justify="between">
           <div className="flex-1">
             <Flex align="center" gap="sm">
-              <H3>{location.location_name || location.name}</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{location.location_name || location.name}</h3>
               {location.is_primary && (
                 <Badge variant="default">Primary</Badge>
               )}
@@ -38,7 +37,7 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
               )}
             </Flex>
             {location.salon_name && (
-              <Muted>{location.salon_name}</Muted>
+              <p className="text-sm text-muted-foreground">{location.salon_name}</p>
             )}
           </div>
         </Flex>
@@ -47,30 +46,30 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
           {address && (
             <Flex align="start" gap="sm">
               <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-              <P className="text-sm">{address}</P>
+              <p className="leading-7 text-sm">{address}</p>
             </Flex>
           )}
 
           {location.phone_number && (
             <Flex align="center" gap="sm">
               <Phone className="h-4 w-4" />
-              <P className="text-sm">{location.phone_number}</P>
+              <p className="leading-7 text-sm">{location.phone_number}</p>
             </Flex>
           )}
 
           {location.email && (
             <Flex align="center" gap="sm">
               <Mail className="h-4 w-4" />
-              <P className="text-sm">{location.email}</P>
+              <p className="leading-7 text-sm">{location.email}</p>
             </Flex>
           )}
         </Stack>
 
         {location.accessibility_notes && (
           <div className="border-t pt-3">
-            <Muted className="text-xs">
+            <p className="text-sm text-muted-foreground text-xs">
               <strong>Accessibility:</strong> {location.accessibility_notes}
-            </Muted>
+            </p>
           </div>
         )}
 

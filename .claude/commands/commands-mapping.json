@@ -1,0 +1,196 @@
+{
+  "metadata": {
+    "generated": "2025-10-18T20:00:00.000Z",
+    "project": "ENORAE",
+    "source": "docs/rules/ v5.0.0 (restructured)",
+    "total_categories": 9,
+    "total_rules": 61,
+    "structure_version": "5.0.0"
+  },
+  "structure": {
+    "core": ["database", "security", "architecture", "ui"],
+    "framework": ["nextjs", "react", "typescript"],
+    "quality": ["performance", "accessibility"]
+  },
+  "categories": [
+    {
+      "name": "database",
+      "group": "core",
+      "domain": "DB",
+      "rules_file": "docs/rules/core/database.md",
+      "command_folder": ".claude/commands/core/database/",
+      "analyze_prompt": ".claude/commands/core/database/analyze.md",
+      "fix_prompt": ".claude/commands/core/database/fix.md",
+      "output_folder": "docs/analyze-fixes/database/",
+      "total_rules": 7,
+      "rules_by_priority": {
+        "critical": 3,
+        "high": 3,
+        "medium": 2,
+        "low": 1
+      },
+      "rule_codes": ["DB-P001", "DB-P002", "DB-P003", "DB-H101", "DB-H102", "DB-H103", "DB-M301", "DB-M302", "DB-L701"]
+    },
+    {
+      "name": "security",
+      "group": "core",
+      "domain": "SEC",
+      "rules_file": "docs/rules/core/security.md",
+      "command_folder": ".claude/commands/core/security/",
+      "analyze_prompt": ".claude/commands/core/security/analyze.md",
+      "fix_prompt": ".claude/commands/core/security/fix.md",
+      "output_folder": "docs/analyze-fixes/security/",
+      "total_rules": 7,
+      "rules_by_priority": {
+        "critical": 3,
+        "high": 3,
+        "medium": 2,
+        "low": 1
+      },
+      "rule_codes": ["SEC-P001", "SEC-P002", "SEC-P003", "SEC-H101", "SEC-H102", "SEC-H103", "SEC-M301", "SEC-M302", "SEC-L701"]
+    },
+    {
+      "name": "architecture",
+      "group": "core",
+      "domain": "ARCH",
+      "rules_file": "docs/rules/core/architecture.md",
+      "command_folder": ".claude/commands/core/architecture/",
+      "analyze_prompt": ".claude/commands/core/architecture/analyze.md",
+      "fix_prompt": ".claude/commands/core/architecture/fix.md",
+      "output_folder": "docs/analyze-fixes/architecture/",
+      "total_rules": 7,
+      "rules_by_priority": {
+        "critical": 2,
+        "high": 2,
+        "medium": 2,
+        "low": 1
+      },
+      "rule_codes": ["ARCH-P001", "ARCH-P002", "ARCH-H101", "ARCH-H102", "ARCH-M301", "ARCH-M302", "ARCH-L701"]
+    },
+    {
+      "name": "ui",
+      "group": "core",
+      "domain": "UI",
+      "rules_file": "docs/rules/core/ui.md",
+      "command_folder": ".claude/commands/core/ui/",
+      "analyze_prompt": ".claude/commands/core/ui/analyze.md",
+      "fix_prompt": ".claude/commands/core/ui/fix.md",
+      "output_folder": "docs/analyze-fixes/ui/",
+      "total_rules": 8,
+      "rules_by_priority": {
+        "critical": 2,
+        "high": 3,
+        "medium": 2,
+        "low": 1
+      },
+      "rule_codes": ["UI-P001", "UI-P002", "UI-H101", "UI-H102", "UI-H103", "UI-M301", "UI-M302", "UI-L701"]
+    },
+    {
+      "name": "nextjs",
+      "group": "framework",
+      "domain": "NEXT",
+      "rules_file": "docs/rules/framework/nextjs.md",
+      "command_folder": ".claude/commands/framework/nextjs/",
+      "analyze_prompt": ".claude/commands/framework/nextjs/analyze.md",
+      "fix_prompt": ".claude/commands/framework/nextjs/fix.md",
+      "output_folder": "docs/analyze-fixes/nextjs/",
+      "total_rules": 7,
+      "rules_by_priority": {
+        "critical": 3,
+        "high": 2,
+        "medium": 2,
+        "low": 1
+      },
+      "rule_codes": ["NEXT-P001", "NEXT-P002", "NEXT-P003", "NEXT-H101", "NEXT-H102", "NEXT-M301", "NEXT-M302", "NEXT-L701"]
+    },
+    {
+      "name": "react",
+      "group": "framework",
+      "domain": "REACT",
+      "rules_file": "docs/rules/framework/react.md",
+      "command_folder": ".claude/commands/framework/react/",
+      "analyze_prompt": ".claude/commands/framework/react/analyze.md",
+      "fix_prompt": ".claude/commands/framework/react/fix.md",
+      "output_folder": "docs/analyze-fixes/react/",
+      "total_rules": 7,
+      "rules_by_priority": {
+        "critical": 2,
+        "high": 2,
+        "medium": 2,
+        "low": 1
+      },
+      "rule_codes": ["REACT-P001", "REACT-P002", "REACT-H101", "REACT-H102", "REACT-M301", "REACT-M302", "REACT-L701"]
+    },
+    {
+      "name": "typescript",
+      "group": "framework",
+      "domain": "TS",
+      "rules_file": "docs/rules/framework/typescript.md",
+      "command_folder": ".claude/commands/framework/typescript/",
+      "analyze_prompt": ".claude/commands/framework/typescript/analyze.md",
+      "fix_prompt": ".claude/commands/framework/typescript/fix.md",
+      "output_folder": "docs/analyze-fixes/typescript/",
+      "total_rules": 7,
+      "rules_by_priority": {
+        "critical": 2,
+        "high": 2,
+        "medium": 2,
+        "low": 1
+      },
+      "rule_codes": ["TS-P001", "TS-P002", "TS-H101", "TS-H102", "TS-M301", "TS-M302", "TS-L701"]
+    },
+    {
+      "name": "performance",
+      "group": "quality",
+      "domain": "PERF",
+      "rules_file": "docs/rules/quality/performance.md",
+      "command_folder": ".claude/commands/quality/performance/",
+      "analyze_prompt": ".claude/commands/quality/performance/analyze.md",
+      "fix_prompt": ".claude/commands/quality/performance/fix.md",
+      "output_folder": "docs/analyze-fixes/performance/",
+      "total_rules": 6,
+      "rules_by_priority": {
+        "critical": 0,
+        "high": 2,
+        "medium": 2,
+        "low": 2
+      },
+      "rule_codes": ["PERF-H101", "PERF-H102", "PERF-M301", "PERF-M302", "PERF-L701", "PERF-L702"]
+    },
+    {
+      "name": "accessibility",
+      "group": "quality",
+      "domain": "A11Y",
+      "rules_file": "docs/rules/quality/accessibility.md",
+      "command_folder": ".claude/commands/quality/accessibility/",
+      "analyze_prompt": ".claude/commands/quality/accessibility/analyze.md",
+      "fix_prompt": ".claude/commands/quality/accessibility/fix.md",
+      "output_folder": "docs/analyze-fixes/accessibility/",
+      "total_rules": 6,
+      "rules_by_priority": {
+        "critical": 0,
+        "high": 3,
+        "medium": 2,
+        "low": 1
+      },
+      "rule_codes": ["A11Y-H101", "A11Y-H102", "A11Y-H103", "A11Y-M301", "A11Y-M302", "A11Y-L701"]
+    }
+  ],
+  "task_mappings": {
+    "new_page": ["nextjs", "architecture", "react"],
+    "new_feature": ["architecture", "database", "security", "ui"],
+    "database_query": ["database", "security", "typescript", "performance"],
+    "database_mutation": ["database", "security", "typescript"],
+    "ui_component": ["ui", "react", "accessibility"],
+    "api_route": ["nextjs", "security", "typescript"],
+    "types": ["typescript", "database"],
+    "form": ["ui", "react", "accessibility"],
+    "auth": ["security", "database"],
+    "performance": ["performance", "database", "react"]
+  },
+  "workflow_mappings": {
+    "new-feature": ["architecture", "database", "security", "ui"],
+    "database-changes": ["database", "security", "performance"],
+    "debugging": ["all"]
+  }
+}

@@ -5,7 +5,6 @@ import { BillingSubscriptionForm } from './components/billing-subscription-form'
 import { MetadataForm } from '@/features/shared/profile-metadata/components/metadata-form'
 import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
 import { Section, Stack } from '@/components/layout'
-import { H2 } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 export async function AccountSettings() {
@@ -16,7 +15,7 @@ export async function AccountSettings() {
     <Section size="lg">
       <Stack gap="xl">
         <div>
-          <H2>Account Information</H2>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Account Information</h2>
           <Stack gap="lg" className="mt-6">
             <AccountInfoForm profile={profile} />
             <PasswordForm />
@@ -27,7 +26,7 @@ export async function AccountSettings() {
         <Separator className="my-4" />
 
         <div>
-          <H2>Billing & Subscription</H2>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Billing & Subscription</h2>
           <div className="mt-6">
             <BillingSubscriptionForm />
           </div>

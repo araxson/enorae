@@ -1,6 +1,5 @@
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Muted } from '@/components/ui/typography'
 import { formatDistanceToNow } from 'date-fns'
 import type { MessageThreadWithInsights } from '../api/queries'
 
@@ -100,20 +99,20 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                   </TableCell>
                   <TableCell>
                     <div className="font-medium leading-tight">{thread.salon_name}</div>
-                    <Muted className="text-xs">{thread.salon_id}</Muted>
+                    <p className="text-sm text-muted-foreground text-xs">{thread.salon_id}</p>
                   </TableCell>
                   <TableCell>
                     <div className="font-medium leading-tight">{thread.customer_name}</div>
-                    <Muted className="text-xs">{thread.customer_email}</Muted>
+                    <p className="text-sm text-muted-foreground text-xs">{thread.customer_email}</p>
                   </TableCell>
                   <TableCell>
                     {thread.staff_name ? (
                       <div>
                         <div className="font-medium leading-tight">{thread.staff_name}</div>
-                        <Muted className="text-xs">{thread.staff_email}</Muted>
+                        <p className="text-sm text-muted-foreground text-xs">{thread.staff_email}</p>
                       </div>
                     ) : (
-                      <Muted className="text-xs">Unassigned</Muted>
+                      <p className="text-sm text-muted-foreground text-xs">Unassigned</p>
                     )}
                   </TableCell>
                   <TableCell>
@@ -135,7 +134,7 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                         <Badge variant="secondary">Reports {thread.unresolvedReports}</Badge>
                       ) : null}
                       {!thread.hasFlaggedMessages && thread.unresolvedReports === 0 ? (
-                        <Muted className="text-xs">None</Muted>
+                        <p className="text-sm text-muted-foreground text-xs">None</p>
                       ) : null}
                     </div>
                   </TableCell>
@@ -148,7 +147,7 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                         <Badge variant="outline">S: {staffUnread}</Badge>
                       ) : null}
                       {customerUnread === 0 && staffUnread === 0 ? (
-                        <Muted className="text-xs">—</Muted>
+                        <p className="text-sm text-muted-foreground text-xs">—</p>
                       ) : null}
                     </div>
                   </TableCell>

@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
-import { H3, Muted } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { updateStaffInfo } from '../api/mutations'
@@ -60,7 +59,7 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
       <Card>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <H3>Professional information</H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Professional information</h3>
             <Separator />
           </div>
 
@@ -74,7 +73,7 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
               placeholder="e.g., Senior Stylist, Master Colorist"
               maxLength={100}
             />
-            <Muted>Your professional title or role.</Muted>
+            <p className="text-sm text-muted-foreground">Your professional title or role.</p>
           </div>
 
           <div className="space-y-2">
@@ -88,7 +87,7 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
               defaultValue={profile.experience_years ?? ''}
               placeholder="e.g., 5"
             />
-            <Muted>How many years you&apos;ve been practicing.</Muted>
+            <p className="text-sm text-muted-foreground">How many years you&apos;ve been practicing.</p>
           </div>
 
           <div className="space-y-2">
@@ -101,7 +100,7 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
               rows={6}
               maxLength={1000}
             />
-            <Muted>{profile.bio?.length || 0}/1000 characters</Muted>
+            <p className="text-sm text-muted-foreground">{profile.bio?.length || 0}/1000 characters</p>
           </div>
         </CardContent>
       </Card>

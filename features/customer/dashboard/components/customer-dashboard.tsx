@@ -34,7 +34,6 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { EmptyState, RefreshButton, LastUpdated } from '@/components/shared'
-import { Small, Muted } from '@/components/ui/typography'
 
 export async function CustomerDashboardPage() {
   let upcomingAppointments
@@ -107,33 +106,33 @@ export async function CustomerDashboardPage() {
             <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2 text-primary">
                 <Crown className="h-5 w-5" />
-                <CardTitle className="text-xl">VIP status</CardTitle>
+                <CardTitle>VIP status</CardTitle>
               </div>
               <CardDescription>Exclusive benefits and rewards</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
-                  <Small className="text-muted-foreground">Loyalty points</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Loyalty points</small>
                   <p className="text-2xl font-bold">
                     {vipStatus.loyaltyPoints?.toLocaleString() ?? 0}
                   </p>
                 </div>
                 <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
-                  <Small className="text-muted-foreground">Tier</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Tier</small>
                   <p className="text-2xl font-bold capitalize">
                     {vipStatus.loyaltyTier ?? 'Standard'}
                   </p>
                 </div>
                 <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
-                  <Small className="text-muted-foreground">Lifetime spend</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">Lifetime spend</small>
                   <p className="text-2xl font-bold">
                     ${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}
                   </p>
                 </div>
                 {vipStatus.monthlySpend !== undefined && (
                   <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
-                    <Small className="text-muted-foreground">This month</Small>
+                    <small className="text-sm font-medium leading-none text-muted-foreground">This month</small>
                     <p className="flex items-center gap-1 text-2xl font-bold">
                       <TrendingUp className="h-4 w-4 text-green-500" />
                       ${vipStatus.monthlySpend.toLocaleString()}
@@ -176,7 +175,7 @@ export async function CustomerDashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Past appointments</CardTitle>
-              <Small>{pastAppointments?.length ?? 0} completed</Small>
+              <small className="text-sm font-medium leading-none">{pastAppointments?.length ?? 0} completed</small>
             </CardHeader>
             <CardContent>
               {!pastAppointments || pastAppointments.length === 0 ? (
@@ -207,11 +206,11 @@ export async function CustomerDashboardPage() {
                         <div className="flex flex-wrap items-center justify-between gap-3">
                           <div>
                             <p className="text-sm font-medium">{appointment.service_names?.[0] ?? 'Service'}</p>
-                            <Muted>
+                            <p className="text-sm text-muted-foreground">
                               {appointment.salon_name ? `at ${appointment.salon_name}` : 'Salon not specified'}
-                            </Muted>
+                            </p>
                           </div>
-                          <Muted>{appointmentDate}</Muted>
+                          <p className="text-sm text-muted-foreground">{appointmentDate}</p>
                         </div>
                       </div>
                     )

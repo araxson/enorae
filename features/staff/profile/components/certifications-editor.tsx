@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { updateStaffMetadata } from '../api/mutations'
 
 interface CertificationsEditorProps {
@@ -58,7 +57,7 @@ export function CertificationsEditor({ initialCertifications = [] }: Certificati
   return (
     <Card className="p-6">
       <Stack gap="md">
-        <H3>Certifications & Licenses</H3>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Certifications & Licenses</h3>
 
         <Flex gap="sm">
           <Input
@@ -99,7 +98,7 @@ export function CertificationsEditor({ initialCertifications = [] }: Certificati
             ))}
           </Flex>
         ) : (
-          <Muted>No certifications added yet</Muted>
+          <p className="text-sm text-muted-foreground">No certifications added yet</p>
         )}
 
         {error && (

@@ -1,7 +1,6 @@
 'use client'
 
 import { Box, Group } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import { ExportButton } from '@/features/business/business-common/components'
 import type { getCustomerCohorts } from '../../api/queries'
 
@@ -17,7 +16,7 @@ export function CohortsTable({ cohorts, start, end }: Props) {
   return (
     <Box className="rounded-lg border p-4">
       <Group className="items-center justify-between mb-3">
-        <Small className="font-semibold">Customer Cohorts (Monthly, last 6)</Small>
+        <small className="text-sm font-medium leading-none font-semibold">Customer Cohorts (Monthly, last 6)</small>
         <ExportButton
           data={cohorts.map((cohort) => ({
             cohort: cohort.cohort,

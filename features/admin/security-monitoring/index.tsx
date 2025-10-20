@@ -1,7 +1,6 @@
 import { getSecurityMonitoringSnapshot } from './api/queries/security-monitoring'
 import { SecurityDashboard } from './components/security-dashboard'
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 
 export async function SecurityMonitoring() {
   const snapshot = await getSecurityMonitoringSnapshot()
@@ -10,10 +9,10 @@ export async function SecurityMonitoring() {
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
       <Stack gap="xl">
         <div>
-          <H1>Security Monitoring</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Security Monitoring</h1>
+          <p className="leading-7 text-muted-foreground">
             Monitor access attempts, detect anomalies, and manage security configurations
-          </P>
+          </p>
         </div>
 
         <SecurityDashboard snapshot={snapshot} />

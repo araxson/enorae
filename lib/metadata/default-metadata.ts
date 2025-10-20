@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { APP_NAME, APP_DESCRIPTION, APP_URL } from '@/lib/constants/app.constants'
+import { APP_NAME, APP_DESCRIPTION, APP_URL } from '@/lib/constants'
 
 export const defaultMetadata: Metadata = {
   title: {

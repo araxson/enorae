@@ -3,7 +3,6 @@ import { MapPin, StickyNote } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { H3, P, Muted } from '@/components/ui/typography'
 import type { FavoriteWithSalon } from '../api/queries'
 import { FavoriteButton } from './favorite-button'
 import { FavoriteNotesButton } from './favorite-notes-button'
@@ -17,10 +16,10 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
     return (
       <Card>
         <CardContent className="space-y-4 py-16 text-center">
-          <Muted>No favorite salons yet</Muted>
-          <P className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">No favorite salons yet</p>
+          <p className="leading-7 text-sm text-muted-foreground">
             Start exploring salons and save your favorites for quick access.
-          </P>
+          </p>
           <Button asChild>
             <Link href="/customer/salons">Browse salons</Link>
           </Button>
@@ -41,13 +40,13 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
             <div className="aspect-video w-full bg-muted" />
             <CardContent className="space-y-4 p-6">
               <div className="space-y-2">
-                <H3>{salon.name || 'Unnamed salon'}</H3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{salon.name || 'Unnamed salon'}</h3>
                 {salon.full_address && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <MapPin className="h-4 w-4" />
-                    <Muted className="text-sm">
+                    <p className="text-sm text-muted-foreground text-sm">
                       {salon.full_address}
-                    </Muted>
+                    </p>
                   </div>
                 )}
               </div>
@@ -56,9 +55,9 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
                 <div className="space-y-2 rounded-md bg-muted/50 p-3">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <StickyNote className="h-3 w-3" />
-                    <Muted className="text-xs font-medium">My notes</Muted>
+                    <p className="text-sm text-muted-foreground text-xs font-medium">My notes</p>
                   </div>
-                  <P className="text-sm italic">{favorite.notes}</P>
+                  <p className="leading-7 text-sm italic">{favorite.notes}</p>
                 </div>
               )}
 

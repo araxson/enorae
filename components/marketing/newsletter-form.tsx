@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { H3, P, Small } from '@/components/ui/typography'
 import { Mail, CheckCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { subscribeToNewsletter } from '@/features/marketing/home/api/mutations'
@@ -54,7 +53,7 @@ export function NewsletterForm({
     return (
       <div className="flex items-center gap-2 text-green-600">
         <CheckCircle className="h-5 w-5" />
-        <Small>Thanks for subscribing!</Small>
+        <small className="text-sm font-medium leading-none">Thanks for subscribing!</small>
       </div>
     )
   }
@@ -83,8 +82,8 @@ export function NewsletterForm({
   return (
     <div className="w-full max-w-md space-y-4">
       <div className="space-y-1">
-        <H3>{title}</H3>
-        <P className="text-sm text-muted-foreground">{description}</P>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{title}</h3>
+        <p className="leading-7 text-sm text-muted-foreground">{description}</p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-2">
         <Input

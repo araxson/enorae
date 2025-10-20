@@ -12,6 +12,7 @@
  * https://supabase.com/docs/guides/auth/server-side/nextjs
  */
 
+import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import type { User } from '@supabase/supabase-js'
@@ -34,7 +35,7 @@ export interface Session {
  *
  * SECURITY: Always use this instead of getSession()
  */
-export async function verifySession(): Promise<Session | null> {
+export const verifySession = cache(async (): Promise<Session | null> => {
   const supabase = await createClient()
 
   // CRITICAL: Use getUser() NOT getSession()
@@ -64,7 +65,7 @@ export async function verifySession(): Promise<Session | null> {
     user,
     role: roleData.role,
   }
-}
+})
 
 /**
  * Require authentication - throws if not authenticated

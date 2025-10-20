@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Stack, Group } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
 import { Tag, Users, Calendar } from 'lucide-react'
 import type { Salon } from '../types'
 
@@ -27,19 +26,19 @@ export function QuickStatsCard({ salon }: QuickStatsCardProps) {
           {salon.services_count !== null && (
             <Group gap="sm">
               <Tag className="h-5 w-5 text-muted-foreground" />
-              <Muted>{salon.services_count} Services</Muted>
+              <p className="text-sm text-muted-foreground">{salon.services_count} Services</p>
             </Group>
           )}
           {salon.staff_count !== null && (
             <Group gap="sm">
               <Users className="h-5 w-5 text-muted-foreground" />
-              <Muted>{salon.staff_count} Staff Members</Muted>
+              <p className="text-sm text-muted-foreground">{salon.staff_count} Staff Members</p>
             </Group>
           )}
           {salon.established_at && (
             <Group gap="sm">
               <Calendar className="h-5 w-5 text-muted-foreground" />
-              <Muted>Established {new Date(salon.established_at).getFullYear()}</Muted>
+              <p className="text-sm text-muted-foreground">Established {new Date(salon.established_at).getFullYear()}</p>
             </Group>
           )}
         </Stack>

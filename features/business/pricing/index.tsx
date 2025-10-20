@@ -1,5 +1,4 @@
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import { getPricingRules, getPricingServices } from './api/queries'
 import { PricingRulesForm } from './components/pricing-rules-form'
 import { PricingRulesList } from './components/pricing-rules-list'
@@ -71,10 +70,10 @@ export async function DynamicPricing() {
   return (
     <Stack gap="xl">
       <div>
-        <H1>Dynamic Pricing</H1>
-        <P className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Dynamic Pricing</h1>
+        <p className="leading-7 text-muted-foreground">
           Configure time-based and demand-based pricing rules to optimize revenue
-        </P>
+        </p>
       </div>
 
       <DynamicPricingDashboard

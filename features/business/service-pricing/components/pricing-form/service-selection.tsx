@@ -7,8 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack, Grid } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
-
 import type { PricingFormState } from './use-pricing-form'
 
 type ServiceSelectionProps = {
@@ -70,7 +68,7 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
                   placeholder="0.00"
                   required
                 />
-                <Muted className="text-xs">Regular service price</Muted>
+                <p className="text-sm text-muted-foreground text-xs">Regular service price</p>
               </div>
 
               <div className="space-y-2">
@@ -84,7 +82,7 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
                   onChange={(event) => onChange('salePrice', event.target.value)}
                   placeholder="0.00"
                 />
-                <Muted className="text-xs">Discounted price (optional)</Muted>
+                <p className="text-sm text-muted-foreground text-xs">Discounted price (optional)</p>
               </div>
             </Grid>
           </Stack>

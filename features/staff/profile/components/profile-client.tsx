@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { P, Muted } from '@/components/ui/typography'
 import { StaffInfoForm } from './staff-info-form'
 import { MetadataForm } from '@/features/shared/profile-metadata/components/metadata-form'
 import { UsernameForm } from '@/features/shared/profile/components/username-form'
@@ -86,17 +85,19 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
               </Avatar>
 
               <div className="space-y-1">
-                <P className="text-xl font-semibold leading-tight">
+                <p className="text-xl font-semibold leading-tight">
                   {profile.full_name || 'Staff member'}
-                </P>
-                {profile.title && <P className="text-muted-foreground">{profile.title}</P>}
-                {profile.email && <Muted className="text-sm">{profile.email}</Muted>}
+                </p>
+                {profile.title && <p className="text-muted-foreground">{profile.title}</p>}
+                {profile.email && (
+                  <p className="text-sm text-muted-foreground">{profile.email}</p>
+                )}
               </div>
 
               {profile.salon_name && (
                 <div className="w-full space-y-1 border-t pt-4">
-                  <P className="text-sm font-medium">Salon</P>
-                  <Muted>{profile.salon_name}</Muted>
+                  <p className="text-sm font-medium text-foreground">Salon</p>
+                  <p className="text-sm text-muted-foreground">{profile.salon_name}</p>
                 </div>
               )}
             </CardContent>
@@ -118,35 +119,43 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
             <TabsContent value="view" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Briefcase className="h-5 w-5" />
-                    Professional information
+                  <CardTitle>
+                    <span className="flex items-center gap-2">
+                      <Briefcase className="h-5 w-5" />
+                      Professional information
+                    </span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-4 sm:grid-cols-2">
                     {profile.title && (
                       <div>
-                        <P className="text-sm font-medium">Title</P>
-                        <Muted>{profile.title}</Muted>
+                        <p className="text-sm font-medium text-foreground">Title</p>
+                        <p className="text-sm text-muted-foreground">{profile.title}</p>
                       </div>
                     )}
                     {profile.experience_years !== null && profile.experience_years !== undefined && (
                       <div>
-                        <P className="text-sm font-medium">Experience</P>
-                        <Muted>{profile.experience_years} years</Muted>
+                        <p className="text-sm font-medium text-foreground">Experience</p>
+                        <p className="text-sm text-muted-foreground">
+                          {profile.experience_years} years
+                        </p>
                       </div>
                     )}
                     {profile.services_count !== null && profile.services_count !== undefined && (
                       <div>
-                        <P className="text-sm font-medium">Services offered</P>
-                        <Muted>{profile.services_count} services</Muted>
+                        <p className="text-sm font-medium text-foreground">Services offered</p>
+                        <p className="text-sm text-muted-foreground">
+                          {profile.services_count} services
+                        </p>
                       </div>
                     )}
                     {profile.total_appointments !== null && profile.total_appointments !== undefined && (
                       <div>
-                        <P className="text-sm font-medium">Total appointments</P>
-                        <Muted>{profile.total_appointments} completed</Muted>
+                        <p className="text-sm font-medium text-foreground">Total appointments</p>
+                        <p className="text-sm text-muted-foreground">
+                          {profile.total_appointments} completed
+                        </p>
                       </div>
                     )}
                   </div>
@@ -156,15 +165,15 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
               {profile.bio && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
                       <User className="h-5 w-5" />
-                      About
-                    </CardTitle>
+                      <CardTitle>About</CardTitle>
+                    </div>
                   </CardHeader>
                   <CardContent>
-                    <P className="whitespace-pre-wrap text-sm text-muted-foreground">
+                    <p className="whitespace-pre-wrap text-sm text-muted-foreground">
                       {profile.bio}
-                    </P>
+                    </p>
                   </CardContent>
                 </Card>
               )}

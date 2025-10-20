@@ -67,7 +67,7 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">Preferences</CardTitle>
+        <CardTitle>Preferences</CardTitle>
         <CardDescription>Adjust locale, timezone, and notification preferences.</CardDescription>
       </CardHeader>
       <CardContent>

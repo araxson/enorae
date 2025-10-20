@@ -36,7 +36,7 @@ export function RecentAppointmentsTable({ appointments }: RecentAppointmentsTabl
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle className="text-base font-semibold">Most Recent Appointments</CardTitle>
+        <CardTitle>Most Recent Appointments</CardTitle>
       </CardHeader>
       <CardContent className="overflow-x-auto">
         {appointments.length === 0 ? (

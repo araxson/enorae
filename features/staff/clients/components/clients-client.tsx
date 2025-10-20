@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react'
 import { Users, Calendar, DollarSign } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import type { ClientWithHistory } from '../api/queries'
 import { ClientStats } from './client-stats'
 import { ClientFilters } from './client-filters'
@@ -97,8 +96,8 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
               <Users className="w-8 h-8 text-muted-foreground" />
             </div>
             <div>
-              <P className="font-medium">No Clients Yet</P>
-              <Muted>Your client list will appear here once you complete appointments</Muted>
+              <p className="leading-7 font-medium">No Clients Yet</p>
+              <p className="text-sm text-muted-foreground">Your client list will appear here once you complete appointments</p>
             </div>
           </Stack>
         </CardContent>
@@ -141,26 +140,26 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
               onClick={() => setSelectedClient(client)}
             >
               <CardHeader>
-                <CardTitle className="text-lg">{client.customer_name || 'Walk-in Customer'}</CardTitle>
-                {client.customer_email && <Muted className="text-sm">{client.customer_email}</Muted>}
+                <CardTitle>{client.customer_name || 'Walk-in Customer'}</CardTitle>
+                {client.customer_email && <p className="text-sm text-muted-foreground text-sm">{client.customer_email}</p>}
               </CardHeader>
               <CardContent>
                 <Stack gap="sm">
                   <div className="flex items-center gap-2 text-sm">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <P>{client.total_appointments} appointments</P>
+                    <p className="leading-7">{client.total_appointments} appointments</p>
                   </div>
                   {client.total_revenue && client.total_revenue > 0 ? (
                     <div className="flex items-center gap-2 text-sm">
                       <DollarSign className="h-4 w-4 text-muted-foreground" />
-                      <P>${Number(client.total_revenue).toFixed(2)} lifetime value</P>
+                      <p className="leading-7">${Number(client.total_revenue).toFixed(2)} lifetime value</p>
                     </div>
                   ) : null}
                   {client.last_appointment_date ? (
                     <div className="text-sm">
-                      <Muted>
+                      <p className="text-sm text-muted-foreground">
                         Last visit: {new Date(client.last_appointment_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                      </Muted>
+                      </p>
                     </div>
                   ) : null}
                 </Stack>

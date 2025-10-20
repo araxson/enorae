@@ -4,8 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Stack, Grid } from '@/components/layout'
-import { Muted, H3 } from '@/components/ui/typography'
-
 type PrimaryImagesSectionProps = {
   logoUrl: string
   coverImageUrl: string
@@ -16,7 +14,7 @@ export function PrimaryImagesSection({ logoUrl, coverImageUrl }: PrimaryImagesSe
     <Card>
       <CardContent>
         <Stack gap="md">
-          <H3>Primary Images</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Primary Images</h3>
           <Grid cols={{ base: 1, md: 2 }} gap="md">
             <div>
               <Label htmlFor="logo_url">Logo URL</Label>
@@ -27,7 +25,7 @@ export function PrimaryImagesSection({ logoUrl, coverImageUrl }: PrimaryImagesSe
                 defaultValue={logoUrl}
                 placeholder="https://example.com/logo.png"
               />
-              <Muted>Your salon&apos;s logo (square format recommended)</Muted>
+              <p className="text-sm text-muted-foreground">Your salon&apos;s logo (square format recommended)</p>
             </div>
 
             <div>
@@ -39,7 +37,7 @@ export function PrimaryImagesSection({ logoUrl, coverImageUrl }: PrimaryImagesSe
                 defaultValue={coverImageUrl}
                 placeholder="https://example.com/cover.jpg"
               />
-              <Muted>Hero image for your salon page (16:9 recommended)</Muted>
+              <p className="text-sm text-muted-foreground">Hero image for your salon page (16:9 recommended)</p>
             </div>
           </Grid>
         </Stack>

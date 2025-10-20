@@ -1,6 +1,5 @@
 import { Phone, Mail, Globe } from 'lucide-react'
 import { Stack, Group } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 
 interface ContactInfoProps {
@@ -23,7 +22,7 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
         <Group gap="sm">
           <Phone className="h-4 w-4 text-muted-foreground" />
           <a href={`tel:${phone}`} className="hover:underline">
-            <Small>{phone}</Small>
+            <small className="text-sm font-medium leading-none">{phone}</small>
           </a>
         </Group>
       )}
@@ -31,7 +30,7 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
         <Group gap="sm">
           <Mail className="h-4 w-4 text-muted-foreground" />
           <a href={`mailto:${email}`} className="hover:underline">
-            <Small>{email}</Small>
+            <small className="text-sm font-medium leading-none">{email}</small>
           </a>
         </Group>
       )}
@@ -44,7 +43,7 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
             rel="noopener noreferrer"
             className="hover:underline"
           >
-            <Small>Visit Website</Small>
+            <small className="text-sm font-medium leading-none">Visit Website</small>
           </a>
         </Group>
       )}

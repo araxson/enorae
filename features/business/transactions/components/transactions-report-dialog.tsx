@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/dialog'
 import { Card } from '@/components/ui/card'
 import { Stack, Grid } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import type { ManualTransactionWithDetails } from '../api/queries'
@@ -101,21 +100,21 @@ export function TransactionsReportDialog({
           {report.dateRange && (
             <Card className="p-4">
               <Stack gap="sm">
-                <H3 className="text-lg">Report Period</H3>
-                <P>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">Report Period</h3>
+                <p className="leading-7">
                   {format(report.dateRange.earliest, 'MMM dd, yyyy')} -{' '}
                   {format(report.dateRange.latest, 'MMM dd, yyyy')}
-                </P>
-                <Muted className="text-sm">
+                </p>
+                <p className="text-sm text-muted-foreground text-sm">
                   Total Transactions: {report.total}
-                </Muted>
+                </p>
               </Stack>
             </Card>
           )}
 
           <Card className="p-4">
             <Stack gap="md">
-              <H3 className="text-lg">By Transaction Type</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Transaction Type</h3>
               <Separator />
               <Grid cols={{ base: 2, md: 3 }} gap="md">
                 {Object.entries(report.byType).map(([type, count]) => (
@@ -123,7 +122,7 @@ export function TransactionsReportDialog({
                     <Badge variant="secondary" className="capitalize">
                       {type}
                     </Badge>
-                    <Muted>{count}</Muted>
+                    <p className="text-sm text-muted-foreground">{count}</p>
                   </div>
                 ))}
               </Grid>
@@ -132,13 +131,13 @@ export function TransactionsReportDialog({
 
           <Card className="p-4">
             <Stack gap="md">
-              <H3 className="text-lg">By Payment Method</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Payment Method</h3>
               <Separator />
               <Grid cols={{ base: 2, md: 3 }} gap="md">
                 {Object.entries(report.byPaymentMethod).map(([method, count]) => (
                   <div key={method} className="flex items-center justify-between">
-                    <P className="capitalize text-sm">{method}</P>
-                    <Muted>{count}</Muted>
+                    <p className="leading-7 capitalize text-sm">{method}</p>
+                    <p className="text-sm text-muted-foreground">{count}</p>
                   </div>
                 ))}
               </Grid>
@@ -147,7 +146,7 @@ export function TransactionsReportDialog({
 
           <Card className="p-4">
             <Stack gap="md">
-              <H3 className="text-lg">By Staff Member</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Staff Member</h3>
               <Separator />
               <Stack gap="sm">
                 {Object.entries(report.byStaff)
@@ -155,7 +154,7 @@ export function TransactionsReportDialog({
                   .slice(0, 10)
                   .map(([staff, count]) => (
                     <div key={staff} className="flex items-center justify-between">
-                      <P className="text-sm">{staff}</P>
+                      <p className="leading-7 text-sm">{staff}</p>
                       <Badge variant="outline">{count}</Badge>
                     </div>
                   ))}

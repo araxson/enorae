@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { P } from '@/components/ui/typography'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { infoData } from './info.data'
 
@@ -14,21 +13,21 @@ export function Info() {
           <div className="flex gap-3">
             <Mail className="h-5 w-5 text-primary" />
             <div>
-              <P className="font-medium text-foreground">General inquiries</P>
+              <p className="leading-7 font-medium text-foreground">General inquiries</p>
               <p>{infoData.email}</p>
             </div>
           </div>
           <div className="flex gap-3">
             <Phone className="h-5 w-5 text-primary" />
             <div>
-              <P className="font-medium text-foreground">Phone</P>
+              <p className="leading-7 font-medium text-foreground">Phone</p>
               <p>{infoData.phone}</p>
             </div>
           </div>
           <div className="flex gap-3">
             <MapPin className="h-5 w-5 text-primary" />
             <div>
-              <P className="font-medium text-foreground">HQ address</P>
+              <p className="leading-7 font-medium text-foreground">HQ address</p>
               <p>{infoData.address}</p>
             </div>
           </div>

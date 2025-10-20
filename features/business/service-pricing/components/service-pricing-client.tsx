@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Section, Stack, Box, Flex } from '@/components/layout'
-import { H1, H3, Muted, Small } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { PricingGrid } from './pricing-grid'
 import { PricingFormDialog } from './pricing-form-dialog'
@@ -43,24 +42,24 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
       <Stack gap="xl">
         <Flex justify="between" align="start">
           <Box>
-            <H1>Service Pricing</H1>
-            <Muted>
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Service Pricing</h1>
+            <p className="text-sm text-muted-foreground">
               Manage pricing for your salon services
-            </Muted>
+            </p>
           </Box>
           <Button onClick={handleAddPricing}>Add Pricing</Button>
         </Flex>
 
         <Flex gap="md">
           <Box className="rounded-lg border p-4">
-            <Small>Total Services</Small>
-            <H3>{pricing.length}</H3>
+            <small className="text-sm font-medium leading-none">Total Services</small>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{pricing.length}</h3>
           </Box>
           <Box className="rounded-lg border p-4">
-            <Small>Average Price</Small>
-            <H3>
+            <small className="text-sm font-medium leading-none">Average Price</small>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               ${avgPrice.toFixed(2)}
-            </H3>
+            </h3>
           </Box>
         </Flex>
 

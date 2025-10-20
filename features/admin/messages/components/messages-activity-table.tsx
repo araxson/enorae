@@ -8,7 +8,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { MessageActivityPoint } from '../api/queries'
-import { Muted } from '@/components/ui/typography'
 
 interface MessagesActivityTableProps {
   activity: MessageActivityPoint[]
@@ -35,7 +34,7 @@ export function MessagesActivityTable({ activity }: MessagesActivityTableProps) 
       </CardHeader>
       <CardContent className="space-y-4">
         {activity.every((point) => point.inbound === 0 && point.outbound === 0) ? (
-          <Muted>No message activity recorded within the selected window.</Muted>
+          <p className="text-sm text-muted-foreground">No message activity recorded within the selected window.</p>
         ) : (
           <div className="overflow-x-auto">
             <Table>

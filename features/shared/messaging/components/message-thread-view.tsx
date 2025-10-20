@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { H3, Muted } from '@/components/ui/typography'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { MessageBubble } from './message-bubble'
@@ -38,8 +37,8 @@ export function MessageThreadView({
   return (
     <div className="flex h-full flex-col gap-6">
       <div>
-        <H3>Conversation</H3>
-        {otherUserName && <Muted>Chatting with {otherUserName}</Muted>}
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Conversation</h3>
+        {otherUserName && <p className="text-sm text-muted-foreground">Chatting with {otherUserName}</p>}
       </div>
 
       <Separator />
@@ -50,7 +49,7 @@ export function MessageThreadView({
             <div className="space-y-3">
               {messages.length === 0 ? (
                 <div className="py-12 text-center">
-                  <Muted>No messages yet. Start the conversation!</Muted>
+                  <p className="text-sm text-muted-foreground">No messages yet. Start the conversation!</p>
                 </div>
               ) : (
                 messages.map((message) => {

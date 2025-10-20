@@ -3,7 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Grid, Stack, Box, Flex } from '@/components/layout'
-import { H3, Small } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { TrendingUp, TrendingDown, Users, UserPlus, Repeat, DollarSign } from 'lucide-react'
 
@@ -51,19 +50,19 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             <Box className="text-center p-4 rounded-lg bg-muted/50">
               <Users className="h-5 w-5 mx-auto mb-2 text-muted-foreground" />
               <div className="text-2xl font-bold">{data.totalCustomers}</div>
-              <Small className="text-muted-foreground">Total Customers</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Total Customers</small>
             </Box>
 
             <Box className="text-center p-4 rounded-lg bg-muted/50">
               <UserPlus className="h-5 w-5 mx-auto mb-2 text-green-600" />
               <div className="text-2xl font-bold">{data.newCustomers}</div>
-              <Small className="text-muted-foreground">New ({newCustomerPercentage}%)</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">New ({newCustomerPercentage}%)</small>
             </Box>
 
             <Box className="text-center p-4 rounded-lg bg-muted/50">
               <Repeat className="h-5 w-5 mx-auto mb-2 text-blue-600" />
               <div className="text-2xl font-bold">{data.returningCustomers}</div>
-              <Small className="text-muted-foreground">Returning</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Returning</small>
             </Box>
 
             <Box className="text-center p-4 rounded-lg bg-muted/50">
@@ -75,7 +74,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                 )}
               </Flex>
               <div className="text-2xl font-bold">{data.retentionRate.toFixed(1)}%</div>
-              <Small className="text-muted-foreground">Retention Rate</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Retention Rate</small>
             </Box>
           </Grid>
 
@@ -86,19 +85,19 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             <Box className="p-4 rounded-lg border">
               <Flex align="center" gap="sm" className="mb-2">
                 <DollarSign className="h-5 w-5 text-muted-foreground" />
-                <H3 className="text-base">Avg Lifetime Value</H3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">Avg Lifetime Value</h3>
               </Flex>
               <div className="text-3xl font-bold">{formatCurrency(data.averageLifetimeValue)}</div>
-              <Small className="text-muted-foreground">Per customer</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Per customer</small>
             </Box>
 
             <Box className="p-4 rounded-lg border">
               <Flex align="center" gap="sm" className="mb-2">
                 <DollarSign className="h-5 w-5 text-muted-foreground" />
-                <H3 className="text-base">Avg Order Value</H3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">Avg Order Value</h3>
               </Flex>
               <div className="text-3xl font-bold">{formatCurrency(data.averageOrderValue)}</div>
-              <Small className="text-muted-foreground">Per appointment</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Per appointment</small>
             </Box>
           </Grid>
 
@@ -107,7 +106,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             <>
               <Separator />
               <Box>
-                <H3 className="mb-4">Top Customers</H3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Top Customers</h3>
                 <Stack gap="sm">
                   {data.topCustomers.map((customer, index) => (
                     <Flex
@@ -119,13 +118,13 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                       <Box className="flex-1">
                         <div className="font-medium">{customer.name}</div>
                         {customer.email && (
-                          <Small className="text-muted-foreground">{customer.email}</Small>
+                          <small className="text-sm font-medium leading-none text-muted-foreground">{customer.email}</small>
                         )}
                       </Box>
                       <Flex gap="md" align="center">
                         <Box className="text-right">
                           <div className="font-semibold">{formatCurrency(customer.totalSpent)}</div>
-                          <Small className="text-muted-foreground">{customer.visitCount} visits</Small>
+                          <small className="text-sm font-medium leading-none text-muted-foreground">{customer.visitCount} visits</small>
                         </Box>
                         <Badge variant="secondary">#{index + 1}</Badge>
                       </Flex>

@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Stack, Flex, Group, Box } from '@/components/layout'
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Small } from '@/components/ui/typography'
 
 export interface StatCardProps {
   label: string
@@ -37,9 +36,7 @@ export function StatCard({
     >
       <CardHeader>
         <Flex direction="row" align="center" justify="between" gap="sm">
-          <CardTitle className="text-sm font-medium" id={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}>
-            {label}
-          </CardTitle>
+          <CardTitle id={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}>{label}</CardTitle>
           {icon && (
             <Box className="text-muted-foreground" aria-hidden="true">
               {icon}
@@ -50,10 +47,7 @@ export function StatCard({
 
       <CardContent>
         <Stack gap="xs">
-          <div
-            className="text-2xl font-bold"
-            aria-describedby={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}
-          >
+          <div className="text-2xl font-bold" aria-describedby={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}>
             {value}
           </div>
 
@@ -63,23 +57,19 @@ export function StatCard({
                 <Group
                   gap="xs"
                   align="center"
-                  className={cn(
-                    'font-medium',
-                    isPositive && 'text-green-600 dark:text-green-400',
-                    isNegative && 'text-red-600 dark:text-red-400'
-                  )}
+                  className={cn('font-medium', isPositive && 'text-success', isNegative && 'text-destructive')}
                   role="status"
                   aria-label={`${isPositive ? 'Increased' : 'Decreased'} by ${Math.abs(change)}%`}
                 >
                   {isPositive && <TrendingUp className="h-3 w-3" aria-hidden="true" />}
                   {isNegative && <TrendingDown className="h-3 w-3" aria-hidden="true" />}
-                  <Small>
+                  <span className="text-sm">
                     {change > 0 && '+'}
                     {change}%
-                  </Small>
+                  </span>
                 </Group>
               )}
-              {description && <Small className="text-muted-foreground">{description}</Small>}
+              {description && <span className="text-sm text-muted-foreground">{description}</span>}
             </Group>
           )}
         </Stack>

@@ -55,7 +55,7 @@ export function ProfileBasicsForm({ profile, onUpdated }: ProfileBasicsFormProps
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">Profile details</CardTitle>
+        <CardTitle>Profile details</CardTitle>
         <CardDescription>Update core profile identifiers for this user.</CardDescription>
       </CardHeader>
       <CardContent>

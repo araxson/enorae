@@ -1,6 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { P, Small, Muted } from '@/components/ui/typography'
 import { Star } from 'lucide-react'
 
 interface TestimonialCardProps {
@@ -40,7 +39,7 @@ export function TestimonialCard({
             ))}
           </div>
 
-          <P className="flex-1 italic text-muted-foreground">&ldquo;{content}&rdquo;</P>
+          <p className="leading-7 flex-1 italic text-muted-foreground">&ldquo;{content}&rdquo;</p>
 
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
@@ -48,8 +47,8 @@ export function TestimonialCard({
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
             <div className="space-y-0.5">
-              <Small className="font-semibold">{author}</Small>
-              <Muted className="text-xs">{role}</Muted>
+              <small className="text-sm font-medium leading-none font-semibold">{author}</small>
+              <p className="text-sm text-muted-foreground text-xs">{role}</p>
             </div>
           </div>
         </CardContent>

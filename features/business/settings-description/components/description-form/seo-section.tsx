@@ -4,7 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Stack } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 type SeoSectionProps = {
@@ -17,7 +16,7 @@ export function SeoSection({ metaTitle, metaDescription }: SeoSectionProps) {
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>SEO Metadata</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">SEO Metadata</h3>
           <Separator />
 
           <Stack gap="sm">
@@ -28,7 +27,7 @@ export function SeoSection({ metaTitle, metaDescription }: SeoSectionProps) {
               defaultValue={metaTitle ?? ''}
               placeholder="Salon name and key service keywords"
             />
-            <Muted>Used for search engines and social sharing</Muted>
+            <p className="text-sm text-muted-foreground">Used for search engines and social sharing</p>
           </Stack>
 
           <Stack gap="sm">

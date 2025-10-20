@@ -1,5 +1,4 @@
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import type { WebhookStats } from '@/features/business/webhooks/api/queries/monitoring'
 import { WebhookMonitoringDashboard } from '@/features/business/webhooks/components/webhook-monitoring-dashboard'
 import type { Database } from '@/lib/types/database.types'
@@ -33,10 +32,10 @@ export function MonitoringPanel({
   return (
     <Stack gap="xl">
       <div>
-        <H1>Webhook Monitoring</H1>
-        <P className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Webhook Monitoring</h1>
+        <p className="leading-7 text-muted-foreground">
           Monitor webhook deliveries and track performance metrics
-        </P>
+        </p>
       </div>
 
       <WebhookMonitoringDashboard

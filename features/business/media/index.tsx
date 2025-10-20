@@ -1,7 +1,6 @@
 import { getUserSalonMedia } from './api/queries'
 import { MediaForm } from './components/media-form'
 import { Section, Stack } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 
 export async function SalonMedia() {
@@ -17,8 +16,8 @@ export async function SalonMedia() {
     return (
       <Section size="lg">
         <Stack gap="md">
-          <P className="text-base font-semibold">Salon Media</P>
-          <P>No salon found. Please create a salon first.</P>
+          <p className="leading-7 text-base font-semibold">Salon Media</p>
+          <p className="leading-7">No salon found. Please create a salon first.</p>
         </Stack>
       </Section>
     )
@@ -31,10 +30,10 @@ export async function SalonMedia() {
     <Section size="lg">
       <Stack gap="xl">
         <div>
-          <P className="text-base font-semibold">Salon Media</P>
-          <Muted>
+          <p className="leading-7 text-base font-semibold">Salon Media</p>
+          <p className="text-sm text-muted-foreground">
             Manage photos, branding, and social media links for {salonName}
-          </Muted>
+          </p>
         </div>
 
         <MediaForm media={media} />

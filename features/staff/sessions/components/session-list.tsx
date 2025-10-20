@@ -7,7 +7,6 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Stack, Flex } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { revokeSession } from '../api/mutations'
 import type { StaffSessionDetail } from '../types'
 
@@ -50,7 +49,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
   if (activeSessions.length === 0) {
     return (
       <Card className="p-8 text-center">
-        <P className="text-muted-foreground">No active sessions found</P>
+        <p className="leading-7 text-muted-foreground">No active sessions found</p>
       </Card>
     )
   }
@@ -72,38 +71,38 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
               <Stack gap="sm" className="flex-1">
                 <Flex align="center" gap="sm">
                   {getDeviceIcon(session.device_type)}
-                  <H3>{session.device_name || 'Unknown Device'}</H3>
+                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{session.device_name || 'Unknown Device'}</h3>
                   {isCurrent && (
                     <Badge variant="default">Current</Badge>
                   )}
                 </Flex>
 
-                <Muted>
+                <p className="text-sm text-muted-foreground">
                   {session.browser_name} {session.browser_version && `v${session.browser_version}`}
-                </Muted>
+                </p>
 
                 {session.ip_address && (
-                  <Muted className="text-xs">
+                  <p className="text-sm text-muted-foreground text-xs">
                     IP: {session.ip_address}
-                  </Muted>
+                  </p>
                 )}
 
                 {session.location && (
-                  <Muted className="text-xs">
+                  <p className="text-sm text-muted-foreground text-xs">
                     Location: {session.location}
-                  </Muted>
+                  </p>
                 )}
 
                 {formattedLastActive && (
-                  <Muted className="text-xs">
+                  <p className="text-sm text-muted-foreground text-xs">
                     Last active: {formattedLastActive}
-                  </Muted>
+                  </p>
                 )}
 
                 {formattedCreatedAt && (
-                  <Muted className="text-xs">
+                  <p className="text-sm text-muted-foreground text-xs">
                     Created: {formattedCreatedAt}
-                  </Muted>
+                  </p>
                 )}
               </Stack>
 

@@ -1,5 +1,4 @@
 import { Progress } from '@/components/ui/progress'
-import { Muted, P } from '@/components/ui/typography'
 import type { InventoryValuationSummary } from '../api/queries'
 import { formatCurrency } from './inventory-utils'
 
@@ -10,7 +9,7 @@ type InventoryValuationBreakdownProps = {
 export function InventoryValuationBreakdown({ valuation }: InventoryValuationBreakdownProps) {
   if (!valuation.categories.length) {
     return (
-      <Muted>No valuation data available</Muted>
+      <p className="text-sm text-muted-foreground">No valuation data available</p>
     )
   }
 
@@ -18,13 +17,13 @@ export function InventoryValuationBreakdown({ valuation }: InventoryValuationBre
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <P className="text-sm font-semibold text-muted-foreground">Total Stock Value</P>
+          <p className="leading-7 text-sm font-semibold text-muted-foreground">Total Stock Value</p>
           <p className="text-2xl font-bold text-foreground">
             {formatCurrency(valuation.totalStockValue)}
           </p>
         </div>
         <div>
-          <P className="text-sm font-semibold text-muted-foreground">Total Retail Value</P>
+          <p className="leading-7 text-sm font-semibold text-muted-foreground">Total Retail Value</p>
           <p className="text-2xl font-bold text-foreground">
             {formatCurrency(valuation.totalRetailValue)}
           </p>

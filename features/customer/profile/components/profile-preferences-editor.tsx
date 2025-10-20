@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
-import { Muted } from '@/components/ui/typography'
 import { Bell, Globe, DollarSign, Shield } from 'lucide-react'
 import { updateProfilePreferences } from '../api/mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -172,7 +171,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="email-notifications">Email Notifications</Label>
-                  <Muted className="text-xs">Receive updates via email</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">Receive updates via email</p>
                 </div>
                 <Switch
                   id="email-notifications"
@@ -184,7 +183,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="sms-notifications">SMS Notifications</Label>
-                  <Muted className="text-xs">Receive text message alerts</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">Receive text message alerts</p>
                 </div>
                 <Switch
                   id="sms-notifications"
@@ -196,7 +195,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="appointment-reminders">Appointment Reminders</Label>
-                  <Muted className="text-xs">Get reminders before appointments</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">Get reminders before appointments</p>
                 </div>
                 <Switch
                   id="appointment-reminders"
@@ -208,7 +207,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="marketing-emails">Marketing Emails</Label>
-                  <Muted className="text-xs">Receive promotional offers and news</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">Receive promotional offers and news</p>
                 </div>
                 <Switch
                   id="marketing-emails"
@@ -225,11 +224,11 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
           <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
             <Shield className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="space-y-1">
-              <Muted className="text-xs font-medium">Privacy & Data</Muted>
-              <Muted className="text-xs">
+              <p className="text-sm text-muted-foreground text-xs font-medium">Privacy & Data</p>
+              <p className="text-sm text-muted-foreground text-xs">
                 Your preferences are stored securely and only used to improve your experience.
                 You can update these settings at any time.
-              </Muted>
+              </p>
             </div>
           </div>
 

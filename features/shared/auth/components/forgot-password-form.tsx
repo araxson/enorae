@@ -17,7 +17,6 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Stack } from '@/components/layout'
 import { AlertCircle, CheckCircle2, Mail, ArrowLeft } from 'lucide-react'
-import { Small } from '@/components/ui/typography'
 
 export function ForgotPasswordForm() {
   const [error, setError] = useState<string | null>(null)
@@ -45,29 +44,29 @@ export function ForgotPasswordForm() {
     return (
       <div className="w-full max-w-md">
         <Card>
-          <CardHeader>
+          <CardHeader className="text-center space-y-4">
             <div className="mb-4 flex items-center justify-center">
               <div className="rounded-full bg-green-100 p-3">
                 <Mail className="h-6 w-6 text-green-600" />
               </div>
             </div>
-            <CardTitle className="text-center">Check your email</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle>Check your email</CardTitle>
+            <CardDescription>
               We&apos;ve sent a password reset link to <strong>{email}</strong>
             </CardDescription>
           </CardHeader>
 
           <CardContent>
             <Stack gap="md">
-              <Alert className="border-green-200 bg-green-50">
+              <Alert>
                 <CheckCircle2 className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-800">
+                <AlertDescription>
                   Click the link in the email to reset your password. The link will expire in 1
                   hour.
                 </AlertDescription>
               </Alert>
 
-              <Small className="text-center text-muted-foreground">
+              <small className="text-sm font-medium leading-none text-center text-muted-foreground">
                 Didn&apos;t receive the email? Check your spam folder or{' '}
                 <button
                   type="button"
@@ -76,7 +75,7 @@ export function ForgotPasswordForm() {
                 >
                   try again
                 </button>
-              </Small>
+              </small>
             </Stack>
           </CardContent>
 
@@ -125,9 +124,9 @@ export function ForgotPasswordForm() {
                   required
                   autoFocus
                 />
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   We&apos;ll send a password reset link to this email
-                </Small>
+                </small>
               </Stack>
             </Stack>
           </CardContent>

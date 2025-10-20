@@ -1,5 +1,4 @@
 import { Section, Stack } from '@/components/layout'
-import { H1, H2, Muted } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { MapPin } from 'lucide-react'
 import { LocationCard } from './components/location-card'
@@ -16,13 +15,13 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
   return (
     <Stack gap="lg">
       <div>
-        <H1>Location Information</H1>
-        <Muted>Your assigned salon location and other branches</Muted>
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Location Information</h1>
+        <p className="text-sm text-muted-foreground">Your assigned salon location and other branches</p>
       </div>
 
       {myLocation ? (
         <Stack gap="md">
-          <H2>Your Location</H2>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Your Location</h2>
           <LocationCard location={myLocation} />
         </Stack>
       ) : (
@@ -36,7 +35,7 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
 
       {allLocations.length > 1 && (
         <Stack gap="md">
-          <H2>All Salon Locations</H2>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">All Salon Locations</h2>
           <AllLocationsList
             locations={allLocations}
             currentLocationId={myLocation?.id}

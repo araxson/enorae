@@ -1,5 +1,4 @@
 import { Section, Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import {
   getNotificationHistory,
   getNotificationPreferences,
@@ -24,10 +23,10 @@ export async function BusinessNotificationManagement() {
     <Section size="lg">
       <Stack gap="xl">
         <div>
-          <H1>Notification Center</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Notification Center</h1>
+          <p className="leading-7 text-muted-foreground">
             Monitor delivery health, manage templates, and configure automation preferences.
-          </P>
+          </p>
         </div>
 
         <NotificationOverviewCards
@@ -44,9 +43,9 @@ export async function BusinessNotificationManagement() {
 
         <div>
           <h2 className="text-2xl font-semibold mb-2">Delivery History</h2>
-          <P className="text-sm text-muted-foreground mb-4">
+          <p className="leading-7 text-sm text-muted-foreground mb-4">
             Recent notifications and delivery statuses for auditing and troubleshooting.
-          </P>
+          </p>
           <NotificationHistoryTable history={history} />
         </div>
       </Stack>

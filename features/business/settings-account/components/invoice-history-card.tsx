@@ -2,7 +2,6 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted, P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { Download } from 'lucide-react'
 import type { Invoice } from './billing-subscription-form'
@@ -12,8 +11,8 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
     <Card className="p-6">
       <Stack gap="lg">
         <div>
-          <H3>Invoice History</H3>
-          <Muted>Download your past invoices</Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Invoice History</h3>
+          <p className="text-sm text-muted-foreground">Download your past invoices</p>
         </div>
 
         <Separator />
@@ -27,17 +26,17 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
               className="py-2"
             >
               <div className="flex-1">
-                <P className="font-medium">{invoice.id}</P>
-                <Muted className="text-sm">
+                <p className="leading-7 font-medium">{invoice.id}</p>
+                <p className="text-sm text-muted-foreground text-sm">
                   {new Date(invoice.date).toLocaleDateString('en-US', {
                     month: 'long',
                     day: 'numeric',
                     year: 'numeric',
                   })}
-                </Muted>
+                </p>
               </div>
               <div className="flex items-center gap-4">
-                <P className="font-medium">${invoice.amount}</P>
+                <p className="leading-7 font-medium">${invoice.amount}</p>
                 <Badge
                   variant={invoice.status === 'paid' ? 'default' : 'destructive'}
                 >

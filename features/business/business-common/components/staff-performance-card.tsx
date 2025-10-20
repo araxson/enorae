@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Grid, Flex, Box } from '@/components/layout'
-import { Small, Muted } from '@/components/ui/typography'
 import { TrendingUp, Calendar, DollarSign } from 'lucide-react'
 
 interface StaffPerformanceCardProps {
@@ -47,7 +46,7 @@ export function StaffPerformanceCard({
           <CardTitle>{title}</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-[200px]">
-          <Muted>No staff performance data available</Muted>
+          <p className="text-sm text-muted-foreground">No staff performance data available</p>
         </CardContent>
       </Card>
     )
@@ -57,7 +56,7 @@ export function StaffPerformanceCard({
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        {description && <Muted className="text-sm">{description}</Muted>}
+        {description && <p className="text-sm text-muted-foreground text-sm">{description}</p>}
       </CardHeader>
       <CardContent>
         <Stack gap="md">
@@ -65,9 +64,9 @@ export function StaffPerformanceCard({
             <Flex key={member.id} justify="between" align="center" className="p-3 rounded-lg hover:bg-muted/50 transition-colors">
               <Flex gap="md" align="center" className="flex-1">
                 <Box className="flex items-center gap-3">
-                  <Small className="text-muted-foreground min-w-[20px] text-center font-semibold">
+                  <small className="text-sm font-medium leading-none text-muted-foreground min-w-[20px] text-center font-semibold">
                     #{index + 1}
-                  </Small>
+                  </small>
                   <Avatar>
                     <AvatarImage src={member.avatar || undefined} />
                     <AvatarFallback>
@@ -79,7 +78,7 @@ export function StaffPerformanceCard({
                 <Box className="flex-1">
                   <Box className="font-medium">{member.name}</Box>
                   {member.title && (
-                    <Small className="text-muted-foreground">{member.title}</Small>
+                    <small className="text-sm font-medium leading-none text-muted-foreground">{member.title}</small>
                   )}
                 </Box>
               </Flex>
@@ -87,12 +86,12 @@ export function StaffPerformanceCard({
               <Grid cols={2} gap="md" className="min-w-[200px]">
                 <Flex align="center" gap="xs">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <Small className="font-medium">{member.appointmentCount}</Small>
+                  <small className="text-sm font-medium leading-none font-medium">{member.appointmentCount}</small>
                 </Flex>
 
                 <Flex align="center" gap="xs">
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <Small className="font-medium">{formatCurrency(member.totalRevenue)}</Small>
+                  <small className="text-sm font-medium leading-none font-medium">{formatCurrency(member.totalRevenue)}</small>
                 </Flex>
               </Grid>
 

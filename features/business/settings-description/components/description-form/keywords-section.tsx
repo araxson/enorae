@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
-import { H3 } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 import { ArrayInput } from './array-input'
@@ -17,7 +16,7 @@ export function KeywordsSection({ keywords, onKeywordsChange }: KeywordsSectionP
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>SEO Keywords</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">SEO Keywords</h3>
           <Separator />
 
           <ArrayInput

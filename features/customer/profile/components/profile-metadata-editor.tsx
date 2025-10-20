@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Stack } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
 import { Heart, Tag, X } from 'lucide-react'
 import { updateProfileMetadata } from '../api/mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -84,7 +83,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
             <Stack gap="sm">
               <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
                 {interests.length === 0 && (
-                  <Muted className="text-xs">No interests added yet</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">No interests added yet</p>
                 )}
                 {interests.map((interest) => (
                   <Badge key={interest} variant="secondary" className="gap-1">
@@ -122,7 +121,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
             <Stack gap="sm">
               <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
                 {tags.length === 0 && (
-                  <Muted className="text-xs">No tags added yet</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">No tags added yet</p>
                 )}
                 {tags.map((tag) => (
                   <Badge key={tag} variant="outline" className="gap-1">
@@ -156,9 +155,9 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
             {isSaving ? 'Saving...' : 'Save Preferences'}
           </Button>
 
-          <Muted className="text-xs text-center">
+          <p className="text-sm text-muted-foreground text-xs text-center">
             Your preferences help us recommend services and salons that match your style
-          </Muted>
+          </p>
         </Stack>
       </CardContent>
     </Card>

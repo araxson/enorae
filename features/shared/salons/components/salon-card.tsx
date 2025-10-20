@@ -12,7 +12,6 @@ import { Stack, Group } from '@/components/layout'
 import { MapPin, Star, Share2, Info, Calendar, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
-import { P, Small } from '@/components/ui/typography'
 import {
   AmenitiesBadges,
   SpecialtiesTags,
@@ -83,11 +82,11 @@ export function SalonCard({
           {rating !== undefined && (
             <Group gap="xs">
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <Small className="font-medium">{rating.toFixed(1)}</Small>
+              <small className="text-sm font-medium leading-none font-medium">{rating.toFixed(1)}</small>
               {reviewCount !== undefined && (
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   ({reviewCount} reviews)
-                </Small>
+                </small>
               )}
             </Group>
           )}
@@ -97,18 +96,18 @@ export function SalonCard({
       <CardContent>
         <Stack gap="sm">
           {description && (
-            <P className="text-muted-foreground line-clamp-2">
+            <p className="leading-7 text-muted-foreground line-clamp-2">
               {description}
-            </P>
+            </p>
           )}
           <Group gap="xs">
             <MapPin className="h-4 w-4 text-muted-foreground" />
-            <Small className="text-muted-foreground">{location}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">{location}</small>
           </Group>
           {hours && (
             <Group gap="xs">
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <Small className="text-muted-foreground">{hours}</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">{hours}</small>
             </Group>
           )}
           <SalonStats staffCount={staffCount} servicesCount={servicesCount} />

@@ -1,5 +1,4 @@
 import { Section, Stack, Flex } from '@/components/layout'
-import { H1 } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { SessionList } from './components/session-list'
 import { getMySessions, getCurrentSessionId } from './api/queries'
@@ -14,7 +13,7 @@ export function SessionsFeature({ sessions, currentSessionId }: SessionsFeatureP
   return (
     <Stack gap="lg">
       <Flex justify="between" align="center">
-        <H1>Active Sessions</H1>
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Active Sessions</h1>
         {sessions.filter(s => s.is_active).length > 1 && (
           <Button variant="destructive" size="sm">
             Revoke All Other Sessions

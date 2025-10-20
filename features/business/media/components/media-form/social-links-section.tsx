@@ -4,8 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Grid, Stack } from '@/components/layout'
-import { H3 } from '@/components/ui/typography'
-
 type SocialLinks = {
   facebook: string
   instagram: string
@@ -31,7 +29,7 @@ export function SocialLinksSection({ socialLinks }: SocialLinksSectionProps) {
     <Card>
       <CardContent>
         <Stack gap="md">
-          <H3>Social Media Links</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Social Media Links</h3>
           <Grid cols={{ base: 1, md: 2 }} gap="md">
             {SOCIAL_INPUTS.map(({ id, label, placeholder }) => (
               <div key={id}>

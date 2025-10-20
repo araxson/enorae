@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Muted } from '@/components/ui/typography'
 import type { ProductCatalogItem } from '../api/queries'
 import { formatCurrency } from './inventory-utils'
 
@@ -50,9 +49,9 @@ export function InventoryProductCatalogTable({ products }: InventoryProductCatal
                 <div>
                   <p className="font-medium leading-tight">{product.productName}</p>
                   <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                    {product.productSku && <Muted>SKU: {product.productSku}</Muted>}
+                    {product.productSku && <p className="text-sm text-muted-foreground">SKU: {product.productSku}</p>}
                     {product.reorderPoint !== null && (
-                      <Muted>Reorder ≤ {product.reorderPoint}</Muted>
+                      <p className="text-sm text-muted-foreground">Reorder ≤ {product.reorderPoint}</p>
                     )}
                   </div>
                 </div>
@@ -68,16 +67,16 @@ export function InventoryProductCatalogTable({ products }: InventoryProductCatal
                 ) : product.lowStockLocations > 0 ? (
                   <Badge variant="secondary">{product.lowStockLocations}</Badge>
                 ) : (
-                  <Muted>—</Muted>
+                  <p className="text-sm text-muted-foreground">—</p>
                 )}
               </TableCell>
               <TableCell className="text-right">
                 <div className="space-y-1">
                   <p className="font-semibold">{formatCurrency(product.stockValue)}</p>
                   {product.retailValue > 0 && (
-                    <Muted className="text-xs">
+                    <p className="text-sm text-muted-foreground text-xs">
                       Retail {formatCurrency(product.retailValue)}
-                    </Muted>
+                    </p>
                   )}
                 </div>
               </TableCell>
@@ -92,7 +91,7 @@ export function InventoryProductCatalogTable({ products }: InventoryProductCatal
           {products.length === 0 && (
             <TableRow>
               <TableCell colSpan={9} className="py-8 text-center">
-                <Muted>No products found in catalog</Muted>
+                <p className="text-sm text-muted-foreground">No products found in catalog</p>
               </TableCell>
             </TableRow>
           )}

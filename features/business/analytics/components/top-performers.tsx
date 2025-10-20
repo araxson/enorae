@@ -2,8 +2,6 @@ import { Award, Star } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
-
 type TopPerformersProps = {
   services: Array<{ name: string; count: number; revenue: number }>
   staff: Array<{ name: string; title: string | null; count: number; revenue: number }>
@@ -46,9 +44,9 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
                     </Badge>
                     <div>
                       <div className="font-medium">{service.name}</div>
-                      <Muted className="text-xs">
+                      <p className="text-sm text-muted-foreground text-xs">
                         {service.count} bookings
-                      </Muted>
+                      </p>
                     </div>
                   </Flex>
                   <div className="text-right">
@@ -87,9 +85,9 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
                     </Badge>
                     <div>
                       <div className="font-medium">{member.name}</div>
-                      <Muted className="text-xs">
+                      <p className="text-sm text-muted-foreground text-xs">
                         {member.title || 'Staff'} • {member.count} appointments
-                      </Muted>
+                      </p>
                     </div>
                   </Flex>
                   <div className="text-right">

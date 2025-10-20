@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Group, Stack } from '@/components/layout'
 import { format } from 'date-fns'
-import { Small } from '@/components/ui/typography'
 import { confirmAppointment, cancelAppointment, completeAppointment } from '../api/mutations'
 import type { AppointmentWithDetails } from '../api/queries'
 
@@ -74,9 +73,9 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     {appointmentDate ? (
                       <Stack gap="xs">
                         <div>{format(appointmentDate, 'MMM dd, yyyy')}</div>
-                        <Small className="text-muted-foreground">
+                        <small className="text-sm font-medium leading-none text-muted-foreground">
                           {format(appointmentDate, 'h:mm a')}
-                        </Small>
+                        </small>
                       </Stack>
                     ) : (
                       'No date'

@@ -8,8 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Muted } from '@/components/ui/typography'
-
 type Product = {
   productId: string
   productName: string
@@ -41,7 +39,7 @@ export function InventoryTopProductsTable({ products }: TopProductsTableProps) {
                 <div>
                   <p className="font-medium">{product.productName}</p>
                   {product.productSku && (
-                    <Muted className="text-xs">SKU: {product.productSku}</Muted>
+                    <p className="text-sm text-muted-foreground text-xs">SKU: {product.productSku}</p>
                   )}
                 </div>
               </div>
@@ -57,7 +55,7 @@ export function InventoryTopProductsTable({ products }: TopProductsTableProps) {
         {products.length === 0 && (
           <TableRow>
             <TableCell colSpan={3} className="py-8 text-center">
-              <Muted>No product data available</Muted>
+              <p className="text-sm text-muted-foreground">No product data available</p>
             </TableCell>
           </TableRow>
         )}

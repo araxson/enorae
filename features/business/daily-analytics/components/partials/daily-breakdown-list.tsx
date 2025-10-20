@@ -2,7 +2,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Muted, P } from '@/components/ui/typography'
 import type { DailyMetricsDashboardProps } from '../types'
 import { formatCurrency } from '../utils/value-formatters'
 
@@ -27,21 +26,21 @@ export function DailyBreakdownList({ metrics }: Props) {
             >
               <div className="flex items-center gap-4">
                 <div>
-                  <P className="font-medium">
+                  <p className="leading-7 font-medium">
                     {metric.metric_at &&
                       new Date(metric.metric_at).toLocaleDateString('en-US', {
                         weekday: 'short',
                         month: 'short',
                         day: 'numeric',
                       })}
-                  </P>
-                  <Muted className="text-xs">{metric.total_appointments || 0} appointments</Muted>
+                  </p>
+                  <p className="text-sm text-muted-foreground text-xs">{metric.total_appointments || 0} appointments</p>
                 </div>
               </div>
               <div className="flex items-center gap-6">
                 <div className="text-right">
-                  <P className="font-medium">{formatCurrency(metric.total_revenue || 0)}</P>
-                  <Muted className="text-xs">{metric.completed_appointments || 0} completed</Muted>
+                  <p className="leading-7 font-medium">{formatCurrency(metric.total_revenue || 0)}</p>
+                  <p className="text-sm text-muted-foreground text-xs">{metric.completed_appointments || 0} completed</p>
                 </div>
                 <div className="text-right min-w-16">
                   <Badge variant="outline">{(metric.utilization_rate || 0).toFixed(1)}%</Badge>

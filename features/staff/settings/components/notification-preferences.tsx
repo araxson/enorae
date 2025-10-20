@@ -5,7 +5,6 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { updateUserPreferences } from '../api/mutations'
 import type { NotificationPreferences, NotificationChannel } from '../types'
 
@@ -56,8 +55,8 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
     <Card className="p-6">
       <Stack gap="lg">
         <div>
-          <H3>Notification Preferences</H3>
-          <Muted>Choose how you want to be notified</Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Notification Preferences</h3>
+          <p className="text-sm text-muted-foreground">Choose how you want to be notified</p>
         </div>
 
         <div className="overflow-x-auto">

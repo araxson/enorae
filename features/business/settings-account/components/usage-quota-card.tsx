@@ -1,6 +1,5 @@
 import { Card } from '@/components/ui/card'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { AlertCircle } from 'lucide-react'
 import type { UsageQuota } from './billing-subscription-form'
 
@@ -9,8 +8,8 @@ export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
     <Card className="p-6">
       <Stack gap="lg">
         <div>
-          <H3>Usage & Quotas</H3>
-          <Muted>Current usage against your plan limits</Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Usage & Quotas</h3>
+          <p className="text-sm text-muted-foreground">Current usage against your plan limits</p>
         </div>
 
         <Stack gap="md">
@@ -37,9 +36,9 @@ export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
                 {isNearLimit && (
                   <Flex gap="sm" align="center" className="mt-1">
                     <AlertCircle className="h-3 w-3 text-red-500" />
-                    <Muted className="text-xs text-red-600">
+                    <p className="text-sm text-muted-foreground text-xs text-red-600">
                       Approaching limit - consider upgrading
-                    </Muted>
+                    </p>
                   </Flex>
                 )}
               </div>

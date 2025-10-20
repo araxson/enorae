@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Flex } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import { ShieldCheck, AlertTriangle, ClipboardCheck, Users, TrendingUp, Gauge } from 'lucide-react'
 import type { StaffDashboardStats } from '../api/queries'
 
@@ -57,7 +56,7 @@ export function StaffStats({ stats }: { stats: StaffDashboardStats }) {
             <CardContent className="p-4">
               <Flex justify="between" align="center">
                 <div>
-                  <P className="text-sm text-muted-foreground">{card.label}</P>
+                  <p className="leading-7 text-sm text-muted-foreground">{card.label}</p>
                   <p className="text-2xl font-semibold mt-1">{card.value}</p>
                 </div>
                 <Icon className={`${STAT_ICON_CLASSES} ${card.tone}`} />

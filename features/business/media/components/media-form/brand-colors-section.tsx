@@ -4,8 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Grid, Stack } from '@/components/layout'
-import { H3 } from '@/components/ui/typography'
-
 type BrandColors = {
   primary: string
   secondary: string
@@ -21,7 +19,7 @@ export function BrandColorsSection({ brandColors }: BrandColorsSectionProps) {
     <Card>
       <CardContent>
         <Stack gap="md">
-          <H3>Brand Colors</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Brand Colors</h3>
           <Grid cols={{ base: 1, md: 3 }} gap="md">
             <div>
               <Label htmlFor="brand_primary">Primary Color</Label>

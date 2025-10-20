@@ -6,7 +6,6 @@ import {
 } from './api/queries'
 import { AdvancedSearchClient } from './components/advanced-search-client'
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 
 interface SalonSearchProps {
   searchParams: {
@@ -37,10 +36,10 @@ export async function SalonSearch({ searchParams }: SalonSearchProps) {
   return (
     <Stack gap="xl">
       <div>
-        <H1>Find Your Perfect Salon</H1>
-        <P className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Find Your Perfect Salon</h1>
+        <p className="leading-7 text-muted-foreground">
           Advanced search with filters, fuzzy matching, and intelligent suggestions
-        </P>
+        </p>
       </div>
 
       <AdvancedSearchClient

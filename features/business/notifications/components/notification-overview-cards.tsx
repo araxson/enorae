@@ -36,7 +36,7 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
     <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="md">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Notifications Processed</CardTitle>
+          <CardTitle>Notifications Processed</CardTitle>
           <Bell className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -49,7 +49,7 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Failure Rate</CardTitle>
+          <CardTitle>Failure Rate</CardTitle>
           <AlertTriangle className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -64,7 +64,7 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Top Channel</CardTitle>
+          <CardTitle>Top Channel</CardTitle>
           <Wifi className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -83,7 +83,7 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Status Breakdown</CardTitle>
+          <CardTitle>Status Breakdown</CardTitle>
           <Inbox className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">

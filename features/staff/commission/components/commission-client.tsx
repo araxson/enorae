@@ -5,7 +5,6 @@ import { DollarSign, TrendingUp, Calendar, PieChart } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Muted, P } from '@/components/ui/typography'
 import type { CommissionData, DailyEarnings, ServiceRevenue, CommissionRate, PayoutSchedule } from '../api/queries'
 import { EarningsChart } from './earnings-chart'
 import { ServiceBreakdown } from './service-breakdown'
@@ -58,45 +57,45 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Today&apos;s Earnings</CardTitle>
+          <CardTitle>Today&apos;s Earnings</CardTitle>
           <DollarSign className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${commission.todayEarnings.toFixed(2)}</div>
-          <Muted className="text-xs">Revenue from completed appointments</Muted>
+          <p className="text-sm text-muted-foreground text-xs">Revenue from completed appointments</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">This Week</CardTitle>
+          <CardTitle>This Week</CardTitle>
           <Calendar className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${commission.weekEarnings.toFixed(2)}</div>
-          <Muted className="text-xs">Week-to-date earnings</Muted>
+          <p className="text-sm text-muted-foreground text-xs">Week-to-date earnings</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">This Month</CardTitle>
+          <CardTitle>This Month</CardTitle>
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${commission.monthEarnings.toFixed(2)}</div>
-          <Muted className="text-xs">Monthly revenue total</Muted>
+          <p className="text-sm text-muted-foreground text-xs">Monthly revenue total</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Avg Per Appointment</CardTitle>
+          <CardTitle>Avg Per Appointment</CardTitle>
           <PieChart className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${commission.avgPerAppointment.toFixed(2)}</div>
-          <Muted className="text-xs">{commission.totalAppointments} appointments this month</Muted>
+          <p className="text-sm text-muted-foreground text-xs">{commission.totalAppointments} appointments this month</p>
         </CardContent>
       </Card>
     </div>
@@ -139,17 +138,17 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
             <CardTitle>Commission summary</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <P className="text-sm text-muted-foreground">
+            <p className="leading-7 text-sm text-muted-foreground">
               Your commission is calculated based on completed appointments. The figures shown represent the total service revenue from appointments you&apos;ve completed.
-            </P>
+            </p>
             <div className="grid gap-4 pt-4 md:grid-cols-2">
               <div>
-                <Muted className="text-xs uppercase">Completed appointments</Muted>
-                <P className="text-lg font-semibold">{commission.totalAppointments}</P>
+                <p className="text-sm text-muted-foreground text-xs uppercase">Completed appointments</p>
+                <p className="leading-7 text-lg font-semibold">{commission.totalAppointments}</p>
               </div>
               <div>
-                <Muted className="text-xs uppercase">Month revenue</Muted>
-                <P className="text-lg font-semibold">${commission.monthEarnings.toFixed(2)}</P>
+                <p className="text-sm text-muted-foreground text-xs uppercase">Month revenue</p>
+                <p className="leading-7 text-lg font-semibold">${commission.monthEarnings.toFixed(2)}</p>
               </div>
             </div>
           </CardContent>

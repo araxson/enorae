@@ -4,7 +4,7 @@
  * Auto-generated from Supabase database schema
  *
  * Project ID: nwmcpfioxerzodvbjigw
- * Generated: 2025-10-11 05:04:58
+ * Generated: 2025-10-18 10:53:28
  * Schemas: 27 schemas
  *
  * CRITICAL:
@@ -32,9 +32,120 @@ export type Database = {
   }
   admin: {
     Tables: {
-      [_ in never]: never
+      query_routing_config: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          priority: number | null
+          query_pattern: string
+          route_to: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          priority?: number | null
+          query_pattern: string
+          route_to?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          priority?: number | null
+          query_pattern?: string
+          route_to?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      schema_audit_fixes: {
+        Row: {
+          applied_at: string | null
+          created_at: string | null
+          fix_category: string
+          fix_description: string | null
+          fix_name: string
+          id: string
+          status: string | null
+        }
+        Insert: {
+          applied_at?: string | null
+          created_at?: string | null
+          fix_category: string
+          fix_description?: string | null
+          fix_name: string
+          id?: string
+          status?: string | null
+        }
+        Update: {
+          applied_at?: string | null
+          created_at?: string | null
+          fix_category?: string
+          fix_description?: string | null
+          fix_name?: string
+          id?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      vacuum_history: {
+        Row: {
+          completed_at: string | null
+          dead_tuples_after: number | null
+          dead_tuples_before: number | null
+          duration_seconds: number | null
+          id: string
+          schema_name: string
+          table_name: string
+          vacuum_type: string
+        }
+        Insert: {
+          completed_at?: string | null
+          dead_tuples_after?: number | null
+          dead_tuples_before?: number | null
+          duration_seconds?: number | null
+          id?: string
+          schema_name: string
+          table_name: string
+          vacuum_type: string
+        }
+        Update: {
+          completed_at?: string | null
+          dead_tuples_after?: number | null
+          dead_tuples_before?: number | null
+          duration_seconds?: number | null
+          id?: string
+          schema_name?: string
+          table_name?: string
+          vacuum_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
+      audit_fix_progress: {
+        Row: {
+          completed_fixes: number | null
+          completion_percentage: number | null
+          failed_fixes: number | null
+          fix_category: string | null
+          pending_fixes: number | null
+          total_fixes: number | null
+        }
+        Relationships: []
+      }
+      constraint_violations: {
+        Row: {
+          table_name: string | null
+          violation_count: number | null
+          violation_type: string | null
+        }
+        Relationships: []
+      }
       foreign_key_analysis: {
         Row: {
           column_name: unknown | null
@@ -46,6 +157,135 @@ export type Database = {
           index_name: unknown | null
           table_name: unknown | null
           table_schema: unknown | null
+        }
+        Relationships: []
+      }
+      improvements_summary: {
+        Row: {
+          description: string | null
+          expected_benefit: string | null
+          feature: string | null
+        }
+        Relationships: []
+      }
+      index_usage_monitor: {
+        Row: {
+          idx_scan: number | null
+          idx_tup_fetch: number | null
+          idx_tup_read: number | null
+          index_name: unknown | null
+          is_never_scanned: boolean | null
+          schemaname: unknown | null
+          size_bytes: number | null
+          size_pretty: string | null
+          table_name: unknown | null
+        }
+        Relationships: []
+      }
+      index_usage_recommendations: {
+        Row: {
+          idx_scan: number | null
+          index_size: string | null
+          indexname: unknown | null
+          schemaname: unknown | null
+          tablename: unknown | null
+          usage_category: string | null
+        }
+        Relationships: []
+      }
+      multi_column_index_stats: {
+        Row: {
+          index_size: string | null
+          indexname: unknown | null
+          schemaname: unknown | null
+          table_size: string | null
+          tablename: unknown | null
+          times_used: number | null
+          tuples_fetched: number | null
+          tuples_read: number | null
+        }
+        Relationships: []
+      }
+      query_routing_stats: {
+        Row: {
+          active_rules: number | null
+          avg_priority: number | null
+          route_to: string | null
+          total_queries: number | null
+        }
+        Relationships: []
+      }
+      rls_policy_summary: {
+        Row: {
+          policies: unknown[] | null
+          policy_count: number | null
+          schemaname: unknown | null
+          status: string | null
+          tablename: unknown | null
+        }
+        Relationships: []
+      }
+      schema_sizes: {
+        Row: {
+          data_size: string | null
+          index_size: string | null
+          schemaname: unknown | null
+          table_count: number | null
+          total_size: string | null
+        }
+        Relationships: []
+      }
+      table_bloat: {
+        Row: {
+          dead_tuple_pct: number | null
+          dead_tuples: number | null
+          health_status: string | null
+          last_autovacuum: string | null
+          last_vacuum: string | null
+          live_tuples: number | null
+          schemaname: unknown | null
+          tablename: unknown | null
+          total_size: string | null
+        }
+        Relationships: []
+      }
+      table_bloat_monitor: {
+        Row: {
+          dead_tuple_percent: number | null
+          dead_tuples: number | null
+          last_analyze: string | null
+          last_autoanalyze: string | null
+          last_autovacuum: string | null
+          last_vacuum: string | null
+          live_tuples: number | null
+          schemaname: unknown | null
+          tablename: unknown | null
+          total_size: string | null
+        }
+        Relationships: []
+      }
+      unused_indexes: {
+        Row: {
+          idx_scan: number | null
+          indexrelname: unknown | null
+          pct_of_table: number | null
+          schemaname: unknown | null
+          size: string | null
+          table_size: string | null
+          tablename: unknown | null
+          usage_category: string | null
+        }
+        Relationships: []
+      }
+      vacuum_recommendations: {
+        Row: {
+          last_autovacuum: string | null
+          n_dead_tup: number | null
+          n_live_tup: number | null
+          priority: string | null
+          schemaname: unknown | null
+          table_size: string | null
+          tablename: unknown | null
         }
         Relationships: []
       }
@@ -63,6 +303,10 @@ export type Database = {
       }
       refresh_foreign_key_analysis: {
         Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      vacuum_table: {
+        Args: { p_full?: boolean; p_schema: string; p_table: string }
         Returns: undefined
       }
     }
@@ -151,13 +395,246 @@ export type Database = {
           updated_at?: string
           utilization_rate?: number | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "fk_daily_metrics_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_daily_mv"
+            referencedColumns: ["salon_id"]
+          },
+        ]
+      }
+      daily_metrics_p2025_09: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string
+          id: string
+          metric_at: string
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string
+        }
+        Insert: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Update: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at?: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id?: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      daily_metrics_p2025_10: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string
+          id: string
+          metric_at: string
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string
+        }
+        Insert: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Update: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at?: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id?: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      daily_metrics_p2025_11: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string
+          id: string
+          metric_at: string
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string
+        }
+        Insert: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Update: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at?: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id?: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      daily_metrics_p2025_12: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string
+          id: string
+          metric_at: string
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string
+        }
+        Insert: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Update: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at?: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id?: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      daily_metrics_partitioned: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string
+          id: string
+          metric_at: string
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string
+        }
+        Insert: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
+        Update: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          id?: string
+          metric_at?: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id?: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+        }
         Relationships: []
       }
       manual_transactions: {
         Row: {
           appointment_id: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           customer_id: string | null
           id: string
           payment_method: string | null
@@ -170,7 +647,7 @@ export type Database = {
         Insert: {
           appointment_id?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           customer_id?: string | null
           id?: string
           payment_method?: string | null
@@ -183,7 +660,7 @@ export type Database = {
         Update: {
           appointment_id?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           customer_id?: string | null
           id?: string
           payment_method?: string | null
@@ -192,6 +669,48 @@ export type Database = {
           transaction_at?: string
           transaction_type?: string
           updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_manual_transactions_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_daily_mv"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_manual_transactions_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_performance_mv"
+            referencedColumns: ["staff_id"]
+          },
+        ]
+      }
+      mv_refresh_log: {
+        Row: {
+          error_message: string | null
+          last_refresh: string | null
+          refresh_duration: unknown | null
+          row_count: number | null
+          status: string | null
+          view_name: string
+        }
+        Insert: {
+          error_message?: string | null
+          last_refresh?: string | null
+          refresh_duration?: unknown | null
+          row_count?: number | null
+          status?: string | null
+          view_name: string
+        }
+        Update: {
+          error_message?: string | null
+          last_refresh?: string | null
+          refresh_duration?: unknown | null
+          row_count?: number | null
+          status?: string | null
+          view_name?: string
         }
         Relationships: []
       }
@@ -244,13 +763,146 @@ export type Database = {
           trend_indicators?: Json | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_operational_metrics_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_daily_mv"
+            referencedColumns: ["salon_id"]
+          },
+        ]
       }
     }
     Views: {
-      [_ in never]: never
+      customer_activity_mv: {
+        Row: {
+          avg_rating_given: number | null
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          customer_id: string | null
+          first_appointment_date: string | null
+          last_appointment_date: string | null
+          reviews_written: number | null
+          salons_visited: number | null
+          total_appointments: number | null
+          unique_services_used: number | null
+        }
+        Relationships: []
+      }
+      daily_metrics_current: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string | null
+          id: string | null
+          metric_at: string | null
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string | null
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string | null
+        }
+        Relationships: []
+      }
+      metrics_table_summary: {
+        Row: {
+          column_count: number | null
+          purpose: string | null
+          recommendation: string | null
+          table_name: string | null
+        }
+        Relationships: []
+      }
+      mv_refresh_health: {
+        Row: {
+          avg_duration_seconds: number | null
+          failure_count: number | null
+          last_error: string | null
+          last_refresh_time: string | null
+          success_count: number | null
+          total_rows_refreshed: number | null
+          view_name: string | null
+        }
+        Relationships: []
+      }
+      salon_metrics_daily_mv: {
+        Row: {
+          avg_appointment_duration_minutes: number | null
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          metric_date: string | null
+          no_show_appointments: number | null
+          salon_id: string | null
+          salon_name: string | null
+          staff_utilized: number | null
+          total_appointments: number | null
+          total_service_minutes: number | null
+          unique_customers: number | null
+        }
+        Relationships: []
+      }
+      service_popularity_mv: {
+        Row: {
+          avg_duration_minutes: number | null
+          category_id: string | null
+          completed_bookings: number | null
+          metric_month: string | null
+          salon_id: string | null
+          service_id: string | null
+          service_name: string | null
+          staff_providers: number | null
+          times_booked: number | null
+          unique_customers: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_services_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_daily_mv"
+            referencedColumns: ["salon_id"]
+          },
+        ]
+      }
+      staff_performance_mv: {
+        Row: {
+          avg_appointment_duration: number | null
+          avg_rating: number | null
+          completed_appointments: number | null
+          metric_month: string | null
+          salon_id: string | null
+          staff_id: string | null
+          total_appointments: number | null
+          total_reviews: number | null
+          total_service_minutes: number | null
+          unique_clients: number | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_daily_mv"
+            referencedColumns: ["salon_id"]
+          },
+        ]
+      }
     }
     Functions: {
+      bulk_update_salon_stats: {
+        Args: { p_salon_ids: string[] }
+        Returns: {
+          avg_rating: number
+          salon_id: string
+          success: boolean
+          total_appointments: number
+          total_revenue: number
+        }[]
+      }
       calculate_avg_days_between_visits: {
         Args: { p_customer_id: string; p_salon_id: string }
         Returns: number
@@ -327,6 +979,10 @@ export type Database = {
           services_performed: number
         }[]
       }
+      create_monthly_partition: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       database_optimization_complete: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -335,8 +991,20 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      maintain_partitions: {
+        Args: { retention_months?: number }
+        Returns: undefined
+      }
       refresh_daily_metrics: {
         Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      refresh_materialized_views: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      refresh_mv: {
+        Args: { p_schema?: string; p_view_name: string }
         Returns: undefined
       }
       refresh_service_performance: {
@@ -361,6 +1029,75 @@ export type Database = {
   }
   archive: {
     Tables: {
+      appointments: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string | null
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          service_count: number | null
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          service_count?: number | null
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          service_count?: number | null
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      event_batches: {
+        Row: {
+          id: string
+          received_at: string | null
+          source: string
+        }
+        Insert: {
+          id?: string
+          received_at?: string | null
+          source: string
+        }
+        Update: {
+          id?: string
+          received_at?: string | null
+          source?: string
+        }
+        Relationships: []
+      }
       events_archived: {
         Row: {
           action: string
@@ -473,14 +1210,72 @@ export type Database = {
           user_agent?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "events_archived_batch_fk"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "event_batches"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
-      [_ in never]: never
+      archive_tables_summary: {
+        Row: {
+          column_count: number | null
+          schemaname: unknown | null
+          tablename: unknown | null
+          total_size: string | null
+        }
+        Relationships: []
+      }
+      statistics: {
+        Row: {
+          cold_count: number | null
+          cold_newest: string | null
+          cold_size: string | null
+          hot_count: number | null
+          hot_oldest: string | null
+          hot_size: string | null
+          table_name: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      auto_archive_old_data: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      create_archive_table: {
+        Args: { source_schema: string; source_table: string }
+        Returns: undefined
+      }
+      is_valid_event_metadata: {
+        Args: { metadata: Json }
+        Returns: boolean
+      }
+      move_old_appointments: {
+        Args: { p_older_than_months?: number }
+        Returns: {
+          archived_count: number
+          deleted_count: number
+        }[]
+      }
+      purge_old_archives: {
+        Args: { archive_table_name: string; older_than_days?: number }
+        Returns: number
+      }
+      restore_appointments: {
+        Args: { p_appointment_ids: string[] }
+        Returns: number
+      }
+      restore_from_archive: {
+        Args: { record_id: string; source_schema: string; source_table: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
@@ -510,6 +1305,9 @@ export type Database = {
           request_id: string | null
           salon_id: string | null
           severity: string | null
+          target_id: string | null
+          target_schema: string
+          target_table: string
           user_agent: string | null
           user_id: string | null
         }
@@ -531,6 +1329,9 @@ export type Database = {
           request_id?: string | null
           salon_id?: string | null
           severity?: string | null
+          target_id?: string | null
+          target_schema: string
+          target_table: string
           user_agent?: string | null
           user_id?: string | null
         }
@@ -552,10 +1353,21 @@ export type Database = {
           request_id?: string | null
           salon_id?: string | null
           severity?: string | null
+          target_id?: string | null
+          target_schema?: string
+          target_table?: string
           user_agent?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_target_fk"
+            columns: ["target_schema", "target_table", "target_id"]
+            isOneToOne: false
+            referencedRelation: "record_registry"
+            referencedColumns: ["target_schema", "target_table", "record_id"]
+          },
+        ]
       }
       data_changes: {
         Row: {
@@ -566,6 +1378,8 @@ export type Database = {
           operation: string
           record_id: string
           table_name: string
+          target_schema: string
+          target_table: string
         }
         Insert: {
           changed_at?: string
@@ -575,6 +1389,8 @@ export type Database = {
           operation: string
           record_id: string
           table_name: string
+          target_schema: string
+          target_table: string
         }
         Update: {
           changed_at?: string
@@ -584,6 +1400,99 @@ export type Database = {
           operation?: string
           record_id?: string
           table_name?: string
+          target_schema?: string
+          target_table?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_changes_target_fk"
+            columns: ["target_schema", "target_table", "record_id"]
+            isOneToOne: false
+            referencedRelation: "record_registry"
+            referencedColumns: ["target_schema", "target_table", "record_id"]
+          },
+        ]
+      }
+      record_registry: {
+        Row: {
+          record_id: string
+          target_schema: string
+          target_table: string
+        }
+        Insert: {
+          record_id: string
+          target_schema: string
+          target_table: string
+        }
+        Update: {
+          record_id?: string
+          target_schema?: string
+          target_table?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "record_registry_target_schema_target_table_fkey"
+            columns: ["target_schema", "target_table"]
+            isOneToOne: false
+            referencedRelation: "target_registry"
+            referencedColumns: ["schema_name", "table_name"]
+          },
+        ]
+      }
+      target_registry: {
+        Row: {
+          schema_name: string
+          table_name: string
+        }
+        Insert: {
+          schema_name: string
+          table_name: string
+        }
+        Update: {
+          schema_name?: string
+          table_name?: string
+        }
+        Relationships: []
+      }
+      user_actions: {
+        Row: {
+          action: string
+          changes: Json | null
+          id: string
+          ip_address: unknown | null
+          performed_at: string
+          record_id: string
+          table_name: string
+          table_schema: string
+          user_agent: string | null
+          user_id: string | null
+          user_snapshot: Json | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          performed_at?: string
+          record_id: string
+          table_name: string
+          table_schema: string
+          user_agent?: string | null
+          user_id?: string | null
+          user_snapshot?: Json | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          performed_at?: string
+          record_id?: string
+          table_name?: string
+          table_schema?: string
+          user_agent?: string | null
+          user_id?: string | null
+          user_snapshot?: Json | null
         }
         Relationships: []
       }
@@ -612,6 +1521,10 @@ export type Database = {
       can_view_audit_logs: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      capture_user_info: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       comprehensive_rls_audit: {
         Args: Record<PropertyKey, never>
@@ -992,11 +1905,89 @@ export type Database = {
           },
         ]
       }
+      oauth_authorizations: {
+        Row: {
+          approved_at: string | null
+          authorization_code: string | null
+          authorization_id: string
+          client_id: string
+          code_challenge: string | null
+          code_challenge_method:
+            | Database["auth"]["Enums"]["code_challenge_method"]
+            | null
+          created_at: string
+          expires_at: string
+          id: string
+          redirect_uri: string
+          resource: string | null
+          response_type: Database["auth"]["Enums"]["oauth_response_type"]
+          scope: string
+          state: string | null
+          status: Database["auth"]["Enums"]["oauth_authorization_status"]
+          user_id: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          authorization_code?: string | null
+          authorization_id: string
+          client_id: string
+          code_challenge?: string | null
+          code_challenge_method?:
+            | Database["auth"]["Enums"]["code_challenge_method"]
+            | null
+          created_at?: string
+          expires_at?: string
+          id: string
+          redirect_uri: string
+          resource?: string | null
+          response_type?: Database["auth"]["Enums"]["oauth_response_type"]
+          scope: string
+          state?: string | null
+          status?: Database["auth"]["Enums"]["oauth_authorization_status"]
+          user_id?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          authorization_code?: string | null
+          authorization_id?: string
+          client_id?: string
+          code_challenge?: string | null
+          code_challenge_method?:
+            | Database["auth"]["Enums"]["code_challenge_method"]
+            | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          redirect_uri?: string
+          resource?: string | null
+          response_type?: Database["auth"]["Enums"]["oauth_response_type"]
+          scope?: string
+          state?: string | null
+          status?: Database["auth"]["Enums"]["oauth_authorization_status"]
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oauth_authorizations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "oauth_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oauth_authorizations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       oauth_clients: {
         Row: {
-          client_id: string
           client_name: string | null
-          client_secret_hash: string
+          client_secret_hash: string | null
+          client_type: Database["auth"]["Enums"]["oauth_client_type"]
           client_uri: string | null
           created_at: string
           deleted_at: string | null
@@ -1008,9 +1999,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          client_id: string
           client_name?: string | null
-          client_secret_hash: string
+          client_secret_hash?: string | null
+          client_type?: Database["auth"]["Enums"]["oauth_client_type"]
           client_uri?: string | null
           created_at?: string
           deleted_at?: string | null
@@ -1022,9 +2013,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          client_id?: string
           client_name?: string | null
-          client_secret_hash?: string
+          client_secret_hash?: string | null
+          client_type?: Database["auth"]["Enums"]["oauth_client_type"]
           client_uri?: string | null
           created_at?: string
           deleted_at?: string | null
@@ -1036,6 +2027,48 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      oauth_consents: {
+        Row: {
+          client_id: string
+          granted_at: string
+          id: string
+          revoked_at: string | null
+          scopes: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          granted_at?: string
+          id: string
+          revoked_at?: string | null
+          scopes: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          granted_at?: string
+          id?: string
+          revoked_at?: string | null
+          scopes?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oauth_consents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "oauth_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oauth_consents_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       one_time_tokens: {
         Row: {
@@ -1231,6 +2264,7 @@ export type Database = {
           id: string
           ip: unknown | null
           not_after: string | null
+          oauth_client_id: string | null
           refreshed_at: string | null
           tag: string | null
           updated_at: string | null
@@ -1244,6 +2278,7 @@ export type Database = {
           id: string
           ip?: unknown | null
           not_after?: string | null
+          oauth_client_id?: string | null
           refreshed_at?: string | null
           tag?: string | null
           updated_at?: string | null
@@ -1257,6 +2292,7 @@ export type Database = {
           id?: string
           ip?: unknown | null
           not_after?: string | null
+          oauth_client_id?: string | null
           refreshed_at?: string | null
           tag?: string | null
           updated_at?: string | null
@@ -1264,6 +2300,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "sessions_oauth_client_id_fkey"
+            columns: ["oauth_client_id"]
+            isOneToOne: false
+            referencedRelation: "oauth_clients"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "sessions_user_id_fkey"
             columns: ["user_id"]
@@ -1470,7 +2513,10 @@ export type Database = {
       code_challenge_method: "s256" | "plain"
       factor_status: "unverified" | "verified"
       factor_type: "totp" | "webauthn" | "phone"
+      oauth_authorization_status: "pending" | "approved" | "denied" | "expired"
+      oauth_client_type: "public" | "confidential"
       oauth_registration_type: "dynamic" | "manual"
+      oauth_response_type: "code"
       one_time_token_type:
         | "confirmation_token"
         | "reauthentication_token"
@@ -1489,7 +2535,7 @@ export type Database = {
         Row: {
           buffer_minutes: number | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           duration_minutes: number | null
@@ -1499,12 +2545,12 @@ export type Database = {
           service_id: string
           total_duration_minutes: number | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           buffer_minutes?: number | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           duration_minutes?: number | null
@@ -1514,12 +2560,12 @@ export type Database = {
           service_id: string
           total_duration_minutes?: number | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           buffer_minutes?: number | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           duration_minutes?: number | null
@@ -1529,11 +2575,11 @@ export type Database = {
           service_id?: string
           total_duration_minutes?: number | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_service_booking_rules_service"
+            foreignKeyName: "fk_service_booking_rules_service_id"
             columns: ["service_id"]
             isOneToOne: true
             referencedRelation: "services"
@@ -1544,7 +2590,7 @@ export type Database = {
       service_categories: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           depth: number | null
@@ -1556,11 +2602,11 @@ export type Database = {
           salon_id: string
           slug: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           depth?: number | null
@@ -1572,11 +2618,11 @@ export type Database = {
           salon_id: string
           slug: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           depth?: number | null
@@ -1588,11 +2634,11 @@ export type Database = {
           salon_id?: string
           slug?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "service_categories_core_norm_parent_id_fkey"
+            foreignKeyName: "fk_service_categories_parent_id"
             columns: ["parent_id"]
             isOneToOne: false
             referencedRelation: "service_categories"
@@ -1606,7 +2652,7 @@ export type Database = {
           commission_rate: number | null
           cost: number | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           currency_code: string
           current_price: number | null
           deleted_at: string | null
@@ -1618,14 +2664,14 @@ export type Database = {
           service_id: string
           tax_rate: number | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           base_price: number
           commission_rate?: number | null
           cost?: number | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           currency_code?: string
           current_price?: number | null
           deleted_at?: string | null
@@ -1637,14 +2683,14 @@ export type Database = {
           service_id: string
           tax_rate?: number | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           base_price?: number
           commission_rate?: number | null
           cost?: number | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           currency_code?: string
           current_price?: number | null
           deleted_at?: string | null
@@ -1656,11 +2702,11 @@ export type Database = {
           service_id?: string
           tax_rate?: number | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_service_pricing_service"
+            foreignKeyName: "fk_service_pricing_service_id"
             columns: ["service_id"]
             isOneToOne: true
             referencedRelation: "services"
@@ -1672,7 +2718,7 @@ export type Database = {
         Row: {
           category_id: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           description: string | null
@@ -1685,12 +2731,12 @@ export type Database = {
           salon_id: string
           slug: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           category_id?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           description?: string | null
@@ -1703,12 +2749,12 @@ export type Database = {
           salon_id: string
           slug: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           category_id?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           description?: string | null
@@ -1721,11 +2767,11 @@ export type Database = {
           salon_id?: string
           slug?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_services_category"
+            foreignKeyName: "fk_services_category_id"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "service_categories"
@@ -1736,70 +2782,64 @@ export type Database = {
       staff_services: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           duration_override: number | null
           id: string
           is_available: boolean
           notes: string | null
-          performed_count: number | null
           price_override: number | null
           proficiency_level:
             | Database["public"]["Enums"]["proficiency_level"]
             | null
           rating_average: number | null
-          rating_count: number | null
           service_id: string
           staff_id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           duration_override?: number | null
           id?: string
           is_available?: boolean
           notes?: string | null
-          performed_count?: number | null
           price_override?: number | null
           proficiency_level?:
             | Database["public"]["Enums"]["proficiency_level"]
             | null
           rating_average?: number | null
-          rating_count?: number | null
           service_id: string
           staff_id: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           duration_override?: number | null
           id?: string
           is_available?: boolean
           notes?: string | null
-          performed_count?: number | null
           price_override?: number | null
           proficiency_level?:
             | Database["public"]["Enums"]["proficiency_level"]
             | null
           rating_average?: number | null
-          rating_count?: number | null
           service_id?: string
           staff_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_staff_services_service"
+            foreignKeyName: "fk_staff_services_service_id"
             columns: ["service_id"]
             isOneToOne: false
             referencedRelation: "services"
@@ -1809,7 +2849,80 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      staff_services_with_metrics: {
+        Row: {
+          avg_rating: number | null
+          created_at: string | null
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          duration_override: number | null
+          id: string | null
+          is_available: boolean | null
+          notes: string | null
+          performed_count: number | null
+          price_override: number | null
+          proficiency_level:
+            | Database["public"]["Enums"]["proficiency_level"]
+            | null
+          rating_average: number | null
+          service_id: string | null
+          staff_id: string | null
+          updated_at: string | null
+          updated_by_id: string | null
+        }
+        Insert: {
+          avg_rating?: never
+          created_at?: string | null
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          duration_override?: number | null
+          id?: string | null
+          is_available?: boolean | null
+          notes?: string | null
+          performed_count?: never
+          price_override?: number | null
+          proficiency_level?:
+            | Database["public"]["Enums"]["proficiency_level"]
+            | null
+          rating_average?: number | null
+          service_id?: string | null
+          staff_id?: string | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+        Update: {
+          avg_rating?: never
+          created_at?: string | null
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          duration_override?: number | null
+          id?: string | null
+          is_available?: boolean | null
+          notes?: string | null
+          performed_count?: never
+          price_override?: number | null
+          proficiency_level?:
+            | Database["public"]["Enums"]["proficiency_level"]
+            | null
+          rating_average?: number | null
+          service_id?: string | null
+          staff_id?: string | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_services_service_id"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       apply_dynamic_pricing: {
@@ -1820,6 +2933,16 @@ export type Database = {
           p_service_id: string
         }
         Returns: number
+      }
+      bulk_create_services: {
+        Args: { p_services: Json[] }
+        Returns: {
+          error_message: string
+          id: string
+          name: string
+          salon_id: string
+          success: boolean
+        }[]
       }
       calculate_service_duration: {
         Args: { p_service_id: string; p_variant_id?: string }
@@ -1840,12 +2963,14 @@ export type Database = {
       get_service_with_details: {
         Args: Record<PropertyKey, never> | { p_service_id: string }
         Returns: {
-          category_name: string
+          base_price: number
+          category_id: string
           description: string
           duration_minutes: number
-          price: number
-          service_id: string
-          service_name: string
+          id: string
+          is_active: boolean
+          name: string
+          salon_id: string
         }[]
       }
       search_services_fulltext: {
@@ -2011,7 +3136,15 @@ export type Database = {
           to_user_id?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_messages_context_id"
+            columns: ["context_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       webhook_queue: {
         Row: {
@@ -2130,7 +3263,15 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      message_context_type:
+        | "appointment"
+        | "booking"
+        | "cancellation"
+        | "reminder"
+        | "general"
+        | "support"
+        | "notification"
+        | "system"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2314,10 +3455,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "review_helpful_votes_review_id_fkey"
+            foreignKeyName: "fk_review_helpful_votes_review_id"
             columns: ["review_id"]
             isOneToOne: false
             referencedRelation: "salon_reviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_review_helpful_votes_review_id"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "salon_reviews_with_counts"
             referencedColumns: ["id"]
           },
         ]
@@ -2332,7 +3480,6 @@ export type Database = {
           deleted_at: string | null
           deleted_by_id: string | null
           flagged_reason: string | null
-          helpful_count: number | null
           id: string
           is_featured: boolean | null
           is_flagged: boolean | null
@@ -2356,7 +3503,6 @@ export type Database = {
           deleted_at?: string | null
           deleted_by_id?: string | null
           flagged_reason?: string | null
-          helpful_count?: number | null
           id?: string
           is_featured?: boolean | null
           is_flagged?: boolean | null
@@ -2380,7 +3526,6 @@ export type Database = {
           deleted_at?: string | null
           deleted_by_id?: string | null
           flagged_reason?: string | null
-          helpful_count?: number | null
           id?: string
           is_featured?: boolean | null
           is_flagged?: boolean | null
@@ -2399,7 +3544,81 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      salon_reviews_with_counts: {
+        Row: {
+          appointment_id: string | null
+          cleanliness_rating: number | null
+          comment: string | null
+          created_at: string | null
+          customer_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          flagged_reason: string | null
+          helpful_count: number | null
+          id: string | null
+          is_featured: boolean | null
+          is_flagged: boolean | null
+          is_verified: boolean | null
+          rating: number | null
+          responded_by_id: string | null
+          response: string | null
+          response_date: string | null
+          salon_id: string | null
+          service_quality_rating: number | null
+          title: string | null
+          updated_at: string | null
+          value_rating: number | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          cleanliness_rating?: number | null
+          comment?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          flagged_reason?: string | null
+          helpful_count?: never
+          id?: string | null
+          is_featured?: boolean | null
+          is_flagged?: boolean | null
+          is_verified?: boolean | null
+          rating?: number | null
+          responded_by_id?: string | null
+          response?: string | null
+          response_date?: string | null
+          salon_id?: string | null
+          service_quality_rating?: number | null
+          title?: string | null
+          updated_at?: string | null
+          value_rating?: number | null
+        }
+        Update: {
+          appointment_id?: string | null
+          cleanliness_rating?: number | null
+          comment?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          flagged_reason?: string | null
+          helpful_count?: never
+          id?: string | null
+          is_featured?: boolean | null
+          is_flagged?: boolean | null
+          is_verified?: boolean | null
+          rating?: number | null
+          responded_by_id?: string | null
+          response?: string | null
+          response_date?: string | null
+          salon_id?: string | null
+          service_quality_rating?: number | null
+          title?: string | null
+          updated_at?: string | null
+          value_rating?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_salon_rating_stats: {
@@ -2779,6 +3998,30 @@ export type Database = {
       }
       bytea_to_text: {
         Args: { data: string }
+        Returns: string
+      }
+      citext: {
+        Args: { "": boolean } | { "": string } | { "": unknown }
+        Returns: string
+      }
+      citext_hash: {
+        Args: { "": string }
+        Returns: number
+      }
+      citextin: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      citextout: {
+        Args: { "": string }
+        Returns: unknown
+      }
+      citextrecv: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      citextsend: {
+        Args: { "": string }
         Returns: string
       }
       daitch_mokotoff: {
@@ -5041,32 +6284,32 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           username: string | null
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           id: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
           username?: string | null
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           username?: string | null
         }
         Relationships: []
@@ -5116,7 +6359,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_profiles_metadata_profile"
+            foreignKeyName: "fk_profiles_metadata_profile_id"
             columns: ["profile_id"]
             isOneToOne: true
             referencedRelation: "profiles"
@@ -5160,7 +6403,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_profiles_preferences_profile"
+            foreignKeyName: "fk_profiles_preferences_profile_id"
             columns: ["profile_id"]
             isOneToOne: true
             referencedRelation: "profiles"
@@ -5171,7 +6414,7 @@ export type Database = {
       sessions: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           id: string
@@ -5180,12 +6423,12 @@ export type Database = {
           refresh_token: string | null
           session_token: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           user_id: string
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           id?: string
@@ -5194,12 +6437,12 @@ export type Database = {
           refresh_token?: string | null
           session_token: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
           user_id: string
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           id?: string
@@ -5208,15 +6451,23 @@ export type Database = {
           refresh_token?: string | null
           session_token?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_sessions_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           id: string
@@ -5225,12 +6476,12 @@ export type Database = {
           role: Database["public"]["Enums"]["role_type"]
           salon_id: string | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           user_id: string
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           id?: string
@@ -5239,12 +6490,12 @@ export type Database = {
           role: Database["public"]["Enums"]["role_type"]
           salon_id?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
           user_id: string
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           id?: string
@@ -5253,7 +6504,7 @@ export type Database = {
           role?: Database["public"]["Enums"]["role_type"]
           salon_id?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           user_id?: string
         }
         Relationships: []
@@ -5445,7 +6696,7 @@ export type Database = {
       product_categories: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           description: string | null
           display_order: number | null
           id: string
@@ -5454,11 +6705,11 @@ export type Database = {
           parent_id: string | null
           salon_id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           description?: string | null
           display_order?: number | null
           id?: string
@@ -5467,11 +6718,11 @@ export type Database = {
           parent_id?: string | null
           salon_id: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           description?: string | null
           display_order?: number | null
           id?: string
@@ -5480,11 +6731,11 @@ export type Database = {
           parent_id?: string | null
           salon_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "product_categories_parent_id_fkey"
+            foreignKeyName: "fk_product_categories_parent_id"
             columns: ["parent_id"]
             isOneToOne: false
             referencedRelation: "product_categories"
@@ -5531,27 +6782,30 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_product_usage_product"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "product_usage_location_id_fkey"
+            foreignKeyName: "fk_product_usage_location_id"
             columns: ["location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_usage_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
       }
       products: {
         Row: {
+          archive_reason: string | null
+          archived_at: string | null
+          archived_by: string | null
           category_id: string | null
           cost_price: number | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           description: string | null
@@ -5567,13 +6821,16 @@ export type Database = {
           supplier_id: string | null
           unit_of_measure: string | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
+          archive_reason?: string | null
+          archived_at?: string | null
+          archived_by?: string | null
           category_id?: string | null
           cost_price?: number | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           description?: string | null
@@ -5589,13 +6846,16 @@ export type Database = {
           supplier_id?: string | null
           unit_of_measure?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
+          archive_reason?: string | null
+          archived_at?: string | null
+          archived_by?: string | null
           category_id?: string | null
           cost_price?: number | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           description?: string | null
@@ -5611,18 +6871,18 @@ export type Database = {
           supplier_id?: string | null
           unit_of_measure?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "products_category_id_fkey"
+            foreignKeyName: "fk_products_category_id"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "product_categories"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "products_supplier_id_fkey"
+            foreignKeyName: "fk_products_supplier_id"
             columns: ["supplier_id"]
             isOneToOne: false
             referencedRelation: "suppliers"
@@ -5666,17 +6926,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_purchase_order_items_order"
-            columns: ["purchase_order_id"]
-            isOneToOne: false
-            referencedRelation: "purchase_orders"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_purchase_order_items_product"
+            foreignKeyName: "fk_purchase_order_items_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_purchase_order_items_purchase_order_id"
+            columns: ["purchase_order_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
             referencedColumns: ["id"]
           },
         ]
@@ -5685,7 +6945,7 @@ export type Database = {
         Row: {
           actual_delivery_at: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           expected_delivery_at: string | null
           id: string
           notes: string | null
@@ -5699,12 +6959,12 @@ export type Database = {
           tax_amount: number | null
           total_amount: number | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           actual_delivery_at?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           expected_delivery_at?: string | null
           id?: string
           notes?: string | null
@@ -5718,12 +6978,12 @@ export type Database = {
           tax_amount?: number | null
           total_amount?: number | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           actual_delivery_at?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           expected_delivery_at?: string | null
           id?: string
           notes?: string | null
@@ -5737,11 +6997,11 @@ export type Database = {
           tax_amount?: number | null
           total_amount?: number | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "purchase_orders_supplier_id_fkey"
+            foreignKeyName: "fk_purchase_orders_supplier_id"
             columns: ["supplier_id"]
             isOneToOne: false
             referencedRelation: "suppliers"
@@ -5779,7 +7039,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_service_product_usage_product"
+            foreignKeyName: "fk_service_product_usage_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
@@ -5835,17 +7095,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_stock_alerts_product"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "stock_alerts_location_id_fkey"
+            foreignKeyName: "fk_stock_alerts_location_id"
             columns: ["location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_stock_alerts_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
@@ -5886,17 +7146,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_stock_levels_product"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "stock_levels_location_id_fkey"
+            foreignKeyName: "fk_stock_levels_location_id"
             columns: ["location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_stock_levels_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
@@ -5904,7 +7164,7 @@ export type Database = {
       stock_locations: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           description: string | null
           id: string
           is_active: boolean
@@ -5913,11 +7173,11 @@ export type Database = {
           name: string
           salon_id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           description?: string | null
           id?: string
           is_active?: boolean
@@ -5926,11 +7186,11 @@ export type Database = {
           name: string
           salon_id: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           description?: string | null
           id?: string
           is_active?: boolean
@@ -5939,9 +7199,120 @@ export type Database = {
           name?: string
           salon_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: []
+      }
+      stock_movement_adjustments: {
+        Row: {
+          adjusted_by: string
+          adjustment_reason: string
+          created_at: string
+          id: string
+          movement_id: string
+        }
+        Insert: {
+          adjusted_by: string
+          adjustment_reason: string
+          created_at?: string
+          id?: string
+          movement_id: string
+        }
+        Update: {
+          adjusted_by?: string
+          adjustment_reason?: string
+          created_at?: string
+          id?: string
+          movement_id?: string
+        }
+        Relationships: []
+      }
+      stock_movement_appointments: {
+        Row: {
+          appointment_id: string
+          created_at: string
+          id: string
+          movement_id: string
+        }
+        Insert: {
+          appointment_id: string
+          created_at?: string
+          id?: string
+          movement_id: string
+        }
+        Update: {
+          appointment_id?: string
+          created_at?: string
+          id?: string
+          movement_id?: string
+        }
+        Relationships: []
+      }
+      stock_movement_purchase_orders: {
+        Row: {
+          created_at: string
+          id: string
+          movement_id: string
+          purchase_order_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          movement_id: string
+          purchase_order_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          movement_id?: string
+          purchase_order_id?: string
+        }
+        Relationships: []
+      }
+      stock_movement_references: {
+        Row: {
+          created_at: string
+          id: string
+          movement_id: string
+          reference_id: string
+          reference_schema: string
+          reference_table: string
+          registry_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          movement_id: string
+          reference_id: string
+          reference_schema: string
+          reference_table: string
+          registry_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          movement_id?: string
+          reference_id?: string
+          reference_schema?: string
+          reference_table?: string
+          registry_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_stock_movement_refs_movement"
+            columns: ["movement_id"]
+            isOneToOne: false
+            referencedRelation: "stock_movements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_stock_movement_refs_registry_id"
+            columns: ["registry_id"]
+            isOneToOne: false
+            referencedRelation: "stock_reference_registry"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       stock_movements: {
         Row: {
@@ -5955,8 +7326,6 @@ export type Database = {
           performed_by_id: string | null
           product_id: string
           quantity: number
-          reference_id: string | null
-          reference_type: string | null
           to_location_id: string | null
           updated_at: string
         }
@@ -5966,13 +7335,11 @@ export type Database = {
           from_location_id?: string | null
           id?: string
           location_id: string
-          movement_type: string
+          movement_type?: string
           notes?: string | null
           performed_by_id?: string | null
           product_id: string
           quantity: number
-          reference_id?: string | null
-          reference_type?: string | null
           to_location_id?: string | null
           updated_at?: string
         }
@@ -5987,35 +7354,33 @@ export type Database = {
           performed_by_id?: string | null
           product_id?: string
           quantity?: number
-          reference_id?: string | null
-          reference_type?: string | null
           to_location_id?: string | null
           updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_stock_movements_product"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "stock_movements_from_location_id_fkey"
+            foreignKeyName: "fk_stock_movements_from_location_id"
             columns: ["from_location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "stock_movements_location_id_fkey"
+            foreignKeyName: "fk_stock_movements_location_id"
             columns: ["location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "stock_movements_to_location_id_fkey"
+            foreignKeyName: "fk_stock_movements_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_stock_movements_to_location_id"
             columns: ["to_location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
@@ -6023,12 +7388,33 @@ export type Database = {
           },
         ]
       }
+      stock_reference_registry: {
+        Row: {
+          id: string
+          reference_id: string
+          reference_schema: string
+          reference_table: string
+        }
+        Insert: {
+          id?: string
+          reference_id: string
+          reference_schema: string
+          reference_table: string
+        }
+        Update: {
+          id?: string
+          reference_id?: string
+          reference_schema?: string
+          reference_table?: string
+        }
+        Relationships: []
+      }
       suppliers: {
         Row: {
           address: string | null
           contact_name: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           email: string | null
           id: string
           is_active: boolean
@@ -6038,14 +7424,14 @@ export type Database = {
           phone: string | null
           salon_id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           website: string | null
         }
         Insert: {
           address?: string | null
           contact_name?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           email?: string | null
           id?: string
           is_active?: boolean
@@ -6055,14 +7441,14 @@ export type Database = {
           phone?: string | null
           salon_id: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
           website?: string | null
         }
         Update: {
           address?: string | null
           contact_name?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           email?: string | null
           id?: string
           is_active?: boolean
@@ -6072,21 +7458,48 @@ export type Database = {
           phone?: string | null
           salon_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           website?: string | null
         }
         Relationships: []
       }
     }
     Views: {
-      [_ in never]: never
+      stock_movement_references_view: {
+        Row: {
+          created_at: string | null
+          movement_id: string | null
+          reference_id: string | null
+          reference_type: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      bulk_update_stock_levels: {
+        Args: { p_updates: Json[] }
+        Returns: {
+          error_message: string
+          location_id: string
+          new_quantity: number
+          old_quantity: number
+          product_id: string
+          success: boolean
+        }[]
+      }
+      can_archive_product: {
+        Args: { product_id: string }
+        Returns: boolean
+      }
       check_availability: {
         Args:
           | Record<PropertyKey, never>
           | { p_location_id: string; p_product_id: string; p_quantity: number }
         Returns: boolean
+      }
+      migrate_stock_movement_references: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
     }
     Enums: {
@@ -6247,13 +7660,61 @@ export type Database = {
   }
   organization: {
     Tables: {
+      amenities: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      languages: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          name: string
+          native_name: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          name: string
+          native_name?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          name?: string
+          native_name?: string | null
+        }
+        Relationships: []
+      }
       location_addresses: {
         Row: {
           accessibility_notes: string | null
           city: string
           country_code: string
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           formatted_address: string | null
           landmark: string | null
           latitude: number | null
@@ -6267,14 +7728,14 @@ export type Database = {
           street_address: string
           street_address_2: string | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           accessibility_notes?: string | null
           city: string
           country_code?: string
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           formatted_address?: string | null
           landmark?: string | null
           latitude?: number | null
@@ -6288,14 +7749,14 @@ export type Database = {
           street_address: string
           street_address_2?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           accessibility_notes?: string | null
           city?: string
           country_code?: string
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           formatted_address?: string | null
           landmark?: string | null
           latitude?: number | null
@@ -6309,11 +7770,11 @@ export type Database = {
           street_address?: string
           street_address_2?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "location_addresses_location_id_fkey"
+            foreignKeyName: "fk_location_addresses_location_id"
             columns: ["location_id"]
             isOneToOne: true
             referencedRelation: "salon_locations"
@@ -6327,7 +7788,7 @@ export type Database = {
           break_start: string | null
           close_time: string
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           day_of_week: Database["public"]["Enums"]["day_of_week"]
           deleted_at: string | null
           deleted_by_id: string | null
@@ -6338,14 +7799,14 @@ export type Database = {
           open_time: string
           salon_id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           break_end?: string | null
           break_start?: string | null
           close_time: string
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           day_of_week: Database["public"]["Enums"]["day_of_week"]
           deleted_at?: string | null
           deleted_by_id?: string | null
@@ -6356,14 +7817,14 @@ export type Database = {
           open_time: string
           salon_id: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           break_end?: string | null
           break_start?: string | null
           close_time?: string
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           day_of_week?: Database["public"]["Enums"]["day_of_week"]
           deleted_at?: string | null
           deleted_by_id?: string | null
@@ -6374,11 +7835,82 @@ export type Database = {
           open_time?: string
           salon_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_operating_hours_salon"
+            foreignKeyName: "fk_operating_hours_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_operating_hours_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_methods: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+          processor: string | null
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+          processor?: string | null
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+          processor?: string | null
+        }
+        Relationships: []
+      }
+      salon_amenities: {
+        Row: {
+          amenity_id: string
+          created_at: string
+          salon_id: string
+        }
+        Insert: {
+          amenity_id: string
+          created_at?: string
+          salon_id: string
+        }
+        Update: {
+          amenity_id?: string
+          created_at?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_amenities_amenity_id"
+            columns: ["amenity_id"]
+            isOneToOne: false
+            referencedRelation: "amenities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_amenities_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_amenities_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -6394,7 +7926,7 @@ export type Database = {
           corporate_email: string | null
           corporate_phone: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           features: Json | null
@@ -6407,14 +7939,11 @@ export type Database = {
           metrics_calculated_at: string | null
           name: string
           owner_id: string | null
-          salon_count: number | null
           settings: Json | null
           slug: string
           subscription_tier: string | null
-          total_customer_count: number | null
-          total_staff_count: number | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           verified_at: string | null
           website: string | null
         }
@@ -6425,12 +7954,12 @@ export type Database = {
           corporate_email?: string | null
           corporate_phone?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           features?: Json | null
           headquarters_address?: string | null
-          id: string
+          id?: string
           is_active?: boolean | null
           is_verified?: boolean | null
           legal_name?: string | null
@@ -6438,14 +7967,11 @@ export type Database = {
           metrics_calculated_at?: string | null
           name: string
           owner_id?: string | null
-          salon_count?: number | null
           settings?: Json | null
           slug: string
           subscription_tier?: string | null
-          total_customer_count?: number | null
-          total_staff_count?: number | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
           verified_at?: string | null
           website?: string | null
         }
@@ -6456,7 +7982,7 @@ export type Database = {
           corporate_email?: string | null
           corporate_phone?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           features?: Json | null
@@ -6469,14 +7995,11 @@ export type Database = {
           metrics_calculated_at?: string | null
           name?: string
           owner_id?: string | null
-          salon_count?: number | null
           settings?: Json | null
           slug?: string
           subscription_tier?: string | null
-          total_customer_count?: number | null
-          total_staff_count?: number | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           verified_at?: string | null
           website?: string | null
         }
@@ -6487,7 +8010,7 @@ export type Database = {
           booking_email: string | null
           booking_url: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           facebook_url: string | null
           hours_display_text: string | null
           instagram_url: string | null
@@ -6500,7 +8023,7 @@ export type Database = {
           tiktok_url: string | null
           twitter_url: string | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           website_url: string | null
           whatsapp_number: string | null
           youtube_url: string | null
@@ -6509,7 +8032,7 @@ export type Database = {
           booking_email?: string | null
           booking_url?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           facebook_url?: string | null
           hours_display_text?: string | null
           instagram_url?: string | null
@@ -6522,7 +8045,7 @@ export type Database = {
           tiktok_url?: string | null
           twitter_url?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
           website_url?: string | null
           whatsapp_number?: string | null
           youtube_url?: string | null
@@ -6531,7 +8054,7 @@ export type Database = {
           booking_email?: string | null
           booking_url?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           facebook_url?: string | null
           hours_display_text?: string | null
           instagram_url?: string | null
@@ -6544,14 +8067,21 @@ export type Database = {
           tiktok_url?: string | null
           twitter_url?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           website_url?: string | null
           whatsapp_number?: string | null
           youtube_url?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "salon_contact_details_salon_id_fkey"
+            foreignKeyName: "fk_salon_contact_details_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_contact_details_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
@@ -6561,70 +8091,99 @@ export type Database = {
       }
       salon_descriptions: {
         Row: {
-          amenities: string[] | null
-          awards: string[] | null
           cancellation_policy: string | null
-          certifications: string[] | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           full_description: string | null
-          languages_spoken: string[] | null
           meta_description: string | null
           meta_keywords: string[] | null
           meta_title: string | null
-          payment_methods: string[] | null
           salon_id: string
           short_description: string | null
-          specialties: string[] | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           welcome_message: string | null
         }
         Insert: {
-          amenities?: string[] | null
-          awards?: string[] | null
           cancellation_policy?: string | null
-          certifications?: string[] | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           full_description?: string | null
-          languages_spoken?: string[] | null
           meta_description?: string | null
           meta_keywords?: string[] | null
           meta_title?: string | null
-          payment_methods?: string[] | null
           salon_id: string
           short_description?: string | null
-          specialties?: string[] | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
           welcome_message?: string | null
         }
         Update: {
-          amenities?: string[] | null
-          awards?: string[] | null
           cancellation_policy?: string | null
-          certifications?: string[] | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           full_description?: string | null
-          languages_spoken?: string[] | null
           meta_description?: string | null
           meta_keywords?: string[] | null
           meta_title?: string | null
-          payment_methods?: string[] | null
           salon_id?: string
           short_description?: string | null
-          specialties?: string[] | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           welcome_message?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "salon_descriptions_salon_id_fkey"
+            foreignKeyName: "fk_salon_descriptions_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_descriptions_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_languages: {
+        Row: {
+          created_at: string
+          language_id: string
+          salon_id: string
+        }
+        Insert: {
+          created_at?: string
+          language_id: string
+          salon_id: string
+        }
+        Update: {
+          created_at?: string
+          language_id?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_languages_language_id"
+            columns: ["language_id"]
+            isOneToOne: false
+            referencedRelation: "languages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_languages_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_languages_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -6633,7 +8192,7 @@ export type Database = {
       salon_locations: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           id: string
@@ -6643,11 +8202,11 @@ export type Database = {
           salon_id: string
           slug: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           id?: string
@@ -6657,11 +8216,11 @@ export type Database = {
           salon_id: string
           slug: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           id?: string
@@ -6671,11 +8230,18 @@ export type Database = {
           salon_id?: string
           slug?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_locations_salon"
+            foreignKeyName: "fk_salon_locations_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_locations_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -6716,7 +8282,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_media_salon"
+            foreignKeyName: "fk_salon_media_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_media_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
@@ -6727,9 +8300,7 @@ export type Database = {
       salon_metrics: {
         Row: {
           created_at: string
-          employee_count: number | null
           rating_average: number | null
-          rating_count: number | null
           salon_id: string
           total_bookings: number | null
           total_revenue: number | null
@@ -6737,9 +8308,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          employee_count?: number | null
           rating_average?: number | null
-          rating_count?: number | null
           salon_id: string
           total_bookings?: number | null
           total_revenue?: number | null
@@ -6747,9 +8316,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          employee_count?: number | null
           rating_average?: number | null
-          rating_count?: number | null
           salon_id?: string
           total_bookings?: number | null
           total_revenue?: number | null
@@ -6757,9 +8324,59 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_metrics_salon"
+            foreignKeyName: "fk_salon_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_metrics_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_payment_methods: {
+        Row: {
+          created_at: string
+          is_preferred: boolean | null
+          payment_method_id: string
+          salon_id: string
+        }
+        Insert: {
+          created_at?: string
+          is_preferred?: boolean | null
+          payment_method_id: string
+          salon_id: string
+        }
+        Update: {
+          created_at?: string
+          is_preferred?: boolean | null
+          payment_method_id?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_payment_methods_payment_method_id"
+            columns: ["payment_method_id"]
+            isOneToOne: false
+            referencedRelation: "payment_methods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_payment_methods_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_payment_methods_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -6810,10 +8427,57 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_settings_salon"
+            foreignKeyName: "fk_salon_settings_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_settings_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_specialties: {
+        Row: {
+          created_at: string
+          salon_id: string
+          specialty_id: string
+        }
+        Insert: {
+          created_at?: string
+          salon_id: string
+          specialty_id: string
+        }
+        Update: {
+          created_at?: string
+          salon_id?: string
+          specialty_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_specialties_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_specialties_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_specialties_specialty_id"
+            columns: ["specialty_id"]
+            isOneToOne: false
+            referencedRelation: "specialties"
             referencedColumns: ["id"]
           },
         ]
@@ -6824,7 +8488,7 @@ export type Database = {
           business_type: string | null
           chain_id: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           established_at: string | null
@@ -6833,14 +8497,14 @@ export type Database = {
           owner_id: string
           slug: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           business_name?: string | null
           business_type?: string | null
           chain_id?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           established_at?: string | null
@@ -6849,14 +8513,14 @@ export type Database = {
           owner_id: string
           slug: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           business_name?: string | null
           business_type?: string | null
           chain_id?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           established_at?: string | null
@@ -6865,30 +8529,47 @@ export type Database = {
           owner_id?: string
           slug?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salons_chain"
+            foreignKeyName: "fk_salons_chain_id"
             columns: ["chain_id"]
             isOneToOne: false
             referencedRelation: "salon_chains"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "fk_salons_chain"
-            columns: ["chain_id"]
-            isOneToOne: false
-            referencedRelation: "salon_chains_summary"
-            referencedColumns: ["id"]
-          },
         ]
+      }
+      specialties: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
       }
       staff_profiles: {
         Row: {
           bio: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           experience_years: number | null
@@ -6896,13 +8577,13 @@ export type Database = {
           salon_id: string
           title: string | null
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           user_id: string
         }
         Insert: {
           bio?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           experience_years?: number | null
@@ -6910,13 +8591,13 @@ export type Database = {
           salon_id: string
           title?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
           user_id: string
         }
         Update: {
           bio?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           experience_years?: number | null
@@ -6924,12 +8605,19 @@ export type Database = {
           salon_id?: string
           title?: string | null
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_staff_profiles_salon"
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -6939,45 +8627,82 @@ export type Database = {
       }
     }
     Views: {
-      salon_chains_summary: {
+      salon_metrics_computed: {
         Row: {
-          created_at: string | null
-          id: string | null
-          is_active: boolean | null
-          name: string | null
-          owner_id: string | null
-          salon_count: number | null
-          slug: string | null
-          subscription_tier: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          name?: string | null
-          owner_id?: string | null
-          salon_count?: number | null
-          slug?: string | null
-          subscription_tier?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          name?: string | null
-          owner_id?: string | null
-          salon_count?: number | null
-          slug?: string | null
-          subscription_tier?: string | null
-          updated_at?: string | null
+          calculated_at: string | null
+          employee_count: number | null
+          rating_average: number | null
+          rating_count: number | null
+          salon_id: string | null
+          total_bookings: number | null
         }
         Relationships: []
       }
+      salon_metrics_with_counts: {
+        Row: {
+          avg_rating: number | null
+          created_at: string | null
+          employee_count: number | null
+          rating_average: number | null
+          review_count: number | null
+          salon_id: string | null
+          total_bookings: number | null
+          total_revenue: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_rating?: never
+          created_at?: string | null
+          employee_count?: never
+          rating_average?: number | null
+          review_count?: never
+          salon_id?: string | null
+          total_bookings?: number | null
+          total_revenue?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_rating?: never
+          created_at?: string | null
+          employee_count?: never
+          rating_average?: number | null
+          review_count?: never
+          salon_id?: string | null
+          total_bookings?: number | null
+          total_revenue?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_metrics_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salon_metrics_computed"
+            referencedColumns: ["salon_id"]
+          },
+          {
+            foreignKeyName: "fk_salon_metrics_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_or_create_amenity: {
+        Args: { amenity_name: string }
+        Returns: string
+      }
+      get_or_create_payment_method: {
+        Args: { method_name: string }
+        Returns: string
+      }
+      get_or_create_specialty: {
+        Args: { specialty_name: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
@@ -7019,7 +8744,7 @@ export type Database = {
           id: string
           is_active: boolean | null
           last_used_at: string | null
-          salon_id: string | null
+          salon_id: string
           service_name: string
           updated_at: string | null
           webhook_secret_encrypted: string | null
@@ -7031,7 +8756,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           last_used_at?: string | null
-          salon_id?: string | null
+          salon_id: string
           service_name: string
           updated_at?: string | null
           webhook_secret_encrypted?: string | null
@@ -7043,7 +8768,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           last_used_at?: string | null
-          salon_id?: string | null
+          salon_id?: string
           service_name?: string
           updated_at?: string | null
           webhook_secret_encrypted?: string | null
@@ -7084,33 +8809,33 @@ export type Database = {
         Row: {
           amount: number
           created_at: string
-          customer_id: string | null
+          customer_id: string
           id: string
           metadata: Json | null
           payment_method: string | null
-          salon_id: string | null
+          salon_id: string
           stripe_payment_id: string | null
           updated_at: string | null
         }
         Insert: {
           amount: number
           created_at?: string
-          customer_id?: string | null
+          customer_id: string
           id?: string
           metadata?: Json | null
           payment_method?: string | null
-          salon_id?: string | null
+          salon_id: string
           stripe_payment_id?: string | null
           updated_at?: string | null
         }
         Update: {
           amount?: number
           created_at?: string
-          customer_id?: string | null
+          customer_id?: string
           id?: string
           metadata?: Json | null
           payment_method?: string | null
-          salon_id?: string | null
+          salon_id?: string
           stripe_payment_id?: string | null
           updated_at?: string | null
         }
@@ -7158,7 +8883,7 @@ export type Database = {
           metadata: Json | null
           plan_id: string
           salon_id: string
-          status: string
+          status: Database["private"]["Enums"]["subscription_status_enum"]
           stripe_subscription_id: string | null
           subscription_type: string | null
           trial_end_at: string | null
@@ -7175,7 +8900,7 @@ export type Database = {
           metadata?: Json | null
           plan_id: string
           salon_id: string
-          status: string
+          status?: Database["private"]["Enums"]["subscription_status_enum"]
           stripe_subscription_id?: string | null
           subscription_type?: string | null
           trial_end_at?: string | null
@@ -7192,7 +8917,7 @@ export type Database = {
           metadata?: Json | null
           plan_id?: string
           salon_id?: string
-          status?: string
+          status?: Database["private"]["Enums"]["subscription_status_enum"]
           stripe_subscription_id?: string | null
           subscription_type?: string | null
           trial_end_at?: string | null
@@ -7241,6 +8966,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_salon_metrics: {
+        Args: { p_salon_id: string }
+        Returns: boolean
+      }
       current_user_id: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -7332,13 +9061,37 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      user_can_access_location: {
+        Args: { p_location_id: string }
+        Returns: boolean
+      }
+      user_can_manage_service: {
+        Args: { p_service_id: string }
+        Returns: boolean
+      }
       user_has_salon_access: {
         Args: { check_salon_id: string }
         Returns: boolean
       }
+      user_is_staff_at_salon: {
+        Args: { p_salon_id: string }
+        Returns: boolean
+      }
+      user_owns_salon: {
+        Args: { p_salon_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      subscription_status_enum:
+        | "active"
+        | "trialing"
+        | "past_due"
+        | "canceled"
+        | "unpaid"
+        | "paused"
+        | "incomplete"
+        | "incomplete_expired"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -7410,6 +9163,8 @@ export type Database = {
       }
       admin_appointments_overview: {
         Row: {
+          cancelled_at: string | null
+          completed_at: string | null
           confirmation_code: string | null
           created_at: string | null
           customer_email: string | null
@@ -7420,46 +9175,67 @@ export type Database = {
           id: string | null
           salon_id: string | null
           salon_name: string | null
-          service_count: number | null
-          staff_email: string | null
+          service_id: string | null
+          service_name: string | null
           staff_id: string | null
           staff_name: string | null
-          staff_title: string | null
           start_time: string | null
           status: string | null
+          total_price: number | null
           updated_at: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_appointments_salon"
+            foreignKeyName: "fk_appointment_services_service_id"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_salon"
+            foreignKeyName: "fk_appointments_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_staff"
+            foreignKeyName: "fk_appointments_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "admin_staff_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_staff"
+            foreignKeyName: "fk_appointments_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "staff"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_staff"
+            foreignKeyName: "fk_appointments_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "staff_profiles"
@@ -7472,14 +9248,12 @@ export type Database = {
           active_alerts_count: number | null
           category_name: string | null
           cost_price: number | null
-          created_at: string | null
-          deleted_at: string | null
           id: string | null
           is_active: boolean | null
           is_tracked: boolean | null
+          product_id: string | null
           product_name: string | null
           reorder_point: number | null
-          reorder_quantity: number | null
           retail_price: number | null
           salon_id: string | null
           salon_name: string | null
@@ -7487,24 +9261,8 @@ export type Database = {
           supplier_name: string | null
           total_available: number | null
           total_quantity: number | null
-          updated_at: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_products_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_products_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       admin_messages_overview: {
         Row: {
@@ -7529,86 +9287,118 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_message_threads_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "message_threads_appointment_id_fkey"
+            foreignKeyName: "fk_message_threads_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "admin_appointments_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "message_threads_appointment_id_fkey"
+            foreignKeyName: "fk_message_threads_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "appointments"
             referencedColumns: ["id"]
           },
-        ]
-      }
-      admin_revenue_overview: {
-        Row: {
-          active_staff_count: number | null
-          appointments_30d: number | null
-          business_type: string | null
-          cancelled_appointments: number | null
-          chain_name: string | null
-          completed_appointments: number | null
-          created_at: string | null
-          date: string | null
-          new_customers: number | null
-          no_show_appointments: number | null
-          product_revenue: number | null
-          returning_customers: number | null
-          revenue_30d: number | null
-          salon_id: string | null
-          salon_name: string | null
-          service_revenue: number | null
-          total_appointments: number | null
-          total_revenue: number | null
-          updated_at: string | null
-          utilization_rate: number | null
-        }
-        Relationships: [
           {
-            foreignKeyName: "daily_metrics_salon_id_fkey"
+            foreignKeyName: "fk_message_threads_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "daily_metrics_salon_id_fkey"
+            foreignKeyName: "fk_message_threads_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "admin_staff_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_revenue_overview: {
+        Row: {
+          cancelled_appointments: number | null
+          chain_id: string | null
+          chain_name: string | null
+          completed_appointments: number | null
+          date: string | null
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string | null
+          salon_name: string | null
+          service_revenue: number | null
+          total_appointments: number | null
+          total_bookings: number | null
+          total_revenue: number | null
+          utilization_rate: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_appointments_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salons_chain_id"
+            columns: ["chain_id"]
+            isOneToOne: false
+            referencedRelation: "salon_chains_view"
             referencedColumns: ["id"]
           },
         ]
       }
       admin_reviews_overview: {
         Row: {
-          appointment_id: string | null
           cleanliness_rating: number | null
           comment: string | null
           created_at: string | null
-          customer_email: string | null
           customer_id: string | null
           customer_name: string | null
-          deleted_at: string | null
-          flagged_reason: string | null
           has_response: boolean | null
           helpful_count: number | null
           id: string | null
@@ -7616,7 +9406,6 @@ export type Database = {
           is_flagged: boolean | null
           is_verified: boolean | null
           rating: number | null
-          responded_by_id: string | null
           response_date: string | null
           salon_id: string | null
           salon_name: string | null
@@ -7627,28 +9416,28 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "salon_reviews_appointment_id_fkey"
-            columns: ["appointment_id"]
+            foreignKeyName: "fk_salon_reviews_customer_id"
+            columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
+            referencedRelation: "admin_users_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_reviews_appointment_id_fkey"
-            columns: ["appointment_id"]
+            foreignKeyName: "fk_salon_reviews_customer_id"
+            columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "appointments"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_reviews_salon_id_fkey"
+            foreignKeyName: "fk_salon_reviews_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_reviews_salon_id_fkey"
+            foreignKeyName: "fk_salon_reviews_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -7658,40 +9447,23 @@ export type Database = {
       }
       admin_salons_overview: {
         Row: {
-          business_name: string | null
-          business_type: string | null
           chain_id: string | null
-          chain_name: string | null
           created_at: string | null
-          deleted_at: string | null
-          employee_count: number | null
-          established_at: string | null
           id: string | null
           is_accepting_bookings: boolean | null
-          max_services: number | null
-          max_staff: number | null
+          is_active: boolean | null
+          location_count: number | null
           name: string | null
-          owner_email: string | null
-          owner_id: string | null
-          owner_name: string | null
           rating_average: number | null
           rating_count: number | null
-          slug: string | null
-          subscription_tier: string | null
+          staff_count: number | null
+          total_appointments: number | null
           total_bookings: number | null
           total_revenue: number | null
-          updated_at: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salons_chain"
-            columns: ["chain_id"]
-            isOneToOne: false
-            referencedRelation: "salon_chains"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salons_chain"
+            foreignKeyName: "fk_salons_chain_id"
             columns: ["chain_id"]
             isOneToOne: false
             referencedRelation: "salon_chains_view"
@@ -7718,14 +9490,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_staff_profiles_salon"
+            foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_staff_profiles_salon"
+            foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -7784,35 +9556,70 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_appointment_services_appointment"
+            foreignKeyName: "fk_appointment_services_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "admin_appointments_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointment_services_appointment"
+            foreignKeyName: "fk_appointment_services_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "appointments"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointment_services_service"
+            foreignKeyName: "fk_appointment_services_service_id"
             columns: ["service_id"]
             isOneToOne: false
             referencedRelation: "services"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_salon"
+            foreignKeyName: "fk_appointment_services_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "admin_staff_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointment_services_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointment_services_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_salon"
+            foreignKeyName: "fk_appointments_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -7822,6 +9629,8 @@ export type Database = {
       }
       appointments: {
         Row: {
+          cancelled_at: string | null
+          completed_at: string | null
           confirmation_code: string | null
           created_at: string | null
           customer_email: string | null
@@ -7832,49 +9641,68 @@ export type Database = {
           id: string | null
           salon_id: string | null
           salon_name: string | null
-          salon_slug: string | null
-          service_count: number | null
-          service_names: string | null
-          staff_avatar: string | null
+          service_id: string | null
+          service_name: string | null
+          service_names: string[] | null
           staff_id: string | null
           staff_name: string | null
-          staff_title: string | null
           start_time: string | null
-          status: Database["public"]["Enums"]["appointment_status"] | null
+          status: string | null
           total_price: number | null
           updated_at: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_appointments_salon"
+            foreignKeyName: "fk_appointment_services_service_id"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_salon"
+            foreignKeyName: "fk_appointments_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_staff"
+            foreignKeyName: "fk_appointments_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "admin_staff_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_staff"
+            foreignKeyName: "fk_appointments_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "staff"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_appointments_staff"
+            foreignKeyName: "fk_appointments_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "staff_profiles"
@@ -7884,7 +9712,7 @@ export type Database = {
       }
       blocked_times: {
         Row: {
-          block_type: string | null
+          block_type: Database["scheduling"]["Enums"]["block_type_enum"] | null
           created_at: string | null
           created_by_id: string | null
           created_by_name: string | null
@@ -7908,14 +9736,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_blocked_times_salon"
+            foreignKeyName: "fk_blocked_times_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_blocked_times_salon"
+            foreignKeyName: "fk_blocked_times_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -7977,31 +9805,80 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_message_threads_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "message_threads_appointment_id_fkey"
+            foreignKeyName: "fk_message_threads_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "admin_appointments_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "message_threads_appointment_id_fkey"
+            foreignKeyName: "fk_message_threads_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_last_message_by_id"
+            columns: ["last_message_by_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_last_message_by_id"
+            columns: ["last_message_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "admin_staff_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -8060,6 +9937,84 @@ export type Database = {
           read_at?: string | null
           to_user_id?: string | null
           updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_messages_context_id"
+            columns: ["context_id"]
+            isOneToOne: false
+            referencedRelation: "admin_messages_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_context_id"
+            columns: ["context_id"]
+            isOneToOne: false
+            referencedRelation: "communication_message_threads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_context_id"
+            columns: ["context_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_deleted_by_id"
+            columns: ["deleted_by_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_deleted_by_id"
+            columns: ["deleted_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_from_user_id"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_from_user_id"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_to_user_id"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_to_user_id"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communication_notification_queue: {
+        Row: {
+          channels: string[] | null
+          created_at: string | null
+          id: string | null
+          notification_type: string | null
+          payload: Json | null
+          scheduled_for: string | null
+          sent_at: string | null
+          status: string | null
+          user_id: string | null
         }
         Relationships: []
       }
@@ -8134,24 +10089,59 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_customer_favorites_salon"
+            foreignKeyName: "fk_customer_favorites_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_customer_favorites_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_customer_favorites_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_customer_favorites_salon"
+            foreignKeyName: "fk_customer_favorites_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_customer_favorites_service"
+            foreignKeyName: "fk_customer_favorites_service_id"
             columns: ["service_id"]
             isOneToOne: false
             referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_customer_favorites_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "admin_staff_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_customer_favorites_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_customer_favorites_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -8234,20 +10224,31 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "daily_metrics_salon_id_fkey"
+            foreignKeyName: "fk_daily_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "daily_metrics_salon_id_fkey"
+            foreignKeyName: "fk_daily_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
         ]
+      }
+      hot_update_stats: {
+        Row: {
+          hot_update_percentage: number | null
+          hot_updates: number | null
+          schemaname: unknown | null
+          status: string | null
+          tablename: unknown | null
+          total_updates: number | null
+        }
+        Relationships: []
       }
       location_addresses: {
         Row: {
@@ -8315,20 +10316,21 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "location_addresses_location_id_fkey"
+            foreignKeyName: "fk_location_addresses_location_id"
             columns: ["location_id"]
             isOneToOne: true
             referencedRelation: "salon_locations"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "location_addresses_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: true
-            referencedRelation: "salons"
-            referencedColumns: ["location_id"]
-          },
         ]
+      }
+      low_priority_optimizations_summary: {
+        Row: {
+          optimization: string | null
+          recommendation: string | null
+          status: string | null
+        }
+        Relationships: []
       }
       manual_transactions: {
         Row: {
@@ -8372,31 +10374,66 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_manual_transactions_appointment"
+            foreignKeyName: "fk_manual_transactions_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "admin_appointments_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_manual_transactions_appointment"
+            foreignKeyName: "fk_manual_transactions_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "appointments"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_manual_transactions_salon"
+            foreignKeyName: "fk_manual_transactions_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_manual_transactions_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_manual_transactions_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_manual_transactions_salon"
+            foreignKeyName: "fk_manual_transactions_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_manual_transactions_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "admin_staff_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_manual_transactions_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_manual_transactions_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -8429,31 +10466,80 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_message_threads_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "message_threads_appointment_id_fkey"
+            foreignKeyName: "fk_message_threads_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "admin_appointments_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "message_threads_appointment_id_fkey"
+            foreignKeyName: "fk_message_threads_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_customer_id"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_last_message_by_id"
+            columns: ["last_message_by_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_last_message_by_id"
+            columns: ["last_message_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "admin_staff_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_message_threads_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -8481,6 +10567,82 @@ export type Database = {
           to_user_name: string | null
           updated_at: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "fk_messages_context_id"
+            columns: ["context_id"]
+            isOneToOne: false
+            referencedRelation: "admin_messages_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_context_id"
+            columns: ["context_id"]
+            isOneToOne: false
+            referencedRelation: "communication_message_threads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_context_id"
+            columns: ["context_id"]
+            isOneToOne: false
+            referencedRelation: "message_threads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_deleted_by_id"
+            columns: ["deleted_by_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_deleted_by_id"
+            columns: ["deleted_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_from_user_id"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_from_user_id"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_to_user_id"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_messages_to_user_id"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      most_called_queries: {
+        Row: {
+          avg_rows_per_call: number | null
+          avg_time_ms: number | null
+          calls: number | null
+          query_preview: string | null
+          queryid: number | null
+          rows: number | null
+          total_time_ms: number | null
+        }
         Relationships: []
       }
       operating_hours: {
@@ -8504,14 +10666,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_operating_hours_salon"
+            foreignKeyName: "fk_operating_hours_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_operating_hours_salon"
+            foreignKeyName: "fk_operating_hours_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -8570,14 +10732,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_operational_metrics_salon"
+            foreignKeyName: "fk_operational_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_operational_metrics_salon"
+            foreignKeyName: "fk_operational_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -8627,24 +10789,24 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_product_categories_salon"
+            foreignKeyName: "fk_product_categories_parent_id"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_categories_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_product_categories_salon"
+            foreignKeyName: "fk_product_categories_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "product_categories_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "product_categories"
             referencedColumns: ["id"]
           },
         ]
@@ -8688,38 +10850,45 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_product_usage_appointment"
+            foreignKeyName: "fk_product_usage_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "admin_appointments_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_product_usage_appointment"
+            foreignKeyName: "fk_product_usage_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "appointments"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_product_usage_product"
+            foreignKeyName: "fk_product_usage_location_id"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "stock_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_usage_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "admin_inventory_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_product_usage_product"
+            foreignKeyName: "fk_product_usage_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_inventory_overview"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "fk_product_usage_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "product_usage_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
             referencedColumns: ["id"]
           },
         ]
@@ -8793,28 +10962,28 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_products_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_products_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "products_category_id_fkey"
+            foreignKeyName: "fk_products_category_id"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "product_categories"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "products_supplier_id_fkey"
+            foreignKeyName: "fk_products_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_products_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_products_supplier_id"
             columns: ["supplier_id"]
             isOneToOne: false
             referencedRelation: "suppliers"
@@ -8893,14 +11062,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_profiles_metadata_profile"
+            foreignKeyName: "fk_profiles_metadata_profile_id"
             columns: ["profile_id"]
             isOneToOne: true
             referencedRelation: "admin_users_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_profiles_metadata_profile"
+            foreignKeyName: "fk_profiles_metadata_profile_id"
             columns: ["profile_id"]
             isOneToOne: true
             referencedRelation: "profiles"
@@ -8944,14 +11113,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_profiles_preferences_profile"
+            foreignKeyName: "fk_profiles_preferences_profile_id"
             columns: ["profile_id"]
             isOneToOne: true
             referencedRelation: "admin_users_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_profiles_preferences_profile"
+            foreignKeyName: "fk_profiles_preferences_profile_id"
             columns: ["profile_id"]
             isOneToOne: true
             referencedRelation: "profiles"
@@ -9003,24 +11172,31 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_purchase_order_items_order"
-            columns: ["purchase_order_id"]
-            isOneToOne: false
-            referencedRelation: "purchase_orders"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_purchase_order_items_product"
+            foreignKeyName: "fk_purchase_order_items_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "admin_inventory_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_purchase_order_items_product"
+            foreignKeyName: "fk_purchase_order_items_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_inventory_overview"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "fk_purchase_order_items_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_purchase_order_items_purchase_order_id"
+            columns: ["purchase_order_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
             referencedColumns: ["id"]
           },
         ]
@@ -9085,21 +11261,21 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_purchase_orders_salon"
+            foreignKeyName: "fk_purchase_orders_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_purchase_orders_salon"
+            foreignKeyName: "fk_purchase_orders_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "purchase_orders_supplier_id_fkey"
+            foreignKeyName: "fk_purchase_orders_supplier_id"
             columns: ["supplier_id"]
             isOneToOne: false
             referencedRelation: "suppliers"
@@ -9107,180 +11283,36 @@ export type Database = {
           },
         ]
       }
-      salon_chains: {
+      query_performance_summary: {
         Row: {
-          billing_email: string | null
-          brand_colors: Json | null
-          brand_guidelines: string | null
-          corporate_email: string | null
-          corporate_phone: string | null
-          created_at: string | null
-          created_by_id: string | null
-          deleted_at: string | null
-          deleted_by_id: string | null
-          features: Json | null
-          headquarters_address: string | null
-          id: string | null
-          is_active: boolean | null
-          is_verified: boolean | null
-          legal_name: string | null
-          logo_url: string | null
-          metrics_calculated_at: string | null
-          name: string | null
-          owner_id: string | null
-          salon_count: number | null
-          settings: Json | null
-          slug: string | null
-          subscription_tier: string | null
-          total_customer_count: number | null
-          total_staff_count: number | null
-          updated_at: string | null
-          updated_by_id: string | null
-          verified_at: string | null
-          website: string | null
-        }
-        Insert: {
-          billing_email?: string | null
-          brand_colors?: Json | null
-          brand_guidelines?: string | null
-          corporate_email?: string | null
-          corporate_phone?: string | null
-          created_at?: string | null
-          created_by_id?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          features?: Json | null
-          headquarters_address?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          is_verified?: boolean | null
-          legal_name?: string | null
-          logo_url?: string | null
-          metrics_calculated_at?: string | null
-          name?: string | null
-          owner_id?: string | null
-          salon_count?: number | null
-          settings?: Json | null
-          slug?: string | null
-          subscription_tier?: string | null
-          total_customer_count?: number | null
-          total_staff_count?: number | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-          verified_at?: string | null
-          website?: string | null
-        }
-        Update: {
-          billing_email?: string | null
-          brand_colors?: Json | null
-          brand_guidelines?: string | null
-          corporate_email?: string | null
-          corporate_phone?: string | null
-          created_at?: string | null
-          created_by_id?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          features?: Json | null
-          headquarters_address?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          is_verified?: boolean | null
-          legal_name?: string | null
-          logo_url?: string | null
-          metrics_calculated_at?: string | null
-          name?: string | null
-          owner_id?: string | null
-          salon_count?: number | null
-          settings?: Json | null
-          slug?: string | null
-          subscription_tier?: string | null
-          total_customer_count?: number | null
-          total_staff_count?: number | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-          verified_at?: string | null
-          website?: string | null
+          avg_tuples_per_scan: number | null
+          index_name: unknown | null
+          index_scans: number | null
+          index_size: string | null
+          schemaname: unknown | null
+          tablename: unknown | null
+          tuples_fetched: number | null
+          tuples_read: number | null
         }
         Relationships: []
       }
       salon_chains_view: {
         Row: {
-          billing_email: string | null
-          brand_colors: Json | null
-          brand_guidelines: string | null
-          corporate_email: string | null
-          corporate_phone: string | null
           created_at: string | null
-          deleted_at: string | null
-          features: Json | null
-          headquarters_address: string | null
           id: string | null
           is_active: boolean | null
           is_verified: boolean | null
           legal_name: string | null
-          logo_url: string | null
           name: string | null
-          owner_id: string | null
+          rating_average: number | null
+          rating_count: number | null
           salon_count: number | null
-          settings: Json | null
           slug: string | null
+          staff_count: number | null
           subscription_tier: string | null
-          total_staff_count: number | null
+          total_completed_appointments: number | null
+          total_revenue: number | null
           updated_at: string | null
-          verified_at: string | null
-          website: string | null
-        }
-        Insert: {
-          billing_email?: string | null
-          brand_colors?: Json | null
-          brand_guidelines?: string | null
-          corporate_email?: string | null
-          corporate_phone?: string | null
-          created_at?: string | null
-          deleted_at?: string | null
-          features?: Json | null
-          headquarters_address?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          is_verified?: boolean | null
-          legal_name?: string | null
-          logo_url?: string | null
-          name?: string | null
-          owner_id?: string | null
-          salon_count?: never
-          settings?: Json | null
-          slug?: string | null
-          subscription_tier?: string | null
-          total_staff_count?: never
-          updated_at?: string | null
-          verified_at?: string | null
-          website?: string | null
-        }
-        Update: {
-          billing_email?: string | null
-          brand_colors?: Json | null
-          brand_guidelines?: string | null
-          corporate_email?: string | null
-          corporate_phone?: string | null
-          created_at?: string | null
-          deleted_at?: string | null
-          features?: Json | null
-          headquarters_address?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          is_verified?: boolean | null
-          legal_name?: string | null
-          logo_url?: string | null
-          name?: string | null
-          owner_id?: string | null
-          salon_count?: never
-          settings?: Json | null
-          slug?: string | null
-          subscription_tier?: string | null
-          total_staff_count?: never
-          updated_at?: string | null
-          verified_at?: string | null
-          website?: string | null
         }
         Relationships: []
       }
@@ -9289,7 +11321,6 @@ export type Database = {
           booking_email: string | null
           booking_url: string | null
           created_at: string | null
-          created_by_id: string | null
           facebook_url: string | null
           hours_display_text: string | null
           instagram_url: string | null
@@ -9302,21 +11333,19 @@ export type Database = {
           tiktok_url: string | null
           twitter_url: string | null
           updated_at: string | null
-          updated_by_id: string | null
           website_url: string | null
           whatsapp_number: string | null
           youtube_url: string | null
         }
         Insert: {
-          booking_email?: string | null
+          booking_email?: never
           booking_url?: string | null
           created_at?: string | null
-          created_by_id?: string | null
           facebook_url?: string | null
           hours_display_text?: string | null
           instagram_url?: string | null
           linkedin_url?: string | null
-          primary_email?: string | null
+          primary_email?: never
           primary_phone?: string | null
           salon_id?: string | null
           secondary_phone?: string | null
@@ -9324,21 +11353,19 @@ export type Database = {
           tiktok_url?: string | null
           twitter_url?: string | null
           updated_at?: string | null
-          updated_by_id?: string | null
           website_url?: string | null
           whatsapp_number?: string | null
           youtube_url?: string | null
         }
         Update: {
-          booking_email?: string | null
+          booking_email?: never
           booking_url?: string | null
           created_at?: string | null
-          created_by_id?: string | null
           facebook_url?: string | null
           hours_display_text?: string | null
           instagram_url?: string | null
           linkedin_url?: string | null
-          primary_email?: string | null
+          primary_email?: never
           primary_phone?: string | null
           salon_id?: string | null
           secondary_phone?: string | null
@@ -9346,21 +11373,20 @@ export type Database = {
           tiktok_url?: string | null
           twitter_url?: string | null
           updated_at?: string | null
-          updated_by_id?: string | null
           website_url?: string | null
           whatsapp_number?: string | null
           youtube_url?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "salon_contact_details_salon_id_fkey"
+            foreignKeyName: "fk_salon_contact_details_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_contact_details_salon_id_fkey"
+            foreignKeyName: "fk_salon_contact_details_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
@@ -9370,75 +11396,57 @@ export type Database = {
       }
       salon_descriptions: {
         Row: {
-          amenities: string[] | null
-          awards: string[] | null
           cancellation_policy: string | null
-          certifications: string[] | null
           created_at: string | null
           created_by_id: string | null
           full_description: string | null
-          languages_spoken: string[] | null
           meta_description: string | null
           meta_keywords: string[] | null
           meta_title: string | null
-          payment_methods: string[] | null
           salon_id: string | null
           short_description: string | null
-          specialties: string[] | null
           updated_at: string | null
           updated_by_id: string | null
           welcome_message: string | null
         }
         Insert: {
-          amenities?: string[] | null
-          awards?: string[] | null
           cancellation_policy?: string | null
-          certifications?: string[] | null
           created_at?: string | null
           created_by_id?: string | null
           full_description?: string | null
-          languages_spoken?: string[] | null
           meta_description?: string | null
           meta_keywords?: string[] | null
           meta_title?: string | null
-          payment_methods?: string[] | null
           salon_id?: string | null
           short_description?: string | null
-          specialties?: string[] | null
           updated_at?: string | null
           updated_by_id?: string | null
           welcome_message?: string | null
         }
         Update: {
-          amenities?: string[] | null
-          awards?: string[] | null
           cancellation_policy?: string | null
-          certifications?: string[] | null
           created_at?: string | null
           created_by_id?: string | null
           full_description?: string | null
-          languages_spoken?: string[] | null
           meta_description?: string | null
           meta_keywords?: string[] | null
           meta_title?: string | null
-          payment_methods?: string[] | null
           salon_id?: string | null
           short_description?: string | null
-          specialties?: string[] | null
           updated_at?: string | null
           updated_by_id?: string | null
           welcome_message?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "salon_descriptions_salon_id_fkey"
+            foreignKeyName: "fk_salon_descriptions_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_descriptions_salon_id_fkey"
+            foreignKeyName: "fk_salon_descriptions_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
@@ -9491,14 +11499,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_locations_salon"
+            foreignKeyName: "fk_salon_locations_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_salon_locations_salon"
+            foreignKeyName: "fk_salon_locations_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -9539,14 +11547,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_media_salon"
+            foreignKeyName: "fk_salon_media_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_salon_media_salon"
+            foreignKeyName: "fk_salon_media_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
@@ -9571,14 +11579,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_media_salon"
+            foreignKeyName: "fk_salon_media_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_salon_media_salon"
+            foreignKeyName: "fk_salon_media_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
@@ -9588,149 +11596,25 @@ export type Database = {
       }
       salon_metrics: {
         Row: {
-          created_at: string | null
-          employee_count: number | null
-          rating_average: number | null
-          rating_count: number | null
+          average_duration: number | null
+          calculated_at: string | null
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          no_show_appointments: number | null
+          revenue_total: number | null
           salon_id: string | null
-          total_bookings: number | null
-          total_revenue: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          employee_count?: number | null
-          rating_average?: number | null
-          rating_count?: number | null
-          salon_id?: string | null
-          total_bookings?: number | null
-          total_revenue?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          employee_count?: number | null
-          rating_average?: number | null
-          rating_count?: number | null
-          salon_id?: string | null
-          total_bookings?: number | null
-          total_revenue?: number | null
-          updated_at?: string | null
+          utilization_rate: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_metrics_salon"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_metrics_salon"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      salon_reviews: {
-        Row: {
-          appointment_id: string | null
-          cleanliness_rating: number | null
-          comment: string | null
-          created_at: string | null
-          customer_id: string | null
-          deleted_at: string | null
-          deleted_by_id: string | null
-          flagged_reason: string | null
-          helpful_count: number | null
-          id: string | null
-          is_featured: boolean | null
-          is_flagged: boolean | null
-          is_verified: boolean | null
-          rating: number | null
-          responded_by_id: string | null
-          response: string | null
-          response_date: string | null
-          salon_id: string | null
-          service_quality_rating: number | null
-          title: string | null
-          updated_at: string | null
-          value_rating: number | null
-        }
-        Insert: {
-          appointment_id?: string | null
-          cleanliness_rating?: number | null
-          comment?: string | null
-          created_at?: string | null
-          customer_id?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          flagged_reason?: string | null
-          helpful_count?: number | null
-          id?: string | null
-          is_featured?: boolean | null
-          is_flagged?: boolean | null
-          is_verified?: boolean | null
-          rating?: number | null
-          responded_by_id?: string | null
-          response?: string | null
-          response_date?: string | null
-          salon_id?: string | null
-          service_quality_rating?: number | null
-          title?: string | null
-          updated_at?: string | null
-          value_rating?: number | null
-        }
-        Update: {
-          appointment_id?: string | null
-          cleanliness_rating?: number | null
-          comment?: string | null
-          created_at?: string | null
-          customer_id?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          flagged_reason?: string | null
-          helpful_count?: number | null
-          id?: string | null
-          is_featured?: boolean | null
-          is_flagged?: boolean | null
-          is_verified?: boolean | null
-          rating?: number | null
-          responded_by_id?: string | null
-          response?: string | null
-          response_date?: string | null
-          salon_id?: string | null
-          service_quality_rating?: number | null
-          title?: string | null
-          updated_at?: string | null
-          value_rating?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "salon_reviews_appointment_id_fkey"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "salon_reviews_appointment_id_fkey"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "salon_reviews_salon_id_fkey"
+            foreignKeyName: "fk_appointments_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_reviews_salon_id_fkey"
+            foreignKeyName: "fk_appointments_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -9740,56 +11624,45 @@ export type Database = {
       }
       salon_reviews_view: {
         Row: {
-          appointment_id: string | null
-          cleanliness_rating: number | null
           comment: string | null
           created_at: string | null
-          customer_avatar: string | null
           customer_id: string | null
           customer_name: string | null
           helpful_count: number | null
           id: string | null
-          is_featured: boolean | null
           is_flagged: boolean | null
           is_verified: boolean | null
-          overall_rating: number | null
           rating: number | null
-          responded_by_id: string | null
-          responded_by_name: string | null
-          response: string | null
-          response_date: string | null
           salon_id: string | null
           salon_name: string | null
-          salon_slug: string | null
-          service_quality_rating: number | null
-          title: string | null
+          staff_id: string | null
+          staff_name: string | null
           updated_at: string | null
-          value_rating: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "salon_reviews_appointment_id_fkey"
-            columns: ["appointment_id"]
+            foreignKeyName: "fk_salon_reviews_customer_id"
+            columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
+            referencedRelation: "admin_users_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_reviews_appointment_id_fkey"
-            columns: ["appointment_id"]
+            foreignKeyName: "fk_salon_reviews_customer_id"
+            columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "appointments"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_reviews_salon_id_fkey"
+            foreignKeyName: "fk_salon_reviews_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "salon_reviews_salon_id_fkey"
+            foreignKeyName: "fk_salon_reviews_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -9842,14 +11715,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_salon_settings_salon"
+            foreignKeyName: "fk_salon_settings_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_salon_settings_salon"
+            foreignKeyName: "fk_salon_settings_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
@@ -9859,85 +11732,33 @@ export type Database = {
       }
       salons: {
         Row: {
-          amenities: string[] | null
-          booking_email: string | null
-          booking_lead_time_hours: number | null
-          booking_url: string | null
-          brand_colors: Json | null
-          business_name: string | null
-          business_type: string | null
-          cancellation_hours: number | null
-          cancellation_policy: string | null
-          chain_id: string | null
+          address: Json | null
           city: string | null
           country_code: string | null
-          cover_image_url: string | null
           created_at: string | null
-          description: string | null
-          email: string | null
-          established_at: string | null
-          facebook_url: string | null
-          features: string[] | null
           formatted_address: string | null
-          full_address: string | null
-          gallery_urls: string[] | null
+          full_description: string | null
           id: string | null
-          instagram_url: string | null
           is_accepting_bookings: boolean | null
-          is_primary: boolean | null
-          landmark: string | null
-          languages_spoken: string[] | null
+          is_active: boolean | null
+          is_featured: boolean | null
+          is_verified: boolean | null
           latitude: number | null
-          location_active: boolean | null
-          location_id: string | null
-          location_name: string | null
-          location_slug: string | null
-          logo_url: string | null
           longitude: number | null
-          max_bookings_per_day: number | null
           name: string | null
-          neighborhood: string | null
-          owner_id: string | null
-          parking_instructions: string | null
-          payment_methods: string[] | null
-          phone: string | null
           postal_code: string | null
-          rating: number | null
-          review_count: number | null
-          secondary_phone: string | null
-          services_count: number | null
+          primary_email: string | null
+          primary_phone: string | null
+          rating_average: number | null
+          rating_count: number | null
           short_description: string | null
           slug: string | null
-          specialties: string[] | null
-          staff_count: number | null
           state_province: string | null
-          status: string | null
           street_address: string | null
           street_address_2: string | null
-          subscription_tier: string | null
-          tiktok_url: string | null
-          twitter_url: string | null
-          updated_at: string | null
           website_url: string | null
-          welcome_message: string | null
-          whatsapp_number: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_salons_chain"
-            columns: ["chain_id"]
-            isOneToOne: false
-            referencedRelation: "salon_chains"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salons_chain"
-            columns: ["chain_id"]
-            isOneToOne: false
-            referencedRelation: "salon_chains_view"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       security_access_monitoring: {
         Row: {
@@ -9973,7 +11794,22 @@ export type Database = {
           user_agent?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "access_monitoring_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_monitoring_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       security_incident_logs: {
         Row: {
@@ -10195,7 +12031,71 @@ export type Database = {
           user_agent?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "session_security_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_security_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_security_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_booking_rules_view: {
+        Row: {
+          buffer_minutes: number | null
+          created_at: string | null
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          duration_minutes: number | null
+          id: string | null
+          max_advance_booking_days: number | null
+          min_advance_booking_hours: number | null
+          salon_id: string | null
+          service_id: string | null
+          service_name: string | null
+          total_duration_minutes: number | null
+          updated_at: string | null
+          updated_by_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_service_booking_rules_service_id"
+            columns: ["service_id"]
+            isOneToOne: true
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_services_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_services_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       service_categories_view: {
         Row: {
@@ -10219,24 +12119,107 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_service_categories_salon"
+            foreignKeyName: "fk_service_categories_parent_id"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_service_categories_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_service_categories_salon"
+            foreignKeyName: "fk_service_categories_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
+        ]
+      }
+      service_performance: {
+        Row: {
+          avg_rating: number | null
+          cancellation_rate: number | null
+          popularity_score: number | null
+          salon_id: string | null
+          salon_name: string | null
+          service_id: string | null
+          service_name: string | null
+          total_bookings: number | null
+          total_revenue: number | null
+        }
+        Relationships: [
           {
-            foreignKeyName: "service_categories_core_norm_parent_id_fkey"
-            columns: ["parent_id"]
+            foreignKeyName: "fk_appointment_services_service_id"
+            columns: ["service_id"]
             isOneToOne: false
-            referencedRelation: "service_categories_view"
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointments_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_pricing_view: {
+        Row: {
+          base_price: number | null
+          commission_rate: number | null
+          cost: number | null
+          created_at: string | null
+          created_by_id: string | null
+          currency_code: string | null
+          current_price: number | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          id: string | null
+          is_taxable: boolean | null
+          profit_margin: number | null
+          sale_price: number | null
+          salon_id: string | null
+          service_description: string | null
+          service_id: string | null
+          service_name: string | null
+          tax_rate: number | null
+          updated_at: string | null
+          updated_by_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_service_pricing_service_id"
+            columns: ["service_id"]
+            isOneToOne: true
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_services_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_services_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
             referencedColumns: ["id"]
           },
         ]
@@ -10271,21 +12254,28 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_service_product_usage_product"
+            foreignKeyName: "fk_service_product_usage_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "admin_inventory_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_service_product_usage_product"
+            foreignKeyName: "fk_service_product_usage_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_inventory_overview"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "fk_service_product_usage_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_service_product_usage_service"
+            foreignKeyName: "fk_service_product_usage_service_id"
             columns: ["service_id"]
             isOneToOne: false
             referencedRelation: "services"
@@ -10324,21 +12314,21 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_services_category"
+            foreignKeyName: "fk_services_category_id"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "service_categories_view"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_services_salon"
+            foreignKeyName: "fk_services_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_services_salon"
+            foreignKeyName: "fk_services_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -10389,6 +12379,36 @@ export type Database = {
           updated_by_id?: string | null
           user_id?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "fk_sessions_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_sessions_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      slow_queries: {
+        Row: {
+          avg_time_ms: number | null
+          cache_hit_ratio: number | null
+          calls: number | null
+          max_time_ms: number | null
+          min_time_ms: number | null
+          query_preview: string | null
+          queryid: number | null
+          rows: number | null
+          stddev_time_ms: number | null
+          total_time_ms: number | null
+        }
         Relationships: []
       }
       staff: {
@@ -10416,14 +12436,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_staff_profiles_salon"
+            foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_staff_profiles_salon"
+            foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -10476,14 +12496,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_staff_profiles_salon"
+            foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_staff_profiles_salon"
+            foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -10539,103 +12559,117 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_staff_schedules_salon"
+            foreignKeyName: "fk_staff_schedules_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_staff_schedules_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      staff_services: {
-        Row: {
-          category_name: string | null
-          category_slug: string | null
-          created_at: string | null
-          currency_code: string | null
-          default_duration: number | null
-          default_price: number | null
-          duration_override: number | null
-          effective_duration: number | null
-          effective_price: number | null
-          id: string | null
-          is_available: boolean | null
-          notes: string | null
-          performed_count: number | null
-          price_override: number | null
-          proficiency_level:
-            | Database["public"]["Enums"]["proficiency_level"]
-            | null
-          rating_average: number | null
-          rating_count: number | null
-          sale_price: number | null
-          salon_id: string | null
-          salon_name: string | null
-          salon_slug: string | null
-          service_description: string | null
-          service_id: string | null
-          service_is_active: boolean | null
-          service_name: string | null
-          service_slug: string | null
-          staff_avatar: string | null
-          staff_bio: string | null
-          staff_id: string | null
-          staff_name: string | null
-          staff_title: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_staff_profiles_salon"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_profiles_salon"
+            foreignKeyName: "fk_staff_schedules_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_staff_services_service"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_services_staff"
+            foreignKeyName: "fk_staff_schedules_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "admin_staff_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_staff_services_staff"
+            foreignKeyName: "fk_staff_schedules_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "staff"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_staff_services_staff"
+            foreignKeyName: "fk_staff_schedules_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
             referencedRelation: "staff_profiles"
             referencedColumns: ["id"]
           },
         ]
+      }
+      staff_services: {
+        Row: {
+          base_price: number | null
+          created_at: string | null
+          duration_override: number | null
+          id: string | null
+          is_available: boolean | null
+          price_override: number | null
+          proficiency_level: string | null
+          rating_average: number | null
+          salon_id: string | null
+          salon_name: string | null
+          service_id: string | null
+          service_name: string | null
+          staff_id: string | null
+          staff_name: string | null
+          staff_user_id: string | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "admin_salons_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_services_service_id"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_services_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "admin_staff_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_services_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_services_staff_id"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      statistics_freshness: {
+        Row: {
+          freshness: string | null
+          last_analyze: string | null
+          last_autoanalyze: string | null
+          live_rows: number | null
+          rows_modified_since_analyze: number | null
+          schemaname: unknown | null
+          tablename: unknown | null
+        }
+        Relationships: []
       }
       stock_alerts: {
         Row: {
@@ -10685,24 +12719,31 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_stock_alerts_product"
+            foreignKeyName: "fk_stock_alerts_location_id"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "stock_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_stock_alerts_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "admin_inventory_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_stock_alerts_product"
+            foreignKeyName: "fk_stock_alerts_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_inventory_overview"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "fk_stock_alerts_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "stock_alerts_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
             referencedColumns: ["id"]
           },
         ]
@@ -10743,24 +12784,31 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_stock_levels_product"
+            foreignKeyName: "fk_stock_levels_location_id"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "stock_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_stock_levels_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "admin_inventory_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_stock_levels_product"
+            foreignKeyName: "fk_stock_levels_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_inventory_overview"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "fk_stock_levels_product_id"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "stock_levels_location_id_fkey"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
             referencedColumns: ["id"]
           },
         ]
@@ -10807,28 +12855,21 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_stock_locations_location"
+            foreignKeyName: "fk_stock_locations_location_id"
             columns: ["location_id"]
             isOneToOne: false
             referencedRelation: "salon_locations"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_stock_locations_location"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["location_id"]
-          },
-          {
-            foreignKeyName: "fk_stock_locations_salon"
+            foreignKeyName: "fk_stock_locations_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_stock_locations_salon"
+            foreignKeyName: "fk_stock_locations_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -10853,69 +12894,44 @@ export type Database = {
           to_location_id: string | null
           updated_at: string | null
         }
-        Insert: {
-          cost_price?: number | null
-          created_at?: string | null
-          from_location_id?: string | null
-          id?: string | null
-          location_id?: string | null
-          movement_type?: string | null
-          notes?: string | null
-          performed_by_id?: string | null
-          product_id?: string | null
-          quantity?: number | null
-          reference_id?: string | null
-          reference_type?: string | null
-          to_location_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          cost_price?: number | null
-          created_at?: string | null
-          from_location_id?: string | null
-          id?: string | null
-          location_id?: string | null
-          movement_type?: string | null
-          notes?: string | null
-          performed_by_id?: string | null
-          product_id?: string | null
-          quantity?: number | null
-          reference_id?: string | null
-          reference_type?: string | null
-          to_location_id?: string | null
-          updated_at?: string | null
-        }
         Relationships: [
           {
-            foreignKeyName: "fk_stock_movements_product"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_product"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "stock_movements_from_location_id_fkey"
+            foreignKeyName: "fk_stock_movements_from_location_id"
             columns: ["from_location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "stock_movements_location_id_fkey"
+            foreignKeyName: "fk_stock_movements_location_id"
             columns: ["location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "stock_movements_to_location_id_fkey"
+            foreignKeyName: "fk_stock_movements_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_inventory_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_stock_movements_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "admin_inventory_overview"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "fk_stock_movements_product_id"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_stock_movements_to_location_id"
             columns: ["to_location_id"]
             isOneToOne: false
             referencedRelation: "stock_locations"
@@ -10926,71 +12942,64 @@ export type Database = {
       suppliers: {
         Row: {
           address: string | null
+          contact_email: string | null
           contact_name: string | null
+          contact_phone: string | null
           created_at: string | null
-          created_by_id: string | null
-          email: string | null
           id: string | null
           is_active: boolean | null
           name: string | null
           notes: string | null
           payment_terms: string | null
-          phone: string | null
+          product_count: number | null
           salon_id: string | null
+          salon_name: string | null
           updated_at: string | null
-          updated_by_id: string | null
           website: string | null
-        }
-        Insert: {
-          address?: string | null
-          contact_name?: string | null
-          created_at?: string | null
-          created_by_id?: string | null
-          email?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          name?: string | null
-          notes?: string | null
-          payment_terms?: string | null
-          phone?: string | null
-          salon_id?: string | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-          website?: string | null
-        }
-        Update: {
-          address?: string | null
-          contact_name?: string | null
-          created_at?: string | null
-          created_by_id?: string | null
-          email?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          name?: string | null
-          notes?: string | null
-          payment_terms?: string | null
-          phone?: string | null
-          salon_id?: string | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-          website?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_suppliers_salon"
+            foreignKeyName: "fk_suppliers_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_suppliers_salon"
+            foreignKeyName: "fk_suppliers_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
         ]
+      }
+      table_bloat_estimate: {
+        Row: {
+          dead_tuple_percent: number | null
+          dead_tuples: number | null
+          indexes_size: string | null
+          last_analyze: string | null
+          last_autoanalyze: string | null
+          last_autovacuum: string | null
+          last_vacuum: string | null
+          live_tuples: number | null
+          schemaname: unknown | null
+          table_size: string | null
+          tablename: unknown | null
+          total_size: string | null
+        }
+        Relationships: []
+      }
+      table_cache_hit_ratio: {
+        Row: {
+          cache_hit_ratio: number | null
+          cache_hits: number | null
+          disk_reads: number | null
+          schemaname: unknown | null
+          tablename: unknown | null
+        }
+        Relationships: []
       }
       tables_without_primary_keys: {
         Row: {
@@ -11021,25 +13030,46 @@ export type Database = {
           staff_title: string | null
           staff_user_id: string | null
           start_at: string | null
-          status: string | null
+          status: Database["public"]["Enums"]["time_off_status"] | null
           updated_at: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_time_off_requests_salon"
+            foreignKeyName: "fk_time_off_requests_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_time_off_requests_salon"
+            foreignKeyName: "fk_time_off_requests_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
         ]
+      }
+      toast_usage_summary: {
+        Row: {
+          main_size: string | null
+          schemaname: unknown | null
+          tablename: unknown | null
+          toast_and_index_size: string | null
+          toast_index_percentage: number | null
+          total_size: string | null
+        }
+        Relationships: []
+      }
+      unused_indexes: {
+        Row: {
+          index_name: unknown | null
+          index_size: string | null
+          scans: number | null
+          schemaname: unknown | null
+          tablename: unknown | null
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
@@ -11074,14 +13104,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_user_roles_salon"
+            foreignKeyName: "fk_user_roles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "admin_salons_overview"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_user_roles_salon"
+            foreignKeyName: "fk_user_roles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
@@ -11104,9 +13134,26 @@ export type Database = {
           table_name: string
         }[]
       }
+      analyze_index_types: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          index_name: string
+          index_size: string
+          index_type: string
+          scans: number
+          schema_name: string
+          table_name: string
+          tuples_fetched: number
+          tuples_read: number
+        }[]
+      }
       audit_http_request: {
         Args: { body?: Json; headers?: Json; method: string; url: string }
         Returns: number
+      }
+      auth_user_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       build_notification_payload: {
         Args: {
@@ -11313,6 +13360,23 @@ export type Database = {
         Args: { p_date_from?: string; p_date_to?: string; p_salon_id?: string }
         Returns: Database["public"]["CompositeTypes"]["appointment_summary"][]
       }
+      get_appointments_page: {
+        Args: {
+          p_after_id?: string
+          p_after_time?: string
+          p_limit?: number
+          p_salon_id: string
+        }
+        Returns: {
+          customer_id: string
+          duration_minutes: number
+          end_time: string
+          id: string
+          staff_id: string
+          start_time: string
+          status: string
+        }[]
+      }
       get_complete_optimization_summary: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -11334,9 +13398,33 @@ export type Database = {
           table_component: string
         }[]
       }
+      get_notifications_page: {
+        Args: {
+          p_after_created?: string
+          p_after_id?: string
+          p_limit?: number
+          p_user_id: string
+        }
+        Returns: {
+          created_at: string
+          id: string
+          is_read: boolean
+          message: string
+          title: string
+          type: string
+        }[]
+      }
       get_optimization_executive_summary: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_parallel_settings: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          current_value: string
+          recommendation: string
+          setting_name: string
+        }[]
       }
       get_phase_6_summary: {
         Args: Record<PropertyKey, never>
@@ -11350,7 +13438,61 @@ export type Database = {
         Args:
           | { p_date_from: string; p_date_to: string; p_salon_id: string }
           | { p_salon_id: string }
-        Returns: Json
+        Returns: {
+          metric_date: string
+          new_customers: number
+          total_appointments: number
+          total_revenue: number
+        }[]
+      }
+      get_services_page: {
+        Args: {
+          p_after_id?: string
+          p_after_name?: string
+          p_limit?: number
+          p_salon_id: string
+        }
+        Returns: {
+          category_id: string
+          description: string
+          id: string
+          is_active: boolean
+          is_bookable: boolean
+          name: string
+        }[]
+      }
+      get_staff_page: {
+        Args: {
+          p_after_id?: string
+          p_after_name?: string
+          p_limit?: number
+          p_salon_id: string
+        }
+        Returns: {
+          email: string
+          full_name: string
+          id: string
+          is_active: boolean
+          phone: string
+        }[]
+      }
+      get_table_fill_factors: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          fill_factor: number
+          recommendation: string
+          schema_name: string
+          table_name: string
+        }[]
+      }
+      get_toast_settings: {
+        Args: { schema_name: string; table_name: string }
+        Returns: {
+          column_name: string
+          data_type: string
+          storage_description: string
+          storage_type: string
+        }[]
       }
       get_ultrathink_insights: {
         Args: Record<PropertyKey, never>
@@ -11412,16 +13554,48 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      is_business_hours: {
+        Args: { check_time: string }
+        Returns: boolean
+      }
       is_future_timestamp: {
         Args: { ts: string }
+        Returns: boolean
+      }
+      is_jsonb_array: {
+        Args: { data: Json }
+        Returns: boolean
+      }
+      is_jsonb_object: {
+        Args: { data: Json }
+        Returns: boolean
+      }
+      is_non_negative: {
+        Args: { value: number }
         Returns: boolean
       }
       is_owner: {
         Args: { check_user_id: string }
         Returns: boolean
       }
+      is_past_timestamp: {
+        Args: { ts: string }
+        Returns: boolean
+      }
       is_platform_admin: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_positive: {
+        Args: { value: number }
+        Returns: boolean
+      }
+      is_positive_amount: {
+        Args: { amount: number }
+        Returns: boolean
+      }
+      is_read_only_query: {
+        Args: { p_query: string }
         Returns: boolean
       }
       is_salon_owner: {
@@ -11452,9 +13626,61 @@ export type Database = {
         Args: { data: Json }
         Returns: boolean
       }
+      is_valid_operating_hours: {
+        Args: { close_time: string; open_time: string }
+        Returns: boolean
+      }
+      is_valid_percentage: {
+        Args: { as_decimal?: boolean; value: number } | { value: number }
+        Returns: boolean
+      }
       is_valid_phone: {
         Args: { phone: string }
         Returns: boolean
+      }
+      is_valid_rating: {
+        Args: { max_rating?: number; min_rating?: number; rating: number }
+        Returns: boolean
+      }
+      is_valid_sku: {
+        Args: { sku: string }
+        Returns: boolean
+      }
+      is_valid_slug: {
+        Args: { slug: string }
+        Returns: boolean
+      }
+      is_valid_time_range: {
+        Args:
+          | { end_time: string; start_time: string }
+          | { end_time: string; start_time: string }
+        Returns: boolean
+      }
+      is_valid_timestamp_range: {
+        Args: { end_ts: string; start_ts: string }
+        Returns: boolean
+      }
+      is_valid_url: {
+        Args: { url: string }
+        Returns: boolean
+      }
+      is_valid_uuid: {
+        Args: { val: string }
+        Returns: boolean
+      }
+      jsonb_has_required_keys: {
+        Args: { data: Json; required_keys: string[] }
+        Returns: boolean
+      }
+      list_index_documentation: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          comment: string
+          index_name: string
+          index_type: string
+          schema_name: string
+          table_name: string
+        }[]
       }
       log_security_event: {
         Args: { p_event_type: string; p_metadata?: Json; p_severity?: string }
@@ -11466,6 +13692,18 @@ export type Database = {
       }
       optimize_distinct_column: {
         Args: { column_name: string; table_name: string }
+        Returns: undefined
+      }
+      optimize_for_analytics: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      optimize_for_oltp: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      optimize_for_reporting: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       optimize_pagination_index: {
@@ -11484,6 +13722,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      perform_index_review: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       prepare_search_query: {
         Args: { query_text: string }
         Returns: unknown
@@ -11496,6 +13738,21 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      refresh_schema_statistics: {
+        Args: { target_schema: string }
+        Returns: {
+          status: string
+          table_name: string
+        }[]
+      }
+      refresh_statistics: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          schema_name: string
+          status: string
+          table_name: string
+        }[]
+      }
       refresh_user_role_claim: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -11503,6 +13760,18 @@ export type Database = {
       require_mfa: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      retry_on_error: {
+        Args: { p_function_call: string; p_max_retries?: number }
+        Returns: Json
+      }
+      retry_with_logging: {
+        Args: {
+          p_function_call: string
+          p_function_name: string
+          p_max_retries?: number
+        }
+        Returns: Json
       }
       safe_json_extract_text: {
         Args: { data: Json; path: string }
@@ -11532,7 +13801,7 @@ export type Database = {
       }
       soft_delete_user: {
         Args: Record<PropertyKey, never> | { p_user_id: string }
-        Returns: boolean
+        Returns: undefined
       }
       subscribe_to_channels: {
         Args: { p_user_id: string }
@@ -11546,6 +13815,14 @@ export type Database = {
         Returns: {
           priority: string
           suggestion: string
+        }[]
+      }
+      suggest_query_routing: {
+        Args: { p_query: string }
+        Returns: {
+          confidence: number
+          reason: string
+          should_route_to: string
         }[]
       }
       text_similarity: {
@@ -11798,6 +14075,21 @@ export type Database = {
         | "customer"
         | "vip_customer"
         | "guest"
+      security_action:
+        | "login"
+        | "logout"
+        | "create"
+        | "read"
+        | "update"
+        | "delete"
+        | "export"
+        | "import"
+        | "share"
+        | "permission_change"
+        | "failed_login"
+        | "password_reset"
+        | "account_locked"
+        | "suspicious_activity"
       security_incident_type:
         | "failed_login"
         | "brute_force"
@@ -11818,6 +14110,16 @@ export type Database = {
         | "vacation"
         | "sick_leave"
         | "training"
+      stock_movement_type:
+        | "purchase"
+        | "sale"
+        | "adjustment"
+        | "transfer"
+        | "return"
+        | "waste"
+        | "damaged"
+        | "initial"
+        | "recount"
       subscription_status:
         | "trialing"
         | "active"
@@ -11827,9 +14129,32 @@ export type Database = {
         | "incomplete"
         | "incomplete_expired"
         | "paused"
+      subscription_tier:
+        | "free"
+        | "starter"
+        | "professional"
+        | "enterprise"
+        | "custom"
       thread_priority: "low" | "normal" | "high" | "urgent"
       thread_status: "open" | "in_progress" | "resolved" | "closed" | "archived"
       time_off_status: "pending" | "approved" | "rejected" | "cancelled"
+      transaction_type:
+        | "service_payment"
+        | "product_sale"
+        | "tip"
+        | "refund"
+        | "adjustment"
+        | "discount"
+        | "fee"
+        | "credit"
+        | "other"
+      webhook_status:
+        | "pending"
+        | "processing"
+        | "completed"
+        | "failed"
+        | "retrying"
+        | "cancelled"
     }
     CompositeTypes: {
       appointment_summary: {
@@ -12302,51 +14627,58 @@ export type Database = {
         Row: {
           appointment_id: string
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           duration_minutes: number | null
           end_time: string | null
           id: string
           service_id: string
           staff_id: string | null
           start_time: string | null
-          status: string | null
+          status: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           appointment_id: string
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           duration_minutes?: number | null
           end_time?: string | null
           id?: string
           service_id: string
           staff_id?: string | null
           start_time?: string | null
-          status?: string | null
+          status?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           appointment_id?: string
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           duration_minutes?: number | null
           end_time?: string | null
           id?: string
           service_id?: string
           staff_id?: string | null
           start_time?: string | null
-          status?: string | null
+          status?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_appointment_services_appointment"
+            foreignKeyName: "fk_appointment_services_appointment_id"
             columns: ["appointment_id"]
             isOneToOne: false
             referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_appointment_services_appointment_id"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments_with_counts"
             referencedColumns: ["id"]
           },
         ]
@@ -12355,56 +14687,53 @@ export type Database = {
         Row: {
           confirmation_code: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           customer_id: string
           duration_minutes: number | null
           end_time: string
           id: string
           salon_id: string
-          service_count: number | null
           staff_id: string | null
           start_time: string
           status: Database["public"]["Enums"]["appointment_status"]
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           confirmation_code?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           customer_id: string
           duration_minutes?: number | null
           end_time: string
           id?: string
           salon_id: string
-          service_count?: number | null
           staff_id?: string | null
           start_time: string
           status?: Database["public"]["Enums"]["appointment_status"]
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           confirmation_code?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           customer_id?: string
           duration_minutes?: number | null
           end_time?: string
           id?: string
           salon_id?: string
-          service_count?: number | null
           staff_id?: string | null
           start_time?: string
           status?: Database["public"]["Enums"]["appointment_status"]
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: []
       }
       blocked_times: {
         Row: {
-          block_type: string
+          block_type: Database["scheduling"]["Enums"]["block_type_enum"]
           created_at: string
           created_by_id: string
           deleted_at: string | null
@@ -12419,10 +14748,10 @@ export type Database = {
           staff_id: string | null
           start_time: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
-          block_type: string
+          block_type: Database["scheduling"]["Enums"]["block_type_enum"]
           created_at?: string
           created_by_id: string
           deleted_at?: string | null
@@ -12437,10 +14766,10 @@ export type Database = {
           staff_id?: string | null
           start_time: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
-          block_type?: string
+          block_type?: Database["scheduling"]["Enums"]["block_type_enum"]
           created_at?: string
           created_by_id?: string
           deleted_at?: string | null
@@ -12455,7 +14784,7 @@ export type Database = {
           staff_id?: string | null
           start_time?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: []
       }
@@ -12464,7 +14793,7 @@ export type Database = {
           break_end: string | null
           break_start: string | null
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           day_of_week: Database["public"]["Enums"]["day_of_week"]
           deleted_at: string | null
           deleted_by_id: string | null
@@ -12477,13 +14806,13 @@ export type Database = {
           staff_id: string
           start_time: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           break_end?: string | null
           break_start?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           day_of_week: Database["public"]["Enums"]["day_of_week"]
           deleted_at?: string | null
           deleted_by_id?: string | null
@@ -12496,13 +14825,13 @@ export type Database = {
           staff_id: string
           start_time: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           break_end?: string | null
           break_start?: string | null
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           day_of_week?: Database["public"]["Enums"]["day_of_week"]
           deleted_at?: string | null
           deleted_by_id?: string | null
@@ -12515,14 +14844,14 @@ export type Database = {
           staff_id?: string
           start_time?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: []
       }
       time_off_requests: {
         Row: {
           created_at: string
-          created_by_id: string | null
+          created_by_id: string
           deleted_at: string | null
           deleted_by_id: string | null
           end_at: string
@@ -12537,13 +14866,13 @@ export type Database = {
           salon_id: string
           staff_id: string
           start_at: string
-          status: string
+          status: Database["public"]["Enums"]["time_off_status"]
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           end_at: string
@@ -12558,13 +14887,13 @@ export type Database = {
           salon_id: string
           staff_id: string
           start_at: string
-          status: string
+          status?: Database["public"]["Enums"]["time_off_status"]
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id: string
         }
         Update: {
           created_at?: string
-          created_by_id?: string | null
+          created_by_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
           end_at?: string
@@ -12579,9 +14908,9 @@ export type Database = {
           salon_id?: string
           staff_id?: string
           start_at?: string
-          status?: string
+          status?: Database["public"]["Enums"]["time_off_status"]
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Relationships: []
       }
@@ -12599,6 +14928,57 @@ export type Database = {
         }
         Relationships: []
       }
+      appointments_with_counts: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string | null
+          created_by_id: string | null
+          customer_id: string | null
+          duration_minutes: number | null
+          end_time: string | null
+          id: string | null
+          salon_id: string | null
+          service_count: number | null
+          staff_id: string | null
+          start_time: string | null
+          status: Database["public"]["Enums"]["appointment_status"] | null
+          updated_at: string | null
+          updated_by_id: string | null
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string | null
+          created_by_id?: string | null
+          customer_id?: string | null
+          duration_minutes?: number | null
+          end_time?: string | null
+          id?: string | null
+          salon_id?: string | null
+          service_count?: never
+          staff_id?: string | null
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["appointment_status"] | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string | null
+          created_by_id?: string | null
+          customer_id?: string | null
+          duration_minutes?: number | null
+          end_time?: string | null
+          id?: string | null
+          salon_id?: string | null
+          service_count?: never
+          staff_id?: string | null
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["appointment_status"] | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       batch_update_appointment_status: {
@@ -12608,6 +14988,28 @@ export type Database = {
           p_reason?: string
         }
         Returns: number
+      }
+      bulk_archive_appointments: {
+        Args: { p_appointment_ids: string[]; p_archived_by?: string }
+        Returns: {
+          appointment_id: string
+          archived: boolean
+          error_message: string
+        }[]
+      }
+      bulk_create_appointments: {
+        Args: { p_appointments: Json[] }
+        Returns: {
+          customer_id: string
+          end_time: string
+          error_message: string
+          id: string
+          salon_id: string
+          staff_id: string
+          start_time: string
+          status: string
+          success: boolean
+        }[]
       }
       check_appointment_conflict: {
         Args: {
@@ -12718,7 +15120,16 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      block_type_enum:
+        | "personal"
+        | "break"
+        | "lunch"
+        | "holiday"
+        | "vacation"
+        | "sick_leave"
+        | "training"
+        | "maintenance"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -12734,7 +15145,10 @@ export type Database = {
           ip_address: unknown | null
           is_granted: boolean
           resource_id: string | null
+          resource_schema: string | null
+          resource_table: string | null
           resource_type: string
+          session_id: string | null
           user_agent: string | null
           user_id: string | null
         }
@@ -12745,7 +15159,10 @@ export type Database = {
           ip_address?: unknown | null
           is_granted: boolean
           resource_id?: string | null
+          resource_schema?: string | null
+          resource_table?: string | null
           resource_type: string
+          session_id?: string | null
           user_agent?: string | null
           user_id?: string | null
         }
@@ -12756,7 +15173,10 @@ export type Database = {
           ip_address?: unknown | null
           is_granted?: boolean
           resource_id?: string | null
+          resource_schema?: string | null
+          resource_table?: string | null
           resource_type?: string
+          session_id?: string | null
           user_agent?: string | null
           user_id?: string | null
         }
@@ -12764,30 +15184,30 @@ export type Database = {
       }
       auth_configuration: {
         Row: {
-          created_at: string | null
+          created_at: string
           description: string | null
           id: number
           setting_name: string
           setting_value: Json
-          updated_at: string | null
+          updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           id?: number
           setting_name: string
           setting_value: Json
-          updated_at?: string | null
+          updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           id?: number
           setting_name?: string
           setting_value?: Json
-          updated_at?: string | null
+          updated_at?: string
           updated_by_id?: string | null
         }
         Relationships: []
@@ -12802,7 +15222,7 @@ export type Database = {
           operation: string
           resource_type: string
           role_name: string
-          updated_at: string | null
+          updated_at: string
         }
         Insert: {
           conditions?: Json | null
@@ -12813,7 +15233,7 @@ export type Database = {
           operation: string
           resource_type: string
           role_name: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Update: {
           conditions?: Json | null
@@ -12824,7 +15244,7 @@ export type Database = {
           operation?: string
           resource_type?: string
           role_name?: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -12940,7 +15360,7 @@ export type Database = {
           ip_address: unknown | null
           is_blocked: boolean | null
           last_activity_at: string | null
-          session_id: string
+          session_id: string | null
           suspicious_score: number | null
           user_agent: string | null
           user_id: string | null
@@ -12951,7 +15371,7 @@ export type Database = {
           ip_address?: unknown | null
           is_blocked?: boolean | null
           last_activity_at?: string | null
-          session_id: string
+          session_id?: string | null
           suspicious_score?: number | null
           user_agent?: string | null
           user_id?: string | null
@@ -12962,7 +15382,7 @@ export type Database = {
           ip_address?: unknown | null
           is_blocked?: boolean | null
           last_activity_at?: string | null
-          session_id?: string
+          session_id?: string | null
           suspicious_score?: number | null
           user_agent?: string | null
           user_id?: string | null
@@ -12986,6 +15406,10 @@ export type Database = {
           status: string
           threshold: number
         }[]
+      }
+      is_valid_rate_limit_metadata: {
+        Args: { metadata: Json }
+        Returns: boolean
       }
       log_security_event: {
         Args: {
@@ -13539,12 +15963,45 @@ export type Database = {
   }
   utility: {
     Tables: {
-      [_ in never]: never
+      index_usage_audit: {
+        Row: {
+          id: number
+          idx_scan: number
+          index_size: string
+          indexname: string
+          recorded_at: string
+          relname: string
+          schemaname: string
+        }
+        Insert: {
+          id?: number
+          idx_scan: number
+          index_size: string
+          indexname: string
+          recorded_at?: string
+          relname: string
+          schemaname: string
+        }
+        Update: {
+          id?: number
+          idx_scan?: number
+          index_size?: string
+          indexname?: string
+          recorded_at?: string
+          relname?: string
+          schemaname?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      capture_zero_scan_indexes: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       current_user_id: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -13865,7 +16322,10 @@ export const Constants = {
       code_challenge_method: ["s256", "plain"],
       factor_status: ["unverified", "verified"],
       factor_type: ["totp", "webauthn", "phone"],
+      oauth_authorization_status: ["pending", "approved", "denied", "expired"],
+      oauth_client_type: ["public", "confidential"],
       oauth_registration_type: ["dynamic", "manual"],
+      oauth_response_type: ["code"],
       one_time_token_type: [
         "confirmation_token",
         "reauthentication_token",
@@ -13880,7 +16340,18 @@ export const Constants = {
     Enums: {},
   },
   communication: {
-    Enums: {},
+    Enums: {
+      message_context_type: [
+        "appointment",
+        "booking",
+        "cancellation",
+        "reminder",
+        "general",
+        "support",
+        "notification",
+        "system",
+      ],
+    },
   },
   cron: {
     Enums: {},
@@ -13915,7 +16386,18 @@ export const Constants = {
     Enums: {},
   },
   private: {
-    Enums: {},
+    Enums: {
+      subscription_status_enum: [
+        "active",
+        "trialing",
+        "past_due",
+        "canceled",
+        "unpaid",
+        "paused",
+        "incomplete",
+        "incomplete_expired",
+      ],
+    },
   },
   public: {
     Enums: {
@@ -14110,6 +16592,22 @@ export const Constants = {
         "vip_customer",
         "guest",
       ],
+      security_action: [
+        "login",
+        "logout",
+        "create",
+        "read",
+        "update",
+        "delete",
+        "export",
+        "import",
+        "share",
+        "permission_change",
+        "failed_login",
+        "password_reset",
+        "account_locked",
+        "suspicious_activity",
+      ],
       security_incident_type: [
         "failed_login",
         "brute_force",
@@ -14132,6 +16630,17 @@ export const Constants = {
         "sick_leave",
         "training",
       ],
+      stock_movement_type: [
+        "purchase",
+        "sale",
+        "adjustment",
+        "transfer",
+        "return",
+        "waste",
+        "damaged",
+        "initial",
+        "recount",
+      ],
       subscription_status: [
         "trialing",
         "active",
@@ -14142,9 +16651,35 @@ export const Constants = {
         "incomplete_expired",
         "paused",
       ],
+      subscription_tier: [
+        "free",
+        "starter",
+        "professional",
+        "enterprise",
+        "custom",
+      ],
       thread_priority: ["low", "normal", "high", "urgent"],
       thread_status: ["open", "in_progress", "resolved", "closed", "archived"],
       time_off_status: ["pending", "approved", "rejected", "cancelled"],
+      transaction_type: [
+        "service_payment",
+        "product_sale",
+        "tip",
+        "refund",
+        "adjustment",
+        "discount",
+        "fee",
+        "credit",
+        "other",
+      ],
+      webhook_status: [
+        "pending",
+        "processing",
+        "completed",
+        "failed",
+        "retrying",
+        "cancelled",
+      ],
     },
   },
   realtime: {
@@ -14157,7 +16692,19 @@ export const Constants = {
     Enums: {},
   },
   scheduling: {
-    Enums: {},
+    Enums: {
+      block_type_enum: [
+        "personal",
+        "break",
+        "lunch",
+        "holiday",
+        "vacation",
+        "sick_leave",
+        "training",
+        "maintenance",
+        "other",
+      ],
+    },
   },
   security: {
     Enums: {},

@@ -8,7 +8,6 @@ import {
 } from './api/queries'
 import { ServicePerformanceDashboard } from './components/service-performance-dashboard'
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 
 export async function ServicePerformance() {
   const salon = await getUserSalon()
@@ -45,10 +44,10 @@ export async function ServicePerformance() {
   return (
     <Stack gap="xl">
       <div>
-        <H1>Service Performance Analytics</H1>
-        <P className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Service Performance Analytics</h1>
+        <p className="leading-7 text-muted-foreground">
           Track revenue, popularity, and performance metrics for your services
-        </P>
+        </p>
       </div>
 
       <ServicePerformanceDashboard

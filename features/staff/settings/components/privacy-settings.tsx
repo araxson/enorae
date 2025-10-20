@@ -5,7 +5,6 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { updateUserPreferences } from '../api/mutations'
 import type { PrivacySettings } from '../types'
 
@@ -36,15 +35,15 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
     <Card className="p-6">
       <Stack gap="lg">
         <div>
-          <H3>Privacy Settings</H3>
-          <Muted>Control who can see your information</Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Privacy Settings</h3>
+          <p className="text-sm text-muted-foreground">Control who can see your information</p>
         </div>
 
         <Stack gap="md">
           <Flex justify="between" align="center">
             <div className="flex-1">
               <Label htmlFor="profile_visible">Profile Visible to Clients</Label>
-              <Muted className="text-sm">Allow clients to view your profile</Muted>
+              <p className="text-sm text-muted-foreground text-sm">Allow clients to view your profile</p>
             </div>
             <Switch
               id="profile_visible"
@@ -56,7 +55,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
           <Flex justify="between" align="center">
             <div className="flex-1">
               <Label htmlFor="show_ratings">Show Ratings</Label>
-              <Muted className="text-sm">Display your ratings publicly</Muted>
+              <p className="text-sm text-muted-foreground text-sm">Display your ratings publicly</p>
             </div>
             <Switch
               id="show_ratings"
@@ -68,7 +67,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
           <Flex justify="between" align="center">
             <div className="flex-1">
               <Label htmlFor="show_appointments">Show Completed Appointments</Label>
-              <Muted className="text-sm">Display appointment count</Muted>
+              <p className="text-sm text-muted-foreground text-sm">Display appointment count</p>
             </div>
             <Switch
               id="show_appointments"
@@ -80,7 +79,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
           <Flex justify="between" align="center">
             <div className="flex-1">
               <Label htmlFor="allow_search">Allow Profile Search</Label>
-              <Muted className="text-sm">Let clients find you in search</Muted>
+              <p className="text-sm text-muted-foreground text-sm">Let clients find you in search</p>
             </div>
             <Switch
               id="allow_search"

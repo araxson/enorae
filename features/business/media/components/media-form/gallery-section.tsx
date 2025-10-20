@@ -7,8 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Stack, Grid } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
-
 type GallerySectionProps = {
   galleryUrls: string[]
   newGalleryUrl: string
@@ -30,7 +28,7 @@ export function GallerySection({
     <Card>
       <CardContent>
         <Stack gap="md">
-          <H3>Photo Gallery</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Photo Gallery</h3>
 
           <div className="flex gap-2">
             <Input
@@ -62,7 +60,7 @@ export function GallerySection({
               ))}
             </Grid>
           ) : (
-            <Muted>No gallery images yet. Add your first image above.</Muted>
+            <p className="text-sm text-muted-foreground">No gallery images yet. Add your first image above.</p>
           )}
         </Stack>
       </CardContent>

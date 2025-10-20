@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Stack, Flex } from '@/components/layout'
 import { AlertCircle } from 'lucide-react'
-import { Small } from '@/components/ui/typography'
 import { PasswordInput } from './password-input'
 
 export function LoginForm() {
@@ -100,12 +99,12 @@ export function LoginForm() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Signing in...' : 'Sign In'}
             </Button>
-            <Small className="text-center text-muted-foreground">
+            <small className="text-sm font-medium leading-none text-center text-muted-foreground">
               Don&apos;t have an account?{' '}
               <Link href="/signup" className="underline hover:text-foreground">
                 Sign up
               </Link>
-            </Small>
+            </small>
           </Stack>
         </CardFooter>
       </form>

@@ -3,7 +3,6 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Grid, Flex } from '@/components/layout'
-import { H3, H4, P, Muted } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   TrendingUp,
@@ -41,7 +40,7 @@ export function BusinessInsightsDashboard({
       {/* Alerts Section */}
       {alerts.length > 0 && (
         <div>
-          <H3 className="mb-4">Active Alerts</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Active Alerts</h3>
           <Stack gap="md">
             {alerts.map((alert) => (
               <Alert
@@ -69,15 +68,15 @@ export function BusinessInsightsDashboard({
 
       {/* Trend Insights */}
       <div>
-        <H3 className="mb-4">Trend Analysis</H3>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Trend Analysis</h3>
         <Grid cols={{ base: 1, md: 3 }} gap="lg">
           {trends.map((trend, idx) => (
             <Card key={idx} className="p-6">
               <Stack gap="md">
                 <Flex justify="between" align="start">
                   <div>
-                    <H4>{trend.metric}</H4>
-                    <Muted className="text-sm">{trend.message}</Muted>
+                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{trend.metric}</h4>
+                    <p className="text-sm text-muted-foreground text-sm">{trend.message}</p>
                   </div>
                   {trend.trend === 'up' ? (
                     <TrendingUp className={`h-6 w-6 ${trend.status === 'positive' ? 'text-green-500' : 'text-red-500'}`} />
@@ -112,7 +111,7 @@ export function BusinessInsightsDashboard({
       {/* AI Recommendations */}
       <div>
         <Flex justify="between" align="center" className="mb-4">
-          <H3>AI-Powered Recommendations</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">AI-Powered Recommendations</h3>
           <Badge variant="outline" className="gap-1">
             <Lightbulb className="h-3 w-3" />
             {recommendations.length} insights
@@ -125,7 +124,7 @@ export function BusinessInsightsDashboard({
                 <Flex justify="between" align="start">
                   <div className="flex-1">
                     <Flex gap="sm" align="center" className="mb-2">
-                      <H4>{rec.title}</H4>
+                      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{rec.title}</h4>
                       <Badge variant={
                         rec.priority === 'high' ? 'destructive' :
                         rec.priority === 'medium' ? 'default' :
@@ -135,18 +134,18 @@ export function BusinessInsightsDashboard({
                       </Badge>
                       <Badge variant="outline">{rec.category}</Badge>
                     </Flex>
-                    <P className="text-sm mb-3">{rec.description}</P>
+                    <p className="leading-7 text-sm mb-3">{rec.description}</p>
                     <div className="bg-muted/50 p-3 rounded-md mb-3">
                       <Flex gap="sm" align="center">
                         <Target className="h-4 w-4 text-primary" />
-                        <Muted className="text-sm font-medium">Impact: {rec.impact}</Muted>
+                        <p className="text-sm text-muted-foreground text-sm font-medium">Impact: {rec.impact}</p>
                       </Flex>
                     </div>
                   </div>
                 </Flex>
 
                 <div>
-                  <Muted className="text-sm font-medium mb-2">Action Items:</Muted>
+                  <p className="text-sm text-muted-foreground text-sm font-medium mb-2">Action Items:</p>
                   <ul className="space-y-1.5">
                     {rec.actionItems.map((item, idx) => (
                       <li key={idx} className="flex gap-2 text-sm">
@@ -164,8 +163,8 @@ export function BusinessInsightsDashboard({
             <Card className="p-8">
               <Stack gap="sm" align="center" className="text-center">
                 <CheckCircle2 className="h-12 w-12 text-green-500" />
-                <H4>All Systems Optimal</H4>
-                <Muted>Your business metrics are performing well. Keep up the great work!</Muted>
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">All Systems Optimal</h4>
+                <p className="text-sm text-muted-foreground">Your business metrics are performing well. Keep up the great work!</p>
               </Stack>
             </Card>
           )}
@@ -175,18 +174,18 @@ export function BusinessInsightsDashboard({
       {/* Growth Opportunities */}
       {opportunities.length > 0 && (
         <div>
-          <H3 className="mb-4">Growth Opportunities</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Growth Opportunities</h3>
           <Grid cols={{ base: 1, md: 2 }} gap="lg">
             {opportunities.map((opp, idx) => (
               <Card key={idx} className="p-6">
                 <Stack gap="sm">
                   <Flex gap="sm" align="center">
                     <TrendingUpIcon className="h-5 w-5 text-primary" />
-                    <H4>{opp.title}</H4>
+                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{opp.title}</h4>
                   </Flex>
-                  <P className="text-sm">{opp.description}</P>
+                  <p className="leading-7 text-sm">{opp.description}</p>
                   <div className="bg-primary/10 p-2 rounded-md">
-                    <Muted className="text-sm font-medium text-primary">{opp.potential}</Muted>
+                    <p className="text-sm text-muted-foreground text-sm font-medium text-primary">{opp.potential}</p>
                   </div>
                 </Stack>
               </Card>

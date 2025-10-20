@@ -35,7 +35,7 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
     return (
       <Card>
         <CardHeader className="pb-4">
-          <CardTitle className="text-base font-semibold">Profile overview</CardTitle>
+          <CardTitle>Profile overview</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Skeleton className="h-16 w-full" />
@@ -50,7 +50,7 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
     return (
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-base font-semibold">Profile overview</CardTitle>
+          <CardTitle>Profile overview</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
@@ -66,7 +66,7 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle className="text-base font-semibold">Profile overview</CardTitle>
+        <CardTitle>Profile overview</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center">

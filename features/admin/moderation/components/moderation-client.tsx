@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import { P, Muted } from '@/components/ui/typography'
 import { ModerationStats } from './moderation-stats'
 import { ModerationFilters } from './moderation-filters'
 import { ReviewsTable } from './reviews-table'
@@ -76,10 +75,10 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
   return (
     <div className="space-y-8">
       <div className="space-y-1">
-        <P className="text-base font-semibold">Content moderation</P>
-        <Muted className="text-sm">
+        <p className="leading-7 text-base font-semibold">Content moderation</p>
+        <p className="text-sm text-muted-foreground text-sm">
           Monitor at-risk reviews, sentiment trends, and reviewer reputation across the platform.
-        </Muted>
+        </p>
       </div>
 
       <ModerationStats stats={stats} />
@@ -140,11 +139,11 @@ function InsightCard({ title, emptyLabel, items, renderBadge }: InsightCardProps
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <Muted className="text-xs">{emptyLabel}</Muted>
+          <p className="text-sm text-muted-foreground text-xs">{emptyLabel}</p>
         ) : (
           items.map((review) => (
             <div key={review.id ?? `${review.salon_id}-${review.created_at}`} className="flex items-center justify-between gap-3">

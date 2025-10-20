@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Small } from '@/components/ui/typography'
 import { Badge } from '@/components/ui/badge'
 import { EmptyState } from '@/components/shared'
 import {
@@ -44,7 +43,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
     <Card>
       <CardHeader>
         <CardTitle>Upcoming Appointments</CardTitle>
-        <Small>Next 7 days</Small>
+        <small className="text-sm font-medium leading-none">Next 7 days</small>
       </CardHeader>
       <CardContent>
         <ItemGroup>
@@ -53,11 +52,11 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
               <Item variant="outline" size="default">
                 <ItemMedia>
                   <div className="flex flex-col items-center justify-center min-w-16 p-2 bg-primary/10 rounded-lg">
-                    <Small className="font-bold text-xs">
+                    <small className="text-sm font-medium leading-none font-bold text-xs">
                       {appointment.start_time
                         ? format(new Date(appointment.start_time), 'MMM')
                         : '---'}
-                    </Small>
+                    </small>
                     <div className="text-lg font-bold leading-none">
                       {appointment.start_time
                         ? format(new Date(appointment.start_time), 'd')

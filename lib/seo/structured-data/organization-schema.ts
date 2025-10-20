@@ -1,4 +1,4 @@
-import { APP_DESCRIPTION, APP_NAME, APP_URL } from '@/lib/constants/app.constants'
+import { APP_DESCRIPTION, APP_NAME, APP_URL } from '@/lib/constants'
 import type { StructuredDataProps } from './schema-types'
 
 export function generateOrganizationSchema(): StructuredDataProps {

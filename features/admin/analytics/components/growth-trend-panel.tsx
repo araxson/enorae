@@ -29,7 +29,7 @@ export function GrowthTrendPanel({ series }: GrowthTrendPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="text-base font-semibold">Growth Trend (Last 14 snapshots)</CardTitle>
+        <CardTitle>Growth Trend (Last 14 snapshots)</CardTitle>
       </CardHeader>
       <CardContent className="overflow-x-auto">
         {rows.length === 0 ? (

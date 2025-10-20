@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Stack, Flex } from '@/components/layout/flex'
-import { H2, P, Muted } from '@/components/ui/typography'
 import { ServerCrash, RefreshCw, Home } from 'lucide-react'
 
 /**
@@ -37,23 +36,23 @@ export default function GlobalError({
             <CardHeader>
               <Flex gap="sm" align="center">
                 <ServerCrash className="h-6 w-6 text-destructive" />
-                <H2 className="m-0">Critical Application Error</H2>
+                <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight m-0">Critical Application Error</h2>
               </Flex>
             </CardHeader>
 
             <CardContent>
               <Stack gap="md">
-                <P className="text-muted-foreground">
+                <p className="leading-7 text-muted-foreground">
                   A critical error occurred that prevented the application from loading.
                   Please try refreshing the page. If the problem persists, contact support.
-                </P>
+                </p>
 
                 {error.digest && (
                   <Alert>
                     <AlertDescription>
-                      <Muted className="font-mono text-xs">
+                      <p className="text-sm text-muted-foreground font-mono text-xs">
                         Error ID: {error.digest}
-                      </Muted>
+                      </p>
                     </AlertDescription>
                   </Alert>
                 )}
@@ -62,12 +61,12 @@ export default function GlobalError({
                   <Alert variant="destructive">
                     <AlertDescription>
                       <Stack gap="xs">
-                        <Muted className="font-semibold text-xs">
+                        <p className="text-sm text-muted-foreground font-semibold text-xs">
                           Development Details:
-                        </Muted>
-                        <Muted className="font-mono text-xs break-all">
+                        </p>
+                        <p className="text-sm text-muted-foreground font-mono text-xs break-all">
                           {error.message}
-                        </Muted>
+                        </p>
                       </Stack>
                     </AlertDescription>
                   </Alert>

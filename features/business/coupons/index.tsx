@@ -1,5 +1,4 @@
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import { getCouponAnalytics, getCouponServiceOptions } from './api/queries'
 import { CouponForm } from './components/coupon-form'
 import { CouponsList } from './components/coupons-list'
@@ -19,10 +18,10 @@ export async function CouponManagement() {
   return (
     <Stack gap="xl">
       <div>
-        <H1>Coupon & Promotion Management</H1>
-        <P className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Coupon & Promotion Management</h1>
+        <p className="leading-7 text-muted-foreground">
           Create and manage discount coupons to attract and retain customers
-        </P>
+        </p>
       </div>
 
       <CouponAnalyticsOverview analytics={analytics} />

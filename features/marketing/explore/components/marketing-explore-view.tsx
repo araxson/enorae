@@ -7,7 +7,6 @@ import type { Database } from '@/lib/types/database.types'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { H2, Muted, P, Small } from '@/components/ui/typography'
 import { MapPin, Search, Sparkles } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 
@@ -58,11 +57,11 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
           <Sparkles className="mr-2 h-4 w-4" />
           Discover
         </Badge>
-        <H2>Find your next favourite salon</H2>
-        <P className="text-muted-foreground">
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Find your next favourite salon</h2>
+        <p className="leading-7 text-muted-foreground">
           Browse top-rated salons and beauty professionals near you. Book instantly and get the VIP
           treatment you deserve.
-        </P>
+        </p>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Input
             value={query}
@@ -81,8 +80,8 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
         <Card>
           <CardContent className="space-y-3 py-12 text-center">
             <Search className="mx-auto h-10 w-10 text-muted-foreground" />
-            <H2 className="text-xl">No salons match your search</H2>
-            <Muted>Try a different city or service to discover more locations.</Muted>
+            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-xl">No salons match your search</h2>
+            <p className="text-sm text-muted-foreground">Try a different city or service to discover more locations.</p>
           </CardContent>
         </Card>
       ) : (
@@ -109,7 +108,7 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
                 ) : null}
                 <CardHeader>
                   <CardTitle>{salon.name ?? salon.business_name ?? 'Salon'}</CardTitle>
-                  {description ? <Muted className="line-clamp-2">{description}</Muted> : null}
+                  {description ? <p className="text-sm text-muted-foreground line-clamp-2">{description}</p> : null}
                 </CardHeader>
                 <CardContent className="flex-1 space-y-3">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -126,9 +125,9 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
                     </div>
                   ) : null}
                   {salon.rating ? (
-                    <Small className="font-medium">
+                    <small className="text-sm font-medium leading-none font-medium">
                       ⭐ {Number(salon.rating).toFixed(1)} • {salon.review_count ?? 0} reviews
-                    </Small>
+                    </small>
                   ) : null}
                 </CardContent>
                 <CardFooter className="pt-0">

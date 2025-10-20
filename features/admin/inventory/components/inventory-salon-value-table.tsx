@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Muted } from '@/components/ui/typography'
 import { formatCurrency } from './inventory-utils'
 
 type SalonValue = {
@@ -52,7 +51,7 @@ export function InventorySalonValueTable({ values }: SalonValueTableProps) {
         {values.length === 0 && (
           <TableRow>
             <TableCell colSpan={4} className="py-8 text-center">
-              <Muted>No salon data available</Muted>
+              <p className="text-sm text-muted-foreground">No salon data available</p>
             </TableCell>
           </TableRow>
         )}

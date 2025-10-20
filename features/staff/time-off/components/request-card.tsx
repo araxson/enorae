@@ -4,7 +4,6 @@ import { useState, useTransition } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Small, Large } from '@/components/ui/typography'
 import {
   approveTimeOffRequest,
   rejectTimeOffRequest,
@@ -102,10 +101,10 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
       <CardContent className="space-y-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <Large>{request.staff?.profiles?.username || 'Staff Member'}</Large>
-            <Small className="text-muted-foreground capitalize">
+            <span className="text-lg font-semibold">{request.staff?.profiles?.username || 'Staff Member'}</span>
+            <small className="text-sm font-medium leading-none text-muted-foreground capitalize">
               {request.request_type?.replace('_', ' ') || 'N/A'}
-            </Small>
+            </small>
           </div>
           <Badge variant={getStatusVariant(request.status || '')} className="capitalize">
             {request.status || 'Unknown'}
@@ -114,17 +113,17 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
 
         <div className="space-y-1 text-sm">
           <div className="flex gap-2">
-            <Small className="text-muted-foreground">From:</Small>
-            <Small>{request.start_at ? new Date(request.start_at).toLocaleDateString() : '—'}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">From:</small>
+            <small className="text-sm font-medium leading-none">{request.start_at ? new Date(request.start_at).toLocaleDateString() : '—'}</small>
           </div>
           <div className="flex gap-2">
-            <Small className="text-muted-foreground">To:</Small>
-            <Small>{request.end_at ? new Date(request.end_at).toLocaleDateString() : '—'}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">To:</small>
+            <small className="text-sm font-medium leading-none">{request.end_at ? new Date(request.end_at).toLocaleDateString() : '—'}</small>
           </div>
           {request.reason && (
             <div className="space-y-1">
-              <Small className="text-muted-foreground">Reason:</Small>
-              <Small>{request.reason}</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Reason:</small>
+              <small className="text-sm font-medium leading-none">{request.reason}</small>
             </div>
           )}
         </div>

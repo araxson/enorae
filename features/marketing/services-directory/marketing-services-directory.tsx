@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Stack, Section, Box } from '@/components/layout'
-import { H1, H2, P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { CategoryNavigation, PopularServicesWidget } from './components/category-navigation'
@@ -27,10 +26,10 @@ export async function ServicesDirectory() {
       <Stack gap="xl">
         <Box>
           <Stack gap="md">
-            <H1>Browse Services</H1>
-            <P className="text-muted-foreground">
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Browse Services</h1>
+            <p className="leading-7 text-muted-foreground">
               Explore all available beauty and wellness services. Find the perfect treatment for your needs.
-            </P>
+            </p>
           </Stack>
         </Box>
 
@@ -44,7 +43,7 @@ export async function ServicesDirectory() {
         )}
 
         <Stack gap="md">
-          <H2>All Services</H2>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">All Services</h2>
           <ServicesGrid services={services} />
         </Stack>
       </Stack>
@@ -73,24 +72,24 @@ export async function CategoryDetail({ categorySlug }: CategoryDetailProps) {
       <Stack gap="xl">
         <Box>
           <Stack gap="md">
-            <H1>{category.name}</H1>
-            <P className="text-muted-foreground">
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{category.name}</h1>
+            <p className="leading-7 text-muted-foreground">
               Browse {category.count} {category.name.toLowerCase()} services offered by {salons.length} salon{salons.length !== 1 ? 's' : ''}.
-            </P>
+            </p>
           </Stack>
         </Box>
 
         <CategoryNavigation categories={categories} currentCategory={categorySlug} />
 
         <Stack gap="md">
-          <H2>{category.name} Services</H2>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">{category.name} Services</h2>
           <ServicesGrid services={services} categoryName={category.name} />
         </Stack>
 
         <Separator />
 
         <Stack gap="md">
-          <H2>Salons Offering {category.name}</H2>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Salons Offering {category.name}</h2>
           <CategorySalons salons={salons} categoryName={category.name} />
         </Stack>
       </Stack>

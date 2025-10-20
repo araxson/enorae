@@ -1,6 +1,5 @@
 import { AppointmentCard } from '@/features/shared/appointments'
 import { Card, CardContent } from '@/components/ui/card'
-import { Muted } from '@/components/ui/typography'
 import type { Database } from '@/lib/types/database.types'
 import { format } from 'date-fns'
 
@@ -25,7 +24,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
     return (
       <Card>
         <CardContent className="py-10 text-center text-muted-foreground">
-          <Muted>No appointments yet</Muted>
+          <p className="text-sm text-muted-foreground">No appointments yet</p>
         </CardContent>
       </Card>
     )

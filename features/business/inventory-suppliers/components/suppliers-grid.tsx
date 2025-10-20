@@ -1,5 +1,4 @@
 import { Grid, Box } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import { SupplierCard } from './supplier-card'
 import type { Supplier } from '@/lib/types/app.types'
 
@@ -11,7 +10,7 @@ export function SuppliersGrid({ suppliers }: SuppliersGridProps) {
   if (suppliers.length === 0) {
     return (
       <Box className="text-center py-12">
-        <P className="text-muted-foreground">No suppliers found</P>
+        <p className="leading-7 text-muted-foreground">No suppliers found</p>
       </Box>
     )
   }

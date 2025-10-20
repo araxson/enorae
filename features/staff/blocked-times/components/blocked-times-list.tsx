@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { deleteBlockedTime } from '../api/mutations'
 import type { BlockedTime } from '../types'
 
@@ -34,7 +33,7 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
   if (blockedTimes.length === 0) {
     return (
       <Card className="p-8 text-center">
-        <P className="text-muted-foreground">No blocked times found</P>
+        <p className="leading-7 text-muted-foreground">No blocked times found</p>
       </Card>
     )
   }
@@ -46,7 +45,7 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
           <Flex justify="between" align="start">
             <Stack gap="sm" className="flex-1">
               <Flex align="center" gap="sm">
-                <H3>{blockedTime.reason}</H3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{blockedTime.reason}</h3>
                 <Badge variant="outline">
                   {blockedTime.block_type}
                 </Badge>
@@ -55,14 +54,14 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                 )}
               </Flex>
 
-              <Muted>
+              <p className="text-sm text-muted-foreground">
                 {blockedTime.start_time && format(new Date(blockedTime.start_time), 'PPp')} - {blockedTime.end_time && format(new Date(blockedTime.end_time), 'p')}
-              </Muted>
+              </p>
 
               {blockedTime.duration_minutes && (
-                <Muted>
+                <p className="text-sm text-muted-foreground">
                   Duration: {blockedTime.duration_minutes} minutes
-                </Muted>
+                </p>
               )}
             </Stack>
 

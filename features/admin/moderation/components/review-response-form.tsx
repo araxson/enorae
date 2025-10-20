@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Muted } from '@/components/ui/typography'
 
 interface ReviewResponseFormProps {
   value: string
@@ -24,7 +23,7 @@ export function ReviewResponseForm({ value, onChange, onCancel, onSubmit, isLoad
           rows={4}
           maxLength={1000}
         />
-        <Muted className="text-xs">{value.length}/1000 characters</Muted>
+        <p className="text-sm text-muted-foreground text-xs">{value.length}/1000 characters</p>
       </div>
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>

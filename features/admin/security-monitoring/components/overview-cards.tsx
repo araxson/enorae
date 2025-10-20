@@ -70,7 +70,7 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
         {overviewDescriptors.map(({ key, label, description, icon: Icon }) => (
           <Card key={key}>
             <CardHeader className="flex flex-row items-start justify-between pb-2">
-              <CardTitle className="text-sm font-semibold text-foreground">{label}</CardTitle>
+              <CardTitle>{label}</CardTitle>
               <Icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent className="space-y-1">
@@ -88,7 +88,7 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
           {metrics.slice(0, 8).map((metric) => (
             <Card key={metric.key}>
               <CardHeader className="flex flex-row items-start justify-between pb-2">
-                <CardTitle className="text-sm font-semibold text-foreground">
+                <CardTitle>
                   {metric.label}
                 </CardTitle>
                 <Badge

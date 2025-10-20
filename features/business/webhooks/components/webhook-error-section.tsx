@@ -1,5 +1,4 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { H4 } from '@/components/ui/typography'
 import { Stack } from '@/components/layout'
 
 type ErrorSectionProps = {
@@ -11,7 +10,7 @@ export function WebhookErrorSection({ error }: ErrorSectionProps) {
 
   return (
     <Stack gap="sm">
-      <H4>Error</H4>
+      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Error</h4>
       <Alert variant="destructive">
         <AlertDescription className="break-words">{error}</AlertDescription>
       </Alert>

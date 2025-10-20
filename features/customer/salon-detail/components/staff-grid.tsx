@@ -5,7 +5,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { H4, Muted, P, Small } from '@/components/ui/typography'
 import { Calendar } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
@@ -46,9 +45,9 @@ export function StaffGrid({ staff }: StaffGridProps) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="space-y-1">
-                    <Small>{member.title || 'Staff member'}</Small>
+                    <small className="text-sm font-medium leading-none">{member.title || 'Staff member'}</small>
                     {member.bio && (
-                      <Muted className="line-clamp-1 text-xs">{member.bio}</Muted>
+                      <p className="text-sm text-muted-foreground line-clamp-1 text-xs">{member.bio}</p>
                     )}
                   </div>
                 </div>
@@ -64,11 +63,11 @@ export function StaffGrid({ staff }: StaffGridProps) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="space-y-1">
-                    <H4>{member.title || 'Staff member'}</H4>
-                    {member.bio && <Muted>{member.bio}</Muted>}
+                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{member.title || 'Staff member'}</h4>
+                    {member.bio && <p className="text-sm text-muted-foreground">{member.bio}</p>}
                   </div>
                 </div>
-                {member.bio && <P className="text-sm text-muted-foreground">{member.bio}</P>}
+                {member.bio && <p className="leading-7 text-sm text-muted-foreground">{member.bio}</p>}
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Calendar className="h-3 w-3" />
                   <span>Click to book an appointment</span>

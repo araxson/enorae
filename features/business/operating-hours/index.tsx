@@ -2,7 +2,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getOperatingHoursBySalon, getOperatingHoursSalon } from './api/queries'
 import { WeeklyScheduleForm } from './components/weekly-schedule-form'
 import { Section, Stack } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 export async function OperatingHoursManagement() {
@@ -29,10 +28,10 @@ export async function OperatingHoursManagement() {
     <Section size="lg">
       <Stack gap="xl">
         <div>
-          <P className="text-base font-semibold">Operating Hours</P>
-          <P className="text-muted-foreground">
+          <p className="leading-7 text-base font-semibold">Operating Hours</p>
+          <p className="leading-7 text-muted-foreground">
             Configure your salon&apos;s weekly operating schedule
-          </P>
+          </p>
         </div>
 
         <Separator />

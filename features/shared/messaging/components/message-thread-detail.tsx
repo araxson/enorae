@@ -3,7 +3,6 @@ import { verifySession } from '@/lib/auth'
 import { getThreadById, getMessagesBetweenUsers } from '../api/queries'
 import { MessageThread } from './message-thread'
 import { Section, Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -34,10 +33,10 @@ export async function MessageThreadDetail({ threadId }: MessageThreadDetailProps
               ← Back to Messages
             </Button>
           </Link>
-          <H1>{thread.subject || 'Conversation'}</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{thread.subject || 'Conversation'}</h1>
+          <p className="leading-7 text-muted-foreground">
             Thread started {thread.created_at ? new Date(thread.created_at).toLocaleDateString() : 'N/A'}
-          </P>
+          </p>
         </div>
 
         <Separator />

@@ -96,7 +96,7 @@ export function ProfileMetadataForm({ profile, onUpdated }: ProfileMetadataFormP
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">Metadata &amp; social</CardTitle>
+        <CardTitle>Metadata &amp; social</CardTitle>
         <CardDescription>Maintain tags, interests, and external profile links.</CardDescription>
       </CardHeader>
       <CardContent>

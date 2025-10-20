@@ -1,7 +1,6 @@
 'use client'
 
 import { Plus } from 'lucide-react'
-import { H2, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { UsageTable } from './usage-table'
 import type { ServiceProductUsageWithDetails } from '../api/queries'
@@ -15,10 +14,10 @@ export function ServiceProductUsageClient({ initialUsage }: ServiceProductUsageC
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <H2>Service Product Usage</H2>
-          <Muted className="mt-1">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Service Product Usage</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Map products to services for automatic cost tracking
-          </Muted>
+          </p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />

@@ -1,6 +1,5 @@
 import { Section, Stack, Grid } from '@/components/layout'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { H2, P } from '@/components/ui/typography'
 import { missionData } from './mission.data'
 
 export function Mission() {
@@ -8,8 +7,8 @@ export function Mission() {
     <Section size="lg">
       <Stack gap="xl">
         <Stack gap="md" className="max-w-3xl mx-auto text-center">
-          <H2>{missionData.title}</H2>
-          <P className="text-lg">{missionData.description}</P>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">{missionData.title}</h2>
+          <p className="leading-7 text-lg">{missionData.description}</p>
         </Stack>
 
         <Grid cols={{ base: 1, md: 3 }} gap="lg">

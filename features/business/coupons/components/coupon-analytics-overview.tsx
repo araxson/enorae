@@ -22,7 +22,7 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
       <Grid cols={{ base: 1, md: 4 }} gap="md">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Discount Issued</CardTitle>
+            <CardTitle>Total Discount Issued</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -35,7 +35,7 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Redemptions</CardTitle>
+            <CardTitle>Total Redemptions</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -48,7 +48,7 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
+            <CardTitle>Active Campaigns</CardTitle>
             <Award className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -61,7 +61,7 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Best Performer</CardTitle>
+            <CardTitle>Best Performer</CardTitle>
             <CalendarClock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>

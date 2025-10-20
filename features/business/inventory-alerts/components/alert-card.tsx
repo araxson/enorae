@@ -4,7 +4,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack, Flex, Box } from '@/components/layout'
-import { Small, Large } from '@/components/ui/typography'
 import { resolveStockAlert, unresolveStockAlert } from '../api/mutations'
 import { useTransition } from 'react'
 import type { StockAlertWithProduct } from '../api/queries'
@@ -66,9 +65,9 @@ export function AlertCard({ alert }: AlertCardProps) {
         <Stack gap="sm">
           <Flex justify="between" align="start">
             <Box>
-              <Large>{alert.product?.name || 'Unknown Product'}</Large>
+              <span className="text-lg font-semibold">{alert.product?.name || 'Unknown Product'}</span>
               {alert.product?.sku && (
-                <Small className="text-muted-foreground">SKU: {alert.product.sku}</Small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">SKU: {alert.product.sku}</small>
               )}
             </Box>
             <Flex gap="xs">
@@ -83,51 +82,51 @@ export function AlertCard({ alert }: AlertCardProps) {
 
           <Stack gap="xs">
             <Flex gap="sm">
-              <Small className="text-muted-foreground">Type:</Small>
-              <Small>{getAlertTypeLabel(alert.alert_type || '')}</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Type:</small>
+              <small className="text-sm font-medium leading-none">{getAlertTypeLabel(alert.alert_type || '')}</small>
             </Flex>
 
             {alert.current_quantity !== null && (
               <Flex gap="sm">
-                <Small className="text-muted-foreground">Current:</Small>
-                <Small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">Current:</small>
+                <small className="text-sm font-medium leading-none">
                   {alert.current_quantity} {alert.product?.unit_of_measure || 'units'}
-                </Small>
+                </small>
               </Flex>
             )}
 
             {alert.threshold_quantity !== null && (
               <Flex gap="sm">
-                <Small className="text-muted-foreground">Threshold:</Small>
-                <Small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">Threshold:</small>
+                <small className="text-sm font-medium leading-none">
                   {alert.threshold_quantity} {alert.product?.unit_of_measure || 'units'}
-                </Small>
+                </small>
               </Flex>
             )}
 
             {alert.location && (
               <Flex gap="sm">
-                <Small className="text-muted-foreground">Location:</Small>
-                <Small>{alert.location.name}</Small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">Location:</small>
+                <small className="text-sm font-medium leading-none">{alert.location.name}</small>
               </Flex>
             )}
 
             {alert.message && (
               <Box>
-                <Small className="text-muted-foreground">Message:</Small>
-                <Small>{alert.message}</Small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">Message:</small>
+                <small className="text-sm font-medium leading-none">{alert.message}</small>
               </Box>
             )}
 
             <Flex gap="sm">
-              <Small className="text-muted-foreground">Created:</Small>
-              <Small>{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Created:</small>
+              <small className="text-sm font-medium leading-none">{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</small>
             </Flex>
 
             {alert.resolved_at && (
               <Flex gap="sm">
-                <Small className="text-muted-foreground">Resolved:</Small>
-                <Small>{new Date(alert.resolved_at).toLocaleDateString()}</Small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">Resolved:</small>
+                <small className="text-sm font-medium leading-none">{new Date(alert.resolved_at).toLocaleDateString()}</small>
               </Flex>
             )}
           </Stack>

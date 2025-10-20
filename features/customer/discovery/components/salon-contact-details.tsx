@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Stack, Group } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
 import { Phone, Mail, Globe, Facebook, Instagram, Twitter, MessageCircle } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
@@ -30,7 +29,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-muted-foreground" />
-                <Muted>{contactDetails.primary_phone}</Muted>
+                <p className="text-sm text-muted-foreground">{contactDetails.primary_phone}</p>
               </div>
               <Button size="sm" variant="outline" asChild>
                 <a href={`tel:${contactDetails.primary_phone}`}>Call</a>
@@ -43,7 +42,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-muted-foreground" />
-                <Muted>{contactDetails.primary_email}</Muted>
+                <p className="text-sm text-muted-foreground">{contactDetails.primary_email}</p>
               </div>
               <Button size="sm" variant="outline" asChild>
                 <a href={`mailto:${contactDetails.primary_email}`}>Email</a>
@@ -56,7 +55,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Globe className="h-4 w-4 text-muted-foreground" />
-                <Muted>Website</Muted>
+                <p className="text-sm text-muted-foreground">Website</p>
               </div>
               <Button size="sm" variant="outline" asChild>
                 <a href={contactDetails.website_url} target="_blank" rel="noopener noreferrer">
@@ -71,7 +70,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <MessageCircle className="h-4 w-4 text-muted-foreground" />
-                <Muted>WhatsApp</Muted>
+                <p className="text-sm text-muted-foreground">WhatsApp</p>
               </div>
               <Button size="sm" variant="outline" asChild>
                 <a
@@ -88,7 +87,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
           {/* Social Media */}
           {socialLinks.length > 0 && (
             <div className="pt-4 border-t">
-              <Muted className="mb-3 block">Follow us</Muted>
+              <p className="text-sm text-muted-foreground mb-3 block">Follow us</p>
               <Group gap="sm">
                 {socialLinks.map((link) => {
                   const Icon = link.icon
@@ -114,7 +113,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
           {/* Operating Hours Display */}
           {contactDetails.hours_display_text && (
             <div className="pt-4 border-t">
-              <Muted className="mb-2 block">Hours</Muted>
+              <p className="text-sm text-muted-foreground mb-2 block">Hours</p>
               <div className="text-sm whitespace-pre-line">{contactDetails.hours_display_text}</div>
             </div>
           )}

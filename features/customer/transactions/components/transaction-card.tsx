@@ -1,7 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { Stack, Flex, Box } from '@/components/layout'
-import { H3, P, Small, Muted } from '@/components/ui/typography'
 import { format } from 'date-fns'
 import type { CustomerTransactionWithDetails } from '../api/queries'
 
@@ -31,10 +30,10 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
       <Stack gap="md">
         <Flex justify="between" align="start">
           <Box>
-            <H3>{transaction.salon?.name || 'Unknown Salon'}</H3>
-            <Small className="text-muted-foreground">
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{transaction.salon?.name || 'Unknown Salon'}</h3>
+            <small className="text-sm font-medium leading-none text-muted-foreground">
               {format(transactionDate, 'PPP')} at {format(transactionDate, 'p')}
-            </Small>
+            </small>
           </Box>
           <Badge variant={getTypeColor(transaction.transaction_type)}>
             {transaction.transaction_type || 'Unknown'}
@@ -43,24 +42,24 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
 
         {transaction.staff && (
           <Box>
-            <Muted>Staff Member</Muted>
-            <P>{transaction.staff.full_name}</P>
+            <p className="text-sm text-muted-foreground">Staff Member</p>
+            <p className="leading-7">{transaction.staff.full_name}</p>
           </Box>
         )}
 
         {transaction.payment_method && (
           <Box>
-            <Muted>Payment Method</Muted>
-            <P className="capitalize">{transaction.payment_method}</P>
+            <p className="text-sm text-muted-foreground">Payment Method</p>
+            <p className="leading-7 capitalize">{transaction.payment_method}</p>
           </Box>
         )}
 
         {transaction.appointment && (
           <Box>
-            <Muted>Related Appointment</Muted>
-            <Small>
+            <p className="text-sm text-muted-foreground">Related Appointment</p>
+            <small className="text-sm font-medium leading-none">
               {format(new Date(transaction.appointment.scheduled_at || ''), 'PPP')}
-            </Small>
+            </small>
           </Box>
         )}
       </Stack>

@@ -76,10 +76,12 @@ export function StaffPageNavigation({
                 {tabs.map((tab) => {
                   const Icon = tab.icon
                   return (
-                    <TabsTrigger key={tab.value} value={tab.value} disabled={tab.disabled} className="gap-2">
-                      {Icon ? <Icon className="h-4 w-4" /> : null}
-                      <span>{tab.label}</span>
-                      {tab.badge ? <Badge variant="secondary">{tab.badge}</Badge> : null}
+                    <TabsTrigger key={tab.value} value={tab.value} disabled={tab.disabled}>
+                      <span className="flex items-center gap-2">
+                        {Icon ? <Icon className="h-4 w-4" /> : null}
+                        <span>{tab.label}</span>
+                        {tab.badge ? <Badge variant="secondary">{tab.badge}</Badge> : null}
+                      </span>
                     </TabsTrigger>
                   )
                 })}

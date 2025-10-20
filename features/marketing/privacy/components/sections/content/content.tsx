@@ -1,5 +1,4 @@
 import { Section, Stack } from '@/components/layout'
-import { H3, P } from '@/components/ui/typography'
 import { contentData } from './content.data'
 
 export function Content() {
@@ -8,8 +7,8 @@ export function Content() {
       <Stack gap="lg" className="max-w-3xl mx-auto">
         {contentData.sections.map((section) => (
           <Stack gap="md" key={section.title}>
-            <H3>{section.title}</H3>
-            <P>{section.content}</P>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{section.title}</h3>
+            <p className="leading-7">{section.content}</p>
           </Stack>
         ))}
       </Stack>

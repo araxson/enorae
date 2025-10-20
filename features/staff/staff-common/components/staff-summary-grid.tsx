@@ -29,9 +29,11 @@ export function StaffSummaryGrid({ summaries }: StaffSummaryGridProps) {
             className={cn('border-l-4', toneClasses[tone])}
           >
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center justify-between text-sm font-medium text-muted-foreground">
-                <span>{summary.label}</span>
-                {Icon ? <Icon className="h-4 w-4 text-foreground" /> : null}
+              <CardTitle>
+                <div className="flex items-center justify-between text-sm font-medium text-muted-foreground">
+                  <span>{summary.label}</span>
+                  {Icon ? <Icon className="h-4 w-4 text-foreground" /> : null}
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -44,4 +46,3 @@ export function StaffSummaryGrid({ summaries }: StaffSummaryGridProps) {
     </div>
   )
 }
-

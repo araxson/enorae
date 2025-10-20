@@ -2,7 +2,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Stack, Flex } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { Progress } from '@/components/ui/progress'
 
 import type { ServiceRevenue } from '../api/queries'
@@ -19,7 +18,7 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
           <CardTitle>Revenue by Service</CardTitle>
         </CardHeader>
         <CardContent>
-          <Muted>No service data available</Muted>
+          <p className="text-sm text-muted-foreground">No service data available</p>
         </CardContent>
       </Card>
     )
@@ -31,7 +30,7 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
     <Card>
       <CardHeader>
         <CardTitle>Revenue by Service</CardTitle>
-        <Muted>This month&apos;s performance breakdown</Muted>
+        <p className="text-sm text-muted-foreground">This month&apos;s performance breakdown</p>
       </CardHeader>
       <CardContent>
         <Stack gap="sm">
@@ -41,12 +40,12 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
               <div key={service.service_name} className="space-y-2">
                 <Flex justify="between" align="center">
                   <div className="flex-1">
-                    <P className="text-sm font-medium">{service.service_name}</P>
-                    <Muted className="text-xs">{service.count} appointments</Muted>
+                    <p className="leading-7 text-sm font-medium">{service.service_name}</p>
+                    <p className="text-sm text-muted-foreground text-xs">{service.count} appointments</p>
                   </div>
                   <div className="text-right">
-                    <P className="text-sm font-bold">${service.revenue.toFixed(2)}</P>
-                    <Muted className="text-xs">{percentage.toFixed(1)}%</Muted>
+                    <p className="leading-7 text-sm font-bold">${service.revenue.toFixed(2)}</p>
+                    <p className="text-sm text-muted-foreground text-xs">{percentage.toFixed(1)}%</p>
                   </div>
                 </Flex>
                 <Progress value={percentage} className="h-2" />

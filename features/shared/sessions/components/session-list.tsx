@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Stack, Flex } from '@/components/layout'
-import { H2, P, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { SessionCard } from './session-card'
@@ -68,10 +67,10 @@ export function SessionList({ sessions }: SessionListProps) {
   if (sessions.length === 0) {
     return (
       <Stack gap="md">
-        <H2>Active Sessions</H2>
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Active Sessions</h2>
         <Alert>
           <AlertDescription>
-            <P>No active sessions found.</P>
+            <p className="leading-7">No active sessions found.</p>
           </AlertDescription>
         </Alert>
       </Stack>
@@ -82,10 +81,10 @@ export function SessionList({ sessions }: SessionListProps) {
     <Stack gap="lg">
       <Flex justify="between" align="center">
         <Stack gap="xs">
-          <H2>Active Sessions</H2>
-          <Muted>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Active Sessions</h2>
+          <p className="text-sm text-muted-foreground">
             You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
-          </Muted>
+          </p>
         </Stack>
 
         {otherSessions.length > 0 && (
@@ -131,11 +130,11 @@ export function SessionList({ sessions }: SessionListProps) {
       <Alert>
         <AlertDescription>
           <Stack gap="sm">
-            <P className="font-medium">Security Tip</P>
-            <Muted>
+            <p className="leading-7 font-medium">Security Tip</p>
+            <p className="text-sm text-muted-foreground">
               If you see a session you don&apos;t recognize, revoke it immediately and change your password.
               Your current session is marked with a badge and cannot be revoked from this page.
-            </Muted>
+            </p>
           </Stack>
         </AlertDescription>
       </Alert>

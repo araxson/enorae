@@ -1,6 +1,5 @@
 import { Card } from '@/components/ui/card'
 import { Stack, Grid } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { StatCard } from '@/components/shared/stat-card'
 import { DollarSign, TrendingUp, Calendar, Users } from 'lucide-react'
 import type { RevenueMetrics } from '../api/types'
@@ -34,12 +33,12 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
   return (
     <Stack gap="lg">
       <div>
-        <H3>Revenue Overview</H3>
-        <Muted>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Revenue Overview</h3>
+        <p className="text-sm text-muted-foreground">
           {metrics.period.start && metrics.period.end
             ? `${metrics.period.start} to ${metrics.period.end}`
             : 'All time'}
-        </Muted>
+        </p>
       </div>
 
       <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="lg">

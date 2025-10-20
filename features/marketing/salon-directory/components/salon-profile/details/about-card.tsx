@@ -1,5 +1,4 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { P } from '@/components/ui/typography'
 import type { Salon } from '../types'
 
 interface AboutCardProps {
@@ -15,7 +14,7 @@ export function AboutCard({ salon }: AboutCardProps) {
         <CardTitle>About</CardTitle>
       </CardHeader>
       <CardContent>
-        <P>{salon.description}</P>
+        <p className="leading-7">{salon.description}</p>
       </CardContent>
     </Card>
   )

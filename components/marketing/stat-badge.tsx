@@ -1,5 +1,4 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { H3, Muted } from '@/components/ui/typography'
 import { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -28,8 +27,8 @@ export function StatBadge({ icon: Icon, value, label, color = 'primary' }: StatB
             </span>
           </div>
           <div className="space-y-1">
-            <H3 className="text-3xl font-bold">{value}</H3>
-            <Muted>{label}</Muted>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-3xl font-bold">{value}</h3>
+            <p className="text-sm text-muted-foreground">{label}</p>
           </div>
         </div>
       </CardContent>

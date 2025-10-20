@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { updateStaffMetadata } from '../api/mutations'
 
 interface SpecialtiesEditorProps {
@@ -58,7 +57,7 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
   return (
     <Card className="p-6">
       <Stack gap="md">
-        <H3>Specialties & Skills</H3>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Specialties & Skills</h3>
 
         <Flex gap="sm">
           <Input
@@ -99,7 +98,7 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
             ))}
           </Flex>
         ) : (
-          <Muted>No specialties added yet</Muted>
+          <p className="text-sm text-muted-foreground">No specialties added yet</p>
         )}
 
         {error && (

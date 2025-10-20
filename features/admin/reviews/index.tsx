@@ -1,5 +1,5 @@
+import { cn } from "@/lib/utils";
 import { Section, Stack, Flex } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ReviewsClient } from './components/reviews-client'
 import { getAllReviews } from './api/queries'
@@ -60,12 +60,12 @@ export async function AdminReviews() {
             <Card key={stat.label} className="min-w-[160px]">
               <CardContent className="py-4">
                 <Stack gap="xs">
-                  <Muted className="uppercase tracking-wide text-xs">
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide text-xs">
                     {stat.label}
-                  </Muted>
-                  <P className={`text-2xl font-semibold ${stat.tone}`}>
+                  </p>
+                  <p className={cn('leading-7', `text-2xl font-semibold ${stat.tone}`)}>
                     {stat.value}
-                  </P>
+                  </p>
                 </Stack>
               </CardContent>
             </Card>

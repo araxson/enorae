@@ -93,7 +93,7 @@ function InsightCard({ title, subtitle, items, renderBadge }: InsightCardProps) 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
         <p className="text-xs text-muted-foreground">{subtitle}</p>
       </CardHeader>
       <CardContent className="space-y-3">

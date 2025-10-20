@@ -1,0 +1,64 @@
+'use client'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Star } from 'lucide-react'
+import type { ServicePerformance } from '../../api/queries'
+import { getPerformanceIcon, formatCurrency } from './utils'
+
+export function PerformanceOverviewCard({ services }: { services: ServicePerformance[] }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Service Performance Overview</CardTitle>
+        <CardDescription>
+          Key health metrics for each service across booking, revenue, and satisfaction.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {services.map((service) => (
+            <div key={service.service_id} className="border rounded-lg p-4">
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h4 className="font-semibold">{service.service_name}</h4>
+                  <div className="flex items-center gap-2 mt-1">
+                    {getPerformanceIcon(service.cancellation_rate || 0)}
+                    <p className="text-xs text-muted-foreground">
+                      {service.cancellation_rate?.toFixed(1) || 0}% cancellation rate
+                    </p>
+                  </div>
+                </div>
+                <Badge variant={service.cancellation_rate > 20 ? 'destructive' : 'default'}>
+                  {service.cancellation_rate > 20 ? 'Needs Attention' : 'Performing Well'}
+                </Badge>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-4">
+                <div>
+                  <p className="text-xs text-muted-foreground">Total Bookings</p>
+                  <p className="font-semibold">{service.total_bookings}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Revenue</p>
+                  <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Avg Rating</p>
+                  <div className="flex items-center gap-1">
+                    <p className="font-semibold">{service.avg_rating?.toFixed(1) || 'N/A'}</p>
+                    <Star className="h-4 w-4 text-star-filled" />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Popularity Score</p>
+                  <p className="font-semibold">{service.popularity_score?.toFixed(0) || 0}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}

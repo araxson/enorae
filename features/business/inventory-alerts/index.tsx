@@ -1,5 +1,4 @@
 import { Section, Stack, Box } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import { AlertsGrid } from './components/alerts-grid'
 import { getStockAlerts } from './api/queries'
 
@@ -15,10 +14,10 @@ export async function StockAlerts() {
         <Stack gap="md">
           {unresolvedCount > 0 && (
             <Box className="rounded-lg bg-destructive/10 p-4 border border-destructive/20">
-              <Small className="font-semibold text-destructive">
+              <small className="text-sm font-medium leading-none font-semibold text-destructive">
                 {unresolvedCount} unresolved alert{unresolvedCount > 1 ? 's' : ''} require
                 {unresolvedCount === 1 ? 's' : ''} attention
-              </Small>
+              </small>
             </Box>
           )}
 

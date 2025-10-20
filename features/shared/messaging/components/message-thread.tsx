@@ -9,7 +9,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { P, Small } from '@/components/ui/typography'
 import { AlertCircle } from 'lucide-react'
 import { Stack } from '@/components/layout'
 
@@ -66,9 +65,9 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
           <ScrollArea className="h-[600px]">
             <div className="space-y-3">
               {messages.length === 0 ? (
-                <P className="py-8 text-center text-muted-foreground">
+                <p className="leading-7 py-8 text-center text-muted-foreground">
                   No messages yet. Start the conversation!
-                </P>
+                </p>
               ) : (
                 messages.map((message) => {
                   const isOwnMessage = message.from_user_id === currentUserId
@@ -81,13 +80,13 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
                         <div
                           className={`rounded-lg border px-4 py-2 text-left ${isOwnMessage ? 'bg-primary text-primary-foreground' : 'bg-card text-foreground'}`}
                         >
-                          <P className="mb-0 whitespace-pre-wrap break-words">{message.content}</P>
+                          <p className="leading-7 mb-0 whitespace-pre-wrap break-words">{message.content}</p>
                         </div>
                         <div
                           className={`flex items-center gap-2 text-xs text-muted-foreground ${isOwnMessage ? 'justify-end' : ''}`}
                         >
-                          <Small>{format(new Date(message.created_at), 'PPp')}</Small>
-                          {isOwnMessage && <Small>{message.is_read ? '✓✓' : '✓'}</Small>}
+                          <small className="text-sm font-medium leading-none">{format(new Date(message.created_at), 'PPp')}</small>
+                          {isOwnMessage && <small className="text-sm font-medium leading-none">{message.is_read ? '✓✓' : '✓'}</small>}
                         </div>
                       </div>
                     </div>

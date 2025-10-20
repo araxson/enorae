@@ -4,7 +4,6 @@ import { Building2, Users, CalendarDays, CheckCircle2, ClipboardList, Store } fr
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Badge } from '@/components/ui/badge'
-import { Small } from '@/components/ui/typography'
 import { Progress } from '@/components/ui/progress'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Grid, Stack, Group } from '@/components/layout'
@@ -82,7 +81,7 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
                 <TooltipTrigger asChild>
                   <div className={`overflow-hidden rounded-xl border border-border/60 bg-card/60 p-4 transition-colors hover:border-primary/40 ${item.accent}`}>
                     <Group className="items-center justify-between">
-                      <Small className="text-muted-foreground">{item.label}</Small>
+                      <small className="text-sm font-medium leading-none text-muted-foreground">{item.label}</small>
                       <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                     </Group>
                     <div className="mt-2 text-2xl font-semibold text-foreground">{item.value(metrics)}</div>
@@ -101,8 +100,8 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
               <Stack gap="md">
                 <Stack gap="xs">
                   <Group className="items-center justify-between">
-                    <Small className="font-medium text-muted-foreground">Confirmation rate</Small>
-                    <Small className="text-muted-foreground">{appointmentFill}%</Small>
+                    <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Confirmation rate</small>
+                    <small className="text-sm font-medium leading-none text-muted-foreground">{appointmentFill}%</small>
                   </Group>
                   <Progress value={appointmentFill} aria-label="Confirmation rate progress" />
                 </Stack>

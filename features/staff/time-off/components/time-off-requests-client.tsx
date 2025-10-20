@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Plus, CalendarCheck2, CalendarClock, PieChart, Users } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
-import { P, Small, H3 } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -108,16 +107,16 @@ export function TimeOffRequestsClient({
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <P className="text-2xl font-bold">{balance.total_days}</P>
-                    <Small className="text-muted-foreground">Total</Small>
+                    <p className="leading-7 text-2xl font-bold">{balance.total_days}</p>
+                    <small className="text-sm font-medium leading-none text-muted-foreground">Total</small>
                   </div>
                   <div>
-                    <P className="text-2xl font-bold text-blue-600">{balance.used_days}</P>
-                    <Small className="text-muted-foreground">Used</Small>
+                    <p className="leading-7 text-2xl font-bold text-blue-600">{balance.used_days}</p>
+                    <small className="text-sm font-medium leading-none text-muted-foreground">Used</small>
                   </div>
                   <div>
-                    <P className="text-2xl font-bold text-green-600">{balance.remaining_days}</P>
-                    <Small className="text-muted-foreground">Remaining</Small>
+                    <p className="leading-7 text-2xl font-bold text-green-600">{balance.remaining_days}</p>
+                    <small className="text-sm font-medium leading-none text-muted-foreground">Remaining</small>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -143,11 +142,11 @@ export function TimeOffRequestsClient({
 
         {activeTab === 'team' && (
           <div className="space-y-4">
-            <H3>Team Time Off Calendar</H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Team Time Off Calendar</h3>
             {teamCalendar.length === 0 ? (
               <Card>
                 <CardContent className="py-12 text-center">
-                  <P className="text-muted-foreground">No upcoming team time off</P>
+                  <p className="leading-7 text-muted-foreground">No upcoming team time off</p>
                 </CardContent>
               </Card>
             ) : (
@@ -157,7 +156,7 @@ export function TimeOffRequestsClient({
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <div>
-                          <CardTitle className="text-base">{entry.staff_name}</CardTitle>
+                          <CardTitle>{entry.staff_name}</CardTitle>
                           {entry.staff_title && (
                             <CardDescription>{entry.staff_title}</CardDescription>
                           )}
@@ -170,8 +169,8 @@ export function TimeOffRequestsClient({
                     <CardContent>
                       <div className="flex items-center justify-between text-sm">
                         <div>
-                          <P className="font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</P>
-                          <Small className="text-muted-foreground capitalize">{entry.request_type.replace('_', ' ')}</Small>
+                          <p className="leading-7 font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</p>
+                          <small className="text-sm font-medium leading-none text-muted-foreground capitalize">{entry.request_type.replace('_', ' ')}</small>
                         </div>
                       </div>
                     </CardContent>
@@ -186,18 +185,18 @@ export function TimeOffRequestsClient({
           <>
             {pendingRequests.length > 0 && activeTab === 'all' && (
               <div className="rounded-lg border bg-secondary/10 p-4">
-                <Small className="font-semibold">
+                <small className="text-sm font-medium leading-none font-semibold">
                   {pendingRequests.length} pending request(s) awaiting review
-                </Small>
+                </small>
               </div>
             )}
 
             {displayedRequests.length === 0 ? (
               <div className="flex flex-col items-center justify-center gap-2 rounded-lg border bg-background py-12 text-center">
-                <P className="text-muted-foreground">No time-off requests yet</P>
-                <P className="text-sm text-muted-foreground">
+                <p className="leading-7 text-muted-foreground">No time-off requests yet</p>
+                <p className="leading-7 text-sm text-muted-foreground">
                   Click the New request button to submit a time-off request
-                </P>
+                </p>
               </div>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">

@@ -2,8 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { P } from '@/components/ui/typography'
-
 type AssignedService = {
   id: string | null
   service_id: string | null
@@ -22,7 +20,7 @@ export function AssignedServicesList({ services, onUnassign }: AssignedServicesL
 
   return (
     <div className="space-y-3">
-      <P className="text-sm font-medium">Currently Assigned</P>
+      <p className="leading-7 text-sm font-medium">Currently Assigned</p>
       <div className="flex flex-wrap gap-2">
         {services.map((service) => (
           <Badge key={service.id} variant="outline" className="flex items-center gap-2">

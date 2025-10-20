@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -99,7 +98,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
       <CardContent>
         <Stack gap="lg">
           <Flex justify="between" align="center">
-            <H3>Map & Coordinates</H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Map & Coordinates</h3>
             <MapPin className="h-5 w-5 text-muted-foreground" />
           </Flex>
           <Separator />
@@ -142,7 +141,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
                 Geocode
               </Button>
             </Flex>
-            <Muted>Search for your address to automatically fill coordinates</Muted>
+            <p className="text-sm text-muted-foreground">Search for your address to automatically fill coordinates</p>
           </Stack>
 
           {selectedAddress && (

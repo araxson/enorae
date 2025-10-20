@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { SalonCard } from '@/features/shared/salons'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
 import { Card, CardContent } from '@/components/ui/card'
-import { H3, Muted } from '@/components/ui/typography'
 import { Search } from 'lucide-react'
 import {
   Pagination,
@@ -45,10 +44,10 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
         <CardContent>
           <div className="space-y-3 py-12 text-center">
             <Search className="mx-auto h-12 w-12 text-muted-foreground" />
-            <H3>No salons found</H3>
-            <Muted>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No salons found</h3>
+            <p className="text-sm text-muted-foreground">
               Try adjusting your search filters or check back later for new salons.
-            </Muted>
+            </p>
           </div>
         </CardContent>
       </Card>

@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Small } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import {
   Item,
@@ -43,7 +42,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
     <Card>
       <CardHeader>
         <CardTitle>Your favorites</CardTitle>
-        <Small>{favorites.length} saved items</Small>
+        <small className="text-sm font-medium leading-none">{favorites.length} saved items</small>
       </CardHeader>
       <CardContent className="space-y-4">
         <ItemGroup>

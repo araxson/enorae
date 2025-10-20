@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Flex } from '@/components/layout'
-import { H3, P } from '@/components/ui/typography'
 import { Building2, CheckCircle, ShieldAlert, Gauge } from 'lucide-react'
 
 interface SalonsStatsProps {
@@ -53,8 +52,8 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
           <CardContent className="p-4">
             <Flex justify="between" align="center">
               <div>
-                <P className="text-sm text-muted-foreground">{label}</P>
-                <H3 className="text-2xl font-semibold">{value}</H3>
+                <p className="leading-7 text-sm text-muted-foreground">{label}</p>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-semibold">{value}</h3>
               </div>
               <Icon className={`h-4 w-4 ${tone}`} />
             </Flex>
@@ -66,8 +65,8 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
         <CardContent className="p-4">
           <Flex justify="between" align="center">
             <div>
-              <P className="text-sm text-muted-foreground">Average compliance</P>
-              <H3 className="text-2xl font-semibold">{stats.averageCompliance}%</H3>
+              <p className="leading-7 text-sm text-muted-foreground">Average compliance</p>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-semibold">{stats.averageCompliance}%</h3>
             </div>
             <Gauge className="h-4 w-4 text-purple-500" />
           </Flex>
@@ -87,7 +86,7 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
 function Distribution({ title, data }: { title: string; data: Record<string, number> }) {
   return (
     <div>
-      <P className="text-sm text-muted-foreground mb-2">{title}</P>
+      <p className="leading-7 text-sm text-muted-foreground mb-2">{title}</p>
       <div className="space-y-1">
         {Object.entries(data).map(([key, value]) => (
           <div key={key} className="flex justify-between text-xs">

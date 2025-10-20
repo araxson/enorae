@@ -5,7 +5,6 @@ import { Plus, List, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Stack, Flex } from '@/components/layout'
-import { H1 } from '@/components/ui/typography'
 import { BlockedTimesList } from './blocked-times-list'
 import { BlockedTimesCalendar } from './blocked-times-calendar'
 import { BlockedTimeDialog } from './blocked-time-dialog'
@@ -33,7 +32,7 @@ export function BlockedTimesFeature({ blockedTimes }: BlockedTimesFeatureProps) 
   return (
     <Stack gap="lg">
       <Flex justify="between" align="center">
-        <H1>Blocked Times</H1>
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Blocked Times</h1>
         <Button onClick={handleCreate}>
           <Plus className="mr-2 h-4 w-4" />
           Add Blocked Time

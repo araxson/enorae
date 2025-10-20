@@ -22,7 +22,7 @@ export function SalonPerformanceTable({ salons }: SalonPerformanceTableProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="text-base font-semibold">Top Performing Salons</CardTitle>
+        <CardTitle>Top Performing Salons</CardTitle>
       </CardHeader>
       <CardContent className="overflow-x-auto">
         {salons.length === 0 ? (

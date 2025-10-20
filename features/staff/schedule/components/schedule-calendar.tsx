@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Plus, Edit2, Trash2 } from 'lucide-react'
 import { Stack } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
 import type { StaffScheduleWithStaff } from '../api/queries'
 
 type ScheduleCalendarProps = {
@@ -54,7 +53,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
           <CardContent className="py-12">
             <div className="text-center text-muted-foreground">
               <p>No schedules found</p>
-              <Muted>Click &quot;Add Schedule&quot; to create weekly schedules</Muted>
+              <p className="text-sm text-muted-foreground">Click &quot;Add Schedule&quot; to create weekly schedules</p>
             </div>
           </CardContent>
         </Card>
@@ -67,7 +66,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
             return (
               <Card key={day}>
                 <CardHeader>
-                  <CardTitle className="text-base">{formatDayName(day)}</CardTitle>
+                  <CardTitle>{formatDayName(day)}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Stack gap="sm">
@@ -85,14 +84,14 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                               {schedule.is_active ? 'Active' : 'Inactive'}
                             </Badge>
                           </div>
-                          <Muted className="text-xs">
+                          <p className="text-sm text-muted-foreground text-xs">
                             {formatTime(schedule.start_time)} - {formatTime(schedule.end_time)}
                             {schedule.staff?.title && ` • ${schedule.staff.title}`}
-                          </Muted>
+                          </p>
                           {schedule.break_start && schedule.break_end && (
-                            <Muted className="text-xs mt-1">
+                            <p className="text-sm text-muted-foreground text-xs mt-1">
                               Break: {formatTime(schedule.break_start)} - {formatTime(schedule.break_end)}
-                            </Muted>
+                            </p>
                           )}
                         </div>
                         <div className="flex gap-2">

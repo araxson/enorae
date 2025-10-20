@@ -4,7 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Stack } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 type DescriptionFieldState = {
@@ -23,7 +22,7 @@ export function DescriptionsSection({ values }: DescriptionsSectionProps) {
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>Salon Descriptions</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Salon Descriptions</h3>
           <Separator />
 
           <Stack gap="sm">
@@ -35,7 +34,7 @@ export function DescriptionsSection({ values }: DescriptionsSectionProps) {
               placeholder="A quick summary of your salon's vibe and specialties"
               rows={3}
             />
-            <Muted>Shown on overview pages and search results (max 160 characters)</Muted>
+            <p className="text-sm text-muted-foreground">Shown on overview pages and search results (max 160 characters)</p>
           </Stack>
 
           <Stack gap="sm">
@@ -47,7 +46,7 @@ export function DescriptionsSection({ values }: DescriptionsSectionProps) {
               placeholder="Tell your full story, services, and unique selling points"
               rows={6}
             />
-            <Muted>Displayed on your salon profile page</Muted>
+            <p className="text-sm text-muted-foreground">Displayed on your salon profile page</p>
           </Stack>
 
           <Stack gap="sm">

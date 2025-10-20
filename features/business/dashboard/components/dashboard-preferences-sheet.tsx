@@ -5,7 +5,6 @@ import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetT
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Small } from '@/components/ui/typography'
 import { Stack, Group } from '@/components/layout'
 
 export function DashboardPreferencesSheet() {
@@ -63,7 +62,7 @@ function PreferenceToggle({ id, label, description, defaultChecked }: Preference
         </label>
         <Switch id={id} defaultChecked={defaultChecked} />
       </Group>
-      <Small className="text-xs text-muted-foreground">{description}</Small>
+      <small className="text-sm font-medium leading-none text-xs text-muted-foreground">{description}</small>
     </Stack>
   )
 }

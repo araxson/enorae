@@ -1,7 +1,5 @@
 import { MessageSquare, AlertTriangle, Clock, ShieldAlert, Gauge } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { P } from '@/components/ui/typography'
-
 type ModerationStatsProps = {
   stats: {
     totalReviews: number
@@ -59,7 +57,7 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
         <Card key={label}>
           <CardContent className="flex items-start justify-between gap-4 p-4">
             <div className="space-y-1">
-              <P className="text-sm text-muted-foreground">{label}</P>
+              <p className="leading-7 text-sm text-muted-foreground">{label}</p>
               <p className="text-2xl font-semibold">
                 {typeof value === 'number' ? value : value}
               </p>

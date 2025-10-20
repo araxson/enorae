@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { EmptyState } from '@/components/shared/empty-state'
 import { CalendarX } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
@@ -49,12 +48,12 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
         <Card key={appointment.id} className="p-6">
           <div className="flex h-full flex-col gap-4">
             <div className="space-y-1">
-              <H3>{appointment.salon_name || 'Unnamed Salon'}</H3>
-              <Muted>{appointment.service_names || 'Service'}</Muted>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{appointment.salon_name || 'Unnamed Salon'}</h3>
+              <p className="text-sm text-muted-foreground">{appointment.service_names || 'Service'}</p>
             </div>
 
             <div className="space-y-1">
-              <P className="text-sm">
+              <p className="leading-7 text-sm">
                 {appointment.start_time &&
                   new Date(appointment.start_time).toLocaleDateString('en-US', {
                     weekday: 'long',
@@ -62,14 +61,14 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
                     month: 'long',
                     day: 'numeric',
                   })}
-              </P>
-              <P className="text-sm text-muted-foreground">
+              </p>
+              <p className="leading-7 text-sm text-muted-foreground">
                 {appointment.start_time &&
                   new Date(appointment.start_time).toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
                   })}
-              </P>
+              </p>
             </div>
 
             <Badge variant={statusVariant(appointment.status)} className="w-fit capitalize">

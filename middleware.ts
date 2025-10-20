@@ -19,6 +19,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { authRateLimiter } from '@/lib/rate-limit'
 import { env } from '@/lib/env'
+import { updateSession } from '@/lib/supabase/middleware'
 
 // Public routes that don't require authentication
 const PUBLIC_ROUTES = [
@@ -86,13 +87,10 @@ export async function middleware(request: NextRequest) {
   }
 
   // ============================================================================
-  // Session presence check via Supabase auth cookie
+  // Session Management - SEC-H103: Use updateSession() for proper token rotation
   // ============================================================================
-  const response = NextResponse.next({
-    request,
-  })
-
-  const isAuthenticated = hasValidSupabaseSession(request)
+  const { response, user } = await updateSession(request)
+  const isAuthenticated = !!user
 
   // ============================================================================
   // Route Protection - Basic Auth Check Only
@@ -133,72 +131,6 @@ export async function middleware(request: NextRequest) {
 
   // Add security headers and return
   return addSecurityHeaders(response)
-}
-
-/**
- * Compute Supabase auth cookie name
- */
-function getSupabaseAuthCookieName(): string | null {
-  const projectUrl = env.NEXT_PUBLIC_SUPABASE_URL
-  if (!projectUrl) return null
-
-  const match = projectUrl.match(/https?:\/\/([^\.]+)\.supabase\.co/i)
-  if (!match) return null
-
-  return `sb-${match[1]}-auth-token`
-}
-
-/**
- * Determine if the incoming request has a valid Supabase session cookie
- */
-function hasValidSupabaseSession(request: NextRequest): boolean {
-  const cookieName = getSupabaseAuthCookieName()
-  if (!cookieName) {
-    return false
-  }
-
-  const cookie = request.cookies.get(cookieName)
-  if (!cookie || !cookie.value) {
-    return false
-  }
-
-  let decoded = cookie.value
-  try {
-    decoded = decodeURIComponent(cookie.value)
-  } catch {
-    decoded = cookie.value
-  }
-
-  try {
-    const parsed = JSON.parse(decoded)
-
-    if (parsed && typeof parsed === 'object') {
-      const accessToken =
-        parsed.access_token || parsed.currentSession?.access_token || parsed.token?.access_token
-
-      if (!accessToken) {
-        return false
-      }
-
-      const expiresAt =
-        parsed.expires_at || parsed.currentSession?.expires_at || parsed.expiresAt || parsed.exp
-
-      if (!expiresAt) {
-        return true
-      }
-
-      const expirySeconds = typeof expiresAt === 'number' ? expiresAt : Number(expiresAt)
-      if (Number.isFinite(expirySeconds)) {
-        return expirySeconds * 1000 > Date.now()
-      }
-
-      return true
-    }
-  } catch {
-    return true
-  }
-
-  return false
 }
 
 /**

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { APP_DESCRIPTION } from '@/lib/constants/app.constants'
+import { APP_DESCRIPTION } from '@/lib/constants'
 import { defaultMetadata } from './default-metadata'
 
 export function generateMetadata(options: {

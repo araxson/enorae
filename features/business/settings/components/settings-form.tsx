@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/select'
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack, Grid } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { updateSalonSettings } from '../api/mutations'
 import { toast } from 'sonner'
 import type { Database } from '@/lib/types/database.types'
@@ -57,11 +56,11 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
         <Card>
           <CardContent>
             <Stack gap="md">
-              <H3>Booking Status</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Booking Status</h3>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Accept New Bookings</Label>
-                  <Muted>Allow customers to book appointments online</Muted>
+                  <p className="text-sm text-muted-foreground">Allow customers to book appointments online</p>
                 </div>
                 <Switch
                   checked={isAcceptingBookings}
@@ -76,7 +75,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
         <Card>
           <CardContent>
             <Stack gap="md">
-              <H3>Booking Rules</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Booking Rules</h3>
               <Grid cols={{ base: 1, md: 2 }} gap="md">
                 <div>
                   <Label htmlFor="booking_lead_time_hours">Lead Time (hours)</Label>
@@ -89,7 +88,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     defaultValue={settings?.booking_lead_time_hours ?? ''}
                     placeholder="24"
                   />
-                  <Muted>Minimum hours before appointment</Muted>
+                  <p className="text-sm text-muted-foreground">Minimum hours before appointment</p>
                 </div>
 
                 <div>
@@ -103,7 +102,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     defaultValue={settings?.cancellation_hours ?? ''}
                     placeholder="24"
                   />
-                  <Muted>Hours before appointment can be cancelled</Muted>
+                  <p className="text-sm text-muted-foreground">Hours before appointment can be cancelled</p>
                 </div>
 
                 <div>
@@ -117,7 +116,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     defaultValue={settings?.max_bookings_per_day ?? ''}
                     placeholder="50"
                   />
-                  <Muted>Maximum daily appointments</Muted>
+                  <p className="text-sm text-muted-foreground">Maximum daily appointments</p>
                 </div>
               </Grid>
             </Stack>
@@ -128,7 +127,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
         <Card>
           <CardContent>
             <Stack gap="md">
-              <H3>Account Limits</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Account Limits</h3>
               <Grid cols={{ base: 1, md: 3 }} gap="md">
                 <div>
                   <Label htmlFor="max_services">Max Services</Label>

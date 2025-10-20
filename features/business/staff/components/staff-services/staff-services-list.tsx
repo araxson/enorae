@@ -9,8 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { EmptyState } from '@/components/shared/empty-state'
 import { SearchInput } from '@/components/shared/search-input'
 import { Box, Group, Stack } from '@/components/layout'
-import { H4, Muted } from '@/components/ui/typography'
-
 import type { StaffMemberWithServices } from './types'
 
 type StaffServicesListProps = {
@@ -92,12 +90,12 @@ function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
       </Avatar>
 
       <Stack gap="xs" className="flex-1">
-        <H4 className="text-base">{member.full_name || 'Staff Member'}</H4>
-        {member.title && <Muted className="text-sm">{member.title}</Muted>}
+        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-base">{member.full_name || 'Staff Member'}</h4>
+        {member.title && <p className="text-sm text-muted-foreground text-sm">{member.title}</p>}
 
         <div className="flex flex-wrap gap-2 mt-2">
           {member.services.length === 0 ? (
-            <Muted className="text-xs">No services assigned</Muted>
+            <p className="text-sm text-muted-foreground text-xs">No services assigned</p>
           ) : (
             member.services.map((service: StaffMemberWithServices['services'][number]) => (
               <ServiceBadge key={service.id} service={service} />

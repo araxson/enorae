@@ -1,5 +1,4 @@
 import { Section, Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { SuppliersGrid } from './components/suppliers-grid'
@@ -21,20 +20,20 @@ export async function Suppliers() {
         <Flex gap="md">
           <Card>
             <CardContent>
-              <Muted>Total Suppliers</Muted>
-              <H3>{suppliers.length}</H3>
+              <p className="text-sm text-muted-foreground">Total Suppliers</p>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{suppliers.length}</h3>
             </CardContent>
           </Card>
           <Card>
             <CardContent>
-              <Muted>Active</Muted>
-              <H3>{activeCount}</H3>
+              <p className="text-sm text-muted-foreground">Active</p>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{activeCount}</h3>
             </CardContent>
           </Card>
           <Card>
             <CardContent>
-              <Muted>Inactive</Muted>
-              <H3 className="text-muted-foreground">{inactiveCount}</H3>
+              <p className="text-sm text-muted-foreground">Inactive</p>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-muted-foreground">{inactiveCount}</h3>
             </CardContent>
           </Card>
         </Flex>

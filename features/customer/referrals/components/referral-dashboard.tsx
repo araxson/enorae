@@ -72,7 +72,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
         <Card>
           <CardHeader>
             <Flex justify="between" align="center">
-              <CardTitle className="text-lg">Total Referrals</CardTitle>
+              <CardTitle>Total Referrals</CardTitle>
               <Users className="h-5 w-5 text-blue-500" />
             </Flex>
           </CardHeader>
@@ -87,7 +87,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
         <Card>
           <CardHeader>
             <Flex justify="between" align="center">
-              <CardTitle className="text-lg">Successful</CardTitle>
+              <CardTitle>Successful</CardTitle>
               <Check className="h-5 w-5 text-green-500" />
             </Flex>
           </CardHeader>
@@ -102,7 +102,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
         <Card>
           <CardHeader>
             <Flex justify="between" align="center">
-              <CardTitle className="text-lg">Pending</CardTitle>
+              <CardTitle>Pending</CardTitle>
               <MessageSquare className="h-5 w-5 text-yellow-500" />
             </Flex>
           </CardHeader>
@@ -117,7 +117,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
         <Card>
           <CardHeader>
             <Flex justify="between" align="center">
-              <CardTitle className="text-lg">Bonus Points</CardTitle>
+              <CardTitle>Bonus Points</CardTitle>
               <Gift className="h-5 w-5 text-purple-500" />
             </Flex>
           </CardHeader>

@@ -3,8 +3,6 @@
 import type { ReactNode } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Small } from '@/components/ui/typography'
-
 type AppointmentMetricCardProps = {
   title: string
   icon: ReactNode
@@ -27,7 +25,7 @@ export function AppointmentMetricCard({
   return (
     <Card role="article" aria-label={`${title} metric`} className={`overflow-hidden border-l-4 ${accent}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
         {icon}
       </CardHeader>
       <CardContent>
@@ -59,13 +57,13 @@ export function RevenueMetricCard({
   return (
     <Card role="article" aria-label={`${title} metric`} className={`overflow-hidden border-l-4 ${accent}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
         {icon}
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="text-3xl font-bold">{amountLabel}</div>
         {highlight}
-        <Small className="text-xs text-muted-foreground">{description}</Small>
+        <small className="text-sm font-medium leading-none text-xs text-muted-foreground">{description}</small>
       </CardContent>
     </Card>
   )

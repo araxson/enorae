@@ -1,5 +1,4 @@
 import { Card } from '@/components/ui/card'
-import { H3, P, Small } from '@/components/ui/typography'
 import type { MessageStats } from '../api/queries'
 import { MessageSquare, AlertTriangle, ShieldAlert, GitPullRequest, Clock, Timer, MailWarning } from 'lucide-react'
 
@@ -29,11 +28,11 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
       <Card className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <P className="text-sm text-muted-foreground">Total Threads</P>
-            <H3 className="text-2xl font-bold">{stats.totalThreads}</H3>
-            <Small className="text-xs text-muted-foreground">
+            <p className="leading-7 text-sm text-muted-foreground">Total Threads</p>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{stats.totalThreads}</h3>
+            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
               Open {stats.openThreads} · In progress {stats.inProgressThreads}
-            </Small>
+            </small>
           </div>
           <MessageSquare className="h-8 w-8 text-muted-foreground" />
         </div>
@@ -42,11 +41,11 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
       <Card className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <P className="text-sm text-muted-foreground">Urgent Threads</P>
-            <H3 className="text-2xl font-bold text-orange-500">{stats.urgentThreads}</H3>
-            <Small className="text-xs text-muted-foreground">
+            <p className="leading-7 text-sm text-muted-foreground">Urgent Threads</p>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-orange-500">{stats.urgentThreads}</h3>
+            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
               High priority {stats.highPriorityThreads}
-            </Small>
+            </small>
           </div>
           <AlertTriangle className="h-8 w-8 text-orange-500" />
         </div>
@@ -55,11 +54,11 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
       <Card className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <P className="text-sm text-muted-foreground">Flagged Messages</P>
-            <H3 className="text-2xl font-bold text-red-500">{stats.flaggedMessages}</H3>
-            <Small className="text-xs text-muted-foreground">
+            <p className="leading-7 text-sm text-muted-foreground">Flagged Messages</p>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-red-500">{stats.flaggedMessages}</h3>
+            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
               Threads affected {stats.flaggedThreads}
-            </Small>
+            </small>
           </div>
           <ShieldAlert className="h-8 w-8 text-red-500" />
         </div>
@@ -68,11 +67,11 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
       <Card className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <P className="text-sm text-muted-foreground">Open Escalations</P>
-            <H3 className="text-2xl font-bold text-amber-500">{stats.openEscalations}</H3>
-            <Small className="text-xs text-muted-foreground">
+            <p className="leading-7 text-sm text-muted-foreground">Open Escalations</p>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-amber-500">{stats.openEscalations}</h3>
+            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
               Resolved {stats.resolvedThreads + stats.closedThreads + stats.archivedThreads}
-            </Small>
+            </small>
           </div>
           <GitPullRequest className="h-8 w-8 text-amber-500" />
         </div>
@@ -81,11 +80,11 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
       <Card className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <P className="text-sm text-muted-foreground">Avg First Response</P>
-            <H3 className="text-2xl font-bold">{formatMinutes(stats.avgFirstResponseMinutes)}</H3>
-            <Small className="text-xs text-muted-foreground">
+            <p className="leading-7 text-sm text-muted-foreground">Avg First Response</p>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{formatMinutes(stats.avgFirstResponseMinutes)}</h3>
+            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
               Based on {stats.totalMeasuredResponses} responses
-            </Small>
+            </small>
           </div>
           <Clock className="h-8 w-8 text-blue-500" />
         </div>
@@ -94,11 +93,11 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
       <Card className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <P className="text-sm text-muted-foreground">Responses ≤ 1h</P>
-            <H3 className="text-2xl font-bold text-emerald-600">
+            <p className="leading-7 text-sm text-muted-foreground">Responses ≤ 1h</p>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-emerald-600">
               {formatPercentage(stats.responsesWithinHourRate)}
-            </H3>
-            <Small className="text-xs text-muted-foreground">Customer SLA coverage</Small>
+            </h3>
+            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Customer SLA coverage</small>
           </div>
           <Timer className="h-8 w-8 text-emerald-600" />
         </div>
@@ -107,9 +106,9 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
       <Card className="p-6 md:col-span-2 xl:col-span-3">
         <div className="flex items-center justify-between">
           <div>
-            <P className="text-sm text-muted-foreground">Unread Messages</P>
-            <H3 className="text-2xl font-bold">{stats.totalUnread}</H3>
-            <Small className="text-xs text-muted-foreground">Across customers and staff</Small>
+            <p className="leading-7 text-sm text-muted-foreground">Unread Messages</p>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{stats.totalUnread}</h3>
+            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Across customers and staff</small>
           </div>
           <MailWarning className="h-8 w-8 text-sky-500" />
         </div>

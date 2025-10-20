@@ -1,7 +1,6 @@
 import { LucideIcon } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { P, Muted } from '@/components/ui/typography'
 
 interface DataTableEmptyProps {
   icon?: LucideIcon
@@ -29,8 +28,8 @@ export function DataTableEmpty({
             </div>
           )}
           <div className="space-y-2">
-            <P className="font-semibold">{title}</P>
-            <Muted>{description}</Muted>
+            <p className="leading-7 font-semibold">{title}</p>
+            <p className="text-sm text-muted-foreground">{description}</p>
           </div>
           {action && (
             <Button onClick={action.onClick} className="mt-2">

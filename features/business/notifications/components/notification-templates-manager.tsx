@@ -157,7 +157,7 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div>
-                        <CardTitle className="text-base font-semibold">{template.name}</CardTitle>
+                        <CardTitle>{template.name}</CardTitle>
                         <CardDescription className="text-xs">
                           {(template.description || template.event.replace('_', ' ')).toString()}
                         </CardDescription>

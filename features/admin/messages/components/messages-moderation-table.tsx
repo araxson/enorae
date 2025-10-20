@@ -8,7 +8,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Muted } from '@/components/ui/typography'
 import { formatDistanceToNow } from 'date-fns'
 import type { ModerationQueueItem } from '../api/queries'
 
@@ -36,7 +35,7 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
       </CardHeader>
       <CardContent className="space-y-4">
         {items.length === 0 ? (
-          <Muted>No flagged messages in the selected period.</Muted>
+          <p className="text-sm text-muted-foreground">No flagged messages in the selected period.</p>
         ) : (
           <div className="overflow-x-auto">
             <Table>

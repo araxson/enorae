@@ -77,7 +77,7 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <CardTitle className="text-lg">{chain.name}</CardTitle>
+                  <CardTitle>{chain.name}</CardTitle>
                   {chain.legal_name && (
                     <CardDescription className="mt-1">
                       {chain.legal_name}

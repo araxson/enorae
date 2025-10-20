@@ -9,8 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Stack, Flex } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
-
 type ProfileImagesSectionProps = {
   avatarUrl: string
   coverUrl: string
@@ -60,7 +58,7 @@ export function ProfileImagesSection({
               <Upload className="h-4 w-4 mr-2" />
               {isUploadingAvatar ? 'Uploading...' : 'Upload Avatar'}
             </Button>
-            <Muted>Max 5MB, JPG or PNG</Muted>
+            <p className="text-sm text-muted-foreground">Max 5MB, JPG or PNG</p>
           </Stack>
         </Flex>
       </Stack>
@@ -90,7 +88,7 @@ export function ProfileImagesSection({
             <Upload className="h-4 w-4 mr-2" />
             {isUploadingCover ? 'Uploading...' : 'Upload Cover Image'}
           </Button>
-          <Muted>Max 10MB, JPG or PNG, recommended 1200x400px</Muted>
+          <p className="text-sm text-muted-foreground">Max 10MB, JPG or PNG, recommended 1200x400px</p>
         </Stack>
       </Stack>
     </Stack>

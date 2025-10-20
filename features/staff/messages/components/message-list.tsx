@@ -2,7 +2,6 @@
 import { format } from 'date-fns'
 import { Card } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import type { Message } from '../types'
 
 interface MessageListProps {
@@ -14,7 +13,7 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
   if (messages.length === 0) {
     return (
       <Card className="p-8 text-center">
-        <P className="text-muted-foreground">No messages in this thread</P>
+        <p className="leading-7 text-muted-foreground">No messages in this thread</p>
       </Card>
     )
   }
@@ -30,12 +29,12 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
             className={`p-4 ${isFromMe ? 'ml-auto bg-primary/10' : 'mr-auto'} max-w-[80%]`}
           >
             <Stack gap="sm">
-              <P className="whitespace-pre-wrap">{message.content}</P>
+              <p className="leading-7 whitespace-pre-wrap">{message.content}</p>
               {message.created_at && (
-                <Muted className="text-xs">
+                <p className="text-sm text-muted-foreground text-xs">
                   {format(new Date(message.created_at), 'PPp')}
                   {message.is_edited && ' (edited)'}
-                </Muted>
+                </p>
               )}
             </Stack>
           </Card>

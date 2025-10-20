@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Stack } from '@/components/layout'
 import { AlertCircle } from 'lucide-react'
-import { Small } from '@/components/ui/typography'
 import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
 
@@ -135,10 +134,10 @@ export function SignupForm() {
                 required
               />
               {confirmPassword && password !== confirmPassword && (
-                <Small className="text-destructive">Passwords do not match</Small>
+                <small className="text-sm font-medium leading-none text-destructive">Passwords do not match</small>
               )}
               {confirmPassword && password === confirmPassword && (
-                <Small className="text-green-600">✓ Passwords match</Small>
+                <small className="text-sm font-medium leading-none text-green-600">✓ Passwords match</small>
               )}
             </Stack>
           </Stack>
@@ -153,12 +152,12 @@ export function SignupForm() {
             >
               {loading ? 'Creating account...' : 'Sign Up'}
             </Button>
-            <Small className="text-center text-muted-foreground">
+            <small className="text-sm font-medium leading-none text-center text-muted-foreground">
               Already have an account?{' '}
               <Link href="/login" className="underline hover:text-foreground">
                 Sign in
               </Link>
-            </Small>
+            </small>
           </Stack>
         </CardFooter>
       </form>

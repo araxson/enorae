@@ -10,7 +10,6 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Stack, Flex } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { Calendar, Clock, User, DollarSign, Mail } from 'lucide-react'
 import type { StaffAppointment, AppointmentStatus } from '../api/queries'
 
@@ -55,25 +54,25 @@ export function AppointmentDetailDialog({
             <Flex gap="sm" align="start">
               <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <Muted className="text-xs">Date</Muted>
-                <P className="font-medium">
+                <p className="text-sm text-muted-foreground text-xs">Date</p>
+                <p className="leading-7 font-medium">
                   {appointment.start_time
                     ? format(new Date(appointment.start_time), 'EEEE, MMMM dd, yyyy')
                     : 'N/A'}
-                </P>
+                </p>
               </div>
             </Flex>
 
             <Flex gap="sm" align="start">
               <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <Muted className="text-xs">Time</Muted>
-                <P className="font-medium">
+                <p className="text-sm text-muted-foreground text-xs">Time</p>
+                <p className="leading-7 font-medium">
                   {appointment.start_time
                     ? format(new Date(appointment.start_time), 'h:mm a')
                     : 'N/A'}
                   {appointment.duration_minutes && ` (${appointment.duration_minutes} min)`}
-                </P>
+                </p>
               </div>
             </Flex>
           </div>
@@ -81,13 +80,13 @@ export function AppointmentDetailDialog({
           <Separator />
 
           <div>
-            <P className="font-semibold mb-3">Customer Information</P>
+            <p className="leading-7 font-semibold mb-3">Customer Information</p>
             <Stack gap="sm">
               <Flex gap="sm" align="start">
                 <User className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <Muted className="text-xs">Name</Muted>
-                  <P>{appointment.customer_name || 'Walk-in Customer'}</P>
+                  <p className="text-sm text-muted-foreground text-xs">Name</p>
+                  <p className="leading-7">{appointment.customer_name || 'Walk-in Customer'}</p>
                 </div>
               </Flex>
 
@@ -95,8 +94,8 @@ export function AppointmentDetailDialog({
                 <Flex gap="sm" align="start">
                   <Mail className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <Muted className="text-xs">Email</Muted>
-                    <P>{appointment.customer_email}</P>
+                    <p className="text-sm text-muted-foreground text-xs">Email</p>
+                    <p className="leading-7">{appointment.customer_email}</p>
                   </div>
                 </Flex>
               )}
@@ -108,12 +107,12 @@ export function AppointmentDetailDialog({
           <Separator />
 
           <div>
-            <P className="font-semibold mb-3">Service Details</P>
+            <p className="leading-7 font-semibold mb-3">Service Details</p>
             <Stack gap="sm">
               {appointment.service_names && (
                 <div>
-                  <Muted className="text-xs">Services</Muted>
-                  <P>{appointment.service_names}</P>
+                  <p className="text-sm text-muted-foreground text-xs">Services</p>
+                  <p className="leading-7">{appointment.service_names}</p>
                 </div>
               )}
 
@@ -121,8 +120,8 @@ export function AppointmentDetailDialog({
                 <Flex gap="sm" align="start">
                   <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <Muted className="text-xs">Total Price</Muted>
-                    <P className="font-medium">${Number(appointment.total_price).toFixed(2)}</P>
+                    <p className="text-sm text-muted-foreground text-xs">Total Price</p>
+                    <p className="leading-7 font-medium">${Number(appointment.total_price).toFixed(2)}</p>
                   </div>
                 </Flex>
               )}

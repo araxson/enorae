@@ -7,7 +7,6 @@ import { Edit2, Trash2, Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Box, Flex, Grid, Group } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import {
   Card,
   CardContent,
@@ -69,7 +68,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
           <Box py="2xl">
             <Stack gap="md" align="center" className="text-center">
               <Package className="h-12 w-12 text-muted-foreground" />
-              <P className="text-muted-foreground">No product categories found</P>
+              <p className="leading-7 text-muted-foreground">No product categories found</p>
             </Stack>
           </Box>
         </CardContent>
@@ -85,7 +84,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
             <CardHeader>
               <Flex align="start" justify="between">
                 <Box className="flex-1">
-                  <CardTitle className="text-lg">{category.name}</CardTitle>
+                  <CardTitle>{category.name}</CardTitle>
                   {category.description && (
                     <CardDescription className="mt-1">
                       {category.description}

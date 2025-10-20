@@ -5,7 +5,6 @@ import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw } from 'lucide-react'
 import { Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
-import { H2, Muted, P } from '@/components/ui/typography'
 import { cn } from '@/lib/utils'
 import type { AppointmentSnapshot } from '../api/types'
 import { MetricsSummary } from './metrics-summary'
@@ -61,18 +60,18 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
     <Stack gap="xl">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <H2 className="mb-1">Platform Appointment Oversight</H2>
-          <Muted className="block text-sm text-muted-foreground">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-1">Platform Appointment Oversight</h2>
+          <p className="block text-sm text-muted-foreground">
             Aggregated metrics across all salons. Last updated {lastUpdatedLabel}.
-          </Muted>
+          </p>
           {error && (
-            <P className="mt-2 text-sm text-destructive">{error}</P>
+            <p className="leading-7 mt-2 text-sm text-destructive">{error}</p>
           )}
         </div>
         <div className="flex items-center gap-3">
-          <Muted className="text-xs uppercase tracking-wide text-muted-foreground">
+          <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
             Auto-refresh 30s
-          </Muted>
+          </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
             <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
             Refresh

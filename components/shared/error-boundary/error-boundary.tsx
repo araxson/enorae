@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Section } from '@/components/layout/primitives'
 import { Stack, Flex } from '@/components/layout/flex'
-import { H2, P } from '@/components/ui/typography'
 import { DigestInfo } from './digest-info'
 import { DevelopmentDetails } from './development-details'
 import { ErrorBoundaryActions } from './actions'
@@ -47,15 +46,15 @@ export function ErrorBoundary({
           <CardHeader>
             <Flex gap="sm" align="center">
               {getErrorIcon(errorType)}
-              <H2 className="m-0">{title ?? ERROR_TITLES[errorType]}</H2>
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight m-0">{title ?? ERROR_TITLES[errorType]}</h2>
             </Flex>
           </CardHeader>
 
           <CardContent>
             <Stack gap="md">
-              <P className="text-muted-foreground">
+              <p className="leading-7 text-muted-foreground">
                 {description ?? ERROR_DESCRIPTIONS[errorType]}
-              </P>
+              </p>
 
               {error.digest && <DigestInfo digest={error.digest} details={copyDetails} />}
 

@@ -31,9 +31,9 @@ export function HelpCategoryAccordion({ categories }: HelpCategoryAccordionProps
         <Accordion type="multiple" className="space-y-3">
           {categories.map((category) => (
             <AccordionItem key={category.id} value={category.id} className="rounded-lg border px-4">
-              <AccordionTrigger className="text-sm font-semibold">
-                <div className="flex items-center gap-2">
-                  {category.name}
+              <AccordionTrigger>
+                <div className="flex items-center gap-2 text-sm font-semibold">
+                  <span>{category.name}</span>
                   <Badge variant="outline">Follow</Badge>
                 </div>
               </AccordionTrigger>
@@ -47,4 +47,3 @@ export function HelpCategoryAccordion({ categories }: HelpCategoryAccordionProps
     </Card>
   )
 }
-

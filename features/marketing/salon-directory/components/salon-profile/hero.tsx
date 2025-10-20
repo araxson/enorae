@@ -2,7 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Stack, Box, Flex, Group } from '@/components/layout'
 import { Button } from '@/components/ui/button'
-import { H1, P, Muted, Large } from '@/components/ui/typography'
 import { Star } from 'lucide-react'
 import type { Salon } from './types'
 
@@ -34,19 +33,19 @@ export function SalonHero({ salon }: SalonHeroProps) {
               </div>
             )}
             <Stack gap="sm">
-              <H1>{salon.name || 'Unnamed Salon'}</H1>
+              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{salon.name || 'Unnamed Salon'}</h1>
               {salon.rating !== null && (
                 <Group gap="sm">
                   <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                  <Large className="font-semibold">{salon.rating.toFixed(1)}</Large>
-                  {salon.review_count !== null && <Muted>({salon.review_count} reviews)</Muted>}
+                  <span className="text-lg font-semibold font-semibold">{salon.rating.toFixed(1)}</span>
+                  {salon.review_count !== null && <p className="text-sm text-muted-foreground">({salon.review_count} reviews)</p>}
                 </Group>
               )}
             </Stack>
           </Group>
 
           {salon.short_description && (
-            <P className="text-muted-foreground">{salon.short_description}</P>
+            <p className="leading-7 text-muted-foreground">{salon.short_description}</p>
           )}
         </Stack>
 

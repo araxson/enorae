@@ -87,10 +87,10 @@ export function AdvancedSearchClient({
       {/* Search Bar with Advanced Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Search className="h-5 w-5" />
-            Advanced Salon Search
-          </CardTitle>
+            <CardTitle>Advanced Salon Search</CardTitle>
+          </div>
           <CardDescription>
             Find the perfect salon with advanced filters and fuzzy matching
           </CardDescription>
@@ -210,15 +210,13 @@ export function AdvancedSearchClient({
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                   <CardHeader>
                     <div className="flex items-start justify-between">
-                      <CardTitle className="text-lg">{salon.name}</CardTitle>
-                      {salon.is_verified && (
-                        <Shield className="h-4 w-4 text-blue-600" />
-                      )}
+                      <CardTitle>{salon.name}</CardTitle>
+                      {salon.is_verified && <Shield className="h-4 w-4 text-blue-600" />}
                     </div>
-                    <CardDescription className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 text-muted-foreground">
                       <MapPin className="h-3 w-3" />
-                      {formatAddress(salon.address)}
-                    </CardDescription>
+                      <CardDescription>{formatAddress(salon.address)}</CardDescription>
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-2">
@@ -246,21 +244,17 @@ export function AdvancedSearchClient({
               <Link key={salon.id} href={`/customer/salons/${salon.slug}`}>
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                   <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <CardTitle className="text-lg">{salon.name}</CardTitle>
+                    <div className="flex items-start justify-between gap-2">
+                      <CardTitle>{salon.name}</CardTitle>
                       <div className="flex gap-1">
-                        {salon.is_verified && (
-                          <Shield className="h-4 w-4 text-blue-600" />
-                        )}
-                        {salon.is_featured && (
-                          <Sparkles className="h-4 w-4 text-yellow-500" />
-                        )}
+                        {salon.is_verified && <Shield className="h-4 w-4 text-blue-600" />}
+                        {salon.is_featured && <Sparkles className="h-4 w-4 text-yellow-500" />}
                       </div>
                     </div>
-                    <CardDescription className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 text-muted-foreground">
                       <MapPin className="h-3 w-3" />
-                      {formatAddress(salon.address)}
-                    </CardDescription>
+                      <CardDescription>{formatAddress(salon.address)}</CardDescription>
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-2">

@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Grid, Stack, Box } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { SalonCard } from '@/features/shared/salons'
 import type { Database } from '@/lib/types/database.types'
 
@@ -16,8 +15,8 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
     return (
       <Box className="text-center py-12">
         <Stack gap="md">
-          <H3>No salons found</H3>
-          <Muted>No salons currently offer {categoryName} services</Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No salons found</h3>
+          <p className="text-sm text-muted-foreground">No salons currently offer {categoryName} services</p>
         </Stack>
       </Box>
     )
@@ -25,9 +24,9 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
 
   return (
     <Stack gap="md">
-      <Muted>
+      <p className="text-sm text-muted-foreground">
         {salons.length} salon{salons.length !== 1 ? 's' : ''} offering {categoryName}
-      </Muted>
+      </p>
       <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
         {salons.map((salon) => {
           const location = [salon.city, salon.state_province].filter(Boolean).join(', ') ||

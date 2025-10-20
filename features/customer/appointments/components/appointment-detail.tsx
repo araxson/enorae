@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -74,7 +73,7 @@ function AppointmentDetailContent({
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-2">
-        <Muted>{appointment.confirmation_code || 'No code'}</Muted>
+        <p className="text-sm text-muted-foreground">{appointment.confirmation_code || 'No code'}</p>
         <Badge variant={getStatusVariant(appointment.status)} className="capitalize">
           {appointment.status ?? 'pending'}
         </Badge>
@@ -85,8 +84,8 @@ function AppointmentDetailContent({
       <Card>
         <CardContent className="flex flex-col gap-6">
           <div className="space-y-2">
-            <H3>Date &amp; time</H3>
-            <P>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Date &amp; time</h3>
+            <p className="leading-7">
               {appointment.start_time &&
                 new Date(appointment.start_time).toLocaleDateString('en-US', {
                   weekday: 'long',
@@ -94,8 +93,8 @@ function AppointmentDetailContent({
                   month: 'long',
                   day: 'numeric',
                 })}
-            </P>
-            <P className="text-muted-foreground">
+            </p>
+            <p className="leading-7 text-muted-foreground">
               {appointment.start_time &&
                 new Date(appointment.start_time).toLocaleTimeString('en-US', {
                   hour: '2-digit',
@@ -107,10 +106,10 @@ function AppointmentDetailContent({
                   hour: '2-digit',
                   minute: '2-digit',
                 })}
-            </P>
+            </p>
             <div className="mt-2 flex items-center gap-2">
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <Muted>{appointment.duration_minutes || 0} minutes total</Muted>
+              <p className="text-sm text-muted-foreground">{appointment.duration_minutes || 0} minutes total</p>
             </div>
           </div>
 
@@ -118,9 +117,9 @@ function AppointmentDetailContent({
             <>
               <Separator />
               <div className="space-y-1">
-                <H3>Staff member</H3>
-                <P>{appointment.staff_name}</P>
-                {appointment.staff_title && <Muted>{appointment.staff_title}</Muted>}
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Staff member</h3>
+                <p className="leading-7">{appointment.staff_name}</p>
+                {appointment.staff_title && <p className="text-sm text-muted-foreground">{appointment.staff_title}</p>}
               </div>
             </>
           )}
@@ -128,7 +127,7 @@ function AppointmentDetailContent({
           <Separator />
 
           <div className="space-y-4">
-            <H3>Services</H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Services</h3>
             {services.length > 0 ? (
               <div className="overflow-hidden rounded-md border">
                 <Table>
@@ -144,9 +143,9 @@ function AppointmentDetailContent({
                       <TableRow key={service.id}>
                         <TableCell>
                           <div className="space-y-1">
-                            <P className="font-medium">{service.service_name}</P>
+                            <p className="leading-7 font-medium">{service.service_name}</p>
                             {service.category_name && (
-                              <Muted className="text-xs">{service.category_name}</Muted>
+                              <p className="text-sm text-muted-foreground text-xs">{service.category_name}</p>
                             )}
                           </div>
                         </TableCell>
@@ -178,9 +177,9 @@ function AppointmentDetailContent({
                 </Table>
               </div>
             ) : (
-              <P className="text-muted-foreground">
+              <p className="leading-7 text-muted-foreground">
                 {appointment.service_names || 'No services listed'}
-              </P>
+              </p>
             )}
           </div>
         </CardContent>
@@ -190,7 +189,7 @@ function AppointmentDetailContent({
         <Card>
           <CardContent className="flex flex-col gap-4">
             <div className="space-y-4">
-              <H3>Products Used</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Products Used</h3>
               <div className="overflow-hidden rounded-md border">
                 <Table>
                   <TableHeader>
@@ -205,9 +204,9 @@ function AppointmentDetailContent({
                       <TableRow key={product.id}>
                         <TableCell>
                           <div className="space-y-1">
-                            <P className="font-medium">{product.product_name || 'Unknown Product'}</P>
+                            <p className="leading-7 font-medium">{product.product_name || 'Unknown Product'}</p>
                             {product.product_description && (
-                              <Muted className="text-xs">{product.product_description}</Muted>
+                              <p className="text-sm text-muted-foreground text-xs">{product.product_description}</p>
                             )}
                           </div>
                         </TableCell>
@@ -224,9 +223,9 @@ function AppointmentDetailContent({
                   </TableBody>
                 </Table>
               </div>
-              <Muted className="text-xs">
+              <p className="text-sm text-muted-foreground text-xs">
                 These are professional products used during your appointment.
-              </Muted>
+              </p>
             </div>
           </CardContent>
         </Card>

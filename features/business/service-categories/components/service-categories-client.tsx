@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
-import { H2, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { CategoryList } from './category-list'
 import { CategoryForm } from './category-form'
@@ -30,10 +29,10 @@ export function ServiceCategoriesClient({ initialCategories }: ServiceCategories
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <H2>Service Categories</H2>
-          <Muted className="mt-1">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Service Categories</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Organize your services with categories
-          </Muted>
+          </p>
         </div>
         <Button onClick={() => setIsFormOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />

@@ -1,6 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { P, Muted } from '@/components/ui/typography'
 import type { Database } from '@/lib/types/database.types'
 
 type Profile = Database['public']['Views']['profiles']['Row']
@@ -21,10 +20,10 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
         </Avatar>
 
         <div className="space-y-1">
-          <P className="text-lg font-semibold leading-tight">
+          <p className="leading-7 text-lg font-semibold leading-tight">
             {profile.full_name || profile.username || 'User'}
-          </P>
-          <Muted className="text-sm">{profile.username ? `@${profile.username}` : `ID: ${profile.id}`}</Muted>
+          </p>
+          <p className="text-sm text-muted-foreground text-sm">{profile.username ? `@${profile.username}` : `ID: ${profile.id}`}</p>
         </div>
       </CardContent>
     </Card>

@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Muted } from '@/components/ui/typography'
 import type { DailyEarnings } from '../api/queries'
 
 type EarningsChartProps = {
@@ -16,7 +15,7 @@ export function EarningsChart({ data }: EarningsChartProps) {
           <CardTitle>Earnings Trend</CardTitle>
         </CardHeader>
         <CardContent>
-          <Muted>No earnings data available</Muted>
+          <p className="text-sm text-muted-foreground">No earnings data available</p>
         </CardContent>
       </Card>
     )
@@ -27,7 +26,7 @@ export function EarningsChart({ data }: EarningsChartProps) {
     <Card>
       <CardHeader>
         <CardTitle>Earnings Trend (Last 30 Days)</CardTitle>
-        <Muted>Daily revenue from completed appointments</Muted>
+        <p className="text-sm text-muted-foreground">Daily revenue from completed appointments</p>
       </CardHeader>
       <CardContent>
         <div className="relative h-52">

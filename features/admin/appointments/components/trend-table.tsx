@@ -21,7 +21,7 @@ export function TrendTable({ trend }: TrendTableProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="text-base font-semibold">14-day Trend</CardTitle>
+        <CardTitle>14-day Trend</CardTitle>
       </CardHeader>
       <CardContent className="overflow-x-auto">
         {rows.length === 0 ? (

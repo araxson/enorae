@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { P, Small } from '@/components/ui/typography'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { format } from 'date-fns'
 
@@ -37,7 +36,7 @@ export function MessageBubble({
 
       <div className={cn('max-w-[70%] space-y-1', isOwn && 'items-end text-right')}>
         {!isOwn && senderName && (
-          <Small className="px-2 text-muted-foreground">{senderName}</Small>
+          <small className="text-sm font-medium leading-none px-2 text-muted-foreground">{senderName}</small>
         )}
 
         <div
@@ -46,12 +45,12 @@ export function MessageBubble({
             isOwn ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
           )}
         >
-          <P className="mb-0 whitespace-pre-wrap break-words">{content}</P>
+          <p className="leading-7 mb-0 whitespace-pre-wrap break-words">{content}</p>
         </div>
 
         <div className="flex items-center gap-2 px-2 text-xs text-muted-foreground">
-          <Small>{format(new Date(timestamp), 'MMM dd, HH:mm')}</Small>
-          {isOwn && <Small>{isRead ? '✓✓' : '✓'}</Small>}
+          <small className="text-sm font-medium leading-none">{format(new Date(timestamp), 'MMM dd, HH:mm')}</small>
+          {isOwn && <small className="text-sm font-medium leading-none">{isRead ? '✓✓' : '✓'}</small>}
         </div>
       </div>
 

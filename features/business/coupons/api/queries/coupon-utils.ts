@@ -1,0 +1,69 @@
+/**
+ * Coupon utility functions
+ * Pure functions that can be used in both server and client components
+ */
+
+export type CouponAnalyticsSnapshot = {
+  coupons: Array<{
+    id: string
+    code: string
+    description: string | null
+    is_active: boolean
+    valid_until: string | null
+    deleted_at: string | null
+    stats: {
+      totalUses: number
+      totalDiscount: number
+    }
+  }>
+  usage: Array<{
+    created_at: string
+    discount_amount: number
+  }>
+}
+
+export function buildCouponEffectiveness(analytics: CouponAnalyticsSnapshot) {
+  const { coupons, usage } = analytics
+
+  const totalDiscount = coupons.reduce((sum, coupon) => sum + coupon.stats.totalDiscount, 0)
+  const totalUses = coupons.reduce((sum, coupon) => sum + coupon.stats.totalUses, 0)
+  const activeCoupons = coupons.filter((coupon) => coupon.is_active && !coupon.deleted_at)
+  const expiringSoon = coupons.filter((coupon) => {
+    if (!coupon.valid_until) return false
+    const daysUntilExpiry =
+      (new Date(coupon.valid_until).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+    return daysUntilExpiry >= 0 && daysUntilExpiry <= 7
+  })
+
+  const topCoupon = coupons.slice().sort((a, b) => b.stats.totalDiscount - a.stats.totalDiscount)[0] || null
+
+  const usageByDay = usage.reduce<Record<string, { uses: number; discount: number }>>((acc, entry) => {
+    if (!entry.created_at) return acc
+    const day = entry.created_at.split('T')[0]
+    const bucket = acc[day] ?? { uses: 0, discount: 0 }
+    bucket.uses += 1
+    bucket.discount += Number(entry.discount_amount || 0)
+    acc[day] = bucket
+    return acc
+  }, {})
+
+  const trend = Object.entries(usageByDay)
+    .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime())
+    .map(([date, value]) => ({
+      date,
+      uses: value.uses,
+      discount: value.discount,
+    }))
+
+  return {
+    totals: {
+      totalDiscount,
+      totalUses,
+      activeCoupons: activeCoupons.length,
+      averageDiscount: totalUses > 0 ? totalDiscount / totalUses : 0,
+    },
+    topCoupon,
+    expiringSoon,
+    trend,
+  }
+}

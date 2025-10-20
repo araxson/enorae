@@ -7,8 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Muted } from '@/components/ui/typography'
-
 type LowStockAlert = {
   productId: string
   productName: string
@@ -46,7 +44,7 @@ export function InventoryLowStockTable({ alerts }: LowStockTableProps) {
               <div>
                 <p className="font-medium">{alert.productName}</p>
                 {alert.productSku && (
-                  <Muted className="text-xs">SKU: {alert.productSku}</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">SKU: {alert.productSku}</p>
                 )}
               </div>
             </TableCell>
@@ -70,7 +68,7 @@ export function InventoryLowStockTable({ alerts }: LowStockTableProps) {
         {alerts.length === 0 && (
           <TableRow>
             <TableCell colSpan={6} className="py-8 text-center">
-              <Muted>No low stock alerts</Muted>
+              <p className="text-sm text-muted-foreground">No low stock alerts</p>
             </TableCell>
           </TableRow>
         )}

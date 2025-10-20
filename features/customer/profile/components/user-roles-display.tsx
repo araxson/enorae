@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { Shield, Building2 } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
@@ -41,10 +40,10 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Shield className="h-5 w-5" />
-          Active Roles
-        </CardTitle>
+          <CardTitle>Active Roles</CardTitle>
+        </div>
       </CardHeader>
       <CardContent>
         <Stack gap="md">
@@ -60,13 +59,13 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
                 {userRole.salon_id && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Building2 className="h-3 w-3" />
-                    <Muted className="text-xs">Salon-specific role</Muted>
+                    <span className="text-xs text-muted-foreground">Salon-specific role</span>
                   </div>
                 )}
 
                 {userRole.permissions && Array.isArray(userRole.permissions) && userRole.permissions.length > 0 && (
                   <div className="mt-2">
-                    <Muted className="text-xs mb-1">Permissions:</Muted>
+                    <span className="mb-1 block text-xs text-muted-foreground">Permissions:</span>
                     <div className="flex flex-wrap gap-1">
                       {userRole.permissions.slice(0, 5).map((permission, idx) => (
                         <Badge key={idx} variant="outline" className="text-xs">
@@ -86,9 +85,9 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
           ))}
 
           {roles.length === 1 && roles[0]?.role === 'customer' && (
-            <Muted className="text-xs text-center py-2">
+            <p className="py-2 text-center text-xs text-muted-foreground">
               You have a customer account. Contact salon staff to request additional roles.
-            </Muted>
+            </p>
           )}
         </Stack>
       </CardContent>

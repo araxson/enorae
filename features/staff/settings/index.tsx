@@ -1,5 +1,4 @@
 import { Section, Stack } from '@/components/layout'
-import { H1 } from '@/components/ui/typography'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { NotificationPreferences } from './components/notification-preferences'
 import { PrivacySettings } from './components/privacy-settings'
@@ -14,7 +13,7 @@ interface SettingsFeatureProps {
 export function SettingsFeature({ preferences }: SettingsFeatureProps) {
   return (
     <Stack gap="lg">
-      <H1>Settings & Preferences</H1>
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Settings & Preferences</h1>
 
       <Tabs defaultValue="notifications" className="w-full">
         <TabsList className="grid w-full grid-cols-3">

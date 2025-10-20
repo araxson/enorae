@@ -1,6 +1,5 @@
 import { Package, AlertTriangle, Users, ShoppingCart } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { H3, Muted } from '@/components/ui/typography'
 import { Grid, Box, Flex } from '@/components/layout'
 
 type InventoryStatsProps = {
@@ -48,8 +47,8 @@ export function InventoryStats({ stats }: InventoryStatsProps) {
             <Box pt="md">
               <Flex align="center" justify="between">
                 <Box>
-                  <Muted>{card.label}</Muted>
-                  <H3 className="mt-2">{card.value}</H3>
+                  <p className="text-sm text-muted-foreground">{card.label}</p>
+                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mt-2">{card.value}</h3>
                 </Box>
                 <card.icon className={`h-8 w-8 ${card.color}`} />
               </Flex>

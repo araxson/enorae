@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Stack, Flex } from '@/components/layout'
-import { Muted, H3 } from '@/components/ui/typography'
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import { formatPercentage } from '../utils/formatters'
 
@@ -136,7 +135,7 @@ export function MetricCard(props: MetricCardProps) {
   return (
     <Card role="article" aria-label={`${title} metric`} className={cardClasses}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
         {IconComponent && (
           <IconComponent className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
         )}
@@ -150,14 +149,14 @@ export function MetricCard(props: MetricCardProps) {
               className={`h-1 ${props.progressClass ?? ''}`}
               aria-label={`${props.progress}% progress`}
             />
-            {subtitle && <Muted className="text-xs">{subtitle}</Muted>}
+            {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
           </Stack>
         )}
 
         {props.variant === 'trend' && (
           <Stack gap="xs">
             <Flex align="end" justify="between">
-              <H3 className="text-2xl font-bold">{value}</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{value}</h3>
               <Badge
                 variant={props.trend >= 0 ? 'default' : 'destructive'}
                 className="flex items-center gap-1"
@@ -170,7 +169,7 @@ export function MetricCard(props: MetricCardProps) {
                 {formatPercentage(Math.abs(props.trend))}
               </Badge>
             </Flex>
-            {subtitle && <Muted className="text-xs">{subtitle}</Muted>}
+            {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
           </Stack>
         )}
 
@@ -178,14 +177,14 @@ export function MetricCard(props: MetricCardProps) {
           <Stack gap="xs">
             <div className="text-3xl font-bold">{value}</div>
             {props.highlight}
-            {subtitle && <Muted className="text-xs">{subtitle}</Muted>}
+            {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
           </Stack>
         )}
 
         {(!props.variant || props.variant === 'default') && (
           <Stack gap="xs">
-            <H3 className="text-2xl font-bold">{value}</H3>
-            {subtitle && <Muted className="text-xs">{subtitle}</Muted>}
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{value}</h3>
+            {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
           </Stack>
         )}
       </CardContent>

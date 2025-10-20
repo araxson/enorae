@@ -1,7 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { Clock } from 'lucide-react'
 import type { OperatingHours } from '../types'
 
@@ -23,7 +22,7 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
       <Stack gap="md">
         <Flex align="center" gap="sm">
           <Clock className="h-5 w-5" />
-          <H3>Operating Hours</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Operating Hours</h3>
         </Flex>
 
         <Stack gap="sm">
@@ -38,9 +37,9 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
                 className={isToday ? 'font-semibold' : ''}
               >
                 <Flex align="center" gap="sm">
-                  <P className="capitalize min-w-[100px]">
+                  <p className="leading-7 capitalize min-w-[100px]">
                     {hour.day_of_week}
-                  </P>
+                  </p>
                   {isToday && (
                     <Badge variant="default" className="text-xs">
                       Today
@@ -51,7 +50,7 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
                 {hour.is_closed ? (
                   <Badge variant="secondary">Closed</Badge>
                 ) : (
-                  <Muted>{hour.hours_display}</Muted>
+                  <p className="text-sm text-muted-foreground">{hour.hours_display}</p>
                 )}
               </Flex>
             )
@@ -59,9 +58,9 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
         </Stack>
 
         {sortedHours[0]?.salon_name && (
-          <Muted className="text-xs border-t pt-2">
+          <p className="text-sm text-muted-foreground text-xs border-t pt-2">
             {sortedHours[0].salon_name}
-          </Muted>
+          </p>
         )}
       </Stack>
     </Card>

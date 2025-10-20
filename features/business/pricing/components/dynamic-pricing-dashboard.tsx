@@ -88,7 +88,7 @@ export function DynamicPricingDashboard({
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Rules</CardTitle>
+            <CardTitle>Active Rules</CardTitle>
             <Zap className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
@@ -102,7 +102,7 @@ export function DynamicPricingDashboard({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Revenue Potential</CardTitle>
+            <CardTitle>Revenue Potential</CardTitle>
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -117,7 +117,7 @@ export function DynamicPricingDashboard({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Services Optimized</CardTitle>
+            <CardTitle>Services Optimized</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>

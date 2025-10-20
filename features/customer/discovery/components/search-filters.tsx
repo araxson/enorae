@@ -30,7 +30,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Search &amp; filter</CardTitle>
+        <CardTitle>Search &amp; filter</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

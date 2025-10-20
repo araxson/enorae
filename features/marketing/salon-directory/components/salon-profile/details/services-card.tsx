@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Stack, Flex, Group } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import type { ServicesByCategory, Service } from '../types'
 
 interface ServicesCardProps {
@@ -21,7 +20,7 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
           {(Object.entries(servicesByCategory) as Array<[string, Service[]]>).map(
             ([category, categoryServices]) => (
               <Stack gap="md" key={category}>
-                <H3>{category}</H3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{category}</h3>
                 <Stack gap="sm">
                   {categoryServices.map((service) => (
                     <ServiceRow key={service.id} service={service} />
@@ -44,13 +43,13 @@ function ServiceRow({ service }: ServiceRowProps) {
   return (
     <Flex justify="between" align="start" className="py-2">
       <Stack gap="xs">
-        <P className="font-medium">{service.name}</P>
-        {service.description && <Muted className="text-sm">{service.description}</Muted>}
+        <p className="leading-7 font-medium">{service.name}</p>
+        {service.description && <p className="text-sm text-muted-foreground text-sm">{service.description}</p>}
       </Stack>
       <Group gap="sm" align="center">
-        {service.duration_minutes && <Muted className="text-sm">{service.duration_minutes}m</Muted>}
+        {service.duration_minutes && <p className="text-sm text-muted-foreground text-sm">{service.duration_minutes}m</p>}
         {service.sale_price && (
-          <P className="font-semibold whitespace-nowrap">${service.sale_price}</P>
+          <p className="leading-7 font-semibold whitespace-nowrap">${service.sale_price}</p>
         )}
       </Group>
     </Flex>

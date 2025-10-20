@@ -15,7 +15,6 @@ import {
 import { Stack, Group } from '@/components/layout'
 import { Calendar, Clock, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Small } from '@/components/ui/typography'
 
 export interface AppointmentCardProps {
   title: string
@@ -33,22 +32,18 @@ const statusConfig = {
   pending: {
     label: 'Pending',
     variant: 'secondary' as const,
-    className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
   },
   confirmed: {
     label: 'Confirmed',
     variant: 'default' as const,
-    className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
   },
   cancelled: {
     label: 'Cancelled',
     variant: 'destructive' as const,
-    className: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
   },
   completed: {
     label: 'Completed',
     variant: 'secondary' as const,
-    className: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
   },
 }
 
@@ -68,9 +63,11 @@ export function AppointmentCard({
   return (
     <Card className={cn('w-full', className)}>
       <CardHeader>
-        <Group gap="sm">
-          <CardTitle className="flex-1">{title}</CardTitle>
-          <Badge className={config.className}>{config.label}</Badge>
+        <Group gap="sm" className="items-center">
+          <div className="flex-1">
+            <CardTitle>{title}</CardTitle>
+          </div>
+          <Badge variant={config.variant}>{config.label}</Badge>
         </Group>
       </CardHeader>
 
@@ -78,15 +75,15 @@ export function AppointmentCard({
         <Stack gap="sm">
           <Group gap="sm">
             <User className="h-4 w-4 text-muted-foreground" />
-            <Small className="text-muted-foreground">{staffName}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">{staffName}</small>
           </Group>
           <Group gap="sm">
             <Calendar className="h-4 w-4 text-muted-foreground" />
-            <Small className="text-muted-foreground">{date}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">{date}</small>
           </Group>
           <Group gap="sm">
             <Clock className="h-4 w-4 text-muted-foreground" />
-            <Small className="text-muted-foreground">{time}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">{time}</small>
           </Group>
         </Stack>
       </CardContent>

@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
-import { H3 } from '@/components/ui/typography'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -17,7 +16,7 @@ export function LocationDetailsSection({ address }: Props) {
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>Location Details</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Location Details</h3>
           <Separator />
 
           <Stack gap="sm">

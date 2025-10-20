@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Grid, Stack, Flex } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { Star, TrendingUp } from 'lucide-react'
 import type { StaffWithServices } from '../api/queries'
 
@@ -69,8 +68,8 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
               </Avatar>
 
               <Stack gap="xs" className="flex-1">
-                <P className="font-semibold">{topPerformer.full_name || 'Staff Member'}</P>
-                {topPerformer.title && <Muted className="text-xs">{topPerformer.title}</Muted>}
+                <p className="leading-7 font-semibold">{topPerformer.full_name || 'Staff Member'}</p>
+                {topPerformer.title && <p className="text-sm text-muted-foreground text-xs">{topPerformer.title}</p>}
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default" className="text-xs">
                     <TrendingUp className="h-3 w-3 mr-1" />
@@ -104,14 +103,14 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
               </Avatar>
 
               <Stack gap="xs" className="flex-1">
-                <P className="font-semibold">{topRated.full_name || 'Staff Member'}</P>
-                {topRated.title && <Muted className="text-xs">{topRated.title}</Muted>}
+                <p className="leading-7 font-semibold">{topRated.full_name || 'Staff Member'}</p>
+                {topRated.title && <p className="text-sm text-muted-foreground text-xs">{topRated.title}</p>}
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default" className="text-xs flex items-center gap-1">
                     <Star className="h-3 w-3 fill-white" />
                     {topRated.avgRating.toFixed(1)} average rating
                   </Badge>
-                  <Muted className="text-xs">({topRated.totalRatings} reviews)</Muted>
+                  <p className="text-sm text-muted-foreground text-xs">({topRated.totalRatings} reviews)</p>
                 </div>
               </Stack>
             </Flex>

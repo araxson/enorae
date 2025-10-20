@@ -27,9 +27,11 @@ export function StaffCommandDialog({ open, onOpenChange, quickActions }: StaffCo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="p-0">
         <DialogHeader className="space-y-0 border-b px-4 py-3">
-          <DialogTitle className="flex items-center gap-2 text-base">
-            <CommandIcon className="h-4 w-4" />
-            Quick navigator
+          <DialogTitle>
+            <span className="flex items-center gap-2 text-base">
+              <CommandIcon className="h-4 w-4" />
+              Quick navigator
+            </span>
           </DialogTitle>
         </DialogHeader>
         <Command className="rounded-b-lg">
@@ -54,4 +56,3 @@ export function StaffCommandDialog({ open, onOpenChange, quickActions }: StaffCo
     </Dialog>
   )
 }
-

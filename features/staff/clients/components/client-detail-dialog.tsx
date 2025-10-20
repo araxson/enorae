@@ -11,7 +11,6 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Stack, Flex } from '@/components/layout'
-import { P, Muted, H3 } from '@/components/ui/typography'
 import { Calendar, DollarSign, Mail, User } from 'lucide-react'
 import type { ClientWithHistory } from '../api/queries'
 import type { Database } from '@/lib/types/database.types'
@@ -59,8 +58,8 @@ export function ClientDetailDialog({
             <Flex gap="sm" align="start">
               <User className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <Muted className="text-xs">Name</Muted>
-                <P className="font-medium">{client.customer_name || 'Walk-in Customer'}</P>
+                <p className="text-sm text-muted-foreground text-xs">Name</p>
+                <p className="leading-7 font-medium">{client.customer_name || 'Walk-in Customer'}</p>
               </div>
             </Flex>
 
@@ -68,8 +67,8 @@ export function ClientDetailDialog({
               <Flex gap="sm" align="start">
                 <Mail className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <Muted className="text-xs">Email</Muted>
-                  <P>{client.customer_email}</P>
+                  <p className="text-sm text-muted-foreground text-xs">Email</p>
+                  <p className="leading-7">{client.customer_email}</p>
                 </div>
               </Flex>
             )}
@@ -77,8 +76,8 @@ export function ClientDetailDialog({
             <Flex gap="sm" align="start">
               <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <Muted className="text-xs">Total Appointments</Muted>
-                <P className="font-medium">{client.total_appointments}</P>
+                <p className="text-sm text-muted-foreground text-xs">Total Appointments</p>
+                <p className="leading-7 font-medium">{client.total_appointments}</p>
               </div>
             </Flex>
 
@@ -86,8 +85,8 @@ export function ClientDetailDialog({
               <Flex gap="sm" align="start">
                 <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <Muted className="text-xs">Total Revenue</Muted>
-                  <P className="font-medium">${Number(client.total_revenue).toFixed(2)}</P>
+                  <p className="text-sm text-muted-foreground text-xs">Total Revenue</p>
+                  <p className="leading-7 font-medium">${Number(client.total_revenue).toFixed(2)}</p>
                 </div>
               </Flex>
             )}
@@ -96,11 +95,11 @@ export function ClientDetailDialog({
           <Separator />
 
           <div>
-            <H3 className="mb-4">Appointment History</H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Appointment History</h3>
             {loading ? (
-              <P className="text-muted-foreground">Loading...</P>
+              <p className="leading-7 text-muted-foreground">Loading...</p>
             ) : appointments.length === 0 ? (
-              <P className="text-muted-foreground">No appointments found</P>
+              <p className="leading-7 text-muted-foreground">No appointments found</p>
             ) : (
               <Stack gap="sm">
                 {appointments.map((apt) => (
@@ -115,18 +114,18 @@ export function ClientDetailDialog({
                             {apt.status}
                           </Badge>
                           {apt.start_time && (
-                            <Muted className="text-xs">
+                            <p className="text-sm text-muted-foreground text-xs">
                               {format(new Date(apt.start_time), 'MMM dd, yyyy • h:mm a')}
-                            </Muted>
+                            </p>
                           )}
                         </Flex>
-                        {apt.service_names && <P className="text-sm">{apt.service_names}</P>}
+                        {apt.service_names && <p className="leading-7 text-sm">{apt.service_names}</p>}
                         {apt.duration_minutes && (
-                          <Muted className="text-xs">{apt.duration_minutes} minutes</Muted>
+                          <p className="text-sm text-muted-foreground text-xs">{apt.duration_minutes} minutes</p>
                         )}
                       </div>
                       {apt.total_price !== undefined && apt.total_price !== null && (
-                        <P className="font-medium">${Number(apt.total_price).toFixed(2)}</P>
+                        <p className="leading-7 font-medium">${Number(apt.total_price).toFixed(2)}</p>
                       )}
                     </Flex>
                   </div>

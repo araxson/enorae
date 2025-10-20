@@ -41,7 +41,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
       <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="md">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Peak Hour</CardTitle>
+            <CardTitle>Peak Hour</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -52,7 +52,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Busiest Day</CardTitle>
+            <CardTitle>Busiest Day</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -63,7 +63,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Anomaly Score</CardTitle>
+            <CardTitle>Anomaly Score</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -76,7 +76,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Forecast Accuracy</CardTitle>
+            <CardTitle>Forecast Accuracy</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>

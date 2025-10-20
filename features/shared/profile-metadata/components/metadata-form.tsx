@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
-import { H3 } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import type { Database } from '@/lib/types/database.types'
@@ -58,7 +57,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
         <Card>
           <CardContent>
             <Stack gap="lg">
-              <H3>Profile Images</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Profile Images</h3>
               <Separator />
               <ProfileImagesSection
                 avatarUrl={avatarUrl}
@@ -75,7 +74,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
         <Card>
           <CardContent>
             <Stack gap="lg">
-              <H3>Social Profiles</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Social Profiles</h3>
               <Separator />
               <SocialProfilesSection defaults={socialProfiles} />
             </Stack>
@@ -85,7 +84,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
         <Card>
           <CardContent>
             <Stack gap="lg">
-              <H3>Interests & Tags</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Interests & Tags</h3>
               <Separator />
               <InterestsTagsSection
                 interests={interests}

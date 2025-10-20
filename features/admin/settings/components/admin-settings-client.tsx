@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Section, Stack, Grid } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import { Settings, Shield, Mail, Bell, Database } from 'lucide-react'
 
 export function AdminSettingsClient() {
@@ -20,18 +19,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <Stack gap="sm">
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Password policies
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Two-factor authentication
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Session management
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Rate limiting configuration
-                </Small>
+                </small>
               </Stack>
             </CardContent>
           </Card>
@@ -48,18 +47,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <Stack gap="sm">
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • SMTP provider settings
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Email templates
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Notification preferences
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Delivery monitoring
-                </Small>
+                </small>
               </Stack>
             </CardContent>
           </Card>
@@ -76,18 +75,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <Stack gap="sm">
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Admin notifications
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • System alerts
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Error notifications
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Webhook configurations
-                </Small>
+                </small>
               </Stack>
             </CardContent>
           </Card>
@@ -104,18 +103,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <Stack gap="sm">
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Connection pooling
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Query optimization
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Backup configuration
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Index management
-                </Small>
+                </small>
               </Stack>
             </CardContent>
           </Card>
@@ -132,18 +131,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <Stack gap="sm">
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Platform name and branding
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Default locale and timezone
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Feature flags
-                </Small>
-                <Small className="text-muted-foreground">
+                </small>
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Maintenance mode
-                </Small>
+                </small>
               </Stack>
             </CardContent>
           </Card>
@@ -157,9 +156,9 @@ export function AdminSettingsClient() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Small className="text-muted-foreground">
+            <small className="text-sm font-medium leading-none text-muted-foreground">
               For now, platform configuration is managed through environment variables and Supabase Dashboard.
-            </Small>
+            </small>
           </CardContent>
         </Card>
       </Stack>

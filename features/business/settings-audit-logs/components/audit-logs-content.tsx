@@ -3,7 +3,6 @@ import { getAuditLogs, getAuditLogStats } from '../api/queries'
 import { AuditLogsStats } from './audit-logs-stats'
 import { AuditLogsClient } from './audit-logs-client'
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 
 export async function AuditLogsContent() {
   const salonId = await getUserSalonId()
@@ -17,10 +16,10 @@ export async function AuditLogsContent() {
   return (
     <Stack gap="xl">
       <div>
-        <H1>Security Audit Logs</H1>
-        <P className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Security Audit Logs</h1>
+        <p className="leading-7 text-muted-foreground">
           Track all system activities and security events
-        </P>
+        </p>
       </div>
 
       <AuditLogsStats stats={stats} />

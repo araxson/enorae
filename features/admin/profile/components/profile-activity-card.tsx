@@ -39,7 +39,7 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
     return (
       <Card>
         <CardHeader className="pb-4">
-          <CardTitle className="text-base font-semibold">Recent activity</CardTitle>
+          <CardTitle>Recent activity</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <Skeleton className="h-4 w-full" />
@@ -54,7 +54,7 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
     return (
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-base font-semibold">Recent activity</CardTitle>
+          <CardTitle>Recent activity</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
@@ -69,7 +69,7 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
     return (
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-base font-semibold">Recent activity</CardTitle>
+          <CardTitle>Recent activity</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
@@ -83,7 +83,7 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">Recent activity</CardTitle>
+        <CardTitle>Recent activity</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <ul className="space-y-3">

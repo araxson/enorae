@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import type {
   MessageActivityPoint,
   MessageReportSummary,
@@ -67,10 +66,10 @@ export function MessagesClient({
   return (
     <Stack gap="xl">
       <div>
-        <H1>Messages Oversight</H1>
-        <P className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Messages Oversight</h1>
+        <p className="leading-7 text-muted-foreground">
           Monitor platform-wide communications, moderate flagged content, and track response performance.
-        </P>
+        </p>
       </div>
 
       <MessagesStats stats={stats} />

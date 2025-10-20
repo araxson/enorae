@@ -5,7 +5,6 @@ import { ThumbsUp, Star } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { toast } from 'sonner'
 import { markReviewAsHelpful } from '@/features/customer/reviews/api/helpful-mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -66,11 +65,11 @@ function ReviewCard({ review }: { review: SalonReview }) {
                 </Badge>
               )}
             </div>
-            {review.title && <P className="text-sm font-medium">{review.title}</P>}
+            {review.title && <p className="leading-7 text-sm font-medium">{review.title}</p>}
           </div>
         </div>
 
-        <P className="text-sm text-muted-foreground">{review.comment}</P>
+        <p className="leading-7 text-sm text-muted-foreground">{review.comment}</p>
 
         {(review.service_quality_rating ||
           review.cleanliness_rating ||
@@ -78,25 +77,25 @@ function ReviewCard({ review }: { review: SalonReview }) {
           <div className="grid gap-4 border-t pt-4 text-sm sm:grid-cols-3">
             {review.service_quality_rating && (
               <div className="space-y-1">
-                <Muted className="text-xs uppercase tracking-wide text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
                   Service
-                </Muted>
+                </p>
                 <StarRating rating={review.service_quality_rating} />
               </div>
             )}
             {review.cleanliness_rating && (
               <div className="space-y-1">
-                <Muted className="text-xs uppercase tracking-wide text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
                   Cleanliness
-                </Muted>
+                </p>
                 <StarRating rating={review.cleanliness_rating} />
               </div>
             )}
             {review.value_rating && (
               <div className="space-y-1">
-                <Muted className="text-xs uppercase tracking-wide text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
                   Value
-                </Muted>
+                </p>
                 <StarRating rating={review.value_rating} />
               </div>
             )}
@@ -105,29 +104,29 @@ function ReviewCard({ review }: { review: SalonReview }) {
 
         {review.response && (
           <div className="space-y-2 rounded-lg bg-muted/40 p-4">
-            <Muted className="text-xs font-semibold">Response from salon</Muted>
-            <P className="text-sm">{review.response}</P>
+            <p className="text-sm text-muted-foreground text-xs font-semibold">Response from salon</p>
+            <p className="leading-7 text-sm">{review.response}</p>
             {review.response_date && (
-              <Muted className="text-xs">
+              <p className="text-sm text-muted-foreground text-xs">
                 {new Date(review.response_date).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 })}
-              </Muted>
+              </p>
             )}
           </div>
         )}
 
         <div className="flex flex-col gap-2 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-          <Muted className="text-xs">
+          <p className="text-sm text-muted-foreground text-xs">
             {review.created_at &&
               new Date(review.created_at).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
-          </Muted>
+          </p>
 
           <Button
             variant="ghost"
@@ -152,8 +151,8 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
     return (
       <Card>
         <CardContent className="space-y-3 p-12 text-center">
-          <H3>No reviews yet</H3>
-          <Muted>Be the first to leave a review for this salon.</Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No reviews yet</h3>
+          <p className="text-sm text-muted-foreground">Be the first to leave a review for this salon.</p>
         </CardContent>
       </Card>
     )

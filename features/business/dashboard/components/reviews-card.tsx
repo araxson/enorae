@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Stack, Box, Group, Grid } from '@/components/layout'
-import { Small, Muted } from '@/components/ui/typography'
 import {
   ButtonGroup,
   ButtonGroupSeparator,
@@ -34,7 +33,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
         </CardHeader>
         <CardContent>
           <Box className="text-center py-8">
-            <Muted>No reviews yet. Reviews from customers will appear here.</Muted>
+            <p className="text-sm text-muted-foreground">No reviews yet. Reviews from customers will appear here.</p>
             <Button asChild variant="outline" className="mt-4">
               <Link href="/business/reviews">Manage Reviews</Link>
             </Button>
@@ -70,7 +69,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
           {/* Average Rating */}
           <Stack gap="md">
             <Box>
-              <Small className="text-muted-foreground">Average Rating</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Average Rating</small>
               <Group gap="xs" className="mt-1 items-baseline">
                 <div className="text-3xl font-bold">{stats.averageRating.toFixed(1)}</div>
                 <Group gap="xs">
@@ -86,9 +85,9 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                   ))}
                 </Group>
               </Group>
-              <Small className="text-muted-foreground mt-1">
+              <small className="text-sm font-medium leading-none text-muted-foreground mt-1">
                 Based on {stats.totalReviews} {stats.totalReviews === 1 ? 'review' : 'reviews'}
-              </Small>
+              </small>
             </Box>
 
             {/* Action Items */}
@@ -99,12 +98,12 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                   <TooltipTrigger asChild>
                     <Group gap="xs" className="items-center rounded-md border px-2 py-1">
                       <MessageSquare className="h-4 w-4 text-orange-500" />
-                      <Small>
+                      <small className="text-sm font-medium leading-none">
                         <Badge variant="outline" className="ml-1">
                           {stats.pendingResponses}
                         </Badge>{' '}
                         {stats.pendingResponses === 1 ? 'review needs' : 'reviews need'} response
-                      </Small>
+                      </small>
                     </Group>
                   </TooltipTrigger>
                   <TooltipContent>Follow up to protect guest satisfaction</TooltipContent>
@@ -115,12 +114,12 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                   <TooltipTrigger asChild>
                     <Group gap="xs" className="items-center rounded-md border px-2 py-1">
                       <AlertTriangle className="h-4 w-4 text-red-500" />
-                      <Small>
+                      <small className="text-sm font-medium leading-none">
                         <Badge variant="destructive" className="ml-1">
                           {stats.flaggedCount}
                         </Badge>{' '}
                         flagged {stats.flaggedCount === 1 ? 'review' : 'reviews'}
-                      </Small>
+                      </small>
                     </Group>
                   </TooltipTrigger>
                   <TooltipContent>Investigate and resolve policy concerns</TooltipContent>
@@ -131,14 +130,14 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
 
           {/* Rating Distribution */}
           <Stack gap="xs">
-            <Small className="text-muted-foreground">Rating Distribution</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">Rating Distribution</small>
             {stats.ratingDistribution.map(({ rating, count }) => {
               const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
               return (
                 <Group key={rating} gap="xs" className="items-center">
-                  <Small className="w-12 text-right">{rating} stars</Small>
+                  <small className="text-sm font-medium leading-none w-12 text-right">{rating} stars</small>
                   <Progress value={percentage} className="flex-1 h-2" />
-                  <Small className="w-8 text-muted-foreground">{count}</Small>
+                  <small className="text-sm font-medium leading-none w-8 text-muted-foreground">{count}</small>
                 </Group>
               )
             })}

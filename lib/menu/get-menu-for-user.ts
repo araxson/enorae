@@ -1,7 +1,7 @@
 'use server'
 
 import { PORTAL_MENUS } from './portal-menus'
-import { verifySession } from '@/lib/auth/session'
+import { verifySession, type Session } from '@/lib/auth/session'
 import type { NavItem, NavSecondaryItem } from '@/components/layout/sidebars/types'
 
 type PortalType = keyof typeof PORTAL_MENUS
@@ -15,10 +15,14 @@ interface MenuResult {
  * Get filtered menu items for current user based on their role
  *
  * @param portal - Portal type (admin, business, staff, customer)
+ * @param sessionOverride - Optional pre-fetched session to avoid duplicate lookups
  * @returns Filtered navigation items
  */
-export async function getMenuForUser(portal: PortalType): Promise<MenuResult> {
-  const session = await verifySession()
+export async function getMenuForUser(
+  portal: PortalType,
+  sessionOverride?: Session | null,
+): Promise<MenuResult> {
+  const session = sessionOverride ?? (await verifySession())
 
   if (!session) {
     return { navMain: [], navSecondary: [] }

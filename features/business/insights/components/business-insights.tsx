@@ -7,7 +7,6 @@ import {
 } from './api/business-insights'
 import { BusinessInsightsDashboard } from './components/business-insights-dashboard'
 import { Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 
 export async function BusinessInsights() {
   const salonId = await getUserSalonId()
@@ -23,10 +22,10 @@ export async function BusinessInsights() {
   return (
     <Stack gap="xl">
       <div>
-        <H1>Business Insights</H1>
-        <P className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Business Insights</h1>
+        <p className="leading-7 text-muted-foreground">
           AI-powered insights, trend detection, and growth recommendations
-        </P>
+        </p>
       </div>
 
       <BusinessInsightsDashboard

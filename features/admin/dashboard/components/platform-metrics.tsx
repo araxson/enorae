@@ -5,7 +5,6 @@ import { Progress } from '@/components/ui/progress'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
-import { H2, P } from '@/components/ui/typography'
 import {
   Activity,
   Building2,
@@ -186,10 +185,10 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
     <Stack as="section" gap="sm">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <H2 className="text-lg font-semibold tracking-tight">Platform metrics</H2>
-          <P className="text-sm text-muted-foreground">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-lg font-semibold tracking-tight">Platform metrics</h2>
+          <p className="leading-7 text-sm text-muted-foreground">
             Core KPIs refresh every minute so you can respond quickly.
-          </P>
+          </p>
         </div>
         <Badge variant="outline" className="gap-1 text-xs">
           <TrendingUp className="h-3 w-3" />
@@ -203,7 +202,7 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4">
               <div className="space-y-1">
                 <CardDescription>{title}</CardDescription>
-                <CardTitle className="text-3xl font-semibold tracking-tight">{value}</CardTitle>
+                <CardTitle>{value}</CardTitle>
               </div>
               <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${accent}`}>
                 <Icon className="h-5 w-5" aria-hidden="true" />
@@ -211,9 +210,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
             </CardHeader>
 
             <CardContent className="space-y-4">
-              <P className="text-sm text-muted-foreground">
+              <p className="leading-7 text-sm text-muted-foreground">
                 {description}
-              </P>
+              </p>
 
               <div>
                 <Progress value={progressValue} className={`h-1.5 ${progressClassName}`} />

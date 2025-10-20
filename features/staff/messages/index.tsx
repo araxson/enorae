@@ -1,6 +1,5 @@
 import { Section, Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
-import { H1, Muted } from '@/components/ui/typography'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -18,7 +17,7 @@ interface MessagesFeatureProps {
 export function MessagesFeature({ threads }: MessagesFeatureProps) {
   return (
     <Stack gap="lg">
-      <H1>Messages</H1>
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Messages</h1>
       <MessageThreadList threads={threads} />
     </Stack>
   )
@@ -66,9 +65,9 @@ export async function StaffMessageThreadPage({ threadId }: StaffMessageThreadPag
         </div>
 
         <div>
-          <H1>{thread.subject}</H1>
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{thread.subject}</h1>
           {thread.customer_name && (
-            <Muted>Conversation with {thread.customer_name}</Muted>
+            <p className="text-sm text-muted-foreground">Conversation with {thread.customer_name}</p>
           )}
         </div>
 

@@ -34,8 +34,6 @@ import { Switch } from '@/components/ui/switch'
 import { Slider } from '@/components/ui/slider'
 import { Separator } from '@/components/ui/separator'
 import { Stack, Group } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
-
 const stylistOptions = ['Any stylist', 'Color specialists', 'Front desk', 'Senior stylists']
 
 export function DashboardFilters() {
@@ -61,7 +59,7 @@ export function DashboardFilters() {
             <Filter className="h-3.5 w-3.5" />
             Smart filters
           </Badge>
-          <Small className="text-muted-foreground">Fine tune the data you see today.</Small>
+          <small className="text-sm font-medium leading-none text-muted-foreground">Fine tune the data you see today.</small>
         </Group>
         <Stack gap="xs" className="items-end text-xs text-muted-foreground">
           <span>{formattedRange}</span>
@@ -113,7 +111,7 @@ export function DashboardFilters() {
 
       <Stack gap="md">
         <Stack gap="xs">
-          <Small className="font-medium text-muted-foreground">Team focus</Small>
+          <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Team focus</small>
           <Command>
             <CommandInput placeholder="Filter by team group" />
             <CommandList>
@@ -136,7 +134,7 @@ export function DashboardFilters() {
 
         <Group className="flex-wrap items-center gap-6">
           <Stack gap="xs">
-            <Small className="font-medium text-muted-foreground">Service mix</Small>
+            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Service mix</small>
             <RadioGroup value={serviceTier} onValueChange={(value) => setServiceTier(value as typeof serviceTier)}>
               <Group className="items-center gap-2"><RadioGroupItem value="all" id="tier-all" /><label htmlFor="tier-all" className="text-sm text-muted-foreground">All services</label></Group>
               <Group className="items-center gap-2"><RadioGroupItem value="premium" id="tier-premium" /><label htmlFor="tier-premium" className="text-sm text-muted-foreground">Premium services</label></Group>
@@ -145,13 +143,13 @@ export function DashboardFilters() {
           </Stack>
 
           <Stack gap="xs" className="w-full max-w-xs">
-            <Small className="font-medium text-muted-foreground">Booking load threshold</Small>
+            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Booking load threshold</small>
             <Slider defaultValue={[75]} aria-label="Booking load threshold" />
-            <Small className="text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</Small>
+            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</small>
           </Stack>
 
           <Stack gap="xs">
-            <Small className="font-medium text-muted-foreground">Staff assignments</Small>
+            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Staff assignments</small>
             <Group className="items-center gap-2"><Checkbox id="assignment-balanced" defaultChecked /><label htmlFor="assignment-balanced" className="text-sm text-muted-foreground">Balanced workload</label></Group>
             <Group className="items-center gap-2"><Checkbox id="assignment-specialist" /><label htmlFor="assignment-specialist" className="text-sm text-muted-foreground">Highlight specialists</label></Group>
           </Stack>

@@ -1,5 +1,4 @@
 import { Section, Stack, Box, Grid } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { TimeOffRequestCard } from './components/time-off-request-card'
 import { getSalonTimeOffRequests, getPendingSalonTimeOffRequests } from './api/queries'
@@ -30,9 +29,9 @@ export async function BusinessTimeOff() {
       <Stack gap="xl">
         {pendingRequests.length > 0 && (
           <Box className="rounded-lg bg-secondary/10 p-4 border">
-            <Small className="font-semibold">
+            <small className="text-sm font-medium leading-none font-semibold">
               {pendingRequests.length} pending request{pendingRequests.length !== 1 ? 's' : ''} need review
-            </Small>
+            </small>
           </Box>
         )}
 

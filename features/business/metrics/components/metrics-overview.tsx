@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { H3, Small, Muted } from '@/components/ui/typography'
 import type { SalonMetricsData } from '../api/queries'
 import { format } from 'date-fns'
 
@@ -22,10 +21,10 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
       <Card>
         <CardContent className="flex flex-col items-center justify-center py-12">
           <DollarSign className="h-12 w-12 text-muted-foreground mb-4" />
-          <Muted>No metrics data available</Muted>
-          <Muted className="mt-1">
+          <p className="text-sm text-muted-foreground">No metrics data available</p>
+          <p className="text-sm text-muted-foreground mt-1">
             Metrics will be generated automatically
-          </Muted>
+          </p>
         </CardContent>
       </Card>
     )
@@ -43,79 +42,79 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <H3>Salon Metrics</H3>
-          <Small className="text-muted-foreground">
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Salon Metrics</h3>
+          <small className="text-sm font-medium leading-none text-muted-foreground">
             Last updated: {format(new Date(metrics.updated_at!), 'MMMM dd, yyyy')}
-          </Small>
+          </small>
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm">
+            <CardTitle>
               Total Bookings
             </CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               {metrics.total_bookings ?? 'N/A'}
-            </H3>
-            <Muted className="text-xs">
+            </h3>
+            <p className="text-sm text-muted-foreground text-xs">
               All time bookings
-            </Muted>
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm">
+            <CardTitle>
               Total Revenue
             </CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               {formatCurrency(metrics.total_revenue)}
-            </H3>
-            <Muted className="text-xs">
+            </h3>
+            <p className="text-sm text-muted-foreground text-xs">
               Lifetime earnings
-            </Muted>
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm">
+            <CardTitle>
               Average Rating
             </CardTitle>
             <Star className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               {metrics.rating_average?.toFixed(1) ?? 'N/A'}
-            </H3>
-            <Muted className="text-xs">
+            </h3>
+            <p className="text-sm text-muted-foreground text-xs">
               {metrics.rating_count ?? 0} reviews
-            </Muted>
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm">
+            <CardTitle>
               Employee Count
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <H3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               {metrics.employee_count ?? 'N/A'}
-            </H3>
-            <Muted className="text-xs">
+            </h3>
+            <p className="text-sm text-muted-foreground text-xs">
               Active staff members
-            </Muted>
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -129,26 +128,26 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex justify-between">
-            <Small className="text-muted-foreground">Total Bookings</Small>
-            <Small className="font-semibold">{metrics.total_bookings ?? 'N/A'}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">Total Bookings</small>
+            <small className="text-sm font-medium leading-none font-semibold">{metrics.total_bookings ?? 'N/A'}</small>
           </div>
           <div className="flex justify-between">
-            <Small className="text-muted-foreground">Total Revenue</Small>
-            <Small className="font-semibold">{formatCurrency(metrics.total_revenue)}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">Total Revenue</small>
+            <small className="text-sm font-medium leading-none font-semibold">{formatCurrency(metrics.total_revenue)}</small>
           </div>
           <div className="flex justify-between">
-            <Small className="text-muted-foreground">Employee Count</Small>
-            <Small className="font-semibold">{metrics.employee_count ?? 'N/A'}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">Employee Count</small>
+            <small className="text-sm font-medium leading-none font-semibold">{metrics.employee_count ?? 'N/A'}</small>
           </div>
           <div className="flex justify-between">
-            <Small className="text-muted-foreground">Average Rating</Small>
-            <Small className="font-semibold">
+            <small className="text-sm font-medium leading-none text-muted-foreground">Average Rating</small>
+            <small className="text-sm font-medium leading-none font-semibold">
               {metrics.rating_average?.toFixed(1) ?? 'N/A'} / 5.0
-            </Small>
+            </small>
           </div>
           <div className="flex justify-between">
-            <Small className="text-muted-foreground">Total Reviews</Small>
-            <Small className="font-semibold">{metrics.rating_count ?? 'N/A'}</Small>
+            <small className="text-sm font-medium leading-none text-muted-foreground">Total Reviews</small>
+            <small className="text-sm font-medium leading-none font-semibold">{metrics.rating_count ?? 'N/A'}</small>
           </div>
         </CardContent>
       </Card>

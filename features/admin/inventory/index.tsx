@@ -1,5 +1,4 @@
 import { Section, Stack, Box } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import {
   getInventorySummary,
   getLowStockAlerts,
@@ -34,8 +33,8 @@ export async function AdminInventory() {
     <Section size="lg">
       <Stack gap="xl">
         <Box>
-          <P className="text-base font-semibold">Inventory Overview</P>
-          <Muted>Platform-wide inventory monitoring and alerts</Muted>
+          <p className="leading-7 text-base font-semibold">Inventory Overview</p>
+          <p className="text-sm text-muted-foreground">Platform-wide inventory monitoring and alerts</p>
         </Box>
 
         <InventoryOverview

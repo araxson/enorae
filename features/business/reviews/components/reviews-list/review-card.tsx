@@ -7,8 +7,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Flex, Grid, Stack } from '@/components/layout'
-import { H3, Muted, P, Small } from '@/components/ui/typography'
-
 import type { NormalizedReview } from './use-reviews-list'
 
 type ReviewCardProps = {
@@ -45,7 +43,7 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
         <Flex justify="between" align="start">
           <Stack gap="sm">
             <Flex gap="sm" align="center">
-              <H3 className="text-base">{review.customer_name || 'Anonymous'}</H3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">{review.customer_name || 'Anonymous'}</h3>
               {review.is_verified && (
                 <Badge variant="outline" className="text-xs">
                   <CheckCircle2 className="h-3 w-3 mr-1" />
@@ -67,7 +65,7 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
             </Flex>
             <Flex gap="md" align="center">
               {renderStars(review.rating)}
-              <Small className="text-muted-foreground">{formatDate(review.created_at)}</Small>
+              <small className="text-sm font-medium leading-none text-muted-foreground">{formatDate(review.created_at)}</small>
             </Flex>
           </Stack>
 
@@ -99,8 +97,8 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
 
       <CardContent>
         <Stack gap="md">
-          {review.title && <P className="font-medium">{review.title}</P>}
-          {review.comment && <P className="text-sm">{review.comment}</P>}
+          {review.title && <p className="leading-7 font-medium">{review.title}</p>}
+          {review.comment && <p className="leading-7 text-sm">{review.comment}</p>}
 
           {(review.service_quality_rating || review.cleanliness_rating || review.value_rating) && (
             <Grid cols={{ base: 1, md: 3 }} gap="sm">
@@ -120,12 +118,12 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
                 <div className="rounded-lg border-l-4 border-l-primary bg-muted/50 p-4">
                   <Stack gap="sm">
                     <Flex justify="between">
-                      <Small className="font-medium">Response from salon</Small>
-                      <Small className="text-muted-foreground">{formatDate(review.response_date)}</Small>
+                      <small className="text-sm font-medium leading-none font-medium">Response from salon</small>
+                      <small className="text-sm font-medium leading-none text-muted-foreground">{formatDate(review.response_date)}</small>
                     </Flex>
-                    <P className="text-sm">{review.response}</P>
+                    <p className="leading-7 text-sm">{review.response}</p>
                     {review.responded_by_name && (
-                      <Muted className="text-xs">- {review.responded_by_name}</Muted>
+                      <p className="text-sm text-muted-foreground text-xs">- {review.responded_by_name}</p>
                     )}
                   </Stack>
                 </div>
@@ -147,7 +145,7 @@ function RatingItem({ label, rating }: RatingItemProps) {
   const stars = rating || 0
   return (
     <div>
-      <Muted className="text-xs">{label}</Muted>
+      <p className="text-sm text-muted-foreground text-xs">{label}</p>
       <div className="flex gap-1">
         {[...Array(5)].map((_, index) => (
           <StarIcon key={index} filled={index < stars} />

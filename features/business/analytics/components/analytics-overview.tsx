@@ -2,7 +2,6 @@ import { TrendingUp, TrendingDown, DollarSign, Calendar, Users, UserCheck } from
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Grid, Stack, Flex, Box, Group } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import type { AnalyticsOverview } from '../api/queries'
 
 type AnalyticsOverviewProps = {
@@ -64,7 +63,7 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
           <CardHeader>
             <Box pb="xs">
               <Flex align="center" justify="between">
-                <CardTitle className="text-sm text-muted-foreground">
+                <CardTitle>
                   {card.title}
                 </CardTitle>
                 <card.icon className={`h-4 w-4 ${card.iconColor}`} />
@@ -74,7 +73,7 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
           <CardContent>
             <Stack gap="xs">
               <Group gap="xs" align="baseline">
-                <H3>{card.value}</H3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{card.value}</h3>
                 {card.trend !== undefined && (
                   <Badge variant={card.trend >= 0 ? 'default' : 'destructive'}>
                     {card.trend >= 0 ? (
@@ -87,10 +86,10 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
                 )}
               </Group>
               {card.subtitle && (
-                <Muted className="text-xs">{card.subtitle}</Muted>
+                <p className="text-sm text-muted-foreground text-xs">{card.subtitle}</p>
               )}
               {card.detail && (
-                <Muted className="text-xs">{card.detail}</Muted>
+                <p className="text-sm text-muted-foreground text-xs">{card.detail}</p>
               )}
             </Stack>
           </CardContent>

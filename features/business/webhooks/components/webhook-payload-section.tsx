@@ -1,4 +1,3 @@
-import { H4 } from '@/components/ui/typography'
 import { Stack } from '@/components/layout'
 
 type PayloadSectionProps = {
@@ -8,7 +7,7 @@ type PayloadSectionProps = {
 export function WebhookPayloadSection({ payload }: PayloadSectionProps) {
   return (
     <Stack gap="sm">
-      <H4>Payload</H4>
+      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Payload</h4>
       <div className="rounded-md bg-muted p-4 overflow-x-auto">
         <pre className="text-xs">
           <code>{JSON.stringify(payload, null, 2)}</code>

@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { H3, Muted } from '@/components/ui/typography'
 import { Package, Scissors } from 'lucide-react'
 import type { DailyMetricsDashboardProps } from '../types'
 import { formatCurrency } from '../utils/value-formatters'
@@ -25,8 +24,8 @@ export function RevenueBreakdownCards({ aggregated }: Props) {
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            <H3 className="text-xl">{formatCurrency(aggregated.serviceRevenue)}</H3>
-            <Muted className="text-xs">{serviceShare.toFixed(1)}% of total</Muted>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-xl">{formatCurrency(aggregated.serviceRevenue)}</h3>
+            <p className="text-sm text-muted-foreground text-xs">{serviceShare.toFixed(1)}% of total</p>
           </div>
         </CardContent>
       </Card>
@@ -40,8 +39,8 @@ export function RevenueBreakdownCards({ aggregated }: Props) {
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            <H3 className="text-xl">{formatCurrency(aggregated.productRevenue)}</H3>
-            <Muted className="text-xs">{productShare.toFixed(1)}% of total</Muted>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-xl">{formatCurrency(aggregated.productRevenue)}</h3>
+            <p className="text-sm text-muted-foreground text-xs">{productShare.toFixed(1)}% of total</p>
           </div>
         </CardContent>
       </Card>

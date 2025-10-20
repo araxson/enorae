@@ -50,20 +50,17 @@ export function LoadingWrapper({
     return (
       <Alert variant="destructive">
         <AlertCircle className="h-4 w-4" />
-        <AlertDescription className="flex items-center justify-between">
-          <span>{error.message || 'Failed to load data. Please try again.'}</span>
+        <div className="flex items-center justify-between gap-4">
+          <AlertDescription>
+            {error.message || 'Failed to load data. Please try again.'}
+          </AlertDescription>
           {onRetry && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onRetry}
-              className="ml-4"
-            >
+            <Button variant="outline" size="sm" onClick={onRetry}>
               <RefreshCw className="mr-2 h-4 w-4" />
               Retry
             </Button>
           )}
-        </AlertDescription>
+        </div>
       </Alert>
     )
   }

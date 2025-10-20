@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Grid, Stack } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -17,7 +16,7 @@ export function StreetAddressSection({ address }: Props) {
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>Street Address</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Street Address</h3>
           <Separator />
 
           <Stack gap="sm">
@@ -93,7 +92,7 @@ export function StreetAddressSection({ address }: Props) {
               placeholder="US"
               maxLength={2}
             />
-            <Muted>2-letter country code (e.g., US, CA, UK)</Muted>
+            <p className="text-sm text-muted-foreground">2-letter country code (e.g., US, CA, UK)</p>
           </Stack>
         </Stack>
       </CardContent>

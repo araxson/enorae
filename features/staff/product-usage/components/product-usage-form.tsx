@@ -9,7 +9,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Stack } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
-import { Muted } from '@/components/ui/typography'
 import { productUsageSchema, type ProductUsageFormData } from '../schema'
 import { recordProductUsage } from '../api/mutations'
 import type { Product } from '../types'
@@ -115,9 +114,9 @@ export function ProductUsageForm({
             <p className="text-sm text-destructive mt-1">{errors.quantity_used.message}</p>
           )}
           {selectedProduct && (
-            <Muted className="mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Unit: {selectedProduct.unit_of_measure}
-            </Muted>
+            </p>
           )}
         </div>
 

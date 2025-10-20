@@ -1,6 +1,5 @@
 import { Section, Stack, Grid } from '@/components/layout'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { H2 } from '@/components/ui/typography'
 import { Heart, Lightbulb, Eye, Shield } from 'lucide-react'
 import { valuesData } from './values.data'
 
@@ -15,7 +14,7 @@ export function Values() {
   return (
     <Section size="lg" className="bg-muted/30">
       <Stack gap="xl">
-        <H2 className="text-center">{valuesData.title}</H2>
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-center">{valuesData.title}</h2>
 
         <Grid cols={{ base: 1, md: 2 }} gap="lg">
           {valuesData.values.map((value) => {

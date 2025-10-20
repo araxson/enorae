@@ -1,5 +1,4 @@
 import { Grid, Stack, Box } from '@/components/layout'
-import { H3, P, Muted } from '@/components/ui/typography'
 import { SalonCard } from '@/features/shared/salons'
 import type { Database } from '@/lib/types/database.types'
 import Link from 'next/link'
@@ -15,8 +14,8 @@ export function SalonGrid({ salons }: SalonGridProps) {
     return (
       <Box className="text-center py-12">
         <Stack gap="md">
-          <H3>No salons found</H3>
-          <Muted>Try adjusting your search filters to find more results</Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No salons found</h3>
+          <p className="text-sm text-muted-foreground">Try adjusting your search filters to find more results</p>
         </Stack>
       </Box>
     )
@@ -24,7 +23,7 @@ export function SalonGrid({ salons }: SalonGridProps) {
 
   return (
     <Stack gap="md">
-      <Muted>{salons.length} salon{salons.length !== 1 ? 's' : ''} found</Muted>
+      <p className="text-sm text-muted-foreground">{salons.length} salon{salons.length !== 1 ? 's' : ''} found</p>
       <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
         {salons.map((salon) => {
           const location = [salon.city, salon.state_province]

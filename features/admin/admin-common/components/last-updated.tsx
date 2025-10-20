@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { Clock } from 'lucide-react'
-import { Muted } from '@/components/ui/typography'
 import { formatDistanceToNow } from 'date-fns'
 
 export function LastUpdated() {
@@ -17,9 +16,9 @@ export function LastUpdated() {
   }, [])
 
   return (
-    <Muted className="flex items-center gap-1 text-xs">
+    <p className="text-sm text-muted-foreground flex items-center gap-1 text-xs">
       <Clock className="h-3 w-3" />
       Updated {formatDistanceToNow(time, { addSuffix: true })}
-    </Muted>
+    </p>
   )
 }

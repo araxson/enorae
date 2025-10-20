@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react'
 import { Stack } from '@/components/layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { P, Muted } from '@/components/ui/typography'
 import type {
   StaffDashboardData,
   StaffPerformanceBenchmark,
@@ -19,12 +18,12 @@ function InsightList({ title, description, items }: { title: string; description
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">{title}</CardTitle>
-        <Muted className="text-xs">{description}</Muted>
+        <CardTitle>{title}</CardTitle>
+        <p className="text-sm text-muted-foreground text-xs">{description}</p>
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <Muted className="text-xs">No records</Muted>
+          <p className="text-sm text-muted-foreground text-xs">No records</p>
         ) : (
           items.slice(0, 5).map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-3">
@@ -48,12 +47,12 @@ function TopPerformerList({ items }: { items: StaffPerformanceBenchmark[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Top performers</CardTitle>
-        <Muted className="text-xs">Sorted by customer rating and compliance</Muted>
+        <CardTitle>Top performers</CardTitle>
+        <p className="text-sm text-muted-foreground text-xs">Sorted by customer rating and compliance</p>
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <Muted className="text-xs">No performers yet</Muted>
+          <p className="text-sm text-muted-foreground text-xs">No performers yet</p>
         ) : (
           items.slice(0, 5).map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-3">
@@ -123,10 +122,10 @@ export function StaffClient({ staff, stats, highRiskStaff, verificationQueue, to
     <Stack gap="xl">
       <Stack gap="md">
         <div>
-          <P className="text-base font-semibold">Staff Oversight</P>
-          <Muted className="text-sm">
+          <p className="leading-7 text-base font-semibold">Staff Oversight</p>
+          <p className="text-sm text-muted-foreground text-sm">
             Monitor staff verification status, performance, and compliance issues across the platform.
-          </Muted>
+          </p>
         </div>
         <StaffStats stats={stats} />
       </Stack>

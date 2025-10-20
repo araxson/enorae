@@ -3,7 +3,6 @@
 import { ArrowDownRight, ArrowUpRight, Equal } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Grid } from '@/components/layout'
-import { Small, Muted } from '@/components/ui/typography'
 import type { MetricsComparison } from '../api/analytics'
 
 type MetricKey = keyof MetricsComparison
@@ -45,7 +44,7 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
     <Card>
       <CardHeader>
         <CardTitle>Period Comparison</CardTitle>
-        <Muted className="text-sm">{periodLabel} vs prior period</Muted>
+        <p className="text-sm text-muted-foreground text-sm">{periodLabel} vs prior period</p>
       </CardHeader>
       <CardContent>
         <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="lg">
@@ -57,14 +56,14 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
             return (
               <Card key={key} className="border-dashed">
                 <CardContent className="p-4 space-y-3">
-                  <Small className="text-muted-foreground">{meta.label}</Small>
+                  <small className="text-sm font-medium leading-none text-muted-foreground">{meta.label}</small>
                   <div>
                     <p className="text-2xl font-semibold">
                       {formatValue(details.current, meta.unit)}
                     </p>
-                    <Muted className="text-xs">
+                    <p className="text-sm text-muted-foreground text-xs">
                       Prev: {formatValue(details.previous, meta.unit)}
-                    </Muted>
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     {indicator.icon}

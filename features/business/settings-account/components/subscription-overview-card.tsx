@@ -2,7 +2,6 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Stack, Flex, Grid } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { CheckCircle2, TrendingUp } from 'lucide-react'
 import type { Subscription } from './billing-subscription-form'
@@ -56,8 +55,8 @@ export function SubscriptionOverviewCard({
       <Stack gap="lg">
         <Flex justify="between" align="start">
           <div>
-            <H3>Current Subscription</H3>
-            <Muted>Manage your plan and billing</Muted>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Current Subscription</h3>
+            <p className="text-sm text-muted-foreground">Manage your plan and billing</p>
           </div>
           <Badge className={getTierColor(subscription.tier)}>
             {subscription.tier.toUpperCase()}
@@ -68,7 +67,7 @@ export function SubscriptionOverviewCard({
 
         <Grid cols={{ base: 1, md: 2 }} gap="lg">
           <div>
-            <Muted className="text-sm mb-2">Plan Details</Muted>
+            <p className="text-sm text-muted-foreground text-sm mb-2">Plan Details</p>
             <Stack gap="sm">
               <Flex justify="between">
                 <span className="text-sm">Tier</span>
@@ -101,7 +100,7 @@ export function SubscriptionOverviewCard({
           </div>
 
           <div>
-            <Muted className="text-sm mb-2">Features Included</Muted>
+            <p className="text-sm text-muted-foreground text-sm mb-2">Features Included</p>
             <ul className="space-y-1.5">
               {tierFeatures[subscription.tier].map((feature) => (
                 <li key={feature} className="flex gap-2 text-sm">

@@ -42,7 +42,7 @@ export function SupportGuidesCard({ sections }: SupportGuidesCardProps) {
               <Card>
                 <CardHeader className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">{section.title}</CardTitle>
+                    <CardTitle>{section.title}</CardTitle>
                     <Badge variant="outline">Updated weekly</Badge>
                   </div>
                   <CardDescription>{section.description}</CardDescription>

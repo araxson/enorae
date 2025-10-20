@@ -1,5 +1,4 @@
 import { Grid, Box } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import { PricingCard } from './pricing-card'
 import type { ServicePricingWithService } from '../api/queries'
 
@@ -12,7 +11,7 @@ export function PricingGrid({ pricing, onEdit }: PricingGridProps) {
   if (pricing.length === 0) {
     return (
       <Box className="text-center py-12">
-        <P className="text-muted-foreground">No pricing configured yet</P>
+        <p className="leading-7 text-muted-foreground">No pricing configured yet</p>
       </Box>
     )
   }

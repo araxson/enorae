@@ -1,5 +1,4 @@
 import { Section, Stack, Box, Flex } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users, UserCheck, UserX, Shield } from 'lucide-react'
@@ -43,7 +42,7 @@ export async function AdminUsersClient() {
             <CardContent className="p-6">
               <Flex justify="between" align="start">
                 <div>
-                  <P className="text-sm text-muted-foreground">Total Users</P>
+                  <p className="leading-7 text-sm text-muted-foreground">Total Users</p>
                   <p className="text-2xl font-bold">{overview.totalUsers}</p>
                 </div>
                 <Users className="h-4 w-4 text-muted-foreground" />
@@ -55,7 +54,7 @@ export async function AdminUsersClient() {
             <CardContent className="p-6">
               <Flex justify="between" align="start">
                 <div>
-                  <P className="text-sm text-muted-foreground">Active Users</P>
+                  <p className="leading-7 text-sm text-muted-foreground">Active Users</p>
                   <p className="text-2xl font-bold">{overview.activeUsers}</p>
                 </div>
                 <UserCheck className="h-4 w-4 text-green-500" />
@@ -67,7 +66,7 @@ export async function AdminUsersClient() {
             <CardContent className="p-6">
               <Flex justify="between" align="start">
                 <div>
-                  <P className="text-sm text-muted-foreground">Suspended</P>
+                  <p className="leading-7 text-sm text-muted-foreground">Suspended</p>
                   <p className="text-2xl font-bold">{overview.suspendedUsers}</p>
                 </div>
                 <UserX className="h-4 w-4 text-red-500" />
@@ -79,7 +78,7 @@ export async function AdminUsersClient() {
             <CardContent className="p-6">
               <Flex justify="between" align="start">
                 <div>
-                  <P className="text-sm text-muted-foreground">With Roles</P>
+                  <p className="leading-7 text-sm text-muted-foreground">With Roles</p>
                   <p className="text-2xl font-bold">{overview.usersWithRoles}</p>
                 </div>
                 <Shield className="h-4 w-4 text-blue-500" />
@@ -90,7 +89,7 @@ export async function AdminUsersClient() {
 
         <Card>
           <CardContent className="p-6">
-            <P className="text-sm font-medium mb-4">Role Distribution</P>
+            <p className="leading-7 text-sm font-medium mb-4">Role Distribution</p>
             <Flex gap="sm" wrap>
               {overview.roleBreakdown.map((role) => (
                 <Badge key={role.role} variant="outline">

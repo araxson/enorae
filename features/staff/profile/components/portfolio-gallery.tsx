@@ -4,7 +4,6 @@ import { Upload, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Stack, Grid } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { uploadPortfolioImage } from '../api/mutations'
 import Image from 'next/image'
 
@@ -42,7 +41,7 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
   return (
     <Card className="p-6">
       <Stack gap="md">
-        <H3>Portfolio Gallery</H3>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Portfolio Gallery</h3>
 
         <div>
           <input
@@ -70,9 +69,9 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
               )}
             </Button>
           </label>
-          <Muted className="text-xs ml-2">
+          <p className="text-sm text-muted-foreground text-xs ml-2">
             Max 5MB per image
-          </Muted>
+          </p>
         </div>
 
         {error && (
@@ -95,7 +94,7 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
         ) : (
           <Card className="p-8 text-center border-dashed">
             <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <Muted>No portfolio images yet. Add your best work!</Muted>
+            <p className="text-sm text-muted-foreground">No portfolio images yet. Add your best work!</p>
           </Card>
         )}
       </Stack>

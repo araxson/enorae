@@ -1,7 +1,6 @@
 'use client'
 
 import { Clock } from 'lucide-react'
-import { Small } from '@/components/ui/typography'
 import { useEffect, useState } from 'react'
 
 /**
@@ -47,9 +46,9 @@ export function LastUpdated() {
   }, [lastUpdated])
 
   return (
-    <Small className="flex items-center gap-1 text-muted-foreground">
+    <small className="text-sm font-medium leading-none flex items-center gap-1 text-muted-foreground">
       <Clock className="h-3 w-3" aria-hidden="true" />
       <span aria-label={`Last updated ${relativeTime}`}>{relativeTime}</span>
-    </Small>
+    </small>
   )
 }

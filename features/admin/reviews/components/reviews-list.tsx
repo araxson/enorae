@@ -1,6 +1,5 @@
 import { Star, Building2, User } from 'lucide-react'
 import { Stack } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
@@ -17,7 +16,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
     return (
       <Card>
         <CardContent className="pt-6">
-          <P className="text-center text-muted-foreground py-8">No reviews found</P>
+          <p className="leading-7 text-center text-muted-foreground py-8">No reviews found</p>
         </CardContent>
       </Card>
     )
@@ -47,7 +46,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                       />
                     ))}
                   </div>
-                  <Muted className="text-sm">{review.rating}/5</Muted>
+                  <p className="text-sm text-muted-foreground text-sm">{review.rating}/5</p>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -59,26 +58,26 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           </CardHeader>
           <CardContent>
             <Stack gap="md">
-              {review.title && <P className="font-medium">{review.title}</P>}
-              {review.comment && <P className="text-sm text-muted-foreground">{review.comment}</P>}
+              {review.title && <p className="leading-7 font-medium">{review.title}</p>}
+              {review.comment && <p className="leading-7 text-sm text-muted-foreground">{review.comment}</p>}
 
               <div className="grid grid-cols-3 gap-4 pt-2 border-t">
                 {review.service_quality_rating && (
                   <div>
-                    <Muted className="text-xs">Service Quality</Muted>
-                    <P className="text-sm font-medium">{review.service_quality_rating}/5</P>
+                    <p className="text-sm text-muted-foreground text-xs">Service Quality</p>
+                    <p className="leading-7 text-sm font-medium">{review.service_quality_rating}/5</p>
                   </div>
                 )}
                 {review.cleanliness_rating && (
                   <div>
-                    <Muted className="text-xs">Cleanliness</Muted>
-                    <P className="text-sm font-medium">{review.cleanliness_rating}/5</P>
+                    <p className="text-sm text-muted-foreground text-xs">Cleanliness</p>
+                    <p className="leading-7 text-sm font-medium">{review.cleanliness_rating}/5</p>
                   </div>
                 )}
                 {review.value_rating && (
                   <div>
-                    <Muted className="text-xs">Value</Muted>
-                    <P className="text-sm font-medium">{review.value_rating}/5</P>
+                    <p className="text-sm text-muted-foreground text-xs">Value</p>
+                    <p className="leading-7 text-sm font-medium">{review.value_rating}/5</p>
                   </div>
                 )}
               </div>
@@ -89,21 +88,21 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                   <span>{review.customer_name || 'Anonymous'}</span>
                 </div>
                 <div className="text-right">
-                  <Muted className="text-xs">
+                  <p className="text-sm text-muted-foreground text-xs">
                     {review.created_at ? format(new Date(review.created_at), 'MMM dd, yyyy') : 'N/A'}
-                  </Muted>
+                  </p>
                   {review.helpful_count && review.helpful_count > 0 && (
-                    <P className="text-xs">{review.helpful_count} found helpful</P>
+                    <p className="leading-7 text-xs">{review.helpful_count} found helpful</p>
                   )}
                 </div>
               </div>
 
               {review.has_response && review.response_date && (
                 <div className="mt-4 p-3 bg-muted rounded-md">
-                  <P className="text-sm font-medium mb-1">Salon Response</P>
-                  <Muted className="text-xs">
+                  <p className="leading-7 text-sm font-medium mb-1">Salon Response</p>
+                  <p className="text-sm text-muted-foreground text-xs">
                     Responded on {format(new Date(review.response_date), 'MMM dd, yyyy')}
-                  </Muted>
+                  </p>
                 </div>
               )}
             </Stack>

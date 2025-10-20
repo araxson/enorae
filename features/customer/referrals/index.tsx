@@ -1,7 +1,6 @@
 import { getReferralCode, getReferralStats, getReferralHistory } from './api/queries'
 import { ReferralDashboard } from './components/referral-dashboard'
 import { Container, Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 
 export async function ReferralProgram() {
   const referralCode = await getReferralCode()
@@ -12,10 +11,10 @@ export async function ReferralProgram() {
     <Container size="lg" className="pb-16 pt-6">
       <Stack gap="xl">
         <div>
-          <H1>Referral Program</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Referral Program</h1>
+          <p className="leading-7 text-muted-foreground">
             Refer friends and earn bonus points for every successful signup
-          </P>
+          </p>
         </div>
 
         <ReferralDashboard

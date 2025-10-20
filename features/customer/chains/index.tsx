@@ -1,5 +1,4 @@
 import { Section, Stack, Box } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import { notFound } from 'next/navigation'
 import { getSalonChains, getSalonChainById } from './api/queries'
 import { ChainsList } from './components/chains-list'
@@ -15,10 +14,10 @@ export function CustomerChainsPage() {
     <Section size="lg">
       <Stack gap="xl">
         <Box>
-          <H1>Salon Chains</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Salon Chains</h1>
+          <p className="leading-7 text-muted-foreground">
             Discover salon chains with multiple locations
-          </P>
+          </p>
         </Box>
 
         <SalonChains />

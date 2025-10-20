@@ -7,7 +7,6 @@ import { deleteBlockedTime } from '../api/mutations'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { H4, P, Small } from '@/components/ui/typography'
 import { Badge } from '@/components/ui/badge'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
 import { EmptyState } from '@/components/shared/empty-state'
@@ -78,9 +77,9 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <H4 className="mb-0">
+                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-0">
                     {format(new Date(blockedTime.start_time), 'PPP')}
-                  </H4>
+                  </h4>
                   {blockedTime.is_recurring && (
                     <Badge variant="secondary" className="flex items-center gap-1">
                       <Repeat className="h-3 w-3" />
@@ -88,11 +87,11 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
                     </Badge>
                   )}
                 </div>
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   {format(new Date(blockedTime.start_time), 'p')} –{' '}
                   {format(new Date(blockedTime.end_time), 'p')}
-                </Small>
-                {blockedTime.reason && <P className="text-sm text-muted-foreground">{blockedTime.reason}</P>}
+                </small>
+                {blockedTime.reason && <p className="leading-7 text-sm text-muted-foreground">{blockedTime.reason}</p>}
               </div>
 
               <ConfirmDialog

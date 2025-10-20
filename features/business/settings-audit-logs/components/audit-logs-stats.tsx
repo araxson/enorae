@@ -1,6 +1,5 @@
 import { Card } from '@/components/ui/card'
 import { Grid, Flex, Stack } from '@/components/layout'
-import { H4, Muted } from '@/components/ui/typography'
 import { Activity, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react'
 
 interface AuditLogsStatsProps {
@@ -22,8 +21,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
             <Activity className="h-6 w-6 text-blue-600" />
           </div>
           <Stack gap="xs">
-            <Muted className="text-sm">Total Events (24h)</Muted>
-            <H4>{stats.totalEvents}</H4>
+            <p className="text-sm text-muted-foreground text-sm">Total Events (24h)</p>
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.totalEvents}</h4>
           </Stack>
         </Flex>
       </Card>
@@ -34,8 +33,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
             <CheckCircle2 className="h-6 w-6 text-green-600" />
           </div>
           <Stack gap="xs">
-            <Muted className="text-sm">Success Rate</Muted>
-            <H4>{stats.successRate.toFixed(1)}%</H4>
+            <p className="text-sm text-muted-foreground text-sm">Success Rate</p>
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.successRate.toFixed(1)}%</h4>
           </Stack>
         </Flex>
       </Card>
@@ -46,8 +45,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
             <XCircle className="h-6 w-6 text-red-600" />
           </div>
           <Stack gap="xs">
-            <Muted className="text-sm">Failed Actions</Muted>
-            <H4>{stats.failedActions}</H4>
+            <p className="text-sm text-muted-foreground text-sm">Failed Actions</p>
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.failedActions}</h4>
           </Stack>
         </Flex>
       </Card>
@@ -58,8 +57,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
             <AlertTriangle className="h-6 w-6 text-orange-600" />
           </div>
           <Stack gap="xs">
-            <Muted className="text-sm">Critical Events</Muted>
-            <H4>{stats.criticalEvents}</H4>
+            <p className="text-sm text-muted-foreground text-sm">Critical Events</p>
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.criticalEvents}</h4>
           </Stack>
         </Flex>
       </Card>
@@ -70,8 +69,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
             <AlertTriangle className="h-6 w-6 text-yellow-600" />
           </div>
           <Stack gap="xs">
-            <Muted className="text-sm">Warnings</Muted>
-            <H4>{stats.warningEvents}</H4>
+            <p className="text-sm text-muted-foreground text-sm">Warnings</p>
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.warningEvents}</h4>
           </Stack>
         </Flex>
       </Card>

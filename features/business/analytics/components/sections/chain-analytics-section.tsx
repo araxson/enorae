@@ -1,7 +1,6 @@
 'use client'
 
 import { Box, Grid, Group } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import { ExportButton } from '@/features/business/business-common/components'
 import { Building2, TrendingUp } from 'lucide-react'
 
@@ -33,7 +32,7 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
       <Group className="items-center justify-between mb-3">
         <Group gap="xs" className="items-center">
           <Building2 className="h-4 w-4" aria-hidden />
-          <Small className="font-semibold">Chain Analytics (All Salons)</Small>
+          <small className="text-sm font-medium leading-none font-semibold">Chain Analytics (All Salons)</small>
         </Group>
         <ExportButton
           data={breakdown.map((row) => ({
@@ -71,7 +70,7 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
       </Grid>
 
       <div className="mt-4">
-        <Small className="text-muted-foreground">Top Salons by Revenue</Small>
+        <small className="text-sm font-medium leading-none text-muted-foreground">Top Salons by Revenue</small>
         <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
           {breakdown.slice(0, 6).map((row) => (
             <Box key={row.salonId} className="rounded border p-3">
@@ -90,7 +89,7 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <Box>
-      <Small className="text-muted-foreground">{label}</Small>
+      <small className="text-sm font-medium leading-none text-muted-foreground">{label}</small>
       <div className="text-2xl font-bold">{value}</div>
     </Box>
   )

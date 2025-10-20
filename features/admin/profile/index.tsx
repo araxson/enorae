@@ -1,5 +1,4 @@
 import { Section, Stack } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import { ProfileManagementClient } from './components/profile-management-client'
 import { searchProfiles, getProfileDetail } from './api/queries'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
@@ -15,10 +14,10 @@ export async function AdminProfile() {
     <Section size="lg">
       <Stack gap="xl">
         <div>
-          <H1>Profile Management</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Profile Management</h1>
+          <p className="leading-7 text-muted-foreground">
             Search, review, and manage user identities, metadata, and privacy controls.
-          </P>
+          </p>
         </div>
 
         <ProfileManagementClient

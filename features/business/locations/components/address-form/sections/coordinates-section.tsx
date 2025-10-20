@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Grid, Stack } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -17,7 +16,7 @@ export function CoordinatesSection({ address }: Props) {
     <Card>
       <CardContent>
         <Stack gap="lg">
-          <H3>Coordinates (Optional)</H3>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Coordinates (Optional)</h3>
           <Separator />
 
           <Grid cols={{ base: 1, md: 2 }} gap="lg">
@@ -46,7 +45,7 @@ export function CoordinatesSection({ address }: Props) {
             </Stack>
           </Grid>
 
-          <Muted>Used for map display and location-based search</Muted>
+          <p className="text-sm text-muted-foreground">Used for map display and location-based search</p>
         </Stack>
       </CardContent>
     </Card>

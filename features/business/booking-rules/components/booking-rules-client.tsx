@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Grid, Flex } from '@/components/layout'
-import { H3, P, Small } from '@/components/ui/typography'
 import { Plus, Clock, Calendar, Timer } from 'lucide-react'
 import { BookingRuleForm } from './booking-rule-form'
 import type { BookingRuleWithService } from '../api/queries'
@@ -44,9 +43,9 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
       <Stack gap="lg">
         <Flex justify="between" align="center">
           <div>
-            <P className="text-sm text-muted-foreground">
+            <p className="leading-7 text-sm text-muted-foreground">
               {rules.length} {rules.length === 1 ? 'rule' : 'rules'} configured
-            </P>
+            </p>
           </div>
           <Button onClick={handleCreate} disabled={servicesWithoutRules.length === 0}>
             <Plus className="h-4 w-4 mr-2" />
@@ -58,11 +57,11 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
               <Timer className="h-12 w-12 text-muted-foreground mb-4" />
-              <H3>No Booking Rules</H3>
-              <P className="text-muted-foreground text-center mt-2">
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No Booking Rules</h3>
+              <p className="leading-7 text-muted-foreground text-center mt-2">
                 Create booking rules to configure service durations, buffer times, and advance
                 booking requirements
-              </P>
+              </p>
               <Button onClick={handleCreate} className="mt-4">
                 <Plus className="h-4 w-4 mr-2" />
                 Create First Rule
@@ -76,7 +75,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                 <CardContent className="p-6">
                   <Stack gap="md">
                     <div>
-                      <H3 className="text-lg">{rule.service?.name || 'Unknown Service'}</H3>
+                      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">{rule.service?.name || 'Unknown Service'}</h3>
                       {rule.total_duration_minutes && (
                         <Badge variant="outline" className="mt-2">
                           Total: {rule.total_duration_minutes} min
@@ -88,16 +87,16 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                       {rule.duration_minutes !== null && rule.duration_minutes !== undefined && (
                         <Flex gap="sm" align="center">
                           <Clock className="h-4 w-4 text-muted-foreground" />
-                          <Small className="text-muted-foreground">Duration:</Small>
-                          <Small className="font-medium">{rule.duration_minutes} min</Small>
+                          <small className="text-sm font-medium leading-none text-muted-foreground">Duration:</small>
+                          <small className="text-sm font-medium leading-none font-medium">{rule.duration_minutes} min</small>
                         </Flex>
                       )}
 
                       {rule.buffer_minutes !== null && rule.buffer_minutes !== undefined && (
                         <Flex gap="sm" align="center">
                           <Timer className="h-4 w-4 text-muted-foreground" />
-                          <Small className="text-muted-foreground">Buffer:</Small>
-                          <Small className="font-medium">{rule.buffer_minutes} min</Small>
+                          <small className="text-sm font-medium leading-none text-muted-foreground">Buffer:</small>
+                          <small className="text-sm font-medium leading-none font-medium">{rule.buffer_minutes} min</small>
                         </Flex>
                       )}
 
@@ -105,10 +104,10 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                         rule.min_advance_booking_hours !== undefined && (
                           <Flex gap="sm" align="center">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
-                            <Small className="text-muted-foreground">Min Advance:</Small>
-                            <Small className="font-medium">
+                            <small className="text-sm font-medium leading-none text-muted-foreground">Min Advance:</small>
+                            <small className="text-sm font-medium leading-none font-medium">
                               {rule.min_advance_booking_hours}h
-                            </Small>
+                            </small>
                           </Flex>
                         )}
 
@@ -116,10 +115,10 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                         rule.max_advance_booking_days !== undefined && (
                           <Flex gap="sm" align="center">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
-                            <Small className="text-muted-foreground">Max Advance:</Small>
-                            <Small className="font-medium">
+                            <small className="text-sm font-medium leading-none text-muted-foreground">Max Advance:</small>
+                            <small className="text-sm font-medium leading-none font-medium">
                               {rule.max_advance_booking_days} days
-                            </Small>
+                            </small>
                           </Flex>
                         )}
                     </Stack>
@@ -138,10 +137,10 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
         {servicesWithoutRules.length > 0 && rules.length > 0 && (
           <Card>
             <CardContent>
-              <Small className="text-muted-foreground">
+              <small className="text-sm font-medium leading-none text-muted-foreground">
                 {servicesWithoutRules.length} service(s) without rules:{' '}
                 {servicesWithoutRules.map((s) => s.name).join(', ')}
-              </Small>
+              </small>
             </CardContent>
           </Card>
         )}

@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { P, Muted } from '@/components/ui/typography'
 import { toast } from 'sonner'
 import { respondToReview } from '../api/mutations'
 import type { ModerationReview } from '../api/queries'
@@ -153,18 +152,18 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
 
           <Panel title="Review">
             {review.comment || 'No text provided'}
-            <Muted className="mt-2 block text-xs">
+            <p className="text-sm text-muted-foreground mt-2 block text-xs">
               Posted on {review.created_at ? format(new Date(review.created_at), 'MMMM d, yyyy') : 'Unknown date'}
-            </Muted>
+            </p>
           </Panel>
 
           {review.has_response && (
             <Panel title="Response" tone="info">
               Response has been recorded. Response content is not available in this overview.
               {review.response_date && (
-                <Muted className="mt-2 block text-xs">
+                <p className="text-sm text-muted-foreground mt-2 block text-xs">
                   Responded on {format(new Date(review.response_date), 'MMMM d, yyyy')}
-                </Muted>
+                </p>
               )}
             </Panel>
           )}

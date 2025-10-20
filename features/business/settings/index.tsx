@@ -1,7 +1,6 @@
 import { getUserSalonSettings } from './api/queries'
 import { SettingsForm } from './components/settings-form'
 import { Section, Stack } from '@/components/layout'
-import { P } from '@/components/ui/typography'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 
 export async function SalonSettings() {
@@ -17,7 +16,7 @@ export async function SalonSettings() {
     return (
       <Section size="lg">
         <Stack gap="md">
-          <P>No salon found. Please create a salon first.</P>
+          <p className="leading-7">No salon found. Please create a salon first.</p>
         </Stack>
       </Section>
     )

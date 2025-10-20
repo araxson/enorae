@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Muted, P } from '@/components/ui/typography'
 import { AlertCircle } from 'lucide-react'
 import type { DailyMetricsDashboardProps } from '../types'
 
@@ -29,17 +28,17 @@ export function AppointmentIssuesCard({ aggregated }: Props) {
       <CardContent>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <Muted className="text-sm">Cancelled</Muted>
+            <p className="text-sm text-muted-foreground text-sm">Cancelled</p>
             <div className="flex items-center gap-2">
-              <P className="text-sm font-medium">{aggregated.cancelledAppointments}</P>
-              <Muted className="text-xs">({cancellationRate.toFixed(1)}%)</Muted>
+              <p className="leading-7 text-sm font-medium">{aggregated.cancelledAppointments}</p>
+              <p className="text-sm text-muted-foreground text-xs">({cancellationRate.toFixed(1)}%)</p>
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <Muted className="text-sm">No-Shows</Muted>
+            <p className="text-sm text-muted-foreground text-sm">No-Shows</p>
             <div className="flex items-center gap-2">
-              <P className="text-sm font-medium">{aggregated.noShowAppointments}</P>
-              <Muted className="text-xs">({noShowRate.toFixed(1)}%)</Muted>
+              <p className="leading-7 text-sm font-medium">{aggregated.noShowAppointments}</p>
+              <p className="text-sm text-muted-foreground text-xs">({noShowRate.toFixed(1)}%)</p>
             </div>
           </div>
         </div>

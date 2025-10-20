@@ -17,7 +17,6 @@ import { Stack } from '@/components/layout'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
-import { Small } from '@/components/ui/typography'
 
 export function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null)
@@ -99,10 +98,10 @@ export function ResetPasswordForm() {
                 required
               />
               {confirmPassword && password !== confirmPassword && (
-                <Small className="text-destructive">Passwords do not match</Small>
+                <small className="text-sm font-medium leading-none text-destructive">Passwords do not match</small>
               )}
               {confirmPassword && password === confirmPassword && (
-                <Small className="text-green-600">Passwords match</Small>
+                <small className="text-sm font-medium leading-none text-green-600">Passwords match</small>
               )}
             </Stack>
           </Stack>

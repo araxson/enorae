@@ -2,7 +2,6 @@
 
 import { useMemo } from 'react'
 import { Stack, Flex } from '@/components/layout'
-import { Small } from '@/components/ui/typography'
 import { Check, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -92,10 +91,10 @@ export function PasswordStrengthIndicator({
       {/* Strength Bar */}
       <Stack gap="xs">
         <Flex justify="between" align="center">
-          <Small className="text-muted-foreground">Password strength:</Small>
-          <Small
+          <small className="text-sm font-medium leading-none text-muted-foreground">Password strength:</small>
+          <small
             className={cn(
-              'font-medium',
+              'text-sm font-medium leading-none', 'font-medium',
               strength === 'weak' && 'text-red-500',
               strength === 'fair' && 'text-orange-500',
               strength === 'good' && 'text-yellow-600',
@@ -103,7 +102,7 @@ export function PasswordStrengthIndicator({
             )}
           >
             {strength.charAt(0).toUpperCase() + strength.slice(1)}
-          </Small>
+          </small>
         </Flex>
         <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
           <div
@@ -123,14 +122,14 @@ export function PasswordStrengthIndicator({
               ) : (
                 <X className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
               )}
-              <Small
+              <small
                 className={cn(
-                  'transition-colors',
+                  'text-sm font-medium leading-none', 'transition-colors',
                   req.met ? 'text-foreground' : 'text-muted-foreground'
                 )}
               >
                 {req.label}
-              </Small>
+              </small>
             </Flex>
           ))}
         </Stack>

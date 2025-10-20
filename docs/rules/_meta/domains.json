@@ -1,0 +1,179 @@
+{
+  "domains": [
+    {
+      "code": "UI",
+      "name": "User Interface",
+      "description": "Rules for shadcn/ui primitives, design tokens, and slot-based typography.",
+      "file": "domains/ui.md",
+      "automation_script": "_automation/detect-ui-violations.sh",
+      "total_rules": 10,
+      "critical_count": 4,
+      "high_count": 3,
+      "medium_count": 2,
+      "low_count": 1,
+      "related_domains": [
+        "A11Y",
+        "REACT"
+      ]
+    },
+    {
+      "code": "DB",
+      "name": "Database",
+      "description": "Rules for Supabase queries, views, migrations, and RLS enforcement.",
+      "file": "domains/database.md",
+      "automation_script": "_automation/detect-db-violations.sh",
+      "total_rules": 9,
+      "critical_count": 3,
+      "high_count": 3,
+      "medium_count": 2,
+      "low_count": 1,
+      "related_domains": [
+        "SEC",
+        "TS",
+        "ARCH"
+      ]
+    },
+    {
+      "code": "ARCH",
+      "name": "Architecture",
+      "description": "Rules for file structure, feature organization, and server directives.",
+      "file": "domains/architecture.md",
+      "automation_script": "_automation/detect-arch-violations.sh",
+      "total_rules": 7,
+      "critical_count": 2,
+      "high_count": 2,
+      "medium_count": 2,
+      "low_count": 1,
+      "related_domains": [
+        "DB",
+        "NEXT"
+      ]
+    },
+    {
+      "code": "SEC",
+      "name": "Security",
+      "description": "Rules for authentication, authorization, and multi-tenant protections.",
+      "file": "domains/security.md",
+      "automation_script": "_automation/detect-sec-violations.sh",
+      "total_rules": 9,
+      "critical_count": 3,
+      "high_count": 3,
+      "medium_count": 2,
+      "low_count": 1,
+      "related_domains": [
+        "DB",
+        "ARCH"
+      ]
+    },
+    {
+      "code": "NEXT",
+      "name": "Next.js",
+      "description": "Rules for Next.js 15 App Router layouts, metadata, and routing.",
+      "file": "domains/nextjs.md",
+      "automation_script": "_automation/detect-next-violations.sh",
+      "total_rules": 8,
+      "critical_count": 3,
+      "high_count": 2,
+      "medium_count": 2,
+      "low_count": 1,
+      "related_domains": [
+        "REACT",
+        "ARCH"
+      ]
+    },
+    {
+      "code": "REACT",
+      "name": "React",
+      "description": "Rules for React 19 Server/Client boundaries and async patterns.",
+      "file": "domains/react.md",
+      "automation_script": "_automation/detect-react-violations.sh",
+      "total_rules": 7,
+      "critical_count": 2,
+      "high_count": 2,
+      "medium_count": 2,
+      "low_count": 1,
+      "related_domains": [
+        "NEXT",
+        "UI"
+      ]
+    },
+    {
+      "code": "TS",
+      "name": "TypeScript",
+      "description": "Rules for TypeScript 5.9 strict typing, Supabase types, and safety.",
+      "file": "domains/typescript.md",
+      "automation_script": "_automation/detect-ts-violations.sh",
+      "total_rules": 7,
+      "critical_count": 2,
+      "high_count": 2,
+      "medium_count": 2,
+      "low_count": 1,
+      "related_domains": [
+        "DB",
+        "SEC"
+      ]
+    },
+    {
+      "code": "PERF",
+      "name": "Performance",
+      "description": "Rules for runtime performance, caching strategies, and query optimization.",
+      "file": "domains/performance.md",
+      "automation_script": "_automation/detect-perf-violations.sh",
+      "total_rules": 6,
+      "critical_count": 0,
+      "high_count": 2,
+      "medium_count": 2,
+      "low_count": 2,
+      "related_domains": [
+        "DB",
+        "NEXT"
+      ]
+    },
+    {
+      "code": "A11Y",
+      "name": "Accessibility",
+      "description": "Rules for WCAG compliance, aria attributes, and assistive support.",
+      "file": "domains/accessibility.md",
+      "automation_script": "_automation/detect-a11y-violations.sh",
+      "total_rules": 6,
+      "critical_count": 0,
+      "high_count": 3,
+      "medium_count": 2,
+      "low_count": 1,
+      "related_domains": [
+        "UI",
+        "REACT"
+      ]
+    }
+  ],
+  "severity_levels": [
+    {
+      "code": "P",
+      "name": "Critical",
+      "range": "001-099",
+      "color": "🔴",
+      "total_count": 19
+    },
+    {
+      "code": "H",
+      "name": "High",
+      "range": "100-299",
+      "color": "🟠",
+      "total_count": 22
+    },
+    {
+      "code": "M",
+      "name": "Medium",
+      "range": "300-699",
+      "color": "🟡",
+      "total_count": 18
+    },
+    {
+      "code": "L",
+      "name": "Low",
+      "range": "700-999",
+      "color": "🟢",
+      "total_count": 10
+    }
+  ]
+}

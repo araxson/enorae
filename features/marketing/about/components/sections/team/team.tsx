@@ -1,6 +1,5 @@
 import { Section, Stack, Grid } from '@/components/layout'
 import { Card, CardContent } from '@/components/ui/card'
-import { H2, P, H3, Muted } from '@/components/ui/typography'
 import { teamData } from './team.data'
 
 export function Team() {
@@ -8,8 +7,8 @@ export function Team() {
     <Section size="lg">
       <Stack gap="xl">
         <Stack gap="md" className="max-w-3xl mx-auto text-center">
-          <H2>{teamData.title}</H2>
-          <P className="text-lg">{teamData.description}</P>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">{teamData.title}</h2>
+          <p className="leading-7 text-lg">{teamData.description}</p>
         </Stack>
 
         <Grid cols={{ base: 2, md: 4 }} gap="lg">
@@ -17,8 +16,8 @@ export function Team() {
             <Card key={stat.label}>
               <CardContent>
                 <Stack gap="xs" className="text-center py-4">
-                  <H3>{stat.value}</H3>
-                  <Muted>{stat.label}</Muted>
+                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{stat.value}</h3>
+                  <p className="text-sm text-muted-foreground">{stat.label}</p>
                 </Stack>
               </CardContent>
             </Card>

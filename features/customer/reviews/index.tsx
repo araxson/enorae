@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import { verifySession } from '@/lib/auth'
 import { getCustomerReviews } from './api/queries'
 import { ReviewsList } from './components/reviews-list'
-import { P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 export async function CustomerReviews() {
@@ -17,9 +16,9 @@ export async function CustomerReviews() {
   return (
     <div className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
       <div className="space-y-6">
-        <P className="text-muted-foreground">
+        <p className="leading-7 text-muted-foreground">
           Reviews you&apos;ve written for salons
-        </P>
+        </p>
 
         <Separator />
 

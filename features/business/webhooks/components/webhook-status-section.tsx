@@ -1,6 +1,6 @@
+import { cn } from "@/lib/utils";
 import { Badge } from '@/components/ui/badge'
 import { Flex, Stack } from '@/components/layout'
-import { H4, Small } from '@/components/ui/typography'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
 import { STATUS_COLORS } from './webhook-detail-constants'
@@ -20,7 +20,7 @@ export function WebhookStatusSection({ webhook }: WebhookStatusSectionProps) {
   return (
     <Stack gap="md">
       <Flex gap="md" align="center">
-        <H4 className="mb-0">Status</H4>
+        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-0">Status</h4>
         <Badge variant={STATUS_COLORS[statusKey] ?? 'secondary'}>
           {webhook.status ?? 'pending'}
         </Badge>
@@ -57,8 +57,8 @@ type DetailRowProps = {
 function DetailRow({ label, value }: DetailRowProps) {
   return (
     <Flex gap="sm">
-      <Small className={`text-muted-foreground ${LABEL_WIDTH}`}>{label}:</Small>
-      <Small className="break-all">{value}</Small>
+      <small className={cn('text-sm font-medium leading-none', `text-muted-foreground ${LABEL_WIDTH}`)}>{label}:</small>
+      <small className="text-sm font-medium leading-none break-all">{value}</small>
     </Flex>
   )
 }

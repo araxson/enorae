@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { Card, CardContent } from '@/components/ui/card'
-import { H4, P, Small } from '@/components/ui/typography'
 import { Badge } from '@/components/ui/badge'
 
 interface MessageThread {
@@ -32,7 +31,7 @@ export function ThreadList({
     return (
       <Card>
         <CardContent className="py-12 text-center">
-          <P className="text-muted-foreground">No messages yet</P>
+          <p className="leading-7 text-muted-foreground">No messages yet</p>
         </CardContent>
       </Card>
     )
@@ -74,18 +73,18 @@ export function ThreadList({
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <H4 className="mb-0">
+                      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-0">
                         {thread.subject || 'No subject'}
-                      </H4>
+                      </h4>
                       {unreadCount > 0 && (
                         <Badge variant="destructive" className="flex h-6 min-w-6 items-center justify-center rounded-full">
                           {unreadCount}
                         </Badge>
                       )}
                     </div>
-                    <Small className="text-muted-foreground">
+                    <small className="text-sm font-medium leading-none text-muted-foreground">
                       Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
-                    </Small>
+                    </small>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">

@@ -4,6 +4,10 @@ import { z } from 'zod'
  * Booking Form Validation Schema
  */
 export const bookingSchema = z.object({
+  salonId: z
+    .string()
+    .min(1, 'Please select a salon')
+    .uuid('Invalid salon ID'),
   serviceId: z
     .string()
     .min(1, 'Please select a service')

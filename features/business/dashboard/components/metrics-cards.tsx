@@ -5,7 +5,6 @@ import { Calendar, CheckCircle, Clock, Users, Scissors, DollarSign, TrendingUp, 
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { Small } from '@/components/ui/typography'
 import { Grid, Stack } from '@/components/layout'
 import type { BusinessDashboardMetrics } from '../types'
 import { AppointmentMetricCard, RevenueMetricCard } from './metric-card'
@@ -50,7 +49,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       highlight: (
         <Stack gap="xs" className="flex-row items-center">
           <ArrowUpRight className="h-3 w-3 text-green-600" aria-hidden="true" />
-          <Small className="text-green-600">Momentum trending upward</Small>
+          <small className="text-sm font-medium leading-none text-green-600">Momentum trending upward</small>
         </Stack>
       ),
     },
@@ -87,10 +86,10 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
   return (
     <Stack gap="lg">
       <Stack gap="xs">
-        <Small className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <small className="text-sm font-medium leading-none text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Dashboard summary
-        </Small>
-        <Small className="text-muted-foreground">Monitor the metrics your team watches daily.</Small>
+        </small>
+        <small className="text-sm font-medium leading-none text-muted-foreground">Monitor the metrics your team watches daily.</small>
       </Stack>
 
       {revenueMetrics.length > 0 && (
@@ -105,7 +104,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
 
       <Stack gap="sm">
         <Stack className="flex-row items-center justify-between">
-          <Small className="font-medium text-muted-foreground">Appointments Overview</Small>
+          <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Appointments Overview</small>
           <Badge variant="outline">{confirmationRate}% Confirmed</Badge>
         </Stack>
         <Grid cols={{ base: 1, sm: 3 }} gap="md">
@@ -118,7 +117,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       <Separator />
 
       <Stack gap="sm">
-        <Small className="font-medium text-muted-foreground">Resources</Small>
+        <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Resources</small>
         <Grid cols={{ base: 1, sm: 2 }} gap="md">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -162,7 +161,7 @@ function AppointmentResource({ title, icon, value, description, accent }: Appoin
   return (
     <div className={`overflow-hidden rounded-xl border-l-4 ${accent}`}>
       <div className="flex items-center justify-between space-y-0 border px-4 py-3">
-        <Small className="text-sm font-medium">{title}</Small>
+        <small className="text-sm font-medium leading-none text-sm font-medium">{title}</small>
         {icon}
       </div>
       <div className="border border-t-0 px-4 py-3">

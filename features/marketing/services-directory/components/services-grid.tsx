@@ -3,7 +3,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Grid, Stack, Box, Group } from '@/components/layout'
-import { H3, P, Muted, Small } from '@/components/ui/typography'
 import type { Database } from '@/lib/types/database.types'
 import { Clock, DollarSign, Sparkles } from 'lucide-react'
 
@@ -19,12 +18,12 @@ export function ServicesGrid({ services, categoryName }: ServicesGridProps) {
     return (
       <Box className="text-center py-12">
         <Stack gap="md">
-          <H3>No services found</H3>
-          <Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No services found</h3>
+          <p className="text-sm text-muted-foreground">
             {categoryName
               ? `No services available in the ${categoryName} category`
               : 'Try browsing different categories to find services'}
-          </Muted>
+          </p>
         </Stack>
       </Box>
     )
@@ -32,10 +31,10 @@ export function ServicesGrid({ services, categoryName }: ServicesGridProps) {
 
   return (
     <Stack gap="md">
-      <Muted>
+      <p className="text-sm text-muted-foreground">
         {services.length} service{services.length !== 1 ? 's' : ''}
         {categoryName && ` in ${categoryName}`}
-      </Muted>
+      </p>
       <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
         {services.map((service) => (
           <ServiceCard key={service.id} service={service} />
@@ -79,7 +78,7 @@ function ServiceCard({ service }: ServiceCardProps) {
       <CardContent className="flex-1">
         <Stack gap="md">
           {service.description && (
-            <P className="text-muted-foreground text-sm line-clamp-3">{service.description}</P>
+            <p className="leading-7 text-muted-foreground text-sm line-clamp-3">{service.description}</p>
           )}
 
           <Stack gap="sm">
@@ -87,9 +86,9 @@ function ServiceCard({ service }: ServiceCardProps) {
             {service.duration_minutes && (
               <Group gap="xs">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <Small className="text-muted-foreground">
+                <small className="text-sm font-medium leading-none text-muted-foreground">
                   {service.duration_minutes} minutes
-                </Small>
+                </small>
               </Group>
             )}
 
@@ -100,20 +99,20 @@ function ServiceCard({ service }: ServiceCardProps) {
                 <Group gap="sm" align="center">
                   {hasSalePrice ? (
                     <>
-                      <Small className="line-through text-muted-foreground">
+                      <small className="text-sm font-medium leading-none line-through text-muted-foreground">
                         ${service.current_price?.toFixed(2)}
-                      </Small>
-                      <Small className="font-semibold text-green-600">
+                      </small>
+                      <small className="text-sm font-medium leading-none font-semibold text-green-600">
                         ${service.sale_price?.toFixed(2)}
-                      </Small>
+                      </small>
                       <Badge variant="destructive" className="text-xs">
                         Sale
                       </Badge>
                     </>
                   ) : (
-                    <Small className="font-semibold">
+                    <small className="text-sm font-medium leading-none font-semibold">
                       ${service.current_price?.toFixed(2)}
-                    </Small>
+                    </small>
                   )}
                 </Group>
               </Group>

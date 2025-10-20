@@ -6,7 +6,6 @@ import { Calendar, Clock, CheckCircle, XCircle, Play } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { ActionButton } from '@/components/shared'
 import {
   markAppointmentCompleted,
@@ -47,8 +46,8 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
               <Calendar className="w-8 h-8 text-muted-foreground" />
             </div>
             <div>
-              <P className="font-medium">No Appointments</P>
-              <Muted>You have no appointments in this period</Muted>
+              <p className="leading-7 font-medium">No Appointments</p>
+              <p className="text-sm text-muted-foreground">You have no appointments in this period</p>
             </div>
           </Stack>
         </CardContent>
@@ -60,7 +59,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <Muted>{appointments.length} appointment{appointments.length !== 1 ? 's' : ''}</Muted>
+        <p className="text-sm text-muted-foreground">{appointments.length} appointment{appointments.length !== 1 ? 's' : ''}</p>
       </CardHeader>
       <CardContent>
         <Stack gap="sm">
@@ -89,15 +88,15 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                   </div>
 
                   <div>
-                    <P className="font-medium">{appointment.customer_name || 'Walk-in Customer'}</P>
+                    <p className="leading-7 font-medium">{appointment.customer_name || 'Walk-in Customer'}</p>
                     {appointment.customer_email && (
-                      <Muted className="text-sm">{appointment.customer_email}</Muted>
+                      <p className="text-sm text-muted-foreground text-sm">{appointment.customer_email}</p>
                     )}
                   </div>
 
                   {appointment.service_names && (
                     <div className="flex items-center gap-1 text-sm">
-                      <Muted>{appointment.service_names}</Muted>
+                      <p className="text-sm text-muted-foreground">{appointment.service_names}</p>
                     </div>
                   )}
 

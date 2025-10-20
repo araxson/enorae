@@ -1,6 +1,4 @@
 import { Section, Center, Stack } from '@/components/layout'
-import { H1, Lead, P } from '@/components/ui/typography'
-
 type MarketingHeroProps = {
   title: string
   subtitle: string
@@ -24,10 +22,10 @@ export function MarketingHero({
         <div className={`mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 ${textAlignClass}`}>
           <div className="space-y-6">
             <div className="space-y-4">
-              <H1>{title}</H1>
-              <Lead>{subtitle}</Lead>
+              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{title}</h1>
+              <p className="text-xl text-muted-foreground">{subtitle}</p>
             </div>
-            <P className="text-lg text-muted-foreground">{description}</P>
+            <p className="leading-7 text-lg text-muted-foreground">{description}</p>
           </div>
         </div>
       </section>
@@ -39,10 +37,10 @@ export function MarketingHero({
       <Center className="w-full">
         <Stack gap="lg" className={`max-w-3xl ${textAlignClass}`}>
           <Stack gap="md">
-            <H1>{title}</H1>
-            <Lead>{subtitle}</Lead>
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{title}</h1>
+            <p className="text-xl text-muted-foreground">{subtitle}</p>
           </Stack>
-          <P className="text-lg text-muted-foreground">{description}</P>
+          <p className="leading-7 text-lg text-muted-foreground">{description}</p>
         </Stack>
       </Center>
     </Section>

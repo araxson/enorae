@@ -4,7 +4,6 @@ import type { ReactNode, ComponentType } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
-import { Muted } from '@/components/ui/typography'
 import { formatCurrency } from '../utils/formatters'
 
 export type RankingItem = {
@@ -140,14 +139,14 @@ export function RankingList({
                   <div>
                     <div className="font-medium">{item.name}</div>
                     {item.subtitle && (
-                      <Muted className="text-xs">{item.subtitle}</Muted>
+                      <p className="text-sm text-muted-foreground text-xs">{item.subtitle}</p>
                     )}
                   </div>
                 </Flex>
                 <div className="text-right">
                   <div className="font-semibold">{formatValue(item.value)}</div>
                   {item.metric && (
-                    <Muted className="text-xs">{item.metric}</Muted>
+                    <p className="text-sm text-muted-foreground text-xs">{item.metric}</p>
                   )}
                 </div>
               </div>

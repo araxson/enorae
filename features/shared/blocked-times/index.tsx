@@ -2,7 +2,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getBlockedTimesBySalon, getBlockedTimesSalon } from './api/queries'
 import { BlockedTimesList } from './components/blocked-times-list'
 import { BlockedTimeForm } from './components/blocked-time-form'
-import { H1, P } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 
 export async function BlockedTimesManagement() {
@@ -13,10 +12,10 @@ export async function BlockedTimesManagement() {
     return (
       <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
         <div className="space-y-2">
-          <H1>Blocked Times</H1>
-          <P className="text-muted-foreground">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Blocked Times</h1>
+          <p className="leading-7 text-muted-foreground">
             Manage blocked time slots to prevent bookings during specific periods.
-          </P>
+          </p>
         </div>
 
         <Separator />

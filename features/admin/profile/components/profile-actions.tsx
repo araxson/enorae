@@ -49,7 +49,7 @@ export function ProfileActions({ profile, onAnonymized, isLoading }: ProfileActi
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">Security actions</CardTitle>
+        <CardTitle>Security actions</CardTitle>
         <CardDescription>Administrative controls for user privacy and data retention.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

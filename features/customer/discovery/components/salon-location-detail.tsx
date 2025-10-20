@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Stack } from '@/components/layout'
-import { P, Muted } from '@/components/ui/typography'
 import { Separator } from '@/components/ui/separator'
 import { MapPin, Navigation, ParkingCircle, Accessibility } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
@@ -28,34 +27,36 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <MapPin className="h-5 w-5" />
-          Location
-        </CardTitle>
+          <CardTitle>Location</CardTitle>
+        </div>
       </CardHeader>
       <CardContent>
         <Stack gap="md">
           {/* Formatted Address */}
           {locationAddress.formatted_address && (
             <div>
-              <Muted className="mb-2 block text-xs">Address</Muted>
-              <P className="whitespace-pre-line">{locationAddress.formatted_address}</P>
+              <p className="mb-2 text-xs text-muted-foreground">Address</p>
+              <p className="whitespace-pre-line text-sm text-foreground">
+                {locationAddress.formatted_address}
+              </p>
             </div>
           )}
 
           {/* Individual Address Components */}
           {!locationAddress.formatted_address && (
             <div>
-              <Muted className="mb-2 block text-xs">Address</Muted>
+              <p className="mb-2 text-xs text-muted-foreground">Address</p>
               <Stack gap="xs">
-                {locationAddress.street_address && <P>{locationAddress.street_address}</P>}
-                {locationAddress.street_address_2 && <P>{locationAddress.street_address_2}</P>}
-                <P>
+                {locationAddress.street_address && <p className="text-sm text-foreground">{locationAddress.street_address}</p>}
+                {locationAddress.street_address_2 && <p className="text-sm text-foreground">{locationAddress.street_address_2}</p>}
+                <p className="text-sm text-foreground">
                   {locationAddress.city}
                   {locationAddress.state_province && `, ${locationAddress.state_province}`}
                   {locationAddress.postal_code && ` ${locationAddress.postal_code}`}
-                </P>
-                {locationAddress.country_code && <P>{locationAddress.country_code}</P>}
+                </p>
+                {locationAddress.country_code && <p className="text-sm text-foreground">{locationAddress.country_code}</p>}
               </Stack>
             </div>
           )}
@@ -67,14 +68,14 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
               <div>
                 {locationAddress.neighborhood && (
                   <div className="mb-2">
-                    <Muted className="text-xs">Neighborhood</Muted>
-                    <P className="text-sm">{locationAddress.neighborhood}</P>
+                    <span className="text-xs text-muted-foreground">Neighborhood</span>
+                    <p className="text-sm text-foreground">{locationAddress.neighborhood}</p>
                   </div>
                 )}
                 {locationAddress.landmark && (
                   <div>
-                    <Muted className="text-xs">Nearby Landmark</Muted>
-                    <P className="text-sm">{locationAddress.landmark}</P>
+                    <span className="text-xs text-muted-foreground">Nearby Landmark</span>
+                    <p className="text-sm text-foreground">{locationAddress.landmark}</p>
                   </div>
                 )}
               </div>
@@ -88,9 +89,11 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <ParkingCircle className="h-4 w-4 text-muted-foreground" />
-                  <Muted className="text-xs">Parking Information</Muted>
+                  <span className="text-xs text-muted-foreground">Parking Information</span>
                 </div>
-                <P className="text-sm whitespace-pre-line">{locationAddress.parking_instructions}</P>
+                <p className="whitespace-pre-line text-sm text-foreground">
+                  {locationAddress.parking_instructions}
+                </p>
               </div>
             </>
           )}
@@ -102,9 +105,11 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Accessibility className="h-4 w-4 text-muted-foreground" />
-                  <Muted className="text-xs">Accessibility</Muted>
+                  <span className="text-xs text-muted-foreground">Accessibility</span>
                 </div>
-                <P className="text-sm whitespace-pre-line">{locationAddress.accessibility_notes}</P>
+                <p className="whitespace-pre-line text-sm text-foreground">
+                  {locationAddress.accessibility_notes}
+                </p>
               </div>
             </>
           )}
@@ -124,9 +129,9 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
 
           {/* Coordinates (for debugging/advanced users) */}
           {locationAddress.latitude && locationAddress.longitude && (
-            <Muted className="text-xs text-center">
+            <p className="text-center text-xs text-muted-foreground">
               {locationAddress.latitude}, {locationAddress.longitude}
-            </Muted>
+            </p>
           )}
         </Stack>
       </CardContent>

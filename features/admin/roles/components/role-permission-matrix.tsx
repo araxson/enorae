@@ -28,7 +28,7 @@ export function RolePermissionMatrix({ roles }: RolePermissionMatrixProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Permission matrix</CardTitle>
+        <CardTitle>Permission matrix</CardTitle>
         <p className="text-xs text-muted-foreground">
           Aggregated permissions across active assignments. Use row actions to refine individual role permissions.
         </p>

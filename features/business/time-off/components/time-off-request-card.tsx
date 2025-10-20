@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Stack, Flex } from '@/components/layout'
-import { P, Muted, Small } from '@/components/ui/typography'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
 
@@ -71,7 +70,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
               {request.staff_name || 'Unknown Staff'}
             </CardTitle>
             {request.staff_title && (
-              <Muted className="text-sm">{request.staff_title}</Muted>
+              <p className="text-sm text-muted-foreground text-sm">{request.staff_title}</p>
             )}
           </div>
           <Badge variant={statusColor}>{request.status}</Badge>
@@ -81,16 +80,16 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
         <Stack gap="md">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Small className="text-muted-foreground">Start Date</Small>
-              <P className="text-sm font-medium">
+              <small className="text-sm font-medium leading-none text-muted-foreground">Start Date</small>
+              <p className="leading-7 text-sm font-medium">
                 {request.start_at ? format(new Date(request.start_at), 'MMM dd, yyyy') : 'N/A'}
-              </P>
+              </p>
             </div>
             <div>
-              <Small className="text-muted-foreground">End Date</Small>
-              <P className="text-sm font-medium">
+              <small className="text-sm font-medium leading-none text-muted-foreground">End Date</small>
+              <p className="leading-7 text-sm font-medium">
                 {request.end_at ? format(new Date(request.end_at), 'MMM dd, yyyy') : 'N/A'}
-              </P>
+              </p>
             </div>
           </div>
 
@@ -103,26 +102,26 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
 
           {request.request_type && (
             <div>
-              <Small className="text-muted-foreground">Type</Small>
-              <P className="text-sm capitalize">{request.request_type.replace('_', ' ')}</P>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Type</small>
+              <p className="leading-7 text-sm capitalize">{request.request_type.replace('_', ' ')}</p>
             </div>
           )}
 
           {request.reason && (
             <div>
-              <Small className="text-muted-foreground">Reason</Small>
-              <P className="text-sm">{request.reason}</P>
+              <small className="text-sm font-medium leading-none text-muted-foreground">Reason</small>
+              <p className="leading-7 text-sm">{request.reason}</p>
             </div>
           )}
 
           {request.reviewed_at && request.reviewed_by_name && (
             <div className="pt-2 border-t">
-              <Small className="text-muted-foreground">
+              <small className="text-sm font-medium leading-none text-muted-foreground">
                 Reviewed by {request.reviewed_by_name} on{' '}
                 {format(new Date(request.reviewed_at), 'MMM dd, yyyy')}
-              </Small>
+              </small>
               {request.review_notes && (
-                <P className="text-sm mt-1">{request.review_notes}</P>
+                <p className="leading-7 text-sm mt-1">{request.review_notes}</p>
               )}
             </div>
           )}

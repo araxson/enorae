@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Stack, Section, Box } from '@/components/layout'
-import { H1, P } from '@/components/ui/typography'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { SalonFilters } from './components/salon-filters'
 import { SalonGrid } from './components/salon-grid'
@@ -33,10 +32,10 @@ export async function SalonDirectory({ searchParams }: SalonDirectoryProps) {
         {/* Header */}
         <Box>
           <Stack gap="md">
-            <H1>Discover Salons</H1>
-            <P className="text-muted-foreground">
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Discover Salons</h1>
+            <p className="leading-7 text-muted-foreground">
               Find and book appointments at the best salons in your area
-            </P>
+            </p>
           </Stack>
         </Box>
 

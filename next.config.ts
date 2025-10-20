@@ -52,10 +52,7 @@ const nextConfig: NextConfig = {
     optimisticClientCache: true,
   },
 
-  webpack: (config) => {
-    config.cache = false
-    return config
-  },
+  webpack: (config) => config,
 };
 
 export default nextConfig;

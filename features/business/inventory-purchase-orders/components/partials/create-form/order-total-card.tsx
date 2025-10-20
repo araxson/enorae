@@ -2,8 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Flex } from '@/components/layout'
-import { P } from '@/components/ui/typography'
-
 const formatTotal = (total: number) => `$${total.toFixed(2)}`
 
 type Props = {
@@ -15,8 +13,8 @@ export function OrderTotalCard({ totalAmount }: Props) {
     <Card>
       <CardContent>
         <Flex justify="between" align="center">
-          <P className="font-semibold">Total Order Amount</P>
-          <P className="text-xl font-bold">{formatTotal(totalAmount)}</P>
+          <p className="leading-7 font-semibold">Total Order Amount</p>
+          <p className="leading-7 text-xl font-bold">{formatTotal(totalAmount)}</p>
         </Flex>
       </CardContent>
     </Card>

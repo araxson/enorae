@@ -5,7 +5,6 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Stack, Flex } from '@/components/layout'
-import { H3, Muted } from '@/components/ui/typography'
 import { updateUserPreferences } from '../api/mutations'
 import type { DisplayPreferences } from '../types'
 
@@ -36,8 +35,8 @@ export function DisplayPreferences({ initialPreferences }: DisplayPreferencesPro
     <Card className="p-6">
       <Stack gap="lg">
         <div>
-          <H3>Display Preferences</H3>
-          <Muted>Customize your interface</Muted>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Display Preferences</h3>
+          <p className="text-sm text-muted-foreground">Customize your interface</p>
         </div>
 
         <Stack gap="md">
