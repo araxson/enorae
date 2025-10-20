@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react'
 import { Plus, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex, Box } from '@/components/layout'
 import { RolesStats } from './roles-stats'
 import { RolesFilters } from './roles-filters'
 import { RolesTable } from './roles-table'
@@ -50,15 +49,15 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
   }, [roles, searchQuery, roleFilter, statusFilter])
 
   return (
-    <Stack gap="xl">
-      <Flex align="center" justify="between">
-        <Box>
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-wrap items-center justify-between gap-6">
+        <div>
           <p className="leading-7 text-base font-semibold">Role Management</p>
           <p className="text-sm text-muted-foreground mt-1">
             Assign roles, manage permissions, and monitor historical changes.
           </p>
-        </Box>
-        <Flex gap="sm">
+        </div>
+        <div className="flex items-center gap-4">
           <Button variant="outline" onClick={() => setIsBulkDialogOpen(true)}>
             <Upload className="mr-2 h-4 w-4" />
             Bulk Assign
@@ -67,8 +66,8 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
             <Plus className="mr-2 h-4 w-4" />
             Assign Role
           </Button>
-        </Flex>
-      </Flex>
+        </div>
+      </div>
 
       <RolesStats stats={stats} />
 
@@ -90,6 +89,6 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
       <AssignRoleForm open={isAssignFormOpen} onOpenChange={setIsAssignFormOpen} salons={salons} />
 
       <BulkAssignDialog open={isBulkDialogOpen} onOpenChange={setIsBulkDialogOpen} salons={salons} />
-    </Stack>
+    </div>
   )
 }

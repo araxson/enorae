@@ -36,7 +36,7 @@ export function SalonHero({ salon }: SalonHeroProps) {
               <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{salon.name || 'Unnamed Salon'}</h1>
               {salon.rating !== null && (
                 <Group gap="sm">
-                  <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                  <Star className="h-5 w-5 text-warning" fill="currentColor" />
                   <span className="text-lg font-semibold font-semibold">{salon.rating.toFixed(1)}</span>
                   {salon.review_count !== null && <p className="text-sm text-muted-foreground">({salon.review_count} reviews)</p>}
                 </Group>

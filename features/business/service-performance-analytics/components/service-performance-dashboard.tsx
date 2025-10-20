@@ -63,9 +63,9 @@ export function ServicePerformanceDashboard({
     .slice(0, 5)
 
   const getPerformanceIcon = (cancellationRate: number) => {
-    if (cancellationRate < 10) return <TrendingUp className="h-4 w-4 text-green-500" />
-    if (cancellationRate > 20) return <TrendingDown className="h-4 w-4 text-red-500" />
-    return <BarChart3 className="h-4 w-4 text-yellow-500" />
+    if (cancellationRate < 10) return <TrendingUp className="h-4 w-4 text-success" />
+    if (cancellationRate > 20) return <TrendingDown className="h-4 w-4 text-destructive" />
+    return <BarChart3 className="h-4 w-4 text-warning" />
   }
 
   const formatCurrency = (amount: number) => {
@@ -80,10 +80,10 @@ export function ServicePerformanceDashboard({
       <Grid cols={{ base: 1, md: 3 }} gap="lg">
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <DollarSign className="h-5 w-5" />
-              Top Revenue Generators
-            </CardTitle>
+              <CardTitle>Top Revenue Generators</CardTitle>
+            </div>
           </CardHeader>
           <CardContent>
             <Stack gap="md">
@@ -103,7 +103,7 @@ export function ServicePerformanceDashboard({
                   <div className="text-right">
                     <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Star className="h-3 w-3" />
+                      <Star className="h-3 w-3 text-warning" />
                       {service.avg_rating?.toFixed(1) || 'N/A'}
                     </div>
                   </div>
@@ -115,10 +115,10 @@ export function ServicePerformanceDashboard({
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5" />
-              Most Popular Services
-            </CardTitle>
+              <CardTitle>Most Popular Services</CardTitle>
+            </div>
           </CardHeader>
           <CardContent>
             <Stack gap="md">
@@ -208,7 +208,7 @@ export function ServicePerformanceDashboard({
                     <p className="text-sm text-muted-foreground">Avg Rating</p>
                     <div className="flex items-center gap-1">
                       <p className="text-xl font-semibold">{service.avg_rating?.toFixed(1) || 'N/A'}</p>
-                      <Star className="h-4 w-4 text-yellow-500" />
+                      <Star className="h-4 w-4 text-warning" />
                     </div>
                   </div>
                   <div>
@@ -225,10 +225,10 @@ export function ServicePerformanceDashboard({
       <Grid cols={{ base: 1, md: 2 }} gap="lg">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <Users className="h-5 w-5" />
-              Staff Leaders by Service
-            </CardTitle>
+              <CardTitle>Staff Leaders by Service</CardTitle>
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             {staffPerformance.map((record) => (
@@ -251,10 +251,10 @@ export function ServicePerformanceDashboard({
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <Link2 className="h-5 w-5" />
-              Service Pairings
-            </CardTitle>
+              <CardTitle>Service Pairings</CardTitle>
+            </div>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
             {pairings.map((pair) => (

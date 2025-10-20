@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -82,9 +82,13 @@ function AppointmentDetailContent({
       <Separator />
 
       <Card>
+        <CardHeader>
+          <CardTitle>Appointment overview</CardTitle>
+          <CardDescription>Schedule, team, and services for this visit</CardDescription>
+        </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <div className="space-y-2">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Date &amp; time</h3>
+            <p className="text-sm font-medium text-muted-foreground uppercase">Date &amp; time</p>
             <p className="leading-7">
               {appointment.start_time &&
                 new Date(appointment.start_time).toLocaleDateString('en-US', {
@@ -117,7 +121,7 @@ function AppointmentDetailContent({
             <>
               <Separator />
               <div className="space-y-1">
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Staff member</h3>
+                <p className="text-sm font-medium text-muted-foreground uppercase">Staff member</p>
                 <p className="leading-7">{appointment.staff_name}</p>
                 {appointment.staff_title && <p className="text-sm text-muted-foreground">{appointment.staff_title}</p>}
               </div>
@@ -127,7 +131,7 @@ function AppointmentDetailContent({
           <Separator />
 
           <div className="space-y-4">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Services</h3>
+            <p className="text-sm font-medium text-muted-foreground uppercase">Services</p>
             {services.length > 0 ? (
               <div className="overflow-hidden rounded-md border">
                 <Table>
@@ -187,9 +191,12 @@ function AppointmentDetailContent({
 
       {productUsage.length > 0 && (
         <Card>
+          <CardHeader>
+            <CardTitle>Products used</CardTitle>
+            <CardDescription>Professional products applied during your appointment</CardDescription>
+          </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="space-y-4">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Products Used</h3>
               <div className="overflow-hidden rounded-md border">
                 <Table>
                   <TableHeader>

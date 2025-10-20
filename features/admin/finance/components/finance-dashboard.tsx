@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import { Grid, Stack } from '@/components/layout'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { RevenueOverview } from './revenue-overview'
 import { RevenueBySalon } from './revenue-by-salon'
@@ -36,7 +35,7 @@ async function FinanceDashboardContent({ startDate, endDate }: FinanceDashboardP
   ])
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-10">
       <RevenueOverview metrics={revenueMetrics} />
 
       <Tabs defaultValue="by-salon" className="w-full">
@@ -63,7 +62,7 @@ async function FinanceDashboardContent({ startDate, endDate }: FinanceDashboardP
           <PaymentMethodStatsComponent stats={paymentMethodStats} />
         </TabsContent>
       </Tabs>
-    </Stack>
+    </div>
   )
 }
 
@@ -80,13 +79,13 @@ export function FinanceDashboard(props: FinanceDashboardPropsWithSuspense) {
 
 export function FinanceDashboardSkeleton() {
   return (
-    <Stack gap="xl">
-      <Grid cols={{ base: 1, md: 4 }} gap="sm">
+    <div className="flex flex-col gap-10">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         {[...Array(4)].map((_, index) => (
           <Skeleton key={index} className="h-32" />
         ))}
-      </Grid>
+      </div>
       <Skeleton className="h-96" />
-    </Stack>
+    </div>
   )
 }

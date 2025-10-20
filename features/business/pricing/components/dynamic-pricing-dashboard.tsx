@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
 import {
   TrendingUp,
   TrendingDown,
@@ -83,13 +82,13 @@ export function DynamicPricingDashboard({
   )
 
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-8">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Active Rules</CardTitle>
-            <Zap className="h-4 w-4 text-yellow-600" />
+            <Zap className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{rules.length}</div>
@@ -103,7 +102,7 @@ export function DynamicPricingDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Revenue Potential</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            <TrendingUp className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -167,15 +166,15 @@ export function DynamicPricingDashboard({
                     <div className="flex items-center gap-2">
                       {rule.adjustment_type === 'surge' ? (
                         <>
-                          <TrendingUp className="h-4 w-4 text-green-600" />
-                          <Badge className="bg-green-100 text-green-800">
+                          <TrendingUp className="h-4 w-4 text-success" />
+                          <Badge className="bg-success/10 text-success">
                             +{rule.adjustment_percentage}% Surge
                           </Badge>
                         </>
                       ) : (
                         <>
-                          <TrendingDown className="h-4 w-4 text-blue-600" />
-                          <Badge className="bg-blue-100 text-blue-800">
+                          <TrendingDown className="h-4 w-4 text-info" />
+                          <Badge className="bg-info/10 text-info">
                             -{rule.adjustment_percentage}% Discount
                           </Badge>
                         </>
@@ -199,7 +198,7 @@ export function DynamicPricingDashboard({
                   </CardDescription>
                 </div>
                 <Select value={selectedDay} onValueChange={setSelectedDay}>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-44">
                     <SelectValue placeholder="Filter by day" />
                   </SelectTrigger>
                   <SelectContent>
@@ -274,13 +273,13 @@ export function DynamicPricingDashboard({
                           Base price: {formatCurrency(insight.base_price)}
                         </p>
                       </div>
-                      <Badge className="bg-green-100 text-green-800">
+                      <Badge className="bg-success/10 text-success">
                         +{formatCurrency(insight.potential_revenue_increase)}/mo
                       </Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-4 mt-3">
                       <div className="flex items-center gap-2">
-                        <TrendingDown className="h-4 w-4 text-blue-600" />
+                        <TrendingDown className="h-4 w-4 text-info" />
                         <div>
                           <p className="text-xs text-muted-foreground">Off-Peak Price</p>
                           <p className="font-semibold">
@@ -289,7 +288,7 @@ export function DynamicPricingDashboard({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-green-600" />
+                        <TrendingUp className="h-4 w-4 text-success" />
                         <div>
                           <p className="text-xs text-muted-foreground">Peak Price</p>
                           <p className="font-semibold">
@@ -305,6 +304,6 @@ export function DynamicPricingDashboard({
           </Card>
         </TabsContent>
       </Tabs>
-    </Stack>
+    </div>
   )
 }

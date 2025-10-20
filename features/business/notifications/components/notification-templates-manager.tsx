@@ -10,9 +10,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Stack, Grid } from '@/components/layout'
 import { PenLine, PlusCircle, Trash2 } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import type { NotificationTemplate } from '../api/queries'
 import { deleteNotificationTemplate, upsertNotificationTemplate } from '../api/mutations'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 type NotificationTemplatesManagerProps = {
   templates: NotificationTemplate[]
@@ -147,18 +148,21 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
         </CardHeader>
         <CardContent>
           {templates.length === 0 ? (
-            <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-              No templates configured yet. Create your first template to standardize notifications.
-            </div>
+            <Alert>
+              <AlertTitle>No templates configured</AlertTitle>
+              <AlertDescription>
+                Create your first template to standardize notifications.
+              </AlertDescription>
+            </Alert>
           ) : (
             <Grid cols={{ base: 1, md: 2 }} gap="md">
               {templates.map((template) => (
                 <Card key={template.id} className="border-muted">
                   <CardHeader>
                     <div className="flex items-start justify-between">
-                      <div>
+                      <div className="space-y-1">
                         <CardTitle>{template.name}</CardTitle>
-                        <CardDescription className="text-xs">
+                        <CardDescription>
                           {(template.description || template.event.replace('_', ' ')).toString()}
                         </CardDescription>
                       </div>

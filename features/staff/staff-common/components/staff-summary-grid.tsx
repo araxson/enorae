@@ -4,9 +4,9 @@ import type { StaffSummary } from './types'
 
 const toneClasses: Record<Required<StaffSummary>['tone'], string> = {
   default: 'border-border',
-  success: 'border-emerald-500/60 dark:border-emerald-500/50',
-  warning: 'border-amber-500/60 dark:border-amber-500/50',
-  info: 'border-sky-500/60 dark:border-sky-500/50',
+  success: 'border-success',
+  warning: 'border-warning',
+  info: 'border-info',
 }
 
 interface StaffSummaryGridProps {

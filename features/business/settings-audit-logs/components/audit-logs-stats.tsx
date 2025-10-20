@@ -17,8 +17,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
     <Grid cols={{ base: 1, md: 2, lg: 5 }} gap="lg">
       <Card className="p-6">
         <Flex gap="md" align="center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-            <Activity className="h-6 w-6 text-blue-600" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-info/10">
+            <Activity className="h-6 w-6 text-info" />
           </div>
           <Stack gap="xs">
             <p className="text-sm text-muted-foreground text-sm">Total Events (24h)</p>
@@ -29,8 +29,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
 
       <Card className="p-6">
         <Flex gap="md" align="center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-            <CheckCircle2 className="h-6 w-6 text-green-600" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success/10">
+            <CheckCircle2 className="h-6 w-6 text-success" />
           </div>
           <Stack gap="xs">
             <p className="text-sm text-muted-foreground text-sm">Success Rate</p>
@@ -41,8 +41,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
 
       <Card className="p-6">
         <Flex gap="md" align="center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-            <XCircle className="h-6 w-6 text-red-600" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
+            <XCircle className="h-6 w-6 text-destructive" />
           </div>
           <Stack gap="xs">
             <p className="text-sm text-muted-foreground text-sm">Failed Actions</p>
@@ -53,8 +53,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
 
       <Card className="p-6">
         <Flex gap="md" align="center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100">
-            <AlertTriangle className="h-6 w-6 text-orange-600" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10">
+            <AlertTriangle className="h-6 w-6 text-warning" />
           </div>
           <Stack gap="xs">
             <p className="text-sm text-muted-foreground text-sm">Critical Events</p>
@@ -65,8 +65,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
 
       <Card className="p-6">
         <Flex gap="md" align="center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-100">
-            <AlertTriangle className="h-6 w-6 text-yellow-600" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10">
+            <AlertTriangle className="h-6 w-6 text-warning" />
           </div>
           <Stack gap="xs">
             <p className="text-sm text-muted-foreground text-sm">Warnings</p>

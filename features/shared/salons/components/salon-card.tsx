@@ -81,7 +81,7 @@ export function SalonCard({
           <CardTitle>{name}</CardTitle>
           {rating !== undefined && (
             <Group gap="xs">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <Star className="h-4 w-4 text-warning" fill="currentColor" />
               <small className="text-sm font-medium leading-none font-medium">{rating.toFixed(1)}</small>
               {reviewCount !== undefined && (
                 <small className="text-sm font-medium leading-none text-muted-foreground">

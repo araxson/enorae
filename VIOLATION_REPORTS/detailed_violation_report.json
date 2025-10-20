@@ -1,0 +1,120 @@
+{
+  "tier_1_critical": [
+    {
+      "path": "features/shared/dashboard",
+      "existing_files": [],
+      "api_files": [],
+      "component_files": [
+        "components/data-refresh-controls.tsx"
+      ],
+      "missing_files": [
+        "index.tsx",
+        "types.ts",
+        "schema.ts"
+      ]
+    },
+    {
+      "path": "features/shared/sessions",
+      "existing_files": [
+        "index.tsx"
+      ],
+      "api_files": [
+        "api/queries.ts",
+        "api/mutations.ts",
+        "api/session-context.ts"
+      ],
+      "component_files": [
+        "components/session-list.tsx",
+        "components/session-card.tsx"
+      ],
+      "missing_files": [
+        "types.ts",
+        "schema.ts"
+      ]
+    }
+  ],
+  "tier_2_high_complexity": [
+    {
+      "path": "features/admin/users",
+      "violation_type": "queries_and_mutations",
+      "root_files": [
+        "schema.ts",
+        "index.tsx",
+        "types.ts"
+      ],
+      "component_files": [
+        "components/users-table.tsx",
+        "components/user-actions-menu.tsx",
+        "components/admin-users-client.tsx",
+        "components/user-actions-menu/index.tsx",
+        "components/user-actions-menu/dialogs.tsx",
+        "..."
+      ],
+      "component_file_count": 6,
+      "files_to_consolidate": {
+        "queries": [
+          "single-user.ts",
+          "all-users.ts",
+          "stats.ts",
+          "types.ts"
+        ],
+        "mutations": [
+          "status.ts",
+          "helpers.ts",
+          "status-reactivate.mutation.ts",
+          "status-ban.mutation.ts",
+          "constants.ts",
+          "status-suspend.mutation.ts",
+          "profile.ts",
+          "status-batch.mutation.ts",
+          "index.ts",
+          "sessions.ts",
+          "delete.ts"
+        ]
+      },
+      "total_files_to_merge": 15
+    },
+    {
+      "path": "features/admin/analytics",
+      "violation_type": "api_internal",
+      "root_files": [
+        "schema.ts",
+        "index.tsx",
+        "types.ts"
+      ],
+      "component_files": [
+        "components/analytics-dashboard.tsx",
+        "components/acquisition-panel.tsx",
+        "components/feature-usage-panel.tsx",
+        "components/metric-summary-cards.tsx",
+        "components/performance-benchmarks-table.tsx",
+        "..."
+      ],
+      "component_file_count": 7,
+      "files_to_consolidate": {
+        "queries": [
+          "queries/inventory.ts",
+          "queries/salons.ts",
+          "queries/revenue.ts",
+          "queries/messages.ts",
+          "queries/platform.ts",
+          "queries/appointments.ts",
+          "queries/users.ts",
+          "queries/staff.ts",
+          "queries/reviews.ts"
+        ],
+        "platform-analytics": [
+          "platform-analytics/helpers.ts",
+          "platform-analytics/performance.ts",
+          "platform-analytics/acquisition.ts",
+          "platform-analytics/retention.ts",
+          "platform-analytics/growth.ts",
+          "platform-analytics/constants.ts",
+          "platform-analytics/feature-usage.ts"
+        ]
+      },
+      "total_files_to_merge": 16
+    }
+  ],
+  "tier_3_medium": []
+}

@@ -15,22 +15,22 @@ const badgeConfig = {
   verified: {
     icon: Check,
     defaultText: 'Verified salons',
-    className: 'bg-green-500/10 text-green-600 hover:bg-green-500/15',
+    className: 'bg-success/10 text-success hover:bg-success/15',
   },
   secure: {
     icon: Shield,
     defaultText: 'Secure platform',
-    className: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/15',
+    className: 'bg-info/10 text-info hover:bg-info/15',
   },
   rated: {
     icon: Star,
     defaultText: '4.8★ rated',
-    className: 'bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/15',
+    className: 'bg-warning/10 text-warning hover:bg-warning/15',
   },
   popular: {
     icon: Users,
     defaultText: '10,000+ users',
-    className: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/15',
+    className: 'bg-accent/10 text-accent-foreground hover:bg-accent/15',
   },
 }
 

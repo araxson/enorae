@@ -77,15 +77,13 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
     >
       <Card>
         <CardHeader>
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <CardTitle className="flex items-center gap-2 text-lg">
+            <div className="flex items-start justify-between">
+              <div className="flex flex-1 items-center gap-2">
                 {isSubcategory && <span className="text-muted-foreground">↳</span>}
-                {category.name}
-              </CardTitle>
-            </div>
-            <Badge variant="secondary">
-              {category.service_count || 0} services
+                <CardTitle>{category.name}</CardTitle>
+              </div>
+              <Badge variant="secondary">
+                {category.service_count || 0} services
             </Badge>
           </div>
         </CardHeader>

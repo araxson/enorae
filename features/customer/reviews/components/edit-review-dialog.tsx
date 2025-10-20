@@ -68,7 +68,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit review</DialogTitle>
           <DialogDescription>
@@ -102,9 +102,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
                   >
                     <Star
                       className={`h-8 w-8 ${
-                        value <= rating
-                          ? 'fill-yellow-500 text-yellow-500'
-                          : 'text-muted-foreground/30'
+                        value <= rating ? 'fill-warning text-warning' : 'text-muted-foreground/30'
                       }`}
                     />
                   </button>

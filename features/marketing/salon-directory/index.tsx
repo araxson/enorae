@@ -49,6 +49,13 @@ export async function SalonDirectory({ searchParams }: SalonDirectoryProps) {
   )
 }
 
+export const marketingSalonDirectoryMetadata = genMeta({
+  title: 'Discover Salons',
+  description:
+    'Browse and discover the best salons in your area. Find services, read reviews, and book appointments.',
+  keywords: ['salons', 'beauty salons', 'hair salon', 'nail salon', 'spa', 'salon directory'],
+})
+
 interface MarketingSalonDirectoryPageProps {
   searchParams: Promise<{
     search?: string

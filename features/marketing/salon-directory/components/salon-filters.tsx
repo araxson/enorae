@@ -71,7 +71,7 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
           {/* City Filter */}
           {cities.length > 0 && (
             <Select value={selectedCity} onValueChange={setSelectedCity}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-52">
                 <MapPin className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Select city" />
               </SelectTrigger>
@@ -89,7 +89,7 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
           {/* Category Filter */}
           {categories.length > 0 && (
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-52">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>

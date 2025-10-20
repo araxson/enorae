@@ -1,5 +1,5 @@
 import { Scissors, Star, TrendingUp, Award } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 type StaffService = {
   id: string
   proficiency_level?: string | null
@@ -29,25 +29,25 @@ export function ServicesStats({ services }: ServicesStatsProps) {
       label: 'Total services',
       value: totalServices,
       icon: Scissors,
-      accent: 'text-blue-500',
+      accent: 'text-info',
     },
     {
       label: 'Total performed',
       value: totalPerformed,
       icon: TrendingUp,
-      accent: 'text-green-500',
+      accent: 'text-success',
     },
     {
       label: 'Average rating',
       value: avgRating > 0 ? avgRating.toFixed(1) : '—',
       icon: Star,
-      accent: 'text-yellow-500',
+      accent: 'text-warning',
     },
     {
       label: 'Expert level',
       value: expertServices,
       icon: Award,
-      accent: 'text-purple-500',
+      accent: 'text-accent',
     },
   ] as const
 
@@ -55,13 +55,13 @@ export function ServicesStats({ services }: ServicesStatsProps) {
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       {items.map(({ label, value, icon: Icon, accent }) => (
         <Card key={label}>
-          <CardContent className="flex items-start justify-between gap-4 p-4">
+          <CardHeader className="flex items-start justify-between space-y-0">
             <div className="space-y-1">
-              <p className="leading-7 text-sm text-muted-foreground">{label}</p>
-              <p className="text-2xl font-semibold">{value}</p>
+              <CardTitle>{value}</CardTitle>
+              <CardDescription>{label}</CardDescription>
             </div>
-            <Icon className={`h-4 w-4 ${accent}`} />
-          </CardContent>
+            <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
+          </CardHeader>
         </Card>
       ))}
     </div>

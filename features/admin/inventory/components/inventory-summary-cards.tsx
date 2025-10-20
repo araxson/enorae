@@ -1,6 +1,5 @@
 import { Package, AlertTriangle, DollarSign } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Grid } from '@/components/layout'
 import { formatCurrency } from './inventory-utils'
 
 type Summary = {
@@ -17,7 +16,7 @@ type SummaryCardsProps = {
 
 export function InventorySummaryCards({ summary }: SummaryCardsProps) {
   return (
-    <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="md">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle>Total Products</CardTitle>
@@ -43,7 +42,7 @@ export function InventorySummaryCards({ summary }: SummaryCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle>Low Stock Alerts</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-yellow-500" />
+          <AlertTriangle className="h-4 w-4 text-warning" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{summary.lowStockAlerts}</div>
@@ -54,15 +53,15 @@ export function InventorySummaryCards({ summary }: SummaryCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle>Critical Alerts</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-red-500" />
+          <AlertTriangle className="h-4 w-4 text-destructive" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-red-600">
+          <div className="text-2xl font-bold text-destructive">
             {summary.criticalStockAlerts}
           </div>
           <p className="text-xs text-muted-foreground">Immediate action required</p>
         </CardContent>
       </Card>
-    </Grid>
+    </div>
   )
 }

@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   getAnalyticsOverview,
@@ -29,13 +28,15 @@ export async function EnhancedAnalytics({ startDate, endDate }: EnhancedAnalytic
     salon = await getAnalyticsSalon()
   } catch (error) {
     return (
-      <Section size="lg">
-        <Alert>
-          <AlertDescription>
-            {error instanceof Error ? error.message : 'Failed to load salon data'}
-          </AlertDescription>
-        </Alert>
-      </Section>
+      <section className="py-16 md:py-24 lg:py-32">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Alert>
+            <AlertDescription>
+              {error instanceof Error ? error.message : 'Failed to load salon data'}
+            </AlertDescription>
+          </Alert>
+        </div>
+      </section>
     )
   }
 
@@ -63,8 +64,9 @@ export async function EnhancedAnalytics({ startDate, endDate }: EnhancedAnalytic
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
         <DateRangeHeader start={start} end={end} />
         <AnalyticsOverviewCards data={overview} />
         <TopPerformersSection start={start} end={end} services={topServices} staff={topStaff} />
@@ -73,7 +75,8 @@ export async function EnhancedAnalytics({ startDate, endDate }: EnhancedAnalytic
         {isTenantOwner && chainCompare ? (
           <ChainAnalyticsSection start={start} end={end} breakdown={chainBreakdown} comparison={chainCompare} />
         ) : null}
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

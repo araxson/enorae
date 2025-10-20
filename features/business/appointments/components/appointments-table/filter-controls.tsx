@@ -36,7 +36,7 @@ export function AppointmentsFilterControls({ searchQuery, onSearchChange, status
           className="flex-1"
         />
         <Select value={statusFilter} onValueChange={onStatusChange}>
-          <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectTrigger className="w-full sm:w-44">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>

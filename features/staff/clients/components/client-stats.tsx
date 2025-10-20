@@ -20,25 +20,25 @@ export function ClientStats({ clients }: ClientStatsProps) {
       label: 'Total Clients',
       value: totalClients.toString(),
       icon: Users,
-      color: 'text-blue-500',
+      color: 'text-info',
     },
     {
       label: 'Repeat Clients',
       value: repeatClients.toString(),
       icon: UserCheck,
-      color: 'text-green-500',
+      color: 'text-success',
     },
     {
       label: 'Appointments',
       value: totalAppointments.toString(),
       icon: Calendar,
-      color: 'text-orange-500',
+      color: 'text-warning',
     },
     {
       label: 'Total Revenue',
       value: `$${totalRevenue.toFixed(2)}`,
       icon: DollarSign,
-      color: 'text-purple-500',
+      color: 'text-accent',
     },
   ]
 

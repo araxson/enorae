@@ -19,8 +19,8 @@ export function PaymentMethodsCard({ salon }: PaymentMethodsCardProps) {
         <Stack gap="sm">
           {salon.payment_methods.map((method: string) => (
             <Group gap="xs" key={method}>
-              <CheckCircle className="h-4 w-4 text-green-600" />
-              <p className="text-sm text-muted-foreground text-sm">{method}</p>
+              <CheckCircle className="h-4 w-4 text-success" />
+              <p className="text-sm text-muted-foreground">{method}</p>
             </Group>
           ))}
         </Stack>

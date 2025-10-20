@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Card } from '@/components/ui/card'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { createCoupon, updateCoupon } from '../api/coupons.mutations'
 import { CouponFormFields } from './coupon-form-fields'
 import {

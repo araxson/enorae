@@ -40,7 +40,7 @@ export function ClientFilters({
         </div>
       ) : null}
       <Select onValueChange={onSortChange} defaultValue="appointments">
-        <SelectTrigger className="w-full sm:w-[200px]">
+        <SelectTrigger className="w-full sm:w-52">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>

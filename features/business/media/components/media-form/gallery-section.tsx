@@ -4,9 +4,8 @@ import Image from 'next/image'
 import { X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Stack, Grid } from '@/components/layout'
 type GallerySectionProps = {
   galleryUrls: string[]
   newGalleryUrl: string
@@ -26,10 +25,11 @@ export function GallerySection({
 }: GallerySectionProps) {
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Photo Gallery</CardTitle>
+      </CardHeader>
       <CardContent>
-        <Stack gap="md">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Photo Gallery</h3>
-
+        <div className="flex flex-col gap-6">
           <div className="flex gap-2">
             <Input
               value={newGalleryUrl}
@@ -43,7 +43,7 @@ export function GallerySection({
           </div>
 
           {galleryUrls.length > 0 ? (
-            <Grid cols={{ base: 2, md: 3, lg: 4 }} gap="md">
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
               {galleryUrls.map((url, index) => (
                 <div key={index} className="group relative aspect-square">
                   <Image src={url} alt={`Gallery ${index + 1}`} fill className="rounded-lg object-cover" />
@@ -58,11 +58,11 @@ export function GallerySection({
                   </Button>
                 </div>
               ))}
-            </Grid>
+            </div>
           ) : (
             <p className="text-sm text-muted-foreground">No gallery images yet. Add your first image above.</p>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

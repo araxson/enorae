@@ -160,7 +160,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
               <iframe
                 width="100%"
                 height="300"
-                style={{ border: 0 }}
+                className="w-full border-0"
                 loading="lazy"
                 src={`https://maps.google.com/maps?q=${address.latitude},${address.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                 title="Location Map"

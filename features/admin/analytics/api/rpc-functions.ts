@@ -4,11 +4,11 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type DailyMetricsRow = Database['public']['Views']['daily_metrics']['Row']
+type DailyMetricsRow = Database['analytics']['Tables']['daily_metrics']['Row']
 type AdminSalonRow = Database['public']['Views']['admin_salons_overview']['Row']
 type AdminAppointmentRow = Database['public']['Views']['admin_appointments_overview']['Row']
 type ProfileRow = Database['public']['Views']['profiles']['Row']
-type ReviewRow = Database['public']['Views']['salon_reviews']['Row']
+type ReviewRow = Database['public']['Views']['salon_reviews_view']['Row']
 
 /**
  * Get platform-wide metrics overview
@@ -23,7 +23,7 @@ export async function getPlatformMetrics() {
     supabase.from('profiles').select('id', { count: 'exact', head: true }),
     supabase.from('salons').select('id', { count: 'exact', head: true }),
     supabase.from('appointments').select('id', { count: 'exact', head: true }),
-    supabase.from('salon_reviews').select('id', { count: 'exact', head: true }),
+    supabase.from('salon_reviews_view').select('id', { count: 'exact', head: true }),
   ])
 
   return {
@@ -73,6 +73,7 @@ export async function getRevenueMetrics(startDate: string, endDate: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
+    .schema('analytics')
     .from('daily_metrics')
     .select('metric_at, salon_id, total_revenue, service_revenue, product_revenue')
     .gte('metric_at', startDate)
@@ -193,7 +194,7 @@ export async function getReviewMetrics(startDate: string, endDate: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salon_reviews')
+    .from('salon_reviews_view')
     .select('*')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
@@ -212,7 +213,7 @@ export async function getReviewMetrics(startDate: string, endDate: string) {
 
   const totalReviews = data.length
   const flaggedReviews = data.filter((r) => r.is_flagged).length
-  const hiddenReviews = data.filter((r) => r.deleted_at !== null).length
+  const hiddenReviews = 0
   const averageRating = data.reduce((sum, r) => sum + (r.rating || 0), 0) / totalReviews || 0
 
   return {

@@ -78,19 +78,17 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
           <Card key={location.id}>
             <CardHeader>
               <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    {location.name}
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CardTitle>{location.name}</CardTitle>
                     {location.is_default && (
-                      <Star className="h-4 w-4 fill-current text-yellow-500" />
+                      <Star className="h-4 w-4 text-warning" fill="currentColor" />
                     )}
-                  </CardTitle>
+                  </div>
                   {location.description && (
-                    <CardDescription className="mt-1">
-                      {location.description}
-                    </CardDescription>
+                    <CardDescription>{location.description}</CardDescription>
                   )}
-                  <div className="mt-2">
+                  <div>
                     <Badge variant="outline">
                       {location.product_count || 0} items
                     </Badge>

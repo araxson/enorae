@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { Flex } from '@/components/layout'
 import { Building2, CheckCircle, ShieldAlert, Gauge } from 'lucide-react'
 
 interface SalonsStatsProps {
@@ -23,25 +22,25 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
       label: 'Total salons',
       value: stats.total,
       icon: Building2,
-      tone: 'text-blue-500',
+      tone: 'text-primary',
     },
     {
       label: 'Verified',
       value: stats.verified,
       icon: CheckCircle,
-      tone: 'text-emerald-500',
+      tone: 'text-success',
     },
     {
       label: 'Expiring licenses',
       value: stats.expiringLicenses,
       icon: ShieldAlert,
-      tone: 'text-amber-500',
+      tone: 'text-warning',
     },
     {
       label: 'High risk',
       value: stats.highRisk,
       icon: ShieldAlert,
-      tone: 'text-red-500',
+      tone: 'text-destructive',
     },
   ] as const
 
@@ -50,26 +49,26 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
       {summaryCards.map(({ label, value, icon: Icon, tone }) => (
         <Card key={label}>
           <CardContent className="p-4">
-            <Flex justify="between" align="center">
+            <div className="flex items-center justify-between">
               <div>
                 <p className="leading-7 text-sm text-muted-foreground">{label}</p>
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-semibold">{value}</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{value}</h3>
               </div>
               <Icon className={`h-4 w-4 ${tone}`} />
-            </Flex>
+            </div>
           </CardContent>
         </Card>
       ))}
 
       <Card>
         <CardContent className="p-4">
-          <Flex justify="between" align="center">
+          <div className="flex items-center justify-between">
             <div>
               <p className="leading-7 text-sm text-muted-foreground">Average compliance</p>
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-semibold">{stats.averageCompliance}%</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{stats.averageCompliance}%</h3>
             </div>
-            <Gauge className="h-4 w-4 text-purple-500" />
-          </Flex>
+            <Gauge className="h-4 w-4 text-info" />
+          </div>
         </CardContent>
       </Card>
 

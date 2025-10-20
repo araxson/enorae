@@ -21,25 +21,25 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
       label: 'Total',
       value: totalAppointments.toString(),
       icon: Calendar,
-      color: 'text-blue-500',
+      color: 'text-info',
     },
     {
       label: 'Completed',
       value: completedAppointments.toString(),
       icon: CheckCircle,
-      color: 'text-green-500',
+      color: 'text-success',
     },
     {
       label: 'Hours',
       value: totalHours,
       icon: Clock,
-      color: 'text-orange-500',
+      color: 'text-warning',
     },
     {
       label: 'Revenue',
       value: `$${totalRevenue.toFixed(2)}`,
       icon: DollarSign,
-      color: 'text-purple-500',
+      color: 'text-accent',
     },
   ]
 

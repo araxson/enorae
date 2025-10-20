@@ -1,0 +1,578 @@
+{
+  "title": "ENORAE Feature Structure Violation - Comprehensive Repair Plan",
+  "scan_date": "2025-10-20",
+  "total_violations": 50,
+  "priority_tiers": {
+    "tier_1_critical": {
+      "name": "Tier 1: CRITICAL - Broken Features (Must Fix First)",
+      "count": 2,
+      "features": [
+        {
+          "path": "features/shared/dashboard",
+          "violations": [
+            "missing_index",
+            "missing_types",
+            "missing_schema"
+          ],
+          "status": "CRITICAL",
+          "estimated_time": "15 minutes",
+          "action_items": [
+            "Create dashboard/index.tsx",
+            "Create dashboard/types.ts",
+            "Create dashboard/schema.ts"
+          ]
+        },
+        {
+          "path": "features/shared/sessions",
+          "violations": [
+            "missing_types",
+            "missing_schema"
+          ],
+          "status": "CRITICAL",
+          "estimated_time": "15 minutes",
+          "action_items": [
+            "Create sessions/types.ts",
+            "Create sessions/schema.ts"
+          ]
+        }
+      ]
+    },
+    "tier_2_complex": {
+      "name": "Tier 2: HIGH COMPLEXITY - Large Consolidations",
+      "count": 2,
+      "features": [
+        {
+          "path": "features/admin/users",
+          "violations": [
+            "api_queries_folder",
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 15,
+          "status": "HIGH PRIORITY",
+          "estimated_time": "30-45 minutes",
+          "violation_details": [
+            "Consolidate 4 files from api/queries/",
+            "Consolidate 11 files from api/mutations/"
+          ],
+          "files_to_consolidate": [
+            "api/queries/single-user.ts",
+            "api/queries/all-users.ts",
+            "api/queries/stats.ts",
+            "api/queries/types.ts",
+            "api/mutations/status.ts",
+            "..."
+          ]
+        },
+        {
+          "path": "features/admin/analytics",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 16,
+          "status": "HIGH PRIORITY",
+          "estimated_time": "30-45 minutes",
+          "violation_details": [
+            "Consolidate 16 files from api/internal"
+          ],
+          "files_to_consolidate": [
+            "api/internal/queries/inventory.ts",
+            "api/internal/queries/salons.ts",
+            "api/internal/queries/revenue.ts",
+            "api/internal/queries/messages.ts",
+            "api/internal/queries/platform.ts",
+            "..."
+          ]
+        }
+      ]
+    },
+    "tier_3_medium": {
+      "name": "Tier 3: MEDIUM - Moderate Consolidations",
+      "count": 1,
+      "features": []
+    },
+    "tier_4_minor": {
+      "name": "Tier 4: MINOR - Small Consolidations",
+      "count": 47,
+      "features": [
+        {
+          "path": "features/shared/sessions",
+          "violations": [
+            "missing_types",
+            "missing_schema"
+          ],
+          "consolidation_count": 0,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/moderation",
+          "violations": [
+            "api_internal_exists",
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 13,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/salons",
+          "violations": [
+            "api_internal_exists",
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 11,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/appointments",
+          "violations": [
+            "api_internal_exists",
+            "api_queries_folder"
+          ],
+          "consolidation_count": 5,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/inventory-products",
+          "violations": [
+            "api_queries_folder",
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 14,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/notifications",
+          "violations": [
+            "api_internal_exists",
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 13,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/services",
+          "violations": [
+            "api_queries_folder",
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 8,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/shared/messaging",
+          "violations": [
+            "api_internal_exists",
+            "api_queries_folder"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/appointments",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 1,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/chains",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 5,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/dashboard",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 6,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/database-health",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 6,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/inventory",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 9,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/security-monitoring",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 1,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/admin/staff",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 6,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/analytics",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 10,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/business-common",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 1,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/chains",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 3,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/coupons",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 2,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/dashboard",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/insights",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 8,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/inventory",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 5,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/inventory-purchase-orders",
+          "violations": [
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/inventory-usage",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 5,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/locations",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 1,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/pricing",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 1,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/reviews",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/settings",
+          "violations": [
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 6,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/settings-roles",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 3,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/staff",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 1,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/staff-schedules",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/staff-services",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 5,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/business/webhooks",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 1,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/customer/booking",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 3,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/customer/dashboard",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 5,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/customer/discovery",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 5,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/customer/salon-search",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/marketing/salon-directory",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 6,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/marketing/services-directory",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 6,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/shared/auth",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/shared/blocked-times",
+          "violations": [
+            "api_mutations_folder"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/shared/profile",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 1,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/staff/analytics",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/staff/clients",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 8,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/staff/commission",
+          "violations": [
+            "api_queries_folder"
+          ],
+          "consolidation_count": 6,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/staff/schedule",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 4,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        },
+        {
+          "path": "features/staff/time-off",
+          "violations": [
+            "api_internal_exists"
+          ],
+          "consolidation_count": 3,
+          "status": "LOW",
+          "estimated_time": "15-20 minutes",
+          "complexity": "simple"
+        }
+      ]
+    }
+  }
+}

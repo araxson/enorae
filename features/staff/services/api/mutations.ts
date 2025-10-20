@@ -10,22 +10,36 @@ export async function toggleServiceAvailability(staffServiceId: string, isAvaila
   const supabase = await createClient()
 
   // Verify ownership
+  const { data: staffProfile } = await supabase
+    .from('staff_profiles')
+    .select('id')
+    .eq('user_id', session.user.id)
+    .maybeSingle<{ id: string | null }>()
+
+  if (!staffProfile?.id) {
+    throw new Error('Staff profile not found')
+  }
+
   const { data: staffService } = await supabase
-    .from('staff_services' as never)
-    .select('staff_id, staff!inner(user_id)')
+    .from('staff_services_with_metrics')
+    .select('staff_id')
     .eq('id', staffServiceId)
-    .single()
+    .maybeSingle<{ staff_id: string | null }>()
 
-  const ownerId = (staffService as unknown as { staff?: { user_id?: string | null } | null } | null)?.staff?.user_id
-
-  if (!ownerId || ownerId !== session.user.id) {
+  if (!staffService?.staff_id || staffService.staff_id !== staffProfile.id) {
     throw new Error('Unauthorized')
   }
 
+  const updatePayload: Database['catalog']['Tables']['staff_services']['Update'] = {
+    is_available: isAvailable,
+    updated_at: new Date().toISOString(),
+    updated_by_id: session.user.id,
+  }
+
   const { error } = await supabase
-    .schema('organization')
-    .from('staff_services' as never)
-    .update({ is_available: isAvailable, updated_at: new Date().toISOString() })
+    .schema('catalog')
+    .from('staff_services')
+    .update(updatePayload)
     .eq('id', staffServiceId)
 
   if (error) throw error
@@ -42,22 +56,36 @@ export async function updateServiceProficiency(
   const supabase = await createClient()
 
   // Verify ownership
+  const { data: staffProfile } = await supabase
+    .from('staff_profiles')
+    .select('id')
+    .eq('user_id', session.user.id)
+    .maybeSingle<{ id: string | null }>()
+
+  if (!staffProfile?.id) {
+    throw new Error('Staff profile not found')
+  }
+
   const { data: staffService } = await supabase
-    .from('staff_services' as never)
-    .select('staff_id, staff!inner(user_id)')
+    .from('staff_services_with_metrics')
+    .select('staff_id')
     .eq('id', staffServiceId)
-    .single()
+    .maybeSingle<{ staff_id: string | null }>()
 
-  const ownerId = (staffService as unknown as { staff?: { user_id?: string | null } | null } | null)?.staff?.user_id
-
-  if (!ownerId || ownerId !== session.user.id) {
+  if (!staffService?.staff_id || staffService.staff_id !== staffProfile.id) {
     throw new Error('Unauthorized')
   }
 
+  const proficiencyUpdate: Database['catalog']['Tables']['staff_services']['Update'] = {
+    proficiency_level: proficiencyLevel,
+    updated_at: new Date().toISOString(),
+    updated_by_id: session.user.id,
+  }
+
   const { error } = await supabase
-    .schema('organization')
-    .from('staff_services' as never)
-    .update({ proficiency_level: proficiencyLevel, updated_at: new Date().toISOString() })
+    .schema('catalog')
+    .from('staff_services')
+    .update(proficiencyUpdate)
     .eq('id', staffServiceId)
 
   if (error) throw error
@@ -72,24 +100,25 @@ export async function requestServiceAddition(serviceId: string, notes?: string) 
 
   // Get staff profile
   const { data: staffProfile } = await supabase
-    .from('staff' as never)
+    .from('staff_profiles')
     .select('id, salon_id')
     .eq('user_id', session.user.id)
-    .single()
+    .maybeSingle<{ id: string | null; salon_id: string | null }>()
 
-  if (!staffProfile) throw new Error('Staff profile not found')
+  if (!staffProfile?.id) throw new Error('Staff profile not found')
+  if (!staffProfile.salon_id) throw new Error('User salon not found')
 
-  const staffId = (staffProfile as { id: string }).id
+  const staffId = staffProfile.id
 
   // Check if service already exists
   const { data: existing } = await supabase
-    .from('staff_services' as never)
+    .from('staff_services_with_metrics')
     .select('id')
     .eq('staff_id', staffId)
     .eq('service_id', serviceId)
-    .single()
+    .maybeSingle<{ id: string | null }>()
 
-  if (existing) {
+  if (existing?.id) {
     throw new Error('You are already assigned this service')
   }
 

@@ -1,17 +1,7 @@
-import type { Metadata } from 'next'
-import { FinancePageContent } from '@/features/admin/finance'
+import { FinancePageFeature, adminFinanceMetadata } from '@/features/admin/finance'
 
-export const metadata: Metadata = {
-  title: 'Finance & Revenue | Admin',
-  description: 'Platform-wide revenue analytics and financial management',
-}
+export const metadata = adminFinanceMetadata
 
-type FinancePageProps = {
-  searchParams?: Promise<{ startDate?: string; endDate?: string }>
-}
-
-export default async function AdminFinancePage({ searchParams }: FinancePageProps) {
-  const resolved = searchParams ? await searchParams : undefined
-
-  return <FinancePageContent startDate={resolved?.startDate} endDate={resolved?.endDate} />
+export default function Page(props: Parameters<typeof FinancePageFeature>[0]) {
+  return <FinancePageFeature {...props} />
 }

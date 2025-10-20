@@ -34,7 +34,7 @@ export function MessageBubble({
         </Avatar>
       )}
 
-      <div className={cn('max-w-[70%] space-y-1', isOwn && 'items-end text-right')}>
+      <div className={cn('flex max-w-xl flex-col space-y-1', isOwn && 'items-end text-right')}>
         {!isOwn && senderName && (
           <small className="text-sm font-medium leading-none px-2 text-muted-foreground">{senderName}</small>
         )}

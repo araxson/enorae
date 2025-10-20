@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { Stack, Box, Group, Grid } from '@/components/layout'
 import {
   ButtonGroup,
   ButtonGroupSeparator,
@@ -26,18 +25,18 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Star className="h-5 w-5" />
-            Customer Reviews
-          </CardTitle>
+            <CardTitle>Customer Reviews</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
-          <Box className="text-center py-8">
+          <div className="py-8 text-center">
             <p className="text-sm text-muted-foreground">No reviews yet. Reviews from customers will appear here.</p>
             <Button asChild variant="outline" className="mt-4">
               <Link href="/business/reviews">Manage Reviews</Link>
             </Button>
-          </Box>
+          </div>
         </CardContent>
       </Card>
     )
@@ -47,11 +46,11 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
     <Card>
       <CardHeader className="gap-4">
         <ButtonGroup className="w-full items-center justify-between">
-          <ButtonGroupText className="flex items-center gap-2">
-            <CardTitle className="flex items-center gap-2">
+          <ButtonGroupText>
+            <span className="flex items-center gap-2">
               <Star className="h-5 w-5" />
-              Customer Reviews
-            </CardTitle>
+              <CardTitle>Customer Reviews</CardTitle>
+            </span>
           </ButtonGroupText>
           <ButtonGroupSeparator />
           <Tooltip>
@@ -62,49 +61,49 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
             </TooltipTrigger>
             <TooltipContent>Open review inbox</TooltipContent>
           </Tooltip>
-        </ButtonGroup>
-      </CardHeader>
-      <CardContent>
-        <Grid cols={{ base: 1, md: 2 }} gap="lg">
+      </ButtonGroup>
+    </CardHeader>
+    <CardContent>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Average Rating */}
-          <Stack gap="md">
-            <Box>
+          <div className="flex flex-col gap-6">
+            <div>
               <small className="text-sm font-medium leading-none text-muted-foreground">Average Rating</small>
-              <Group gap="xs" className="mt-1 items-baseline">
+              <div className="mt-1 flex items-baseline gap-2">
                 <div className="text-3xl font-bold">{stats.averageRating.toFixed(1)}</div>
-                <Group gap="xs">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${
-                        i < Math.round(stats.averageRating)
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                </Group>
-              </Group>
+                <div className="flex items-center gap-2">
+                  {[...Array(5)].map((_, i) => {
+                    const isFilled = i < Math.round(stats.averageRating)
+                    return (
+                      <Star
+                        key={i}
+                        className={`h-4 w-4 ${isFilled ? 'text-warning' : 'text-muted-foreground'}`}
+                        fill={isFilled ? 'currentColor' : 'none'}
+                      />
+                    )
+                  })}
+                </div>
+              </div>
               <small className="text-sm font-medium leading-none text-muted-foreground mt-1">
                 Based on {stats.totalReviews} {stats.totalReviews === 1 ? 'review' : 'reviews'}
               </small>
-            </Box>
+            </div>
 
             {/* Action Items */}
             <Separator />
-            <Stack gap="xs">
+            <div className="flex flex-col gap-2">
               {stats.pendingResponses > 0 && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Group gap="xs" className="items-center rounded-md border px-2 py-1">
-                      <MessageSquare className="h-4 w-4 text-orange-500" />
+                    <div className="flex items-center gap-2 rounded-md border px-2 py-1">
+                      <MessageSquare className="h-4 w-4 text-warning" />
                       <small className="text-sm font-medium leading-none">
                         <Badge variant="outline" className="ml-1">
                           {stats.pendingResponses}
                         </Badge>{' '}
                         {stats.pendingResponses === 1 ? 'review needs' : 'reviews need'} response
                       </small>
-                    </Group>
+                    </div>
                   </TooltipTrigger>
                   <TooltipContent>Follow up to protect guest satisfaction</TooltipContent>
                 </Tooltip>
@@ -112,37 +111,37 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
               {stats.flaggedCount > 0 && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Group gap="xs" className="items-center rounded-md border px-2 py-1">
-                      <AlertTriangle className="h-4 w-4 text-red-500" />
+                    <div className="flex items-center gap-2 rounded-md border px-2 py-1">
+                      <AlertTriangle className="h-4 w-4 text-destructive" />
                       <small className="text-sm font-medium leading-none">
                         <Badge variant="destructive" className="ml-1">
                           {stats.flaggedCount}
                         </Badge>{' '}
                         flagged {stats.flaggedCount === 1 ? 'review' : 'reviews'}
                       </small>
-                    </Group>
+                    </div>
                   </TooltipTrigger>
                   <TooltipContent>Investigate and resolve policy concerns</TooltipContent>
                 </Tooltip>
               )}
-            </Stack>
-          </Stack>
+            </div>
+          </div>
 
           {/* Rating Distribution */}
-          <Stack gap="xs">
+          <div className="flex flex-col gap-2">
             <small className="text-sm font-medium leading-none text-muted-foreground">Rating Distribution</small>
             {stats.ratingDistribution.map(({ rating, count }) => {
               const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
               return (
-                <Group key={rating} gap="xs" className="items-center">
+                <div key={rating} className="flex items-center gap-2">
                   <small className="text-sm font-medium leading-none w-12 text-right">{rating} stars</small>
                   <Progress value={percentage} className="flex-1 h-2" />
                   <small className="text-sm font-medium leading-none w-8 text-muted-foreground">{count}</small>
-                </Group>
+                </div>
               )
             })}
-          </Stack>
-        </Grid>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

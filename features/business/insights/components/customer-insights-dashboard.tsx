@@ -19,6 +19,7 @@ import {
   UserX,
 } from 'lucide-react'
 import type { CustomerMetrics, InsightsSummary } from '../api/queries'
+import { cn } from '@/lib/utils'
 
 interface CustomerInsightsDashboardProps {
   summary: InsightsSummary
@@ -45,38 +46,19 @@ export function CustomerInsightsDashboard({
   const getSegmentIcon = (segment: string) => {
     switch (segment) {
       case 'VIP':
-        return <Crown className="h-4 w-4 text-yellow-600" />
+        return <Crown className="h-4 w-4 text-warning" />
       case 'Loyal':
-        return <Heart className="h-4 w-4 text-red-600" />
+        return <Heart className="h-4 w-4 text-destructive" />
       case 'Regular':
-        return <Users className="h-4 w-4 text-blue-600" />
+        return <Users className="h-4 w-4 text-info" />
       case 'At Risk':
-        return <AlertTriangle className="h-4 w-4 text-orange-600" />
+        return <AlertTriangle className="h-4 w-4 text-warning" />
       case 'New':
-        return <UserPlus className="h-4 w-4 text-green-600" />
+        return <UserPlus className="h-4 w-4 text-success" />
       case 'Churned':
-        return <UserX className="h-4 w-4 text-gray-600" />
+        return <UserX className="h-4 w-4 text-muted-foreground" />
       default:
-        return <Users className="h-4 w-4" />
-    }
-  }
-
-  const getSegmentColor = (segment: string) => {
-    switch (segment) {
-      case 'VIP':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300'
-      case 'Loyal':
-        return 'bg-red-100 text-red-800 border-red-300'
-      case 'Regular':
-        return 'bg-blue-100 text-blue-800 border-blue-300'
-      case 'At Risk':
-        return 'bg-orange-100 text-orange-800 border-orange-300'
-      case 'New':
-        return 'bg-green-100 text-green-800 border-green-300'
-      case 'Churned':
-        return 'bg-gray-100 text-gray-800 border-gray-300'
-      default:
-        return 'bg-gray-100 text-gray-800'
+        return <Users className="h-4 w-4 text-muted-foreground" />
     }
   }
 
@@ -84,6 +66,15 @@ export function CustomerInsightsDashboard({
     selectedSegment === 'all'
       ? topCustomers
       : topCustomers.filter((c) => c.segment.toLowerCase() === selectedSegment)
+
+  const segmentCards = [
+    { label: 'VIP', value: summary.segmentation.vip, icon: Crown, iconClass: 'text-warning' },
+    { label: 'Loyal', value: summary.segmentation.loyal, icon: Heart, iconClass: 'text-destructive' },
+    { label: 'Regular', value: summary.segmentation.regular, icon: Users, iconClass: 'text-info' },
+    { label: 'At Risk', value: summary.segmentation.at_risk, icon: AlertTriangle, iconClass: 'text-warning' },
+    { label: 'New', value: summary.segmentation.new, icon: UserPlus, iconClass: 'text-success' },
+    { label: 'Churned', value: summary.segmentation.churned, icon: UserX, iconClass: 'text-muted-foreground' },
+  ]
 
   return (
     <Stack gap="lg">
@@ -105,7 +96,7 @@ export function CustomerInsightsDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Avg Lifetime Value</CardTitle>
-            <DollarSign className="h-4 w-4 text-green-600" />
+            <DollarSign className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -120,7 +111,7 @@ export function CustomerInsightsDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Retention Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            <TrendingUp className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -135,10 +126,10 @@ export function CustomerInsightsDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Churn Rate</CardTitle>
-            <TrendingDown className="h-4 w-4 text-red-600" />
+            <TrendingDown className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-destructive">
               {formatPercentage(summary.churn_rate)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -158,36 +149,15 @@ export function CustomerInsightsDashboard({
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
-            <div className="flex flex-col items-center p-4 border rounded-lg bg-yellow-50">
-              <Crown className="h-6 w-6 text-yellow-600 mb-2" />
-              <div className="text-2xl font-bold">{summary.segmentation.vip}</div>
-              <div className="text-xs text-muted-foreground">VIP</div>
-            </div>
-            <div className="flex flex-col items-center p-4 border rounded-lg bg-red-50">
-              <Heart className="h-6 w-6 text-red-600 mb-2" />
-              <div className="text-2xl font-bold">{summary.segmentation.loyal}</div>
-              <div className="text-xs text-muted-foreground">Loyal</div>
-            </div>
-            <div className="flex flex-col items-center p-4 border rounded-lg bg-blue-50">
-              <Users className="h-6 w-6 text-blue-600 mb-2" />
-              <div className="text-2xl font-bold">{summary.segmentation.regular}</div>
-              <div className="text-xs text-muted-foreground">Regular</div>
-            </div>
-            <div className="flex flex-col items-center p-4 border rounded-lg bg-orange-50">
-              <AlertTriangle className="h-6 w-6 text-orange-600 mb-2" />
-              <div className="text-2xl font-bold">{summary.segmentation.at_risk}</div>
-              <div className="text-xs text-muted-foreground">At Risk</div>
-            </div>
-            <div className="flex flex-col items-center p-4 border rounded-lg bg-green-50">
-              <UserPlus className="h-6 w-6 text-green-600 mb-2" />
-              <div className="text-2xl font-bold">{summary.segmentation.new}</div>
-              <div className="text-xs text-muted-foreground">New</div>
-            </div>
-            <div className="flex flex-col items-center p-4 border rounded-lg bg-gray-50">
-              <UserX className="h-6 w-6 text-gray-600 mb-2" />
-              <div className="text-2xl font-bold">{summary.segmentation.churned}</div>
-              <div className="text-xs text-muted-foreground">Churned</div>
-            </div>
+            {segmentCards.map(({ label, value, icon: Icon, iconClass }) => (
+              <Card key={label}>
+                <CardContent className="flex flex-col items-center gap-2 p-4">
+                  <Icon className={cn('h-6 w-6', iconClass)} />
+                  <div className="text-2xl font-bold">{value}</div>
+                  <div className="text-xs text-muted-foreground">{label}</div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </CardContent>
       </Card>
@@ -225,12 +195,9 @@ export function CustomerInsightsDashboard({
                       <div className="space-y-2 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{customer.customer_name}</span>
-                          <Badge
-                            variant="outline"
-                            className={getSegmentColor(customer.segment)}
-                          >
+                          <Badge variant="outline" className="flex items-center gap-1">
                             {getSegmentIcon(customer.segment)}
-                            <span className="ml-1">{customer.segment}</span>
+                            <span>{customer.segment}</span>
                           </Badge>
                         </div>
 
@@ -250,7 +217,7 @@ export function CustomerInsightsDashboard({
                           </div>
                           {customer.average_rating > 0 && (
                             <div className="flex items-center gap-1">
-                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                              <Star className="h-3 w-3 fill-warning text-warning" />
                               <span className="font-medium">{customer.average_rating.toFixed(1)}</span>
                             </div>
                           )}

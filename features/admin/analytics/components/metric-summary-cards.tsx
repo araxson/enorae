@@ -63,10 +63,10 @@ export function MetricSummaryCards({ growth, acquisition, retention }: MetricSum
       {cards.map(({ title, icon: Icon, value, helper, delta }) => (
         <Card key={title}>
           <CardHeader className="flex flex-row items-start justify-between pb-2">
-            <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <Icon className="h-4 w-4 text-muted-foreground" />
-              {title}
-            </CardTitle>
+              <CardTitle>{title}</CardTitle>
+            </div>
             {delta.icon ? (
               <Badge variant={delta.variant} className="flex items-center gap-1 text-xs">
                 <delta.icon className="h-3 w-3" />

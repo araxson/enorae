@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw } from 'lucide-react'
-import { Grid, Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { PlatformAnalyticsSnapshot } from '../api/admin-analytics-types'
@@ -60,7 +59,7 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
   }, [refresh])
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-1">Platform Analytics Overview</h2>
@@ -88,17 +87,17 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
         retention={data.retention}
       />
 
-      <Grid gap="sm" className="xl:grid-cols-[2fr,1fr]">
+      <div className="grid gap-4 xl:grid-cols-[2fr,1fr]">
         <GrowthTrendPanel series={data.growth.series} timeframe={data.timeframe} />
         <AcquisitionPanel acquisition={data.acquisition} />
-      </Grid>
+      </div>
 
-      <Grid gap="sm" className="xl:grid-cols-2">
+      <div className="grid gap-4 xl:grid-cols-2">
         <RetentionPanel retention={data.retention} />
         <FeatureUsagePanel featureUsage={data.featureUsage} />
-      </Grid>
+      </div>
 
       <PerformanceBenchmarksTable performance={data.performance} />
-    </Stack>
+    </div>
   )
 }

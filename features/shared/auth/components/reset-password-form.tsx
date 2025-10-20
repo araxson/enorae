@@ -13,7 +13,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack } from '@/components/layout'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
@@ -63,7 +62,7 @@ export function ResetPasswordForm() {
 
       <form action={handleSubmit}>
         <CardContent>
-          <Stack gap="md">
+          <div className="flex flex-col gap-6">
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
@@ -71,7 +70,7 @@ export function ResetPasswordForm() {
               </Alert>
             )}
 
-            <Stack gap="xs">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="password">New password</Label>
               <PasswordInput
                 id="password"
@@ -85,9 +84,9 @@ export function ResetPasswordForm() {
               {password && (
                 <PasswordStrengthIndicator password={password} showRequirements />
               )}
-            </Stack>
+            </div>
 
-            <Stack gap="xs">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="confirmPassword">Confirm new password</Label>
               <PasswordInput
                 id="confirmPassword"
@@ -101,10 +100,10 @@ export function ResetPasswordForm() {
                 <small className="text-sm font-medium leading-none text-destructive">Passwords do not match</small>
               )}
               {confirmPassword && password === confirmPassword && (
-                <small className="text-sm font-medium leading-none text-green-600">Passwords match</small>
+                <small className="text-sm font-medium leading-none text-success">Passwords match</small>
               )}
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         </CardContent>
 
         <CardFooter>

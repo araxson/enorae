@@ -26,9 +26,9 @@ interface OperationalMetricsDashboardProps {
 
 export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashboardProps) {
   const getUtilizationColor = (percentage: number) => {
-    if (percentage >= 80) return 'text-green-600'
-    if (percentage >= 60) return 'text-yellow-600'
-    return 'text-red-600'
+    if (percentage >= 80) return 'text-success'
+    if (percentage >= 60) return 'text-warning'
+    return 'text-destructive'
   }
 
   return (

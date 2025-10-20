@@ -13,10 +13,10 @@ export function NoShowPanel({ noShows }: NoShowPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
+        <div className="flex items-center gap-2">
           <CalendarOff className="h-4 w-4 text-muted-foreground" />
-          No-show Tracking
-        </CardTitle>
+          <CardTitle>No-show Tracking</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center gap-4 text-sm text-muted-foreground">

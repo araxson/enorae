@@ -1,9 +1,9 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Stack, Flex } from '@/components/layout'
 import { Check, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Progress } from '@/components/ui/progress'
 
 interface PasswordStrengthIndicatorProps {
   password: string
@@ -50,9 +50,14 @@ export function PasswordStrengthIndicator({
     },
   ], [password])
 
-  const { strength, color, percentage } = useMemo(() => {
+  const { strength, percentage, indicatorClass, textTone } = useMemo(() => {
     if (!password) {
-      return { strength: 'weak' as PasswordStrength, color: 'bg-gray-300', percentage: 0 }
+      return {
+        strength: 'weak' as PasswordStrength,
+        percentage: 0,
+        indicatorClass: '[&_[data-slot=progress-indicator]]:bg-muted',
+        textTone: 'text-muted-foreground'
+      }
     }
 
     const metCount = requirements.filter(r => r.met).length
@@ -60,65 +65,63 @@ export function PasswordStrengthIndicator({
     if (metCount <= 2) {
       return {
         strength: 'weak' as PasswordStrength,
-        color: 'bg-red-500',
-        percentage: 25
+        percentage: 25,
+        indicatorClass: '[&_[data-slot=progress-indicator]]:bg-destructive',
+        textTone: 'text-destructive'
       }
-    } else if (metCount === 3) {
+    }
+
+    if (metCount === 3) {
       return {
         strength: 'fair' as PasswordStrength,
-        color: 'bg-orange-500',
-        percentage: 50
+        percentage: 50,
+        indicatorClass: '[&_[data-slot=progress-indicator]]:bg-warning',
+        textTone: 'text-warning'
       }
-    } else if (metCount === 4) {
+    }
+
+    if (metCount === 4) {
       return {
         strength: 'good' as PasswordStrength,
-        color: 'bg-yellow-500',
-        percentage: 75
+        percentage: 75,
+        indicatorClass: '[&_[data-slot=progress-indicator]]:bg-info',
+        textTone: 'text-info'
       }
-    } else {
-      return {
-        strength: 'strong' as PasswordStrength,
-        color: 'bg-green-500',
-        percentage: 100
-      }
+    }
+
+    return {
+      strength: 'strong' as PasswordStrength,
+      percentage: 100,
+      indicatorClass: '[&_[data-slot=progress-indicator]]:bg-success',
+      textTone: 'text-success'
     }
   }, [password, requirements])
 
   if (!password) return null
 
   return (
-    <Stack gap="sm">
+    <div className="flex flex-col gap-4">
       {/* Strength Bar */}
-      <Stack gap="xs">
-        <Flex justify="between" align="center">
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
           <small className="text-sm font-medium leading-none text-muted-foreground">Password strength:</small>
-          <small
-            className={cn(
-              'text-sm font-medium leading-none', 'font-medium',
-              strength === 'weak' && 'text-red-500',
-              strength === 'fair' && 'text-orange-500',
-              strength === 'good' && 'text-yellow-600',
-              strength === 'strong' && 'text-green-600'
-            )}
-          >
+          <small className={cn('text-sm font-medium leading-none', textTone)}>
             {strength.charAt(0).toUpperCase() + strength.slice(1)}
           </small>
-        </Flex>
-        <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-          <div
-            className={cn('h-full transition-all duration-300', color)}
-            style={{ width: `${percentage}%` }}
-          />
         </div>
-      </Stack>
+        <Progress
+          value={percentage}
+          className={cn('bg-muted transition-none', indicatorClass)}
+        />
+      </div>
 
       {/* Requirements List */}
       {showRequirements && (
-        <Stack gap="xs" className="mt-1">
+        <div className="mt-1 flex flex-col gap-2">
           {requirements.map((req, index) => (
-            <Flex key={index} gap="xs" align="center">
+            <div key={index} className="flex items-center gap-2">
               {req.met ? (
-                <Check className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                <Check className="text-success h-3.5 w-3.5 flex-shrink-0" />
               ) : (
                 <X className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
               )}
@@ -130,11 +133,11 @@ export function PasswordStrengthIndicator({
               >
                 {req.label}
               </small>
-            </Flex>
+            </div>
           ))}
-        </Stack>
+        </div>
       )}
-    </Stack>
+    </div>
   )
 }
 

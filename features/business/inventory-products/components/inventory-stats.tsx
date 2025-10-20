@@ -17,7 +17,7 @@ export function InventoryStats({ stats }: InventoryStatsProps) {
       icon: Package,
       label: 'Total Products',
       value: stats.productsCount,
-      color: 'text-blue-500',
+      color: 'text-info',
     },
     {
       icon: AlertTriangle,
@@ -29,13 +29,13 @@ export function InventoryStats({ stats }: InventoryStatsProps) {
       icon: Users,
       label: 'Active Suppliers',
       value: stats.suppliersCount,
-      color: 'text-green-500',
+      color: 'text-success',
     },
     {
       icon: ShoppingCart,
       label: 'Pending Orders',
       value: stats.pendingOrdersCount,
-      color: 'text-orange-500',
+      color: 'text-warning',
     },
   ]
 

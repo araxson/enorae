@@ -9,11 +9,11 @@ interface OverviewCardsProps {
 }
 
 const STATUS_STYLES: Record<SecurityMetric['status'], string> = {
-  ok: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-  healthy: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-  info: 'border-blue-200 bg-blue-50 text-blue-700',
-  warning: 'border-amber-200 bg-amber-50 text-amber-700',
-  critical: 'border-red-200 bg-red-50 text-red-700',
+  ok: 'border-success/30 bg-success/10 text-success',
+  healthy: 'border-success/30 bg-success/10 text-success',
+  info: 'border-info/30 bg-info/10 text-info',
+  warning: 'border-warning/30 bg-warning/10 text-warning',
+  critical: 'border-destructive/30 bg-destructive/10 text-destructive',
   unknown: 'border-border bg-muted text-muted-foreground',
 }
 

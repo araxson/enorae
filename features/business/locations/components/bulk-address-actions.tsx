@@ -9,7 +9,7 @@ import { Stack, Flex } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import { MapPin, Globe, CheckCircle } from 'lucide-react'
 import { bulkUpdateAddresses, geocodeAllAddresses } from '../api/bulk-address.mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 type Props = {
   salonId: string

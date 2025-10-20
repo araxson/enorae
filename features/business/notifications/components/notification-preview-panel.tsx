@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 import { sendTestNotification } from '../api/mutations'
 import type { NotificationTemplate } from '../api/queries'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 type NotificationPreviewPanelProps = {
   templates: NotificationTemplate[]
@@ -72,7 +72,8 @@ export function NotificationPreviewPanel({ templates }: NotificationPreviewPanel
         </div>
 
         {template ? (
-          <div className="rounded-md border bg-muted/30 p-4 space-y-3">
+          <Card>
+            <CardContent className="space-y-3 p-4">
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="capitalize">
                 {template.event.replace(/_/g, ' ')}
@@ -89,7 +90,8 @@ export function NotificationPreviewPanel({ templates }: NotificationPreviewPanel
                 {template.body}
               </pre>
             </ScrollArea>
-          </div>
+            </CardContent>
+          </Card>
         ) : null}
 
         <Button onClick={handleSend} disabled={isPending || !selectedId}>

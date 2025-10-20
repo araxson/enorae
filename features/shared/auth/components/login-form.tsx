@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack, Flex } from '@/components/layout'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
 
@@ -55,7 +54,7 @@ export function LoginForm() {
 
       <form action={handleSubmit}>
         <CardContent>
-          <Stack gap="md">
+          <div className="flex flex-col gap-6">
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
@@ -63,7 +62,7 @@ export function LoginForm() {
               </Alert>
             )}
 
-            <Stack gap="xs">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -72,10 +71,10 @@ export function LoginForm() {
                 placeholder="you@example.com"
                 required
               />
-            </Stack>
+            </div>
 
-            <Stack gap="xs">
-              <Flex justify="between" align="center">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
                 <Link
                   href="/auth/forgot-password"
@@ -83,19 +82,19 @@ export function LoginForm() {
                 >
                   Forgot password?
                 </Link>
-              </Flex>
+              </div>
               <PasswordInput
                 id="password"
                 name="password"
                 required
                 placeholder="Enter your password"
               />
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         </CardContent>
 
         <CardFooter>
-          <Stack gap="sm" className="w-full">
+          <div className="flex w-full flex-col gap-4">
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Signing in...' : 'Sign In'}
             </Button>
@@ -105,7 +104,7 @@ export function LoginForm() {
                 Sign up
               </Link>
             </small>
-          </Stack>
+          </div>
         </CardFooter>
       </form>
       </Card>

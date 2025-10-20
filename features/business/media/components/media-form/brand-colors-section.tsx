@@ -1,9 +1,8 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Grid, Stack } from '@/components/layout'
 type BrandColors = {
   primary: string
   secondary: string
@@ -17,10 +16,12 @@ type BrandColorsSectionProps = {
 export function BrandColorsSection({ brandColors }: BrandColorsSectionProps) {
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Brand Colors</CardTitle>
+      </CardHeader>
       <CardContent>
-        <Stack gap="md">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Brand Colors</h3>
-          <Grid cols={{ base: 1, md: 3 }} gap="md">
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div>
               <Label htmlFor="brand_primary">Primary Color</Label>
               <Input id="brand_primary" name="brand_primary" type="color" defaultValue={brandColors.primary} />
@@ -35,8 +36,8 @@ export function BrandColorsSection({ brandColors }: BrandColorsSectionProps) {
               <Label htmlFor="brand_accent">Accent Color</Label>
               <Input id="brand_accent" name="brand_accent" type="color" defaultValue={brandColors.accent} />
             </div>
-          </Grid>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

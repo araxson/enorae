@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Flex } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 
 declare global {
@@ -43,8 +42,8 @@ export function RolesFilters({
   }, [onSearchChange, onRoleFilterChange, onStatusFilterChange])
 
   return (
-    <Flex gap="md" align="center" className="flex-wrap">
-      <div className="relative flex-1 min-w-[200px]">
+    <div className="flex flex-wrap items-center gap-6">
+      <div className="relative flex-1 min-w-0">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search by user or salon ID..."
@@ -55,7 +54,7 @@ export function RolesFilters({
       </div>
 
       <Select value={roleFilter} onValueChange={onRoleFilterChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-44">
           <SelectValue placeholder="All Roles" />
         </SelectTrigger>
         <SelectContent>
@@ -75,7 +74,7 @@ export function RolesFilters({
       </Select>
 
       <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-        <SelectTrigger className="w-[150px]">
+        <SelectTrigger className="w-36">
           <SelectValue placeholder="All Status" />
         </SelectTrigger>
         <SelectContent>
@@ -88,6 +87,6 @@ export function RolesFilters({
       <Button variant="ghost" size="sm" onClick={clearFilters}>
         Clear all filters
       </Button>
-    </Flex>
+    </div>
   )
 }

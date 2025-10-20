@@ -1,4 +1,4 @@
-import type { PlatformAnalyticsSnapshot, PerformanceBenchmark } from '../admin-analytics-types'
+import type { PlatformAnalyticsSnapshot, PerformanceBenchmark } from '../../admin-analytics-types'
 import { toNumber } from './helpers'
 
 type DailyMetricsRow = {
@@ -11,8 +11,16 @@ type DailyMetricsRow = {
 }
 
 type AdminClient = Awaited<
-  ReturnType<typeof import('../admin-analytics-shared')['requireAdminClient']>
+  ReturnType<typeof import('../../admin-analytics-shared')['requireAdminClient']>
 >
+
+type SalonOverviewRow = {
+  id: string | null
+  name: string | null
+  business_name?: string | null
+  subscription_tier: string | null
+  rating_average: number | null
+}
 
 interface SalonAccumulator {
   totalRevenue: number
@@ -89,17 +97,16 @@ export async function buildPerformanceBenchmark(
       console.error('[PlatformAnalytics] Failed to fetch salon details', salonError)
     }
 
-    const detailsMap = new Map<
-      string,
-      { name: string | null; subscription_tier: string | null; rating_average: number | null }
-    >()
+    const detailsMap = new Map<string, SalonOverviewRow>()
 
-    salonDetails?.forEach((detail) => {
+    ;(salonDetails as SalonOverviewRow[] | null | undefined)?.forEach((detail) => {
       if (detail.id) {
         detailsMap.set(detail.id, {
-          name: detail.name ?? (detail as { business_name?: string | null }).business_name ?? null,
-          subscription_tier: detail.subscription_tier ?? null,
-          rating_average: detail.rating_average ?? null,
+          id: detail.id,
+          name: detail.name,
+          business_name: detail.business_name,
+          subscription_tier: detail.subscription_tier,
+          rating_average: detail.rating_average,
         })
       }
     })
@@ -112,7 +119,7 @@ export async function buildPerformanceBenchmark(
         const detail = detailsMap.get(item.salonId)
         return {
           salonId: item.salonId,
-          salonName: detail?.name ?? item.salonId,
+          salonName: detail?.name ?? detail?.business_name ?? item.salonId,
           revenue: item.revenue,
           appointments: item.appointments,
           avgUtilization: item.avgUtilization,

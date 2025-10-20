@@ -1,5 +1,12 @@
+import { generateMetadata as genMeta } from '@/lib/metadata'
 import { StaffSupportClient } from './components/support-client'
 import { getStaffSupportOverview } from './api/queries'
+
+export const staffSupportMetadata = genMeta({
+  title: 'Support Center',
+  description: 'Get help, open tickets, and review staff-focused release notes.',
+  noIndex: true,
+})
 
 export async function StaffSupport() {
   const { summaryCards, quickActions, guideSections, faqItems } = await getStaffSupportOverview()

@@ -15,7 +15,7 @@ export async function getChainAnalytics(chainId?: string): Promise<ChainAnalytic
 
   let chainsQuery = supabase
     .from('salon_chains_view')
-    .select('id, name, salon_count, total_staff_count, is_verified, subscription_tier')
+    .select('id, name, salon_count, staff_count, is_verified, subscription_tier')
     .is('deleted_at', null)
 
   if (chainId) {
@@ -68,7 +68,7 @@ export async function getChainAnalytics(chainId?: string): Promise<ChainAnalytic
       chainId: chain.id,
       chainName: chain.name ?? 'Unknown',
       totalSalons: chain.salon_count ?? salons?.length ?? 0,
-      totalStaff: chain.total_staff_count ?? 0,
+      totalStaff: chain.staff_count ?? 0,
       totalRevenue,
       totalAppointments,
       avgRating,

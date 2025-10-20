@@ -68,7 +68,7 @@ export function EditPermissionsDialog({ role, open, onOpenChange }: EditPermissi
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[520px]">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Edit permissions</DialogTitle>
           <DialogDescription>

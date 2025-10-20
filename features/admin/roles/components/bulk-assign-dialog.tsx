@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Stack, Flex } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { bulkAssignRoles } from '../api/mutations'
@@ -120,21 +119,21 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[640px]">
+      <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Users className="h-5 w-5" />
-            Bulk assign roles
-          </DialogTitle>
+            <DialogTitle>Bulk assign roles</DialogTitle>
+          </div>
           <DialogDescription>
             Quickly assign multiple roles. Templates prefill recommended permissions.
           </DialogDescription>
         </DialogHeader>
 
-        <Stack gap="lg">
+        <div className="flex flex-col gap-8">
           {rows.map((row, index) => (
             <div key={index} className="rounded-lg border p-4 space-y-4">
-              <Flex gap="md" className="flex-col md:flex-row">
+              <div className="flex flex-col gap-6 md:flex-row md:items-center">
                 <div className="flex-1 space-y-2">
                   <Label htmlFor={`user-${index}`}>User ID *</Label>
                   <Input
@@ -147,7 +146,7 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
                 <Button variant="ghost" size="sm" onClick={() => handleRemoveRow(index)} disabled={rows.length === 1}>
                   Remove
                 </Button>
-              </Flex>
+              </div>
 
               <RoleSelector
                 role={row.role}
@@ -162,15 +161,15 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
             </div>
           ))}
 
-          <Flex justify="between">
+          <div className="flex items-center justify-between">
             <Button type="button" variant="outline" onClick={handleAddRow}>
               Add another
             </Button>
             <Button type="button" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Assigning...' : 'Assign roles'}
             </Button>
-          </Flex>
-        </Stack>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   )

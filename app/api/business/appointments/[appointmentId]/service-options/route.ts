@@ -34,7 +34,7 @@ export async function GET(
       .select('salon_id')
       .eq('id', appointmentId)
       .in('salon_id', accessibleSalonIds)
-      .maybeSingle()
+      .maybeSingle<{ salon_id: string | null }>()
 
     if (appointmentError) {
       return NextResponse.json(

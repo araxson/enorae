@@ -148,7 +148,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
               <TableHead>Risk</TableHead>
               <TableHead>Reputation</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead className="w-[50px]" />
+              <TableHead className="w-12" />
             </TableRow>
           </TableHeader>
           <TableBody>

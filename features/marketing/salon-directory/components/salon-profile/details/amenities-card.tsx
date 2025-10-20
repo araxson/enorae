@@ -19,7 +19,7 @@ export function AmenitiesCard({ salon }: AmenitiesCardProps) {
         <Grid cols={{ base: 2, md: 3 }} gap="md">
           {salon.amenities?.map((amenity: string) => (
             <Group gap="xs" key={amenity}>
-              <CheckCircle className="h-4 w-4 text-green-600" />
+              <CheckCircle className="h-4 w-4 text-success" />
               <p className="text-sm text-muted-foreground">{amenity}</p>
             </Group>
           ))}

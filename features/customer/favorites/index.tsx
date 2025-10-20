@@ -1,5 +1,14 @@
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
+import { generateMetadata as genMeta } from '@/lib/metadata'
 import { getUserFavorites } from './api/queries'
 import { FavoritesList } from './components/favorites-list'
+
+export const favoritesMetadata = genMeta({
+  title: 'My Favorites',
+  description: 'View and manage your favorite salons',
+  noIndex: true,
+})
 
 export async function Favorites() {
   const favorites = await getUserFavorites()
@@ -14,5 +23,13 @@ export async function Favorites() {
         <FavoritesList favorites={favorites} />
       </div>
     </div>
+  )
+}
+
+export function FavoritesFeature() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <Favorites />
+    </Suspense>
   )
 }

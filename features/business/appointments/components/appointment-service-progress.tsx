@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { CheckCircle2, Circle, Clock, XCircle } from 'lucide-react'
 import { updateServiceStatus } from '../api/mutations'
 import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 interface AppointmentServiceProgressProps {
   appointmentId: string
@@ -70,13 +70,13 @@ export function AppointmentServiceProgress({
   const getStatusIcon = (status: string | null) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle2 className="h-5 w-5 text-green-600" />
+        return <CheckCircle2 className="h-5 w-5 text-success" />
       case 'in_progress':
-        return <Clock className="h-5 w-5 text-blue-600" />
+        return <Clock className="h-5 w-5 text-info" />
       case 'cancelled':
-        return <XCircle className="h-5 w-5 text-red-600" />
+        return <XCircle className="h-5 w-5 text-destructive" />
       default:
-        return <Circle className="h-5 w-5 text-gray-400" />
+        return <Circle className="h-5 w-5 text-muted-foreground/40" />
     }
   }
 

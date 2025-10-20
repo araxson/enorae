@@ -1,0 +1,436 @@
+{
+  "metadata": {
+    "scan_date": "2025-10-20",
+    "scan_type": "comprehensive_structural_analysis",
+    "features_scanned": 229,
+    "total_violations_found": 50,
+    "total_features_affected": 51,
+    "estimated_repair_time_hours": "8-12"
+  },
+  "summary": {
+    "broken_features": 2,
+    "high_complexity_consolidations": 2,
+    "medium_complexity_consolidations": 1,
+    "minor_violations": 47
+  },
+  "violation_types": {
+    "api_internal_exists": {
+      "count": 27,
+      "severity": "high",
+      "description": "Feature has api/internal/ directory instead of api/queries.ts and api/mutations.ts",
+      "consolidation_pattern": "api/internal/ -> api/queries.ts + api/mutations.ts",
+      "estimated_time_per_feature_minutes": 15
+    },
+    "api_queries_folder": {
+      "count": 20,
+      "severity": "medium",
+      "description": "Feature has api/queries/ subfolder instead of api/queries.ts file",
+      "consolidation_pattern": "api/queries/* -> api/queries.ts",
+      "estimated_time_per_feature_minutes": 10
+    },
+    "api_mutations_folder": {
+      "count": 9,
+      "severity": "medium",
+      "description": "Feature has api/mutations/ subfolder instead of api/mutations.ts file",
+      "consolidation_pattern": "api/mutations/* -> api/mutations.ts",
+      "estimated_time_per_feature_minutes": 10
+    },
+    "missing_index": {
+      "count": 1,
+      "severity": "critical",
+      "description": "Feature is missing index.tsx export file",
+      "consolidation_pattern": "Create index.tsx",
+      "estimated_time_per_feature_minutes": 5
+    },
+    "missing_types": {
+      "count": 2,
+      "severity": "critical",
+      "description": "Feature is missing types.ts type definitions",
+      "consolidation_pattern": "Create types.ts",
+      "estimated_time_per_feature_minutes": 5
+    },
+    "missing_schema": {
+      "count": 2,
+      "severity": "critical",
+      "description": "Feature is missing schema.ts Zod validation schemas",
+      "consolidation_pattern": "Create schema.ts",
+      "estimated_time_per_feature_minutes": 5
+    }
+  },
+  "priority_tiers": {
+    "tier_1_critical": {
+      "name": "CRITICAL - Broken Features (Missing Required Files)",
+      "count": 2,
+      "estimated_time_hours": 0.5,
+      "priority": 1,
+      "features": [
+        {
+          "path": "features/shared/dashboard",
+          "portal": "shared",
+          "feature_name": "dashboard",
+          "violations": ["missing_index", "missing_types", "missing_schema"],
+          "status": "BROKEN",
+          "existing_files": [],
+          "missing_files": ["index.tsx", "types.ts", "schema.ts"],
+          "components": ["components/data-refresh-controls.tsx"],
+          "action_items": [
+            "Create dashboard/index.tsx - feature export",
+            "Create dashboard/types.ts - TypeScript type definitions",
+            "Create dashboard/schema.ts - Zod validation schemas"
+          ],
+          "notes": "Completely missing root-level files. Components exist but feature is unusable."
+        },
+        {
+          "path": "features/shared/sessions",
+          "portal": "shared",
+          "feature_name": "sessions",
+          "violations": ["missing_types", "missing_schema"],
+          "status": "BROKEN",
+          "existing_files": ["index.tsx"],
+          "missing_files": ["types.ts", "schema.ts"],
+          "api_files": ["api/queries.ts", "api/mutations.ts", "api/session-context.ts"],
+          "components": ["components/session-list.tsx", "components/session-card.tsx"],
+          "action_items": [
+            "Create sessions/types.ts - TypeScript type definitions",
+            "Create sessions/schema.ts - Zod validation schemas"
+          ],
+          "notes": "Has index.tsx but missing type/schema files. Needs consolidation of api/session-context.ts"
+        }
+      ]
+    },
+    "tier_2_high_complexity": {
+      "name": "HIGH COMPLEXITY - Large Consolidations (>10 files)",
+      "count": 2,
+      "estimated_time_hours": 1.5,
+      "priority": 2,
+      "features": [
+        {
+          "path": "features/admin/users",
+          "portal": "admin",
+          "feature_name": "users",
+          "violations": ["api_queries_folder", "api_mutations_folder"],
+          "status": "URGENT",
+          "total_files_to_consolidate": 15,
+          "root_files": ["schema.ts", "index.tsx", "types.ts"],
+          "consolidation_breakdown": {
+            "api_queries_files": 4,
+            "api_mutations_files": 11,
+            "total": 15
+          },
+          "files_to_consolidate": [
+            "api/queries/single-user.ts",
+            "api/queries/all-users.ts",
+            "api/queries/stats.ts",
+            "api/queries/types.ts",
+            "api/mutations/status.ts",
+            "api/mutations/helpers.ts",
+            "api/mutations/status-reactivate.mutation.ts",
+            "api/mutations/status-ban.mutation.ts",
+            "api/mutations/constants.ts",
+            "api/mutations/status-suspend.mutation.ts",
+            "api/mutations/profile.ts",
+            "api/mutations/status-batch.mutation.ts",
+            "api/mutations/index.ts",
+            "api/mutations/sessions.ts",
+            "api/mutations/delete.ts"
+          ],
+          "consolidation_steps": [
+            "1. Review all files in api/queries/ - identify exports",
+            "2. Merge all query functions into single api/queries.ts",
+            "3. Review all files in api/mutations/ - identify exports",
+            "4. Merge all mutation functions into single api/mutations.ts",
+            "5. Update all component imports (search for api/queries/ and api/mutations/)",
+            "6. Delete api/queries/ and api/mutations/ directories",
+            "7. Verify no broken imports"
+          ],
+          "component_count": 5,
+          "notes": "High consolidation required. Multiple small files need to be merged systematically."
+        },
+        {
+          "path": "features/admin/analytics",
+          "portal": "admin",
+          "feature_name": "analytics",
+          "violations": ["api_internal_exists"],
+          "status": "URGENT",
+          "total_files_to_consolidate": 16,
+          "root_files": ["schema.ts", "index.tsx", "types.ts"],
+          "api_internal_structure": {
+            "queries": [
+              "api/internal/queries/appointments.ts",
+              "api/internal/queries/inventory.ts",
+              "api/internal/queries/messages.ts",
+              "api/internal/queries/platform.ts",
+              "api/internal/queries/revenue.ts",
+              "api/internal/queries/reviews.ts",
+              "api/internal/queries/salons.ts",
+              "api/internal/queries/staff.ts",
+              "api/internal/queries/users.ts"
+            ],
+            "platform-analytics": [
+              "api/internal/platform-analytics/feature-usage.ts",
+              "api/internal/platform-analytics/growth.ts",
+              "api/internal/platform-analytics/helpers.ts",
+              "api/internal/platform-analytics/performance.ts",
+              "api/internal/platform-analytics/retention.ts"
+            ],
+            "rpc-functions": [
+              "api/internal/rpc-functions.ts"
+            ]
+          },
+          "consolidation_steps": [
+            "1. Analyze structure - 9 query files + 5 platform-analytics + 1 rpc-functions",
+            "2. Create api/queries.ts - merge all query-related exports",
+            "3. Create api/mutations.ts - check if any mutations exist (currently none apparent)",
+            "4. Export rpc-functions as needed or integrate into queries/mutations",
+            "5. Update all component imports throughout features/admin/analytics/",
+            "6. Delete api/internal/ directory",
+            "7. Verify no broken imports"
+          ],
+          "component_count": 10,
+          "notes": "Complex internal structure with queries and specialized platform-analytics. Need to carefully preserve all functionality."
+        }
+      ]
+    },
+    "tier_3_medium": {
+      "name": "MEDIUM COMPLEXITY - Moderate Consolidations (2-3 violations)",
+      "count": 1,
+      "estimated_time_hours": 1,
+      "priority": 3,
+      "features": [
+        {
+          "path": "features/admin/moderation",
+          "violations": ["api_internal_exists", "api_mutations_folder"],
+          "violation_count": 2,
+          "total_files_to_consolidate": 13,
+          "api_internal_files": 3,
+          "api_mutations_files": 10,
+          "estimated_time_minutes": 20
+        }
+      ]
+    },
+    "tier_4_minor": {
+      "name": "MINOR VIOLATIONS - Single or Small Consolidations",
+      "count": 47,
+      "estimated_time_hours": 7,
+      "priority": 4,
+      "by_violation_type": {
+        "api_internal_exists": {
+          "count": 26,
+          "features": [
+            "features/admin/chains",
+            "features/admin/dashboard",
+            "features/admin/database-health",
+            "features/admin/staff",
+            "features/business/appointments",
+            "features/business/chains",
+            "features/business/inventory",
+            "features/business/inventory-usage",
+            "features/business/notifications",
+            "features/business/reviews",
+            "features/business/settings-roles",
+            "features/business/staff",
+            "features/business/staff-schedules",
+            "features/business/staff-services",
+            "features/customer/discovery",
+            "features/customer/salon-search",
+            "features/marketing/salon-directory",
+            "features/marketing/services-directory",
+            "features/shared/auth",
+            "features/shared/messaging",
+            "features/staff/analytics",
+            "features/staff/clients",
+            "features/staff/schedule",
+            "features/staff/time-off"
+          ]
+        },
+        "api_queries_folder": {
+          "count": 17,
+          "features": [
+            "features/admin/appointments",
+            "features/admin/inventory",
+            "features/admin/security-monitoring",
+            "features/business/analytics",
+            "features/business/business-common",
+            "features/business/coupons",
+            "features/business/dashboard",
+            "features/business/insights",
+            "features/business/inventory-products",
+            "features/business/locations",
+            "features/business/pricing",
+            "features/business/services",
+            "features/business/webhooks",
+            "features/customer/booking",
+            "features/customer/dashboard",
+            "features/shared/profile",
+            "features/staff/commission"
+          ]
+        },
+        "api_mutations_folder": {
+          "count": 3,
+          "features": [
+            "features/business/inventory-purchase-orders",
+            "features/business/settings",
+            "features/shared/blocked-times"
+          ]
+        }
+      }
+    }
+  },
+  "consolidated_features_list": {
+    "with_api_internal": [
+      "features/admin/analytics",
+      "features/admin/chains",
+      "features/admin/dashboard",
+      "features/admin/database-health",
+      "features/admin/moderation",
+      "features/admin/salons",
+      "features/admin/staff",
+      "features/business/appointments",
+      "features/business/chains",
+      "features/business/inventory",
+      "features/business/inventory-usage",
+      "features/business/notifications",
+      "features/business/reviews",
+      "features/business/settings-roles",
+      "features/business/staff",
+      "features/business/staff-schedules",
+      "features/business/staff-services",
+      "features/customer/discovery",
+      "features/customer/salon-search",
+      "features/marketing/salon-directory",
+      "features/marketing/services-directory",
+      "features/shared/auth",
+      "features/shared/messaging",
+      "features/staff/analytics",
+      "features/staff/clients",
+      "features/staff/schedule",
+      "features/staff/time-off"
+    ],
+    "with_api_queries_folder": [
+      "features/admin/analytics",
+      "features/admin/appointments",
+      "features/admin/inventory",
+      "features/admin/security-monitoring",
+      "features/admin/users",
+      "features/business/analytics",
+      "features/business/appointments",
+      "features/business/business-common",
+      "features/business/coupons",
+      "features/business/dashboard",
+      "features/business/insights",
+      "features/business/inventory-products",
+      "features/business/locations",
+      "features/business/pricing",
+      "features/business/services",
+      "features/business/webhooks",
+      "features/customer/booking",
+      "features/customer/dashboard",
+      "features/shared/messaging",
+      "features/shared/profile",
+      "features/staff/commission"
+    ],
+    "with_api_mutations_folder": [
+      "features/admin/moderation",
+      "features/admin/salons",
+      "features/admin/users",
+      "features/business/inventory-purchase-orders",
+      "features/business/notifications",
+      "features/business/services",
+      "features/business/settings",
+      "features/shared/blocked-times"
+    ]
+  },
+  "repair_strategy": {
+    "phase_1": {
+      "name": "Fix Broken Features",
+      "duration_hours": 0.5,
+      "order": 1,
+      "features": [
+        "features/shared/dashboard",
+        "features/shared/sessions"
+      ],
+      "actions": [
+        "Create missing index.tsx, types.ts, schema.ts files",
+        "Verify feature can be imported and used",
+        "Update exports in feature index files"
+      ]
+    },
+    "phase_2": {
+      "name": "High Complexity Consolidation",
+      "duration_hours": 1.5,
+      "order": 2,
+      "features": [
+        "features/admin/users",
+        "features/admin/analytics"
+      ],
+      "actions": [
+        "Consolidate api/queries/ and api/mutations/ folders into single files",
+        "Update all component imports throughout the codebase",
+        "Verify TypeScript compilation succeeds",
+        "Test feature functionality"
+      ]
+    },
+    "phase_3": {
+      "name": "Medium Complexity Consolidation",
+      "duration_hours": 1,
+      "order": 3,
+      "features": [
+        "features/admin/moderation"
+      ],
+      "actions": [
+        "Consolidate api/internal and api/mutations folders",
+        "Update imports and verify compilation"
+      ]
+    },
+    "phase_4": {
+      "name": "Batch Process Minor Violations",
+      "duration_hours": 6,
+      "order": 4,
+      "strategy": "Process by violation type in parallel",
+      "batches": [
+        {
+          "batch": 1,
+          "violation_type": "api_internal_exists",
+          "count": 26,
+          "duration_hours": 3,
+          "features_per_batch": 5,
+          "consolidation_type": "api/internal -> api/queries.ts + api/mutations.ts"
+        },
+        {
+          "batch": 2,
+          "violation_type": "api_queries_folder",
+          "count": 17,
+          "duration_hours": 2,
+          "features_per_batch": 5,
+          "consolidation_type": "api/queries/* -> api/queries.ts"
+        },
+        {
+          "batch": 3,
+          "violation_type": "api_mutations_folder",
+          "count": 3,
+          "duration_hours": 1,
+          "features_per_batch": 3,
+          "consolidation_type": "api/mutations/* -> api/mutations.ts"
+        }
+      ]
+    }
+  },
+  "detection_commands": {
+    "find_api_internal": "find /Users/afshin/Desktop/Enorae/features -type d -path '*/api/internal' | sort",
+    "find_api_queries_folder": "find /Users/afshin/Desktop/Enorae/features -type d -path '*/api/queries' | sort",
+    "find_api_mutations_folder": "find /Users/afshin/Desktop/Enorae/features -type d -path '*/api/mutations' | sort",
+    "find_missing_index": "for dir in /Users/afshin/Desktop/Enorae/features/*/*; do [ ! -f \"$dir/index.tsx\" ] && echo \"$dir\"; done",
+    "find_missing_types": "for dir in /Users/afshin/Desktop/Enorae/features/*/*; do [ ! -f \"$dir/types.ts\" ] && echo \"$dir\"; done",
+    "find_missing_schema": "for dir in /Users/afshin/Desktop/Enorae/features/*/*; do [ ! -f \"$dir/schema.ts\" ] && echo \"$dir\"; done"
+  },
+  "notes": [
+    "Total affected features: 51 out of ~180 total features (28% have violations)",
+    "Most violations are structural (api/internal, api/queries/, api/mutations/)",
+    "Only 2 features are completely broken (missing critical files)",
+    "Pattern-based consolidation can be largely automated",
+    "All changes should preserve functionality - only reorganizing file structure",
+    "Recommend processing by tier to maintain morale and demonstrate progress",
+    "Phase 1 & 2 should be done manually to ensure quality",
+    "Phase 3 & 4 can use automated consolidation scripts with verification"
+  ]
+}

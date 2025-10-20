@@ -124,13 +124,13 @@ export function SalonDescriptionComponent({ description }: SalonDescriptionProps
                 <Stack gap="sm">
                   {description.awards && Array.isArray(description.awards) && description.awards.map((award, idx) => (
                     <div key={`award-${idx}`} className="flex items-start gap-2">
-                      <Award className="h-4 w-4 mt-0.5 text-yellow-500" />
+                      <Award className="h-4 w-4 mt-0.5 text-warning" />
                       <p className="text-sm text-muted-foreground text-sm">{String(award)}</p>
                     </div>
                   ))}
                   {description.certifications && Array.isArray(description.certifications) && description.certifications.map((cert, idx) => (
                     <div key={`cert-${idx}`} className="flex items-start gap-2">
-                      <Award className="h-4 w-4 mt-0.5 text-blue-500" />
+                      <Award className="h-4 w-4 mt-0.5 text-info" />
                       <p className="text-sm text-muted-foreground text-sm">{String(cert)}</p>
                     </div>
                   ))}

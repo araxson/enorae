@@ -12,7 +12,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Stack, Flex } from '@/components/layout'
 import { toast } from 'sonner'
 import { assignRole } from '../api/mutations'
 import { PermissionsEditor } from './permissions-editor'
@@ -121,7 +120,7 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="sm:max-w-[560px]"
+        className="sm:max-w-xl"
         onOpenAutoFocus={(event) => {
           if (userIdRef.current) {
             userIdRef.current.focus()
@@ -130,18 +129,18 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
         }}
       >
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
-            Assign Role
-          </DialogTitle>
+            <DialogTitle>Assign Role</DialogTitle>
+          </div>
           <DialogDescription>
             Assign a role to a user and optionally configure granular permissions with templates.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <Stack gap="lg">
-            <Stack gap="md">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
               <div className="space-y-2">
                 <Label htmlFor="userId">User ID *</Label>
                 <Input
@@ -183,29 +182,29 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
                   {errors.salonId && <p className="text-xs text-destructive">{errors.salonId}</p>}
                 </>
               )}
-            </Stack>
+            </div>
 
-            <Stack gap="sm">
-              <Flex align="center" justify="between">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
                 <Label>Permissions</Label>
                 <p className="text-xs text-muted-foreground">Templates prefill permissions; add or remove as needed.</p>
-              </Flex>
+              </div>
               <PermissionsEditor
                 permissions={permissions}
                 onAdd={handleAddPermission}
                 onRemove={handleRemovePermission}
               />
-            </Stack>
+            </div>
 
-            <Flex justify="end" gap="md">
+            <div className="flex justify-end gap-6">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? 'Assigning...' : 'Assign Role'}
               </Button>
-            </Flex>
-          </Stack>
+            </div>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

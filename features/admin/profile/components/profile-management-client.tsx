@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState, useTransition } from 'react'
 
-import { Stack } from '@/components/layout'
 import { getProfileDetailAction, searchProfilesAction } from '../api/actions'
 import type { ProfileDetail, ProfileSearchResult } from '../api/types'
 import { useDebouncedCallback } from '@/lib/performance/react-optimizations'
@@ -134,18 +133,19 @@ export function ProfileManagementClient({
   }, [])
 
   return (
-    <Stack gap="xl">
-      <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
-        <ProfileSearchPanel
-          isSearching={isSearching}
-          onSearchChange={handleSearchChange}
-          onSelect={handleSelect}
-          results={profiles}
-          searchTerm={searchTerm}
-          selectedId={selectedId}
-        />
-
-        <Stack gap="lg">
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-6 lg:flex-row">
+        <div className="lg:w-80">
+          <ProfileSearchPanel
+            isSearching={isSearching}
+            onSearchChange={handleSearchChange}
+            onSelect={handleSelect}
+            results={profiles}
+            searchTerm={searchTerm}
+            selectedId={selectedId}
+          />
+        </div>
+        <div className="flex flex-col gap-8">
           <ProfileSummaryCard profile={selectedProfile} isLoading={isLoadingProfile} />
           <ProfileActions
             profile={selectedProfile}
@@ -156,8 +156,8 @@ export function ProfileManagementClient({
           <ProfileMetadataForm profile={selectedProfile} onUpdated={refreshProfile} />
           <ProfilePreferencesForm profile={selectedProfile} onUpdated={refreshProfile} />
           <ProfileActivityCard profile={selectedProfile} isLoading={isLoadingProfile} />
-        </Stack>
+        </div>
       </div>
-    </Stack>
+    </div>
   )
 }

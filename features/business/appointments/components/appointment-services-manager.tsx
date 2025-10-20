@@ -11,7 +11,7 @@ import { EditServiceDialog } from './edit-service-dialog'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
 import { removeServiceFromAppointment } from '../api/mutations'
 import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 interface AppointmentServicesManagerProps {
   appointmentId: string

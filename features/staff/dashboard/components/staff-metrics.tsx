@@ -28,18 +28,18 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
       </div>
 
       <Grid cols={{ base: 1, sm: 3 }} gap="md">
-        <div className="rounded-xl border-l-4 border-l-orange-500">
+        <div className="rounded-xl border-l-4 border-l-warning">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>Today</CardTitle>
-              <Clock className="h-4 w-4 text-orange-600" />
+              <Clock className="h-4 w-4 text-warning" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metrics.todayAppointments}</div>
               <p className="text-xs text-muted-foreground mt-1">Scheduled for today</p>
               {metrics.todayAppointments > 0 && (
                 <div className="mt-2">
-                  <Progress value={weekProgress} className="h-1.5 [&>div]:bg-orange-600" />
+                  <Progress value={weekProgress} className="h-1.5 [&>div]:bg-warning" />
                   <p className="text-xs text-muted-foreground mt-1">{Math.round(weekProgress)}% of weekly</p>
                 </div>
               )}
@@ -47,11 +47,11 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
           </Card>
         </div>
 
-        <div className="rounded-xl border-l-4 border-l-blue-500">
+        <div className="rounded-xl border-l-4 border-l-info">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>This Week</CardTitle>
-              <Calendar className="h-4 w-4 text-blue-600" />
+              <Calendar className="h-4 w-4 text-info" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metrics.weekAppointments}</div>
@@ -64,8 +64,8 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
                         key={i}
                         className={`h-6 flex-1 rounded ${
                           i < Math.ceil(metrics.weekAppointments / 7)
-                            ? 'bg-blue-600'
-                            : 'bg-blue-100 dark:bg-blue-950'
+                            ? 'bg-info'
+                            : 'bg-info/10'
                         }`}
                       />
                     ))}
@@ -76,11 +76,11 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
           </Card>
         </div>
 
-        <div className="rounded-xl border-l-4 border-l-green-500">
+        <div className="rounded-xl border-l-4 border-l-success">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>This Month</CardTitle>
-              <CheckCircle className="h-4 w-4 text-green-600" />
+              <CheckCircle className="h-4 w-4 text-success" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metrics.monthCompleted}</div>
@@ -89,7 +89,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
                 <div className="mt-2">
                   <Progress
                     value={Math.min((metrics.monthCompleted / 50) * 100, 100)}
-                    className="h-1.5 [&>div]:bg-green-600"
+                    className="h-1.5 [&>div]:bg-success"
                   />
                   <p className="text-xs text-muted-foreground mt-1">Goal: 50 appointments</p>
                 </div>

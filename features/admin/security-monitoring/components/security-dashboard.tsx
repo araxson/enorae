@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw } from 'lucide-react'
-import { Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { SecurityMonitoringSnapshot } from '../api/types'
@@ -68,7 +67,7 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
   }, [refresh])
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-1">Real-Time Security Overview</h2>
@@ -109,6 +108,6 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
         <IpAccessPanel events={data.ipAccess} />
         <IncidentResponsePanel incidents={data.incidents} />
       </div>
-    </Stack>
+    </div>
   )
 }

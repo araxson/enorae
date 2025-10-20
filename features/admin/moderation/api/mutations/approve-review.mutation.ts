@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import type { Database, Json } from '@/lib/types/database.types'
 
 /**
  * Approve flagged review and mark as verified
@@ -21,30 +22,40 @@ export async function approveReview(formData: FormData) {
 
     // Get review details
     const { data: review } = await supabase
+      .schema('engagement')
       .from('salon_reviews')
       .select('customer_id, salon_id, is_flagged')
       .eq('id', reviewId)
-      .single()
+      .single<{ customer_id: string; salon_id: string; is_flagged: boolean }>()
 
     if (!review) {
       return { error: 'Review not found' }
     }
 
     // Approve review (unflag, verify, restore if hidden)
+    const updatePayload: Database['engagement']['Tables']['salon_reviews']['Update'] = {
+      is_flagged: false,
+      flagged_reason: null,
+      is_verified: true,
+      deleted_at: null,
+    }
+
     const { error } = await supabase
       .schema('engagement')
       .from('salon_reviews')
-      .update({
-        is_flagged: false,
-        flagged_reason: null,
-        is_verified: true,
-        deleted_at: null, // Restore if hidden
-      })
+      .update(updatePayload)
       .eq('id', reviewId)
 
     if (error) return { error: error.message }
 
     // Audit log
+    const metadata: Json = {
+      was_flagged: review.is_flagged,
+      customer_id: review.customer_id,
+      salon_id: review.salon_id,
+      approved_by: session.user.id,
+    }
+
     await supabase.schema('audit').from('audit_logs').insert({
       event_type: 'review_approved',
       event_category: 'business',
@@ -53,13 +64,11 @@ export async function approveReview(formData: FormData) {
       action: 'approve_review',
       entity_type: 'review',
       entity_id: reviewId,
-      metadata: {
-        was_flagged: review.is_flagged,
-        customer_id: review.customer_id,
-        salon_id: review.salon_id,
-        approved_by: session.user.id,
-      },
+      metadata,
       is_success: true,
+      target_schema: 'engagement',
+      target_table: 'salon_reviews',
+      target_id: reviewId,
     })
 
     revalidatePath('/admin/moderation')

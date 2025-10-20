@@ -7,7 +7,6 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack } from '@/components/layout'
 import { Download, Loader2, CheckCircle2, XCircle } from 'lucide-react'
 import { exportFinancialDataToCSV } from '../api/mutations'
 
@@ -55,7 +54,7 @@ export function ExportFinancialData() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-8">
           {message && (
             <Alert variant={message.type === 'error' ? 'destructive' : 'default'}>
               {message.type === 'success' ? (
@@ -135,7 +134,7 @@ export function ExportFinancialData() {
               </>
             )}
           </Button>
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

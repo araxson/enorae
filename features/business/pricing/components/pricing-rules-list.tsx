@@ -7,7 +7,7 @@ import { Switch } from '@/components/ui/switch'
 import { Stack } from '@/components/layout'
 import { Trash2 } from 'lucide-react'
 import { togglePricingRuleStatus, deletePricingRule } from '../api/pricing-rules.mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 interface PricingRule {
   id: string

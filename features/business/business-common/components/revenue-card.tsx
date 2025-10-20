@@ -150,12 +150,15 @@ export function RevenueCard({
           {growthRate !== undefined && (
             <Flex gap="xs" align="center">
               {growthRate >= 0 ? (
-                <ArrowUpRight className="h-3 w-3 text-green-600" aria-hidden="true" />
+                <ArrowUpRight className="h-3 w-3 text-success" aria-hidden="true" />
               ) : (
-                <ArrowDownRight className="h-3 w-3 text-red-600" aria-hidden="true" />
+                <ArrowDownRight className="h-3 w-3 text-destructive" aria-hidden="true" />
               )}
               <small
-                className={cn('text-sm font-medium leading-none', `text-xs ${growthRate >= 0 ? 'text-green-600' : 'text-red-600'}`)}
+                className={cn(
+                  'text-sm font-medium leading-none',
+                  `text-xs ${growthRate >= 0 ? 'text-success' : 'text-destructive'}`
+                )}
               >
                 {growthRate >= 0 ? 'Growth' : 'Decline'} vs. previous period
               </small>

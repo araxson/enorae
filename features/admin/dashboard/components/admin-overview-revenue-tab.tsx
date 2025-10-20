@@ -64,7 +64,7 @@ export function AdminOverviewRevenueTab({ revenue, windowSize }: RevenueTabProps
           </Tooltip>
         </div>
 
-        <ScrollArea className="h-[320px] pr-4">
+        <ScrollArea className="h-80 pr-4">
           <Table>
             <TableHeader>
               <TableRow>

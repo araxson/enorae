@@ -13,7 +13,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack, Grid } from '@/components/layout'
 import { updateSalonSettings } from '../api/mutations'
 import { toast } from 'sonner'
 import type { Database } from '@/lib/types/database.types'
@@ -51,11 +50,11 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack gap="lg">
+      <div className="flex flex-col gap-8">
         {/* Booking Status */}
         <Card>
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-6">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Booking Status</h3>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
@@ -67,16 +66,16 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                   onCheckedChange={setIsAcceptingBookings}
                 />
               </div>
-            </Stack>
+            </div>
           </CardContent>
         </Card>
 
         {/* Booking Rules */}
         <Card>
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-6">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Booking Rules</h3>
-              <Grid cols={{ base: 1, md: 2 }} gap="md">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                   <Label htmlFor="booking_lead_time_hours">Lead Time (hours)</Label>
                   <Input
@@ -118,17 +117,17 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                   />
                   <p className="text-sm text-muted-foreground">Maximum daily appointments</p>
                 </div>
-              </Grid>
-            </Stack>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         {/* Account Limits */}
         <Card>
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-6">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Account Limits</h3>
-              <Grid cols={{ base: 1, md: 3 }} gap="md">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div>
                   <Label htmlFor="max_services">Max Services</Label>
                   <Input
@@ -172,8 +171,8 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     </SelectContent>
                   </Select>
                 </div>
-              </Grid>
-            </Stack>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -183,7 +182,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
             {isSubmitting ? 'Saving...' : 'Save Settings'}
           </Button>
         </div>
-      </Stack>
+      </div>
     </form>
   )
 }

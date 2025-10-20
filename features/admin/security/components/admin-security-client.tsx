@@ -1,4 +1,3 @@
-import { Section, Stack, Box, Flex } from '@/components/layout'
 import { Card, CardContent } from '@/components/ui/card'
 import { Shield, Activity, AlertTriangle, UserX } from 'lucide-react'
 import { getSecurityOverview, getAuditLogs, getSecurityEvents } from '../api/queries'
@@ -19,12 +18,13 @@ export async function AdminSecurityClient() {
   ])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardContent className="p-6">
-              <Flex justify="between" align="start">
+              <div className="flex items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">Total Audit Logs</p>
                   <p className="leading-7 text-2xl font-semibold text-foreground">
@@ -32,67 +32,68 @@ export async function AdminSecurityClient() {
                   </p>
                 </div>
                 <Activity className="h-4 w-4 text-muted-foreground" />
-              </Flex>
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <Flex justify="between" align="start">
+              <div className="flex items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">Security Events</p>
                   <p className="leading-7 text-2xl font-semibold text-foreground">
                     {overview.totalSecurityEvents}
                   </p>
                 </div>
-                <Shield className="h-4 w-4 text-blue-500" />
-              </Flex>
+                <Shield className="h-4 w-4 text-info" />
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <Flex justify="between" align="start">
+              <div className="flex items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">Failed Logins</p>
                   <p className="leading-7 text-2xl font-semibold text-foreground">
                     {overview.failedLogins}
                   </p>
                 </div>
-                <UserX className="h-4 w-4 text-orange-500" />
-              </Flex>
+                <UserX className="h-4 w-4 text-warning" />
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <Flex justify="between" align="start">
+              <div className="flex items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">Suspicious Activity</p>
                   <p className="leading-7 text-2xl font-semibold text-foreground">
                     {overview.suspiciousActivity}
                   </p>
                 </div>
-                <AlertTriangle className="h-4 w-4 text-red-500" />
-              </Flex>
+                <AlertTriangle className="h-4 w-4 text-destructive" />
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        <Box>
+        <div>
           <p className="leading-7 text-sm font-semibold uppercase tracking-wide">Recent Security Events</p>
           <p className="text-sm text-muted-foreground mb-4">
             Failed login attempts and suspicious activity
           </p>
           <SecurityEventsTable events={securityEvents} />
-        </Box>
+        </div>
 
-        <Box>
+        <div>
           <p className="leading-7 text-sm font-semibold uppercase tracking-wide">Recent Audit Logs</p>
           <p className="text-sm text-muted-foreground mb-4">All user actions and system events</p>
           <AuditLogsTable logs={auditLogs} />
-        </Box>
-      </Stack>
-    </Section>
+        </div>
+        </div>
+      </div>
+    </section>
   )
 }

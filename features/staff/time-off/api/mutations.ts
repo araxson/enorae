@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import type { Database } from '@/lib/types/database.types'
 import { z } from 'zod'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
@@ -18,6 +19,9 @@ const requestSchema = z.object({
   isAutoReschedule: z.boolean().optional(),
   isNotifyCustomers: z.boolean().optional(),
 })
+
+type TimeOffRequestInsert = Database['scheduling']['Tables']['time_off_requests']['Insert']
+type TimeOffRequestUpdate = Database['scheduling']['Tables']['time_off_requests']['Update']
 
 export async function createTimeOffRequest(formData: FormData) {
   try {
@@ -48,21 +52,25 @@ export async function createTimeOffRequest(formData: FormData) {
 
     if (!staffProfile?.salon_id) return { error: 'User salon not found' }
 
+    const insertPayload: TimeOffRequestInsert = {
+      salon_id: staffProfile.salon_id,
+      staff_id: data.staffId,
+      start_at: data.startAt,
+      end_at: data.endAt,
+      request_type: data.requestType,
+      reason: data.reason || null,
+      status: 'pending',
+      is_auto_reschedule: data.isAutoReschedule || false,
+      is_notify_customers: data.isNotifyCustomers || false,
+      created_by_id: user.id,
+      updated_by_id: user.id,
+      updated_at: new Date().toISOString(),
+    }
+
     const { error: insertError } = await supabase
       .schema('scheduling')
       .from('time_off_requests')
-      .insert({
-        salon_id: staffProfile.salon_id,
-        staff_id: data.staffId,
-        start_at: data.startAt,
-        end_at: data.endAt,
-        request_type: data.requestType,
-        reason: data.reason || null,
-        status: 'pending',
-        is_auto_reschedule: data.isAutoReschedule || false,
-        is_notify_customers: data.isNotifyCustomers || false,
-        created_by_id: user.id,
-      })
+      .insert<TimeOffRequestInsert>(insertPayload)
 
     if (insertError) return { error: insertError.message }
 
@@ -104,15 +112,18 @@ export async function approveTimeOffRequest(formData: FormData) {
       return { error: 'Unauthorized: Request not found for your salon' }
     }
 
+    const approvePayload: TimeOffRequestUpdate = {
+      status: 'approved',
+      reviewed_by_id: user.id,
+      reviewed_at: new Date().toISOString(),
+      updated_by_id: user.id,
+      updated_at: new Date().toISOString(),
+    }
+
     const { error: updateError } = await supabase
       .schema('scheduling')
       .from('time_off_requests')
-      .update({
-        status: 'approved',
-        reviewed_by_id: user.id,
-        reviewed_at: new Date().toISOString(),
-        updated_by_id: user.id,
-      })
+      .update<TimeOffRequestUpdate>(approvePayload)
       .eq('id', id)
       .eq('salon_id', staffProfile.salon_id)
 
@@ -157,16 +168,19 @@ export async function rejectTimeOffRequest(formData: FormData) {
       return { error: 'Unauthorized: Request not found for your salon' }
     }
 
+    const rejectPayload: TimeOffRequestUpdate = {
+      status: 'rejected',
+      review_notes: notes || null,
+      reviewed_by_id: user.id,
+      reviewed_at: new Date().toISOString(),
+      updated_by_id: user.id,
+      updated_at: new Date().toISOString(),
+    }
+
     const { error: updateError } = await supabase
       .schema('scheduling')
       .from('time_off_requests')
-      .update({
-        status: 'rejected',
-        review_notes: notes || null,
-        reviewed_by_id: user.id,
-        reviewed_at: new Date().toISOString(),
-        updated_by_id: user.id,
-      })
+      .update<TimeOffRequestUpdate>(rejectPayload)
       .eq('id', id)
       .eq('salon_id', staffProfile.salon_id)
 
@@ -223,7 +237,7 @@ export async function updateTimeOffRequest(formData: FormData) {
     }
 
     // Build update object
-    const updateData: Record<string, unknown> = {
+    const updateData: TimeOffRequestUpdate = {
       updated_at: new Date().toISOString(),
       updated_by_id: user.id,
     }
@@ -241,7 +255,7 @@ export async function updateTimeOffRequest(formData: FormData) {
     const { error: updateError } = await supabase
       .schema('scheduling')
       .from('time_off_requests')
-      .update(updateData)
+      .update<TimeOffRequestUpdate>(updateData)
       .eq('id', id)
       .eq('staff_id', staffProfile.id) // Security check
 
@@ -293,14 +307,16 @@ export async function cancelTimeOffRequest(formData: FormData) {
       return { error: `Request is already ${request.status}` }
     }
 
+    const cancelPayload: TimeOffRequestUpdate = {
+      status: 'cancelled',
+      updated_at: new Date().toISOString(),
+      updated_by_id: user.id,
+    }
+
     const { error: updateError } = await supabase
       .schema('scheduling')
       .from('time_off_requests')
-      .update({
-        status: 'cancelled',
-        updated_at: new Date().toISOString(),
-        updated_by_id: user.id,
-      })
+      .update<TimeOffRequestUpdate>(cancelPayload)
       .eq('id', id)
       .eq('staff_id', staffProfile.id) // Security check
 

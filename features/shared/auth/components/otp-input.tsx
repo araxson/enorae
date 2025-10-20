@@ -2,7 +2,6 @@
 
 import { useState, useRef, KeyboardEvent, ClipboardEvent, ChangeEvent } from 'react'
 import { Input } from '@/components/ui/input'
-import { Flex } from '@/components/layout'
 import { cn } from '@/lib/utils'
 
 interface OTPInputProps {
@@ -99,7 +98,7 @@ export function OTPInput({
   }
 
   return (
-    <Flex gap="sm" justify="center" className={className}>
+    <div className={cn('flex justify-center gap-4', className)}>
       {Array.from({ length }).map((_, index) => (
         <Input
           key={index}
@@ -124,7 +123,7 @@ export function OTPInput({
           aria-label={`Digit ${index + 1}`}
         />
       ))}
-    </Flex>
+    </div>
   )
 }
 

@@ -63,7 +63,7 @@ export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFiel
           className="flex flex-wrap gap-2 pt-2"
         >
           {dayOptions.map((day) => (
-            <ToggleGroupItem key={day.value} value={day.value.toString()} className="min-w-[2.5rem]">
+            <ToggleGroupItem key={day.value} value={day.value.toString()} className="w-10">
               {day.label}
             </ToggleGroupItem>
           ))}

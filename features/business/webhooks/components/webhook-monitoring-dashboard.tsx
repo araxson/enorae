@@ -37,13 +37,13 @@ export function WebhookMonitoringDashboard({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'delivered':
-        return 'text-green-600'
+        return 'text-success'
       case 'failed':
-        return 'text-red-600'
+        return 'text-destructive'
       case 'pending':
-        return 'text-yellow-600'
+        return 'text-warning'
       default:
-        return 'text-gray-600'
+        return 'text-muted-foreground'
     }
   }
 
@@ -77,7 +77,7 @@ export function WebhookMonitoringDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Success Rate</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CheckCircle className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.success_rate.toFixed(1)}%</div>
@@ -90,7 +90,7 @@ export function WebhookMonitoringDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Failed Deliveries</CardTitle>
-            <AlertCircle className="h-4 w-4 text-red-600" />
+            <AlertCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.failed_deliveries}</div>
@@ -152,7 +152,7 @@ export function WebhookMonitoringDashboard({
                       Event: {webhook.event_type}
                     </p>
                     {webhook.error_message && (
-                      <p className="text-sm text-red-600">
+                      <p className="text-sm text-destructive">
                         Error: {webhook.error_message}
                       </p>
                     )}
@@ -202,7 +202,7 @@ export function WebhookMonitoringDashboard({
                       )}
                     </div>
                     {log.error_message && (
-                      <p className="text-sm text-red-600">
+                      <p className="text-sm text-destructive">
                         {log.error_message}
                       </p>
                     )}

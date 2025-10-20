@@ -10,6 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 import type { TimeOffRequestWithStaff } from '../api/queries'
 import { RequestCard } from './request-card'
@@ -52,11 +53,12 @@ export function TimeOffRequestGrid({
   return (
     <div className="flex flex-col gap-6">
       {showPendingBanner && (
-        <div className="rounded-lg border bg-secondary/10 p-4">
-          <p className="text-xs font-semibold">
+        <Alert>
+          <AlertTitle>Pending requests</AlertTitle>
+          <AlertDescription>
             {pendingCount} pending request(s) awaiting review
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">

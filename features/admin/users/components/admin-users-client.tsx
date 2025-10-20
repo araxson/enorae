@@ -1,4 +1,3 @@
-import { Section, Stack, Box, Flex } from '@/components/layout'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users, UserCheck, UserX, Shield } from 'lucide-react'
@@ -35,54 +34,55 @@ export async function AdminUsersClient() {
   })
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardContent className="p-6">
-              <Flex justify="between" align="start">
+              <div className="flex items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">Total Users</p>
                   <p className="text-2xl font-bold">{overview.totalUsers}</p>
                 </div>
                 <Users className="h-4 w-4 text-muted-foreground" />
-              </Flex>
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <Flex justify="between" align="start">
+              <div className="flex items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">Active Users</p>
                   <p className="text-2xl font-bold">{overview.activeUsers}</p>
                 </div>
-                <UserCheck className="h-4 w-4 text-green-500" />
-              </Flex>
+                <UserCheck className="h-4 w-4 text-success" />
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <Flex justify="between" align="start">
+              <div className="flex items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">Suspended</p>
                   <p className="text-2xl font-bold">{overview.suspendedUsers}</p>
                 </div>
-                <UserX className="h-4 w-4 text-red-500" />
-              </Flex>
+                <UserX className="h-4 w-4 text-destructive" />
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <Flex justify="between" align="start">
+              <div className="flex items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">With Roles</p>
                   <p className="text-2xl font-bold">{overview.usersWithRoles}</p>
                 </div>
-                <Shield className="h-4 w-4 text-blue-500" />
-              </Flex>
+                <Shield className="h-4 w-4 text-info" />
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -90,17 +90,17 @@ export async function AdminUsersClient() {
         <Card>
           <CardContent className="p-6">
             <p className="leading-7 text-sm font-medium mb-4">Role Distribution</p>
-            <Flex gap="sm" wrap>
+            <div className="flex flex-wrap gap-4">
               {overview.roleBreakdown.map((role) => (
                 <Badge key={role.role} variant="outline">
                   {role.role.replace('_', ' ')}: {role.count}
                 </Badge>
               ))}
-            </Flex>
+            </div>
           </CardContent>
         </Card>
 
-        <Box>
+        <div>
           <UsersTable
             users={normalizedUsers}
             onSuspend={suspendUser}
@@ -108,8 +108,9 @@ export async function AdminUsersClient() {
             onTerminateSessions={terminateAllUserSessions}
             onDelete={isSuperAdmin ? deleteUserPermanently : undefined}
           />
-        </Box>
-      </Stack>
-    </Section>
+        </div>
+        </div>
+      </div>
+    </section>
   )
 }

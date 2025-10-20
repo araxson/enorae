@@ -65,10 +65,10 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <User className="w-4 h-4" />
-              {request.staff_name || 'Unknown Staff'}
-            </CardTitle>
+            <div className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              <CardTitle>{request.staff_name || 'Unknown Staff'}</CardTitle>
+            </div>
             {request.staff_title && (
               <p className="text-sm text-muted-foreground text-sm">{request.staff_title}</p>
             )}

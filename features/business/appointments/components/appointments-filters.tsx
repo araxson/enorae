@@ -41,14 +41,14 @@ export function AppointmentsFilters({
         value={searchTerm}
         onChange={onSearchChange}
         placeholder="Search by customer name or email..."
-        className="min-w-[300px]"
+        className="w-full lg:w-80"
       />
       <StatusFilter
         value={statusFilter}
         onChange={onStatusChange}
         options={statusOptions}
         placeholder="Filter by status"
-        className="w-[180px]"
+        className="w-44"
       />
       <DateRangeFilter
         startDate={startDate}

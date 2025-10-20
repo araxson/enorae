@@ -213,7 +213,7 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
               {selectedLog.error_message && (
                 <div>
                   <p className="text-sm font-medium text-muted-foreground mb-1">Error Message</p>
-                  <p className="text-sm text-red-600 bg-red-50 p-2 rounded">
+                  <p className="text-sm text-destructive bg-destructive/10 p-2 rounded">
                     {selectedLog.error_message}
                   </p>
                 </div>

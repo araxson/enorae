@@ -1,7 +1,6 @@
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Users, UserCheck } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Grid, Stack, Flex, Box, Group } from '@/components/layout'
 import type { AnalyticsOverview } from '../api/queries'
 
 type AnalyticsOverviewProps = {
@@ -27,7 +26,7 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
       title: 'Total Revenue',
       value: formatCurrency(data.revenue.total),
       icon: DollarSign,
-      iconColor: 'text-green-500',
+      iconColor: 'text-success',
       subtitle: `Service: ${formatCurrency(data.revenue.service)} | Product: ${formatCurrency(data.revenue.product)}`,
       trend: data.revenue.growth,
     },
@@ -35,7 +34,7 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
       title: 'Appointments',
       value: data.appointments.total.toString(),
       icon: Calendar,
-      iconColor: 'text-blue-500',
+      iconColor: 'text-primary',
       subtitle: `${formatPercent(data.appointments.completionRate)} completion rate`,
       detail: `${data.appointments.completed} completed, ${data.appointments.cancelled} cancelled`,
     },
@@ -43,7 +42,7 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
       title: 'Customers',
       value: data.customers.total.toString(),
       icon: Users,
-      iconColor: 'text-purple-500',
+      iconColor: 'text-info',
       subtitle: `${data.customers.new} new, ${data.customers.returning} returning`,
       detail: `${formatPercent(data.customers.retentionRate)} retention rate`,
     },
@@ -51,28 +50,28 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
       title: 'Active Staff',
       value: data.staff.active.toString(),
       icon: UserCheck,
-      iconColor: 'text-orange-500',
+      iconColor: 'text-warning',
       subtitle: 'Team members',
     },
   ]
 
   return (
-    <Grid cols={{ base: 1, sm: 2, lg: 4 }} gap="md">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((card) => (
         <Card key={card.title}>
           <CardHeader>
-            <Box pb="xs">
-              <Flex align="center" justify="between">
+            <div className="pb-2">
+              <div className="flex items-center justify-between">
                 <CardTitle>
                   {card.title}
                 </CardTitle>
                 <card.icon className={`h-4 w-4 ${card.iconColor}`} />
-              </Flex>
-            </Box>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
-            <Stack gap="xs">
-              <Group gap="xs" align="baseline">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-baseline gap-2">
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{card.value}</h3>
                 {card.trend !== undefined && (
                   <Badge variant={card.trend >= 0 ? 'default' : 'destructive'}>
@@ -84,17 +83,17 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
                     {formatPercent(Math.abs(card.trend))}
                   </Badge>
                 )}
-              </Group>
+              </div>
               {card.subtitle && (
-                <p className="text-sm text-muted-foreground text-xs">{card.subtitle}</p>
+                <p className="text-xs text-muted-foreground">{card.subtitle}</p>
               )}
               {card.detail && (
-                <p className="text-sm text-muted-foreground text-xs">{card.detail}</p>
+                <p className="text-xs text-muted-foreground">{card.detail}</p>
               )}
-            </Stack>
+            </div>
           </CardContent>
         </Card>
       ))}
-    </Grid>
+    </div>
   )
 }

@@ -1,6 +1,8 @@
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
+import { Container, Stack } from '@/components/layout'
 import { getReferralCode, getReferralStats, getReferralHistory } from './api/queries'
 import { ReferralDashboard } from './components/referral-dashboard'
-import { Container, Stack } from '@/components/layout'
 
 export async function ReferralProgram() {
   const referralCode = await getReferralCode()
@@ -24,5 +26,13 @@ export async function ReferralProgram() {
         />
       </Stack>
     </Container>
+  )
+}
+
+export function ReferralProgramFeature() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <ReferralProgram />
+    </Suspense>
   )
 }

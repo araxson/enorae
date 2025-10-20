@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import { Section, Stack } from '@/components/layout'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getAllSalonChains, getChainAnalytics, getChainCompliance } from './api/queries'
@@ -15,13 +14,14 @@ export async function AdminChains() {
   ])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="compliance">Compliance</TabsTrigger>
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="compliance">Compliance</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="mt-6">
@@ -32,26 +32,29 @@ export async function AdminChains() {
             <ChainAnalyticsTable analytics={analytics} />
           </TabsContent>
 
-          <TabsContent value="compliance" className="mt-6">
-            <ChainComplianceTable compliance={compliance} />
-          </TabsContent>
-        </Tabs>
-      </Stack>
-    </Section>
+            <TabsContent value="compliance" className="mt-6">
+              <ChainComplianceTable compliance={compliance} />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </section>
   )
 }
 
 export function AdminChainsSkeleton() {
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Skeleton className="h-10 w-full" />
-        <div className="grid gap-4 md:grid-cols-3">
-          {[...Array(3)].map((_, i) => (
-            <Skeleton key={i} className="h-32" />
-          ))}
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
+          <Skeleton className="h-10 w-full" />
+          <div className="grid gap-4 md:grid-cols-3">
+            {[...Array(3)].map((_, i) => (
+              <Skeleton key={i} className="h-32" />
+            ))}
+          </div>
         </div>
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

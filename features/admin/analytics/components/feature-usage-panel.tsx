@@ -12,10 +12,10 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
+        <div className="flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-muted-foreground" />
-          Feature Usage Signals
-        </CardTitle>
+          <CardTitle>Feature Usage Signals</CardTitle>
+        </div>
       </CardHeader>
       <CardContent>
         {items.length === 0 ? (

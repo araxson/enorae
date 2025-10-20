@@ -136,7 +136,7 @@ function ServiceBadge({
           )}
           {service.rating_average && service.rating_average > 0 && (
             <span className="flex items-center gap-1">
-              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+              <Star className="h-3 w-3 text-warning" fill="currentColor" />
               {Number(service.rating_average).toFixed(1)} ({service.rating_count || 0} reviews)
             </span>
           )}

@@ -1,7 +1,6 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Stack } from '@/components/layout'
 import type {
   MessageActivityPoint,
   MessageReportSummary,
@@ -64,7 +63,7 @@ export function MessagesClient({
   }, [threads, searchTerm, statusFilter, priorityFilter, showFlaggedOnly])
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-10">
       <div>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Messages Oversight</h1>
         <p className="leading-7 text-muted-foreground">
@@ -89,6 +88,6 @@ export function MessagesClient({
       </div>
 
       <MessagesActivityTable activity={activity} />
-    </Stack>
+    </div>
   )
 }

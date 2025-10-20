@@ -1,4 +1,3 @@
-import { Section } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getPlatformAnalyticsSnapshot } from './api/queries'
 import { PlatformAnalyticsDashboard } from './components/analytics-dashboard'
@@ -7,19 +6,23 @@ export async function AdminAnalytics() {
   try {
     const snapshot = await getPlatformAnalyticsSnapshot({ windowDays: 120 })
     return (
-      <Section size="lg">
-        <PlatformAnalyticsDashboard snapshot={snapshot} />
-      </Section>
+      <section className="py-16 md:py-24 lg:py-32">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <PlatformAnalyticsDashboard snapshot={snapshot} />
+        </div>
+      </section>
     )
   } catch (error) {
     return (
-      <Section size="lg">
-        <Alert variant="destructive">
-          <AlertDescription>
-            {error instanceof Error ? error.message : 'Failed to load analytics'}
-          </AlertDescription>
-        </Alert>
-      </Section>
+      <section className="py-16 md:py-24 lg:py-32">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Alert variant="destructive">
+            <AlertDescription>
+              {error instanceof Error ? error.message : 'Failed to load analytics'}
+            </AlertDescription>
+          </Alert>
+        </div>
+      </section>
     )
   }
 }

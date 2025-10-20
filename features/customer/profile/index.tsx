@@ -1,11 +1,20 @@
-import { getProfile, getUserAppointments } from './api/queries'
-import { ProfileHeader } from './components/profile-header'
-import { AppointmentsList } from './components/appointments-list'
-import { UsernameForm } from '@/features/shared/profile/components/username-form'
-import { ProfileEditForm } from '@/features/shared/profile/components/profile-edit-form'
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { generateMetadata as genMeta } from '@/lib/metadata'
 import { MetadataForm } from '@/features/shared/profile-metadata'
 import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ProfileEditForm } from '@/features/shared/profile/components/profile-edit-form'
+import { UsernameForm } from '@/features/shared/profile/components/username-form'
+import { AppointmentsList } from './components/appointments-list'
+import { ProfileHeader } from './components/profile-header'
+import { getProfile, getUserAppointments } from './api/queries'
+
+export const customerProfileMetadata = genMeta({
+  title: 'My Profile',
+  description: 'Manage your profile and view your appointment history.',
+  noIndex: true,
+})
 
 export async function CustomerProfile() {
   let profile
@@ -35,5 +44,13 @@ export async function CustomerProfile() {
       <MetadataForm metadata={metadata} />
       <AppointmentsList appointments={appointments} />
     </div>
+  )
+}
+
+export function CustomerProfileFeature() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <CustomerProfile />
+    </Suspense>
   )
 }

@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { deleteBlockedTime } from '../api/mutations'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
 import { EmptyState } from '@/components/shared/empty-state'
@@ -73,13 +73,13 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
     <div className="space-y-4">
       {blockedTimes.map((blockedTime) => (
         <Card key={blockedTime.id}>
-          <CardContent className="space-y-3 p-5">
+          <CardHeader className="space-y-3 p-5 pb-0">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-0">
+                  <CardTitle>
                     {format(new Date(blockedTime.start_time), 'PPP')}
-                  </h4>
+                  </CardTitle>
                   {blockedTime.is_recurring && (
                     <Badge variant="secondary" className="flex items-center gap-1">
                       <Repeat className="h-3 w-3" />
@@ -87,13 +87,11 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
                     </Badge>
                   )}
                 </div>
-                <small className="text-sm font-medium leading-none text-muted-foreground">
+                <CardDescription>
                   {format(new Date(blockedTime.start_time), 'p')} –{' '}
                   {format(new Date(blockedTime.end_time), 'p')}
-                </small>
-                {blockedTime.reason && <p className="leading-7 text-sm text-muted-foreground">{blockedTime.reason}</p>}
+                </CardDescription>
               </div>
-
               <ConfirmDialog
                 title="Delete blocked time?"
                 description="Are you sure you want to delete this blocked time? This action cannot be undone."
@@ -109,6 +107,13 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
                 </Button>
               </ConfirmDialog>
             </div>
+          </CardHeader>
+          <CardContent className="p-5 pt-0">
+            {blockedTime.reason && (
+              <p className="text-sm text-muted-foreground">
+                {blockedTime.reason}
+              </p>
+            )}
           </CardContent>
         </Card>
       ))}

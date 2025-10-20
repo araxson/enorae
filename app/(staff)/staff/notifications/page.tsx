@@ -5,10 +5,6 @@ export const metadata = {
   description: 'View and manage your notifications',
 }
 
-export default async function NotificationsPage() {
-  return (
-    <div className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
-      <Notifications />
-    </div>
-  )
+export default function Page() {
+  return <Notifications />
 }

@@ -76,10 +76,10 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
           <Card key={chain.id}>
             <CardHeader>
               <div className="flex items-start justify-between">
-                <div className="flex-1">
+                <div className="flex-1 space-y-2">
                   <CardTitle>{chain.name}</CardTitle>
                   {chain.legal_name && (
-                    <CardDescription className="mt-1">
+                    <CardDescription>
                       {chain.legal_name}
                     </CardDescription>
                   )}

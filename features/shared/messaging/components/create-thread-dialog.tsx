@@ -58,7 +58,7 @@ export function CreateThreadDialog({ open, onOpenChange, salonId }: CreateThread
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px]">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Start a new conversation</DialogTitle>
           <DialogDescription>

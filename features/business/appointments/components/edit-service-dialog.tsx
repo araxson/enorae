@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { updateAppointmentService } from '../api/mutations'
 import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
 

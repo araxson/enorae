@@ -6,11 +6,10 @@ import { sendMessage, markMessagesAsRead } from '../api/mutations'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { AlertCircle } from 'lucide-react'
-import { Stack } from '@/components/layout'
 
 interface Message {
   id: string
@@ -61,8 +60,12 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
   return (
     <div className="space-y-6">
       <Card>
+        <CardHeader>
+          <CardTitle>Conversation</CardTitle>
+          <CardDescription>Latest messages in this thread</CardDescription>
+        </CardHeader>
         <CardContent>
-          <ScrollArea className="h-[600px]">
+          <ScrollArea className="h-96">
             <div className="space-y-3">
               {messages.length === 0 ? (
                 <p className="leading-7 py-8 text-center text-muted-foreground">
@@ -76,7 +79,7 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
                       key={message.id}
                       className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
                     >
-                      <div className={`max-w-[70%] space-y-1 ${isOwnMessage ? 'text-right' : ''}`}>
+                      <div className={`max-w-xl space-y-1 ${isOwnMessage ? 'text-right' : ''}`}>
                         <div
                           className={`rounded-lg border px-4 py-2 text-left ${isOwnMessage ? 'bg-primary text-primary-foreground' : 'bg-card text-foreground'}`}
                         >
@@ -99,8 +102,11 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
       </Card>
 
       <Card>
+        <CardHeader>
+          <CardTitle>Send a message</CardTitle>
+        </CardHeader>
         <CardContent>
-          <Stack gap="sm">
+          <div className="flex flex-col gap-4">
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
@@ -119,7 +125,7 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
                 {isSending ? 'Sending...' : 'Send message'}
               </Button>
             </div>
-          </Stack>
+          </div>
         </CardContent>
       </Card>
     </div>

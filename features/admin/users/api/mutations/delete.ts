@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole } from '@/lib/auth'
-import { sanitizeAdminText } from '@/features/admin/admin-common/utils/sanitize'
+import { sanitizeAdminText } from '@/features/admin/admin-common'
 
 import { UUID_REGEX } from './constants'
 

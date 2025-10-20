@@ -1,7 +1,8 @@
 import 'server-only'
 
-import { requireAdminClient } from '../admin-analytics-shared'
-import type { PlatformAnalyticsSnapshot } from '../admin-analytics-types'
+import { requireAdminClient } from '../../admin-analytics-shared'
+import type { PlatformAnalyticsSnapshot } from '../../admin-analytics-types'
+import type { Database } from '@/lib/types/database.types'
 import {
   DAY_MS,
   DEFAULT_WINDOW_DAYS,
@@ -41,11 +42,14 @@ type UserRow = {
   country_code: string | null
 }
 
+const ANALYTICS_DAILY_METRICS_TABLE = 'daily_metrics' satisfies keyof Database['analytics']['Tables']
+
 export async function getPlatformAnalyticsSnapshot(
   options: { windowDays?: number } = {},
 ): Promise<PlatformAnalyticsSnapshot> {
   const windowDays = Math.max(options.windowDays ?? DEFAULT_WINDOW_DAYS, PERFORMANCE_WINDOW_DAYS)
   const supabase = await requireAdminClient()
+  const analyticsSchema = supabase.schema('analytics')
 
   const now = new Date()
   const windowStart = new Date(now.getTime() - windowDays * DAY_MS)
@@ -61,8 +65,8 @@ export async function getPlatformAnalyticsSnapshot(
       .select('*')
       .gte('date', windowStart.toISOString())
       .order('date', { ascending: false }),
-    supabase
-      .from('analytics_daily_metrics')
+    analyticsSchema
+      .from(ANALYTICS_DAILY_METRICS_TABLE)
       .select(
         `metric_at,salon_id,total_revenue,service_revenue,product_revenue,total_appointments,new_customers,returning_customers,utilization_rate,active_staff_count,streaming_metrics`,
       )
@@ -81,7 +85,7 @@ export async function getPlatformAnalyticsSnapshot(
   if (dailyMetricsRes.error) throw dailyMetricsRes.error
   if (usersRes.error) throw usersRes.error
 
-  const analyticsRows = (analyticsRes.data ?? []).sort((a, b) => {
+  const analyticsRows = ((analyticsRes.data ?? []) as AnalyticsRow[]).sort((a, b) => {
     const aDate = parseDate(a.date)
     const bDate = parseDate(b.date)
     if (!aDate || !bDate) return 0

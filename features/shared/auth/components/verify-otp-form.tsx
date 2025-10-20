@@ -13,7 +13,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack, Flex } from '@/components/layout'
 import { AlertCircle, CheckCircle2, Shield } from 'lucide-react'
 import { OTPInput, ResendOTP } from './otp-input'
 
@@ -86,7 +85,7 @@ export function VerifyOTPForm({
         </CardHeader>
 
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-6">
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
@@ -94,7 +93,7 @@ export function VerifyOTPForm({
             </Alert>
           )}
 
-          <Stack gap="md">
+          <div className="flex flex-col gap-6">
             <OTPInput
               length={6}
               onChange={setOtp}
@@ -102,23 +101,23 @@ export function VerifyOTPForm({
               disabled={loading}
             />
 
-            <Flex justify="center" align="center" gap="xs">
+            <div className="flex items-center justify-center gap-2">
               <small className="text-sm font-medium leading-none text-muted-foreground">Didn&apos;t receive the code?</small>
               <ResendOTP onResend={handleResend} cooldownSeconds={60} />
-            </Flex>
-          </Stack>
+            </div>
+          </div>
 
           {otp.length === 6 && (
             <Alert>
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <AlertDescription>Code entered. Click verify to continue.</AlertDescription>
             </Alert>
           )}
-        </Stack>
+        </div>
       </CardContent>
 
         <CardFooter>
-          <Stack gap="sm" className="w-full">
+          <div className="flex w-full flex-col gap-4">
             <Button
               onClick={handleVerify}
               className="w-full"
@@ -130,7 +129,7 @@ export function VerifyOTPForm({
             <small className="text-sm font-medium leading-none text-center text-muted-foreground">
               Check your spam folder if you don&apos;t see the email
             </small>
-          </Stack>
+          </div>
         </CardFooter>
       </Card>
     </div>

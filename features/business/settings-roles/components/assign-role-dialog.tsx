@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/select'
 import { Stack } from '@/components/layout'
 import { assignUserRole } from '../api/mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 interface AssignRoleDialogProps {
   open: boolean

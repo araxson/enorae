@@ -1,6 +1,14 @@
+import { Suspense } from 'react'
+import { PageLoading } from '@/components/shared'
 import { Section, Stack, Box } from '@/components/layout'
+import { generateMetadata as genMeta } from '@/lib/metadata'
 import { getCustomerMetrics } from './api/queries'
 import { MetricsDashboard } from './components/metrics-dashboard'
+
+export const customerAnalyticsMetadata = genMeta({
+  title: 'Analytics | Enorae',
+  description: 'View your personal analytics and insights',
+})
 
 export async function CustomerAnalytics() {
   const metrics = await getCustomerMetrics()
@@ -21,6 +29,14 @@ export function CustomerAnalyticsPage() {
         <CustomerAnalytics />
       </Stack>
     </Section>
+  )
+}
+
+export function CustomerAnalyticsFeature() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <CustomerAnalyticsPage />
+    </Suspense>
   )
 }
 

@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { Stack, Grid } from '@/components/layout'
 import { bulkGenerateCoupons } from '../api/coupons.mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 type BulkCouponGeneratorProps = {
   salonId: string

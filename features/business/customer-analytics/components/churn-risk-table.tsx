@@ -58,7 +58,7 @@ export function ChurnRiskTable({ customers }: ChurnRiskTableProps) {
                 </TableCell>
                 <TableCell>{customer.visitCount}</TableCell>
                 <TableCell>
-                  <span className={customer.daysSinceLastVisit > 120 ? 'text-rose-600 font-semibold' : ''}>
+                  <span className={customer.daysSinceLastVisit > 120 ? 'text-destructive font-semibold' : ''}>
                     {customer.daysSinceLastVisit} days
                   </span>
                 </TableCell>

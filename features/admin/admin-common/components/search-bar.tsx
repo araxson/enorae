@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Box } from '@/components/layout'
 
 interface SearchBarProps {
   placeholder?: string
@@ -68,7 +67,7 @@ export function SearchBar({ placeholder = 'Search...', onSearch, defaultValue = 
   }, [])
 
   return (
-    <Box className="relative w-full max-w-sm pb-6" data-search-shortcut="cmd+k">
+    <div className="relative w-full max-w-sm pb-6" data-search-shortcut="cmd+k">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
       <Input
         ref={inputRef}
@@ -93,6 +92,6 @@ export function SearchBar({ placeholder = 'Search...', onSearch, defaultValue = 
       <span className="absolute -bottom-6 left-0 text-xs text-muted-foreground" aria-live="polite">
         {isSearching ? 'Searching…' : 'Press ⌘K / Ctrl+K to focus search'}
       </span>
-    </Box>
+    </div>
   )
 }

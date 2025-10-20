@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Stack, Grid } from '@/components/layout'
 import { updateNotificationPreferences } from '../api/mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 type ChannelPreferences = Record<string, boolean>
 

@@ -1,13 +1,5 @@
-import { StaffProfilePage } from '@/features/customer/staff-profiles'
+import { StaffProfileFeature } from '@/features/customer/staff-profiles'
 
-interface PageProps {
-  params: Promise<{
-    id: string
-  }>
-}
-
-export default async function StaffDetailPage({ params }: PageProps) {
-  const { id } = await params
-
-  return <StaffProfilePage staffId={id} />
+export default function Page(props: Parameters<typeof StaffProfileFeature>[0]) {
+  return <StaffProfileFeature {...props} />
 }

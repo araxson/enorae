@@ -44,29 +44,41 @@ export function AdminOverviewTabs({
           Data refreshes automatically every 60 seconds
         </div>
         <TabsList className="w-full justify-between overflow-x-auto md:w-auto">
-          <TabsTrigger value="revenue" className="gap-1.5">
-            <DollarSign className="h-4 w-4" />
-            Revenue
+          <TabsTrigger value="revenue">
+            <span className="flex items-center gap-1.5">
+              <DollarSign className="h-4 w-4" />
+              Revenue
+            </span>
           </TabsTrigger>
-          <TabsTrigger value="appointments" className="gap-1.5">
-            <Calendar className="h-4 w-4" />
-            Appointments
+          <TabsTrigger value="appointments">
+            <span className="flex items-center gap-1.5">
+              <Calendar className="h-4 w-4" />
+              Appointments
+            </span>
           </TabsTrigger>
-          <TabsTrigger value="reviews" className="gap-1.5">
-            <Star className="h-4 w-4" />
-            Reviews
+          <TabsTrigger value="reviews">
+            <span className="flex items-center gap-1.5">
+              <Star className="h-4 w-4" />
+              Reviews
+            </span>
           </TabsTrigger>
-          <TabsTrigger value="inventory" className="gap-1.5">
-            <Package className="h-4 w-4" />
-            Inventory
+          <TabsTrigger value="inventory">
+            <span className="flex items-center gap-1.5">
+              <Package className="h-4 w-4" />
+              Inventory
+            </span>
           </TabsTrigger>
-          <TabsTrigger value="messages" className="gap-1.5">
-            <MessageSquare className="h-4 w-4" />
-            Messages
+          <TabsTrigger value="messages">
+            <span className="flex items-center gap-1.5">
+              <MessageSquare className="h-4 w-4" />
+              Messages
+            </span>
           </TabsTrigger>
-          <TabsTrigger value="staff" className="gap-1.5">
-            <Users className="h-4 w-4" />
-            Staff
+          <TabsTrigger value="staff">
+            <span className="flex items-center gap-1.5">
+              <Users className="h-4 w-4" />
+              Staff
+            </span>
           </TabsTrigger>
         </TabsList>
       </div>

@@ -40,5 +40,15 @@ export async function SalonChainDetailPage({ slug }: { slug: string }) {
   )
 }
 
+export async function SalonChainDetailFeature({
+  params,
+}: {
+  params: Promise<{ slug: string }> | { slug: string }
+}) {
+  const resolved = await params
+
+  return <SalonChainDetailPage slug={resolved.slug} />
+}
+
 export { getSalonChains, getSalonChainById, getChainLocations } from './api/queries'
 export type { SalonChainWithLocations } from './api/queries'

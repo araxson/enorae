@@ -38,10 +38,10 @@ export function SecurityEventsPanel({ events }: SecurityEventsPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
+        <div className="flex items-center gap-2">
           <Shield className="h-4 w-4 text-muted-foreground" />
-          Security Event Stream
-        </CardTitle>
+          <CardTitle>Security Event Stream</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {events.length === 0 ? (
@@ -49,7 +49,7 @@ export function SecurityEventsPanel({ events }: SecurityEventsPanelProps) {
             No security events recorded for the selected timeframe.
           </p>
         ) : (
-          <div className="max-h-[360px] overflow-y-auto rounded-md border">
+          <div className="max-h-96 overflow-y-auto rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>

@@ -163,7 +163,7 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={() => openDialog('delete')} className="text-red-600">
+          <DropdownMenuItem onClick={() => openDialog('delete')} className="text-destructive">
             <Trash2 className="mr-2 h-4 w-4" />
             Delete Chain
           </DropdownMenuItem>

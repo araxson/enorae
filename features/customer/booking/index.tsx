@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getSalonById, getAvailableServices, getAvailableStaff } from './api/queries'
 import { BookingForm } from './components/booking-form'
+import type { SalonRouteParams } from './metadata'
 
 interface BookingProps {
   salonId: string
@@ -34,3 +35,15 @@ export async function Booking({ salonId }: BookingProps) {
     </div>
   )
 }
+
+export async function BookingFeature({
+  params,
+}: {
+  params: Promise<SalonRouteParams> | SalonRouteParams
+}) {
+  const resolvedParams = await params
+
+  return <Booking salonId={resolvedParams['salon-id']} />
+}
+
+export { generateBookingMetadata } from './metadata'

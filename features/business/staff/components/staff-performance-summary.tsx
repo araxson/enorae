@@ -51,10 +51,10 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
       {topPerformer && topPerformer.totalPerformed > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-green-600" />
-              Top Performer by Volume
-            </CardTitle>
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-success" />
+              <CardTitle>Top Performer by Volume</CardTitle>
+            </div>
           </CardHeader>
           <CardContent>
             <Flex gap="md" align="center">
@@ -69,7 +69,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
 
               <Stack gap="xs" className="flex-1">
                 <p className="leading-7 font-semibold">{topPerformer.full_name || 'Staff Member'}</p>
-                {topPerformer.title && <p className="text-sm text-muted-foreground text-xs">{topPerformer.title}</p>}
+                {topPerformer.title && <p className="text-sm text-muted-foreground">{topPerformer.title}</p>}
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default" className="text-xs">
                     <TrendingUp className="h-3 w-3 mr-1" />
@@ -86,10 +86,10 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
       {topRated && topRated.avgRating > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-              Top Rated Staff Member
-            </CardTitle>
+            <div className="flex items-center gap-2">
+              <Star className="h-4 w-4 text-warning" fill="currentColor" />
+              <CardTitle>Top Rated Staff Member</CardTitle>
+            </div>
           </CardHeader>
           <CardContent>
             <Flex gap="md" align="center">
@@ -104,13 +104,13 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
 
               <Stack gap="xs" className="flex-1">
                 <p className="leading-7 font-semibold">{topRated.full_name || 'Staff Member'}</p>
-                {topRated.title && <p className="text-sm text-muted-foreground text-xs">{topRated.title}</p>}
+                {topRated.title && <p className="text-sm text-muted-foreground">{topRated.title}</p>}
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default" className="text-xs flex items-center gap-1">
                     <Star className="h-3 w-3 fill-white" />
                     {topRated.avgRating.toFixed(1)} average rating
                   </Badge>
-                  <p className="text-sm text-muted-foreground text-xs">({topRated.totalRatings} reviews)</p>
+                  <p className="text-sm text-muted-foreground">({topRated.totalRatings} reviews)</p>
                 </div>
               </Stack>
             </Flex>

@@ -32,7 +32,7 @@ export function PriceScenariosTab({
             </CardDescription>
           </div>
           <Select value={selectedDay} onValueChange={onDayChange}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-44">
               <SelectValue placeholder="Filter by day" />
             </SelectTrigger>
             <SelectContent>

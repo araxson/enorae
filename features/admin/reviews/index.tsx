@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { Section, Stack, Flex } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ReviewsClient } from './components/reviews-client'
 import { getAllReviews } from './api/queries'
@@ -13,13 +12,15 @@ export async function AdminReviews() {
     reviews = await getAllReviews(100)
   } catch (error) {
     return (
-      <Section size="lg">
+      <section className="py-16 md:py-24 lg:py-32">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <Alert variant="destructive">
           <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load reviews'}
           </AlertDescription>
         </Alert>
-      </Section>
+        </div>
+      </section>
     )
   }
 
@@ -29,14 +30,15 @@ export async function AdminReviews() {
   const needsResponseCount = reviews.filter(r => !r.has_response).length
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Flex justify="end" align="start">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
+        <div className="flex justify-end">
           <LastUpdated />
-        </Flex>
+        </div>
 
         {/* Moderation Stats */}
-        <Flex gap="md" className="flex-wrap">
+        <div className="flex flex-wrap gap-6">
           {[{
             label: 'Total Reviews',
             value: reviews.length,
@@ -50,30 +52,31 @@ export async function AdminReviews() {
           {
             label: 'Unverified',
             value: unverifiedCount,
-            tone: 'text-orange-500',
+            tone: 'text-warning',
           },
           {
             label: 'Needs Response',
             value: needsResponseCount,
-            tone: 'text-blue-500',
+            tone: 'text-info',
           }].map(stat => (
-            <Card key={stat.label} className="min-w-[160px]">
+            <Card key={stat.label} className="min-w-40">
               <CardContent className="py-4">
-                <Stack gap="xs">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide text-xs">
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
                     {stat.label}
                   </p>
-                  <p className={cn('leading-7', `text-2xl font-semibold ${stat.tone}`)}>
+                  <p className={cn('text-2xl font-semibold leading-7', stat.tone)}>
                     {stat.value}
                   </p>
-                </Stack>
+                </div>
               </CardContent>
             </Card>
           ))}
-        </Flex>
+        </div>
 
         <ReviewsClient reviews={reviews} />
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

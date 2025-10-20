@@ -7,6 +7,7 @@ import { Webhook } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Flex } from '@/components/layout'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   Table,
   TableBody,
@@ -83,10 +84,11 @@ export function WebhookList({ webhooks }: WebhookListProps) {
 
   if (webhooks.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 border rounded-lg">
-        <Webhook className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">No webhook entries found</p>
-      </div>
+      <Alert>
+        <Webhook className="h-4 w-4" />
+        <AlertTitle>No webhook entries found</AlertTitle>
+        <AlertDescription>New webhook activity will appear here.</AlertDescription>
+      </Alert>
     )
   }
 
@@ -151,7 +153,7 @@ export function WebhookList({ webhooks }: WebhookListProps) {
                 <code className="text-xs">webhook</code>
               </TableCell>
               <TableCell>
-                <div className="max-w-[200px] truncate text-sm">
+                <div className="max-w-xs truncate text-sm">
                   {webhook.url}
                 </div>
               </TableCell>
@@ -175,7 +177,7 @@ export function WebhookList({ webhooks }: WebhookListProps) {
                 )}
               </TableCell>
               <TableCell>
-                <div className="max-w-[200px] truncate text-sm text-muted-foreground">
+                <div className="max-w-xs truncate text-sm text-muted-foreground">
                   {webhook.last_error || '-'}
                 </div>
               </TableCell>

@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw } from 'lucide-react'
-import { Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { AppointmentSnapshot } from '../api/types'
@@ -57,7 +56,7 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
   }, [refresh])
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-1">Platform Appointment Oversight</h2>
@@ -97,6 +96,6 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
       </div>
 
       <RecentAppointmentsTable appointments={data.recentAppointments} />
-    </Stack>
+    </div>
   )
 }

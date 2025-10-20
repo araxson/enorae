@@ -9,6 +9,7 @@ import type { NotificationTemplate } from '../api/queries'
 import { deleteNotificationTemplate, upsertNotificationTemplate } from '../api/mutations'
 import { TemplateCard } from './template-card'
 import { TemplateDialog } from './template-dialog'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 type NotificationTemplatesManagerProps = {
   templates: NotificationTemplate[]
@@ -131,9 +132,12 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
         </CardHeader>
         <CardContent>
           {templates.length === 0 ? (
-            <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-              No templates configured yet. Create your first template to standardize notifications.
-            </div>
+            <Alert>
+              <AlertTitle>No templates configured</AlertTitle>
+              <AlertDescription>
+                Create your first template to standardize notifications.
+              </AlertDescription>
+            </Alert>
           ) : (
             <div className="grid gap-6 md:grid-cols-2">
               {templates.map((template) => (

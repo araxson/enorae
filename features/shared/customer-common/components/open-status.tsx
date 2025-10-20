@@ -12,11 +12,7 @@ export function OpenStatus({ isOpen, nextOpenTime, className }: OpenStatusProps)
   return (
     <Badge
       variant={isOpen ? 'default' : 'secondary'}
-      className={cn(
-        'gap-1',
-        isOpen && 'bg-green-500 hover:bg-green-600',
-        className
-      )}
+      className={cn('gap-1', className)}
     >
       <Clock className="h-3 w-3" />
       {isOpen ? 'Open Now' : nextOpenTime ? `Opens ${nextOpenTime}` : 'Closed'}

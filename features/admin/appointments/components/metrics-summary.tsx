@@ -58,10 +58,10 @@ export function MetricsSummary({ totals, performance }: MetricsSummaryProps) {
       {items.map(({ title, icon: Icon, value, helper, badge }) => (
         <Card key={title}>
           <CardHeader className="flex items-start justify-between pb-2">
-            <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <Icon className="h-4 w-4 text-muted-foreground" />
-              {title}
-            </CardTitle>
+              <CardTitle>{title}</CardTitle>
+            </div>
             {badge && <Badge variant="destructive">{badge}</Badge>}
           </CardHeader>
           <CardContent className="space-y-1">

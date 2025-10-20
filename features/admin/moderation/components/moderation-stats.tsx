@@ -1,5 +1,5 @@
 import { MessageSquare, AlertTriangle, Clock, ShieldAlert, Gauge } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 type ModerationStatsProps = {
   stats: {
     totalReviews: number
@@ -17,37 +17,37 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
       label: 'Total reviews',
       value: stats.totalReviews,
       icon: MessageSquare,
-      accent: 'text-blue-500',
+      accent: 'text-primary',
     },
     {
       label: 'Flagged reviews',
       value: stats.flaggedReviews,
       icon: AlertTriangle,
-      accent: 'text-red-500',
+      accent: 'text-destructive',
     },
     {
       label: 'Pending response',
       value: stats.pendingReviews,
       icon: Clock,
-      accent: 'text-orange-500',
+      accent: 'text-warning',
     },
     {
       label: 'High risk reviews',
       value: stats.highRiskReviews,
       icon: ShieldAlert,
-      accent: 'text-rose-500',
+      accent: 'text-destructive',
     },
     {
       label: 'Avg sentiment',
       value: stats.averageSentiment.toFixed(2),
       icon: Gauge,
-      accent: 'text-purple-500',
+      accent: 'text-info',
     },
     {
       label: 'Avg quality score',
       value: `${stats.averageQuality}%`,
       icon: Gauge,
-      accent: 'text-sky-500',
+      accent: 'text-success',
     },
   ] as const
 
@@ -55,15 +55,15 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
     <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-5">
       {cards.map(({ label, value, icon: Icon, accent }) => (
         <Card key={label}>
-          <CardContent className="flex items-start justify-between gap-4 p-4">
-            <div className="space-y-1">
-              <p className="leading-7 text-sm text-muted-foreground">{label}</p>
-              <p className="text-2xl font-semibold">
-                {typeof value === 'number' ? value : value}
-              </p>
+          <CardHeader className="p-4">
+            <div className="flex items-start justify-between gap-4">
+              <CardDescription>{label}</CardDescription>
+              <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
             </div>
-            <Icon className={`h-4 w-4 ${accent}`} />
-          </CardContent>
+            <CardTitle className="text-2xl">
+              {typeof value === 'number' ? value : value}
+            </CardTitle>
+          </CardHeader>
         </Card>
       ))}
     </div>

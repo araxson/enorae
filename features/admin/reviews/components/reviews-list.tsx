@@ -1,5 +1,4 @@
 import { Star, Building2, User } from 'lucide-react'
-import { Stack } from '@/components/layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
@@ -29,24 +28,25 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           <CardHeader>
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Building2 className="w-4 h-4" />
-                  {review.salon_name}
-                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <Building2 className="h-4 w-4" />
+                  <CardTitle>{review.salon_name}</CardTitle>
+                </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < (review.rating || 0)
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-300'
-                        }`}
-                      />
-                    ))}
+                    {[...Array(5)].map((_, i) => {
+                      const rating = review.rating ?? 0
+                      const isFilled = i < Math.round(rating)
+                      return (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${isFilled ? 'text-warning' : 'text-muted-foreground'}`}
+                          fill={isFilled ? 'currentColor' : 'none'}
+                        />
+                      )
+                    })}
                   </div>
-                  <p className="text-sm text-muted-foreground text-sm">{review.rating}/5</p>
+                  <p className="text-sm text-muted-foreground">{review.rating}/5</p>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -57,26 +57,26 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             </div>
           </CardHeader>
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-6">
               {review.title && <p className="leading-7 font-medium">{review.title}</p>}
               {review.comment && <p className="leading-7 text-sm text-muted-foreground">{review.comment}</p>}
 
               <div className="grid grid-cols-3 gap-4 pt-2 border-t">
                 {review.service_quality_rating && (
                   <div>
-                    <p className="text-sm text-muted-foreground text-xs">Service Quality</p>
+                    <p className="text-xs text-muted-foreground">Service Quality</p>
                     <p className="leading-7 text-sm font-medium">{review.service_quality_rating}/5</p>
                   </div>
                 )}
                 {review.cleanliness_rating && (
                   <div>
-                    <p className="text-sm text-muted-foreground text-xs">Cleanliness</p>
+                    <p className="text-xs text-muted-foreground">Cleanliness</p>
                     <p className="leading-7 text-sm font-medium">{review.cleanliness_rating}/5</p>
                   </div>
                 )}
                 {review.value_rating && (
                   <div>
-                    <p className="text-sm text-muted-foreground text-xs">Value</p>
+                    <p className="text-xs text-muted-foreground">Value</p>
                     <p className="leading-7 text-sm font-medium">{review.value_rating}/5</p>
                   </div>
                 )}
@@ -88,7 +88,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                   <span>{review.customer_name || 'Anonymous'}</span>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     {review.created_at ? format(new Date(review.created_at), 'MMM dd, yyyy') : 'N/A'}
                   </p>
                   {review.helpful_count && review.helpful_count > 0 && (
@@ -105,7 +105,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                   </p>
                 </div>
               )}
-            </Stack>
+            </div>
           </CardContent>
         </Card>
       ))}

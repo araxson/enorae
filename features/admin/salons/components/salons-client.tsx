@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import { Stack } from '@/components/layout'
 import type { EnhancedSalon, SalonDashboardStats, SalonInsights } from '../api/queries'
 import { SalonsStats } from './salons-stats'
 import { SalonsFilters } from './salons-filters'
@@ -42,7 +41,7 @@ export function SalonsClient({ salons, stats, insights }: SalonsClientProps) {
   }, [salons, searchQuery, tierFilter, licenseFilter, complianceFilter])
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-10">
       <SalonsStats stats={stats} />
 
       <SalonsFilters
@@ -78,7 +77,7 @@ export function SalonsClient({ salons, stats, insights }: SalonsClientProps) {
       </div>
 
       <SalonsTable salons={filteredSalons} />
-    </Stack>
+    </div>
   )
 }
 

@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Card, CardContent } from '@/components/ui/card'
 
 interface HelpFeedbackDrawerProps {
   open: boolean
@@ -37,14 +38,16 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
 
             <div className="grid gap-2">
               <Label>Notify me when</Label>
-              <div className="space-y-2 rounded-md border p-3 text-sm">
+              <Card>
+                <CardContent className="space-y-2 p-4 text-sm">
                 <Label className="flex items-center gap-2">
                   <Checkbox defaultChecked /> New resources are added
                 </Label>
                 <Label className="flex items-center gap-2">
                   <Checkbox /> Content is updated
                 </Label>
-              </div>
+                </CardContent>
+              </Card>
             </div>
 
             <div className="grid gap-2">
@@ -56,13 +59,15 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
               />
             </div>
 
-            <div className="flex items-center justify-between rounded-md border p-3">
-              <div className="space-y-1 text-sm">
-                <p className="font-medium">Share anonymously</p>
-                <p className="text-xs text-muted-foreground">We will only record the feedback message.</p>
-              </div>
-              <Switch defaultChecked />
-            </div>
+            <Card>
+              <CardContent className="flex items-start justify-between gap-4 p-4">
+                <div className="space-y-1 text-sm">
+                  <p className="font-medium">Share anonymously</p>
+                  <p className="text-xs text-muted-foreground">We will only record the feedback message.</p>
+                </div>
+                <Switch defaultChecked />
+              </CardContent>
+            </Card>
           </div>
         </ScrollArea>
 
@@ -76,4 +81,3 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
     </Drawer>
   )
 }
-

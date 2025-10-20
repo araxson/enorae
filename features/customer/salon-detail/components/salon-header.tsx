@@ -106,7 +106,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           <Group gap="md">
             {salon.rating && (
               <Group gap="xs">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <Star className="h-4 w-4 fill-warning text-warning" />
                 <small className="text-sm font-medium leading-none font-medium">{Number(salon.rating).toFixed(1)}</small>
                 {salon.review_count && (
                   <small className="text-sm font-medium leading-none text-muted-foreground">

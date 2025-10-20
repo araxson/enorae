@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { toggleServiceAvailability, updateServiceProficiency } from '../api/mutations'
 
 type StaffService = {
@@ -162,7 +162,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
         )}
         {service.rating_average && service.rating_count && service.rating_count > 0 && (
           <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
+            <Star className="h-4 w-4 fill-warning text-warning" />
             <p className="leading-7 text-sm">
               {service.rating_average.toFixed(1)} ({service.rating_count} reviews)
             </p>

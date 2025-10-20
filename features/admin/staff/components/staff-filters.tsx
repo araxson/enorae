@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex } from '@/components/layout'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { BackgroundStatus } from '../api/internal/staff-dashboard/metrics'
 
 declare global {
@@ -64,80 +64,83 @@ export function StaffFilters({
   }, [onSearchChange, onRiskFilterChange, onRoleFilterChange, onBackgroundFilterChange])
 
   return (
-    <div className="rounded-lg border p-4">
-      <Flex justify="end" className="mb-3">
+    <Card>
+      <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <CardTitle>Filters</CardTitle>
         <Button type="button" variant="ghost" size="sm" onClick={clearFilters}>
           Clear all filters
         </Button>
-      </Flex>
-      <Stack gap="md">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <div className="space-y-2">
-            <Label htmlFor="staff-search">Search</Label>
-            <Input
-              id="staff-search"
-              placeholder="Search by staff, salon or email"
-              value={search}
-              onChange={(event) => onSearchChange(event.target.value)}
-            />
-          </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-6">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="space-y-2">
+              <Label htmlFor="staff-search">Search</Label>
+              <Input
+                id="staff-search"
+                placeholder="Search by staff, salon or email"
+                value={search}
+                onChange={(event) => onSearchChange(event.target.value)}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <Label>Compliance risk</Label>
-            <Select value={riskFilter} onValueChange={(value) => {
-              if (isRiskFilter(value)) {
-                onRiskFilterChange(value)
-              }
-            }}>
-              <SelectTrigger>
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+            <div className="space-y-2">
+              <Label>Compliance risk</Label>
+              <Select value={riskFilter} onValueChange={(value) => {
+                if (isRiskFilter(value)) {
+                  onRiskFilterChange(value)
+                }
+              }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div className="space-y-2">
-            <Label>Role</Label>
-            <Select value={roleFilter} onValueChange={onRoleFilterChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="All roles" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All roles</SelectItem>
-                {roleOptions.map((role) => (
-                  <SelectItem key={role} value={role}>
-                    {role.replace(/_/g, ' ')}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+            <div className="space-y-2">
+              <Label>Role</Label>
+              <Select value={roleFilter} onValueChange={onRoleFilterChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All roles" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All roles</SelectItem>
+                  {roleOptions.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role.replace(/_/g, ' ')}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div className="space-y-2">
-            <Label>Background check</Label>
-            <Select
-              value={backgroundFilter}
-              onValueChange={(value) => onBackgroundFilterChange(value as BackgroundStatus | 'all')}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="All statuses" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All statuses</SelectItem>
-                <SelectItem value="clear">Clear</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
-                <SelectItem value="missing">Missing</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2">
+              <Label>Background check</Label>
+              <Select
+                value={backgroundFilter}
+                onValueChange={(value) => onBackgroundFilterChange(value as BackgroundStatus | 'all')}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="All statuses" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All statuses</SelectItem>
+                  <SelectItem value="clear">Clear</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="failed">Failed</SelectItem>
+                  <SelectItem value="missing">Missing</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
-      </Stack>
-    </div>
+      </CardContent>
+    </Card>
   )
 }

@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack } from '@/components/layout'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
@@ -73,7 +72,7 @@ export function SignupForm() {
 
       <form action={handleSubmit}>
         <CardContent>
-          <Stack gap="md">
+          <div className="flex flex-col gap-6">
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
@@ -86,7 +85,7 @@ export function SignupForm() {
               </Alert>
             )}
 
-            <Stack gap="xs">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="fullName">Full Name</Label>
               <Input
                 id="fullName"
@@ -95,9 +94,9 @@ export function SignupForm() {
                 placeholder="John Doe"
                 required
               />
-            </Stack>
+            </div>
 
-            <Stack gap="xs">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -106,9 +105,9 @@ export function SignupForm() {
                 placeholder="you@example.com"
                 required
               />
-            </Stack>
+            </div>
 
-            <Stack gap="xs">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="password">Password</Label>
               <PasswordInput
                 id="password"
@@ -121,9 +120,9 @@ export function SignupForm() {
               {password && (
                 <PasswordStrengthIndicator password={password} showRequirements />
               )}
-            </Stack>
+            </div>
 
-            <Stack gap="xs">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <PasswordInput
                 id="confirmPassword"
@@ -137,14 +136,14 @@ export function SignupForm() {
                 <small className="text-sm font-medium leading-none text-destructive">Passwords do not match</small>
               )}
               {confirmPassword && password === confirmPassword && (
-                <small className="text-sm font-medium leading-none text-green-600">✓ Passwords match</small>
+                <small className="text-sm font-medium leading-none text-success">✓ Passwords match</small>
               )}
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         </CardContent>
 
         <CardFooter>
-          <Stack gap="sm" className="w-full">
+          <div className="flex w-full flex-col gap-4">
             <Button
               type="submit"
               className="w-full"
@@ -158,7 +157,7 @@ export function SignupForm() {
                 Sign in
               </Link>
             </small>
-          </Stack>
+          </div>
         </CardFooter>
       </form>
       </Card>

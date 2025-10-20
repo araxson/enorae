@@ -35,11 +35,11 @@ export function InventoryTopProductsTable({ products }: TopProductsTableProps) {
           <TableRow key={product.productId}>
             <TableCell>
               <div className="flex items-center gap-2">
-                {index < 3 && <TrendingUp className="h-4 w-4 text-green-500" />}
+                {index < 3 && <TrendingUp className="h-4 w-4 text-success" />}
                 <div>
                   <p className="font-medium">{product.productName}</p>
                   {product.productSku && (
-                    <p className="text-sm text-muted-foreground text-xs">SKU: {product.productSku}</p>
+                    <p className="text-xs text-muted-foreground">SKU: {product.productSku}</p>
                   )}
                 </div>
               </div>

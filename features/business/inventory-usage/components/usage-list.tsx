@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table'
 import type { ProductUsageWithDetails } from '../api/queries'
 import { format } from 'date-fns'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 type UsageListProps = {
   usage: ProductUsageWithDetails[]
@@ -19,10 +20,11 @@ type UsageListProps = {
 export function UsageList({ usage }: UsageListProps) {
   if (usage.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 border rounded-lg">
-        <Package className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">No product usage records found</p>
-      </div>
+      <Alert>
+        <Package className="h-4 w-4" />
+        <AlertTitle>No product usage records</AlertTitle>
+        <AlertDescription>New usage entries will appear once recorded.</AlertDescription>
+      </Alert>
     )
   }
 
@@ -95,7 +97,7 @@ export function UsageList({ usage }: UsageListProps) {
               )}
             </TableCell>
             <TableCell>
-              <div className="text-sm text-muted-foreground max-w-[200px] truncate">
+              <div className="max-w-xs truncate text-sm text-muted-foreground">
                 {record.notes || '-'}
               </div>
             </TableCell>

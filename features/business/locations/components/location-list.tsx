@@ -74,20 +74,22 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
           <Card key={location.id}>
             <CardHeader>
               <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    {location.name}
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CardTitle>{location.name}</CardTitle>
                     {location.is_primary && (
-                      <Star className="h-4 w-4 fill-current text-yellow-500" />
+                      <Star className="h-4 w-4 fill-warning text-warning" />
                     )}
-                  </CardTitle>
-                  <CardDescription className="mt-2">
+                  </div>
+                  <CardDescription>
                     <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                      <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0" />
                       <Stack gap="xs">
                         <p className="text-sm text-muted-foreground">/{location.slug}</p>
                         {location.is_active ? (
-                          <small className="text-sm font-medium leading-none text-green-600">Active</small>
+                          <small className="text-sm font-medium leading-none text-success">
+                            Active
+                          </small>
                         ) : (
                           <p className="text-sm text-muted-foreground">Inactive</p>
                         )}

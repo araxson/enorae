@@ -35,10 +35,10 @@ export function FailedLoginsPanel({ summary }: FailedLoginsPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
+        <div className="flex items-center gap-2">
           <Fingerprint className="h-4 w-4 text-muted-foreground" />
-          Failed Login Tracking
-        </CardTitle>
+          <CardTitle>Failed Login Tracking</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center gap-4">

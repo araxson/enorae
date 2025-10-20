@@ -3,10 +3,10 @@ import {
   getTrendInsights,
   getBusinessRecommendations,
   getAnomalyAlerts,
-  getGrowthOpportunities
+  getGrowthOpportunities,
 } from './api/business-insights'
 import { BusinessInsightsDashboard } from './components/business-insights-dashboard'
-import { Stack } from '@/components/layout'
+import { Section, Stack } from '@/components/layout'
 
 export async function BusinessInsights() {
   const salonId = await getUserSalonId()
@@ -20,20 +20,22 @@ export async function BusinessInsights() {
   ])
 
   return (
-    <Stack gap="xl">
-      <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Business Insights</h1>
-        <p className="leading-7 text-muted-foreground">
-          AI-powered insights, trend detection, and growth recommendations
-        </p>
-      </div>
+    <Section size="lg">
+      <Stack gap="xl">
+        <div>
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Business Insights</h1>
+          <p className="leading-7 text-muted-foreground">
+            AI-powered insights, trend detection, and growth recommendations
+          </p>
+        </div>
 
-      <BusinessInsightsDashboard
-        trends={trends}
-        recommendations={recommendations}
-        alerts={alerts}
-        opportunities={opportunities}
-      />
-    </Stack>
+        <BusinessInsightsDashboard
+          trends={trends}
+          recommendations={recommendations}
+          alerts={alerts}
+          opportunities={opportunities}
+        />
+      </Stack>
+    </Section>
   )
 }

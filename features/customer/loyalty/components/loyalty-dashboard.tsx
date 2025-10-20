@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -38,7 +38,7 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
           <CardHeader>
             <Flex justify="between" align="center">
               <CardTitle>Total Points</CardTitle>
-              <Star className="h-5 w-5 text-yellow-500" />
+              <Star className="h-5 w-5 text-warning" />
             </Flex>
           </CardHeader>
           <CardContent>
@@ -53,7 +53,7 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
           <CardHeader>
             <Flex justify="between" align="center">
               <CardTitle>Current Tier</CardTitle>
-              <Trophy className="h-5 w-5 text-purple-500" />
+              <Trophy className="h-5 w-5 text-info" />
             </Flex>
           </CardHeader>
           <CardContent>
@@ -70,7 +70,7 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
           <CardHeader>
             <Flex justify="between" align="center">
               <CardTitle>Lifetime Earned</CardTitle>
-              <TrendingUp className="h-5 w-5 text-green-500" />
+              <TrendingUp className="h-5 w-5 text-success" />
             </Flex>
           </CardHeader>
           <CardContent>
@@ -111,37 +111,45 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
         </CardHeader>
         <CardContent>
           <Grid cols={{ base: 1, md: 2 }} gap="md">
-            <Card className="border-2">
-              <CardContent className="p-4">
-                <h4 className="font-semibold">$10 Off</h4>
-                <p className="text-sm text-muted-foreground my-2">500 points</p>
+            <Card>
+              <CardHeader>
+                <CardTitle>$10 Off</CardTitle>
+                <CardDescription>Redeem for 500 points</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
                 <Button size="sm" className="w-full" disabled={!points || points.total_points < 500}>
                   Redeem
                 </Button>
               </CardContent>
             </Card>
-            <Card className="border-2">
-              <CardContent className="p-4">
-                <h4 className="font-semibold">$25 Off</h4>
-                <p className="text-sm text-muted-foreground my-2">1,000 points</p>
+            <Card>
+              <CardHeader>
+                <CardTitle>$25 Off</CardTitle>
+                <CardDescription>Redeem for 1,000 points</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
                 <Button size="sm" className="w-full" disabled={!points || points.total_points < 1000}>
                   Redeem
                 </Button>
               </CardContent>
             </Card>
-            <Card className="border-2">
-              <CardContent className="p-4">
-                <h4 className="font-semibold">Free Service</h4>
-                <p className="text-sm text-muted-foreground my-2">2,000 points</p>
+            <Card>
+              <CardHeader>
+                <CardTitle>Free Service</CardTitle>
+                <CardDescription>Redeem for 2,000 points</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
                 <Button size="sm" className="w-full" disabled={!points || points.total_points < 2000}>
                   Redeem
                 </Button>
               </CardContent>
             </Card>
-            <Card className="border-2">
-              <CardContent className="p-4">
-                <h4 className="font-semibold">VIP Upgrade</h4>
-                <p className="text-sm text-muted-foreground my-2">5,000 points</p>
+            <Card>
+              <CardHeader>
+                <CardTitle>VIP Upgrade</CardTitle>
+                <CardDescription>Redeem for 5,000 points</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
                 <Button size="sm" className="w-full" disabled={!points || points.total_points < 5000}>
                   Redeem
                 </Button>

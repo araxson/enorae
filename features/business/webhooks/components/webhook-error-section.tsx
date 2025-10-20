@@ -11,8 +11,8 @@ export function WebhookErrorSection({ error }: ErrorSectionProps) {
   return (
     <Stack gap="sm">
       <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Error</h4>
-      <Alert variant="destructive">
-        <AlertDescription className="break-words">{error}</AlertDescription>
+      <Alert variant="destructive" className="break-words">
+        <AlertDescription>{error}</AlertDescription>
       </Alert>
     </Stack>
   )

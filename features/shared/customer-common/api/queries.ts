@@ -15,7 +15,7 @@ export interface FavoriteShortcut {
   salonId?: string
 }
 
-export async function getCustomerFavoritesSummary(userId: string) {
+export async function getCustomerFavoritesSummary(userId: string): Promise<FavoriteShortcut[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase

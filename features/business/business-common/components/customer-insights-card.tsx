@@ -54,13 +54,13 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             </Box>
 
             <Box className="text-center p-4 rounded-lg bg-muted/50">
-              <UserPlus className="h-5 w-5 mx-auto mb-2 text-green-600" />
+              <UserPlus className="h-5 w-5 mx-auto mb-2 text-success" />
               <div className="text-2xl font-bold">{data.newCustomers}</div>
               <small className="text-sm font-medium leading-none text-muted-foreground">New ({newCustomerPercentage}%)</small>
             </Box>
 
             <Box className="text-center p-4 rounded-lg bg-muted/50">
-              <Repeat className="h-5 w-5 mx-auto mb-2 text-blue-600" />
+              <Repeat className="h-5 w-5 mx-auto mb-2 text-info" />
               <div className="text-2xl font-bold">{data.returningCustomers}</div>
               <small className="text-sm font-medium leading-none text-muted-foreground">Returning</small>
             </Box>
@@ -68,9 +68,9 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             <Box className="text-center p-4 rounded-lg bg-muted/50">
               <Flex align="center" justify="center" gap="xs" className="mb-2">
                 {data.retentionRate >= 50 ? (
-                  <TrendingUp className="h-5 w-5 text-green-600" />
+                  <TrendingUp className="h-5 w-5 text-success" />
                 ) : (
-                  <TrendingDown className="h-5 w-5 text-red-600" />
+                  <TrendingDown className="h-5 w-5 text-destructive" />
                 )}
               </Flex>
               <div className="text-2xl font-bold">{data.retentionRate.toFixed(1)}%</div>

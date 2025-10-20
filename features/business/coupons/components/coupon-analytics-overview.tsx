@@ -97,7 +97,7 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
               uses: { label: 'Uses', color: 'hsl(var(--chart-1))' },
               discount: { label: 'Discount', color: 'hsl(var(--chart-2))' },
             }}
-            className="h-[260px] w-full"
+            className="h-64 w-full"
           >
             <ResponsiveContainer>
               <AreaChart

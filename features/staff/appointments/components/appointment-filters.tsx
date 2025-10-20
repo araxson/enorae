@@ -40,7 +40,7 @@ export function AppointmentFilters({
         </div>
       ) : null}
       <Select onValueChange={onStatusChange} defaultValue="all">
-        <SelectTrigger className="w-full sm:w-[180px]">
+        <SelectTrigger className="w-full sm:w-44">
           <SelectValue placeholder="Filter by status" />
         </SelectTrigger>
         <SelectContent>

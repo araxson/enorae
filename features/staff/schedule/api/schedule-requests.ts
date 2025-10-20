@@ -5,7 +5,6 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-// TODO: These tables don't exist in public schema - create views or use organization schema
 type StaffRow = {
   id: string
   user_id: string
@@ -29,6 +28,10 @@ type StaffScheduleRow = {
   created_at: string
   updated_at: string
 }
+
+type StaffScheduleUpdate = Database['scheduling']['Tables']['staff_schedules']['Update']
+
+const STAFF_SCHEDULES_TABLE = 'staff_schedules' satisfies keyof Database['scheduling']['Tables']
 
 export async function requestScheduleChange(
   scheduleId: string,
@@ -65,6 +68,7 @@ export async function requestScheduleChange(
 
   // Create notification for management
   const { error } = await supabase
+    .schema('communication')
     .rpc('send_notification', {
       p_user_id: session.user.id,
       p_type: 'schedule_change_request',
@@ -140,6 +144,7 @@ export async function requestShiftSwap(
 
   // Send notification to target staff
   const { error: targetError } = await supabase
+    .schema('communication')
     .rpc('send_notification', {
       p_user_id: targetStaff.user_id,
       p_type: 'shift_swap_request',
@@ -158,6 +163,7 @@ export async function requestShiftSwap(
 
   // Send notification to management
   const { error: managementError } = await supabase
+    .schema('communication')
     .rpc('send_notification', {
       p_user_id: session.user.id,
       p_type: 'shift_swap_request',
@@ -200,21 +206,25 @@ export async function createRecurringSchedule(
 
   if (!staffProfile) throw new Error('Staff profile not found')
 
+  const insertPayload: Database['scheduling']['Tables']['staff_schedules']['Insert'] = {
+    staff_id: staffProfile.id,
+    salon_id: staffProfile.salon_id,
+    day_of_week: dayOfWeek,
+    start_time: startTime,
+    end_time: endTime,
+    break_start: breakStart || null,
+    break_end: breakEnd || null,
+    effective_from: effectiveFrom || new Date().toISOString().split('T')[0],
+    effective_until: effectiveUntil || null,
+    is_active: true,
+    created_by_id: session.user.id,
+    updated_by_id: session.user.id,
+  }
+
   const { error } = await supabase
-    .schema('organization')
-    .from('staff_schedules')
-    .insert({
-      staff_id: staffProfile.id,
-      salon_id: staffProfile.salon_id,
-      day_of_week: dayOfWeek,
-      start_time: startTime,
-      end_time: endTime,
-      break_start: breakStart || null,
-      break_end: breakEnd || null,
-      effective_from: effectiveFrom || new Date().toISOString().split('T')[0],
-      effective_until: effectiveUntil || null,
-      is_active: true,
-    })
+    .schema('scheduling')
+    .from(STAFF_SCHEDULES_TABLE)
+    .insert(insertPayload)
 
   if (error) throw error
 
@@ -260,7 +270,7 @@ export async function updateRecurringSchedule(
     throw new Error('Unauthorized')
   }
 
-  const updateData: Record<string, unknown> = {
+  const updateData: StaffScheduleUpdate = {
     updated_at: new Date().toISOString(),
   }
 
@@ -271,10 +281,12 @@ export async function updateRecurringSchedule(
   if (updates.effectiveUntil !== undefined) updateData.effective_until = updates.effectiveUntil || null
   if (updates.isActive !== undefined) updateData.is_active = updates.isActive
 
+  updateData.updated_by_id = session.user.id
+
   const { error } = await supabase
-    .schema('organization')
+    .schema('scheduling')
     .from('staff_schedules')
-    .update(updateData)
+    .update<StaffScheduleUpdate>(updateData)
     .eq('id', scheduleId)
 
   if (error) throw error

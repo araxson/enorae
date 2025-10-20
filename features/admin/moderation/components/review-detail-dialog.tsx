@@ -123,7 +123,7 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[640px]">
+      <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Review details</DialogTitle>
         </DialogHeader>
@@ -152,7 +152,7 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
 
           <Panel title="Review">
             {review.comment || 'No text provided'}
-            <p className="text-sm text-muted-foreground mt-2 block text-xs">
+            <p className="mt-2 text-xs text-muted-foreground">
               Posted on {review.created_at ? format(new Date(review.created_at), 'MMMM d, yyyy') : 'Unknown date'}
             </p>
           </Panel>
@@ -161,7 +161,7 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
             <Panel title="Response" tone="info">
               Response has been recorded. Response content is not available in this overview.
               {review.response_date && (
-                <p className="text-sm text-muted-foreground mt-2 block text-xs">
+                <p className="mt-2 text-xs text-muted-foreground">
                   Responded on {format(new Date(review.response_date), 'MMMM d, yyyy')}
                 </p>
               )}

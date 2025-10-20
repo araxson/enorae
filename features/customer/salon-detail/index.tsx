@@ -10,6 +10,7 @@ import { SalonHeader } from './components/salon-header'
 import { ServiceList } from './components/service-list'
 import { StaffGrid } from './components/staff-grid'
 import { SalonReviews } from './components/salon-reviews'
+import type { SalonDetailParams } from './metadata'
 
 interface SalonDetailProps {
   slug: string
@@ -34,3 +35,15 @@ export async function SalonDetail({ slug }: SalonDetailProps) {
     </div>
   )
 }
+
+export async function SalonDetailFeature({
+  params,
+}: {
+  params: Promise<SalonDetailParams> | SalonDetailParams
+}) {
+  const { slug } = await params
+
+  return <SalonDetail slug={slug} />
+}
+
+export { generateSalonDetailMetadata } from './metadata'

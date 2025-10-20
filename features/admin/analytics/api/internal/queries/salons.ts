@@ -1,6 +1,6 @@
 import 'server-only';
-import { requireAdminClient } from '../admin-analytics-shared'
-import type { AdminSalonRow } from '../admin-analytics-types'
+import { requireAdminClient } from '../../admin-analytics-shared'
+import type { AdminSalonRow } from '../../admin-analytics-types'
 
 const SALONS_TABLE = 'admin_salons_overview'
 

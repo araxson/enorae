@@ -1,16 +1,7 @@
-import { Suspense } from 'react'
-import { PageLoading } from '@/components/shared'
-import { CustomerAnalyticsPage } from '@/features/customer/analytics'
+import { CustomerAnalyticsFeature, customerAnalyticsMetadata } from '@/features/customer/analytics'
 
-export const metadata = {
-  title: 'Analytics | Enorae',
-  description: 'View your personal analytics and insights',
-}
+export const metadata = customerAnalyticsMetadata
 
-export default function CustomerAnalyticsRoute() {
-  return (
-    <Suspense fallback={<PageLoading />}>
-      <CustomerAnalyticsPage />
-    </Suspense>
-  )
+export default function Page() {
+  return <CustomerAnalyticsFeature />
 }

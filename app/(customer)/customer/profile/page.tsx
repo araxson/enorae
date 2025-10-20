@@ -1,18 +1,7 @@
-import { Suspense } from 'react'
-import { PageLoading } from '@/components/shared'
-import { CustomerProfile } from '@/features/customer/profile'
-import { generateMetadata as genMeta } from '@/lib/metadata'
+import { CustomerProfileFeature, customerProfileMetadata } from '@/features/customer/profile'
 
-export const metadata = genMeta({
-  title: 'My Profile',
-  description: 'Manage your profile and view your appointment history.',
-  noIndex: true,
-})
+export const metadata = customerProfileMetadata
 
-export default function CustomerProfilePage() {
-  return (
-    <Suspense fallback={<PageLoading />}>
-      <CustomerProfile />
-    </Suspense>
-  )
+export default function Page() {
+  return <CustomerProfileFeature />
 }

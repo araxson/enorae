@@ -55,7 +55,7 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
                       </div>
                     </TableCell>
                     <TableCell className="text-right">{chain.salon_count || 0}</TableCell>
-                    <TableCell className="text-right">{chain.total_staff_count || 0}</TableCell>
+                    <TableCell className="text-right">{chain.staff_count || 0}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className="capitalize">
                         {chain.subscription_tier || 'Free'}

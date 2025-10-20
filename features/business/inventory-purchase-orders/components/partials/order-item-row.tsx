@@ -17,7 +17,7 @@ const computeOrderedQuantity = (item: OrderItemRowProps['item']) => item.quantit
 const computeReceivedQuantity = (item: OrderItemRowProps['item']) => item.quantity_received ?? 0
 
 const buildClassNames = (received: number, ordered: number) =>
-  received >= ordered ? 'text-green-600 font-medium' : ''
+  received >= ordered ? 'text-success font-medium' : ''
 
 export function OrderItemRow({
   item,

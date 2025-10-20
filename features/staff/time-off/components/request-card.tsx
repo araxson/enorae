@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -98,18 +98,18 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
 
   return (
     <Card>
-      <CardContent className="space-y-4">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <span className="text-lg font-semibold">{request.staff?.profiles?.username || 'Staff Member'}</span>
-            <small className="text-sm font-medium leading-none text-muted-foreground capitalize">
-              {request.request_type?.replace('_', ' ') || 'N/A'}
-            </small>
-          </div>
-          <Badge variant={getStatusVariant(request.status || '')} className="capitalize">
-            {request.status || 'Unknown'}
-          </Badge>
+      <CardHeader className="flex items-start justify-between gap-3">
+        <div className="space-y-1">
+          <CardTitle>{request.staff?.profiles?.username || 'Staff member'}</CardTitle>
+          <CardDescription className="capitalize">
+            {request.request_type?.replace('_', ' ') || 'N/A'}
+          </CardDescription>
         </div>
+        <Badge variant={getStatusVariant(request.status || '')} className="capitalize">
+          {request.status || 'Unknown'}
+        </Badge>
+      </CardHeader>
+      <CardContent className="space-y-4">
 
         <div className="space-y-1 text-sm">
           <div className="flex gap-2">

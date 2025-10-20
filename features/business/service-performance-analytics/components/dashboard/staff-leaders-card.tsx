@@ -9,10 +9,10 @@ export function StaffLeadersCard({ staffPerformance }: { staffPerformance: Staff
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Users className="h-5 w-5" />
-          Staff Leaders by Service
-        </CardTitle>
+          <CardTitle>Staff Leaders by Service</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-3">
         {staffPerformance.map((record) => (

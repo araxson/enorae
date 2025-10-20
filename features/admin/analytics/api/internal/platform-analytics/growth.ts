@@ -1,4 +1,4 @@
-import type { GrowthDelta } from '../admin-analytics-types'
+import type { GrowthDelta } from '../../admin-analytics-types'
 import { averageMetric, computeDelta, sumMetric, toNumber } from './helpers'
 
 type AnalyticsRow = {

@@ -55,10 +55,10 @@ export function HealthOverview({ snapshot }: HealthOverviewProps) {
     <div className="grid gap-4 md:grid-cols-4">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
             {getHealthIcon(healthScore)}
-            Health Score
-          </CardTitle>
+            <CardTitle>Health Score</CardTitle>
+          </div>
           <CardDescription>{healthScore}% overall</CardDescription>
         </CardHeader>
         <CardContent>
@@ -69,10 +69,10 @@ export function HealthOverview({ snapshot }: HealthOverviewProps) {
       {metrics.map((metric) => (
         <Card key={metric.label}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
               {metric.icon}
-              {metric.label}
-            </CardTitle>
+              <CardTitle>{metric.label}</CardTitle>
+            </div>
             <CardDescription>Latest snapshot for {metric.label.toLowerCase()}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">

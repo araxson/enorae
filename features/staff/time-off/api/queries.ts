@@ -4,6 +4,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 type TimeOffRequest = Database['public']['Views']['time_off_requests_view']['Row']
+type TimeOffRequestSummary = Pick<TimeOffRequest, 'duration_days' | 'status'>
 
 export type TimeOffRequestWithStaff = TimeOffRequest & {
   staff: {
@@ -26,15 +27,14 @@ export async function getTimeOffRequests(): Promise<TimeOffRequestWithStaff[]> {
     .from('staff')
     .select('salon_id')
     .eq('user_id', session.user.id)
-    .single()
+    .single<{ salon_id: string | null }>()
 
-  const typedStaff = staffProfile as { salon_id: string | null } | null
-  if (!typedStaff?.salon_id) throw new Error('User salon not found')
+  if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
     .from('time_off_requests_view')
     .select('*')
-    .eq('salon_id', typedStaff.salon_id)
+    .eq('salon_id', staffProfile.salon_id)
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
 
@@ -53,15 +53,14 @@ export async function getPendingTimeOffRequests(): Promise<TimeOffRequestWithSta
     .from('staff')
     .select('salon_id')
     .eq('user_id', session.user.id)
-    .single()
+    .single<{ salon_id: string | null }>()
 
-  const typedStaff = staffProfile as { salon_id: string | null } | null
-  if (!typedStaff?.salon_id) throw new Error('User salon not found')
+  if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
     .from('time_off_requests_view')
     .select('*')
-    .eq('salon_id', typedStaff.salon_id)
+    .eq('salon_id', staffProfile.salon_id)
     .eq('status', 'pending')
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
@@ -86,9 +85,9 @@ export async function getTimeOffBalance(year?: number): Promise<TimeOffBalance> 
     .from('staff')
     .select('id')
     .eq('user_id', session.user.id)
-    .single()
+    .single<{ id: string | null }>()
 
-  if (!staffProfile) throw new Error('Staff profile not found')
+  if (!staffProfile?.id) throw new Error('Staff profile not found')
 
   const currentYear = year || new Date().getFullYear()
   const startDate = `${currentYear}-01-01`
@@ -101,9 +100,11 @@ export async function getTimeOffBalance(year?: number): Promise<TimeOffBalance> 
     .eq('staff_id', staffProfile.id)
     .gte('start_at', startDate)
     .lte('start_at', endDate)
+    .returns<TimeOffRequestSummary[]>()
 
-  const approved = requests?.filter(r => r.status === 'approved') || []
-  const pending = requests?.filter(r => r.status === 'pending') || []
+  const requestList = requests ?? []
+  const approved = requestList.filter((r) => r.status === 'approved')
+  const pending = requestList.filter((r) => r.status === 'pending')
 
   const usedDays = approved.reduce((sum, r) => sum + (r.duration_days || 0), 0)
   const pendingDays = pending.reduce((sum, r) => sum + (r.duration_days || 0), 0)
@@ -141,10 +142,9 @@ export async function getTeamTimeOffCalendar(
     .from('staff')
     .select('salon_id')
     .eq('user_id', session.user.id)
-    .single()
+    .single<{ salon_id: string | null }>()
 
-  const typedStaff = staffProfile as { salon_id: string | null } | null
-  if (!typedStaff?.salon_id) throw new Error('User salon not found')
+  if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   const start = startDate || new Date().toISOString().split('T')[0]
   const end = endDate || new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
@@ -152,7 +152,7 @@ export async function getTeamTimeOffCalendar(
   const { data, error } = await supabase
     .from('time_off_requests_view')
     .select('staff_id, staff_name, staff_title, start_at, end_at, request_type, status')
-    .eq('salon_id', typedStaff.salon_id)
+    .eq('salon_id', staffProfile.salon_id)
     .in('status', ['approved', 'pending'])
     .gte('start_at', start)
     .lte('start_at', end)

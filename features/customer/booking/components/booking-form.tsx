@@ -241,7 +241,7 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
               {availabilityStatus === 'checking' || isCheckingAvailability ? (
                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
               ) : availabilityStatus === 'available' ? (
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                <CheckCircle2 className="h-4 w-4 text-success" />
               ) : availabilityStatus === 'unavailable' ? (
                 <XCircle className="h-4 w-4 text-destructive" />
               ) : (
@@ -250,7 +250,7 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
               <span
                 className={
                   availabilityStatus === 'available'
-                    ? 'text-emerald-700'
+                    ? 'text-success'
                     : availabilityStatus === 'unavailable'
                     ? 'text-destructive'
                     : 'text-muted-foreground'

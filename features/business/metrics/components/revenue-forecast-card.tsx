@@ -33,6 +33,7 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
 
   const upcoming = chartData.filter((point) => point.actual === null)
   const nextForecast = upcoming[0]
+  const growthColor = forecast.projectedGrowth >= 0 ? 'text-success' : 'text-destructive'
 
   return (
     <Card>
@@ -56,7 +57,7 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
               forecast: { label: 'Forecast', color: 'hsl(var(--chart-2))' },
               baseline: { label: 'Baseline', color: 'hsl(var(--muted-foreground))' },
             }}
-            className="h-[300px] w-full"
+            className="h-72 w-full"
           >
             <ResponsiveContainer>
               <LineChart data={chartData} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
@@ -108,7 +109,7 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
               <p className="text-sm text-muted-foreground">
                 Projected change (next {forecast.points.filter((p) => p.actual === undefined).length} days)
               </p>
-              <p className={`text-xl font-semibold ${forecast.projectedGrowth >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+              <p className={`text-xl font-semibold ${growthColor}`}>
                 {forecast.projectedGrowth >= 0 ? '+' : ''}
                 {forecast.projectedGrowth.toFixed(1)}%
               </p>

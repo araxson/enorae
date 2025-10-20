@@ -1,6 +1,6 @@
 import 'server-only';
-import { requireAdminClient } from '../admin-analytics-shared'
-import type { AdminMessageRow } from '../admin-analytics-types'
+import { requireAdminClient } from '../../admin-analytics-shared'
+import type { AdminMessageRow } from '../../admin-analytics-types'
 
 const MESSAGES_TABLE = 'admin_messages_overview'
 

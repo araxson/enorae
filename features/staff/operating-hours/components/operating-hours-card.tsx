@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Stack, Flex } from '@/components/layout'
 import { Clock } from 'lucide-react'
@@ -18,13 +18,14 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
   const today = dayOrder[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1] || 'monday'
 
   return (
-    <Card className="p-6">
-      <Stack gap="md">
+    <Card>
+      <CardHeader className="p-6 pb-4">
         <Flex align="center" gap="sm">
           <Clock className="h-5 w-5" />
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Operating Hours</h3>
+          <CardTitle>Operating Hours</CardTitle>
         </Flex>
-
+      </CardHeader>
+      <CardContent className="p-6 pt-0">
         <Stack gap="sm">
           {sortedHours.map((hour) => {
             const isToday = hour.day_of_week === today
@@ -37,7 +38,7 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
                 className={isToday ? 'font-semibold' : ''}
               >
                 <Flex align="center" gap="sm">
-                  <p className="leading-7 capitalize min-w-[100px]">
+                  <p className="leading-7 capitalize min-w-24">
                     {hour.day_of_week}
                   </p>
                   {isToday && (
@@ -56,13 +57,12 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
             )
           })}
         </Stack>
-
-        {sortedHours[0]?.salon_name && (
-          <p className="text-sm text-muted-foreground text-xs border-t pt-2">
-            {sortedHours[0].salon_name}
-          </p>
-        )}
-      </Stack>
+      </CardContent>
+      {sortedHours[0]?.salon_name && (
+        <CardFooter className="border-t p-6 pt-4">
+          <p className="text-xs text-muted-foreground">{sortedHours[0].salon_name}</p>
+        </CardFooter>
+      )}
     </Card>
   )
 }

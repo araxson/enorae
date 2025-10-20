@@ -51,7 +51,7 @@ export function SalonsTable({ salons }: SalonsTableProps) {
             {salons.map((salon) => (
               <TableRow key={salon.id} className="hover:bg-accent/50">
                 <TableCell>
-                  <div className="min-w-[200px]">
+                  <div className="min-w-0">
                     <p className="font-medium">{salon.name}</p>
                     {salon.chain_name && (
                       <p className="flex items-center gap-1 text-xs text-muted-foreground">

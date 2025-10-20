@@ -41,10 +41,10 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
     <Card>
       <CardHeader className="gap-4 pb-4">
         <ButtonGroup className="w-full items-center justify-between">
-          <ButtonGroupText className="flex items-start gap-2">
-            <div>
+          <ButtonGroupText>
+            <div className="space-y-1">
               <CardTitle>Recent Bookings</CardTitle>
-              <CardDescription className="mt-1">
+              <CardDescription>
                 {isEmpty ? 'No appointments yet' : `${appointments.length} appointments`}
               </CardDescription>
             </div>
@@ -72,7 +72,7 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
             description="Recent appointments will appear here"
           />
         ) : (
-          <ScrollArea className="h-[400px]">
+          <ScrollArea className="h-96">
             <div className="p-6 space-y-4">
               {appointments.map((appointment, index) => {
                 const statusConfig = getStatusConfig(appointment.status)
@@ -82,7 +82,7 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
                   <div key={appointment.id}>
                     <div className="group -mx-2 flex items-start gap-4 rounded-lg p-2 transition-colors hover:bg-accent/50">
                       <Avatar className="h-10 w-10 border-2 border-background">
-                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white text-xs font-semibold">
+                        <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
                           {customerInitials}
                         </AvatarFallback>
                       </Avatar>

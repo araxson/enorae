@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -9,29 +9,25 @@ interface StatBadgeProps {
   color?: 'primary' | 'secondary' | 'success' | 'warning'
 }
 
-const colorClasses = {
+const colorClasses: Record<Required<StatBadgeProps>['color'], string> = {
   primary: 'bg-primary/10 text-primary',
   secondary: 'bg-secondary/10 text-secondary-foreground',
-  success: 'bg-green-500/10 text-green-600 dark:text-green-400',
-  warning: 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400',
+  success: 'bg-success/10 text-success',
+  warning: 'bg-warning/10 text-warning',
 }
 
 export function StatBadge({ icon: Icon, value, label, color = 'primary' }: StatBadgeProps) {
   return (
     <Card>
-      <CardContent>
-        <div className="space-y-4 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg text-lg shadow-inner">
-            <span className={cn('flex h-full w-full items-center justify-center rounded-lg', colorClasses[color])}>
-              <Icon className="h-6 w-6" />
-            </span>
-          </div>
-          <div className="space-y-1">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-3xl font-bold">{value}</h3>
-            <p className="text-sm text-muted-foreground">{label}</p>
-          </div>
+      <CardHeader className="items-center text-center">
+        <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-lg text-lg shadow-inner">
+          <span className={cn('flex h-full w-full items-center justify-center rounded-lg', colorClasses[color])}>
+            <Icon className="h-6 w-6" />
+          </span>
         </div>
-      </CardContent>
+        <CardTitle>{value}</CardTitle>
+        <CardDescription>{label}</CardDescription>
+      </CardHeader>
     </Card>
   )
 }

@@ -1,5 +1,6 @@
 export * from './components'
 export { faqSEO } from './faq.seo'
 export * from './api/queries'
+export { FAQFeature } from './feature'
 export { Hero } from './components/sections/hero'
 export { Questions } from './components/sections/questions'

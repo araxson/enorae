@@ -1,7 +1,6 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Stack } from '@/components/layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type {
   StaffDashboardData,
@@ -119,8 +118,8 @@ export function StaffClient({ staff, stats, highRiskStaff, verificationQueue, to
   }, [staff, search, riskFilter, roleFilter, backgroundFilter])
 
   return (
-    <Stack gap="xl">
-      <Stack gap="md">
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-6">
         <div>
           <p className="leading-7 text-base font-semibold">Staff Oversight</p>
           <p className="text-sm text-muted-foreground text-sm">
@@ -128,7 +127,7 @@ export function StaffClient({ staff, stats, highRiskStaff, verificationQueue, to
           </p>
         </div>
         <StaffStats stats={stats} />
-      </Stack>
+      </div>
 
       <StaffFilters
         search={search}
@@ -157,6 +156,6 @@ export function StaffClient({ staff, stats, highRiskStaff, verificationQueue, to
       </div>
 
       <StaffTable staff={filteredStaff} />
-    </Stack>
+    </div>
   )
 }

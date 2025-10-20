@@ -1,13 +1,5 @@
-import { SalonChainDetailPage } from '@/features/customer/chains'
+import { SalonChainDetailFeature } from '@/features/customer/chains'
 
-interface PageProps {
-  params: Promise<{
-    slug: string
-  }>
-}
-
-export default async function ChainDetailPage({ params }: PageProps) {
-  const { slug } = await params
-
-  return <SalonChainDetailPage slug={slug} />
+export default function Page(props: Parameters<typeof SalonChainDetailFeature>[0]) {
+  return <SalonChainDetailFeature {...props} />
 }

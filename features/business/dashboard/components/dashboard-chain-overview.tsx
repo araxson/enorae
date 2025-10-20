@@ -65,10 +65,10 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
     <Card id="overview">
       <CardHeader>
         <Group className="items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Building2 className="h-5 w-5" aria-hidden="true" />
-            Chain overview
-          </CardTitle>
+            <CardTitle>Chain overview</CardTitle>
+          </div>
           <Badge variant="outline">Multi-location</Badge>
         </Group>
       </CardHeader>

@@ -1,18 +1,7 @@
-import { Suspense } from 'react'
-import { PageLoading } from '@/components/shared'
-import { Favorites } from '@/features/customer/favorites'
-import { generateMetadata as genMeta } from '@/lib/metadata'
+import { FavoritesFeature, favoritesMetadata } from '@/features/customer/favorites'
 
-export const metadata = genMeta({
-  title: 'My Favorites',
-  description: 'View and manage your favorite salons',
-  noIndex: true,
-})
+export const metadata = favoritesMetadata
 
-export default function FavoritesPage() {
-  return (
-    <Suspense fallback={<PageLoading />}>
-      <Favorites />
-    </Suspense>
-  )
+export default function Page() {
+  return <FavoritesFeature />
 }

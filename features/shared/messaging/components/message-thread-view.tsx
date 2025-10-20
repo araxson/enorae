@@ -43,7 +43,7 @@ export function MessageThreadView({
 
       <Separator />
 
-      <div className="flex-1 min-h-[400px] overflow-y-auto">
+      <div className="flex-1 min-h-96 overflow-y-auto">
         <Card>
           <CardContent>
             <div className="space-y-3">

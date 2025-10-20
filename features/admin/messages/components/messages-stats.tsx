@@ -42,12 +42,12 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Urgent Threads</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-orange-500">{stats.urgentThreads}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-warning">{stats.urgentThreads}</h3>
             <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
               High priority {stats.highPriorityThreads}
             </small>
           </div>
-          <AlertTriangle className="h-8 w-8 text-orange-500" />
+          <AlertTriangle className="h-8 w-8 text-warning" />
         </div>
       </Card>
 
@@ -55,12 +55,12 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Flagged Messages</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-red-500">{stats.flaggedMessages}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-destructive">{stats.flaggedMessages}</h3>
             <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
               Threads affected {stats.flaggedThreads}
             </small>
           </div>
-          <ShieldAlert className="h-8 w-8 text-red-500" />
+          <ShieldAlert className="h-8 w-8 text-destructive" />
         </div>
       </Card>
 
@@ -68,12 +68,12 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Open Escalations</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-amber-500">{stats.openEscalations}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-warning">{stats.openEscalations}</h3>
             <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
               Resolved {stats.resolvedThreads + stats.closedThreads + stats.archivedThreads}
             </small>
           </div>
-          <GitPullRequest className="h-8 w-8 text-amber-500" />
+          <GitPullRequest className="h-8 w-8 text-warning" />
         </div>
       </Card>
 
@@ -86,7 +86,7 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
               Based on {stats.totalMeasuredResponses} responses
             </small>
           </div>
-          <Clock className="h-8 w-8 text-blue-500" />
+          <Clock className="h-8 w-8 text-info" />
         </div>
       </Card>
 
@@ -94,12 +94,12 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Responses ≤ 1h</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-emerald-600">
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-success">
               {formatPercentage(stats.responsesWithinHourRate)}
             </h3>
             <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Customer SLA coverage</small>
           </div>
-          <Timer className="h-8 w-8 text-emerald-600" />
+          <Timer className="h-8 w-8 text-success" />
         </div>
       </Card>
 
@@ -110,7 +110,7 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{stats.totalUnread}</h3>
             <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Across customers and staff</small>
           </div>
-          <MailWarning className="h-8 w-8 text-sky-500" />
+          <MailWarning className="h-8 w-8 text-info" />
         </div>
       </Card>
     </div>

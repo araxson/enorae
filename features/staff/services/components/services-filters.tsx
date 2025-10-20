@@ -34,7 +34,7 @@ export function ServicesFilters({
   return (
     <div className="flex flex-wrap items-center gap-3">
       {showSearch ? (
-        <div className="relative flex-1 min-w-[220px]">
+        <div className="relative flex-1 min-w-56">
           <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search services..."
@@ -46,7 +46,7 @@ export function ServicesFilters({
       ) : null}
 
       <Select value={categoryFilter} onValueChange={onCategoryFilterChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-44">
           <SelectValue placeholder="All categories" />
         </SelectTrigger>
         <SelectContent>
@@ -60,7 +60,7 @@ export function ServicesFilters({
       </Select>
 
       <Select value={proficiencyFilter} onValueChange={onProficiencyFilterChange}>
-        <SelectTrigger className="w-[160px]">
+        <SelectTrigger className="w-40">
           <SelectValue placeholder="All levels" />
         </SelectTrigger>
         <SelectContent>

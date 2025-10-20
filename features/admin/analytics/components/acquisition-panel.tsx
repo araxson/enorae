@@ -14,10 +14,10 @@ export function AcquisitionPanel({ acquisition }: AcquisitionPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
+        <div className="flex items-center gap-2">
           <Users className="h-4 w-4 text-muted-foreground" />
-          User Acquisition
-        </CardTitle>
+          <CardTitle>User Acquisition</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         <div className="flex items-center justify-between">

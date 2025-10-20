@@ -16,7 +16,6 @@ import {
 } from '@/components/ui/select'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
-import { Stack, Group } from '@/components/layout'
 import { DashboardCommandButton } from './dashboard-command-button'
 import { DashboardPreferencesSheet } from './dashboard-preferences-sheet'
 import { DashboardQuickFiltersDrawer } from './dashboard-quick-filters-drawer'
@@ -51,27 +50,27 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
   const [timeframe, setTimeframe] = useState<'7' | '30' | '90'>('30')
 
   return (
-    <Stack gap="md" className="rounded-xl border bg-card/40 px-4 py-3 shadow-sm md:px-6">
-      <Group className="flex-wrap items-center justify-between gap-4">
-        <Group gap="sm" className="items-center">
+    <div className="flex flex-col gap-4 rounded-xl border bg-card/40 px-4 py-3 shadow-sm md:px-6">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-3">
           <Avatar className="h-9 w-9">
             <AvatarFallback>{salonName.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <Stack gap="xs">
+          <div className="flex min-w-0 flex-col gap-1">
             <span className="text-sm font-semibold text-foreground">{salonName}</span>
             <small className="text-sm font-medium leading-none text-muted-foreground">
               Review bookings, revenue, and reputation signals at a glance.
             </small>
-          </Stack>
+          </div>
           {isTenantOwner && totalLocations ? (
             <Badge variant="secondary" className="gap-1">
               <LayoutDashboard className="h-3 w-3" />
               {totalLocations} locations
             </Badge>
           ) : null}
-        </Group>
+        </div>
 
-        <Group gap="sm" className="items-center">
+        <div className="flex items-center gap-3">
           <DashboardCommandButton navigationItems={NAVIGATION_ITEMS} commandItems={COMMAND_ITEMS} />
           <DashboardPreferencesSheet />
           <DashboardQuickFiltersDrawer />
@@ -83,14 +82,14 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
             </TooltipTrigger>
             <TooltipContent>Contact support or browse help center</TooltipContent>
           </Tooltip>
-        </Group>
-      </Group>
+        </div>
+      </div>
 
-      <Group className="flex-wrap items-center justify-between gap-3">
-        <Group gap="sm" className="items-center">
-          <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Timeframe</small>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <small className="text-sm font-medium leading-none text-muted-foreground">Timeframe</small>
           <Select value={timeframe} onValueChange={(value) => setTimeframe(value as typeof timeframe)}>
-            <SelectTrigger className="w-[160px]">
+            <SelectTrigger className="w-40">
               <SelectValue placeholder="Select timeframe" />
             </SelectTrigger>
             <SelectContent>
@@ -101,24 +100,24 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
               ))}
             </SelectContent>
           </Select>
-        </Group>
-        <Group gap="sm" className="items-center text-xs text-muted-foreground">
+        </div>
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
           <Badge variant="outline">Timeframe {timeframe} days</Badge>
           <Badge variant="outline">{isTenantOwner ? 'Tenant owner' : 'Team member'}</Badge>
-        </Group>
-      </Group>
+        </div>
+      </div>
 
       <Separator />
 
       <Alert variant="default" className="bg-muted/30">
-        <AlertTitle className="flex items-center gap-2 text-sm font-medium">
+        <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-primary" />
-          Weekly momentum
-        </AlertTitle>
-        <AlertDescription className="text-sm text-muted-foreground">
+          <AlertTitle>Weekly momentum</AlertTitle>
+        </div>
+        <AlertDescription>
           Confirmation rate is holding steady. Encourage stylists to respond to pending bookings to keep the momentum.
         </AlertDescription>
       </Alert>
-    </Stack>
+    </div>
   )
 }

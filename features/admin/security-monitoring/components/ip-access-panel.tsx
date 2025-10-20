@@ -11,10 +11,10 @@ export function IpAccessPanel({ events }: IpAccessPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
+        <div className="flex items-center gap-2">
           <Network className="h-4 w-4 text-muted-foreground" />
-          IP Access Control
-        </CardTitle>
+          <CardTitle>IP Access Control</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-3">
         {events.length === 0 ? (

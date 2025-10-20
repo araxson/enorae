@@ -1,4 +1,3 @@
-import { Stack } from '@/components/layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -62,9 +61,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatCurrency(metrics.revenue),
       description: 'Platform-wide revenue across all salons',
       icon: DollarSign,
-      accent: 'bg-green-500/10 text-green-600',
+      accent: 'bg-success/10 text-success',
       progressValue: 100,
-      progressClassName: '[&>div]:bg-green-600',
+      progressClassName: '[&>div]:bg-success',
       footer: (
         <HoverCard>
           <HoverCardTrigger asChild>
@@ -85,9 +84,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatNumber(metrics.totalSalons),
       description: 'Active businesses connected to the platform',
       icon: Building2,
-      accent: 'bg-indigo-500/10 text-indigo-600',
+      accent: 'bg-primary/10 text-primary',
       progressValue: 100,
-      progressClassName: '[&>div]:bg-indigo-600',
+      progressClassName: '[&>div]:bg-primary',
       footer: (
         <HoverCard>
           <HoverCardTrigger asChild>
@@ -108,11 +107,11 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatNumber(metrics.totalUsers),
       description: 'Registered platform accounts across roles',
       icon: Users,
-      accent: 'bg-purple-500/10 text-purple-600',
+      accent: 'bg-info/10 text-info',
       progressValue: metrics.totalSalons
         ? Math.min(100, Math.round((metrics.totalUsers / (metrics.totalSalons * 15)) * 100))
         : 0,
-      progressClassName: '[&>div]:bg-purple-600',
+      progressClassName: '[&>div]:bg-info',
       footer: (
         <Badge variant="outline" className="w-fit gap-1 text-xs">
           <TrendingUp className="h-3 w-3" />
@@ -126,9 +125,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatNumber(metrics.activeUsers),
       description: 'Users with platform activity in last 30 days',
       icon: UserCheck,
-      accent: 'bg-cyan-500/10 text-cyan-600',
+      accent: 'bg-info/10 text-info',
       progressValue: activeUserRate,
-      progressClassName: '[&>div]:bg-cyan-600',
+      progressClassName: '[&>div]:bg-info',
       footer: (
         <HoverCard>
           <HoverCardTrigger asChild>
@@ -149,9 +148,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatNumber(metrics.totalAppointments),
       description: 'All-time bookings made through the platform',
       icon: Calendar,
-      accent: 'bg-blue-500/10 text-blue-600',
+      accent: 'bg-primary/10 text-primary',
       progressValue: Math.min(100, Math.round(metrics.totalAppointments / 50)),
-      progressClassName: '[&>div]:bg-blue-600',
+      progressClassName: '[&>div]:bg-primary',
       footer: (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -169,9 +168,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatNumber(metrics.activeAppointments),
       description: 'Upcoming confirmed bookings',
       icon: CheckCircle2,
-      accent: 'bg-emerald-500/10 text-emerald-600',
+      accent: 'bg-success/10 text-success',
       progressValue: activeRate,
-      progressClassName: '[&>div]:bg-emerald-600',
+      progressClassName: '[&>div]:bg-success',
       footer: (
         <Badge variant="outline" className="w-fit gap-1 text-xs">
           <Activity className="h-3.5 w-3.5" />
@@ -182,7 +181,7 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
   ] as const
 
   return (
-    <Stack as="section" gap="sm">
+    <section className="flex flex-col gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-lg font-semibold tracking-tight">Platform metrics</h2>
@@ -223,6 +222,6 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
           </Card>
         ))}
       </div>
-    </Stack>
+    </section>
   )
 }

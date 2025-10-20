@@ -5,7 +5,6 @@ import { ReviewsList } from './reviews-list'
 import { SearchBar } from '@/features/admin/admin-common/components'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import type { Database } from '@/lib/types/database.types'
-import { Stack } from '@/components/layout'
 
 type AdminReview = Database['public']['Views']['admin_reviews_overview']['Row']
 
@@ -44,7 +43,7 @@ export function ReviewsClient({ reviews }: ReviewsClientProps) {
   }, [reviews, search, filter])
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-6">
       <SearchBar
         placeholder="Search reviews by salon, customer, or content..."
         onSearch={setSearch}
@@ -68,6 +67,6 @@ export function ReviewsClient({ reviews }: ReviewsClientProps) {
           <ReviewsList reviews={filteredReviews} />
         </TabsContent>
       </Tabs>
-    </Stack>
+    </div>
   )
 }

@@ -22,9 +22,9 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       value: metrics.upcomingAppointments,
       description: 'Scheduled bookings',
       icon: Calendar,
-      accent: 'bg-blue-500/10 text-blue-600',
+      accent: 'bg-info/10 text-info',
       progress: metrics.upcomingAppointments > 0 ? 100 : 0,
-      progressClass: '[&>div]:bg-blue-600',
+      progressClass: '[&>div]:bg-info',
       showHearts: undefined,
     },
     {
@@ -32,12 +32,12 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       value: metrics.completedAppointments,
       description: 'Total visits',
       icon: CheckCircle,
-      accent: 'bg-green-500/10 text-green-600',
+      accent: 'bg-success/10 text-success',
       progress:
         totalActivity > 0
           ? Math.round((metrics.completedAppointments / totalActivity) * 100)
           : 0,
-      progressClass: '[&>div]:bg-green-600',
+      progressClass: '[&>div]:bg-success',
       showHearts: undefined,
     },
     {
@@ -45,7 +45,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       value: metrics.favorites,
       description: 'Saved salons',
       icon: Heart,
-      accent: 'bg-pink-500/10 text-pink-600',
+      accent: 'bg-accent/10 text-accent-foreground',
       progress: undefined,
       progressClass: undefined,
       showHearts: metrics.favorites,
@@ -82,7 +82,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
               {typeof showHearts === 'number' && showHearts > 0 ? (
                 <div className="flex flex-wrap items-center gap-1">
                   {Array.from({ length: Math.min(showHearts, 5) }).map((_, index) => (
-                    <Heart key={index} className="h-3.5 w-3.5 fill-pink-500 text-pink-500" />
+                    <Heart key={index} className="h-3.5 w-3.5 fill-accent text-accent-foreground" />
                   ))}
                   {showHearts > 5 && (
                     <span className="text-xs text-muted-foreground">+{showHearts - 5}</span>

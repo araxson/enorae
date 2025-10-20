@@ -14,10 +14,10 @@ export function PopularServicesCard({ services }: { services: ServicePerformance
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5" />
-          Most Popular Services
-        </CardTitle>
+          <CardTitle>Most Popular Services</CardTitle>
+        </div>
         <CardDescription>Services with the highest booking volume during the selected period.</CardDescription>
       </CardHeader>
       <CardContent>

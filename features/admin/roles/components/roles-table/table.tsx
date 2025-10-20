@@ -41,7 +41,7 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
             <TableHead>Status</TableHead>
             <TableHead>Permissions</TableHead>
             <TableHead>Assigned</TableHead>
-            <TableHead className="w-[50px]" />
+            <TableHead className="w-12" />
           </TableRow>
         </TableHeader>
         <TableBody>

@@ -81,9 +81,9 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
               Interests
             </Label>
             <Stack gap="sm">
-              <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+              <div className="flex flex-wrap gap-2 min-h-10 p-2 border rounded-md">
                 {interests.length === 0 && (
-                  <p className="text-sm text-muted-foreground text-xs">No interests added yet</p>
+                  <p className="text-xs text-muted-foreground">No interests added yet</p>
                 )}
                 {interests.map((interest) => (
                   <Badge key={interest} variant="secondary" className="gap-1">
@@ -119,9 +119,9 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
               Tags
             </Label>
             <Stack gap="sm">
-              <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+              <div className="flex flex-wrap gap-2 min-h-10 p-2 border rounded-md">
                 {tags.length === 0 && (
-                  <p className="text-sm text-muted-foreground text-xs">No tags added yet</p>
+                  <p className="text-xs text-muted-foreground">No tags added yet</p>
                 )}
                 {tags.map((tag) => (
                   <Badge key={tag} variant="outline" className="gap-1">
@@ -155,7 +155,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
             {isSaving ? 'Saving...' : 'Save Preferences'}
           </Button>
 
-          <p className="text-sm text-muted-foreground text-xs text-center">
+          <p className="text-xs text-center text-muted-foreground">
             Your preferences help us recommend services and salons that match your style
           </p>
         </Stack>

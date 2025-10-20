@@ -1,13 +1,7 @@
-import { generateMetadata as genMeta } from '@/lib/metadata'
-import { StaffHelp } from '@/features/staff/help'
+import { StaffHelp, staffHelpMetadata } from '@/features/staff/help'
 
-export const metadata = genMeta({
-  title: 'Help Library',
-  description: 'Browse curated staff resources and training tracks.',
-  noIndex: true,
-})
+export const metadata = staffHelpMetadata
 
-export default async function StaffHelpPage() {
+export default function Page() {
   return <StaffHelp />
 }
-

@@ -118,10 +118,10 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
       {Object.values(staffGroups).map((group) => (
         <Card key={group.staffId || 'unknown'}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              {group.staffName}
+            <div className="flex items-center gap-2">
+              <CardTitle>{group.staffName}</CardTitle>
               {group.staffTitle && <Badge variant="outline">{group.staffTitle}</Badge>}
-            </CardTitle>
+            </div>
           </CardHeader>
           <CardContent>
             <Table>

@@ -1,4 +1,3 @@
-import { Section } from '@/components/layout'
 import { getAllRoleAssignments, getRoleStats, getRoleAuditTimeline } from './api/queries'
 import { RolesClient } from './components/roles-client'
 import { requireAnyRole } from '@/lib/auth'
@@ -35,14 +34,16 @@ export async function AdminRoles() {
   )
 
   return (
-    <Section size="lg">
-      <RolesClient
-        roles={roles}
-        stats={stats}
-        salons={sanitizedSalons}
-        canDelete={isSuperAdmin}
-        auditEvents={auditEvents}
-      />
-    </Section>
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <RolesClient
+          roles={roles}
+          stats={stats}
+          salons={sanitizedSalons}
+          canDelete={isSuperAdmin}
+          auditEvents={auditEvents}
+        />
+      </div>
+    </section>
   )
 }

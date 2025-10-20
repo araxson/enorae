@@ -138,7 +138,7 @@ export const CouponCard = memo(function CouponCard({
             </p>
             <p className="text-xl font-semibold flex items-center gap-2">
               {coupon.stats.totalUses}
-              <TrendingUp className="h-4 w-4 text-emerald-500" />
+              <TrendingUp className="h-4 w-4 text-success" />
             </p>
             <p className="text-xs text-muted-foreground">
               {coupon.stats.uniqueCustomers} unique customers

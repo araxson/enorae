@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { Flex } from '@/components/layout'
 import { ShieldCheck, AlertTriangle, ClipboardCheck, Users, TrendingUp, Gauge } from 'lucide-react'
 import type { StaffDashboardStats } from '../api/queries'
 
@@ -13,37 +12,37 @@ export function StaffStats({ stats }: { stats: StaffDashboardStats }) {
       label: 'Total staff',
       value: stats.totalStaff,
       icon: Users,
-      tone: 'text-blue-500',
+      tone: 'text-primary',
     },
     {
       label: 'Background cleared',
       value: stats.verifiedStaff,
       icon: ShieldCheck,
-      tone: 'text-emerald-500',
+      tone: 'text-success',
     },
     {
       label: 'Pending verification',
       value: stats.pendingReviews,
       icon: AlertTriangle,
-      tone: 'text-amber-500',
+      tone: 'text-warning',
     },
     {
       label: 'Critical alerts',
       value: stats.criticalAlerts,
       icon: ClipboardCheck,
-      tone: 'text-red-500',
+      tone: 'text-destructive',
     },
     {
       label: 'Average experience',
       value: `${stats.averageExperience} yrs`,
       icon: TrendingUp,
-      tone: 'text-purple-500',
+      tone: 'text-info',
     },
     {
       label: 'Avg compliance score',
       value: `${stats.averageCompliance}%`,
       icon: Gauge,
-      tone: 'text-sky-500',
+      tone: 'text-success',
     },
   ]
 
@@ -54,13 +53,13 @@ export function StaffStats({ stats }: { stats: StaffDashboardStats }) {
         return (
           <Card key={card.label}>
             <CardContent className="p-4">
-              <Flex justify="between" align="center">
+              <div className="flex items-center justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">{card.label}</p>
                   <p className="text-2xl font-semibold mt-1">{card.value}</p>
                 </div>
                 <Icon className={`${STAT_ICON_CLASSES} ${card.tone}`} />
-              </Flex>
+              </div>
             </CardContent>
           </Card>
         )

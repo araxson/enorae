@@ -71,7 +71,7 @@ export function MessagesFilters({
             onStatusChange(value)
           }}
         >
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-40">
             <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>
@@ -90,7 +90,7 @@ export function MessagesFilters({
             onPriorityChange(value)
           }}
         >
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-40">
             <SelectValue placeholder="All priorities" />
           </SelectTrigger>
           <SelectContent>
@@ -102,7 +102,7 @@ export function MessagesFilters({
           </SelectContent>
         </Select>
         <div className="flex items-center gap-2 rounded-md border px-3 py-2">
-          <ShieldAlert className="h-4 w-4 text-amber-500" />
+          <ShieldAlert className="h-4 w-4 text-warning" />
           <Label htmlFor="flagged-only" className="text-sm font-medium">
             Flagged only
           </Label>

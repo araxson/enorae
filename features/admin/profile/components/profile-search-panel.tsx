@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { Loader2, Search } from 'lucide-react'
 import type { ProfileSearchResult } from '../api/types'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface ProfileSearchPanelProps {
   results: ProfileSearchResult[]
@@ -52,7 +53,7 @@ export function ProfileSearchPanel({
           </div>
         )}
 
-        <div className="max-h-[520px] flex-1 overflow-y-auto rounded-md border bg-muted/10">
+        <ScrollArea className="h-96 rounded-md border bg-muted/10">
           {results.length === 0 ? (
             <p className="p-4 text-sm text-muted-foreground">No profiles found.</p>
           ) : (
@@ -98,7 +99,7 @@ export function ProfileSearchPanel({
               })}
             </ul>
           )}
-        </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   )

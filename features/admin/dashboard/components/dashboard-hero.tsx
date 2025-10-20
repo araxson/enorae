@@ -123,7 +123,7 @@ export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
                   <Settings className="h-4 w-4" />
                   Quick actions
                 </NavigationMenuTrigger>
-                <NavigationMenuContent className="min-w-[15rem] rounded-md border bg-popover p-2 text-popover-foreground shadow-md">
+                <NavigationMenuContent className="w-60 rounded-md border bg-popover p-2 text-popover-foreground shadow-md">
                   <div className="px-1 pb-2 text-xs font-medium uppercase text-muted-foreground">
                     Navigate to
                   </div>
@@ -206,7 +206,7 @@ function BadgePill({ children, ...props }: BadgeProps & { children: ReactNode })
   return (
     <Badge
       {...props}
-      className="flex w-fit items-center gap-2 rounded-full border-foreground/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"
+      className="flex w-fit items-center gap-2 rounded-full border-foreground/20 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground"
     >
       {children}
     </Badge>

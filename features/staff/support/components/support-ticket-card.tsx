@@ -28,22 +28,46 @@ export function SupportTicketCard() {
 
         <div className="grid gap-2">
           <Label>Priority</Label>
-          <RadioGroup defaultValue="standard" className="grid grid-cols-3 gap-2">
-            <Label className="flex cursor-pointer flex-col gap-1 rounded-md border p-3 text-xs" htmlFor="priority-low">
-              <RadioGroupItem id="priority-low" value="low" className="sr-only" />
-              <span className="font-semibold">Low</span>
-              <span className="text-muted-foreground">Informational</span>
-            </Label>
-            <Label className="flex cursor-pointer flex-col gap-1 rounded-md border p-3 text-xs" htmlFor="priority-standard">
-              <RadioGroupItem id="priority-standard" value="standard" className="sr-only" />
-              <span className="font-semibold">Standard</span>
-              <span className="text-muted-foreground">Needs attention</span>
-            </Label>
-            <Label className="flex cursor-pointer flex-col gap-1 rounded-md border p-3 text-xs" htmlFor="priority-urgent">
-              <RadioGroupItem id="priority-urgent" value="urgent" className="sr-only" />
-              <span className="font-semibold text-destructive">Urgent</span>
-              <span className="text-muted-foreground">Blocking work</span>
-            </Label>
+          <RadioGroup defaultValue="standard" className="grid grid-cols-3 gap-3">
+            <Card>
+              <CardContent className="space-y-2 p-4 text-xs">
+                <div className="flex items-start gap-2">
+                  <RadioGroupItem id="priority-low" value="low" />
+                  <div className="space-y-1">
+                    <Label htmlFor="priority-low" className="font-semibold text-sm">
+                      Low
+                    </Label>
+                    <span className="text-muted-foreground">Informational</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="space-y-2 p-4 text-xs">
+                <div className="flex items-start gap-2">
+                  <RadioGroupItem id="priority-standard" value="standard" />
+                  <div className="space-y-1">
+                    <Label htmlFor="priority-standard" className="font-semibold text-sm">
+                      Standard
+                    </Label>
+                    <span className="text-muted-foreground">Needs attention</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="space-y-2 p-4 text-xs">
+                <div className="flex items-start gap-2">
+                  <RadioGroupItem id="priority-urgent" value="urgent" />
+                  <div className="space-y-1">
+                    <Label htmlFor="priority-urgent" className="font-semibold text-sm text-destructive">
+                      Urgent
+                    </Label>
+                    <span className="text-muted-foreground">Blocking work</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </RadioGroup>
         </div>
 
@@ -67,13 +91,17 @@ export function SupportTicketCard() {
           <Textarea id="ticket-details" rows={4} placeholder="Share the exact error, steps to reproduce, or screenshots." />
         </div>
 
-        <div className="flex items-center justify-between rounded-lg border p-3">
-          <div className="space-y-1">
-            <Label className="text-sm font-medium">Attach logs automatically</Label>
-            <p className="text-xs text-muted-foreground">Include the last 10 events from your activity timeline.</p>
-          </div>
-          <Switch defaultChecked />
-        </div>
+        <Card>
+          <CardContent className="flex items-start justify-between gap-4 p-4">
+            <div className="space-y-1">
+              <Label className="text-sm font-medium" htmlFor="attach-logs">
+                Attach logs automatically
+              </Label>
+              <p className="text-xs text-muted-foreground">Include the last 10 events from your activity timeline.</p>
+            </div>
+            <Switch id="attach-logs" defaultChecked />
+          </CardContent>
+        </Card>
 
         <div className="flex items-center gap-2">
           <Button type="submit">Submit ticket</Button>
@@ -83,4 +111,3 @@ export function SupportTicketCard() {
     </Card>
   )
 }
-

@@ -1,4 +1,4 @@
-import type { RetentionSeriesPoint } from '../admin-analytics-types'
+import type { RetentionSeriesPoint } from '../../admin-analytics-types'
 import { toNumber } from './helpers'
 import type { GrowthMetricsResult } from './growth'
 

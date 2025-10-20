@@ -74,9 +74,9 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                     {dayApts.length > 0 && (
                       <Stack gap="xs">
                         {dayApts.slice(0, 3).map((apt) => (
-                          <Box key={apt.id} className="rounded bg-blue-100 dark:bg-blue-900/20 p-2">
+                          <Box key={apt.id} className="rounded bg-info/10 p-2">
                             <div className="flex items-start gap-1">
-                              <Clock className="h-3 w-3 mt-0.5 flex-shrink-0 text-blue-600 dark:text-blue-400" />
+                              <Clock className="h-3 w-3 mt-0.5 flex-shrink-0 text-info" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-xs text-muted-foreground truncate">
                                   {apt.start_time ? format(parseISO(apt.start_time), 'h:mm a') : 'TBD'}
@@ -100,9 +100,9 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                     {blocked.length > 0 && (
                       <Stack gap="xs">
                         {blocked.slice(0, 2).map((bt) => (
-                          <Box key={bt.id} className="rounded bg-red-100 dark:bg-red-900/20 p-2">
+                          <Box key={bt.id} className="rounded bg-destructive/10 p-2">
                             <div className="flex items-start gap-1">
-                              <Ban className="h-3 w-3 mt-0.5 flex-shrink-0 text-red-600 dark:text-red-400" />
+                              <Ban className="h-3 w-3 mt-0.5 flex-shrink-0 text-destructive" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-xs text-muted-foreground truncate">
                                   {bt.start_time ? format(parseISO(bt.start_time), 'h:mm a') : 'TBD'}
@@ -153,11 +153,11 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
         {/* Legend */}
         <div className="flex gap-4 mt-4 pt-4 border-t">
           <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Clock className="h-4 w-4 text-info" />
             <span className="text-xs text-muted-foreground">Appointments</span>
           </div>
           <div className="flex items-center gap-2">
-            <Ban className="h-4 w-4 text-red-600 dark:text-red-400" />
+            <Ban className="h-4 w-4 text-destructive" />
             <span className="text-xs text-muted-foreground">Blocked Times</span>
           </div>
         </div>

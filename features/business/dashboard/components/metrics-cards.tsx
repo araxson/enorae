@@ -5,7 +5,6 @@ import { Calendar, CheckCircle, Clock, Users, Scissors, DollarSign, TrendingUp, 
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { Grid, Stack } from '@/components/layout'
 import type { BusinessDashboardMetrics } from '../types'
 import { AppointmentMetricCard, RevenueMetricCard } from './metric-card'
 
@@ -43,14 +42,14 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
     metrics.last30DaysRevenue !== undefined && {
       title: 'Last 30 Days',
       icon: <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />,
-      accent: 'border-l-green-500',
+      accent: 'border-l-success',
       amountLabel: formatCurrency(metrics.last30DaysRevenue),
       description: 'Active revenue stream',
       highlight: (
-        <Stack gap="xs" className="flex-row items-center">
-          <ArrowUpRight className="h-3 w-3 text-green-600" aria-hidden="true" />
-          <small className="text-sm font-medium leading-none text-green-600">Momentum trending upward</small>
-        </Stack>
+        <div className="flex items-center gap-2">
+          <ArrowUpRight className="h-3 w-3 text-success" aria-hidden="true" />
+          <small className="text-sm font-medium leading-none text-success">Momentum trending upward</small>
+        </div>
       ),
     },
   ].filter(Boolean)
@@ -58,74 +57,74 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
   const appointmentMetrics = [
     {
       title: 'Total',
-      icon: <Calendar className="h-4 w-4 text-blue-600" aria-hidden="true" />,
+      icon: <Calendar className="h-4 w-4 text-primary" aria-hidden="true" />,
       value: metrics.totalAppointments,
       progress: 100,
       description: 'All bookings',
-      accent: 'border-l-blue-500',
+      accent: 'border-l-primary',
     },
     {
       title: 'Confirmed',
-      icon: <CheckCircle className="h-4 w-4 text-green-600" aria-hidden="true" />,
+      icon: <CheckCircle className="h-4 w-4 text-success" aria-hidden="true" />,
       value: metrics.confirmedAppointments,
       progress: confirmationRate,
       description: `${confirmationRate}% of total`,
-      accent: 'border-l-green-500',
+      accent: 'border-l-success',
     },
     {
       title: 'Pending',
-      icon: <Clock className="h-4 w-4 text-yellow-600" aria-hidden="true" />,
+      icon: <Clock className="h-4 w-4 text-warning" aria-hidden="true" />,
       value: metrics.pendingAppointments,
       progress: pendingRate,
       description: 'Awaiting confirmation',
-      accent: 'border-l-yellow-500',
-      progressClass: '[&>div]:bg-yellow-600',
+      accent: 'border-l-warning',
+      progressClass: '[&>div]:bg-warning',
     },
   ]
 
   return (
-    <Stack gap="lg">
-      <Stack gap="xs">
-        <small className="text-sm font-medium leading-none text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <small className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Dashboard summary
         </small>
         <small className="text-sm font-medium leading-none text-muted-foreground">Monitor the metrics your team watches daily.</small>
-      </Stack>
+      </div>
 
       {revenueMetrics.length > 0 && (
-        <Grid cols={{ base: 1, md: 2 }} gap="md">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {revenueMetrics.filter((m): m is Exclude<typeof m, false> => Boolean(m)).map((metric) => (
             <RevenueMetricCard key={metric.title} {...metric} />
           ))}
-        </Grid>
+        </div>
       )}
 
       <Separator />
 
-      <Stack gap="sm">
-        <Stack className="flex-row items-center justify-between">
-          <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Appointments Overview</small>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <small className="text-sm font-medium leading-none text-muted-foreground">Appointments Overview</small>
           <Badge variant="outline">{confirmationRate}% Confirmed</Badge>
-        </Stack>
-        <Grid cols={{ base: 1, sm: 3 }} gap="md">
+        </div>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {appointmentMetrics.map((metric) => (
             <AppointmentMetricCard key={metric.title} {...metric} />
           ))}
-        </Grid>
-      </Stack>
+        </div>
+      </div>
 
       <Separator />
 
-      <Stack gap="sm">
-        <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Resources</small>
-        <Grid cols={{ base: 1, sm: 2 }} gap="md">
+      <div className="flex flex-col gap-4">
+        <small className="text-sm font-medium leading-none text-muted-foreground">Resources</small>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <AppointmentResource
                 title="Staff Members"
-                icon={<Users className="h-4 w-4 text-purple-600" aria-hidden="true" />}
+                icon={<Users className="h-4 w-4 text-info" aria-hidden="true" />}
                 value={metrics.totalStaff}
-                accent="border-l-purple-500"
+                accent="border-l-info"
                 description="Active team members"
               />
             </TooltipTrigger>
@@ -135,17 +134,17 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
             <TooltipTrigger asChild>
               <AppointmentResource
                 title="Services Offered"
-                icon={<Scissors className="h-4 w-4 text-pink-600" aria-hidden="true" />}
+                icon={<Scissors className="h-4 w-4 text-secondary-foreground" aria-hidden="true" />}
                 value={metrics.totalServices}
-                accent="border-l-pink-500"
+                accent="border-l-secondary"
                 description="Available services"
               />
             </TooltipTrigger>
             <TooltipContent>Audit catalogs to avoid duplicates</TooltipContent>
           </Tooltip>
-        </Grid>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -161,7 +160,7 @@ function AppointmentResource({ title, icon, value, description, accent }: Appoin
   return (
     <div className={`overflow-hidden rounded-xl border-l-4 ${accent}`}>
       <div className="flex items-center justify-between space-y-0 border px-4 py-3">
-        <small className="text-sm font-medium leading-none text-sm font-medium">{title}</small>
+        <small className="text-sm font-medium leading-none">{title}</small>
         {icon}
       </div>
       <div className="border border-t-0 px-4 py-3">

@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Stack, Grid, Flex } from '@/components/layout'
 import { Users, Gift, Copy, Mail, MessageSquare, Check } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { generateReferralCode } from '../api/mutations'
 import type { Referral } from '../api/queries'
 
@@ -66,68 +66,54 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
     ? `${window.location.origin}/signup?ref=${referralCode.code}`
     : ''
 
+  const statCards = [
+    {
+      title: 'Total Referrals',
+      value: stats.total_referrals,
+      description: 'Friends referred',
+      icon: Users,
+      tone: 'text-info',
+    },
+    {
+      title: 'Successful',
+      value: stats.successful_referrals,
+      description: 'Completed signups',
+      icon: Check,
+      tone: 'text-success',
+    },
+    {
+      title: 'Pending',
+      value: stats.pending_referrals,
+      description: 'Awaiting signup',
+      icon: MessageSquare,
+      tone: 'text-warning',
+    },
+    {
+      title: 'Bonus Points',
+      value: stats.total_bonus_points,
+      description: 'Points earned',
+      icon: Gift,
+      tone: 'text-primary',
+    },
+  ] as const
+
   return (
     <Stack gap="xl">
       <Grid cols={{ base: 1, md: 4 }} gap="lg">
-        <Card>
-          <CardHeader>
-            <Flex justify="between" align="center">
-              <CardTitle>Total Referrals</CardTitle>
-              <Users className="h-5 w-5 text-blue-500" />
-            </Flex>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{stats.total_referrals}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Friends referred
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <Flex justify="between" align="center">
-              <CardTitle>Successful</CardTitle>
-              <Check className="h-5 w-5 text-green-500" />
-            </Flex>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{stats.successful_referrals}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Completed signups
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <Flex justify="between" align="center">
-              <CardTitle>Pending</CardTitle>
-              <MessageSquare className="h-5 w-5 text-yellow-500" />
-            </Flex>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{stats.pending_referrals}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Awaiting signup
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <Flex justify="between" align="center">
-              <CardTitle>Bonus Points</CardTitle>
-              <Gift className="h-5 w-5 text-purple-500" />
-            </Flex>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{stats.total_bonus_points}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Points earned
-            </p>
-          </CardContent>
-        </Card>
+        {statCards.map((card) => (
+          <Card key={card.title}>
+            <CardHeader>
+              <Flex justify="between" align="center">
+                <CardTitle>{card.title}</CardTitle>
+                <card.icon className={`h-5 w-5 ${card.tone}`} />
+              </Flex>
+            </CardHeader>
+            <CardContent className="space-y-1">
+              <div className="text-3xl font-semibold">{card.value}</div>
+              <CardDescription>{card.description}</CardDescription>
+            </CardContent>
+          </Card>
+        ))}
       </Grid>
 
       <Card>

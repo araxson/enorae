@@ -41,17 +41,17 @@ const roleDescriptions: Record<string, string> = {
 }
 
 const progressAccent: Record<string, string> = {
-  super_admin: '[&>div]:bg-rose-500',
-  platform_admin: '[&>div]:bg-rose-500',
-  tenant_owner: '[&>div]:bg-orange-500',
-  salon_owner: '[&>div]:bg-orange-500',
-  salon_manager: '[&>div]:bg-amber-500',
-  senior_staff: '[&>div]:bg-sky-500',
-  staff: '[&>div]:bg-sky-500',
-  junior_staff: '[&>div]:bg-blue-500',
-  vip_customer: '[&>div]:bg-emerald-500',
-  customer: '[&>div]:bg-emerald-500',
-  guest: '[&>div]:bg-slate-400',
+  super_admin: '[&>div]:bg-primary',
+  platform_admin: '[&>div]:bg-primary',
+  tenant_owner: '[&>div]:bg-warning',
+  salon_owner: '[&>div]:bg-warning',
+  salon_manager: '[&>div]:bg-secondary',
+  senior_staff: '[&>div]:bg-info',
+  staff: '[&>div]:bg-info',
+  junior_staff: '[&>div]:bg-accent',
+  vip_customer: '[&>div]:bg-success',
+  customer: '[&>div]:bg-success',
+  guest: '[&>div]:bg-muted',
 }
 
 export function UserRoleStats({ stats }: UserRoleStatsProps) {
@@ -84,7 +84,7 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          <ScrollArea className="h-[320px] pr-4">
+          <ScrollArea className="h-80 pr-4">
             <div className="space-y-4">
               {sortedRoles.map(([role, count]) => {
                 const percentage = stats.totalUsers > 0 ? (count / stats.totalUsers) * 100 : 0
@@ -110,7 +110,7 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
                       </Badge>
                     </div>
                     <div className="flex items-center gap-3">
-                      <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-slate-400'}`} />
+                      <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-muted'}`} />
                       <span className="w-14 text-right text-xs font-medium text-muted-foreground">
                         {percentage.toFixed(1)}%
                       </span>

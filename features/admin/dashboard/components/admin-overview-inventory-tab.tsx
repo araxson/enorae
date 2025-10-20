@@ -37,12 +37,12 @@ export function AdminOverviewInventoryTab({ inventory }: InventoryTabProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[320px] pr-4">
+        <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((item) => (
               <Alert key={item.id} variant="destructive" className="border-destructive/50 bg-destructive/10">
                 <AlertTitle>{item.product_name || 'Unknown product'}</AlertTitle>
-                <AlertDescription className="text-xs">
+                <AlertDescription>
                   {item.salon_name || 'Unknown salon'} • Stock remaining: {item.total_available ?? 0}
                 </AlertDescription>
               </Alert>

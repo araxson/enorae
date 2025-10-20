@@ -82,10 +82,10 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
               <TableCell>
                 <code className="text-sm font-mono">{pref.locale || 'en-US'}</code>
               </TableCell>
-              <TableCell className="max-w-[300px]">
+              <TableCell className="max-w-72">
                 <div className="truncate text-sm">{pref.timezone || 'UTC'}</div>
               </TableCell>
-              <TableCell className="max-w-[200px]">
+              <TableCell className="max-w-52">
                 <div className="truncate text-sm text-muted-foreground">
                   {pref.currency_code || 'USD'}
                 </div>

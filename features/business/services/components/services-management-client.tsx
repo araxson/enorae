@@ -82,7 +82,7 @@ export function ServicesManagementClient({ salon, services }: ServicesManagement
               className="flex-1"
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectTrigger className="w-full sm:w-44">
                 <SelectValue placeholder="All Services" />
               </SelectTrigger>
               <SelectContent>

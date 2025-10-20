@@ -13,10 +13,10 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
-          <AlertTriangle className="h-4 w-4 text-yellow-600" />
-          Cancellation Patterns
-        </CardTitle>
+        <div className="flex items-center gap-2">
+          <AlertTriangle className="h-4 w-4 text-warning" />
+          <CardTitle>Cancellation Patterns</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-3">
         {patterns.length === 0 ? (

@@ -50,7 +50,7 @@ export function StockAlertsList({ alerts }: StockAlertsListProps) {
       <Card>
         <CardContent className="pt-6">
           <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
-            <CheckCircle className="h-12 w-12 text-green-500" />
+            <CheckCircle className="h-12 w-12 text-success" />
             <p>No active stock alerts</p>
             <p className="text-sm text-muted-foreground">All products are adequately stocked</p>
           </div>
@@ -62,10 +62,10 @@ export function StockAlertsList({ alerts }: StockAlertsListProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-destructive" />
-          Stock Alerts ({alerts.length})
-        </CardTitle>
+          <CardTitle>Stock Alerts ({alerts.length})</CardTitle>
+        </div>
       </CardHeader>
       <CardContent>
         <Stack gap="sm">

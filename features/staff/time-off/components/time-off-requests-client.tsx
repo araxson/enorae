@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress'
 import { RequestCard } from './request-card'
 import { CreateRequestDialog } from './create-request-dialog'
 import type { TimeOffRequestWithStaff, TimeOffBalance, TeamTimeOffCalendar } from '../api/queries'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface TimeOffRequestsClientProps {
   staffId: string
@@ -111,11 +112,11 @@ export function TimeOffRequestsClient({
                     <small className="text-sm font-medium leading-none text-muted-foreground">Total</small>
                   </div>
                   <div>
-                    <p className="leading-7 text-2xl font-bold text-blue-600">{balance.used_days}</p>
+                    <p className="leading-7 text-2xl font-bold text-info">{balance.used_days}</p>
                     <small className="text-sm font-medium leading-none text-muted-foreground">Used</small>
                   </div>
                   <div>
-                    <p className="leading-7 text-2xl font-bold text-green-600">{balance.remaining_days}</p>
+                    <p className="leading-7 text-2xl font-bold text-success">{balance.remaining_days}</p>
                     <small className="text-sm font-medium leading-none text-muted-foreground">Remaining</small>
                   </div>
                 </div>
@@ -184,20 +185,21 @@ export function TimeOffRequestsClient({
         {(activeTab === 'all' || activeTab === 'pending') && (
           <>
             {pendingRequests.length > 0 && activeTab === 'all' && (
-              <div className="rounded-lg border bg-secondary/10 p-4">
-                <small className="text-sm font-medium leading-none font-semibold">
-                  {pendingRequests.length} pending request(s) awaiting review
-                </small>
-              </div>
+              <Alert>
+                <AlertTitle>{pendingRequests.length} pending request(s)</AlertTitle>
+                <AlertDescription>Awaiting review</AlertDescription>
+              </Alert>
             )}
 
             {displayedRequests.length === 0 ? (
-              <div className="flex flex-col items-center justify-center gap-2 rounded-lg border bg-background py-12 text-center">
-                <p className="leading-7 text-muted-foreground">No time-off requests yet</p>
-                <p className="leading-7 text-sm text-muted-foreground">
-                  Click the New request button to submit a time-off request
-                </p>
-              </div>
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center gap-2 py-12 text-center">
+                  <p className="leading-7 text-muted-foreground">No time-off requests yet</p>
+                  <p className="leading-7 text-sm text-muted-foreground">
+                    Click the New request button to submit a time-off request
+                  </p>
+                </CardContent>
+              </Card>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {displayedRequests.map((request) => (
@@ -217,4 +219,3 @@ export function TimeOffRequestsClient({
     </StaffPageShell>
   )
 }
-

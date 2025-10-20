@@ -1,12 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Section, Stack, Grid } from '@/components/layout'
 import { Settings, Shield, Mail, Bell, Database } from 'lucide-react'
 
 export function AdminSettingsClient() {
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Grid cols={{ base: 1, md: 2 }} gap="lg">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
@@ -18,7 +18,7 @@ export function AdminSettingsClient() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Stack gap="sm">
+              <div className="flex flex-col gap-4">
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Password policies
                 </small>
@@ -31,7 +31,7 @@ export function AdminSettingsClient() {
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Rate limiting configuration
                 </small>
-              </Stack>
+              </div>
             </CardContent>
           </Card>
 
@@ -46,7 +46,7 @@ export function AdminSettingsClient() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Stack gap="sm">
+              <div className="flex flex-col gap-4">
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • SMTP provider settings
                 </small>
@@ -59,7 +59,7 @@ export function AdminSettingsClient() {
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Delivery monitoring
                 </small>
-              </Stack>
+              </div>
             </CardContent>
           </Card>
 
@@ -74,7 +74,7 @@ export function AdminSettingsClient() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Stack gap="sm">
+              <div className="flex flex-col gap-4">
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Admin notifications
                 </small>
@@ -87,7 +87,7 @@ export function AdminSettingsClient() {
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Webhook configurations
                 </small>
-              </Stack>
+              </div>
             </CardContent>
           </Card>
 
@@ -102,7 +102,7 @@ export function AdminSettingsClient() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Stack gap="sm">
+              <div className="flex flex-col gap-4">
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Connection pooling
                 </small>
@@ -115,7 +115,7 @@ export function AdminSettingsClient() {
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Index management
                 </small>
-              </Stack>
+              </div>
             </CardContent>
           </Card>
 
@@ -130,7 +130,7 @@ export function AdminSettingsClient() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Stack gap="sm">
+              <div className="flex flex-col gap-4">
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Platform name and branding
                 </small>
@@ -143,10 +143,10 @@ export function AdminSettingsClient() {
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   • Maintenance mode
                 </small>
-              </Stack>
+              </div>
             </CardContent>
           </Card>
-        </Grid>
+          </div>
 
         <Card>
           <CardHeader>
@@ -161,7 +161,8 @@ export function AdminSettingsClient() {
             </small>
           </CardContent>
         </Card>
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

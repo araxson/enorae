@@ -1,7 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex, Grid } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { CheckCircle2, TrendingUp } from 'lucide-react'
 import type { Subscription } from './billing-subscription-form'
@@ -35,13 +34,13 @@ const tierFeatures: Record<Subscription['tier'], string[]> = {
 function getTierColor(tier: Subscription['tier']) {
   switch (tier) {
     case 'basic':
-      return 'bg-gray-100 text-gray-800'
+      return 'bg-secondary text-secondary-foreground'
     case 'professional':
-      return 'bg-blue-100 text-blue-800'
+      return 'bg-info/10 text-info'
     case 'enterprise':
-      return 'bg-purple-100 text-purple-800'
+      return 'bg-primary/10 text-primary'
     default:
-      return 'bg-gray-100 text-gray-800'
+      return 'bg-secondary text-secondary-foreground'
   }
 }
 
@@ -52,8 +51,8 @@ export function SubscriptionOverviewCard({
 }) {
   return (
     <Card className="p-6">
-      <Stack gap="lg">
-        <Flex justify="between" align="start">
+      <div className="flex flex-col gap-8">
+        <div className="flex items-start justify-between">
           <div>
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Current Subscription</h3>
             <p className="text-sm text-muted-foreground">Manage your plan and billing</p>
@@ -61,70 +60,70 @@ export function SubscriptionOverviewCard({
           <Badge className={getTierColor(subscription.tier)}>
             {subscription.tier.toUpperCase()}
           </Badge>
-        </Flex>
+        </div>
 
         <Separator />
 
-        <Grid cols={{ base: 1, md: 2 }} gap="lg">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
-            <p className="text-sm text-muted-foreground text-sm mb-2">Plan Details</p>
-            <Stack gap="sm">
-              <Flex justify="between">
+            <p className="text-sm text-muted-foreground mb-2">Plan Details</p>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
                 <span className="text-sm">Tier</span>
                 <span className="font-medium capitalize">
                   {subscription.tier}
                 </span>
-              </Flex>
-              <Flex justify="between">
+              </div>
+              <div className="flex items-center justify-between">
                 <span className="text-sm">Billing Cycle</span>
                 <span className="font-medium capitalize">
                   {subscription.billingCycle}
                 </span>
-              </Flex>
-              <Flex justify="between">
+              </div>
+              <div className="flex items-center justify-between">
                 <span className="text-sm">Price</span>
                 <span className="font-medium">
                   ${subscription.price}/
                   {subscription.billingCycle === 'monthly' ? 'mo' : 'yr'}
                 </span>
-              </Flex>
-              <Flex justify="between">
+              </div>
+              <div className="flex items-center justify-between">
                 <span className="text-sm">Status</span>
                 <Badge
                   variant={subscription.status === 'active' ? 'default' : 'secondary'}
                 >
                   {subscription.status}
                 </Badge>
-              </Flex>
-            </Stack>
+              </div>
+            </div>
           </div>
 
           <div>
-            <p className="text-sm text-muted-foreground text-sm mb-2">Features Included</p>
+            <p className="text-sm text-muted-foreground mb-2">Features Included</p>
             <ul className="space-y-1.5">
               {tierFeatures[subscription.tier].map((feature) => (
                 <li key={feature} className="flex gap-2 text-sm">
-                  <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
                   <span>{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
-        </Grid>
+        </div>
 
         <Separator />
 
-        <Flex gap="sm">
+        <div className="flex gap-4">
           <Button variant="outline" className="gap-2">
             <TrendingUp className="h-4 w-4" />
             Upgrade Plan
           </Button>
           <Button variant="ghost">Change Billing Cycle</Button>
-          <Button variant="ghost" className="text-red-600 hover:text-red-700">
+          <Button variant="destructive">
             Cancel Subscription
           </Button>
-        </Flex>
-      </Stack>
+        </div>
+      </div>
     </Card>
   )
 }

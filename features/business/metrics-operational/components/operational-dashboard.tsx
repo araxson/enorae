@@ -88,10 +88,10 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Activity className="h-5 w-5" />
-            Real-Time Monitoring
-          </CardTitle>
+            <CardTitle>Real-Time Monitoring</CardTitle>
+          </div>
           <CardDescription>Live operational updates</CardDescription>
         </CardHeader>
         <CardContent>

@@ -83,12 +83,10 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
           <Card key={category.id}>
             <CardHeader>
               <Flex align="start" justify="between">
-                <Box className="flex-1">
+                <Box className="flex-1 space-y-2">
                   <CardTitle>{category.name}</CardTitle>
                   {category.description && (
-                    <CardDescription className="mt-1">
-                      {category.description}
-                    </CardDescription>
+                    <CardDescription>{category.description}</CardDescription>
                   )}
                 </Box>
                 <Badge variant="secondary">

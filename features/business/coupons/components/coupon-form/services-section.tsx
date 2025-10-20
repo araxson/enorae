@@ -1,5 +1,8 @@
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface CouponServicesSectionProps {
   services: { id: string; name: string }[]
@@ -13,26 +16,38 @@ export function CouponServicesSection({
   onToggleService,
 }: CouponServicesSectionProps) {
   return (
-    <div>
-      <Label>Applicable Services</Label>
-      <div className="mt-2 rounded-md border p-3 space-y-2 max-h-48 overflow-y-auto">
+    <Card>
+      <CardHeader>
+        <CardTitle>Applicable services</CardTitle>
+      </CardHeader>
+      <CardContent>
         {services.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No active services available</p>
+          <Alert>
+            <AlertTitle>No active services</AlertTitle>
+            <AlertDescription>Select services once they are available.</AlertDescription>
+          </Alert>
         ) : (
-          services.map((service) => (
-            <label
-              key={service.id}
-              className="flex items-center justify-between rounded-md px-2 py-1 hover:bg-muted/50"
-            >
-              <span className="text-sm">{service.name}</span>
-              <Checkbox
-                checked={selectedServiceIds.has(service.id)}
-                onCheckedChange={(checked) => onToggleService(service.id, Boolean(checked))}
-              />
-            </label>
-          ))
+          <ScrollArea className="max-h-48">
+            <div className="space-y-2 pr-2">
+              {services.map((service) => {
+                const checkboxId = `coupon-service-${service.id}`
+                return (
+                  <div key={service.id} className="flex items-center justify-between rounded-md px-2 py-1">
+                    <Label htmlFor={checkboxId} className="text-sm font-medium">
+                      {service.name}
+                    </Label>
+                    <Checkbox
+                      id={checkboxId}
+                      checked={selectedServiceIds.has(service.id)}
+                      onCheckedChange={(checked) => onToggleService(service.id, Boolean(checked))}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          </ScrollArea>
         )}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }

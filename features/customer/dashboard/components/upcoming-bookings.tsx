@@ -53,9 +53,9 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <div>
+        <div className="space-y-1">
           <CardTitle>Upcoming Appointments</CardTitle>
-          <CardDescription className="mt-1">{appointments.length} scheduled</CardDescription>
+          <CardDescription>{appointments.length} scheduled</CardDescription>
         </div>
         <Button variant="ghost" size="sm" asChild>
           <Link href="/customer/appointments">
@@ -66,7 +66,7 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
       </CardHeader>
       <Separator />
       <CardContent className="p-0">
-        <ScrollArea className="h-[400px]">
+        <ScrollArea className="h-96">
           <div className="p-6 space-y-4">
             {appointments.map((appointment, index) => {
               const salonInitials = getInitials(appointment.salon_name || 'Salon')
@@ -78,7 +78,7 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
                 <div key={appointment.id}>
                   <div className="flex items-start gap-4 group hover:bg-accent/50 -mx-2 p-2 rounded-lg transition-colors">
                     <Avatar className="h-10 w-10 border-2 border-background">
-                      <AvatarFallback className="bg-gradient-to-br from-pink-500 to-orange-500 text-white text-xs font-semibold">
+                      <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
                         {salonInitials}
                       </AvatarFallback>
                     </Avatar>

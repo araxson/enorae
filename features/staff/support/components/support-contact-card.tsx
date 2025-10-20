@@ -18,27 +18,31 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
         <CardDescription>Select the channel that matches the urgency of your request.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between rounded-lg border p-3">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 text-sm font-semibold">
-              <Phone className="h-4 w-4 text-sky-500" />
-              Hotline
+        <Card>
+          <CardContent className="flex items-start justify-between gap-4 p-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <Phone className="h-4 w-4 text-info" />
+                Hotline
+              </div>
+              <p className="text-xs text-muted-foreground">Best for urgent issues that block work.</p>
             </div>
-            <p className="text-xs text-muted-foreground">Best for urgent issues that block work.</p>
-          </div>
-          <Badge variant="secondary">15 min avg</Badge>
-        </div>
+            <Badge variant="secondary">15 min avg</Badge>
+          </CardContent>
+        </Card>
 
-        <div className="flex items-center justify-between rounded-lg border p-3">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 text-sm font-semibold">
-              <MessageCircle className="h-4 w-4 text-emerald-500" />
-              Chat
+        <Card>
+          <CardContent className="flex items-start justify-between gap-4 p-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <MessageCircle className="h-4 w-4 text-success" />
+                Chat
+              </div>
+              <p className="text-xs text-muted-foreground">Great for multi-step troubleshooting.</p>
             </div>
-            <p className="text-xs text-muted-foreground">Great for multi-step troubleshooting.</p>
-          </div>
-          <Badge variant="outline">Live 8a–8p</Badge>
-        </div>
+            <Badge variant="outline">Live 8a–8p</Badge>
+          </CardContent>
+        </Card>
 
         <Separator />
 
@@ -53,17 +57,18 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
           </HoverCardContent>
         </HoverCard>
 
-        <div className="space-y-3 rounded-lg border p-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold">Status alerts</span>
-            <Switch defaultChecked aria-label="Toggle status alerts" />
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Receive mobile and email alerts when ticket status changes or a fix is shipped.
-          </p>
-        </div>
+        <Card>
+          <CardContent className="space-y-3 p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold">Status alerts</span>
+              <Switch defaultChecked aria-label="Toggle status alerts" />
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Receive mobile and email alerts when ticket status changes or a fix is shipped.
+            </p>
+          </CardContent>
+        </Card>
       </CardContent>
     </Card>
   )
 }
-

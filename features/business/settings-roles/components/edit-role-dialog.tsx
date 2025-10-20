@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/select'
 import { Stack } from '@/components/layout'
 import { updateUserRole } from '../api/mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import type { UserRoleWithDetails } from '../api/queries'
 
 interface EditRoleDialogProps {

@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import { Card } from '@/components/ui/card'
 import { Stack } from '@/components/layout'
 import type { Message } from '../types'
+import { cn } from '@/lib/utils'
 
 interface MessageListProps {
   messages: Message[]
@@ -26,7 +27,10 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
         return (
           <Card
             key={message.id}
-            className={`p-4 ${isFromMe ? 'ml-auto bg-primary/10' : 'mr-auto'} max-w-[80%]`}
+            className={cn(
+              'w-full max-w-xl p-4',
+              isFromMe ? 'ml-auto bg-primary/10' : 'mr-auto'
+            )}
           >
             <Stack gap="sm">
               <p className="leading-7 whitespace-pre-wrap">{message.content}</p>

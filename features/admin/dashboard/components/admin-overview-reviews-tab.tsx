@@ -37,7 +37,7 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[320px] pr-4">
+        <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((review) => (
               <div key={review.id} className="rounded-lg border border-border/60 p-3">
@@ -51,7 +51,7 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
                     </p>
                   </div>
                   <Badge variant="outline" className="gap-1 text-xs">
-                    <Star className="h-3 w-3 fill-yellow-400 text-yellow-500" />
+                    <Star className="h-3 w-3 text-warning" fill="currentColor" />
                     {review.rating || 0}/5
                   </Badge>
                 </div>

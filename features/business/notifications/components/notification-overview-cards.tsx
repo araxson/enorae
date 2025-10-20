@@ -39,9 +39,9 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
           <CardTitle>Notifications Processed</CardTitle>
           <Bell className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-1">
           <div className="text-2xl font-bold">{totalSent}</div>
-          <CardDescription className="text-xs">
+          <CardDescription>
             Across all channels in the last 200 events
           </CardDescription>
         </CardContent>
@@ -52,11 +52,11 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
           <CardTitle>Failure Rate</CardTitle>
           <AlertTriangle className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-1">
           <div className={`text-2xl font-bold ${failureRate > 5 ? 'text-rose-600' : ''}`}>
             {failureRate.toFixed(1)}%
           </div>
-          <CardDescription className="text-xs">
+          <CardDescription>
             {recentFailures} failures detected in recent queue
           </CardDescription>
         </CardContent>
@@ -67,11 +67,11 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
           <CardTitle>Top Channel</CardTitle>
           <Wifi className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-1">
           {topChannel ? (
             <>
               <div className="text-2xl font-bold capitalize">{topChannel[0].replace('_', ' ')}</div>
-              <CardDescription className="text-xs">
+              <CardDescription>
                 {topChannel[1]} notifications sent
               </CardDescription>
             </>

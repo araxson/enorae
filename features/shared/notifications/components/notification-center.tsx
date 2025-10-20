@@ -9,7 +9,7 @@ import { Stack, Flex } from '@/components/layout'
 import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '../api/mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import type { Json } from '@/lib/types/database.types'
 
 // TODO: communication_notification_queue view doesn't exist yet

@@ -14,10 +14,10 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
   return (
     <Card className="md:col-span-2">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <DollarSign className="h-5 w-5" />
-          Top Revenue Generators
-        </CardTitle>
+          <CardTitle>Top Revenue Generators</CardTitle>
+        </div>
         <CardDescription>Highest earning services ranked by total revenue.</CardDescription>
       </CardHeader>
       <CardContent>

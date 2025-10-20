@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { ThumbsUp, Star } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
@@ -24,7 +24,7 @@ function StarRating({ rating }: { rating: number | null }) {
         <Star
           key={i}
           className={`h-4 w-4 ${
-            i < validRating ? 'fill-yellow-500 text-yellow-500' : 'text-muted-foreground/30'
+            i < validRating ? 'fill-warning text-warning' : 'text-muted-foreground/30'
           }`}
         />
       ))}
@@ -77,25 +77,25 @@ function ReviewCard({ review }: { review: SalonReview }) {
           <div className="grid gap-4 border-t pt-4 text-sm sm:grid-cols-3">
             {review.service_quality_rating && (
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
+                <span className="text-xs font-semibold uppercase text-muted-foreground">
                   Service
-                </p>
+                </span>
                 <StarRating rating={review.service_quality_rating} />
               </div>
             )}
             {review.cleanliness_rating && (
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
+                <span className="text-xs font-semibold uppercase text-muted-foreground">
                   Cleanliness
-                </p>
+                </span>
                 <StarRating rating={review.cleanliness_rating} />
               </div>
             )}
             {review.value_rating && (
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
+                <span className="text-xs font-semibold uppercase text-muted-foreground">
                   Value
-                </p>
+                </span>
                 <StarRating rating={review.value_rating} />
               </div>
             )}
@@ -104,29 +104,29 @@ function ReviewCard({ review }: { review: SalonReview }) {
 
         {review.response && (
           <div className="space-y-2 rounded-lg bg-muted/40 p-4">
-            <p className="text-sm text-muted-foreground text-xs font-semibold">Response from salon</p>
+            <span className="text-xs font-semibold text-muted-foreground">Response from salon</span>
             <p className="leading-7 text-sm">{review.response}</p>
             {review.response_date && (
-              <p className="text-sm text-muted-foreground text-xs">
+              <span className="text-xs text-muted-foreground">
                 {new Date(review.response_date).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 })}
-              </p>
+              </span>
             )}
           </div>
         )}
 
         <div className="flex flex-col gap-2 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted-foreground text-xs">
+          <span className="text-xs text-muted-foreground">
             {review.created_at &&
               new Date(review.created_at).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
-          </p>
+          </span>
 
           <Button
             variant="ghost"
@@ -150,10 +150,10 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
   if (reviews.length === 0) {
     return (
       <Card>
-        <CardContent className="space-y-3 p-12 text-center">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No reviews yet</h3>
-          <p className="text-sm text-muted-foreground">Be the first to leave a review for this salon.</p>
-        </CardContent>
+        <CardHeader className="items-center text-center">
+          <CardTitle>No reviews yet</CardTitle>
+          <CardDescription>Be the first to leave a review for this salon.</CardDescription>
+        </CardHeader>
       </Card>
     )
   }

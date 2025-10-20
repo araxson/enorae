@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import type { Database } from '@/lib/types/database.types'
 
@@ -11,7 +11,7 @@ interface ProfileHeaderProps {
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
   return (
     <Card>
-      <CardContent className="flex items-center gap-4 p-6">
+      <CardHeader className="flex items-center gap-4">
         <Avatar className="h-16 w-16">
           {profile.avatar_url && <AvatarImage src={profile.avatar_url} />}
           <AvatarFallback className="text-xl">
@@ -20,12 +20,12 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
         </Avatar>
 
         <div className="space-y-1">
-          <p className="leading-7 text-lg font-semibold leading-tight">
-            {profile.full_name || profile.username || 'User'}
-          </p>
-          <p className="text-sm text-muted-foreground text-sm">{profile.username ? `@${profile.username}` : `ID: ${profile.id}`}</p>
+          <CardTitle>{profile.full_name || profile.username || 'User'}</CardTitle>
+          <CardDescription>
+            {profile.username ? `@${profile.username}` : `ID: ${profile.id}`}
+          </CardDescription>
         </div>
-      </CardContent>
+      </CardHeader>
     </Card>
   )
 }

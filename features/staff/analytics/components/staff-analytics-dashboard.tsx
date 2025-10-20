@@ -17,6 +17,7 @@ import type {
   StaffRevenueBreakdown,
   CustomerRelationship,
 } from '../api/queries'
+import { Progress } from '@/components/ui/progress'
 
 interface StaffAnalyticsDashboardProps {
   metrics: StaffPerformanceMetrics
@@ -68,7 +69,7 @@ export function StaffAnalyticsDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Estimated Commission</CardTitle>
-            <Award className="h-4 w-4 text-green-600" />
+            <Award className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(earnings.estimated_commission)}</div>
@@ -127,7 +128,9 @@ export function StaffAnalyticsDashboard({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Completed</span>
-                  <Badge className="bg-green-600">{metrics.completed_appointments}</Badge>
+                  <Badge variant="secondary" className="bg-success/10 text-success">
+                    {metrics.completed_appointments}
+                  </Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Cancelled</span>
@@ -147,32 +150,22 @@ export function StaffAnalyticsDashboard({
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-medium">Completion Rate</span>
-                    <span className="text-sm font-bold text-green-600">
+                    <span className="text-sm font-bold text-success">
                       {formatPercentage(metrics.completion_rate)}
                     </span>
                   </div>
-                  <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-green-600"
-                      style={{ width: `${metrics.completion_rate}%` }}
-                    />
-                  </div>
+                  <Progress value={metrics.completion_rate} className="h-2" />
                 </div>
                 <div>
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-medium">Cancellation Rate</span>
-                    <span className="text-sm font-bold text-red-600">
+                    <span className="text-sm font-bold text-destructive">
                       {formatPercentage(metrics.cancellation_rate)}
                     </span>
                   </div>
-                  <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-red-600"
-                      style={{ width: `${metrics.cancellation_rate}%` }}
-                    />
-                  </div>
+                  <Progress value={metrics.cancellation_rate} className="h-2" />
                 </div>
               </CardContent>
             </Card>

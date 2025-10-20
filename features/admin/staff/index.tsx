@@ -1,4 +1,3 @@
-import { Section } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { StaffClient } from './components/staff-client'
 import { getStaffDashboardData } from './api/queries'
@@ -8,19 +7,23 @@ export async function AdminStaff() {
     const data = await getStaffDashboardData()
 
     return (
-      <Section size="lg">
-        <StaffClient {...data} />
-      </Section>
+      <section className="py-16 md:py-24 lg:py-32">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <StaffClient {...data} />
+        </div>
+      </section>
     )
   } catch (error) {
     return (
-      <Section size="lg">
-        <Alert variant="destructive">
-          <AlertDescription>
-            {error instanceof Error ? error.message : 'Failed to load staff overview'}
-          </AlertDescription>
-        </Alert>
-      </Section>
+      <section className="py-16 md:py-24 lg:py-32">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Alert variant="destructive">
+            <AlertDescription>
+              {error instanceof Error ? error.message : 'Failed to load staff overview'}
+            </AlertDescription>
+          </Alert>
+        </div>
+      </section>
     )
   }
 }

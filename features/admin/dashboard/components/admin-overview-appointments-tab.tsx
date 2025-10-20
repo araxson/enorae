@@ -37,7 +37,7 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[320px] pr-4">
+        <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((apt) => (
               <div key={apt.id} className="rounded-lg border border-border/60 p-3">
@@ -47,7 +47,7 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
                       {apt.salon_name || 'Unknown salon'}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {apt.customer_name || 'Unknown customer'} • {apt.service_count || 0} service(s)
+                      {apt.customer_name || 'Unknown customer'} • {apt.service_name || 'Service pending'}
                     </p>
                   </div>
                   <Badge

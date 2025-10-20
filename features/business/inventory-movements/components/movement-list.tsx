@@ -112,9 +112,9 @@ export function MovementList({ movements }: MovementListProps) {
             <TableCell className="text-right">
               <span className={
                 (movement.quantity ?? 0) > 0
-                  ? 'text-green-600 font-medium'
+                  ? 'text-success font-medium'
                   : (movement.quantity ?? 0) < 0
-                  ? 'text-red-600 font-medium'
+                  ? 'text-destructive font-medium'
                   : 'font-medium'
               }>
                 {(movement.quantity ?? 0) > 0 ? '+' : ''}{movement.quantity ?? 0}
@@ -126,7 +126,7 @@ export function MovementList({ movements }: MovementListProps) {
               </div>
             </TableCell>
             <TableCell>
-              <div className="text-sm text-muted-foreground max-w-[200px] truncate">
+              <div className="text-sm text-muted-foreground max-w-52 truncate">
                 {movement.notes || '-'}
               </div>
             </TableCell>

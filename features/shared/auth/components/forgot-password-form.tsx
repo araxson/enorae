@@ -15,7 +15,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack } from '@/components/layout'
 import { AlertCircle, CheckCircle2, Mail, ArrowLeft } from 'lucide-react'
 
 export function ForgotPasswordForm() {
@@ -46,8 +45,8 @@ export function ForgotPasswordForm() {
         <Card>
           <CardHeader className="text-center space-y-4">
             <div className="mb-4 flex items-center justify-center">
-              <div className="rounded-full bg-green-100 p-3">
-                <Mail className="h-6 w-6 text-green-600" />
+              <div className="rounded-full bg-success/10 p-3">
+                <Mail className="h-6 w-6 text-success" />
               </div>
             </div>
             <CardTitle>Check your email</CardTitle>
@@ -57,9 +56,9 @@ export function ForgotPasswordForm() {
           </CardHeader>
 
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-6">
               <Alert>
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4 text-success" />
                 <AlertDescription>
                   Click the link in the email to reset your password. The link will expire in 1
                   hour.
@@ -76,7 +75,7 @@ export function ForgotPasswordForm() {
                   try again
                 </button>
               </small>
-            </Stack>
+            </div>
           </CardContent>
 
           <CardFooter>
@@ -104,7 +103,7 @@ export function ForgotPasswordForm() {
 
         <form action={handleSubmit}>
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-6">
               {error && (
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
@@ -112,7 +111,7 @@ export function ForgotPasswordForm() {
                 </Alert>
               )}
 
-              <Stack gap="xs">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="email">Email address</Label>
                 <Input
                   id="email"
@@ -127,12 +126,12 @@ export function ForgotPasswordForm() {
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   We&apos;ll send a password reset link to this email
                 </small>
-              </Stack>
-            </Stack>
+              </div>
+            </div>
           </CardContent>
 
           <CardFooter>
-            <Stack gap="sm" className="w-full">
+            <div className="flex w-full flex-col gap-4">
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? 'Sending...' : 'Send reset link'}
               </Button>
@@ -143,7 +142,7 @@ export function ForgotPasswordForm() {
                   Back to login
                 </Link>
               </Button>
-            </Stack>
+            </div>
           </CardFooter>
         </form>
       </Card>

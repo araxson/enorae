@@ -29,10 +29,10 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
+        <div className="flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-muted-foreground" />
-          Security Incident Response
-        </CardTitle>
+          <CardTitle>Security Incident Response</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {incidents.length === 0 ? (

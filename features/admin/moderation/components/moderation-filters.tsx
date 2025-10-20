@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Flex } from '@/components/layout'
 
 declare global {
   interface WindowEventMap {
@@ -66,12 +65,12 @@ export function ModerationFilters({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <Flex justify="end" className="w-full">
+      <div className="flex w-full justify-end">
         <Button variant="ghost" size="sm" onClick={clearFilters}>
           Clear all filters
         </Button>
-      </Flex>
-      <div className="relative min-w-[220px] flex-1">
+      </div>
+      <div className="relative min-w-56 flex-1">
         <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search reviews..."
@@ -82,7 +81,7 @@ export function ModerationFilters({
       </div>
 
       <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-        <SelectTrigger className="w-[200px]">
+        <SelectTrigger className="w-52">
           <SelectValue placeholder="All reviews" />
         </SelectTrigger>
         <SelectContent>
@@ -96,7 +95,7 @@ export function ModerationFilters({
       </Select>
 
       <Select value={riskFilter} onValueChange={onRiskFilterChange}>
-        <SelectTrigger className="w-[160px]">
+        <SelectTrigger className="w-40">
           <SelectValue placeholder="Risk level" />
         </SelectTrigger>
         <SelectContent>
@@ -108,7 +107,7 @@ export function ModerationFilters({
       </Select>
 
       <Select value={sentimentFilter} onValueChange={onSentimentFilterChange}>
-        <SelectTrigger className="w-[160px]">
+        <SelectTrigger className="w-40">
           <SelectValue placeholder="Sentiment" />
         </SelectTrigger>
         <SelectContent>
@@ -120,7 +119,7 @@ export function ModerationFilters({
       </Select>
 
       <Select value={reputationFilter} onValueChange={onReputationFilterChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-44">
           <SelectValue placeholder="Reviewer reputation" />
         </SelectTrigger>
         <SelectContent>

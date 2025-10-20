@@ -3,7 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { sanitizeAdminText } from '@/features/admin/admin-common/utils/sanitize'
+import { sanitizeAdminText } from '@/features/admin/admin-common'
+import type { Json } from '@/lib/types/database.types'
 import {
   chainIdSchema,
   deleteChainSchema,
@@ -22,7 +23,7 @@ async function logChainAudit(
   chainId: string,
   eventType: string,
   severity: 'info' | 'warning' | 'critical',
-  metadata: Record<string, unknown>,
+  metadata: Json | null = null,
 ) {
   const { error } = await supabase.schema('audit').from('audit_logs').insert({
     event_type: eventType,
@@ -34,6 +35,8 @@ async function logChainAudit(
     entity_id: chainId,
     metadata,
     is_success: true,
+    target_schema: 'organization',
+    target_table: 'salon_chains',
   })
 
   if (error) {

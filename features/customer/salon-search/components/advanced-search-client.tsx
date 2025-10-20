@@ -110,12 +110,12 @@ export function AdvancedSearchClient({
 
               {/* Suggestions Dropdown */}
               {suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-md shadow-lg z-10">
+                <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-card shadow-lg z-10">
                   {suggestions.map((suggestion) => (
                     <Link
                       key={suggestion.slug}
                       href={`/customer/salons/${suggestion.slug}`}
-                      className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                      className="block px-4 py-2 text-sm hover:bg-muted"
                     >
                       {suggestion.name}
                     </Link>
@@ -201,7 +201,7 @@ export function AdvancedSearchClient({
       {featuredSalons.length > 0 && !searchTerm && (
         <div>
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-yellow-500" />
+            <Sparkles className="h-5 w-5 text-warning" />
             Featured Salons
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -211,7 +211,7 @@ export function AdvancedSearchClient({
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <CardTitle>{salon.name}</CardTitle>
-                      {salon.is_verified && <Shield className="h-4 w-4 text-blue-600" />}
+                      {salon.is_verified && <Shield className="h-4 w-4 text-info" />}
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground">
                       <MapPin className="h-3 w-3" />
@@ -220,7 +220,7 @@ export function AdvancedSearchClient({
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star className="h-4 w-4 fill-warning text-warning" />
                       <span className="font-semibold">{formatRating(salon.rating_average)}</span>
                       <Badge variant="secondary" className="ml-auto">Featured</Badge>
                     </div>
@@ -247,8 +247,8 @@ export function AdvancedSearchClient({
                     <div className="flex items-start justify-between gap-2">
                       <CardTitle>{salon.name}</CardTitle>
                       <div className="flex gap-1">
-                        {salon.is_verified && <Shield className="h-4 w-4 text-blue-600" />}
-                        {salon.is_featured && <Sparkles className="h-4 w-4 text-yellow-500" />}
+                        {salon.is_verified && <Shield className="h-4 w-4 text-info" />}
+                        {salon.is_featured && <Sparkles className="h-4 w-4 text-warning" />}
                       </div>
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground">
@@ -258,7 +258,7 @@ export function AdvancedSearchClient({
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star className="h-4 w-4 fill-warning text-warning" />
                       <span className="font-semibold">{formatRating(salon.rating_average)}</span>
                       {salon.similarity_score && (
                         <Badge variant="outline" className="ml-auto">

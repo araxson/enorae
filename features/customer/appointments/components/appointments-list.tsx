@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { EmptyState } from '@/components/shared/empty-state'
@@ -45,15 +45,14 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {appointments.map((appointment) => (
-        <Card key={appointment.id} className="p-6">
-          <div className="flex h-full flex-col gap-4">
+        <Card key={appointment.id}>
+          <CardHeader className="p-6 pb-4">
+            <CardTitle>{appointment.salon_name || 'Unnamed Salon'}</CardTitle>
+            <CardDescription>{appointment.service_names || 'Service'}</CardDescription>
+          </CardHeader>
+          <CardContent className="p-6 pt-0 space-y-3">
             <div className="space-y-1">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{appointment.salon_name || 'Unnamed Salon'}</h3>
-              <p className="text-sm text-muted-foreground">{appointment.service_names || 'Service'}</p>
-            </div>
-
-            <div className="space-y-1">
-              <p className="leading-7 text-sm">
+              <p className="text-sm">
                 {appointment.start_time &&
                   new Date(appointment.start_time).toLocaleDateString('en-US', {
                     weekday: 'long',
@@ -62,7 +61,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
                     day: 'numeric',
                   })}
               </p>
-              <p className="leading-7 text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {appointment.start_time &&
                   new Date(appointment.start_time).toLocaleTimeString('en-US', {
                     hour: '2-digit',
@@ -74,13 +73,14 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
             <Badge variant={statusVariant(appointment.status)} className="w-fit capitalize">
               {appointment.status}
             </Badge>
-
-            <Button asChild variant="outline" className="mt-auto w-full">
+          </CardContent>
+          <CardFooter className="p-6 pt-0">
+            <Button asChild variant="outline" className="w-full">
               <Link href={`/customer/appointments/${appointment.id}`}>
                 View details
               </Link>
             </Button>
-          </div>
+          </CardFooter>
         </Card>
       ))}
     </div>

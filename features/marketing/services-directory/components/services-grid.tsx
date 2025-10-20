@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Grid, Stack, Box, Group } from '@/components/layout'
 import type { Database } from '@/lib/types/database.types'
 import { Clock, DollarSign, Sparkles } from 'lucide-react'
 
@@ -16,31 +15,31 @@ interface ServicesGridProps {
 export function ServicesGrid({ services, categoryName }: ServicesGridProps) {
   if (services.length === 0) {
     return (
-      <Box className="text-center py-12">
-        <Stack gap="md">
+      <div className="py-12 text-center">
+        <div className="flex flex-col gap-6">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No services found</h3>
           <p className="text-sm text-muted-foreground">
             {categoryName
               ? `No services available in the ${categoryName} category`
               : 'Try browsing different categories to find services'}
           </p>
-        </Stack>
-      </Box>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-6">
       <p className="text-sm text-muted-foreground">
         {services.length} service{services.length !== 1 ? 's' : ''}
         {categoryName && ` in ${categoryName}`}
       </p>
-      <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => (
           <ServiceCard key={service.id} service={service} />
         ))}
-      </Grid>
-    </Stack>
+      </div>
+    </div>
   )
 }
 
@@ -55,14 +54,14 @@ function ServiceCard({ service }: ServiceCardProps) {
   return (
     <Card className="flex flex-col h-full hover:shadow-lg transition-shadow">
       <CardHeader>
-        <Stack gap="sm">
-          <Group gap="sm" className="flex-wrap">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {service.category_name && (
-              <Link href={`/services/${service.category_slug}`}>
-                <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
+              <Badge asChild variant="secondary">
+                <Link href={`/services/${service.category_slug}`}>
                   {service.category_name}
-                </Badge>
-              </Link>
+                </Link>
+              </Badge>
             )}
             {service.is_featured && (
               <Badge variant="default" className="gap-1">
@@ -70,55 +69,55 @@ function ServiceCard({ service }: ServiceCardProps) {
                 Featured
               </Badge>
             )}
-          </Group>
+          </div>
           <CardTitle>{service.name}</CardTitle>
-        </Stack>
+        </div>
       </CardHeader>
 
       <CardContent className="flex-1">
-        <Stack gap="md">
+        <div className="flex flex-col gap-6">
           {service.description && (
             <p className="leading-7 text-muted-foreground text-sm line-clamp-3">{service.description}</p>
           )}
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-4">
             {/* Duration */}
             {service.duration_minutes && (
-              <Group gap="xs">
+              <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   {service.duration_minutes} minutes
                 </small>
-              </Group>
+              </div>
             )}
 
             {/* Price */}
             {hasPrice && (
-              <Group gap="xs">
+              <div className="flex items-center gap-2">
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
-                <Group gap="sm" align="center">
+                <div className="flex items-center gap-4">
                   {hasSalePrice ? (
                     <>
                       <small className="text-sm font-medium leading-none line-through text-muted-foreground">
                         ${service.current_price?.toFixed(2)}
                       </small>
-                      <small className="text-sm font-medium leading-none font-semibold text-green-600">
+                      <small className="text-sm font-medium leading-none font-semibold text-success">
                         ${service.sale_price?.toFixed(2)}
                       </small>
                       <Badge variant="destructive" className="text-xs">
                         Sale
                       </Badge>
                     </>
-                  ) : (
-                    <small className="text-sm font-medium leading-none font-semibold">
-                      ${service.current_price?.toFixed(2)}
-                    </small>
-                  )}
-                </Group>
-              </Group>
+                    ) : (
+                      <small className="text-sm font-medium leading-none font-semibold">
+                        ${service.current_price?.toFixed(2)}
+                      </small>
+                    )}
+                </div>
+              </div>
             )}
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
 
       <CardFooter className="pt-0">

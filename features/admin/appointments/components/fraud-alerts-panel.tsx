@@ -24,10 +24,10 @@ export function FraudAlertsPanel({ alerts }: FraudAlertsPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
-          <ShieldAlert className="h-4 w-4 text-red-600" />
-          Fraud & Abuse Signals
-        </CardTitle>
+        <div className="flex items-center gap-2">
+          <ShieldAlert className="h-4 w-4 text-destructive" />
+          <CardTitle>Fraud &amp; Abuse Signals</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-3">
         {alerts.length === 0 ? (
@@ -43,7 +43,7 @@ export function FraudAlertsPanel({ alerts }: FraudAlertsPanelProps) {
                   </Badge>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{alert.summary}</p>
-                <div className="mt-2 text-[11px] text-muted-foreground">
+                <div className="mt-2 text-xs text-muted-foreground">
                   {alert.relatedAppointmentIds.length} linked appointment(s)
                   {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
                   {alert.salonId ? ` · Salon ${alert.salonId}` : ''}

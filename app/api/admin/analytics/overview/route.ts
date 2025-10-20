@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getPlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/queries/platform'
+import { getPlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/queries'
 
 export async function GET() {
   try {

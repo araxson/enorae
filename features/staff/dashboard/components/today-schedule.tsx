@@ -48,9 +48,9 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <div>
+          <div className="space-y-1">
             <CardTitle>Today&apos;s Schedule</CardTitle>
-            <CardDescription className="mt-1">{appointments.length} appointments</CardDescription>
+            <CardDescription>{appointments.length} appointments</CardDescription>
           </div>
           <Badge variant="secondary" className="gap-1">
             <CheckCircle className="h-3 w-3" />
@@ -60,7 +60,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
       </CardHeader>
       <Separator />
       <CardContent className="p-0">
-        <ScrollArea className="h-[350px]">
+        <ScrollArea className="max-h-96">
           <div className="p-6 space-y-3">
             {appointments.map((appointment, index) => {
               const customerInitials = getInitials(appointment.customer_name || 'Unknown')
@@ -69,11 +69,14 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
 
               return (
                 <div key={appointment.id}>
-                  <div className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
-                    isCompleted ? 'bg-muted/50 opacity-75' : 'bg-background hover:bg-accent/50'
-                  }`}>
+                  <Card className={isCompleted ? 'opacity-75' : undefined}>
+                    <CardContent
+                      className={`flex items-center gap-3 p-3 transition-all ${
+                        isCompleted ? 'bg-muted/50' : 'bg-background hover:bg-accent/50'
+                      }`}
+                    >
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex flex-col items-center gap-1 min-w-[60px]">
+                      <div className="flex w-16 flex-none flex-col items-center gap-1">
                         <Clock className="h-4 w-4 text-muted-foreground" />
                         <p className="text-sm font-semibold">{formatAppointmentTime(appointment.start_time)}</p>
                       </div>
@@ -81,7 +84,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
                       <Separator orientation="vertical" className="h-10" />
 
                       <Avatar className="h-8 w-8 border">
-                        <AvatarFallback className="bg-gradient-to-br from-cyan-500 to-blue-500 text-white text-xs">
+                        <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
                           {customerInitials}
                         </AvatarFallback>
                       </Avatar>
@@ -100,7 +103,8 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
                     <Badge variant={statusConfig.variant} className="text-xs shrink-0">
                       {statusConfig.label}
                     </Badge>
-                  </div>
+                    </CardContent>
+                  </Card>
 
                   {index < appointments.length - 1 && <Separator className="my-3" />}
                 </div>

@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { UserRoleWithDetails } from '../api/queries'
 import { format } from 'date-fns'
 
@@ -57,10 +58,11 @@ const ROLE_COLORS: Record<string, 'default' | 'secondary' | 'destructive' | 'out
 export function RolesList({ roles, onEdit, onDeactivate }: RolesListProps) {
   if (roles.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 border rounded-lg">
-        <Shield className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">No user roles found</p>
-      </div>
+      <Alert>
+        <Shield className="h-4 w-4" />
+        <AlertTitle>No user roles found</AlertTitle>
+        <AlertDescription>Roles will appear once they are created.</AlertDescription>
+      </Alert>
     )
   }
 
@@ -73,7 +75,7 @@ export function RolesList({ roles, onEdit, onDeactivate }: RolesListProps) {
           <TableHead>Role</TableHead>
           <TableHead>Salon</TableHead>
           <TableHead>Assigned</TableHead>
-          <TableHead className="w-[50px]"></TableHead>
+          <TableHead className="w-12"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

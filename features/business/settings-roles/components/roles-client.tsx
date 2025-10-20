@@ -9,7 +9,7 @@ import { AssignRoleDialog } from './assign-role-dialog'
 import { EditRoleDialog } from './edit-role-dialog'
 import type { UserRoleWithDetails } from '../api/queries'
 import { deactivateUserRole } from '../api/mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 
 interface RolesClientProps {
   roles: UserRoleWithDetails[]

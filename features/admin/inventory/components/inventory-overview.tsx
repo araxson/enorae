@@ -1,6 +1,5 @@
 'use client'
 
-import { Stack } from '@/components/layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type {
   InventorySummary,
@@ -39,7 +38,7 @@ export function InventoryOverview({
   valuation,
 }: InventoryOverviewProps) {
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-10">
       <InventorySummaryCards summary={summary} />
 
       <Card>
@@ -101,6 +100,6 @@ export function InventoryOverview({
           <InventoryTopProductsTable products={topProducts} />
         </CardContent>
       </Card>
-    </Stack>
+    </div>
   )
 }

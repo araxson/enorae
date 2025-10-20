@@ -42,13 +42,19 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
     tone: 'default' | 'secondary' | 'destructive' = 'default'
   ) => {
     const percentage = total === 0 ? 0 : (value / total) * 100
+    const progressClass =
+      tone === 'destructive'
+        ? 'h-2 [&>div]:bg-destructive'
+        : tone === 'secondary'
+          ? 'h-2 [&>div]:bg-warning'
+          : 'h-2'
     return (
       <div className="space-y-1">
         <div className="flex items-center justify-between text-sm">
           <span>{label}</span>
           <span className="text-muted-foreground">{value}</span>
         </div>
-        <Progress value={percentage} className={tone === 'destructive' ? 'h-2 bg-rose-100' : 'h-2'} />
+        <Progress value={percentage} className={progressClass} />
       </div>
     )
   }

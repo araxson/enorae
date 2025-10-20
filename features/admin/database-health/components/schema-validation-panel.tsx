@@ -43,10 +43,10 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
         <div className="grid gap-4 md:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <ShieldAlert className="h-5 w-5" />
-                RLS Policy Issues
-              </CardTitle>
+                <CardTitle>RLS Policy Issues</CardTitle>
+              </div>
               <CardDescription>
                 {summary.totalRLSIssues} table{summary.totalRLSIssues === 1 ? '' : 's'} without RLS
               </CardDescription>
@@ -96,10 +96,10 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <Key className="h-5 w-5" />
-                Primary Key Issues
-              </CardTitle>
+                <CardTitle>Primary Key Issues</CardTitle>
+              </div>
               <CardDescription>
                 {summary.totalPKIssues} table{summary.totalPKIssues === 1 ? '' : 's'} missing primary
                 keys

@@ -74,7 +74,7 @@ type RankingListProps = {
  * <RankingList
  *   title="Top Services"
  *   icon={Star}
- *   iconColor="text-yellow-500"
+ *   iconColor="text-warning"
  *   items={[
  *     { id: '1', name: 'Haircut', subtitle: '45 bookings', value: 3750, metric: 'revenue' },
  *     { id: '2', name: 'Color', subtitle: '32 bookings', value: 2880, metric: 'revenue' },
@@ -112,10 +112,10 @@ export function RankingList({
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           {IconComponent && <IconComponent className={`h-5 w-5 ${iconColor}`} />}
-          {title}
-        </CardTitle>
+          <CardTitle>{title}</CardTitle>
+        </div>
       </CardHeader>
       <CardContent>
         {displayItems.length === 0 ? (
@@ -132,7 +132,7 @@ export function RankingList({
                 <Flex gap="sm" align="center">
                   <Badge
                     variant={index === 0 ? 'default' : 'outline'}
-                    className="min-w-[2rem] justify-center"
+                    className="w-8 justify-center"
                   >
                     #{index + 1}
                   </Badge>

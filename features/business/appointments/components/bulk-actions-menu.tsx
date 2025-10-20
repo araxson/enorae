@@ -20,7 +20,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { ChevronDown, CheckCircle, XCircle, Clock, Ban } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import {
   bulkCancelAppointments,
   bulkConfirmAppointments,

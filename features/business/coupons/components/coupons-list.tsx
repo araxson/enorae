@@ -11,7 +11,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { toggleCouponStatus, deleteCoupon } from '../api/coupons.mutations'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/lib/hooks/use-toast'
 import { CouponForm } from './coupon-form'
 import type { CouponWithStats } from '../api/queries/coupon-validation'
 import { CouponCard } from './coupon-card'

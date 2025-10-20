@@ -43,7 +43,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
           <CardTitle>Revenue Trend</CardTitle>
           <CardDescription>No data available</CardDescription>
         </CardHeader>
-        <CardContent className="h-[300px] flex items-center justify-center text-muted-foreground">
+        <CardContent className="flex h-72 items-center justify-center text-muted-foreground">
           No revenue data to display
         </CardContent>
       </Card>
@@ -57,7 +57,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
         <CardDescription>Last {data.length} days of revenue performance</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[300px] w-full">
+        <ChartContainer config={chartConfig} className="h-72 w-full">
           <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="fillTotal" x1="0" y1="0" x2="0" y2="1">

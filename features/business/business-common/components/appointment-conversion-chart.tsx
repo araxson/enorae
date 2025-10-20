@@ -39,7 +39,7 @@ export function AppointmentConversionChart({ data }: AppointmentConversionChartP
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[300px] w-full">
+        <ChartContainer config={chartConfig} className="h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <FunnelChart>
               <Funnel dataKey="value" data={chartData} isAnimationActive>

@@ -9,10 +9,10 @@ export function ServicePairingsCard({ pairings }: { pairings: ServicePairing[] }
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Link2 className="h-5 w-5" />
-          Service Pairings
-        </CardTitle>
+          <CardTitle>Service Pairings</CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="space-y-2 text-sm">
         {pairings.map((pair) => (

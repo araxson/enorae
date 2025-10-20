@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import type { StaffPerformanceMetrics } from '../../api/queries'
 import { formatPercentage } from './utils'
+import { Progress } from '@/components/ui/progress'
 
 interface PerformanceTabProps {
   metrics: StaffPerformanceMetrics
@@ -42,32 +43,22 @@ export function PerformanceTab({ metrics }: PerformanceTabProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="mb-2 flex items-center justify-between">
               <span className="text-sm font-medium">Completion Rate</span>
               <span className="text-sm font-bold text-primary">
                 {formatPercentage(metrics.completion_rate)}
               </span>
             </div>
-            <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-              <div
-                className="h-full bg-primary"
-                style={{ width: `${metrics.completion_rate}%` }}
-              />
-            </div>
+            <Progress value={metrics.completion_rate} className="h-2" />
           </div>
           <div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="mb-2 flex items-center justify-between">
               <span className="text-sm font-medium">Cancellation Rate</span>
               <span className="text-sm font-bold text-destructive">
                 {formatPercentage(metrics.cancellation_rate)}
               </span>
             </div>
-            <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-              <div
-                className="h-full bg-destructive"
-                style={{ width: `${metrics.cancellation_rate}%` }}
-              />
-            </div>
+            <Progress value={metrics.cancellation_rate} className="h-2" />
           </div>
         </CardContent>
       </Card>

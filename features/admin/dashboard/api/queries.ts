@@ -70,35 +70,23 @@ export async function getPlatformMetrics() {
 
   let activeUsersCount = 0
 
-  // Try using RPC function for efficient counting (if exists)
-  const { data: activeUsersRPC, error: rpcError } = await supabase
-    .rpc('get_active_users_count', { days_ago: 30 })
-    .maybeSingle()
+  const { data: activeUsersData, error: activeUsersError } = await supabase
+    .schema('audit')
+    .from('audit_logs')
+    .select('user_id')
+    .gte('created_at', thirtyDaysAgoISO)
+    .not('user_id', 'is', null)
+    .limit(10000)
 
-  if (!rpcError && typeof activeUsersRPC === 'number') {
-    activeUsersCount = activeUsersRPC
-  } else {
-    // Fallback: Query with LIMIT to prevent crashes at scale
-    // TODO: Create database function get_active_users_count for better performance
-    const { data: activeUsersData, error: activeUsersError } = await supabase
-      .schema('audit')
-      .from('audit_logs')
-      .select('user_id')
-      .gte('created_at', thirtyDaysAgoISO)
-      .not('user_id', 'is', null)
-      .limit(10000) // Safety limit to prevent OOM
-
-    if (!activeUsersError && activeUsersData) {
-      // Filter out any null user_ids and create unique set
-      const uniqueUserIds = new Set(
-        activeUsersData
-          .map(log => log.user_id)
-          .filter((id): id is string => id !== null && id !== undefined)
-      )
-      activeUsersCount = uniqueUserIds.size
-    } else if (activeUsersError) {
-      logSupabaseError('getPlatformMetrics:activeUsers', activeUsersError)
-    }
+  if (!activeUsersError && activeUsersData) {
+    const uniqueUserIds = new Set(
+      activeUsersData
+        .map((log) => log.user_id)
+        .filter((id): id is string => id !== null && id !== undefined),
+    )
+    activeUsersCount = uniqueUserIds.size
+  } else if (activeUsersError) {
+    logSupabaseError('getPlatformMetrics:activeUsers', activeUsersError)
   }
 
   // Calculate low stock alerts count

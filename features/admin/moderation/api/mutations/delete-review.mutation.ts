@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { sanitizeAdminText } from '@/features/admin/admin-common/utils/sanitize'
+import { sanitizeAdminText } from '@/features/admin/admin-common'
 import { resolveAdminClient, resolveAdminSession, UUID_REGEX, MODERATION_PATHS } from './shared'
 
 export async function deleteReview(formData: FormData) {

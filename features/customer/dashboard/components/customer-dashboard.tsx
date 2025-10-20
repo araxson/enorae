@@ -101,65 +101,79 @@ export async function CustomerDashboardPage() {
       </div>
 
       {vipStatus?.isVIP && (
-        <div className="rounded-xl border border-primary/10">
-          <Card>
-            <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-2 text-primary">
-                <Crown className="h-5 w-5" />
-                <CardTitle>VIP status</CardTitle>
-              </div>
-              <CardDescription>Exclusive benefits and rewards</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
-                  <small className="text-sm font-medium leading-none text-muted-foreground">Loyalty points</small>
+        <Card>
+          <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2 text-primary">
+              <Crown className="h-5 w-5" />
+              <CardTitle>VIP status</CardTitle>
+            </div>
+            <CardDescription>Exclusive benefits and rewards</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Loyalty points</CardTitle>
+                </CardHeader>
+                <CardContent>
                   <p className="text-2xl font-bold">
                     {vipStatus.loyaltyPoints?.toLocaleString() ?? 0}
                   </p>
-                </div>
-                <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
-                  <small className="text-sm font-medium leading-none text-muted-foreground">Tier</small>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Loyalty tier</CardTitle>
+                </CardHeader>
+                <CardContent>
                   <p className="text-2xl font-bold capitalize">
                     {vipStatus.loyaltyTier ?? 'Standard'}
                   </p>
-                </div>
-                <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
-                  <small className="text-sm font-medium leading-none text-muted-foreground">Lifetime spend</small>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Lifetime spend</CardTitle>
+                </CardHeader>
+                <CardContent>
                   <p className="text-2xl font-bold">
                     ${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}
                   </p>
-                </div>
-                {vipStatus.monthlySpend !== undefined && (
-                  <div className="space-y-1 rounded-lg border border-primary/10 bg-primary/5 p-4">
-                    <small className="text-sm font-medium leading-none text-muted-foreground">This month</small>
-                    <p className="flex items-center gap-1 text-2xl font-bold">
-                      <TrendingUp className="h-4 w-4 text-green-500" />
+                </CardContent>
+              </Card>
+              {vipStatus.monthlySpend !== undefined && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>This month</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="flex items-center gap-2 text-2xl font-bold">
+                      <TrendingUp className="h-4 w-4 text-success" />
                       ${vipStatus.monthlySpend.toLocaleString()}
                     </p>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       )}
 
       <CustomerMetrics metrics={metrics} />
 
       <Tabs defaultValue="upcoming" className="w-full space-y-6">
         <TabsList className="grid w-full max-w-md grid-cols-3">
-          <TabsTrigger value="upcoming" className="gap-2">
+          <TabsTrigger value="upcoming" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" aria-hidden="true" />
-            <span>Upcoming</span>
+            Upcoming
           </TabsTrigger>
-          <TabsTrigger value="favorites" className="gap-2">
+          <TabsTrigger value="favorites" className="flex items-center gap-2">
             <Heart className="h-4 w-4" aria-hidden="true" />
-            <span>Favorites</span>
+            Favorites
           </TabsTrigger>
-          <TabsTrigger value="history" className="gap-2">
+          <TabsTrigger value="history" className="flex items-center gap-2">
             <History className="h-4 w-4" aria-hidden="true" />
-            <span>History</span>
+            History
           </TabsTrigger>
         </TabsList>
 
@@ -175,7 +189,7 @@ export async function CustomerDashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Past appointments</CardTitle>
-              <small className="text-sm font-medium leading-none">{pastAppointments?.length ?? 0} completed</small>
+              <CardDescription>{pastAppointments?.length ?? 0} completed</CardDescription>
             </CardHeader>
             <CardContent>
               {!pastAppointments || pastAppointments.length === 0 ? (
@@ -199,20 +213,21 @@ export async function CustomerDashboardPage() {
                       : 'Date not available'
 
                     return (
-                      <div
-                        key={appointment.id}
-                        className="rounded-lg border border-border/60 p-4"
-                      >
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                          <div>
-                            <p className="text-sm font-medium">{appointment.service_names?.[0] ?? 'Service'}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {appointment.salon_name ? `at ${appointment.salon_name}` : 'Salon not specified'}
-                            </p>
+                      <Card key={appointment.id}>
+                        <CardContent className="space-y-2">
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                              <p className="text-sm font-medium">
+                                {appointment.service_names?.[0] ?? 'Service'}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {appointment.salon_name ? `at ${appointment.salon_name}` : 'Salon not specified'}
+                              </p>
+                            </div>
+                            <p className="text-sm text-muted-foreground">{appointmentDate}</p>
                           </div>
-                          <p className="text-sm text-muted-foreground">{appointmentDate}</p>
-                        </div>
-                      </div>
+                        </CardContent>
+                      </Card>
                     )
                   })}
                 </div>

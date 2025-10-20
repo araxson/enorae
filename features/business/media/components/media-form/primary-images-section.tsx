@@ -1,9 +1,8 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Stack, Grid } from '@/components/layout'
 type PrimaryImagesSectionProps = {
   logoUrl: string
   coverImageUrl: string
@@ -12,10 +11,12 @@ type PrimaryImagesSectionProps = {
 export function PrimaryImagesSection({ logoUrl, coverImageUrl }: PrimaryImagesSectionProps) {
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Primary Images</CardTitle>
+      </CardHeader>
       <CardContent>
-        <Stack gap="md">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Primary Images</h3>
-          <Grid cols={{ base: 1, md: 2 }} gap="md">
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
               <Label htmlFor="logo_url">Logo URL</Label>
               <Input
@@ -39,8 +40,8 @@ export function PrimaryImagesSection({ logoUrl, coverImageUrl }: PrimaryImagesSe
               />
               <p className="text-sm text-muted-foreground">Hero image for your salon page (16:9 recommended)</p>
             </div>
-          </Grid>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

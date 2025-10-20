@@ -1,7 +1,6 @@
 import { Award, Star } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
 type TopPerformersProps = {
   services: Array<{ name: string; count: number; revenue: number }>
   staff: Array<{ name: string; title: string | null; count: number; revenue: number }>
@@ -21,10 +20,10 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
       {/* Top Services */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Star className="h-5 w-5 text-yellow-500" />
-            Top Services
-          </CardTitle>
+          <div className="flex items-center gap-2">
+            <Star className="h-5 w-5 text-warning" />
+            <CardTitle>Top Services</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           {services.length === 0 ? (
@@ -32,29 +31,29 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
               <p>No data available</p>
             </div>
           ) : (
-            <Stack gap="sm">
+            <div className="flex flex-col gap-4">
               {services.map((service, index) => (
                 <div
                   key={service.name}
                   className="flex items-center justify-between p-3 border rounded-lg"
                 >
-                  <Flex gap="sm" align="center">
+                  <div className="flex items-center gap-4">
                     <Badge variant={index === 0 ? 'default' : 'outline'}>
                       #{index + 1}
                     </Badge>
                     <div>
                       <div className="font-medium">{service.name}</div>
-                      <p className="text-sm text-muted-foreground text-xs">
+                      <p className="text-xs text-muted-foreground">
                         {service.count} bookings
                       </p>
                     </div>
-                  </Flex>
+                  </div>
                   <div className="text-right">
                     <div className="font-semibold">{formatCurrency(service.revenue)}</div>
                   </div>
                 </div>
               ))}
-            </Stack>
+            </div>
           )}
         </CardContent>
       </Card>
@@ -62,10 +61,10 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
       {/* Top Staff */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Award className="h-5 w-5 text-blue-500" />
-            Top Performers
-          </CardTitle>
+          <div className="flex items-center gap-2">
+            <Award className="h-5 w-5 text-info" />
+            <CardTitle>Top Performers</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           {staff.length === 0 ? (
@@ -73,29 +72,29 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
               <p>No data available</p>
             </div>
           ) : (
-            <Stack gap="sm">
+            <div className="flex flex-col gap-4">
               {staff.map((member, index) => (
                 <div
                   key={member.name}
                   className="flex items-center justify-between p-3 border rounded-lg"
                 >
-                  <Flex gap="sm" align="center">
+                  <div className="flex items-center gap-4">
                     <Badge variant={index === 0 ? 'default' : 'outline'}>
                       #{index + 1}
                     </Badge>
                     <div>
                       <div className="font-medium">{member.name}</div>
-                      <p className="text-sm text-muted-foreground text-xs">
+                      <p className="text-xs text-muted-foreground">
                         {member.title || 'Staff'} • {member.count} appointments
                       </p>
                     </div>
-                  </Flex>
+                  </div>
                   <div className="text-right">
                     <div className="font-semibold">{formatCurrency(member.revenue)}</div>
                   </div>
                 </div>
               ))}
-            </Stack>
+            </div>
           )}
         </CardContent>
       </Card>

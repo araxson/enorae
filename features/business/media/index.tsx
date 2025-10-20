@@ -1,6 +1,5 @@
 import { getUserSalonMedia } from './api/queries'
 import { MediaForm } from './components/media-form'
-import { Section, Stack } from '@/components/layout'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 
 export async function SalonMedia() {
@@ -14,12 +13,14 @@ export async function SalonMedia() {
 
   if (!salon) {
     return (
-      <Section size="lg">
-        <Stack gap="md">
-          <p className="leading-7 text-base font-semibold">Salon Media</p>
-          <p className="leading-7">No salon found. Please create a salon first.</p>
-        </Stack>
-      </Section>
+      <section className="py-16 md:py-24 lg:py-32">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-4">
+            <p className="leading-7 text-base font-semibold">Salon Media</p>
+            <p className="leading-7">No salon found. Please create a salon first.</p>
+          </div>
+        </div>
+      </section>
     )
   }
 
@@ -27,8 +28,9 @@ export async function SalonMedia() {
   const salonName = salon.name || 'your salon'
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
         <div>
           <p className="leading-7 text-base font-semibold">Salon Media</p>
           <p className="text-sm text-muted-foreground">
@@ -37,7 +39,8 @@ export async function SalonMedia() {
         </div>
 
         <MediaForm media={media} />
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

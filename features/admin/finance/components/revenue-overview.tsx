@@ -1,5 +1,4 @@
 import { Card } from '@/components/ui/card'
-import { Stack, Grid } from '@/components/layout'
 import { StatCard } from '@/components/shared/stat-card'
 import { DollarSign, TrendingUp, Calendar, Users } from 'lucide-react'
 import type { RevenueMetrics } from '../api/types'
@@ -31,7 +30,7 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
     : 0
 
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-8">
       <div>
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Revenue Overview</h3>
         <p className="text-sm text-muted-foreground">
@@ -41,7 +40,7 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
         </p>
       </div>
 
-      <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="lg">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total Revenue"
           value={formatCurrency(metrics.totalRevenue)}
@@ -65,9 +64,9 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
           icon={<TrendingUp className="h-4 w-4" />}
           description={`${metrics.completedAppointments} completed`}
         />
-      </Grid>
+      </div>
 
-      <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="lg">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total Appointments"
           value={metrics.totalAppointments.toString()}
@@ -91,7 +90,7 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
           icon={<Users className="h-4 w-4" />}
           description={formatPercentage((metrics.noShowAppointments / metrics.totalAppointments) * 100 || 0) + ' of total'}
         />
-      </Grid>
-    </Stack>
+      </div>
+    </div>
   )
 }

@@ -36,7 +36,7 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[320px] pr-4">
+        <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((msg) => (
               <div key={msg.id} className="rounded-lg border border-border/60 p-3">

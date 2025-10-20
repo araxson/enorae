@@ -17,5 +17,15 @@ export async function StaffProfilePage({ staffId }: { staffId: string }) {
   )
 }
 
+export async function StaffProfileFeature({
+  params,
+}: {
+  params: Promise<{ id: string }> | { id: string }
+}) {
+  const resolved = await params
+
+  return <StaffProfilePage staffId={resolved.id} />
+}
+
 export { getStaffProfile, getSalonStaff } from './api/queries'
 export type { StaffProfile } from './api/queries'

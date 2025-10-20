@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { UUID_REGEX } from '../utils/schemas'
 import { ensurePlatformAdmin, getSupabaseClient } from './shared'
-import { sanitizeAdminText } from '@/features/admin/admin-common/utils/sanitize'
+import { sanitizeAdminText } from '@/features/admin/admin-common'
 
 export async function transferSalonOwnership(formData: FormData) {
   try {

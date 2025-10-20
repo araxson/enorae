@@ -45,7 +45,7 @@ export function StaffPerformanceCard({
         <CardHeader>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-center h-[200px]">
+        <CardContent className="flex h-48 items-center justify-center">
           <p className="text-sm text-muted-foreground">No staff performance data available</p>
         </CardContent>
       </Card>
@@ -64,9 +64,9 @@ export function StaffPerformanceCard({
             <Flex key={member.id} justify="between" align="center" className="p-3 rounded-lg hover:bg-muted/50 transition-colors">
               <Flex gap="md" align="center" className="flex-1">
                 <Box className="flex items-center gap-3">
-                  <small className="text-sm font-medium leading-none text-muted-foreground min-w-[20px] text-center font-semibold">
+                  <span className="flex h-6 w-6 items-center justify-center text-sm font-semibold text-muted-foreground">
                     #{index + 1}
-                  </small>
+                  </span>
                   <Avatar>
                     <AvatarImage src={member.avatar || undefined} />
                     <AvatarFallback>
@@ -83,7 +83,7 @@ export function StaffPerformanceCard({
                 </Box>
               </Flex>
 
-              <Grid cols={2} gap="md" className="min-w-[200px]">
+              <Grid cols={2} gap="md" className="w-52">
                 <Flex align="center" gap="xs">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <small className="text-sm font-medium leading-none font-medium">{member.appointmentCount}</small>

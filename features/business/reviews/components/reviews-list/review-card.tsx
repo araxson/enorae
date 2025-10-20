@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Flex, Grid, Stack } from '@/components/layout'
 import type { NormalizedReview } from './use-reviews-list'
 
@@ -114,19 +114,19 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
 
           {review.response && (
             <Card>
+              <CardHeader>
+                <Flex justify="between" align="center">
+                  <div>
+                    <CardTitle>Response from salon</CardTitle>
+                    {review.responded_by_name ? (
+                      <CardDescription>By {review.responded_by_name}</CardDescription>
+                    ) : null}
+                  </div>
+                  <CardDescription>{formatDate(review.response_date)}</CardDescription>
+                </Flex>
+              </CardHeader>
               <CardContent>
-                <div className="rounded-lg border-l-4 border-l-primary bg-muted/50 p-4">
-                  <Stack gap="sm">
-                    <Flex justify="between">
-                      <small className="text-sm font-medium leading-none font-medium">Response from salon</small>
-                      <small className="text-sm font-medium leading-none text-muted-foreground">{formatDate(review.response_date)}</small>
-                    </Flex>
-                    <p className="leading-7 text-sm">{review.response}</p>
-                    {review.responded_by_name && (
-                      <p className="text-sm text-muted-foreground text-xs">- {review.responded_by_name}</p>
-                    )}
-                  </Stack>
-                </div>
+                <p className="leading-7 text-sm">{review.response}</p>
               </CardContent>
             </Card>
           )}
@@ -169,7 +169,7 @@ function StarIcon({ filled }: StarIconProps) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`h-4 w-4 ${filled ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+      className={`h-4 w-4 ${filled ? 'fill-warning text-warning' : 'text-muted-foreground/30'}`}
     >
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
     </svg>

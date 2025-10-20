@@ -18,7 +18,7 @@ type Props = {
 export function OrderStatusSelect({ value, onChange, disabled }: Props) {
   return (
     <Select value={value} onValueChange={onChange} disabled={disabled}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-44">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

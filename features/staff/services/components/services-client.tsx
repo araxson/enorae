@@ -7,6 +7,7 @@ import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-comm
 import { ServicesStats } from './services-stats'
 import { ServicesFilters } from './services-filters'
 import { ServiceCard } from './service-card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 type StaffService = {
   id: string
@@ -124,9 +125,10 @@ export function ServicesClient({ services }: ServicesClientProps) {
 
         {activeTab === 'catalog' ? (
           filteredServices.length === 0 ? (
-            <div className="rounded-lg border bg-muted/20 p-8 text-center text-sm text-muted-foreground">
-              No services match your filters.
-            </div>
+            <Alert>
+              <AlertTitle>No services match your filters</AlertTitle>
+              <AlertDescription>Adjust your filters to see additional services.</AlertDescription>
+            </Alert>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {filteredServices.map((service) => (

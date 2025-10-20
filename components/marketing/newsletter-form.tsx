@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Mail, CheckCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { subscribeToNewsletter } from '@/features/marketing/home/api/mutations'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 interface NewsletterFormProps {
   title?: string
@@ -51,9 +52,9 @@ export function NewsletterForm({
 
   if (subscribed) {
     return (
-      <div className="flex items-center gap-2 text-green-600">
+      <div className="flex items-center gap-2 text-success">
         <CheckCircle className="h-5 w-5" />
-        <small className="text-sm font-medium leading-none">Thanks for subscribing!</small>
+        <span className="text-sm font-medium leading-none">Thanks for subscribing!</span>
       </div>
     )
   }
@@ -80,24 +81,26 @@ export function NewsletterForm({
   }
 
   return (
-    <div className="w-full max-w-md space-y-4">
-      <div className="space-y-1">
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{title}</h3>
-        <p className="leading-7 text-sm text-muted-foreground">{description}</p>
-      </div>
-      <form onSubmit={handleSubmit} className="space-y-2">
-        <Input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          disabled={isPending}
-        />
-        <Button type="submit" disabled={isPending} className="w-full gap-2">
-          <Mail className="h-4 w-4" />
-          {buttonText}
-        </Button>
-      </form>
-    </div>
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-2">
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            disabled={isPending}
+          />
+          <Button type="submit" disabled={isPending} className="w-full gap-2">
+            <Mail className="h-4 w-4" />
+            {buttonText}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   )
 }

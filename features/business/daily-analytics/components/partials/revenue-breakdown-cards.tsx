@@ -17,10 +17,10 @@ export function RevenueBreakdownCards({ aggregated }: Props) {
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Scissors className="h-4 w-4" />
-            Service Revenue
-          </CardTitle>
+            <CardTitle>Service Revenue</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
@@ -32,10 +32,10 @@ export function RevenueBreakdownCards({ aggregated }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Package className="h-4 w-4" />
-            Product Revenue
-          </CardTitle>
+            <CardTitle>Product Revenue</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">

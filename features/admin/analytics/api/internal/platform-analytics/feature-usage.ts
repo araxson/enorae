@@ -1,4 +1,4 @@
-import type { FeatureUsageItem } from '../admin-analytics-types'
+import type { FeatureUsageItem } from '../../admin-analytics-types'
 
 type DailyMetricsRow = {
   streaming_metrics: Record<string, unknown> | null

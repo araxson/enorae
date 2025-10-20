@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Stack } from '@/components/layout'
 
 import type { SalonMedia as SalonMediaRow } from '@/lib/types/app.types'
 
@@ -23,7 +22,7 @@ export function MediaForm({ media }: Omit<MediaFormProps, 'salonId'>) {
 
   return (
     <form onSubmit={handlers.handleSubmit}>
-      <Stack gap="lg">
+      <div className="flex flex-col gap-8">
         <PrimaryImagesSection logoUrl={state.logoUrl} coverImageUrl={state.coverImageUrl} />
 
         <GallerySection
@@ -44,7 +43,7 @@ export function MediaForm({ media }: Omit<MediaFormProps, 'salonId'>) {
             {state.isSubmitting ? 'Saving...' : 'Save Media'}
           </Button>
         </div>
-      </Stack>
+      </div>
     </form>
   )
 }

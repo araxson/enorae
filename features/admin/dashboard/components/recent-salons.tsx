@@ -11,7 +11,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import type { AdminSalon } from '@/lib/types/app.types'
 import { safeFormatDate } from './admin-overview-utils'
@@ -69,7 +68,7 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <ScrollArea className="h-[320px] pr-4">
+          <ScrollArea className="h-80 pr-4">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -92,18 +91,9 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
                           <p className="truncate font-medium leading-tight">
                             {salon.name || 'Unnamed salon'}
                           </p>
-                          {(salon.business_name || salon.owner_name) && (
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <span className="line-clamp-1 text-xs text-muted-foreground">
-                                  {salon.business_name || salon.owner_name || 'No business name'}
-                                </span>
-                              </TooltipTrigger>
-                              <TooltipContent className="max-w-xs text-xs text-muted-foreground">
-                                {salon.business_name || salon.owner_name || 'No business name'}
-                              </TooltipContent>
-                            </Tooltip>
-                          )}
+                          <span className="text-xs text-muted-foreground">
+                            {`${salon.location_count ?? 0} location${(salon.location_count ?? 0) === 1 ? '' : 's'} • ${salon.staff_count ?? 0} staff`}
+                          </span>
                         </div>
                       </div>
                     </TableCell>

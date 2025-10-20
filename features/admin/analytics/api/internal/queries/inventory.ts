@@ -1,6 +1,6 @@
 import 'server-only';
-import { requireAdminClient } from '../admin-analytics-shared'
-import type { AdminInventoryRow } from '../admin-analytics-types'
+import { requireAdminClient } from '../../admin-analytics-shared'
+import type { AdminInventoryRow } from '../../admin-analytics-types'
 
 const INVENTORY_TABLE = 'admin_inventory_overview'
 

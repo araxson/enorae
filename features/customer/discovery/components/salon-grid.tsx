@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SalonCard } from '@/features/shared/salons'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search } from 'lucide-react'
 import {
   Pagination,
@@ -41,15 +41,13 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
   if (salons.length === 0) {
     return (
       <Card>
-        <CardContent>
-          <div className="space-y-3 py-12 text-center">
-            <Search className="mx-auto h-12 w-12 text-muted-foreground" />
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No salons found</h3>
-            <p className="text-sm text-muted-foreground">
-              Try adjusting your search filters or check back later for new salons.
-            </p>
-          </div>
-        </CardContent>
+        <CardHeader className="items-center space-y-3 text-center">
+          <Search className="h-12 w-12 text-muted-foreground" aria-hidden="true" />
+          <CardTitle>No salons found</CardTitle>
+          <CardDescription>
+            Try adjusting your search filters or check back later for new salons.
+          </CardDescription>
+        </CardHeader>
       </Card>
     )
   }

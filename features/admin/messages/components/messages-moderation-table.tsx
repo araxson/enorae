@@ -50,7 +50,7 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
               <TableBody>
                 {items.map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell className="max-w-[260px]">
+                    <TableCell className="max-w-sm">
                       <p className="text-sm font-medium leading-tight line-clamp-3">
                         {item.content}
                       </p>

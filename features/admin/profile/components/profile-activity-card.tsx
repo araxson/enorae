@@ -106,7 +106,7 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
               <div className="mt-2 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
                 <span>{formatDate(event.createdAt)}</span>
                 {event.ipAddress && <span>IP {event.ipAddress}</span>}
-                {event.userAgent && <span className="truncate md:max-w-[320px]">{event.userAgent}</span>}
+                {event.userAgent && <span className="truncate md:max-w-md">{event.userAgent}</span>}
               </div>
             </li>
           ))}
