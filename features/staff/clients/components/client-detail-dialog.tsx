@@ -94,7 +94,7 @@ export function ClientDetailDialog({
           <Separator />
 
           <div>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Appointment History</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Appointment History</h3>
             {loading ? (
               <p className="leading-7 text-muted-foreground">Loading...</p>
             ) : appointments.length === 0 ? (

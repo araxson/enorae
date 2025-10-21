@@ -155,7 +155,7 @@ export function MetricCard(props: MetricCardProps) {
         {props.variant === 'trend' && (
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-end justify-between">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{value}</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold">{value}</h3>
               <Badge
                 variant={props.trend >= 0 ? 'default' : 'destructive'}
                 className="flex items-center gap-1"
@@ -182,7 +182,7 @@ export function MetricCard(props: MetricCardProps) {
 
         {(!props.variant || props.variant === 'default') && (
           <div className="flex flex-col gap-2">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{value}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold">{value}</h3>
             {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
           </div>
         )}

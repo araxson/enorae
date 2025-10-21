@@ -262,7 +262,7 @@ export async function getReviewsForModeration(
   if (reviewIds.length) {
     const { data: detailsData, error: detailsError } = await supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .select('id, flagged_reason')
       .in('id', reviewIds)
 
@@ -375,24 +375,24 @@ export async function getModerationStats(): Promise<ModerationStats> {
     // We need raw engagement.salon_reviews data for admin-only moderation metrics that are not exposed via views.
     supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
       .is('deleted_at', null),
     supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
       .eq('is_flagged', true)
       .is('deleted_at', null),
     supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
       .is('response', null)
       .is('deleted_at', null),
     supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
       .or('is_flagged.eq.true,is_verified.eq.false')
       .is('deleted_at', null),
@@ -441,7 +441,7 @@ async function fetchReviewerStats(
   const { data, error } = await supabase
     // Admin reviewer reputation analysis requires per-review rows, so we access the underlying table with platform admin credentials.
     .schema('engagement')
-    .from('salon_reviews_view')
+    .from('salon_reviews')
     .select('customer_id, is_flagged')
     .in('customer_id', reviewerIds)
     .limit(REVIEWER_SAMPLE_LIMIT)

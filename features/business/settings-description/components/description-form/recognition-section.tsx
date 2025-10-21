@@ -17,7 +17,7 @@ export function RecognitionSection({ awards, certifications, onAwardsChange, onC
     <Card>
       <CardContent>
         <div className="flex flex-col gap-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Awards & Certifications</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold">Awards & Certifications</h3>
           <Separator />
 
           <ArrayInput

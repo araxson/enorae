@@ -246,7 +246,7 @@ export async function getDataIntegrityAlerts() {
   // Check for reviews without ratings
   const { count: invalidReviews } = await supabase
     .schema('engagement')
-    .from('salon_reviews_view')
+    .from('salon_reviews')
     .select('id', { count: 'exact', head: true })
     .is('rating', null)
 

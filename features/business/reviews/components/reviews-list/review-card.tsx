@@ -42,7 +42,7 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
         <div className="flex gap-4 items-start justify-between">
           <div className="flex flex-col gap-3">
             <div className="flex gap-3 items-center">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">{review.customer_name || 'Anonymous'}</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold text-base">{review.customer_name || 'Anonymous'}</h3>
               {review.is_verified && (
                 <Badge variant="outline" className="text-xs">
                   <CheckCircle2 className="h-3 w-3 mr-1" />
@@ -64,7 +64,7 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
             </div>
             <div className="flex gap-4 items-center">
               {renderStars(review.rating)}
-              <small className="text-sm font-medium leading-none text-muted-foreground">{formatDate(review.created_at)}</small>
+              <small className="text-sm font-medium text-muted-foreground">{formatDate(review.created_at)}</small>
             </div>
           </div>
 

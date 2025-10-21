@@ -13,7 +13,7 @@ export function SalonGrid({ salons }: SalonGridProps) {
     return (
       <div className="text-center py-12">
         <div className="flex flex-col gap-4">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No salons found</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold">No salons found</h3>
           <p className="text-sm text-muted-foreground">Try adjusting your search filters to find more results</p>
         </div>
       </div>

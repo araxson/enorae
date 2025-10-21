@@ -40,7 +40,7 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
   return (
     <Card className="p-6">
       <div className="flex flex-col gap-4">
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Portfolio Gallery</h3>
+        <h3 className="scroll-m-20 text-2xl font-semibold">Portfolio Gallery</h3>
 
         <div>
           <input

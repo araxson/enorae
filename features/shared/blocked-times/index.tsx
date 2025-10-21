@@ -12,7 +12,7 @@ export async function BlockedTimesManagement() {
     return (
       <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
         <div className="space-y-2">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Blocked Times</h1>
+          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Blocked Times</h1>
           <p className="leading-7 text-muted-foreground">
             Manage blocked time slots to prevent bookings during specific periods.
           </p>

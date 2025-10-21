@@ -48,7 +48,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       highlight: (
         <div className="flex items-center gap-2">
           <ArrowUpRight className="h-3 w-3 text-success" aria-hidden="true" />
-          <small className="text-sm font-medium leading-none text-success">Momentum trending upward</small>
+          <small className="text-sm font-medium text-success">Momentum trending upward</small>
         </div>
       ),
     },
@@ -88,7 +88,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
         <small className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Dashboard summary
         </small>
-        <small className="text-sm font-medium leading-none text-muted-foreground">Monitor the metrics your team watches daily.</small>
+        <small className="text-sm font-medium text-muted-foreground">Monitor the metrics your team watches daily.</small>
       </div>
 
       {revenueMetrics.length > 0 && (
@@ -103,7 +103,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
 
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <small className="text-sm font-medium leading-none text-muted-foreground">Appointments Overview</small>
+          <small className="text-sm font-medium text-muted-foreground">Appointments Overview</small>
           <Badge variant="outline">{confirmationRate}% Confirmed</Badge>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -116,7 +116,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       <Separator />
 
       <div className="flex flex-col gap-4">
-        <small className="text-sm font-medium leading-none text-muted-foreground">Resources</small>
+        <small className="text-sm font-medium text-muted-foreground">Resources</small>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -160,7 +160,7 @@ function AppointmentResource({ title, icon, value, description, accent }: Appoin
   return (
     <div className={`overflow-hidden rounded-xl border-l-4 ${accent}`}>
       <div className="flex items-center justify-between space-y-0 border px-4 py-3">
-        <small className="text-sm font-medium leading-none">{title}</small>
+        <small className="text-sm font-medium">{title}</small>
         {icon}
       </div>
       <div className="border border-t-0 px-4 py-3">

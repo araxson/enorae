@@ -14,7 +14,7 @@ export async function AccountSettings() {
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Account Information</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">Account Information</h2>
           <div className="flex flex-col gap-6 mt-6">
             <AccountInfoForm profile={profile} />
             <PasswordForm />
@@ -25,7 +25,7 @@ export async function AccountSettings() {
         <Separator className="my-4" />
 
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Billing & Subscription</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">Billing & Subscription</h2>
           <div className="mt-6">
             <BillingSubscriptionForm />
           </div>

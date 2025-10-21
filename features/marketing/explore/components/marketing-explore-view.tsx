@@ -57,7 +57,7 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
           <Sparkles className="mr-2 h-4 w-4" />
           Discover
         </Badge>
-        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Find your next favourite salon</h2>
+        <h2 className="scroll-m-20 text-3xl font-semibold">Find your next favourite salon</h2>
         <p className="leading-7 text-muted-foreground">
           Browse top-rated salons and beauty professionals near you. Book instantly and get the VIP
           treatment you deserve.
@@ -80,7 +80,7 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
         <Card>
           <CardContent className="space-y-3 py-12 text-center">
             <Search className="mx-auto h-10 w-10 text-muted-foreground" />
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-xl">No salons match your search</h2>
+            <h2 className="scroll-m-20 text-3xl font-semibold text-xl">No salons match your search</h2>
             <p className="text-sm text-muted-foreground">Try a different city or service to discover more locations.</p>
           </CardContent>
         </Card>
@@ -125,7 +125,7 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
                     </div>
                   ) : null}
                   {salon.rating ? (
-                    <small className="text-sm font-medium leading-none font-medium">
+                    <small className="text-sm font-medium font-medium">
                       ⭐ {Number(salon.rating).toFixed(1)} • {salon.review_count ?? 0} reviews
                     </small>
                   ) : null}

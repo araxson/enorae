@@ -13,7 +13,7 @@ export async function StockAlerts() {
         <div className="flex flex-col gap-4">
           {unresolvedCount > 0 && (
             <div className="rounded-lg bg-destructive/10 p-4 border border-destructive/20">
-              <small className="text-sm font-medium leading-none font-semibold text-destructive">
+              <small className="text-sm font-medium font-semibold text-destructive">
                 {unresolvedCount} unresolved alert{unresolvedCount > 1 ? 's' : ''} require
                 {unresolvedCount === 1 ? 's' : ''} attention
               </small>

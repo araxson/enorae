@@ -145,13 +145,13 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
       <CardHeader className="space-y-4">
         <div className="space-y-1">
           <CardTitle>Book an appointment</CardTitle>
-          <small className="text-sm font-medium leading-none text-muted-foreground">{salonName}</small>
+          <small className="text-sm font-medium text-muted-foreground">{salonName}</small>
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Progress</small>
-            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">{progress}%</small>
+            <small className="text-sm font-medium font-medium text-muted-foreground">Progress</small>
+            <small className="text-sm font-medium font-medium text-muted-foreground">{progress}%</small>
           </div>
           <Progress value={progress} className="h-2" />
         </div>

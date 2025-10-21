@@ -60,17 +60,20 @@ export async function upsertBookingRule(formData: FormData) {
 
     const { error: upsertError } = await supabase
       .schema('catalog')
-      .from('service_booking_rules_view')
-      .upsert({
-        service_id: data.serviceId,
-        duration_minutes: data.durationMinutes || null,
-        buffer_minutes: data.bufferMinutes || null,
-        total_duration_minutes: totalDuration > 0 ? totalDuration : null,
-        min_advance_booking_hours: data.minAdvanceBookingHours || null,
-        max_advance_booking_days: data.maxAdvanceBookingDays || null,
-        created_by_id: session.user.id,
-        updated_by_id: session.user.id,
-      })
+      .from('service_booking_rules')
+      .upsert(
+        {
+          service_id: data.serviceId,
+          duration_minutes: data.durationMinutes ?? null,
+          buffer_minutes: data.bufferMinutes ?? null,
+          total_duration_minutes: totalDuration > 0 ? totalDuration : null,
+          min_advance_booking_hours: data.minAdvanceBookingHours ?? null,
+          max_advance_booking_days: data.maxAdvanceBookingDays ?? null,
+          created_by_id: session.user.id,
+          updated_by_id: session.user.id,
+        },
+        { onConflict: 'service_id' },
+      )
 
     if (upsertError) return { error: upsertError.message }
 

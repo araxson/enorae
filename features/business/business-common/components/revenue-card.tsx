@@ -127,7 +127,7 @@ export function RevenueCard({
         <div className={cn('flex flex-col', compact ? 'gap-2' : 'gap-3')}>
           {/* Primary amount */}
           <div className="flex gap-2">
-            <h3 className={cn('scroll-m-20 text-2xl font-semibold tracking-tight', compact ? 'text-2xl' : 'text-3xl font-bold')}>
+            <h3 className={cn('scroll-m-20 text-2xl font-semibold', compact ? 'text-2xl' : 'text-3xl font-bold')}>
               {formattedAmount}
             </h3>
             {growthRate !== undefined && (
@@ -155,7 +155,7 @@ export function RevenueCard({
               )}
               <small
                 className={cn(
-                  'text-sm font-medium leading-none',
+                  'text-sm font-medium',
                   `text-xs ${growthRate >= 0 ? 'text-success' : 'text-destructive'}`
                 )}
               >
@@ -171,7 +171,7 @@ export function RevenueCard({
                 {breakdown.map((item) => (
                   <div key={item.label} className="flex gap-4 items-center justify-between">
                     <p className="text-sm text-muted-foreground text-xs">{item.label}</p>
-                    <small className="text-sm font-medium leading-none font-medium">
+                    <small className="text-sm font-medium font-medium">
                       {formatCurrency(item.amount, { currency })}
                     </small>
                   </div>

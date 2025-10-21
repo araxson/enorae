@@ -18,42 +18,42 @@ const overviewItems = [
     value: (metrics: BusinessMultiLocationMetrics) => metrics.totalLocations,
     icon: Building2,
     tooltip: 'Active locations that your tenant manages today.',
-    accent: 'border-l-indigo-500',
+    accent: 'border-l-primary',
   },
   {
     label: 'Total appointments',
     value: (metrics: BusinessMultiLocationMetrics) => metrics.totalAppointments,
     icon: CalendarDays,
     tooltip: 'Combined booked appointments across every location.',
-    accent: 'border-l-blue-500',
+    accent: 'border-l-secondary',
   },
   {
     label: 'Confirmed',
     value: (metrics: BusinessMultiLocationMetrics) => metrics.confirmedAppointments,
     icon: CheckCircle2,
     tooltip: 'Guests who have confirmed attendance.',
-    accent: 'border-l-emerald-500',
+    accent: 'border-l-accent',
   },
   {
     label: 'Pending',
     value: (metrics: BusinessMultiLocationMetrics) => metrics.pendingAppointments,
     icon: ClipboardList,
     tooltip: 'Appointments awaiting confirmation.',
-    accent: 'border-l-amber-500',
+    accent: 'border-l-primary',
   },
   {
     label: 'Staff',
     value: (metrics: BusinessMultiLocationMetrics) => metrics.totalStaff,
     icon: Users,
     tooltip: 'Active stylists and front desk team members.',
-    accent: 'border-l-purple-500',
+    accent: 'border-l-secondary',
   },
   {
     label: 'Services',
     value: (metrics: BusinessMultiLocationMetrics) => metrics.totalServices,
     icon: Store,
     tooltip: 'Service offerings across your network.',
-    accent: 'border-l-pink-500',
+    accent: 'border-l-accent',
   },
 ] as const
 
@@ -80,7 +80,7 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
                 <TooltipTrigger asChild>
                   <div className={`overflow-hidden rounded-xl border border-border/60 bg-card/60 p-4 transition-colors hover:border-primary/40 ${item.accent}`}>
                     <div className="flex gap-4 items-center items-center justify-between">
-                      <small className="text-sm font-medium leading-none text-muted-foreground">{item.label}</small>
+                      <small className="text-sm font-medium text-muted-foreground">{item.label}</small>
                       <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                     </div>
                     <div className="mt-2 text-2xl font-semibold text-foreground">{item.value(metrics)}</div>
@@ -99,8 +99,8 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
                   <div className="flex gap-4 items-center items-center justify-between">
-                    <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Confirmation rate</small>
-                    <small className="text-sm font-medium leading-none text-muted-foreground">{appointmentFill}%</small>
+                    <small className="text-sm font-medium font-medium text-muted-foreground">Confirmation rate</small>
+                    <small className="text-sm font-medium text-muted-foreground">{appointmentFill}%</small>
                   </div>
                   <Progress value={appointmentFill} aria-label="Confirmation rate progress" />
                 </div>

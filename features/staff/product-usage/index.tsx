@@ -9,7 +9,7 @@ interface ProductUsageFeatureProps {
 export function ProductUsageFeature({ productUsage }: ProductUsageFeatureProps) {
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Product Usage History</h1>
+      <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Product Usage History</h1>
       <ProductUsageList productUsage={productUsage} />
     </div>
   )

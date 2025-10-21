@@ -21,7 +21,7 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Total Events (24h)</p>
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.totalEvents}</h4>
+            <h4 className="scroll-m-20 text-xl font-semibold">{stats.totalEvents}</h4>
           </div>
         </div>
       </Card>
@@ -33,7 +33,7 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Success Rate</p>
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.successRate.toFixed(1)}%</h4>
+            <h4 className="scroll-m-20 text-xl font-semibold">{stats.successRate.toFixed(1)}%</h4>
           </div>
         </div>
       </Card>
@@ -45,7 +45,7 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Failed Actions</p>
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.failedActions}</h4>
+            <h4 className="scroll-m-20 text-xl font-semibold">{stats.failedActions}</h4>
           </div>
         </div>
       </Card>
@@ -57,7 +57,7 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Critical Events</p>
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.criticalEvents}</h4>
+            <h4 className="scroll-m-20 text-xl font-semibold">{stats.criticalEvents}</h4>
           </div>
         </div>
       </Card>
@@ -69,7 +69,7 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Warnings</p>
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{stats.warningEvents}</h4>
+            <h4 className="scroll-m-20 text-xl font-semibold">{stats.warningEvents}</h4>
           </div>
         </div>
       </Card>

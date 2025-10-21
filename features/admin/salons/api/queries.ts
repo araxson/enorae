@@ -6,7 +6,13 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 type AdminSalonRow = Database['public']['Views']['admin_salons_overview']['Row']
 type SalonSettingsRow = Database['organization']['Tables']['salon_settings']['Row']
-type SalonBaseRow = { id: string; is_verified?: boolean | null }
+type SalonBaseRow = {
+  id: string
+  is_verified?: boolean | null
+  slug?: string | null
+  business_name?: string | null
+  business_type?: string | null
+}
 
 export type LicenseStatus = 'valid' | 'expiring' | 'expired' | 'unknown'
 export type ComplianceLevel = 'low' | 'medium' | 'high'
@@ -108,6 +114,10 @@ export type AdminSalon = AdminSalonRow & {
   complianceIssues: string[]
   healthScore: number
   staffCapacityRatio: number
+  subscriptionTier: string | null
+  business_name: string | null
+  slug: string | null
+  businessType: string | null
 }
 
 export interface SalonDashboardStats {
@@ -117,6 +127,8 @@ export interface SalonDashboardStats {
   expiringLicenses: number
   highRisk: number
   averageCompliance: number
+  byTier: Record<string, number>
+  byType: Record<string, number>
 }
 
 export interface SalonInsights {
@@ -167,13 +179,13 @@ export async function getAllSalons(): Promise<SalonsResponse> {
       ? supabase
           .schema('organization')
           .from('salon_settings')
-          .select('salon_id, subscription_expires_at, is_accepting_bookings, max_staff')
+          .select('salon_id, subscription_expires_at, subscription_tier, is_accepting_bookings, max_staff')
           .in('salon_id', salonIds)
       : { data: [], error: null },
     salonIds.length
       ? supabase
           .from('salons')
-          .select('id, is_verified')
+          .select('id, is_verified, slug, business_name, business_type')
           .in('id', salonIds)
       : { data: [], error: null },
   ])
@@ -228,6 +240,10 @@ export async function getAllSalons(): Promise<SalonsResponse> {
       complianceIssues: compliance.issues,
       healthScore,
       staffCapacityRatio,
+      subscriptionTier: settings?.subscription_tier ?? null,
+      business_name: baseRecord?.business_name ?? null,
+      slug: baseRecord?.slug ?? null,
+      businessType: baseRecord?.business_type ?? null,
     }
   })
 
@@ -239,6 +255,8 @@ export async function getAllSalons(): Promise<SalonsResponse> {
         adminSalons.reduce((total, salon) => total + salon.complianceScore, 0) / adminSalons.length
       )
     : 0
+  const byTier = countBy(adminSalons, (salon) => salon.subscriptionTier ?? 'unassigned')
+  const byType = countBy(adminSalons, (salon) => salon.businessType ?? 'unknown')
 
   const stats: SalonDashboardStats = {
     total: adminSalons.length,
@@ -247,6 +265,8 @@ export async function getAllSalons(): Promise<SalonsResponse> {
     expiringLicenses: expiring.length,
     highRisk: highRisk.length,
     averageCompliance,
+    byTier,
+    byType,
   }
 
   const insights: SalonInsights = {
@@ -278,10 +298,10 @@ export async function getAllSalonsLegacy(filters?: SalonFilters) {
   return { salons: filtered, stats }
 }
 
-function applySalonFilters(salons: EnhancedSalon[], filters: SalonFilters) {
+function applySalonFilters(salons: AdminSalon[], filters: SalonFilters) {
   return salons.filter((salon) => {
     const matchesChain = !filters.chain_id || salon.chain_id === filters.chain_id
-    const matchesTier = !filters.subscription_tier || salon.subscription_tier === filters.subscription_tier
+    const matchesTier = !filters.subscription_tier || salon.subscriptionTier === filters.subscription_tier
     const matchesSearch = !filters.search
       ? true
       : [salon.name, salon.business_name, salon.slug]

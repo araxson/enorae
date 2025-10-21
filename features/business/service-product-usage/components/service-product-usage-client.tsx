@@ -14,7 +14,7 @@ export function ServiceProductUsageClient({ initialUsage }: ServiceProductUsageC
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Service Product Usage</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">Service Product Usage</h2>
           <p className="text-sm text-muted-foreground mt-1">
             Map products to services for automatic cost tracking
           </p>

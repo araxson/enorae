@@ -56,7 +56,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
         <Card>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Profile Images</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">Profile Images</h3>
               <Separator />
               <ProfileImagesSection
                 avatarUrl={avatarUrl}
@@ -73,7 +73,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
         <Card>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Social Profiles</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">Social Profiles</h3>
               <Separator />
               <SocialProfilesSection defaults={socialProfiles} />
             </div>
@@ -83,7 +83,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
         <Card>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Interests & Tags</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">Interests & Tags</h3>
               <Separator />
               <InterestsTagsSection
                 interests={interests}

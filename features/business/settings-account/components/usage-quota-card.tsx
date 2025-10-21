@@ -8,7 +8,7 @@ export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
     <Card className="p-6">
       <div className="flex flex-col gap-8">
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Usage & Quotas</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold">Usage & Quotas</h3>
           <p className="text-sm text-muted-foreground">Current usage against your plan limits</p>
         </div>
 

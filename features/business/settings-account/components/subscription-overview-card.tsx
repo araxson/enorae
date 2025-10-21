@@ -54,7 +54,7 @@ export function SubscriptionOverviewCard({
       <div className="flex flex-col gap-8">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Current Subscription</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold">Current Subscription</h3>
             <p className="text-sm text-muted-foreground">Manage your plan and billing</p>
           </div>
           <Badge className={getTierColor(subscription.tier)}>

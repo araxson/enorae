@@ -8,7 +8,7 @@ export function WebhookErrorSection({ error }: ErrorSectionProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Error</h4>
+      <h4 className="scroll-m-20 text-xl font-semibold">Error</h4>
       <Alert variant="destructive" className="break-words">
         <AlertDescription>{error}</AlertDescription>
       </Alert>

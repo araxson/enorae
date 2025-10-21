@@ -130,12 +130,11 @@ export async function updateAppointmentService(formData: FormData): Promise<Muta
 
     const { data: appointmentService, error: fetchError } = await supabase
       .from('appointment_services')
-      .select('salon_id')
+      .select('appointment_id, salon_id')
       .eq('id', data.appointmentServiceId)
-      .in('salon_id', accessibleSalonIds)
-      .single()
+      .maybeSingle<Pick<Database['public']['Views']['appointment_services']['Row'], 'appointment_id' | 'salon_id'>>()
 
-    if (fetchError || !appointmentService) {
+    if (fetchError || !appointmentService?.salon_id || !accessibleSalonIds.includes(appointmentService.salon_id)) {
       return { error: 'Appointment service not found or unauthorized' }
     }
 
@@ -168,7 +167,6 @@ export async function updateAppointmentService(formData: FormData): Promise<Muta
       .from('appointment_services')
       .update(updates)
       .eq('id', data.appointmentServiceId)
-      .eq('salon_id', appointmentService.salon_id)
 
     if (updateError) {
       return { error: updateError.message }
@@ -203,25 +201,30 @@ export async function removeServiceFromAppointment(formData: FormData): Promise<
 
     const { data: appointmentService, error: fetchError } = await supabase
       .from('appointment_services')
-      .select('salon_id, appointment_id')
+      .select('appointment_id, salon_id')
       .eq('id', data.appointmentServiceId)
-      .in('salon_id', accessibleSalonIds)
-      .single()
+      .maybeSingle<Pick<Database['public']['Views']['appointment_services']['Row'], 'appointment_id' | 'salon_id'>>()
 
-    if (fetchError || !appointmentService) {
+    if (
+      fetchError ||
+      !appointmentService?.appointment_id ||
+      !appointmentService.salon_id ||
+      !accessibleSalonIds.includes(appointmentService.salon_id)
+    ) {
       return { error: 'Appointment service not found or unauthorized' }
     }
 
-    const { data: services, error: countError } = await supabase
+    const { count: serviceCount, error: countError } = await supabase
+      .schema('scheduling')
       .from('appointment_services')
-      .select('id')
+      .select('id', { count: 'exact', head: true })
       .eq('appointment_id', appointmentService.appointment_id)
 
     if (countError) {
       return { error: countError.message }
     }
 
-    if (services && services.length <= 1) {
+    if ((serviceCount ?? 0) <= 1) {
       return { error: 'Cannot remove the last service from an appointment' }
     }
 
@@ -230,7 +233,6 @@ export async function removeServiceFromAppointment(formData: FormData): Promise<
       .from('appointment_services')
       .delete()
       .eq('id', data.appointmentServiceId)
-      .eq('salon_id', appointmentService.salon_id)
 
     if (deleteError) {
       return { error: deleteError.message }
@@ -269,10 +271,9 @@ export async function updateServiceStatus(formData: FormData): Promise<MutationR
       .from('appointment_services')
       .select('salon_id')
       .eq('id', data.appointmentServiceId)
-      .in('salon_id', accessibleSalonIds)
-      .single()
+      .maybeSingle<Pick<Database['public']['Views']['appointment_services']['Row'], 'salon_id'>>()
 
-    if (fetchError || !appointmentService) {
+    if (!appointmentService?.salon_id || fetchError || !accessibleSalonIds.includes(appointmentService.salon_id)) {
       return { error: 'Appointment service not found or unauthorized' }
     }
 
@@ -284,7 +285,6 @@ export async function updateServiceStatus(formData: FormData): Promise<MutationR
         updated_by_id: session.user.id,
       })
       .eq('id', data.appointmentServiceId)
-      .eq('salon_id', appointmentService.salon_id)
 
     if (updateError) {
       return { error: updateError.message }
@@ -324,10 +324,9 @@ export async function adjustServicePricing(formData: FormData): Promise<Mutation
       .from('appointment_services')
       .select('salon_id, service_id')
       .eq('id', appointmentServiceId)
-      .in('salon_id', accessibleSalonIds)
-      .single()
+      .maybeSingle<Pick<Database['public']['Views']['appointment_services']['Row'], 'salon_id' | 'service_id'>>()
 
-    if (fetchError || !appointmentService) {
+    if (fetchError || !appointmentService?.salon_id || !accessibleSalonIds.includes(appointmentService.salon_id)) {
       return { error: 'Appointment service not found or unauthorized' }
     }
 

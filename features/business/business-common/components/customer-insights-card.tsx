@@ -49,19 +49,19 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             <div className="text-center p-4 rounded-lg bg-muted/50">
               <Users className="h-5 w-5 mx-auto mb-2 text-muted-foreground" />
               <div className="text-2xl font-bold">{data.totalCustomers}</div>
-              <small className="text-sm font-medium leading-none text-muted-foreground">Total Customers</small>
+              <small className="text-sm font-medium text-muted-foreground">Total Customers</small>
             </div>
 
             <div className="text-center p-4 rounded-lg bg-muted/50">
               <UserPlus className="h-5 w-5 mx-auto mb-2 text-success" />
               <div className="text-2xl font-bold">{data.newCustomers}</div>
-              <small className="text-sm font-medium leading-none text-muted-foreground">New ({newCustomerPercentage}%)</small>
+              <small className="text-sm font-medium text-muted-foreground">New ({newCustomerPercentage}%)</small>
             </div>
 
             <div className="text-center p-4 rounded-lg bg-muted/50">
               <Repeat className="h-5 w-5 mx-auto mb-2 text-info" />
               <div className="text-2xl font-bold">{data.returningCustomers}</div>
-              <small className="text-sm font-medium leading-none text-muted-foreground">Returning</small>
+              <small className="text-sm font-medium text-muted-foreground">Returning</small>
             </div>
 
             <div className="text-center p-4 rounded-lg bg-muted/50">
@@ -73,7 +73,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                 )}
               </div>
               <div className="text-2xl font-bold">{data.retentionRate.toFixed(1)}%</div>
-              <small className="text-sm font-medium leading-none text-muted-foreground">Retention Rate</small>
+              <small className="text-sm font-medium text-muted-foreground">Retention Rate</small>
             </div>
           </div>
 
@@ -84,19 +84,19 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             <div className="p-4 rounded-lg border">
               <div className="flex gap-3 items-center mb-2">
                 <DollarSign className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">Avg Lifetime Value</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold text-base">Avg Lifetime Value</h3>
               </div>
               <div className="text-3xl font-bold">{formatCurrency(data.averageLifetimeValue)}</div>
-              <small className="text-sm font-medium leading-none text-muted-foreground">Per customer</small>
+              <small className="text-sm font-medium text-muted-foreground">Per customer</small>
             </div>
 
             <div className="p-4 rounded-lg border">
               <div className="flex gap-3 items-center mb-2">
                 <DollarSign className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">Avg Order Value</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold text-base">Avg Order Value</h3>
               </div>
               <div className="text-3xl font-bold">{formatCurrency(data.averageOrderValue)}</div>
-              <small className="text-sm font-medium leading-none text-muted-foreground">Per appointment</small>
+              <small className="text-sm font-medium text-muted-foreground">Per appointment</small>
             </div>
           </div>
 
@@ -105,7 +105,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             <>
               <Separator />
               <div>
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Top Customers</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Top Customers</h3>
                 <div className="flex flex-col gap-3">
                   {data.topCustomers.map((customer, index) => (
                     <div
@@ -115,13 +115,13 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                       <div className="flex-1">
                         <div className="font-medium">{customer.name}</div>
                         {customer.email && (
-                          <small className="text-sm font-medium leading-none text-muted-foreground">{customer.email}</small>
+                          <small className="text-sm font-medium text-muted-foreground">{customer.email}</small>
                         )}
                       </div>
                       <div className="flex gap-4 items-center">
                         <div className="text-right">
                           <div className="font-semibold">{formatCurrency(customer.totalSpent)}</div>
-                          <small className="text-sm font-medium leading-none text-muted-foreground">{customer.visitCount} visits</small>
+                          <small className="text-sm font-medium text-muted-foreground">{customer.visitCount} visits</small>
                         </div>
                         <Badge variant="secondary">#{index + 1}</Badge>
                       </div>

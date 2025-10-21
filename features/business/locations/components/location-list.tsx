@@ -86,7 +86,7 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                       <div className="flex flex-col gap-2">
                         <p className="text-sm text-muted-foreground">/{location.slug}</p>
                         {location.is_active ? (
-                          <small className="text-sm font-medium leading-none text-success">
+                          <small className="text-sm font-medium text-success">
                             Active
                           </small>
                         ) : (

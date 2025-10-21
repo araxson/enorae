@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { sanitizeAdminText } from '@/features/admin/admin-common'
-import type { Json } from '@/lib/types/database.types'
+import type { Json, Tables } from '@/lib/types/database.types'
 import {
   chainIdSchema,
   deleteChainSchema,
@@ -16,6 +16,8 @@ import {
 type ChainActionResponse =
   | { success: true; message: string }
   | { success: false; error: string }
+
+type SalonChainRow = Tables<{ schema: 'organization' }, 'salon_chains'>
 
 async function logChainAudit(
   supabase: ReturnType<typeof createServiceRoleClient>,
@@ -66,10 +68,10 @@ export async function verifyChain(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .select('is_verified, verified_at')
       .eq('id', chainId)
-      .maybeSingle()
+      .maybeSingle<Pick<SalonChainRow, 'is_verified' | 'verified_at'>>()
 
     if (fetchError) {
       return { success: false, error: fetchError.message }
@@ -77,7 +79,7 @@ export async function verifyChain(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({
         is_verified: isVerified,
         verified_at: isVerified ? new Date().toISOString() : null,
@@ -129,10 +131,10 @@ export async function updateChainActiveStatus(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .select('is_active')
       .eq('id', chainId)
-      .maybeSingle()
+      .maybeSingle<Pick<SalonChainRow, 'is_active'>>()
 
     if (fetchError) {
       return { success: false, error: fetchError.message }
@@ -140,7 +142,7 @@ export async function updateChainActiveStatus(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({ is_active: isActive })
       .eq('id', chainId)
 
@@ -189,10 +191,10 @@ export async function updateChainSubscription(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .select('subscription_tier')
       .eq('id', chainId)
-      .maybeSingle()
+      .maybeSingle<Pick<SalonChainRow, 'subscription_tier'>>()
 
     if (fetchError) {
       return { success: false, error: fetchError.message }
@@ -200,7 +202,7 @@ export async function updateChainSubscription(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({
         subscription_tier: subscriptionTier,
       })
@@ -247,10 +249,10 @@ export async function deleteChain(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .select('is_active, deleted_at')
       .eq('id', chainId)
-      .maybeSingle()
+      .maybeSingle<Pick<SalonChainRow, 'is_active' | 'deleted_at'>>()
 
     if (fetchError) {
       return { success: false, error: fetchError.message }
@@ -258,7 +260,7 @@ export async function deleteChain(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({
         deleted_at: new Date().toISOString(),
         is_active: false,
@@ -300,7 +302,7 @@ export async function restoreChain(chainId: string): Promise<ChainActionResponse
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({
         deleted_at: null,
       })

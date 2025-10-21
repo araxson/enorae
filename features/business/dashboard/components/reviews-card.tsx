@@ -68,7 +68,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
           {/* Average Rating */}
           <div className="flex flex-col gap-6">
             <div>
-              <small className="text-sm font-medium leading-none text-muted-foreground">Average Rating</small>
+              <small className="text-sm font-medium text-muted-foreground">Average Rating</small>
               <div className="mt-1 flex items-baseline gap-2">
                 <div className="text-3xl font-bold">{stats.averageRating.toFixed(1)}</div>
                 <div className="flex items-center gap-2">
@@ -84,7 +84,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                   })}
                 </div>
               </div>
-              <small className="text-sm font-medium leading-none text-muted-foreground mt-1">
+              <small className="text-sm font-medium text-muted-foreground mt-1">
                 Based on {stats.totalReviews} {stats.totalReviews === 1 ? 'review' : 'reviews'}
               </small>
             </div>
@@ -97,7 +97,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                   <TooltipTrigger asChild>
                     <div className="flex items-center gap-2 rounded-md border px-2 py-1">
                       <MessageSquare className="h-4 w-4 text-warning" />
-                      <small className="text-sm font-medium leading-none">
+                      <small className="text-sm font-medium">
                         <Badge variant="outline" className="ml-1">
                           {stats.pendingResponses}
                         </Badge>{' '}
@@ -113,7 +113,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                   <TooltipTrigger asChild>
                     <div className="flex items-center gap-2 rounded-md border px-2 py-1">
                       <AlertTriangle className="h-4 w-4 text-destructive" />
-                      <small className="text-sm font-medium leading-none">
+                      <small className="text-sm font-medium">
                         <Badge variant="destructive" className="ml-1">
                           {stats.flaggedCount}
                         </Badge>{' '}
@@ -129,14 +129,14 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
 
           {/* Rating Distribution */}
           <div className="flex flex-col gap-2">
-            <small className="text-sm font-medium leading-none text-muted-foreground">Rating Distribution</small>
+            <small className="text-sm font-medium text-muted-foreground">Rating Distribution</small>
             {stats.ratingDistribution.map(({ rating, count }) => {
               const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
               return (
                 <div key={rating} className="flex items-center gap-2">
-                  <small className="text-sm font-medium leading-none w-12 text-right">{rating} stars</small>
+                  <small className="text-sm font-medium w-12 text-right">{rating} stars</small>
                   <Progress value={percentage} className="flex-1 h-2" />
-                  <small className="text-sm font-medium leading-none w-8 text-muted-foreground">{count}</small>
+                  <small className="text-sm font-medium w-8 text-muted-foreground">{count}</small>
                 </div>
               )
             })}

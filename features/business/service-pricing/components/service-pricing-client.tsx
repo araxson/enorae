@@ -42,7 +42,7 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
       <div className="flex flex-col gap-8">
         <div className="flex gap-4 items-start justify-between">
           <div>
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Service Pricing</h1>
+            <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Service Pricing</h1>
             <p className="text-sm text-muted-foreground">
               Manage pricing for your salon services
             </p>
@@ -53,14 +53,14 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
         <div className="flex gap-4">
           <Card className="w-full">
             <CardContent className="p-4">
-              <small className="text-sm font-medium leading-none">Total Services</small>
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{pricing.length}</h3>
+              <small className="text-sm font-medium">Total Services</small>
+              <h3 className="scroll-m-20 text-2xl font-semibold">{pricing.length}</h3>
             </CardContent>
           </Card>
           <Card className="w-full">
             <CardContent className="p-4">
-              <small className="text-sm font-medium leading-none">Average Price</small>
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              <small className="text-sm font-medium">Average Price</small>
+              <h3 className="scroll-m-20 text-2xl font-semibold">
                 ${avgPrice.toFixed(2)}
               </h3>
             </CardContent>

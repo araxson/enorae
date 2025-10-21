@@ -39,7 +39,7 @@ export function BusinessInsightsDashboard({
       {/* Alerts Section */}
       {alerts.length > 0 && (
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Active Alerts</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Active Alerts</h3>
           <div className="flex flex-col gap-6">
             {alerts.map((alert) => (
               <Alert
@@ -69,14 +69,14 @@ export function BusinessInsightsDashboard({
 
       {/* Trend Insights */}
       <div>
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Trend Analysis</h3>
+        <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Trend Analysis</h3>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {trends.map((trend, idx) => (
             <Card key={idx} className="p-6">
               <div className="flex flex-col gap-6">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{trend.metric}</h4>
+                    <h4 className="scroll-m-20 text-xl font-semibold">{trend.metric}</h4>
                     <p className="text-sm text-muted-foreground">{trend.message}</p>
                   </div>
                   {trend.trend === 'up' ? (
@@ -112,7 +112,7 @@ export function BusinessInsightsDashboard({
       {/* AI Recommendations */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">AI-Powered Recommendations</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold">AI-Powered Recommendations</h3>
           <Badge variant="outline" className="gap-1">
             <Lightbulb className="h-3 w-3" />
             {recommendations.length} insights
@@ -125,7 +125,7 @@ export function BusinessInsightsDashboard({
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="mb-2 flex items-center gap-4">
-                      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{rec.title}</h4>
+                      <h4 className="scroll-m-20 text-xl font-semibold">{rec.title}</h4>
                       <Badge variant={
                         rec.priority === 'high' ? 'destructive' :
                         rec.priority === 'medium' ? 'default' :
@@ -164,7 +164,7 @@ export function BusinessInsightsDashboard({
             <Card className="p-8">
               <div className="flex flex-col items-center gap-4 text-center">
                 <CheckCircle2 className="h-12 w-12 text-success" />
-                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">All Systems Optimal</h4>
+                <h4 className="scroll-m-20 text-xl font-semibold">All Systems Optimal</h4>
                 <p className="text-sm text-muted-foreground">Your business metrics are performing well. Keep up the great work!</p>
               </div>
             </Card>
@@ -175,14 +175,14 @@ export function BusinessInsightsDashboard({
       {/* Growth Opportunities */}
       {opportunities.length > 0 && (
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Growth Opportunities</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Growth Opportunities</h3>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {opportunities.map((opp, idx) => (
               <Card key={idx} className="p-6">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-4">
                     <TrendingUpIcon className="h-5 w-5 text-primary" />
-                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{opp.title}</h4>
+                    <h4 className="scroll-m-20 text-xl font-semibold">{opp.title}</h4>
                   </div>
                   <p className="leading-7 text-sm">{opp.description}</p>
                   <div className="bg-primary/10 p-2 rounded-md">

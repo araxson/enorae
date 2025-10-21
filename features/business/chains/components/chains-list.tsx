@@ -91,9 +91,9 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {chain.total_staff_count !== null && chain.total_staff_count > 0 && (
+                {chain.staff_count !== null && chain.staff_count > 0 && (
                   <div className="text-sm text-muted-foreground">
-                    {chain.total_staff_count} staff members
+                    {chain.staff_count} staff members
                   </div>
                 )}
                 <div className="flex gap-2">

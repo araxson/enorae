@@ -63,7 +63,7 @@ export function RevenueMetricCard({
       <CardContent className="space-y-2">
         <div className="text-3xl font-bold">{amountLabel}</div>
         {highlight}
-        <small className="text-sm font-medium leading-none text-xs text-muted-foreground">{description}</small>
+        <small className="text-sm font-medium text-xs text-muted-foreground">{description}</small>
       </CardContent>
     </Card>
   )

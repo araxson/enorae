@@ -19,7 +19,7 @@ export function WebhookStatusSection({ webhook }: WebhookStatusSectionProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-4 items-center">
-        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-0">Status</h4>
+        <h4 className="scroll-m-20 text-xl font-semibold mb-0">Status</h4>
         <Badge variant={STATUS_COLORS[statusKey] ?? 'secondary'}>
           {webhook.status ?? 'pending'}
         </Badge>
@@ -56,8 +56,8 @@ type DetailRowProps = {
 function DetailRow({ label, value }: DetailRowProps) {
   return (
     <div className="flex gap-3">
-      <small className={cn('text-sm font-medium leading-none', `text-muted-foreground ${LABEL_WIDTH}`)}>{label}:</small>
-      <small className="text-sm font-medium leading-none break-all">{value}</small>
+      <small className={cn('text-sm font-medium', `text-muted-foreground ${LABEL_WIDTH}`)}>{label}:</small>
+      <small className="text-sm font-medium break-all">{value}</small>
     </div>
   )
 }

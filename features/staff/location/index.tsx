@@ -14,13 +14,13 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Location Information</h1>
+        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Location Information</h1>
         <p className="text-sm text-muted-foreground">Your assigned salon location and other branches</p>
       </div>
 
       {myLocation ? (
         <div className="flex flex-col gap-4">
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Your Location</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">Your Location</h2>
           <LocationCard location={myLocation} />
         </div>
       ) : (
@@ -34,7 +34,7 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
 
       {allLocations.length > 1 && (
         <div className="flex flex-col gap-4">
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">All Salon Locations</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">All Salon Locations</h2>
           <AllLocationsList
             locations={allLocations}
             currentLocationId={myLocation?.id}

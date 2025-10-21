@@ -28,7 +28,7 @@ export async function BusinessTimeOff() {
       <div className="flex flex-col gap-8">
         {pendingRequests.length > 0 && (
           <div className="rounded-lg bg-secondary/10 p-4 border">
-            <small className="text-sm font-medium leading-none font-semibold">
+            <small className="text-sm font-medium font-semibold">
               {pendingRequests.length} pending request{pendingRequests.length !== 1 ? 's' : ''} need review
             </small>
           </div>

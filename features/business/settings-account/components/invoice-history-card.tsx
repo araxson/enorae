@@ -10,7 +10,7 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
     <Card className="p-6">
       <div className="flex flex-col gap-6">
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Invoice History</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold">Invoice History</h3>
           <p className="text-sm text-muted-foreground">Download your past invoices</p>
         </div>
 

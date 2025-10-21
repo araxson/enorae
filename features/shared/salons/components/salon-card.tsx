@@ -81,9 +81,9 @@ export function SalonCard({
           {rating !== undefined && (
             <div className="flex gap-2 items-center">
               <Star className="h-4 w-4 text-warning" fill="currentColor" />
-              <small className="text-sm font-medium leading-none font-medium">{rating.toFixed(1)}</small>
+              <small className="text-sm font-medium font-medium">{rating.toFixed(1)}</small>
               {reviewCount !== undefined && (
-                <small className="text-sm font-medium leading-none text-muted-foreground">
+                <small className="text-sm font-medium text-muted-foreground">
                   ({reviewCount} reviews)
                 </small>
               )}
@@ -101,12 +101,12 @@ export function SalonCard({
           )}
           <div className="flex gap-2 items-center">
             <MapPin className="h-4 w-4 text-muted-foreground" />
-            <small className="text-sm font-medium leading-none text-muted-foreground">{location}</small>
+            <small className="text-sm font-medium text-muted-foreground">{location}</small>
           </div>
           {hours && (
             <div className="flex gap-2 items-center">
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <small className="text-sm font-medium leading-none text-muted-foreground">{hours}</small>
+              <small className="text-sm font-medium text-muted-foreground">{hours}</small>
             </div>
           )}
           <SalonStats staffCount={staffCount} servicesCount={servicesCount} />

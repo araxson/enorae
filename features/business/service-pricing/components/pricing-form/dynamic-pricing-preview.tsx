@@ -110,12 +110,12 @@ export function DynamicPricingPreview({ serviceId, currencyCode }: DynamicPricin
           </div>
 
           {formattedPrice && !error && (
-            <small className="text-sm font-medium leading-none">
+            <small className="text-sm font-medium">
               Calculated price: <span className="font-semibold text-primary">{formattedPrice}</span>
             </small>
           )}
 
-          {error && <small className="text-sm font-medium leading-none text-destructive">{error}</small>}
+          {error && <small className="text-sm font-medium text-destructive">{error}</small>}
 
           {!serviceId && (
             <p className="text-sm text-muted-foreground text-xs">

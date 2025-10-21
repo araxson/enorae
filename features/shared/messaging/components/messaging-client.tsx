@@ -26,7 +26,7 @@ export function MessagingClient({ threads, salonId }: MessagingClientProps) {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-2xl font-semibold">Messages</h1>
+          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl text-2xl font-semibold">Messages</h1>
           <p className="leading-7 text-muted-foreground">
             Communicate with salons about your appointments.
           </p>

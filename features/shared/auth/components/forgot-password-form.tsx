@@ -65,7 +65,7 @@ export function ForgotPasswordForm() {
                 </AlertDescription>
               </Alert>
 
-              <small className="text-sm font-medium leading-none text-center text-muted-foreground">
+              <small className="text-sm font-medium text-center text-muted-foreground">
                 Didn&apos;t receive the email? Check your spam folder or{' '}
                 <button
                   type="button"
@@ -123,7 +123,7 @@ export function ForgotPasswordForm() {
                   required
                   autoFocus
                 />
-                <small className="text-sm font-medium leading-none text-muted-foreground">
+                <small className="text-sm font-medium text-muted-foreground">
                   We&apos;ll send a password reset link to this email
                 </small>
               </div>

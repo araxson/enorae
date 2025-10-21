@@ -37,7 +37,7 @@ export function StaffSummaryGrid({ summaries }: StaffSummaryGridProps) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <p className="text-2xl font-semibold tracking-tight">{summary.value}</p>
+              <p className="text-2xl font-semibold">{summary.value}</p>
               {summary.helper ? <p className="text-xs text-muted-foreground">{summary.helper}</p> : null}
             </CardContent>
           </Card>

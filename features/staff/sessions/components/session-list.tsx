@@ -70,7 +70,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
               <div className="flex flex-col gap-3 flex-1">
                 <div className="flex gap-3 items-center">
                   {getDeviceIcon(session.device_type)}
-                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{session.device_name || 'Unknown Device'}</h3>
+                  <h3 className="scroll-m-20 text-2xl font-semibold">{session.device_name || 'Unknown Device'}</h3>
                   {isCurrent && (
                     <Badge variant="default">Current</Badge>
                   )}

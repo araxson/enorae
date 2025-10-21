@@ -86,9 +86,7 @@ export function CustomerInsightsDashboard({
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{summary.total_customers}</div>
-            <p className="text-xs text-muted-foreground">
-              {summary.active_customers} active
-            </p>
+            <p className="text-xs text-muted-foreground">{summary.active_customers} active</p>
           </CardContent>
         </Card>
 
@@ -116,9 +114,7 @@ export function CustomerInsightsDashboard({
             <div className="text-2xl font-bold">
               {formatPercentage(summary.retention_rate)}
             </div>
-            <p className="text-xs text-muted-foreground">
-              Customer retention
-            </p>
+            <p className="text-xs text-muted-foreground">Customer retention</p>
           </CardContent>
         </Card>
 
@@ -193,7 +189,7 @@ export function CustomerInsightsDashboard({
                     >
                       <div className="space-y-2 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium">{customer.customer_name}</span>
+                          <span className="font-semibold">{customer.customer_name}</span>
                           <Badge variant="outline" className="flex items-center gap-1">
                             {getSegmentIcon(customer.segment)}
                             <span>{customer.segment}</span>
@@ -202,22 +198,22 @@ export function CustomerInsightsDashboard({
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-muted-foreground">
                           <div>
-                            <span className="font-medium">{customer.total_visits}</span> visits
+                            <span className="font-semibold">{customer.total_visits}</span> visits
                           </div>
                           <div>
-                            <span className="font-medium">
+                            <span className="font-semibold">
                               {formatCurrency(customer.lifetime_value)}
                             </span>{' '}
                             LTV
                           </div>
                           <div>
-                            <span className="font-medium">{customer.favorite_service_name}</span>{' '}
+                            <span className="font-semibold">{customer.favorite_service_name}</span>{' '}
                             favorite
                           </div>
                           {customer.average_rating > 0 && (
                             <div className="flex items-center gap-1">
                               <Star className="h-3 w-3 fill-warning text-warning" />
-                              <span className="font-medium">{customer.average_rating.toFixed(1)}</span>
+                              <span className="font-semibold">{customer.average_rating.toFixed(1)}</span>
                             </div>
                           )}
                         </div>

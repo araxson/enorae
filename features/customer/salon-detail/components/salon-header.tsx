@@ -87,7 +87,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {/* Header with name and favorite button */}
           <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-3 flex-1">
-              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">{salon.name}</h2>
+              <h2 className="scroll-m-20 text-3xl font-semibold">{salon.name}</h2>
               {salon.short_description && (
                 <p className="leading-7 text-muted-foreground">{salon.short_description}</p>
               )}
@@ -106,9 +106,9 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
             {salon.rating && (
               <div className="flex gap-2 items-center">
                 <Star className="h-4 w-4 fill-warning text-warning" />
-                <small className="text-sm font-medium leading-none font-medium">{Number(salon.rating).toFixed(1)}</small>
+                <small className="text-sm font-medium font-medium">{Number(salon.rating).toFixed(1)}</small>
                 {salon.review_count && (
-                  <small className="text-sm font-medium leading-none text-muted-foreground">
+                  <small className="text-sm font-medium text-muted-foreground">
                     ({salon.review_count} {salon.review_count === 1 ? 'review' : 'reviews'})
                   </small>
                 )}
@@ -117,7 +117,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
             {salon.full_address && (
               <div className="flex gap-2 items-center">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
-                <small className="text-sm font-medium leading-none text-muted-foreground">{salon.full_address}</small>
+                <small className="text-sm font-medium text-muted-foreground">{salon.full_address}</small>
               </div>
             )}
           </div>

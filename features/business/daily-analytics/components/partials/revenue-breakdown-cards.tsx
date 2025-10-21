@@ -24,7 +24,7 @@ export function RevenueBreakdownCards({ aggregated }: Props) {
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-xl">{formatCurrency(aggregated.serviceRevenue)}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold text-xl">{formatCurrency(aggregated.serviceRevenue)}</h3>
             <p className="text-sm text-muted-foreground text-xs">{serviceShare.toFixed(1)}% of total</p>
           </div>
         </CardContent>
@@ -39,7 +39,7 @@ export function RevenueBreakdownCards({ aggregated }: Props) {
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-xl">{formatCurrency(aggregated.productRevenue)}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold text-xl">{formatCurrency(aggregated.productRevenue)}</h3>
             <p className="text-sm text-muted-foreground text-xs">{productShare.toFixed(1)}% of total</p>
           </div>
         </CardContent>

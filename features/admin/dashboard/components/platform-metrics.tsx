@@ -184,7 +184,7 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
     <section className="flex flex-col gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-lg font-semibold tracking-tight">Platform metrics</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold text-lg font-semibold">Platform metrics</h2>
           <p className="leading-7 text-sm text-muted-foreground">
             Core KPIs refresh every minute so you can respond quickly.
           </p>

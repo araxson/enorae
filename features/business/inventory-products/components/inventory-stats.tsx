@@ -46,7 +46,7 @@ export function InventoryStats({ stats }: InventoryStatsProps) {
               <div className="flex gap-4 items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">{card.label}</p>
-                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mt-2">{card.value}</h3>
+                  <h3 className="scroll-m-20 text-2xl font-semibold mt-2">{card.value}</h3>
                 </div>
                 <card.icon className={`h-8 w-8 ${card.color}`} />
               </div>

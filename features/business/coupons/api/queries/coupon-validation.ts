@@ -1,6 +1,4 @@
-import 'server-only'
-import { createClient } from '@/lib/supabase/server'
-import type { Database } from '@/lib/types/database.types'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '../coupons.mutations'
 
 interface CouponValidationResult {
   is_valid: boolean
@@ -61,134 +59,26 @@ export async function validateCoupon(
   customerId: string,
   amount: number
 ): Promise<CouponValidationResult> {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  const { data, error } = await supabase
-    .rpc('validate_coupon', {
-      p_coupon_code: couponCode,
-      p_salon_id: salonId,
-      p_customer_id: customerId,
-      p_amount: amount,
-    })
-    .single()
-
-  if (error) throw error
-  return data as CouponValidationResult
+  return {
+    is_valid: false,
+    discount_amount: 0,
+    discount_type: 'unsupported',
+    error_message: COUPONS_UNSUPPORTED_MESSAGE,
+  }
 }
 
 export async function getCouponAnalytics(salonId: string): Promise<CouponAnalyticsSnapshot> {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  const { data, error } = await supabase
-    .from('catalog_coupons')
-    .select('*')
-    .eq('salon_id', salonId)
-    .is('deleted_at', null)
-    .order('created_at', { ascending: false })
-
-  if (error) throw error
-
-  const coupons = (data || []) as CouponRow[]
-  if (coupons.length === 0) {
-    return {
-      coupons: [],
-      usage: [],
-    }
-  }
-
-  const { data: usageRows, error: usageError } = await supabase
-    .from('catalog_coupon_usage')
-    .select('coupon_id, coupon_code, customer_id, discount_amount, created_at, appointment_id')
-    .in(
-      'coupon_id',
-      coupons.map((coupon) => coupon.id)
-    )
-
-  if (usageError) throw usageError
-
-  const usage = (usageRows || []) as CouponUsageRow[]
-  const statsMap = new Map<string, CouponWithStats['stats']>()
-
-  for (const coupon of coupons) {
-    statsMap.set(coupon.id, {
-      totalUses: 0,
-      uniqueCustomers: 0,
-      totalDiscount: 0,
-      averageDiscount: 0,
-      lastUsedAt: null,
-    })
-  }
-
-  usage.forEach((entry) => {
-    const stats = statsMap.get(entry.coupon_id)
-    if (!stats) return
-
-    stats.totalUses += 1
-    stats.totalDiscount += Number(entry.discount_amount || 0)
-    stats.lastUsedAt =
-      !stats.lastUsedAt || (entry.created_at && entry.created_at > stats.lastUsedAt)
-        ? entry.created_at
-        : stats.lastUsedAt
-  })
-
-  // Compute unique customers and averages
-  const uniqueCustomersByCoupon = usage.reduce<Record<string, Set<string>>>((acc, entry) => {
-    if (!entry.coupon_id || !entry.customer_id) return acc
-    if (!acc[entry.coupon_id]) {
-      acc[entry.coupon_id] = new Set<string>()
-    }
-    acc[entry.coupon_id].add(entry.customer_id)
-    return acc
-  }, {})
-
-  statsMap.forEach((stats, couponId) => {
-    const uniqueCount = uniqueCustomersByCoupon[couponId]?.size ?? 0
-    stats.uniqueCustomers = uniqueCount
-    stats.averageDiscount = stats.totalUses > 0 ? stats.totalDiscount / stats.totalUses : 0
-  })
-
-  const enrichedCoupons = coupons.map((coupon) => ({
-    ...coupon,
-    stats: statsMap.get(coupon.id) ?? {
-      totalUses: 0,
-      uniqueCustomers: 0,
-      totalDiscount: 0,
-      averageDiscount: 0,
-      lastUsedAt: null,
-    },
-  }))
-
   return {
-    coupons: enrichedCoupons,
-    usage,
+    coupons: [],
+    usage: [],
   }
 }
 
 export async function getCouponUsageStats(couponId: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  const { data, error } = await supabase
-    .from('catalog_coupon_usage')
-    .select('*')
-    .eq('coupon_id', couponId)
-
-  if (error) throw error
-
-  const usageEntries = (data ?? []) as CouponUsageRow[]
-
   return {
-    total_uses: usageEntries.length,
-    unique_customers: new Set(usageEntries.map((u) => u.customer_id).filter(Boolean)).size,
-    total_discount: usageEntries.reduce(
-      (sum, u) => sum + Number(u.discount_amount || 0),
-      0
-    ),
+    total_uses: 0,
+    unique_customers: 0,
+    total_discount: 0,
   }
 }
 

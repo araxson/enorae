@@ -3,7 +3,9 @@
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import type { Database, Json } from '@/lib/types/database.types'
+import type { Database, Json, Tables } from '@/lib/types/database.types'
+
+type SalonReviewViewRow = Tables<'salon_reviews_view'>
 
 /**
  * Approve flagged review and mark as verified
@@ -21,12 +23,15 @@ export async function approveReview(formData: FormData) {
     const supabase = createServiceRoleClient()
 
     // Get review details
-    const { data: review } = await supabase
-      .schema('engagement')
+    const { data: review, error: reviewError } = await supabase
       .from('salon_reviews_view')
       .select('customer_id, salon_id, is_flagged')
       .eq('id', reviewId)
-      .single<{ customer_id: string; salon_id: string; is_flagged: boolean }>()
+      .maybeSingle<Pick<SalonReviewViewRow, 'customer_id' | 'salon_id' | 'is_flagged'>>()
+
+    if (reviewError) {
+      return { error: reviewError.message }
+    }
 
     if (!review) {
       return { error: 'Review not found' }
@@ -40,11 +45,7 @@ export async function approveReview(formData: FormData) {
       deleted_at: null,
     }
 
-    const { error } = await supabase
-      .schema('engagement')
-      .from('salon_reviews_view')
-      .update(updatePayload)
-      .eq('id', reviewId)
+    const { error } = await supabase.schema('engagement').from('salon_reviews').update(updatePayload).eq('id', reviewId)
 
     if (error) return { error: error.message }
 

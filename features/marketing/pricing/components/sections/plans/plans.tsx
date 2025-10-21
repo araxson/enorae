@@ -8,7 +8,7 @@ export function Plans() {
   return (
     <section className="bg-background">
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-16 sm:px-6 lg:px-8">
-        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-center text-3xl font-bold">{plansData.title}</h2>
+        <h2 className="scroll-m-20 text-3xl font-semibold text-center text-3xl font-bold">{plansData.title}</h2>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {plansData.plans.map((plan) => (
@@ -25,7 +25,7 @@ export function Plans() {
                 <CardTitle>{plan.name}</CardTitle>
                 <CardDescription>{plan.description}</CardDescription>
                 <div className="pt-4">
-                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-3xl font-semibold">
+                  <h3 className="scroll-m-20 text-2xl font-semibold text-3xl font-semibold">
                     {plan.price}
                     <span className="ml-1 text-sm font-normal text-muted-foreground">
                       {plan.period}

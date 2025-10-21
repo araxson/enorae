@@ -70,7 +70,7 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
     <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-1">Real-Time Security Overview</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold mb-1">Real-Time Security Overview</h2>
           <p className="block text-sm text-muted-foreground">
             Streaming telemetry from Supabase security logs. Last updated {lastUpdatedLabel}.
           </p>

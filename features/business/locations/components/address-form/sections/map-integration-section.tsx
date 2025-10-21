@@ -97,7 +97,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
       <CardContent>
         <div className="flex flex-col gap-6">
           <div className="flex gap-4 items-center justify-between">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Map & Coordinates</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold">Map & Coordinates</h3>
             <MapPin className="h-5 w-5 text-muted-foreground" />
           </div>
           <Separator />

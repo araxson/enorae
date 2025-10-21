@@ -72,7 +72,7 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
       {/* Services Offered */}
       {profile.services && profile.services.length > 0 && (
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Services Offered</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Services Offered</h3>
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             {profile.services.map((service) => (
               <Card key={service.id}>

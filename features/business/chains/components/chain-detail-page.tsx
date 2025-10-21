@@ -28,7 +28,7 @@ export async function ChainDetail({ chainId }: ChainDetailProps) {
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{chain.name}</h1>
+            <h1 className="text-3xl font-bold">{chain.name}</h1>
             {chain.legal_name && (
               <p className="text-muted-foreground">{chain.legal_name}</p>
             )}

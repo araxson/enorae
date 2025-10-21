@@ -14,7 +14,7 @@ export async function unflagReview(formData: FormData) {
 
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .update({ is_flagged: false, flagged_reason: null })
       .eq('id', reviewId)
 

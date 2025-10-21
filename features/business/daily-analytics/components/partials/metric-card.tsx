@@ -24,7 +24,7 @@ export function MetricCard({ title, value, trend, icon: Icon, subtitle }: Props)
             <Icon className="h-4 w-4 text-muted-foreground" />
           </div>
           <div className="flex items-end justify-between">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{value}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold">{value}</h3>
             {trend !== undefined && (
               <Badge variant={trend >= 0 ? 'default' : 'destructive'} className="flex items-center gap-1">
                 {trend >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}

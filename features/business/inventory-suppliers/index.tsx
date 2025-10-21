@@ -20,19 +20,19 @@ export async function Suppliers() {
           <Card>
             <CardContent>
               <p className="text-sm text-muted-foreground">Total Suppliers</p>
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{suppliers.length}</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">{suppliers.length}</h3>
             </CardContent>
           </Card>
           <Card>
             <CardContent>
               <p className="text-sm text-muted-foreground">Active</p>
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{activeCount}</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">{activeCount}</h3>
             </CardContent>
           </Card>
           <Card>
             <CardContent>
               <p className="text-sm text-muted-foreground">Inactive</p>
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-muted-foreground">{inactiveCount}</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold text-muted-foreground">{inactiveCount}</h3>
             </CardContent>
           </Card>
         </div>

@@ -61,7 +61,7 @@ function PreferenceToggle({ id, label, description, defaultChecked }: Preference
         </label>
         <Switch id={id} defaultChecked={defaultChecked} />
       </div>
-      <small className="text-sm font-medium leading-none text-xs text-muted-foreground">{description}</small>
+      <small className="text-sm font-medium text-xs text-muted-foreground">{description}</small>
     </div>
   )
 }

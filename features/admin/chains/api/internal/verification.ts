@@ -7,6 +7,9 @@ import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-saniti
 import { verifyChainSchema, updateChainActiveStatusSchema } from '../schemas'
 import type { ChainActionResponse } from './types'
 import { logChainAudit } from './audit'
+import type { Tables } from '@/lib/types/database.types'
+
+type SalonChainRow = Tables<{ schema: 'organization' }, 'salon_chains'>
 
 /**
  * Approve/verify a salon chain
@@ -30,10 +33,10 @@ export async function verifyChain(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .select('is_verified, verified_at')
       .eq('id', chainId)
-      .maybeSingle()
+      .maybeSingle<Pick<SalonChainRow, 'is_verified' | 'verified_at'>>()
 
     if (fetchError) {
       return { success: false, error: fetchError.message }
@@ -41,7 +44,7 @@ export async function verifyChain(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({
         is_verified: isVerified,
         verified_at: isVerified ? new Date().toISOString() : null,
@@ -93,10 +96,10 @@ export async function updateChainActiveStatus(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .select('is_active')
       .eq('id', chainId)
-      .maybeSingle()
+      .maybeSingle<Pick<SalonChainRow, 'is_active'>>()
 
     if (fetchError) {
       return { success: false, error: fetchError.message }
@@ -104,7 +107,7 @@ export async function updateChainActiveStatus(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({ is_active: isActive })
       .eq('id', chainId)
 

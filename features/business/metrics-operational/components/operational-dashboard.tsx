@@ -33,7 +33,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">Operational Intelligence</h2>
+        <h2 className="text-2xl font-bold">Operational Intelligence</h2>
         <p className="text-sm text-muted-foreground">Real-time operational insights and forecasting</p>
       </div>
 

@@ -24,18 +24,33 @@ export function SalonsClient({ salons, stats, insights }: SalonsClientProps) {
   const filteredSalons = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase()
 
+    const tierAliases: Record<string, string[]> = {
+      basic: ['starter'],
+      premium: ['professional'],
+      enterprise: ['enterprise', 'custom'],
+    }
+
     return salons.filter((salon) => {
       const matchesSearch =
         !normalizedQuery ||
-        salon.name?.toLowerCase().includes(normalizedQuery)
+        [salon.name, salon.business_name, salon.slug]
+          .filter(Boolean)
+          .some((value) => value!.toLowerCase().includes(normalizedQuery))
+
+      const subscriptionTier = salon.subscriptionTier?.toLowerCase() ?? 'unassigned'
+      const normalizedTierFilter = tierFilter.toLowerCase()
+      const matchesTier =
+        normalizedTierFilter === 'all' ||
+        subscriptionTier === normalizedTierFilter ||
+        tierAliases[normalizedTierFilter]?.includes(subscriptionTier) === true
 
       const matchesLicense = licenseFilter === 'all' || salon.licenseStatus === licenseFilter
       const matchesCompliance =
         complianceFilter === 'all' || salon.complianceLevel === complianceFilter
 
-      return matchesSearch && matchesLicense && matchesCompliance
+      return matchesSearch && matchesTier && matchesLicense && matchesCompliance
     })
-  }, [salons, searchQuery, licenseFilter, complianceFilter])
+  }, [salons, searchQuery, tierFilter, licenseFilter, complianceFilter])
 
   return (
     <div className="flex flex-col gap-10">

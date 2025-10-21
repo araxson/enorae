@@ -46,7 +46,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
                       </AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
-                      <small className="text-sm font-medium leading-none">{member.title || 'Staff member'}</small>
+                      <small className="text-sm font-medium">{member.title || 'Staff member'}</small>
                       {member.bio && (
                         <p className="text-sm text-muted-foreground line-clamp-1 text-xs">{member.bio}</p>
                       )}
@@ -65,7 +65,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="space-y-1">
-                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{member.title || 'Staff member'}</h4>
+                    <h4 className="scroll-m-20 text-xl font-semibold">{member.title || 'Staff member'}</h4>
                     {member.bio && <p className="text-sm text-muted-foreground">{member.bio}</p>}
                   </div>
                 </div>

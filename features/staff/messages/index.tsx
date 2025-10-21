@@ -16,7 +16,7 @@ interface MessagesFeatureProps {
 export function MessagesFeature({ threads }: MessagesFeatureProps) {
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Messages</h1>
+      <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Messages</h1>
       <MessageThreadList threads={threads} />
     </div>
   )
@@ -64,7 +64,7 @@ export async function StaffMessageThreadPage({ threadId }: StaffMessageThreadPag
         </div>
 
         <div>
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{thread.subject}</h1>
+          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">{thread.subject}</h1>
           {thread.customer_name && (
             <p className="text-sm text-muted-foreground">Conversation with {thread.customer_name}</p>
           )}

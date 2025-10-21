@@ -66,7 +66,7 @@ export function AlertCard({ alert }: AlertCardProps) {
             <div>
               <span className="text-lg font-semibold">{alert.product?.name || 'Unknown Product'}</span>
               {alert.product?.sku && (
-                <small className="text-sm font-medium leading-none text-muted-foreground">SKU: {alert.product.sku}</small>
+                <small className="text-sm font-medium text-muted-foreground">SKU: {alert.product.sku}</small>
               )}
             </div>
             <div className="flex gap-2">
@@ -81,14 +81,14 @@ export function AlertCard({ alert }: AlertCardProps) {
 
           <div className="flex flex-col gap-2">
             <div className="flex gap-3">
-              <small className="text-sm font-medium leading-none text-muted-foreground">Type:</small>
-              <small className="text-sm font-medium leading-none">{getAlertTypeLabel(alert.alert_type || '')}</small>
+              <small className="text-sm font-medium text-muted-foreground">Type:</small>
+              <small className="text-sm font-medium">{getAlertTypeLabel(alert.alert_type || '')}</small>
             </div>
 
             {alert.current_quantity !== null && (
               <div className="flex gap-3">
-                <small className="text-sm font-medium leading-none text-muted-foreground">Current:</small>
-                <small className="text-sm font-medium leading-none">
+                <small className="text-sm font-medium text-muted-foreground">Current:</small>
+                <small className="text-sm font-medium">
                   {alert.current_quantity} {alert.product?.unit_of_measure || 'units'}
                 </small>
               </div>
@@ -96,8 +96,8 @@ export function AlertCard({ alert }: AlertCardProps) {
 
             {alert.threshold_quantity !== null && (
               <div className="flex gap-3">
-                <small className="text-sm font-medium leading-none text-muted-foreground">Threshold:</small>
-                <small className="text-sm font-medium leading-none">
+                <small className="text-sm font-medium text-muted-foreground">Threshold:</small>
+                <small className="text-sm font-medium">
                   {alert.threshold_quantity} {alert.product?.unit_of_measure || 'units'}
                 </small>
               </div>
@@ -105,27 +105,27 @@ export function AlertCard({ alert }: AlertCardProps) {
 
             {alert.location && (
               <div className="flex gap-3">
-                <small className="text-sm font-medium leading-none text-muted-foreground">Location:</small>
-                <small className="text-sm font-medium leading-none">{alert.location.name}</small>
+                <small className="text-sm font-medium text-muted-foreground">Location:</small>
+                <small className="text-sm font-medium">{alert.location.name}</small>
               </div>
             )}
 
             {alert.message && (
               <div>
-                <small className="text-sm font-medium leading-none text-muted-foreground">Message:</small>
-                <small className="text-sm font-medium leading-none">{alert.message}</small>
+                <small className="text-sm font-medium text-muted-foreground">Message:</small>
+                <small className="text-sm font-medium">{alert.message}</small>
               </div>
             )}
 
             <div className="flex gap-3">
-              <small className="text-sm font-medium leading-none text-muted-foreground">Created:</small>
-              <small className="text-sm font-medium leading-none">{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</small>
+              <small className="text-sm font-medium text-muted-foreground">Created:</small>
+              <small className="text-sm font-medium">{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</small>
             </div>
 
             {alert.resolved_at && (
               <div className="flex gap-3">
-                <small className="text-sm font-medium leading-none text-muted-foreground">Resolved:</small>
-                <small className="text-sm font-medium leading-none">{new Date(alert.resolved_at).toLocaleDateString()}</small>
+                <small className="text-sm font-medium text-muted-foreground">Resolved:</small>
+                <small className="text-sm font-medium">{new Date(alert.resolved_at).toLocaleDateString()}</small>
               </div>
             )}
           </div>

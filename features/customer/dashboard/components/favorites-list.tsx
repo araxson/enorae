@@ -42,7 +42,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
     <Card>
       <CardHeader>
         <CardTitle>Your favorites</CardTitle>
-        <small className="text-sm font-medium leading-none">{favorites.length} saved items</small>
+        <small className="text-sm font-medium">{favorites.length} saved items</small>
       </CardHeader>
       <CardContent className="space-y-4">
         <ItemGroup>

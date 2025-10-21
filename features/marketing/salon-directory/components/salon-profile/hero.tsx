@@ -32,7 +32,7 @@ export function SalonHero({ salon }: SalonHeroProps) {
               </div>
             )}
             <div className="flex flex-col gap-3">
-              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{salon.name || 'Unnamed Salon'}</h1>
+              <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">{salon.name || 'Unnamed Salon'}</h1>
               {salon.rating !== null && (
                 <div className="flex gap-3 items-center">
                   <Star className="h-5 w-5 text-warning" fill="currentColor" />

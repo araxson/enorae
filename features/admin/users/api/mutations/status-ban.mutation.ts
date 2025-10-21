@@ -16,14 +16,14 @@ export async function banUser(formData: FormData) {
     const parsed = banUserSchema.safeParse({
       userId: formData.get('userId')?.toString(),
       reason: formData.get('reason')?.toString(),
-      permanent: formData.get('permanent')?.toString(),
+      isPermanent: formData.get('permanent') === 'true',
     })
 
     if (!parsed.success) {
       return { error: parsed.error.issues[0]?.message ?? 'Invalid ban payload' }
     }
 
-    const { userId, reason, permanent } = parsed.data
+    const { userId, reason, isPermanent } = parsed.data
 
     if (!UUID_REGEX.test(userId)) {
       return { error: 'Invalid user ID' }
@@ -73,7 +73,7 @@ export async function banUser(formData: FormData) {
     // Critical audit log
     const metadata: Json = {
       reason: sanitizedReason,
-      is_permanent: permanent,
+      is_permanent: isPermanent,
       banned_by: session.user.id,
     }
 

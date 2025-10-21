@@ -59,7 +59,7 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
       <Card>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Professional information</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold">Professional information</h3>
             <Separator />
           </div>
 

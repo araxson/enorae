@@ -99,7 +99,7 @@ export function StaffPageHeading({
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+              <h1 className="text-2xl font-semibold">{title}</h1>
               <Badge variant="secondary" className="hidden sm:inline-flex items-center gap-1">
                 <Sparkles className="h-3.5 w-3.5" />
                 Staff Portal

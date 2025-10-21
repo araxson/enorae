@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Card } from '@/components/ui/card'
 import { useToast } from '@/lib/hooks/use-toast'
-import { createCoupon, updateCoupon } from '../api/coupons.mutations'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '../api/coupons.mutations'
 import { CouponFormFields } from './coupon-form-fields'
 import {
   defaultCouponFormState,
@@ -75,65 +75,13 @@ export function CouponForm({ salonId, services, coupon, onSuccess }: CouponFormP
     event.preventDefault()
     setIsLoading(true)
 
-    try {
-      const payload = {
-        salon_id: salonId,
-        code: formData.code.trim(),
-        description: formData.description.trim(),
-        discount_type: formData.discount_type,
-        discount_value: Number(formData.discount_value),
-        min_purchase_amount:
-          formData.min_purchase_amount !== null ? Number(formData.min_purchase_amount) : undefined,
-        max_discount_amount:
-          formData.max_discount_amount !== null ? Number(formData.max_discount_amount) : undefined,
-        max_uses: formData.max_uses !== null ? Number(formData.max_uses) : undefined,
-        max_uses_per_customer:
-          formData.max_uses_per_customer !== null ? Number(formData.max_uses_per_customer) : undefined,
-        valid_from: formData.valid_from
-          ? new Date(formData.valid_from).toISOString()
-          : new Date().toISOString(),
-        valid_until: formData.valid_until
-          ? new Date(formData.valid_until).toISOString()
-          : new Date().toISOString(),
-        is_active: formData.is_active,
-        applicable_services: formData.applicable_services.length
-          ? formData.applicable_services
-          : undefined,
-        applicable_customer_ids: formData.applicable_customer_ids
-          ? formData.applicable_customer_ids
-              .split(/\r?\n/)
-              .map((value) => value.trim())
-              .filter(Boolean)
-          : undefined,
-      }
+    toast({
+      title: 'Coupons unavailable',
+      description: COUPONS_UNSUPPORTED_MESSAGE,
+      variant: 'destructive',
+    })
 
-      if (isEditing && coupon?.id) {
-        await updateCoupon(coupon.id, payload)
-      } else {
-        await createCoupon(payload)
-      }
-
-      toast({
-        title: isEditing ? 'Coupon updated' : 'Coupon created',
-        description: `Coupon code "${formData.code}" has been ${
-          isEditing ? 'updated' : 'created'
-        } successfully.`,
-      })
-
-      onSuccess?.()
-
-      if (!isEditing) {
-        setFormData(() => mapCouponToState())
-      }
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: `Failed to ${isEditing ? 'update' : 'create'} coupon. Please try again.`,
-        variant: 'destructive',
-      })
-    } finally {
-      setIsLoading(false)
-    }
+    setIsLoading(false)
   }
 
   return (

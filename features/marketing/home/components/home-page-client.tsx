@@ -11,7 +11,7 @@ export function HomePageClient() {
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 px-4 pb-16 pt-20 text-center sm:px-6 lg:px-8">
           <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-5xl font-bold leading-tight text-transparent md:text-6xl">
+              <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-5xl font-bold leading-tight text-transparent md:text-6xl">
                 Enorae
               </h1>
               <p className="text-xl text-muted-foreground text-2xl md:text-3xl">Your Beauty Appointments, Simplified</p>
@@ -51,7 +51,7 @@ export function HomePageClient() {
       <section className="bg-background">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-3xl font-bold md:text-4xl">Everything you need</h2>
+            <h2 className="scroll-m-20 text-3xl font-semibold text-3xl font-bold md:text-4xl">Everything you need</h2>
             <p className="leading-7 mt-4 text-muted-foreground">Powerful features for clients and salon businesses</p>
           </div>
 
@@ -98,7 +98,7 @@ export function HomePageClient() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                     <Icon className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-xl font-semibold">{title}</h3>
+                  <h3 className="scroll-m-20 text-2xl font-semibold text-xl font-semibold">{title}</h3>
                   <p className="leading-7 text-sm text-muted-foreground">{description}</p>
                 </div>
               </Card>
@@ -110,7 +110,7 @@ export function HomePageClient() {
       <section className="bg-background">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-3xl font-bold md:text-4xl">What our users say</h2>
+            <h2 className="scroll-m-20 text-3xl font-semibold text-3xl font-bold md:text-4xl">What our users say</h2>
             <p className="leading-7 mt-4 text-muted-foreground">Trusted by thousands of customers and salon professionals</p>
           </div>
 
@@ -140,7 +140,7 @@ export function HomePageClient() {
       <section className="bg-primary/5">
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-16 text-center sm:px-6 lg:px-8">
           <div className="space-y-4">
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-3xl font-bold md:text-4xl">Ready to get started?</h2>
+            <h2 className="scroll-m-20 text-3xl font-semibold text-3xl font-bold md:text-4xl">Ready to get started?</h2>
             <p className="leading-7 text-lg text-muted-foreground">
               Join thousands of salons and clients using Enorae to streamline their beauty appointments.
             </p>

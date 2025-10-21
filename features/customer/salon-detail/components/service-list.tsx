@@ -38,7 +38,7 @@ export function ServiceList({ services }: ServiceListProps) {
             <AccordionItem key={service.id || ''} value={`service-${index}`} className="rounded-md border">
               <AccordionTrigger>
                 <div className="flex flex-col gap-2 px-4 py-3 text-left sm:flex-row sm:items-center sm:justify-between">
-                  <h6 className="scroll-m-20 text-base font-semibold tracking-tight">{service.name || 'Service'}</h6>
+                  <h6 className="scroll-m-20 text-base font-semibold">{service.name || 'Service'}</h6>
                   {service.category_name && (
                     <Badge variant="secondary" className="w-fit">
                       {service.category_name}
@@ -55,7 +55,7 @@ export function ServiceList({ services }: ServiceListProps) {
                     {service.duration_minutes && (
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Clock className="h-4 w-4" />
-                        <small className="text-sm font-medium leading-none">{service.duration_minutes} min</small>
+                        <small className="text-sm font-medium">{service.duration_minutes} min</small>
                       </div>
                     )}
                     <Button size="sm">Book now</Button>

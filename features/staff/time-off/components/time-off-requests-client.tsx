@@ -109,15 +109,15 @@ export function TimeOffRequestsClient({
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
                     <p className="leading-7 text-2xl font-bold">{balance.total_days}</p>
-                    <small className="text-sm font-medium leading-none text-muted-foreground">Total</small>
+                    <small className="text-sm font-medium text-muted-foreground">Total</small>
                   </div>
                   <div>
                     <p className="leading-7 text-2xl font-bold text-info">{balance.used_days}</p>
-                    <small className="text-sm font-medium leading-none text-muted-foreground">Used</small>
+                    <small className="text-sm font-medium text-muted-foreground">Used</small>
                   </div>
                   <div>
                     <p className="leading-7 text-2xl font-bold text-success">{balance.remaining_days}</p>
-                    <small className="text-sm font-medium leading-none text-muted-foreground">Remaining</small>
+                    <small className="text-sm font-medium text-muted-foreground">Remaining</small>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -143,7 +143,7 @@ export function TimeOffRequestsClient({
 
         {activeTab === 'team' && (
           <div className="space-y-4">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Team Time Off Calendar</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold">Team Time Off Calendar</h3>
             {teamCalendar.length === 0 ? (
               <Card>
                 <CardContent className="py-12 text-center">
@@ -171,7 +171,7 @@ export function TimeOffRequestsClient({
                       <div className="flex items-center justify-between text-sm">
                         <div>
                           <p className="leading-7 font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</p>
-                          <small className="text-sm font-medium leading-none text-muted-foreground capitalize">{entry.request_type.replace('_', ' ')}</small>
+                          <small className="text-sm font-medium text-muted-foreground capitalize">{entry.request_type.replace('_', ' ')}</small>
                         </div>
                       </div>
                     </CardContent>

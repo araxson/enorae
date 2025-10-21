@@ -29,8 +29,8 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Total Threads</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{stats.totalThreads}</h3>
-            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold">{stats.totalThreads}</h3>
+            <small className="text-sm font-medium text-xs text-muted-foreground">
               Open {stats.openThreads} · In progress {stats.inProgressThreads}
             </small>
           </div>
@@ -42,8 +42,8 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Urgent Threads</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-warning">{stats.urgentThreads}</h3>
-            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold text-warning">{stats.urgentThreads}</h3>
+            <small className="text-sm font-medium text-xs text-muted-foreground">
               High priority {stats.highPriorityThreads}
             </small>
           </div>
@@ -55,8 +55,8 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Flagged Messages</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-destructive">{stats.flaggedMessages}</h3>
-            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold text-destructive">{stats.flaggedMessages}</h3>
+            <small className="text-sm font-medium text-xs text-muted-foreground">
               Threads affected {stats.flaggedThreads}
             </small>
           </div>
@@ -68,8 +68,8 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Open Escalations</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-warning">{stats.openEscalations}</h3>
-            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold text-warning">{stats.openEscalations}</h3>
+            <small className="text-sm font-medium text-xs text-muted-foreground">
               Resolved {stats.resolvedThreads + stats.closedThreads + stats.archivedThreads}
             </small>
           </div>
@@ -81,8 +81,8 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Avg First Response</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{formatMinutes(stats.avgFirstResponseMinutes)}</h3>
-            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold">{formatMinutes(stats.avgFirstResponseMinutes)}</h3>
+            <small className="text-sm font-medium text-xs text-muted-foreground">
               Based on {stats.totalMeasuredResponses} responses
             </small>
           </div>
@@ -94,10 +94,10 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Responses ≤ 1h</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold text-success">
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold text-success">
               {formatPercentage(stats.responsesWithinHourRate)}
             </h3>
-            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Customer SLA coverage</small>
+            <small className="text-sm font-medium text-xs text-muted-foreground">Customer SLA coverage</small>
           </div>
           <Timer className="h-8 w-8 text-success" />
         </div>
@@ -107,8 +107,8 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">Unread Messages</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{stats.totalUnread}</h3>
-            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Across customers and staff</small>
+            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold">{stats.totalUnread}</h3>
+            <small className="text-sm font-medium text-xs text-muted-foreground">Across customers and staff</small>
           </div>
           <MailWarning className="h-8 w-8 text-info" />
         </div>

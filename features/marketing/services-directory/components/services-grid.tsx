@@ -17,7 +17,7 @@ export function ServicesGrid({ services, categoryName }: ServicesGridProps) {
     return (
       <div className="py-12 text-center">
         <div className="flex flex-col gap-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">No services found</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold">No services found</h3>
           <p className="text-sm text-muted-foreground">
             {categoryName
               ? `No services available in the ${categoryName} category`
@@ -85,7 +85,7 @@ function ServiceCard({ service }: ServiceCardProps) {
             {service.duration_minutes && (
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <small className="text-sm font-medium leading-none text-muted-foreground">
+                <small className="text-sm font-medium text-muted-foreground">
                   {service.duration_minutes} minutes
                 </small>
               </div>
@@ -98,10 +98,10 @@ function ServiceCard({ service }: ServiceCardProps) {
                 <div className="flex items-center gap-4">
                   {hasSalePrice ? (
                     <>
-                      <small className="text-sm font-medium leading-none line-through text-muted-foreground">
+                      <small className="text-sm font-medium line-through text-muted-foreground">
                         ${service.current_price?.toFixed(2)}
                       </small>
-                      <small className="text-sm font-medium leading-none font-semibold text-success">
+                      <small className="text-sm font-medium font-semibold text-success">
                         ${service.sale_price?.toFixed(2)}
                       </small>
                       <Badge variant="destructive" className="text-xs">
@@ -109,7 +109,7 @@ function ServiceCard({ service }: ServiceCardProps) {
                       </Badge>
                     </>
                     ) : (
-                      <small className="text-sm font-medium leading-none font-semibold">
+                      <small className="text-sm font-medium font-semibold">
                         ${service.current_price?.toFixed(2)}
                       </small>
                     )}

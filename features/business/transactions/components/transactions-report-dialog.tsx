@@ -99,7 +99,7 @@ export function TransactionsReportDialog({
           {report.dateRange && (
             <Card className="p-4">
               <div className="flex flex-col gap-3">
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">Report Period</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold text-lg">Report Period</h3>
                 <p className="leading-7">
                   {format(report.dateRange.earliest, 'MMM dd, yyyy')} -{' '}
                   {format(report.dateRange.latest, 'MMM dd, yyyy')}
@@ -113,7 +113,7 @@ export function TransactionsReportDialog({
 
           <Card className="p-4">
             <div className="flex flex-col gap-4">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Transaction Type</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold text-lg">By Transaction Type</h3>
               <Separator />
               <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                 {Object.entries(report.byType).map(([type, count]) => (
@@ -130,7 +130,7 @@ export function TransactionsReportDialog({
 
           <Card className="p-4">
             <div className="flex flex-col gap-4">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Payment Method</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold text-lg">By Payment Method</h3>
               <Separator />
               <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                 {Object.entries(report.byPaymentMethod).map(([method, count]) => (
@@ -145,7 +145,7 @@ export function TransactionsReportDialog({
 
           <Card className="p-4">
             <div className="flex flex-col gap-4">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Staff Member</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold text-lg">By Staff Member</h3>
               <Separator />
               <div className="flex flex-col gap-3">
                 {Object.entries(report.byStaff)

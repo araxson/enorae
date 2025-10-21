@@ -7,6 +7,9 @@ import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-saniti
 import { chainIdSchema, deleteChainSchema } from '../schemas'
 import type { ChainActionResponse } from './types'
 import { logChainAudit } from './audit'
+import type { Tables } from '@/lib/types/database.types'
+
+type SalonChainRow = Tables<{ schema: 'organization' }, 'salon_chains'>
 
 /**
  * Soft delete a chain
@@ -29,10 +32,10 @@ export async function deleteChain(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .select('is_active, deleted_at')
       .eq('id', chainId)
-      .maybeSingle()
+      .maybeSingle<Pick<SalonChainRow, 'is_active' | 'deleted_at'>>()
 
     if (fetchError) {
       return { success: false, error: fetchError.message }
@@ -40,7 +43,7 @@ export async function deleteChain(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({
         deleted_at: new Date().toISOString(),
         is_active: false,
@@ -82,7 +85,7 @@ export async function restoreChain(chainId: string): Promise<ChainActionResponse
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({
         deleted_at: null,
       })

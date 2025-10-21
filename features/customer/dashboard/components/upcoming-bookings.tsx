@@ -85,7 +85,7 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
 
                     <div className="flex-1 space-y-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium leading-none truncate">
+                        <p className="text-sm font-medium truncate">
                           {appointment.salon_name || 'Salon TBD'}
                         </p>
                         <Badge variant={getStatusVariant(appointment.status)} className="text-xs">

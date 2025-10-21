@@ -42,7 +42,7 @@ export function StaffList({ staff }: StaffListProps) {
               </Avatar>
 
               <div className="flex flex-col gap-2 flex-1">
-                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-base">{member.title || 'Staff Member'}</h4>
+                <h4 className="scroll-m-20 text-xl font-semibold text-base">{member.title || 'Staff Member'}</h4>
                 {member.bio && <p className="text-sm text-muted-foreground line-clamp-2">{member.bio}</p>}
               </div>
 

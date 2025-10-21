@@ -77,7 +77,7 @@ export function BlockedTimeForm({
   return (
     <Card>
       <CardHeader>
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Block time slot</h3>
+        <h3 className="scroll-m-20 text-2xl font-semibold">Block time slot</h3>
       </CardHeader>
       <form onSubmit={handleSubmit} className="space-y-6">
         <CardContent className="space-y-4">

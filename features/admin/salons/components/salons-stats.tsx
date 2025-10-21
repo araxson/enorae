@@ -52,7 +52,7 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="leading-7 text-sm text-muted-foreground">{label}</p>
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{value}</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold">{value}</h3>
               </div>
               <Icon className={`h-4 w-4 ${tone}`} />
             </div>
@@ -65,7 +65,7 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
           <div className="flex items-center justify-between">
             <div>
               <p className="leading-7 text-sm text-muted-foreground">Average compliance</p>
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{stats.averageCompliance}%</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">{stats.averageCompliance}%</h3>
             </div>
             <Gauge className="h-4 w-4 text-info" />
           </div>

@@ -47,7 +47,7 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
   return (
     <Card className="p-6">
       <div className="flex flex-col gap-4">
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Profile Photo</h3>
+        <h3 className="scroll-m-20 text-2xl font-semibold">Profile Photo</h3>
 
         <div className="flex gap-6 items-center">
           <Avatar className="h-24 w-24">

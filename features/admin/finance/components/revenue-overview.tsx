@@ -32,7 +32,7 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Revenue Overview</h3>
+        <h3 className="scroll-m-20 text-2xl font-semibold">Revenue Overview</h3>
         <p className="text-sm text-muted-foreground">
           {metrics.period.start && metrics.period.end
             ? `${metrics.period.start} to ${metrics.period.end}`

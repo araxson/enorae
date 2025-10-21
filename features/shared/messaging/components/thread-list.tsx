@@ -73,7 +73,7 @@ export function ThreadList({
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-0">
+                      <h4 className="scroll-m-20 text-xl font-semibold mb-0">
                         {thread.subject || 'No subject'}
                       </h4>
                       {unreadCount > 0 && (
@@ -82,7 +82,7 @@ export function ThreadList({
                         </Badge>
                       )}
                     </div>
-                    <small className="text-sm font-medium leading-none text-muted-foreground">
+                    <small className="text-sm font-medium text-muted-foreground">
                       Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
                     </small>
                   </div>

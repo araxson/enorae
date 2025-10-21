@@ -17,7 +17,6 @@ export async function getBookingRules(): Promise<BookingRuleWithService[]> {
   // SECURITY: Require authentication
   const { supabase, salonId } = await resolveSalonContext()
   const { data, error } = await supabase
-    .schema('catalog')
     .from('service_booking_rules_view')
     .select(`
       *,

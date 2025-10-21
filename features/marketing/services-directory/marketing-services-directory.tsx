@@ -25,7 +25,7 @@ export async function ServicesDirectory() {
       <div className="flex flex-col gap-8">
         <div>
           <div className="flex flex-col gap-4">
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Browse Services</h1>
+            <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Browse Services</h1>
             <p className="leading-7 text-muted-foreground">
               Explore all available beauty and wellness services. Find the perfect treatment for your needs.
             </p>
@@ -42,7 +42,7 @@ export async function ServicesDirectory() {
         )}
 
         <div className="flex flex-col gap-4">
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">All Services</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">All Services</h2>
           <ServicesGrid services={services} />
         </div>
       </div>
@@ -71,7 +71,7 @@ export async function CategoryDetail({ categorySlug }: CategoryDetailProps) {
       <div className="flex flex-col gap-8">
         <div>
           <div className="flex flex-col gap-4">
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{category.name}</h1>
+            <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">{category.name}</h1>
             <p className="leading-7 text-muted-foreground">
               Browse {category.count} {category.name.toLowerCase()} services offered by {salons.length} salon{salons.length !== 1 ? 's' : ''}.
             </p>
@@ -81,14 +81,14 @@ export async function CategoryDetail({ categorySlug }: CategoryDetailProps) {
         <CategoryNavigation categories={categories} currentCategory={categorySlug} />
 
         <div className="flex flex-col gap-4">
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">{category.name} Services</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">{category.name} Services</h2>
           <ServicesGrid services={services} categoryName={category.name} />
         </div>
 
         <Separator />
 
         <div className="flex flex-col gap-4">
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Salons Offering {category.name}</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">Salons Offering {category.name}</h2>
           <CategorySalons salons={salons} categoryName={category.name} />
         </div>
       </div>

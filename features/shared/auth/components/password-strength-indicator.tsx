@@ -104,8 +104,8 @@ export function PasswordStrengthIndicator({
       {/* Strength Bar */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <small className="text-sm font-medium leading-none text-muted-foreground">Password strength:</small>
-          <small className={cn('text-sm font-medium leading-none', textTone)}>
+          <small className="text-sm font-medium text-muted-foreground">Password strength:</small>
+          <small className={cn('text-sm font-medium', textTone)}>
             {strength.charAt(0).toUpperCase() + strength.slice(1)}
           </small>
         </div>
@@ -127,7 +127,7 @@ export function PasswordStrengthIndicator({
               )}
               <small
                 className={cn(
-                  'text-sm font-medium leading-none', 'transition-colors',
+                  'text-sm font-medium', 'transition-colors',
                   req.met ? 'text-foreground' : 'text-muted-foreground'
                 )}
               >

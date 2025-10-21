@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog'
-import { toggleCouponStatus, deleteCoupon } from '../api/coupons.mutations'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '../api/coupons.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import { CouponForm } from './coupon-form'
 import type { CouponWithStats } from '../api/queries/coupon-validation'
@@ -36,39 +36,20 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
     })
   }
 
-  const handleToggle = async (id: string, isActive: boolean) => {
-    try {
-      await toggleCouponStatus(id, !isActive)
-      toast({
-        title: isActive ? 'Coupon deactivated' : 'Coupon activated',
-        description: 'Coupon status updated successfully.',
-      })
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to update coupon status.',
-        variant: 'destructive',
-      })
-    }
+  const handleToggle = async () => {
+    toast({
+      title: 'Coupons unavailable',
+      description: COUPONS_UNSUPPORTED_MESSAGE,
+      variant: 'destructive',
+    })
   }
 
-  const handleDelete = async (coupon: CouponWithStats) => {
-    if (!coupon.id || !coupon.code) return
-    if (!confirm(`Are you sure you want to delete coupon "${coupon.code}"?`)) return
-
-    try {
-      await deleteCoupon(coupon.id)
-      toast({
-        title: 'Coupon deleted',
-        description: 'Coupon has been deleted successfully.',
-      })
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to delete coupon.',
-        variant: 'destructive',
-      })
-    }
+  const handleDelete = async () => {
+    toast({
+      title: 'Coupons unavailable',
+      description: COUPONS_UNSUPPORTED_MESSAGE,
+      variant: 'destructive',
+    })
   }
 
   const serviceNameById = useMemo(() => {

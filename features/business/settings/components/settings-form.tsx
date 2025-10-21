@@ -55,7 +55,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
         <Card>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Booking Status</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">Booking Status</h3>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Accept New Bookings</Label>
@@ -74,7 +74,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
         <Card>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Booking Rules</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">Booking Rules</h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                   <Label htmlFor="booking_lead_time_hours">Lead Time (hours)</Label>
@@ -126,7 +126,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
         <Card>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Account Limits</h3>
+              <h3 className="scroll-m-20 text-2xl font-semibold">Account Limits</h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div>
                   <Label htmlFor="max_services">Max Services</Label>

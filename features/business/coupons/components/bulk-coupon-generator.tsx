@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { bulkGenerateCoupons } from '../api/coupons.mutations'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '../api/coupons.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
 type BulkCouponGeneratorProps = {
@@ -33,41 +33,12 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setIsSubmitting(true)
-
-    try {
-      const validFrom = formState.valid_from
-        ? new Date(formState.valid_from).toISOString()
-        : new Date().toISOString()
-      const validUntil = formState.valid_until
-        ? new Date(formState.valid_until).toISOString()
-        : new Date().toISOString()
-
-      const result = await bulkGenerateCoupons(salonId, {
-        prefix: formState.prefix,
-        description: formState.description,
-        discount_type: formState.discount_type,
-        discount_value: Number(formState.discount_value),
-        count: Number(formState.count),
-        valid_from: validFrom,
-        valid_until: validUntil,
-        is_active: formState.is_active,
-        min_purchase_amount: formState.min_purchase_amount,
-        max_discount_amount: formState.max_discount_amount,
-      })
-
-      toast({
-        title: 'Coupons generated',
-        description: `${result.generated} coupon codes created successfully.`,
-      })
-    } catch (error) {
-      toast({
-        title: 'Bulk generation failed',
-        description: 'Unable to generate coupons. Please review your configuration.',
-        variant: 'destructive',
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
+    toast({
+      title: 'Coupons unavailable',
+      description: COUPONS_UNSUPPORTED_MESSAGE,
+      variant: 'destructive',
+    })
+    setIsSubmitting(false)
   }
 
   return (

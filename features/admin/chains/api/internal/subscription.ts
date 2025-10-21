@@ -7,6 +7,9 @@ import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-saniti
 import { updateChainSubscriptionSchema } from '../schemas'
 import type { ChainActionResponse } from './types'
 import { logChainAudit } from './audit'
+import type { Tables } from '@/lib/types/database.types'
+
+type SalonChainRow = Tables<{ schema: 'organization' }, 'salon_chains'>
 
 /**
  * Update chain subscription tier
@@ -30,10 +33,10 @@ export async function updateChainSubscription(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .select('subscription_tier')
       .eq('id', chainId)
-      .maybeSingle()
+      .maybeSingle<Pick<SalonChainRow, 'subscription_tier'>>()
 
     if (fetchError) {
       return { success: false, error: fetchError.message }
@@ -41,7 +44,7 @@ export async function updateChainSubscription(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains_view')
+      .from('salon_chains')
       .update({
         subscription_tier: subscriptionTier,
       })

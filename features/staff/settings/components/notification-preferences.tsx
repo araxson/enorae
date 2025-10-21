@@ -54,7 +54,7 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
     <Card className="p-6">
       <div className="flex flex-col gap-6">
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Notification Preferences</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold">Notification Preferences</h3>
           <p className="text-sm text-muted-foreground">Choose how you want to be notified</p>
         </div>
 

@@ -12,7 +12,7 @@ export function SessionsFeature({ sessions, currentSessionId }: SessionsFeatureP
   return (
     <div className="flex flex-col gap-6">
       <div className="flex gap-4 items-center justify-between">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Active Sessions</h1>
+        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Active Sessions</h1>
         {sessions.filter(s => s.is_active).length > 1 && (
           <Button variant="destructive" size="sm">
             Revoke All Other Sessions

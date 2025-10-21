@@ -10,11 +10,11 @@ export function Questions() {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8 max-w-3xl mx-auto">
-        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-center">{questionsData.title}</h2>
+        <h2 className="scroll-m-20 text-3xl font-semibold text-center">{questionsData.title}</h2>
 
         {questionsData.categories.map((category) => (
           <div key={category.name} className="flex flex-col gap-6">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{category.name}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold">{category.name}</h3>
             <Accordion type="multiple" className="w-full">
               {category.questions.map((item, idx) => (
                 <AccordionItem key={idx} value={`item-${idx}`}>

@@ -206,12 +206,16 @@ export async function batchReschedule(
     .in('id', appointmentIds)
 
   if (fetchError) throw fetchError
-  if (!appointments || appointments.length === 0) {
+
+  const appointmentRows =
+    (appointments as Pick<AppointmentView, 'id' | 'salon_id' | 'duration_minutes'>[] | null | undefined) ?? []
+
+  if (appointmentRows.length === 0) {
     throw new Error('No appointments found')
   }
 
   // Check authorization
-  const salonIds = [...new Set(appointments.map((appointment) => appointment.salon_id))]
+  const salonIds = [...new Set(appointmentRows.map((appointment) => appointment.salon_id))]
   for (const salonId of salonIds) {
     if (!salonId) continue
     const authorized = await canAccessSalon(salonId)
@@ -222,7 +226,7 @@ export async function batchReschedule(
 
   // Calculate end time
   const startDate = new Date(newStartTime)
-  const duration = durationMinutes || (appointments[0] as AppointmentView).duration_minutes || 60
+  const duration = durationMinutes || appointmentRows[0].duration_minutes || 60
   const endDate = new Date(startDate.getTime() + duration * 60000)
 
   // Update appointments
@@ -281,12 +285,16 @@ export async function batchCancelAppointments(appointmentIds: string[], reason: 
     .in('id', appointmentIds)
 
   if (fetchError) throw fetchError
-  if (!appointments || appointments.length === 0) {
+
+  const appointmentRows =
+    (appointments as Pick<AppointmentView, 'id' | 'salon_id' | 'status'>[] | null | undefined) ?? []
+
+  if (appointmentRows.length === 0) {
     throw new Error('No appointments found')
   }
 
   // Check authorization
-  const salonIds = [...new Set(appointments.map((appointment) => appointment.salon_id))]
+  const salonIds = [...new Set(appointmentRows.map((appointment) => appointment.salon_id))]
   for (const salonId of salonIds) {
     if (!salonId) continue
     const authorized = await canAccessSalon(salonId)

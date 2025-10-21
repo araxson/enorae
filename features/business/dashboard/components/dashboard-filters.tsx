@@ -116,7 +116,7 @@ export function DashboardFilters() {
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Team focus</small>
+              <small className="text-sm font-medium font-medium text-muted-foreground">Team focus</small>
               <Command>
                 <CommandInput placeholder="Filter by team group" />
                 <CommandList>
@@ -139,7 +139,7 @@ export function DashboardFilters() {
 
             <div className="flex gap-4 items-center flex-wrap items-center gap-6">
               <div className="flex flex-col gap-2">
-                <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Service mix</small>
+                <small className="text-sm font-medium font-medium text-muted-foreground">Service mix</small>
                 <RadioGroup value={serviceTier} onValueChange={(value) => setServiceTier(value as typeof serviceTier)}>
                   <div className="flex gap-4 items-center items-center gap-2"><RadioGroupItem value="all" id="tier-all" /><label htmlFor="tier-all" className="text-sm text-muted-foreground">All services</label></div>
                   <div className="flex gap-4 items-center items-center gap-2"><RadioGroupItem value="premium" id="tier-premium" /><label htmlFor="tier-premium" className="text-sm text-muted-foreground">Premium services</label></div>
@@ -148,13 +148,13 @@ export function DashboardFilters() {
               </div>
 
               <div className="flex flex-col gap-2 w-full max-w-xs">
-                <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Booking load threshold</small>
+                <small className="text-sm font-medium font-medium text-muted-foreground">Booking load threshold</small>
                 <Slider defaultValue={[75]} aria-label="Booking load threshold" />
-                <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</small>
+                <small className="text-sm font-medium text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</small>
               </div>
 
               <div className="flex flex-col gap-2">
-                <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Staff assignments</small>
+                <small className="text-sm font-medium font-medium text-muted-foreground">Staff assignments</small>
                 <div className="flex gap-4 items-center items-center gap-2"><Checkbox id="assignment-balanced" defaultChecked /><label htmlFor="assignment-balanced" className="text-sm text-muted-foreground">Balanced workload</label></div>
                 <div className="flex gap-4 items-center items-center gap-2"><Checkbox id="assignment-specialist" /><label htmlFor="assignment-specialist" className="text-sm text-muted-foreground">Highlight specialists</label></div>
               </div>

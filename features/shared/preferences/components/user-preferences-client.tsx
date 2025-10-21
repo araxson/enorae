@@ -46,7 +46,7 @@ export function UserPreferencesClient({ initialPreferences }: UserPreferencesCli
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">User Preferences</h2>
+        <h2 className="scroll-m-20 text-3xl font-semibold">User Preferences</h2>
         <p className="text-sm text-muted-foreground mt-1">
           Manage your personal preferences and settings
         </p>

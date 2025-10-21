@@ -59,7 +59,7 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
     <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight mb-1">Platform Appointment Oversight</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold mb-1">Platform Appointment Oversight</h2>
           <p className="block text-sm text-muted-foreground">
             Aggregated metrics across all salons. Last updated {lastUpdatedLabel}.
           </p>

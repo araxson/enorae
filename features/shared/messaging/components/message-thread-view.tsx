@@ -37,7 +37,7 @@ export function MessageThreadView({
   return (
     <div className="flex h-full flex-col gap-6">
       <div>
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Conversation</h3>
+        <h3 className="scroll-m-20 text-2xl font-semibold">Conversation</h3>
         {otherUserName && <p className="text-sm text-muted-foreground">Chatting with {otherUserName}</p>}
       </div>
 

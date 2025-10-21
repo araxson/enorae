@@ -66,7 +66,7 @@ export function SessionList({ sessions }: SessionListProps) {
   if (sessions.length === 0) {
     return (
       <div className="flex flex-col gap-4">
-        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Active Sessions</h2>
+        <h2 className="scroll-m-20 text-3xl font-semibold">Active Sessions</h2>
         <Alert>
           <AlertDescription>
             <p className="leading-7">No active sessions found.</p>
@@ -80,7 +80,7 @@ export function SessionList({ sessions }: SessionListProps) {
     <div className="flex flex-col gap-6">
       <div className="flex gap-4 items-center justify-between">
         <div className="flex flex-col gap-2">
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Active Sessions</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">Active Sessions</h2>
           <p className="text-sm text-muted-foreground">
             You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
           </p>

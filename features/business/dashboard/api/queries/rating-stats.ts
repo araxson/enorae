@@ -7,33 +7,51 @@ interface RatingStats {
   rating_distribution: Record<string, number>
 }
 
-type RatingStatsRpc = {
-  average_rating: number | null
-  review_count: number | null
-  rating_distribution: Record<string, number> | null
-}
-
 export async function getSalonRatingStats(salonId: string): Promise<RatingStats | null> {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase.rpc('get_salon_rating_stats', { p_salon_id: salonId })
+  const { data, error } = await supabase
+    .from('salon_reviews_view')
+    .select('rating')
+    .eq('salon_id', salonId)
 
   if (error) throw error
+  const ratings = (data ?? []) as Array<{ rating: number | null }>
+  if (ratings.length === 0) {
+    return {
+      average_rating: 0,
+      review_count: 0,
+      rating_distribution: {},
+    }
+  }
 
-  const statsArray = (data as RatingStatsRpc[] | null) ?? null
-  const stats = statsArray?.[0]
-  if (!stats) return null
+  const buckets: Record<string, number> = {}
+  let total = 0
+  let count = 0
 
-  const ratingDistribution =
-    stats.rating_distribution && typeof stats.rating_distribution === 'object'
-      ? (stats.rating_distribution as Record<string, number>)
-      : {}
+  ratings.forEach(({ rating }) => {
+    if (rating == null) return
+    const bucket = String(Math.round(rating))
+    buckets[bucket] = (buckets[bucket] || 0) + 1
+    total += rating
+    count += 1
+  })
+
+  if (count === 0) {
+    return {
+      average_rating: 0,
+      review_count: 0,
+      rating_distribution: {},
+    }
+  }
 
   return {
-    average_rating: stats.average_rating ?? 0,
-    review_count: stats.review_count ?? 0,
-    rating_distribution: ratingDistribution,
+    average_rating: Number((total / count).toFixed(2)),
+    review_count: count,
+    rating_distribution: buckets,
   }
 }

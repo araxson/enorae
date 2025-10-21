@@ -56,7 +56,7 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
   return (
     <Card className="p-6">
       <div className="flex flex-col gap-4">
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Specialties & Skills</h3>
+        <h3 className="scroll-m-20 text-2xl font-semibold">Specialties & Skills</h3>
 
         <div className="flex gap-3">
           <Input

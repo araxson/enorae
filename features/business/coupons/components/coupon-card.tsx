@@ -27,9 +27,9 @@ import {
 export interface CouponCardProps {
   coupon: CouponWithStats
   onCopy: (code: string) => void
-  onToggle: (id: string, isActive: boolean) => void
+  onToggle: () => void
   onEdit: (coupon: CouponWithStats) => void
-  onDelete: (coupon: CouponWithStats) => void
+  onDelete: () => void
   resolveServiceName: (serviceId: string) => string
 }
 
@@ -107,7 +107,7 @@ export const CouponCard = memo(function CouponCard({
           <div className="flex items-center gap-2">
             <Switch
               checked={coupon.is_active}
-              onCheckedChange={() => coupon.id && onToggle(coupon.id, coupon.is_active)}
+              onCheckedChange={onToggle}
               disabled={isExpired(coupon.valid_until)}
             />
             <Button
@@ -120,7 +120,7 @@ export const CouponCard = memo(function CouponCard({
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => onDelete(coupon)}
+              onClick={onDelete}
             >
               <Trash2 className="h-4 w-4" />
             </Button>

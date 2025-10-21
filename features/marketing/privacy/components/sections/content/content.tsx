@@ -6,7 +6,7 @@ export function Content() {
       <div className="flex flex-col gap-6 max-w-3xl mx-auto">
         {contentData.sections.map((section) => (
           <div key={section.title} className="flex flex-col gap-4">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{section.title}</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold">{section.title}</h3>
             <p className="leading-7">{section.content}</p>
           </div>
         ))}

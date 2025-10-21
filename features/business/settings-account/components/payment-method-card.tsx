@@ -15,7 +15,7 @@ export function PaymentMethodCard({
       <div className="flex flex-col gap-8">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Payment Method</h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold">Payment Method</h3>
             <p className="text-sm text-muted-foreground">Manage your payment information</p>
           </div>
           <Button variant="outline" size="sm">

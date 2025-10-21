@@ -89,7 +89,7 @@ function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
       </Avatar>
 
       <div className="flex flex-col gap-2 flex-1">
-        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-base">{member.full_name || 'Staff Member'}</h4>
+        <h4 className="scroll-m-20 text-xl font-semibold text-base">{member.full_name || 'Staff Member'}</h4>
         {member.title && <p className="text-sm text-muted-foreground text-sm">{member.title}</p>}
 
         <div className="flex flex-wrap gap-2 mt-2">

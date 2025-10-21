@@ -43,7 +43,7 @@ export function ProductUsageList({ productUsage }: ProductUsageListProps) {
           <div className="flex gap-4 items-start justify-between">
             <div className="flex flex-col gap-3 flex-1">
               <div className="flex gap-3 items-center">
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Product {usage.product_id}</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold">Product {usage.product_id}</h3>
               </div>
 
               <p className="text-sm text-muted-foreground">

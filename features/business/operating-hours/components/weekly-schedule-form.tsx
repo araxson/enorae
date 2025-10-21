@@ -83,7 +83,7 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
   return (
     <Card>
       <CardHeader>
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Weekly Operating Hours</h3>
+        <h3 className="scroll-m-20 text-2xl font-semibold">Weekly Operating Hours</h3>
         <p className="leading-7 text-muted-foreground">
           Set your salon&apos;s operating hours for each day of the week
         </p>

@@ -77,7 +77,7 @@ export async function fetchReviewSample(
 
   const { data, error } = await supabase
     .schema('engagement')
-    .from('salon_reviews_view')
+    .from('salon_reviews')
     .select('appointment_id, rating, is_flagged, customer_id, created_at')
     .in('appointment_id', validIds)
     .limit(MAX_REVIEW_SAMPLE)

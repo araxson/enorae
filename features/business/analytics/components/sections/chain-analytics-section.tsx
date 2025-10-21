@@ -73,7 +73,7 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
         </div>
 
         <div className="mt-4">
-          <small className="text-sm font-medium leading-none text-muted-foreground">Top Salons by Revenue</small>
+          <small className="text-sm font-medium text-muted-foreground">Top Salons by Revenue</small>
           <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
             {breakdown.slice(0, 6).map((row) => (
               <Card key={row.salonId}>
@@ -95,7 +95,7 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <small className="text-sm font-medium leading-none text-muted-foreground">{label}</small>
+      <small className="text-sm font-medium text-muted-foreground">{label}</small>
       <div className="text-2xl font-bold">{value}</div>
     </div>
   )

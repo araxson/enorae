@@ -41,7 +41,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
             <div className="flex gap-4 items-start justify-between">
               <div className="flex flex-col gap-3 flex-1">
                 <div className="flex gap-3 items-center">
-                  <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{thread.subject}</h3>
+                  <h3 className="scroll-m-20 text-2xl font-semibold">{thread.subject}</h3>
                   {thread.unread_count_staff && thread.unread_count_staff > 0 && (
                     <Badge variant="default">
                       {thread.unread_count_staff} unread

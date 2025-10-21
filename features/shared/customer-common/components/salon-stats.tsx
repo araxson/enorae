@@ -19,7 +19,7 @@ export function SalonStats({ staffCount, servicesCount, className }: SalonStatsP
       {staffCount && staffCount > 0 && (
         <div className="flex gap-2 items-center">
           <Users className="h-4 w-4 text-muted-foreground" />
-          <small className="text-sm font-medium leading-none text-muted-foreground">
+          <small className="text-sm font-medium text-muted-foreground">
             {staffCount} {staffCount === 1 ? 'staff member' : 'staff'}
           </small>
         </div>
@@ -27,7 +27,7 @@ export function SalonStats({ staffCount, servicesCount, className }: SalonStatsP
       {servicesCount && servicesCount > 0 && (
         <div className="flex gap-2 items-center">
           <Scissors className="h-4 w-4 text-muted-foreground" />
-          <small className="text-sm font-medium leading-none text-muted-foreground">
+          <small className="text-sm font-medium text-muted-foreground">
             {servicesCount} {servicesCount === 1 ? 'service' : 'services'}
           </small>
         </div>

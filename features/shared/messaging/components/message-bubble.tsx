@@ -36,7 +36,7 @@ export function MessageBubble({
 
       <div className={cn('flex max-w-xl flex-col space-y-1', isOwn && 'items-end text-right')}>
         {!isOwn && senderName && (
-          <small className="text-sm font-medium leading-none px-2 text-muted-foreground">{senderName}</small>
+          <small className="text-sm font-medium px-2 text-muted-foreground">{senderName}</small>
         )}
 
         <div
@@ -49,8 +49,8 @@ export function MessageBubble({
         </div>
 
         <div className="flex items-center gap-2 px-2 text-xs text-muted-foreground">
-          <small className="text-sm font-medium leading-none">{format(new Date(timestamp), 'MMM dd, HH:mm')}</small>
-          {isOwn && <small className="text-sm font-medium leading-none">{isRead ? '✓✓' : '✓'}</small>}
+          <small className="text-sm font-medium">{format(new Date(timestamp), 'MMM dd, HH:mm')}</small>
+          {isOwn && <small className="text-sm font-medium">{isRead ? '✓✓' : '✓'}</small>}
         </div>
       </div>
 

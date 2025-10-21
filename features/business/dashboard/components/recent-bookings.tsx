@@ -89,7 +89,7 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
 
                       <div className="min-w-0 flex-1 space-y-1">
                         <div className="flex items-center gap-2">
-                          <p className="truncate text-sm font-medium leading-none">
+                          <p className="truncate text-sm font-medium">
                             {appointment.customer_name || 'Guest'}
                           </p>
                           <Badge variant={statusConfig.variant} className="text-xs">

@@ -57,7 +57,7 @@ export function TransactionsClient({
     <div className="flex flex-col gap-8">
       <div className="flex gap-4 items-start justify-between">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Manual Transactions</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">Manual Transactions</h2>
           <p className="text-sm text-muted-foreground mt-1">
             Track manual financial transactions and adjustments
           </p>

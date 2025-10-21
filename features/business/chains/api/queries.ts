@@ -157,6 +157,23 @@ export async function getChainAnalytics(chainId: string) {
   type StaffData = { salon_id: string }
   const staff = (staffData || []) as StaffData[]
 
+  // Get service counts
+  const { data: servicesData } = await supabase
+    .from('services')
+    .select('salon_id')
+    .in('salon_id', salonIds)
+    .eq('is_active', true)
+    .is('deleted_at', null)
+
+  type ServiceData = { salon_id: string | null }
+  const services = (servicesData || []) as ServiceData[]
+
+  const servicesBySalon = services.reduce<Record<string, number>>((acc, row) => {
+    if (!row.salon_id) return acc
+    acc[row.salon_id] = (acc[row.salon_id] || 0) + 1
+    return acc
+  }, {})
+
   // Aggregate data
   const totalRevenue = appointments.reduce(
     (sum, apt) => sum + (Number(apt.total_price) || 0),
@@ -174,6 +191,7 @@ export async function getChainAnalytics(chainId: string) {
     0
   )
 
+  const totalServices = services.length
   const totalStaff = staff.length
 
   // Create location-level metrics
@@ -197,6 +215,7 @@ export async function getChainAnalytics(chainId: string) {
       rating: Number(locationRating?.rating_average) || 0,
       reviewCount: Number(locationRating?.rating_count) || 0,
       staffCount: locationStaffCount,
+      servicesCount: servicesBySalon[salon.id] || 0,
     }
   })
 

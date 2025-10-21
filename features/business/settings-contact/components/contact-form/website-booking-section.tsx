@@ -19,7 +19,7 @@ export function WebsiteBookingSection({ initialValues }: WebsiteBookingSectionPr
     <Card>
       <CardContent>
         <div className="flex flex-col gap-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Website & Booking</h3>
+          <h3 className="scroll-m-20 text-2xl font-semibold">Website & Booking</h3>
           <Separator />
 
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2">

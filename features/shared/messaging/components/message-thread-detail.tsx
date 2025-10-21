@@ -32,7 +32,7 @@ export async function MessageThreadDetail({ threadId }: MessageThreadDetailProps
               ← Back to Messages
             </Button>
           </Link>
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{thread.subject || 'Conversation'}</h1>
+          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">{thread.subject || 'Conversation'}</h1>
           <p className="leading-7 text-muted-foreground">
             Thread started {thread.created_at ? new Date(thread.created_at).toLocaleDateString() : 'N/A'}
           </p>
