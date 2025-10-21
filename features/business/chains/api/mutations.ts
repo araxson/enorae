@@ -75,7 +75,7 @@ export async function createSalonChain(formData: FormData) {
 
     const { error: insertError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .insert({
         id: crypto.randomUUID(),
         owner_id: user.id,
@@ -116,7 +116,7 @@ export async function updateSalonChain(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         name: data.name,
         legal_name: data.legal_name || null,
@@ -159,7 +159,7 @@ export async function deleteSalonChain(formData: FormData) {
 
     const { error: deleteError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         deleted_at: new Date().toISOString(),
         updated_by_id: user.id,

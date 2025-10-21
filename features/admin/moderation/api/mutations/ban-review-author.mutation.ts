@@ -40,7 +40,7 @@ export async function banReviewAuthor(formData: FormData) {
     // Hide the offending review
     await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({
         deleted_at: timestamp,
         deleted_by_id: session.user.id,

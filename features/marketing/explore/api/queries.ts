@@ -18,7 +18,7 @@ export const getPublicSalons = cache(async function getPublicSalons(
   const { data, error } = await supabase
     .from('salons')
     .select('*')
-    .eq('status', 'active')
+    .eq('is_active', true)
     .is('deleted_at', null)
     .order('rating', { ascending: false })
     .order('created_at', { ascending: false })

@@ -31,8 +31,8 @@ export async function permanentlyDeleteService(
   }
 
   const cleanupSteps = [
-    supabase.schema('catalog').from('service_pricing').delete().eq('service_id', serviceId),
-    supabase.schema('catalog').from('service_booking_rules').delete().eq('service_id', serviceId),
+    supabase.schema('catalog').from('service_pricing_view').delete().eq('service_id', serviceId),
+    supabase.schema('catalog').from('service_booking_rules_view').delete().eq('service_id', serviceId),
     supabase.schema('catalog').from('staff_services').delete().eq('service_id', serviceId),
     supabase.schema('inventory').from('service_product_usage').delete().eq('service_id', serviceId),
     supabase.schema('scheduling').from('appointment_services').delete().eq('service_id', serviceId),

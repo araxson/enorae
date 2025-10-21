@@ -25,7 +25,7 @@ export async function respondToReview(
     const supabase = await createClient()
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({
         response,
         response_date: new Date().toISOString(),
@@ -70,7 +70,7 @@ export async function updateReviewResponse(
     const supabase = await createClient()
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({
         response,
         response_date: new Date().toISOString(),
@@ -114,7 +114,7 @@ export async function deleteReviewResponse(
     const supabase = await createClient()
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({
         response: null,
         response_date: null,

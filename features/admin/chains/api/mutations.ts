@@ -66,7 +66,7 @@ export async function verifyChain(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('is_verified, verified_at')
       .eq('id', chainId)
       .maybeSingle()
@@ -77,7 +77,7 @@ export async function verifyChain(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         is_verified: isVerified,
         verified_at: isVerified ? new Date().toISOString() : null,
@@ -129,7 +129,7 @@ export async function updateChainActiveStatus(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('is_active')
       .eq('id', chainId)
       .maybeSingle()
@@ -140,7 +140,7 @@ export async function updateChainActiveStatus(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({ is_active: isActive })
       .eq('id', chainId)
 
@@ -189,7 +189,7 @@ export async function updateChainSubscription(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('subscription_tier')
       .eq('id', chainId)
       .maybeSingle()
@@ -200,7 +200,7 @@ export async function updateChainSubscription(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         subscription_tier: subscriptionTier,
       })
@@ -247,7 +247,7 @@ export async function deleteChain(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('is_active, deleted_at')
       .eq('id', chainId)
       .maybeSingle()
@@ -258,7 +258,7 @@ export async function deleteChain(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         deleted_at: new Date().toISOString(),
         is_active: false,
@@ -300,7 +300,7 @@ export async function restoreChain(chainId: string): Promise<ChainActionResponse
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         deleted_at: null,
       })

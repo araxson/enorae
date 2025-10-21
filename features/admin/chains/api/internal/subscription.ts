@@ -30,7 +30,7 @@ export async function updateChainSubscription(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('subscription_tier')
       .eq('id', chainId)
       .maybeSingle()
@@ -41,7 +41,7 @@ export async function updateChainSubscription(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         subscription_tier: subscriptionTier,
       })

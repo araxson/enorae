@@ -1,0 +1,4734 @@
+{
+  "views": {
+    "admin_analytics_overview": {
+      "active_salons": "number | null",
+      "avg_utilization_rate": "number | null",
+      "date": "string | null",
+      "platform_active_staff": "number | null",
+      "platform_appointments": "number | null",
+      "platform_cancelled_appointments": "number | null",
+      "platform_completed_appointments": "number | null",
+      "platform_new_customers": "number | null",
+      "platform_no_shows": "number | null",
+      "platform_product_revenue": "number | null",
+      "platform_returning_customers": "number | null",
+      "platform_revenue": "number | null",
+      "platform_service_revenue": "number | null"
+    },
+    "admin_appointments_overview": {
+      "cancelled_at": "string | null",
+      "completed_at": "string | null",
+      "confirmation_code": "string | null",
+      "created_at": "string | null",
+      "customer_email": "string | null",
+      "customer_id": "string | null",
+      "customer_name": "string | null",
+      "duration_minutes": "number | null",
+      "end_time": "string | null",
+      "id": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "service_id": "string | null",
+      "service_name": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "start_time": "string | null",
+      "status": "string | null",
+      "total_price": "number | null",
+      "updated_at": "string | null"
+    },
+    "admin_inventory_overview": {
+      "active_alerts_count": "number | null",
+      "category_name": "string | null",
+      "cost_price": "number | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "is_tracked": "boolean | null",
+      "product_id": "string | null",
+      "product_name": "string | null",
+      "reorder_point": "number | null",
+      "retail_price": "number | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "sku": "string | null",
+      "supplier_name": "string | null",
+      "total_available": "number | null",
+      "total_quantity": "number | null"
+    },
+    "admin_messages_overview": {
+      "appointment_id": "string | null",
+      "created_at": "string | null",
+      "customer_email": "string | null",
+      "customer_id": "string | null",
+      "customer_name": "string | null",
+      "id": "string | null",
+      "last_message_at": "string | null",
+      "priority": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "staff_email": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "status": "string | null",
+      "subject": "string | null",
+      "unread_count_customer": "number | null",
+      "unread_count_staff": "number | null",
+      "updated_at": "string | null"
+    },
+    "admin_revenue_overview": {
+      "cancelled_appointments": "number | null",
+      "chain_id": "string | null",
+      "chain_name": "string | null",
+      "completed_appointments": "number | null",
+      "date": "string | null",
+      "no_show_appointments": "number | null",
+      "product_revenue": "number | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "service_revenue": "number | null",
+      "total_appointments": "number | null",
+      "total_bookings": "number | null",
+      "total_revenue": "number | null",
+      "utilization_rate": "number | null"
+    },
+    "admin_reviews_overview": {
+      "cleanliness_rating": "number | null",
+      "comment": "string | null",
+      "created_at": "string | null",
+      "customer_id": "string | null",
+      "customer_name": "string | null",
+      "has_response": "boolean | null",
+      "helpful_count": "number | null",
+      "id": "string | null",
+      "is_featured": "boolean | null",
+      "is_flagged": "boolean | null",
+      "is_verified": "boolean | null",
+      "rating": "number | null",
+      "response_date": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "service_quality_rating": "number | null",
+      "title": "string | null",
+      "updated_at": "string | null",
+      "value_rating": "number | null"
+    },
+    "admin_salons_overview": {
+      "chain_id": "string | null",
+      "created_at": "string | null",
+      "id": "string | null",
+      "is_accepting_bookings": "boolean | null",
+      "is_active": "boolean | null",
+      "location_count": "number | null",
+      "name": "string | null",
+      "rating_average": "number | null",
+      "rating_count": "number | null",
+      "staff_count": "number | null",
+      "total_appointments": "number | null",
+      "total_bookings": "number | null",
+      "total_revenue": "number | null"
+    },
+    "admin_staff_overview": {
+      "bio": "string | null",
+      "created_at": "string | null",
+      "deleted_at": "string | null",
+      "email": "string | null",
+      "experience_years": "number | null",
+      "full_name": "string | null",
+      "id": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "staff_role": "string | null",
+      "title": "string | null",
+      "updated_at": "string | null",
+      "user_id": "string | null"
+    },
+    "admin_users_overview": {
+      "avatar_url": "string | null",
+      "country_code": "string | null",
+      "created_at": "string | null",
+      "deleted_at": "string | null",
+      "email": "string | null",
+      "email_verified": "boolean | null",
+      "full_name": "string | null",
+      "id": "string | null",
+      "locale": "string | null",
+      "primary_role": "string | null",
+      "roles": "string[] | null",
+      "salon_ids": "string[] | null",
+      "status": "string | null",
+      "timezone": "string | null",
+      "updated_at": "string | null",
+      "username": "string | null"
+    },
+    "appointment_services": {
+      "appointment_id": "string | null",
+      "category_name": "string | null",
+      "confirmation_code": "string | null",
+      "created_at": "string | null",
+      "currency_code": "string | null",
+      "current_price": "number | null",
+      "customer_id": "string | null",
+      "duration_minutes": "number | null",
+      "end_time": "string | null",
+      "id": "string | null",
+      "sale_price": "number | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "service_description": "string | null",
+      "service_id": "string | null",
+      "service_name": "string | null",
+      "service_price": "number | null",
+      "service_slug": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "staff_title": "string | null",
+      "start_time": "string | null",
+      "status": "string | null",
+      "updated_at": "string | null"
+    },
+    "appointments": {
+      "cancelled_at": "string | null",
+      "completed_at": "string | null",
+      "confirmation_code": "string | null",
+      "created_at": "string | null",
+      "customer_email": "string | null",
+      "customer_id": "string | null",
+      "customer_name": "string | null",
+      "duration_minutes": "number | null",
+      "end_time": "string | null",
+      "id": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "service_id": "string | null",
+      "service_name": "string | null",
+      "service_names": "string[] | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "start_time": "string | null",
+      "status": "string | null",
+      "total_price": "number | null",
+      "updated_at": "string | null"
+    },
+    "blocked_times": {
+      "block_type": "Database[\"scheduling\"][\"Enums\"][\"block_type_enum\"] | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "created_by_name": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "duration_minutes": "number | null",
+      "end_time": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "is_recurring": "boolean | null",
+      "reason": "string | null",
+      "recurrence_pattern": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "staff_title": "string | null",
+      "start_time": "string | null",
+      "updated_at": "string | null"
+    },
+    "communication_message_threads": {
+      "appointment_id": "string | null",
+      "created_at": "string | null",
+      "customer_id": "string | null",
+      "id": "string | null",
+      "last_message_at": "string | null",
+      "last_message_by_id": "string | null",
+      "metadata": "Json | null",
+      "priority": "Database[\"public\"][\"Enums\"][\"thread_priority\"] | null",
+      "salon_id": "string | null",
+      "staff_id": "string | null",
+      "status": "Database[\"public\"][\"Enums\"][\"thread_status\"] | null",
+      "subject": "string | null",
+      "unread_count_customer": "number | null",
+      "unread_count_staff": "number | null",
+      "updated_at": "string | null"
+    },
+    "communication_messages": {
+      "content": "string | null",
+      "context_id": "string | null",
+      "context_type": "string | null",
+      "created_at": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "edited_at": "string | null",
+      "from_user_id": "string | null",
+      "id": "string | null",
+      "is_deleted": "boolean | null",
+      "is_edited": "boolean | null",
+      "is_read": "boolean | null",
+      "metadata": "Json | null",
+      "read_at": "string | null",
+      "to_user_id": "string | null",
+      "updated_at": "string | null"
+    },
+    "communication_notification_queue": {
+      "channels": "string[] | null",
+      "created_at": "string | null",
+      "id": "string | null",
+      "notification_type": "string | null",
+      "payload": "Json | null",
+      "scheduled_for": "string | null",
+      "sent_at": "string | null",
+      "status": "string | null",
+      "user_id": "string | null"
+    },
+    "communication_webhook_queue": {
+      "attempts": "number | null",
+      "completed_at": "string | null",
+      "created_at": "string | null",
+      "headers": "Json | null",
+      "id": "string | null",
+      "last_error": "string | null",
+      "max_attempts": "number | null",
+      "next_retry_at": "string | null",
+      "payload": "Json | null",
+      "status": "string | null",
+      "updated_at": "string | null",
+      "url": "string | null"
+    },
+    "customer_favorites": {
+      "business_name": "string | null",
+      "category_name": "string | null",
+      "created_at": "string | null",
+      "currency_code": "string | null",
+      "customer_email": "string | null",
+      "customer_id": "string | null",
+      "customer_name": "string | null",
+      "id": "string | null",
+      "notes": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "service_description": "string | null",
+      "service_id": "string | null",
+      "service_name": "string | null",
+      "service_price": "number | null",
+      "service_slug": "string | null",
+      "staff_avatar": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "staff_title": "string | null"
+    },
+    "daily_metrics": {
+      "active_staff_count": "number | null",
+      "anomaly_score": "number | null",
+      "cancelled_appointments": "number | null",
+      "completed_appointments": "number | null",
+      "created_at": "string | null",
+      "forecast_accuracy": "number | null",
+      "id": "string | null",
+      "last_real_time_update": "string | null",
+      "metric_at": "string | null",
+      "new_customers": "number | null",
+      "no_show_appointments": "number | null",
+      "predicted_demand": "Json | null",
+      "product_revenue": "number | null",
+      "real_time_updates_count": "number | null",
+      "returning_customers": "number | null",
+      "salon_id": "string | null",
+      "service_revenue": "number | null",
+      "streaming_metrics": "Json | null",
+      "total_appointments": "number | null",
+      "total_revenue": "number | null",
+      "trend_indicators": "Json | null",
+      "updated_at": "string | null",
+      "utilization_rate": "number | null"
+    },
+    "hot_update_stats": {
+      "hot_update_percentage": "number | null",
+      "hot_updates": "number | null",
+      "schemaname": "unknown | null",
+      "status": "string | null",
+      "tablename": "unknown | null",
+      "total_updates": "number | null"
+    },
+    "location_addresses": {
+      "accessibility_notes": "string | null",
+      "city": "string | null",
+      "country_code": "string | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "formatted_address": "string | null",
+      "landmark": "string | null",
+      "latitude": "number | null",
+      "location_id": "string | null",
+      "longitude": "number | null",
+      "neighborhood": "string | null",
+      "parking_instructions": "string | null",
+      "place_id": "string | null",
+      "postal_code": "string | null",
+      "state_province": "string | null",
+      "street_address": "string | null",
+      "street_address_2": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null"
+    },
+    "low_priority_optimizations_summary": {
+      "optimization": "string | null",
+      "recommendation": "string | null",
+      "status": "string | null"
+    },
+    "manual_transactions": {
+      "appointment_id": "string | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "customer_id": "string | null",
+      "id": "string | null",
+      "payment_method": "string | null",
+      "salon_id": "string | null",
+      "staff_id": "string | null",
+      "transaction_at": "string | null",
+      "transaction_type": "string | null",
+      "updated_at": "string | null"
+    },
+    "message_threads": {
+      "appointment_id": "string | null",
+      "created_at": "string | null",
+      "customer_email": "string | null",
+      "customer_id": "string | null",
+      "customer_name": "string | null",
+      "customer_phone": "string | null",
+      "id": "string | null",
+      "last_message_at": "string | null",
+      "last_message_by_id": "string | null",
+      "metadata": "Json | null",
+      "priority": "Database[\"public\"][\"Enums\"][\"thread_priority\"] | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "staff_email": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "staff_title": "string | null",
+      "status": "Database[\"public\"][\"Enums\"][\"thread_status\"] | null",
+      "subject": "string | null",
+      "unread_count_customer": "number | null",
+      "unread_count_staff": "number | null",
+      "updated_at": "string | null"
+    },
+    "messages": {
+      "content": "string | null",
+      "context_id": "string | null",
+      "context_type": "string | null",
+      "created_at": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "edited_at": "string | null",
+      "from_user_email": "string | null",
+      "from_user_id": "string | null",
+      "from_user_name": "string | null",
+      "id": "string | null",
+      "is_deleted": "boolean | null",
+      "is_edited": "boolean | null",
+      "is_read": "boolean | null",
+      "metadata": "Json | null",
+      "read_at": "string | null",
+      "to_user_email": "string | null",
+      "to_user_id": "string | null",
+      "to_user_name": "string | null",
+      "updated_at": "string | null"
+    },
+    "most_called_queries": {
+      "avg_rows_per_call": "number | null",
+      "avg_time_ms": "number | null",
+      "calls": "number | null",
+      "query_preview": "string | null",
+      "queryid": "number | null",
+      "rows": "number | null",
+      "total_time_ms": "number | null"
+    },
+    "operating_hours": {
+      "break_end": "string | null",
+      "break_start": "string | null",
+      "close_time": "string | null",
+      "created_at": "string | null",
+      "day_of_week": "Database[\"public\"][\"Enums\"][\"day_of_week\"] | null",
+      "deleted_at": "string | null",
+      "effective_from": "string | null",
+      "effective_until": "string | null",
+      "hours_display": "string | null",
+      "id": "string | null",
+      "is_closed": "boolean | null",
+      "open_time": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "updated_at": "string | null"
+    },
+    "operational_metrics": {
+      "anomaly_score": "number | null",
+      "busiest_day_of_week": "number | null",
+      "created_at": "string | null",
+      "forecast_accuracy": "number | null",
+      "id": "string | null",
+      "last_real_time_update": "string | null",
+      "metric_at": "string | null",
+      "peak_hour": "number | null",
+      "predicted_demand": "Json | null",
+      "real_time_updates_count": "number | null",
+      "salon_id": "string | null",
+      "streaming_metrics": "Json | null",
+      "trend_indicators": "Json | null",
+      "updated_at": "string | null"
+    },
+    "product_categories": {
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "description": "string | null",
+      "display_order": "number | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "name": "string | null",
+      "parent_id": "string | null",
+      "salon_id": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null"
+    },
+    "product_usage": {
+      "appointment_id": "string | null",
+      "cost_at_time": "number | null",
+      "created_at": "string | null",
+      "id": "string | null",
+      "location_id": "string | null",
+      "notes": "string | null",
+      "performed_by_id": "string | null",
+      "product_id": "string | null",
+      "quantity_used": "number | null",
+      "updated_at": "string | null"
+    },
+    "products": {
+      "category_id": "string | null",
+      "cost_price": "number | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "description": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "is_tracked": "boolean | null",
+      "name": "string | null",
+      "reorder_point": "number | null",
+      "reorder_quantity": "number | null",
+      "retail_price": "number | null",
+      "salon_id": "string | null",
+      "sku": "string | null",
+      "supplier_id": "string | null",
+      "unit_of_measure": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null"
+    },
+    "profiles": {
+      "avatar_thumbnail_url": "string | null",
+      "avatar_url": "string | null",
+      "country_code": "string | null",
+      "cover_image_url": "string | null",
+      "created_at": "string | null",
+      "currency_code": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "email": "string | null",
+      "email_confirmed_at": "string | null",
+      "email_verified": "boolean | null",
+      "full_name": "string | null",
+      "id": "string | null",
+      "interests": "string[] | null",
+      "last_sign_in_at": "string | null",
+      "locale": "string | null",
+      "phone": "string | null",
+      "preferences": "Json | null",
+      "social_profiles": "Json | null",
+      "status": "string | null",
+      "tags": "string[] | null",
+      "timezone": "string | null",
+      "updated_at": "string | null",
+      "username": "string | null"
+    },
+    "profiles_metadata": {
+      "avatar_thumbnail_url": "string | null",
+      "avatar_url": "string | null",
+      "cover_image_url": "string | null",
+      "created_at": "string | null",
+      "id": "string | null",
+      "interests": "string[] | null",
+      "profile_id": "string | null",
+      "search_vector": "unknown | null",
+      "social_profiles": "Json | null",
+      "tags": "string[] | null",
+      "updated_at": "string | null"
+    },
+    "profiles_preferences": {
+      "country_code": "string | null",
+      "created_at": "string | null",
+      "currency_code": "string | null",
+      "id": "string | null",
+      "locale": "string | null",
+      "preferences": "Json | null",
+      "profile_id": "string | null",
+      "timezone": "string | null",
+      "updated_at": "string | null"
+    },
+    "public_tables_without_rls": {
+      "rls_status": "string | null",
+      "schemaname": "unknown | null",
+      "tablename": "unknown | null"
+    },
+    "purchase_order_items": {
+      "created_at": "string | null",
+      "id": "string | null",
+      "product_id": "string | null",
+      "purchase_order_id": "string | null",
+      "quantity_ordered": "number | null",
+      "quantity_received": "number | null",
+      "total_price": "number | null",
+      "unit_price": "number | null",
+      "updated_at": "string | null"
+    },
+    "purchase_orders": {
+      "actual_delivery_at": "string | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "expected_delivery_at": "string | null",
+      "id": "string | null",
+      "notes": "string | null",
+      "order_number": "string | null",
+      "ordered_at": "string | null",
+      "salon_id": "string | null",
+      "shipping_cost": "number | null",
+      "status": "string | null",
+      "subtotal": "number | null",
+      "supplier_id": "string | null",
+      "tax_amount": "number | null",
+      "total_amount": "number | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null"
+    },
+    "query_performance_summary": {
+      "avg_tuples_per_scan": "number | null",
+      "index_name": "unknown | null",
+      "index_scans": "number | null",
+      "index_size": "string | null",
+      "schemaname": "unknown | null",
+      "tablename": "unknown | null",
+      "tuples_fetched": "number | null",
+      "tuples_read": "number | null"
+    },
+    "salon_chains_view": {
+      "created_at": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "is_verified": "boolean | null",
+      "legal_name": "string | null",
+      "name": "string | null",
+      "rating_average": "number | null",
+      "rating_count": "number | null",
+      "salon_count": "number | null",
+      "slug": "string | null",
+      "staff_count": "number | null",
+      "subscription_tier": "string | null",
+      "total_completed_appointments": "number | null",
+      "total_revenue": "number | null",
+      "updated_at": "string | null"
+    },
+    "salon_contact_details": {
+      "booking_email": "string | null",
+      "booking_url": "string | null",
+      "created_at": "string | null",
+      "facebook_url": "string | null",
+      "hours_display_text": "string | null",
+      "instagram_url": "string | null",
+      "linkedin_url": "string | null",
+      "primary_email": "string | null",
+      "primary_phone": "string | null",
+      "salon_id": "string | null",
+      "secondary_phone": "string | null",
+      "telegram_username": "string | null",
+      "tiktok_url": "string | null",
+      "twitter_url": "string | null",
+      "updated_at": "string | null",
+      "website_url": "string | null",
+      "whatsapp_number": "string | null",
+      "youtube_url": "string | null"
+    },
+    "salon_descriptions": {
+      "cancellation_policy": "string | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "full_description": "string | null",
+      "meta_description": "string | null",
+      "meta_keywords": "string[] | null",
+      "meta_title": "string | null",
+      "salon_id": "string | null",
+      "short_description": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null",
+      "welcome_message": "string | null"
+    },
+    "salon_locations": {
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "is_primary": "boolean | null",
+      "name": "string | null",
+      "salon_id": "string | null",
+      "slug": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null"
+    },
+    "salon_media": {
+      "brand_colors": "Json | null",
+      "cover_image_url": "string | null",
+      "created_at": "string | null",
+      "gallery_urls": "string[] | null",
+      "logo_url": "string | null",
+      "salon_id": "string | null",
+      "social_links": "Json | null",
+      "updated_at": "string | null"
+    },
+    "salon_media_view": {
+      "brand_colors": "Json | null",
+      "business_name": "string | null",
+      "cover_image_url": "string | null",
+      "created_at": "string | null",
+      "gallery_image_count": "number | null",
+      "gallery_urls": "string[] | null",
+      "logo_url": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "social_links": "Json | null",
+      "updated_at": "string | null"
+    },
+    "salon_metrics": {
+      "average_duration": "number | null",
+      "calculated_at": "string | null",
+      "cancelled_appointments": "number | null",
+      "completed_appointments": "number | null",
+      "no_show_appointments": "number | null",
+      "revenue_total": "number | null",
+      "salon_id": "string | null",
+      "utilization_rate": "number | null"
+    },
+    "salon_reviews_view": {
+      "comment": "string | null",
+      "created_at": "string | null",
+      "customer_id": "string | null",
+      "customer_name": "string | null",
+      "helpful_count": "number | null",
+      "id": "string | null",
+      "is_flagged": "boolean | null",
+      "is_verified": "boolean | null",
+      "rating": "number | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "updated_at": "string | null"
+    },
+    "salon_settings": {
+      "booking_lead_time_hours": "number | null",
+      "cancellation_hours": "number | null",
+      "created_at": "string | null",
+      "features": "string[] | null",
+      "is_accepting_bookings": "boolean | null",
+      "max_bookings_per_day": "number | null",
+      "max_services": "number | null",
+      "max_staff": "number | null",
+      "salon_id": "string | null",
+      "subscription_expires_at": "string | null",
+      "subscription_tier": "string | null",
+      "updated_at": "string | null"
+    },
+    "salons": {
+      "address": "Json | null",
+      "city": "string | null",
+      "country_code": "string | null",
+      "created_at": "string | null",
+      "formatted_address": "string | null",
+      "full_description": "string | null",
+      "id": "string | null",
+      "is_accepting_bookings": "boolean | null",
+      "is_active": "boolean | null",
+      "is_featured": "boolean | null",
+      "is_verified": "boolean | null",
+      "latitude": "number | null",
+      "longitude": "number | null",
+      "name": "string | null",
+      "postal_code": "string | null",
+      "primary_email": "string | null",
+      "primary_phone": "string | null",
+      "rating_average": "number | null",
+      "rating_count": "number | null",
+      "short_description": "string | null",
+      "slug": "string | null",
+      "state_province": "string | null",
+      "street_address": "string | null",
+      "street_address_2": "string | null",
+      "website_url": "string | null"
+    },
+    "security_access_monitoring": {
+      "action": "string | null",
+      "created_at": "string | null",
+      "id": "string | null",
+      "ip_address": "unknown | null",
+      "is_granted": "boolean | null",
+      "resource_id": "string | null",
+      "resource_type": "string | null",
+      "user_agent": "string | null",
+      "user_id": "string | null"
+    },
+    "security_incident_logs": {
+      "action": "string | null",
+      "created_at": "string | null",
+      "entity_id": "string | null",
+      "entity_type": "string | null",
+      "error_message": "string | null",
+      "event_category": "string | null",
+      "event_type": "string | null",
+      "id": "string | null",
+      "impersonator_id": "string | null",
+      "ip_address": "unknown | null",
+      "is_success": "boolean | null",
+      "metadata": "Json | null",
+      "new_values": "Json | null",
+      "old_values": "Json | null",
+      "request_id": "string | null",
+      "salon_id": "string | null",
+      "severity": "string | null",
+      "user_agent": "string | null",
+      "user_id": "string | null"
+    },
+    "security_rate_limit_rules": {
+      "applies_to": "string | null",
+      "block_duration_seconds": "number | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "description": "string | null",
+      "endpoint": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "max_requests": "number | null",
+      "metadata": "Json | null",
+      "method": "string | null",
+      "priority": "number | null",
+      "role_filter": "Database[\"public\"][\"Enums\"][\"role_type\"] | null",
+      "rule_name": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null",
+      "window_seconds": "number | null"
+    },
+    "security_rate_limit_tracking": {
+      "blocked_until": "string | null",
+      "created_at": "string | null",
+      "endpoint": "string | null",
+      "identifier": "string | null",
+      "identifier_type": "string | null",
+      "last_blocked_at": "string | null",
+      "last_request_at": "string | null",
+      "metadata": "Json | null",
+      "request_count": "number | null",
+      "updated_at": "string | null",
+      "user_agent": "string | null",
+      "window_start_at": "string | null"
+    },
+    "security_session_security": {
+      "created_at": "string | null",
+      "id": "string | null",
+      "ip_address": "unknown | null",
+      "is_blocked": "boolean | null",
+      "last_activity_at": "string | null",
+      "session_id": "string | null",
+      "suspicious_score": "number | null",
+      "user_agent": "string | null",
+      "user_id": "string | null"
+    },
+    "service_booking_rules_view": {
+      "buffer_minutes": "number | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "duration_minutes": "number | null",
+      "id": "string | null",
+      "max_advance_booking_days": "number | null",
+      "min_advance_booking_hours": "number | null",
+      "salon_id": "string | null",
+      "service_id": "string | null",
+      "service_name": "string | null",
+      "total_duration_minutes": "number | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null"
+    },
+    "service_categories_view": {
+      "active_services_count": "number | null",
+      "created_at": "string | null",
+      "deleted_at": "string | null",
+      "depth": "number | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "name": "string | null",
+      "parent_category_name": "string | null",
+      "parent_category_slug": "string | null",
+      "parent_id": "string | null",
+      "path": "string[] | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "slug": "string | null",
+      "subcategories_count": "number | null",
+      "updated_at": "string | null"
+    },
+    "service_performance": {
+      "avg_rating": "number | null",
+      "cancellation_rate": "number | null",
+      "popularity_score": "number | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "service_id": "string | null",
+      "service_name": "string | null",
+      "total_bookings": "number | null",
+      "total_revenue": "number | null"
+    },
+    "service_pricing_view": {
+      "base_price": "number | null",
+      "commission_rate": "number | null",
+      "cost": "number | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "currency_code": "string | null",
+      "current_price": "number | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "id": "string | null",
+      "is_taxable": "boolean | null",
+      "profit_margin": "number | null",
+      "sale_price": "number | null",
+      "salon_id": "string | null",
+      "service_description": "string | null",
+      "service_id": "string | null",
+      "service_name": "string | null",
+      "tax_rate": "number | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null"
+    },
+    "service_product_usage": {
+      "created_at": "string | null",
+      "id": "string | null",
+      "is_optional": "boolean | null",
+      "product_id": "string | null",
+      "quantity_per_service": "number | null",
+      "service_id": "string | null",
+      "updated_at": "string | null"
+    },
+    "services": {
+      "buffer_minutes": "number | null",
+      "category_id": "string | null",
+      "category_name": "string | null",
+      "category_slug": "string | null",
+      "created_at": "string | null",
+      "currency_code": "string | null",
+      "current_price": "number | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "description": "string | null",
+      "discontinued_at": "string | null",
+      "duration_minutes": "number | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "is_bookable": "boolean | null",
+      "is_featured": "boolean | null",
+      "max_advance_booking_days": "number | null",
+      "min_advance_booking_hours": "number | null",
+      "name": "string | null",
+      "price": "number | null",
+      "sale_price": "number | null",
+      "salon_id": "string | null",
+      "slug": "string | null",
+      "status": "string | null",
+      "total_duration_minutes": "number | null",
+      "updated_at": "string | null"
+    },
+    "sessions": {
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "is_suspicious": "boolean | null",
+      "refresh_token": "string | null",
+      "session_token": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null",
+      "user_id": "string | null"
+    },
+    "slow_queries": {
+      "avg_time_ms": "number | null",
+      "cache_hit_ratio": "number | null",
+      "calls": "number | null",
+      "max_time_ms": "number | null",
+      "min_time_ms": "number | null",
+      "query_preview": "string | null",
+      "queryid": "number | null",
+      "rows": "number | null",
+      "stddev_time_ms": "number | null",
+      "total_time_ms": "number | null"
+    },
+    "staff": {
+      "avatar_thumbnail_url": "string | null",
+      "avatar_url": "string | null",
+      "bio": "string | null",
+      "business_name": "string | null",
+      "created_at": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "email": "string | null",
+      "experience_years": "number | null",
+      "full_name": "string | null",
+      "id": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "services_count": "number | null",
+      "status": "string | null",
+      "title": "string | null",
+      "total_appointments": "number | null",
+      "updated_at": "string | null",
+      "user_id": "string | null"
+    },
+    "staff_profiles": {
+      "bio": "string | null",
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "deleted_at": "string | null",
+      "deleted_by_id": "string | null",
+      "experience_years": "number | null",
+      "id": "string | null",
+      "salon_id": "string | null",
+      "title": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null",
+      "user_id": "string | null"
+    },
+    "staff_schedules": {
+      "break_end": "string | null",
+      "break_start": "string | null",
+      "created_at": "string | null",
+      "day_of_week": "Database[\"public\"][\"Enums\"][\"day_of_week\"] | null",
+      "effective_from": "string | null",
+      "effective_until": "string | null",
+      "end_time": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "salon_id": "string | null",
+      "staff_id": "string | null",
+      "start_time": "string | null",
+      "updated_at": "string | null"
+    },
+    "staff_services": {
+      "base_price": "number | null",
+      "created_at": "string | null",
+      "duration_override": "number | null",
+      "id": "string | null",
+      "is_available": "boolean | null",
+      "price_override": "number | null",
+      "proficiency_level": "string | null",
+      "rating_average": "number | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "service_id": "string | null",
+      "service_name": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "staff_user_id": "string | null",
+      "updated_at": "string | null"
+    },
+    "statistics_freshness": {
+      "freshness": "string | null",
+      "last_analyze": "string | null",
+      "last_autoanalyze": "string | null",
+      "live_rows": "number | null",
+      "rows_modified_since_analyze": "number | null",
+      "schemaname": "unknown | null",
+      "tablename": "unknown | null"
+    },
+    "stock_alerts": {
+      "alert_level": "string | null",
+      "alert_type": "string | null",
+      "created_at": "string | null",
+      "current_quantity": "number | null",
+      "id": "string | null",
+      "is_resolved": "boolean | null",
+      "location_id": "string | null",
+      "message": "string | null",
+      "product_id": "string | null",
+      "resolved_at": "string | null",
+      "resolved_by_id": "string | null",
+      "threshold_quantity": "number | null",
+      "updated_at": "string | null"
+    },
+    "stock_levels": {
+      "available_quantity": "number | null",
+      "created_at": "string | null",
+      "id": "string | null",
+      "last_counted_at": "string | null",
+      "location_id": "string | null",
+      "product_id": "string | null",
+      "quantity": "number | null",
+      "reserved_quantity": "number | null",
+      "updated_at": "string | null"
+    },
+    "stock_locations": {
+      "created_at": "string | null",
+      "created_by_id": "string | null",
+      "description": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "is_default": "boolean | null",
+      "location_id": "string | null",
+      "name": "string | null",
+      "salon_id": "string | null",
+      "updated_at": "string | null",
+      "updated_by_id": "string | null"
+    },
+    "stock_movements": {
+      "cost_price": "number | null",
+      "created_at": "string | null",
+      "from_location_id": "string | null",
+      "id": "string | null",
+      "location_id": "string | null",
+      "movement_type": "string | null",
+      "notes": "string | null",
+      "performed_by_id": "string | null",
+      "product_id": "string | null",
+      "quantity": "number | null",
+      "reference_id": "string | null",
+      "reference_type": "string | null",
+      "to_location_id": "string | null",
+      "updated_at": "string | null"
+    },
+    "suppliers": {
+      "address": "string | null",
+      "contact_email": "string | null",
+      "contact_name": "string | null",
+      "contact_phone": "string | null",
+      "created_at": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "name": "string | null",
+      "notes": "string | null",
+      "payment_terms": "string | null",
+      "product_count": "number | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "updated_at": "string | null",
+      "website": "string | null"
+    },
+    "table_bloat_estimate": {
+      "dead_tuple_percent": "number | null",
+      "dead_tuples": "number | null",
+      "indexes_size": "string | null",
+      "last_analyze": "string | null",
+      "last_autoanalyze": "string | null",
+      "last_autovacuum": "string | null",
+      "last_vacuum": "string | null",
+      "live_tuples": "number | null",
+      "schemaname": "unknown | null",
+      "table_size": "string | null",
+      "tablename": "unknown | null",
+      "total_size": "string | null"
+    },
+    "table_cache_hit_ratio": {
+      "cache_hit_ratio": "number | null",
+      "cache_hits": "number | null",
+      "disk_reads": "number | null",
+      "schemaname": "unknown | null",
+      "tablename": "unknown | null"
+    },
+    "tables_without_primary_keys": {
+      "schema_name": "unknown | null",
+      "table_name": "unknown | null"
+    },
+    "time_off_requests_view": {
+      "created_at": "string | null",
+      "duration_days": "number | null",
+      "end_at": "string | null",
+      "id": "string | null",
+      "is_auto_reschedule": "boolean | null",
+      "is_notify_customers": "boolean | null",
+      "reason": "string | null",
+      "request_type": "string | null",
+      "review_notes": "string | null",
+      "reviewed_at": "string | null",
+      "reviewed_by_id": "string | null",
+      "reviewed_by_name": "string | null",
+      "salon_id": "string | null",
+      "salon_name": "string | null",
+      "salon_slug": "string | null",
+      "staff_id": "string | null",
+      "staff_name": "string | null",
+      "staff_title": "string | null",
+      "staff_user_id": "string | null",
+      "start_at": "string | null",
+      "status": "Database[\"public\"][\"Enums\"][\"time_off_status\"] | null",
+      "updated_at": "string | null"
+    },
+    "toast_usage_summary": {
+      "main_size": "string | null",
+      "schemaname": "unknown | null",
+      "tablename": "unknown | null",
+      "toast_and_index_size": "string | null",
+      "toast_index_percentage": "number | null",
+      "total_size": "string | null"
+    },
+    "unused_indexes": {
+      "index_name": "unknown | null",
+      "index_size": "string | null",
+      "scans": "number | null",
+      "schemaname": "unknown | null",
+      "tablename": "unknown | null"
+    },
+    "user_roles": {
+      "created_at": "string | null",
+      "id": "string | null",
+      "is_active": "boolean | null",
+      "permissions": "string[] | null",
+      "role": "Database[\"public\"][\"Enums\"][\"role_type\"] | null",
+      "salon_id": "string | null",
+      "updated_at": "string | null",
+      "user_id": "string | null"
+    }
+  },
+  "functions": {
+    "vacuum_table": {
+      "args": {
+        "p_schema": "string; p_table: string"
+      },
+      "returns": "undefined"
+    },
+    "Functions": {
+      "args": {
+        "_bucket_id": "string; _name: string"
+      },
+      "returns": "undefined"
+    },
+    "calculate_avg_days_between_visits": {
+      "args": {
+        "p_customer_id": "string; p_salon_id: string"
+      },
+      "returns": "number"
+    },
+    "calculate_customer_favorite_staff": {
+      "args": {
+        "p_customer_id": "string; p_salon_id: string"
+      },
+      "returns": "string"
+    },
+    "calculate_customer_metrics": {
+      "args": {
+        "p_customer_id": "string; p_salon_id: string"
+      },
+      "returns": "undefined"
+    },
+    "calculate_customer_rates": {
+      "args": {
+        "p_customer_id": "string; p_salon_id: string"
+      },
+      "returns": "{"
+    },
+    "calculate_customer_review_stats": {
+      "args": {
+        "p_customer_id": "string; p_salon_id: string"
+      },
+      "returns": "{"
+    },
+    "calculate_customer_service_stats": {
+      "args": {
+        "p_customer_id": "string; p_salon_id: string"
+      },
+      "returns": "{"
+    },
+    "calculate_customer_visit_stats": {
+      "args": {
+        "p_customer_id": "string; p_salon_id: string"
+      },
+      "returns": "{"
+    },
+    "calculate_daily_appointment_metrics": {
+      "args": {
+        "p_date": "string; p_salon_id: string"
+      },
+      "returns": "{"
+    },
+    "calculate_daily_customer_metrics": {
+      "args": {
+        "p_date": "string; p_salon_id: string"
+      },
+      "returns": "{"
+    },
+    "calculate_daily_metrics": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "undefined"
+    },
+    "calculate_daily_service_metrics": {
+      "args": {
+        "p_date": "string; p_salon_id: string"
+      },
+      "returns": "{"
+    },
+    "maintain_partitions": {
+      "args": {},
+      "returns": "undefined"
+    },
+    "refresh_mv": {
+      "args": {
+        "p_view_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "refresh_service_performance": {
+      "args": {
+        "p_service_id": "string"
+      },
+      "returns": "undefined"
+    },
+    "update_salon_stats": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "undefined"
+    },
+    "user_owns_salon": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "create_archive_table": {
+      "args": {
+        "source_schema": "string; source_table: string"
+      },
+      "returns": "undefined"
+    },
+    "is_valid_event_metadata": {
+      "args": {
+        "metadata": "Json"
+      },
+      "returns": "boolean"
+    },
+    "move_old_appointments": {
+      "args": {},
+      "returns": "{"
+    },
+    "purge_old_archives": {
+      "args": {
+        "archive_table_name": "string; older_than_days?: number"
+      },
+      "returns": "number"
+    },
+    "restore_appointments": {
+      "args": {
+        "p_appointment_ids": "string[]"
+      },
+      "returns": "number"
+    },
+    "restore_from_archive": {
+      "args": {
+        "record_id": "string; source_schema: string; source_table: string"
+      },
+      "returns": "undefined"
+    },
+    "calculate_event_risk_score": {
+      "args": {
+        "p_event_type": "Database[\"public\"][\"Enums\"][\"audit_event_type\"]",
+        "p_ip_address": "unknown",
+        "p_severity": "Database[\"public\"][\"Enums\"][\"audit_severity\"]",
+        "p_user_id": "string"
+      },
+      "returns": "number"
+    },
+    "create_monthly_partition": {
+      "args": {
+        "partition_date": "string"
+      },
+      "returns": "undefined"
+    },
+    "create_monthly_partitions": {
+      "args": {},
+      "returns": "undefined"
+    },
+    "create_partition_indexes": {
+      "args": {
+        "partition_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "enable_tracking": {
+      "args": {
+        "target_table": "unknown"
+      },
+      "returns": "undefined"
+    },
+    "get_record_history": {
+      "args": {
+        "p_record_id": "string; p_table_name: string"
+      },
+      "returns": "{"
+    },
+    "log_event": {
+      "args": {
+        "p_action": "string",
+        "p_event_category": "Database[\"public\"][\"Enums\"][\"audit_category\"]",
+        "p_event_type": "Database[\"public\"][\"Enums\"][\"audit_event_type\"]"
+      },
+      "returns": "string"
+    },
+    "log_security_incident": {
+      "args": {
+        "p_description": "string",
+        "p_incident_type": "Database[\"public\"][\"Enums\"][\"security_incident_type\"]",
+        "p_severity": "Database[\"public\"][\"Enums\"][\"incident_severity\"]"
+      },
+      "returns": "string"
+    },
+    "log_sensitive_operation": {
+      "args": {
+        "operation_type": "string",
+        "record_id": "string",
+        "table_name": "string"
+      },
+      "returns": "string"
+    },
+    "primary_key_columns": {
+      "args": {
+        "entity_oid": "unknown"
+      },
+      "returns": "string[]"
+    },
+    "trigger_security_alert": {
+      "args": {
+        "p_event_id": "string; p_risk_score: number"
+      },
+      "returns": "undefined"
+    },
+    "bulk_create_services": {
+      "args": {
+        "p_services": "Json[]"
+      },
+      "returns": "{"
+    },
+    "calculate_service_duration": {
+      "args": {
+        "p_service_id": "string; p_variant_id?: string"
+      },
+      "returns": "number"
+    },
+    "calculate_service_price": {
+      "args": {
+        "p_service_id": "string"
+      },
+      "returns": "number"
+    },
+    "check_is_package": {
+      "args": {
+        "p_service_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "search_services_fulltext": {
+      "args": {
+        "search_query": "string"
+      },
+      "returns": "{"
+    },
+    "search_services_optimized": {
+      "args": {
+        "search_query": "string"
+      },
+      "returns": "{"
+    },
+    "update_service_with_version": {
+      "args": {
+        "p_expected_version": "number",
+        "p_service_id": "string",
+        "p_updates": "Json"
+      },
+      "returns": "boolean"
+    },
+    "user_can_manage_service": {
+      "args": {
+        "p_service_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "validate_coupon": {
+      "args": {
+        "p_amount": "number",
+        "p_coupon_code": "string",
+        "p_customer_id": "string",
+        "p_salon_id": "string"
+      },
+      "returns": "{"
+    },
+    "cleanup_stale_locks": {
+      "args": {},
+      "returns": "number"
+    },
+    "complete_notification": {
+      "args": {
+        "p_queue_id": "string; p_worker_id?: string"
+      },
+      "returns": "boolean"
+    },
+    "fail_notification": {
+      "args": {
+        "p_error_message": "string",
+        "p_queue_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "get_or_create_thread": {
+      "args": {
+        "p_customer_id": "string",
+        "p_salon_id": "string"
+      },
+      "returns": "string"
+    },
+    "get_unread_count": {
+      "args": {
+        "p_user_id": "string"
+      },
+      "returns": "number"
+    },
+    "get_unread_counts": {
+      "args": {
+        "p_user_id": "string"
+      },
+      "returns": "{"
+    },
+    "mark_notifications_read": {
+      "args": {
+        "p_user_id": "string"
+      },
+      "returns": "number"
+    },
+    "send_notification": {
+      "args": {
+        "p_message": "string",
+        "p_title": "string",
+        "p_type": "string",
+        "p_user_id": "string"
+      },
+      "returns": "string"
+    },
+    "schedule_in_database": {
+      "args": {
+        "command": "string",
+        "database": "string",
+        "job_name": "string",
+        "schedule": "string"
+      },
+      "returns": "number"
+    },
+    "_postgis_index_extent": {
+      "args": {
+        "col": "string; tbl: unknown"
+      },
+      "returns": "unknown"
+    },
+    "_postgis_selectivity": {
+      "args": {
+        "att_name": "string; geom: unknown; mode?: string; tbl: unknown"
+      },
+      "returns": "number"
+    },
+    "_st_3dintersects": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_bestsrid": {
+      "args": {},
+      "returns": "number"
+    },
+    "_st_contains": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_containsproperly": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_crosses": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_dwithin": {
+      "args": {
+        "geog1": "unknown",
+        "geog2": "unknown",
+        "tolerance": "number"
+      },
+      "returns": "boolean"
+    },
+    "_st_equals": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_intersects": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_linecrossingdirection": {
+      "args": {
+        "line1": "unknown; line2: unknown"
+      },
+      "returns": "number"
+    },
+    "_st_longestline": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "_st_maxdistance": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "_st_orderingequals": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_overlaps": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_pointoutside": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "_st_sortablehash": {
+      "args": {
+        "geom": "unknown"
+      },
+      "returns": "number"
+    },
+    "_st_touches": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "_st_voronoi": {
+      "args": {
+        "g1": "unknown"
+      },
+      "returns": "unknown"
+    },
+    "_st_within": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "addauth": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "akeys": {
+      "args": {},
+      "returns": "string[]"
+    },
+    "armor": {
+      "args": {},
+      "returns": "string"
+    },
+    "avals": {
+      "args": {},
+      "returns": "string[]"
+    },
+    "box2d_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "box2d_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "box2df_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "box2df_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "box3d_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "box3d_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "box3dtobox": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "bytea_to_text": {
+      "args": {
+        "data": "string"
+      },
+      "returns": "string"
+    },
+    "citext_hash": {
+      "args": {},
+      "returns": "number"
+    },
+    "citextin": {
+      "args": {},
+      "returns": "string"
+    },
+    "citextout": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "citextrecv": {
+      "args": {},
+      "returns": "string"
+    },
+    "citextsend": {
+      "args": {},
+      "returns": "string"
+    },
+    "daitch_mokotoff": {
+      "args": {},
+      "returns": "string[]"
+    },
+    "dearmor": {
+      "args": {},
+      "returns": "string"
+    },
+    "dmetaphone": {
+      "args": {},
+      "returns": "string"
+    },
+    "dmetaphone_alt": {
+      "args": {},
+      "returns": "string"
+    },
+    "each": {
+      "args": {
+        "hs": "unknown"
+      },
+      "returns": "Record<string, unknown>[]"
+    },
+    "equals": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "gbt_bit_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_bool_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_bool_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_bpchar_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_bytea_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_cash_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_cash_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_date_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_date_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_decompress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_enum_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_enum_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_float4_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_float4_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_float8_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_float8_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_inet_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_int2_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_int2_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_int4_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_int4_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_int8_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_int8_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_intv_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_intv_decompress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_intv_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_macad_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_macad_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_macad8_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_macad8_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_numeric_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_oid_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_oid_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_text_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_time_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_time_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_timetz_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_ts_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_ts_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_tstz_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_uuid_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_uuid_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_var_decompress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbt_var_fetch": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey_var_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey_var_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey16_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey16_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey2_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey2_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey32_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey32_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey4_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey4_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey8_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gbtreekey8_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gen_random_bytes": {
+      "args": {},
+      "returns": "string"
+    },
+    "gen_salt": {
+      "args": {},
+      "returns": "string"
+    },
+    "geography_analyze": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "geography_gist_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geography_gist_decompress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geography_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geography_send": {
+      "args": {},
+      "returns": "string"
+    },
+    "geography_spgist_compress_nd": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geography_typmod_in": {
+      "args": {},
+      "returns": "number"
+    },
+    "geography_typmod_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_above": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_analyze": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "geometry_below": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_cmp": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "geometry_contained_3d": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_contains": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_contains_3d": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_distance_box": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "geometry_distance_centroid": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "geometry_eq": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_ge": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_gist_compress_2d": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_gist_compress_nd": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_gist_decompress_2d": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_gist_decompress_nd": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_gist_sortsupport_2d": {
+      "args": {},
+      "returns": "undefined"
+    },
+    "geometry_gt": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_hash": {
+      "args": {},
+      "returns": "number"
+    },
+    "geometry_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_le": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_left": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_lt": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_overabove": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_overbelow": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_overlaps": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_overlaps_3d": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_overleft": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_overright": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_recv": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_right": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_same": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_same_3d": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geometry_send": {
+      "args": {},
+      "returns": "string"
+    },
+    "geometry_sortsupport": {
+      "args": {},
+      "returns": "undefined"
+    },
+    "geometry_spgist_compress_2d": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_spgist_compress_3d": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_spgist_compress_nd": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_typmod_in": {
+      "args": {},
+      "returns": "number"
+    },
+    "geometry_typmod_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geometry_within": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "geomfromewkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "geomfromewkt": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "get_proj4_from_srid": {
+      "args": {},
+      "returns": "string"
+    },
+    "ghstore_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "ghstore_decompress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "ghstore_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "ghstore_options": {
+      "args": {},
+      "returns": "undefined"
+    },
+    "ghstore_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gidx_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gidx_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gtrgm_compress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gtrgm_decompress": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gtrgm_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "gtrgm_options": {
+      "args": {},
+      "returns": "undefined"
+    },
+    "gtrgm_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "hstore_hash": {
+      "args": {},
+      "returns": "number"
+    },
+    "hstore_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "hstore_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "hstore_recv": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "hstore_send": {
+      "args": {},
+      "returns": "string"
+    },
+    "hstore_subscript_handler": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "hstore_to_array": {
+      "args": {},
+      "returns": "string[]"
+    },
+    "hstore_to_json": {
+      "args": {},
+      "returns": "Json"
+    },
+    "hstore_to_json_loose": {
+      "args": {},
+      "returns": "Json"
+    },
+    "hstore_to_jsonb": {
+      "args": {},
+      "returns": "Json"
+    },
+    "hstore_to_jsonb_loose": {
+      "args": {},
+      "returns": "Json"
+    },
+    "hstore_to_matrix": {
+      "args": {},
+      "returns": "string[]"
+    },
+    "hstore_version_diag": {
+      "args": {},
+      "returns": "number"
+    },
+    "http": {
+      "args": {
+        "request": "Database[\"extensions\"][\"CompositeTypes\"][\"http_request\"]"
+      },
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"http_response\"]"
+    },
+    "http_head": {
+      "args": {
+        "uri": "string"
+      },
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"http_response\"]"
+    },
+    "http_header": {
+      "args": {
+        "field": "string; value: string"
+      },
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"http_header\"]"
+    },
+    "http_patch": {
+      "args": {
+        "content": "string; content_type: string; uri: string"
+      },
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"http_response\"]"
+    },
+    "http_put": {
+      "args": {
+        "content": "string; content_type: string; uri: string"
+      },
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"http_response\"]"
+    },
+    "http_set_curlopt": {
+      "args": {
+        "curlopt": "string; value: string"
+      },
+      "returns": "boolean"
+    },
+    "hypopg_create_index": {
+      "args": {
+        "sql_order": "string"
+      },
+      "returns": "Record<string, unknown>[]"
+    },
+    "hypopg_drop_index": {
+      "args": {
+        "indexid": "unknown"
+      },
+      "returns": "boolean"
+    },
+    "hypopg_get_indexdef": {
+      "args": {
+        "indexid": "unknown"
+      },
+      "returns": "string"
+    },
+    "hypopg_hide_index": {
+      "args": {
+        "indexid": "unknown"
+      },
+      "returns": "boolean"
+    },
+    "hypopg_relation_size": {
+      "args": {
+        "indexid": "unknown"
+      },
+      "returns": "number"
+    },
+    "hypopg_unhide_index": {
+      "args": {
+        "indexid": "unknown"
+      },
+      "returns": "boolean"
+    },
+    "index_advisor": {
+      "args": {
+        "query": "string"
+      },
+      "returns": "{"
+    },
+    "json": {
+      "args": {},
+      "returns": "Json"
+    },
+    "json_matches_schema": {
+      "args": {
+        "instance": "Json; schema: Json"
+      },
+      "returns": "boolean"
+    },
+    "jsonb": {
+      "args": {},
+      "returns": "Json"
+    },
+    "jsonb_matches_schema": {
+      "args": {
+        "instance": "Json; schema: Json"
+      },
+      "returns": "boolean"
+    },
+    "jsonschema_is_valid": {
+      "args": {
+        "schema": "Json"
+      },
+      "returns": "boolean"
+    },
+    "jsonschema_validation_errors": {
+      "args": {
+        "instance": "Json; schema: Json"
+      },
+      "returns": "string[]"
+    },
+    "path": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "pg_stat_statements": {
+      "args": {
+        "showtext": "boolean"
+      },
+      "returns": "Record<string, unknown>[]"
+    },
+    "pg_stat_statements_reset": {
+      "args": {},
+      "returns": "string"
+    },
+    "pgis_asflatgeobuf_finalfn": {
+      "args": {},
+      "returns": "string"
+    },
+    "pgis_asgeobuf_finalfn": {
+      "args": {},
+      "returns": "string"
+    },
+    "pgis_asmvt_finalfn": {
+      "args": {},
+      "returns": "string"
+    },
+    "pgis_asmvt_serialfn": {
+      "args": {},
+      "returns": "string"
+    },
+    "pgis_geometry_clusterintersecting_finalfn": {
+      "args": {},
+      "returns": "unknown[]"
+    },
+    "pgis_geometry_clusterwithin_finalfn": {
+      "args": {},
+      "returns": "unknown[]"
+    },
+    "pgis_geometry_collect_finalfn": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "pgis_geometry_makeline_finalfn": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "pgis_geometry_polygonize_finalfn": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "pgis_geometry_union_parallel_finalfn": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "pgis_geometry_union_parallel_serialfn": {
+      "args": {},
+      "returns": "string"
+    },
+    "pgp_armor_headers": {
+      "args": {},
+      "returns": "Record<string, unknown>[]"
+    },
+    "pgp_key_id": {
+      "args": {},
+      "returns": "string"
+    },
+    "point": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "polygon": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "postgis_addbbox": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "postgis_constraint_dims": {
+      "args": {
+        "geomcolumn": "string; geomschema: string; geomtable: string"
+      },
+      "returns": "number"
+    },
+    "postgis_constraint_srid": {
+      "args": {
+        "geomcolumn": "string; geomschema: string; geomtable: string"
+      },
+      "returns": "number"
+    },
+    "postgis_constraint_type": {
+      "args": {
+        "geomcolumn": "string; geomschema: string; geomtable: string"
+      },
+      "returns": "string"
+    },
+    "postgis_dropbbox": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "postgis_geos_noop": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "postgis_getbbox": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "postgis_hasbbox": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "postgis_index_supportfn": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "postgis_noop": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "postgis_type_name": {
+      "args": {
+        "coord_dimension": "number",
+        "geomname": "string"
+      },
+      "returns": "string"
+    },
+    "postgis_typmod_dims": {
+      "args": {},
+      "returns": "number"
+    },
+    "postgis_typmod_srid": {
+      "args": {},
+      "returns": "number"
+    },
+    "postgis_typmod_type": {
+      "args": {},
+      "returns": "string"
+    },
+    "set_limit": {
+      "args": {},
+      "returns": "number"
+    },
+    "show_trgm": {
+      "args": {},
+      "returns": "string[]"
+    },
+    "skeys": {
+      "args": {},
+      "returns": "string[]"
+    },
+    "soundex": {
+      "args": {},
+      "returns": "string"
+    },
+    "spheroid_in": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "spheroid_out": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_3dclosestpoint": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_3ddistance": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "st_3dintersects": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_3dlength": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_3dlongestline": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_3dmakebox": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_3dmaxdistance": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "st_3dperimeter": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_3dshortestline": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_addpoint": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_area2d": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_asencodedpolyline": {
+      "args": {
+        "geom": "unknown; nprecision?: number"
+      },
+      "returns": "string"
+    },
+    "st_asewkb": {
+      "args": {},
+      "returns": "string"
+    },
+    "st_ashexewkb": {
+      "args": {},
+      "returns": "string"
+    },
+    "st_aslatlontext": {
+      "args": {
+        "geom": "unknown; tmpl?: string"
+      },
+      "returns": "string"
+    },
+    "st_asmarc21": {
+      "args": {
+        "geom": "unknown"
+      },
+      "returns": "string"
+    },
+    "st_asmvtgeom": {
+      "args": {
+        "bounds": "unknown",
+        "geom": "unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_asx3d": {
+      "args": {
+        "geom": "unknown; maxdecimaldigits?: number; options?: number"
+      },
+      "returns": "string"
+    },
+    "st_boundary": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_boundingdiagonal": {
+      "args": {
+        "geom": "unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_buildarea": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_cleangeometry": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_clipbybox2d": {
+      "args": {
+        "box": "unknown; geom: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_closestpoint": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_clusterintersecting": {
+      "args": {},
+      "returns": "unknown[]"
+    },
+    "st_collectionextract": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_collectionhomogenize": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_concavehull": {
+      "args": {
+        "param_geom": "unknown",
+        "param_pctconvex": "number"
+      },
+      "returns": "unknown"
+    },
+    "st_contains": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_containsproperly": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_convexhull": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_coorddim": {
+      "args": {
+        "geometry": "unknown"
+      },
+      "returns": "number"
+    },
+    "st_crosses": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_curvetoline": {
+      "args": {
+        "geom": "unknown; tol?: number; toltype?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_delaunaytriangles": {
+      "args": {
+        "g1": "unknown; tolerance?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_difference": {
+      "args": {
+        "geom1": "unknown; geom2: unknown; gridsize?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_dimension": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_disjoint": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_distancespheroid": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "st_dump": {
+      "args": {},
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"geometry_dump\"][]"
+    },
+    "st_dumppoints": {
+      "args": {},
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"geometry_dump\"][]"
+    },
+    "st_dumprings": {
+      "args": {},
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"geometry_dump\"][]"
+    },
+    "st_dumpsegments": {
+      "args": {},
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"geometry_dump\"][]"
+    },
+    "st_dwithin": {
+      "args": {
+        "geog1": "unknown",
+        "geog2": "unknown",
+        "tolerance": "number"
+      },
+      "returns": "boolean"
+    },
+    "st_endpoint": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_envelope": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_equals": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_exteriorring": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_flipcoordinates": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_force2d": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_force3d": {
+      "args": {
+        "geom": "unknown; zvalue?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_force3dm": {
+      "args": {
+        "geom": "unknown; mvalue?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_force3dz": {
+      "args": {
+        "geom": "unknown; zvalue?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_force4d": {
+      "args": {
+        "geom": "unknown; mvalue?: number; zvalue?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_forcecollection": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_forcecurve": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_forcepolygonccw": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_forcepolygoncw": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_forcerhr": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_forcesfs": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geogfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geogfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geographyfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geomcollfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geomcollfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geometricmedian": {
+      "args": {
+        "g": "unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_geometryfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geometrytype": {
+      "args": {},
+      "returns": "string"
+    },
+    "st_geomfromewkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geomfromewkt": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geomfromgml": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geomfromkml": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geomfrommarc21": {
+      "args": {
+        "marc21xml": "string"
+      },
+      "returns": "unknown"
+    },
+    "st_geomfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geomfromtwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_geomfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_gmltosql": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_hasarc": {
+      "args": {
+        "geometry": "unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_hausdorffdistance": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "st_hexagon": {
+      "args": {
+        "cell_i": "number; cell_j: number; origin?: unknown; size: number"
+      },
+      "returns": "unknown"
+    },
+    "st_hexagongrid": {
+      "args": {
+        "bounds": "unknown; size: number"
+      },
+      "returns": "Record<string, unknown>[]"
+    },
+    "st_interpolatepoint": {
+      "args": {
+        "line": "unknown; point: unknown"
+      },
+      "returns": "number"
+    },
+    "st_intersection": {
+      "args": {
+        "geom1": "unknown; geom2: unknown; gridsize?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_isclosed": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_iscollection": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_isempty": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_ispolygonccw": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_ispolygoncw": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_isring": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_issimple": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_isvalid": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_isvaliddetail": {
+      "args": {
+        "geom": "unknown"
+      },
+      "returns": "Database[\"extensions\"][\"CompositeTypes\"][\"valid_detail\"]"
+    },
+    "st_isvalidreason": {
+      "args": {},
+      "returns": "string"
+    },
+    "st_isvalidtrajectory": {
+      "args": {},
+      "returns": "boolean"
+    },
+    "st_length2d": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_letters": {
+      "args": {
+        "letters": "string"
+      },
+      "returns": "unknown"
+    },
+    "st_linecrossingdirection": {
+      "args": {
+        "line1": "unknown; line2: unknown"
+      },
+      "returns": "number"
+    },
+    "st_linefromencodedpolyline": {
+      "args": {
+        "txtin": "string"
+      },
+      "returns": "unknown"
+    },
+    "st_linefrommultipoint": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_linefromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_linefromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_linelocatepoint": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "st_linemerge": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_linestringfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_linetocurve": {
+      "args": {
+        "geometry": "unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_locatealong": {
+      "args": {
+        "geometry": "unknown; leftrightoffset?: number; measure: number"
+      },
+      "returns": "unknown"
+    },
+    "st_locatebetween": {
+      "args": {
+        "frommeasure": "number",
+        "geometry": "unknown",
+        "tomeasure": "number"
+      },
+      "returns": "unknown"
+    },
+    "st_locatebetweenelevations": {
+      "args": {
+        "fromelevation": "number; geometry: unknown; toelevation: number"
+      },
+      "returns": "unknown"
+    },
+    "st_longestline": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_m": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_makebox2d": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_makepolygon": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_maxdistance": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "number"
+    },
+    "st_maximuminscribedcircle": {
+      "args": {},
+      "returns": "Record<string, unknown>"
+    },
+    "st_memsize": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_minimumboundingcircle": {
+      "args": {
+        "inputgeom": "unknown; segs_per_quarter?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_minimumboundingradius": {
+      "args": {},
+      "returns": "Record<string, unknown>"
+    },
+    "st_minimumclearance": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_minimumclearanceline": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_mlinefromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_mlinefromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_mpointfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_mpointfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_mpolyfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_mpolyfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_multi": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_multilinefromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_multilinestringfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_multipointfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_multipointfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_multipolyfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_multipolygonfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_ndims": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_node": {
+      "args": {
+        "g": "unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_normalize": {
+      "args": {
+        "geom": "unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_npoints": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_nrings": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_numgeometries": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_numinteriorring": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_numinteriorrings": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_numpatches": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_numpoints": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_offsetcurve": {
+      "args": {
+        "distance": "number; line: unknown; params?: string"
+      },
+      "returns": "unknown"
+    },
+    "st_orderingequals": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_orientedenvelope": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_overlaps": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_perimeter2d": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_pointfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_pointfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_pointm": {
+      "args": {
+        "mcoordinate": "number",
+        "xcoordinate": "number",
+        "ycoordinate": "number"
+      },
+      "returns": "unknown"
+    },
+    "st_pointonsurface": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_points": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_pointz": {
+      "args": {
+        "xcoordinate": "number",
+        "ycoordinate": "number",
+        "zcoordinate": "number"
+      },
+      "returns": "unknown"
+    },
+    "st_pointzm": {
+      "args": {
+        "mcoordinate": "number",
+        "xcoordinate": "number",
+        "ycoordinate": "number",
+        "zcoordinate": "number"
+      },
+      "returns": "unknown"
+    },
+    "st_polyfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_polyfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_polygonfromtext": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_polygonfromwkb": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_polygonize": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_project": {
+      "args": {
+        "azimuth": "number; distance: number; geog: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_quantizecoordinates": {
+      "args": {
+        "g": "unknown",
+        "prec_x": "number"
+      },
+      "returns": "unknown"
+    },
+    "st_reduceprecision": {
+      "args": {
+        "geom": "unknown; gridsize: number"
+      },
+      "returns": "unknown"
+    },
+    "st_relate": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "string"
+    },
+    "st_removerepeatedpoints": {
+      "args": {
+        "geom": "unknown; tolerance?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_reverse": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_segmentize": {
+      "args": {
+        "geog": "unknown; max_segment_length: number"
+      },
+      "returns": "unknown"
+    },
+    "st_sharedpaths": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_shiftlongitude": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_shortestline": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_simplifypolygonhull": {
+      "args": {
+        "geom": "unknown; is_outer?: boolean; vertex_fraction: number"
+      },
+      "returns": "unknown"
+    },
+    "st_split": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_square": {
+      "args": {
+        "cell_i": "number; cell_j: number; origin?: unknown; size: number"
+      },
+      "returns": "unknown"
+    },
+    "st_squaregrid": {
+      "args": {
+        "bounds": "unknown; size: number"
+      },
+      "returns": "Record<string, unknown>[]"
+    },
+    "st_startpoint": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_subdivide": {
+      "args": {
+        "geom": "unknown; gridsize?: number; maxvertices?: number"
+      },
+      "returns": "unknown[]"
+    },
+    "st_swapordinates": {
+      "args": {
+        "geom": "unknown; ords: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_symdifference": {
+      "args": {
+        "geom1": "unknown; geom2: unknown; gridsize?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_symmetricdifference": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_tileenvelope": {
+      "args": {
+        "x": "number",
+        "y": "number",
+        "zoom": "number"
+      },
+      "returns": "unknown"
+    },
+    "st_touches": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_triangulatepolygon": {
+      "args": {
+        "g1": "unknown"
+      },
+      "returns": "unknown"
+    },
+    "st_voronoilines": {
+      "args": {
+        "g1": "unknown; tolerance?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_voronoipolygons": {
+      "args": {
+        "g1": "unknown; tolerance?: number"
+      },
+      "returns": "unknown"
+    },
+    "st_within": {
+      "args": {
+        "geom1": "unknown; geom2: unknown"
+      },
+      "returns": "boolean"
+    },
+    "st_wkbtosql": {
+      "args": {
+        "wkb": "string"
+      },
+      "returns": "unknown"
+    },
+    "st_wkttosql": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "st_wrapx": {
+      "args": {
+        "geom": "unknown; move: number; wrap: number"
+      },
+      "returns": "unknown"
+    },
+    "st_x": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_xmax": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_xmin": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_y": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_ymax": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_ymin": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_z": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_zmax": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_zmflag": {
+      "args": {},
+      "returns": "number"
+    },
+    "st_zmin": {
+      "args": {},
+      "returns": "number"
+    },
+    "svals": {
+      "args": {},
+      "returns": "string[]"
+    },
+    "text": {
+      "args": {},
+      "returns": "string"
+    },
+    "text_soundex": {
+      "args": {},
+      "returns": "string"
+    },
+    "text_to_bytea": {
+      "args": {
+        "data": "string"
+      },
+      "returns": "string"
+    },
+    "unaccent": {
+      "args": {},
+      "returns": "string"
+    },
+    "unaccent_init": {
+      "args": {},
+      "returns": "unknown"
+    },
+    "unlockrows": {
+      "args": {},
+      "returns": "number"
+    },
+    "updategeometrysrid": {
+      "args": {
+        "catalogn_name": "string",
+        "column_name": "string",
+        "new_srid_in": "number",
+        "schema_name": "string",
+        "table_name": "string"
+      },
+      "returns": "string"
+    },
+    "uuid_generate_v3": {
+      "args": {
+        "name": "string; namespace: string"
+      },
+      "returns": "string"
+    },
+    "uuid_generate_v5": {
+      "args": {
+        "name": "string; namespace: string"
+      },
+      "returns": "string"
+    },
+    "comment_directive": {
+      "args": {
+        "comment_": "string"
+      },
+      "returns": "Json"
+    },
+    "exception": {
+      "args": {
+        "message": "string"
+      },
+      "returns": "string"
+    },
+    "resolve": {
+      "args": {
+        "query": "string"
+      },
+      "returns": "Json"
+    },
+    "check_rate_limit": {
+      "args": {
+        "p_key": "string"
+      },
+      "returns": "boolean"
+    },
+    "decrypt_mfa_secret": {
+      "args": {
+        "p_encrypted": "string",
+        "p_factor_id": "string",
+        "p_key_id": "string",
+        "p_nonce": "string"
+      },
+      "returns": "string"
+    },
+    "decrypt_mfa_secret_vault": {
+      "args": {
+        "encrypted": "string"
+      },
+      "returns": "string"
+    },
+    "detect_access_anomaly": {
+      "args": {
+        "p_user_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "encrypt_mfa_secret": {
+      "args": {
+        "p_factor_id": "string; p_secret: string"
+      },
+      "returns": "Json"
+    },
+    "encrypt_mfa_secret_vault": {
+      "args": {
+        "plaintext": "string"
+      },
+      "returns": "string"
+    },
+    "get_profile_summary": {
+      "args": {},
+      "returns": "Json"
+    },
+    "manage_my_mfa": {
+      "args": {
+        "action": "string; factor_name?: string; factor_type?: string"
+      },
+      "returns": "Json"
+    },
+    "user_has_salon_access": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_archive_product": {
+      "args": {
+        "product_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "_encode_url_with_params_array": {
+      "args": {
+        "params_array": "string[]; url: string"
+      },
+      "returns": "string"
+    },
+    "_http_collect_response": {
+      "args": {
+        "request_id": "number"
+      },
+      "returns": "Database[\"net\"][\"CompositeTypes\"][\"http_response_result\"]"
+    },
+    "_urlencode_string": {
+      "args": {
+        "string": "string"
+      },
+      "returns": "string"
+    },
+    "http_collect_response": {
+      "args": {
+        "request_id": "number"
+      },
+      "returns": "Database[\"net\"][\"CompositeTypes\"][\"http_response_result\"]"
+    },
+    "http_delete": {
+      "args": {
+        "url": "string"
+      },
+      "returns": "number"
+    },
+    "http_get": {
+      "args": {
+        "url": "string"
+      },
+      "returns": "number"
+    },
+    "http_post": {
+      "args": {
+        "url": "string"
+      },
+      "returns": "number"
+    },
+    "get_or_create_payment_method": {
+      "args": {
+        "method_name": "string"
+      },
+      "returns": "string"
+    },
+    "get_or_create_specialty": {
+      "args": {
+        "specialty_name": "string"
+      },
+      "returns": "string"
+    },
+    "decrypt_pii": {
+      "args": {
+        "encrypted_data": "string"
+      },
+      "returns": "string"
+    },
+    "encrypt_pii": {
+      "args": {
+        "plain_text": "string"
+      },
+      "returns": "string"
+    },
+    "get_api_config": {
+      "args": {
+        "p_salon_id": "string; p_service: string"
+      },
+      "returns": "Json"
+    },
+    "get_my_financial_transactions": {
+      "args": {},
+      "returns": "{"
+    },
+    "get_user_accessible_salons": {
+      "args": {
+        "p_user_id": "string"
+      },
+      "returns": "string[]"
+    },
+    "get_user_role": {
+      "args": {},
+      "returns": "string"
+    },
+    "get_user_role_for_salon": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "Database[\"public\"][\"Enums\"][\"role_type\"]"
+    },
+    "get_user_sensitive_data": {
+      "args": {
+        "p_user_id": "string"
+      },
+      "returns": "Json"
+    },
+    "is_salon_manager": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_salon_owner": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_salon_staff": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "user_can_access_location": {
+      "args": {
+        "p_location_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "user_is_staff_at_salon": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "audit_http_request": {
+      "args": {
+        "method": "string; url: string"
+      },
+      "returns": "number"
+    },
+    "build_notification_payload": {
+      "args": {
+        "p_event_type": "string",
+        "p_record_id": "string",
+        "p_table_name": "string"
+      },
+      "returns": "Json"
+    },
+    "calculate_business_hours": {
+      "args": {
+        "end_time": "string; salon_uuid?: string; start_time: string"
+      },
+      "returns": "number"
+    },
+    "calculate_duration_minutes": {
+      "args": {
+        "end_time": "string; start_time: string"
+      },
+      "returns": "number"
+    },
+    "can_access_service_data": {
+      "args": {
+        "p_service_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_access_service_scheduling": {
+      "args": {
+        "p_service_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_manage_blocked_times": {
+      "args": {
+        "p_salon_id": "string; p_staff_id: string"
+      },
+      "returns": "boolean"
+    },
+    "can_manage_operating_hours": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_manage_salon": {
+      "args": {
+        "salon_uuid": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_manage_special_dates": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_manage_staff_schedule": {
+      "args": {
+        "p_staff_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_modify_appointment": {
+      "args": {
+        "appointment_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_update_appointment": {
+      "args": {
+        "p_appointment_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_update_time_off_request": {
+      "args": {
+        "p_request_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_user_manage_salon": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_view_appointment": {
+      "args": {
+        "appointment_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_view_time_off_request": {
+      "args": {
+        "p_salon_id": "string; p_staff_id: string"
+      },
+      "returns": "boolean"
+    },
+    "check_salon_access": {
+      "args": {
+        "target_salon_id": "string"
+      },
+      "returns": "{"
+    },
+    "clean_phone_number": {
+      "args": {
+        "phone": "string"
+      },
+      "returns": "string"
+    },
+    "create_aggregate_index": {
+      "args": {
+        "column_name": "string; table_name: string"
+      },
+      "returns": "undefined"
+    },
+    "create_aggregate_materialized_view": {
+      "args": {
+        "agg_column": "string",
+        "group_column": "string",
+        "source_table": "string",
+        "view_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "create_analytics_indexes": {
+      "args": {
+        "table_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "create_common_sort_indexes": {
+      "args": {
+        "table_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "create_compound_orderby_index": {
+      "args": {
+        "columns_with_order": "Json; table_name: string"
+      },
+      "returns": "undefined"
+    },
+    "create_fk_composite_indexes": {
+      "args": {
+        "filter_column": "string; fk_column: string; table_name: string"
+      },
+      "returns": "undefined"
+    },
+    "create_fk_covering_index": {
+      "args": {
+        "fk_column": "string",
+        "included_columns": "string[]",
+        "table_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "create_groupby_composite_index": {
+      "args": {
+        "columns": "string[]; table_name: string"
+      },
+      "returns": "undefined"
+    },
+    "create_orderby_index": {
+      "args": {
+        "column_name": "string",
+        "table_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "generate_random_code": {
+      "args": {},
+      "returns": "string"
+    },
+    "generate_search_vector": {
+      "args": {
+        "input_text": "string"
+      },
+      "returns": "unknown"
+    },
+    "generate_service_search_text": {
+      "args": {
+        "service_id": "string"
+      },
+      "returns": "string"
+    },
+    "generate_slug": {
+      "args": {
+        "input_text": "string"
+      },
+      "returns": "string"
+    },
+    "generate_unique_slug": {
+      "args": {
+        "base_text": "string",
+        "column_name": "string",
+        "schema_name": "string",
+        "table_name": "string"
+      },
+      "returns": "string"
+    },
+    "get_appointment_summary": {
+      "args": {},
+      "returns": "Database[\"public\"][\"CompositeTypes\"][\"appointment_summary\"][]"
+    },
+    "get_appointments_page": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "{"
+    },
+    "get_notifications_page": {
+      "args": {
+        "p_user_id": "string"
+      },
+      "returns": "{"
+    },
+    "get_services_page": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "{"
+    },
+    "get_staff_page": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "{"
+    },
+    "get_toast_settings": {
+      "args": {
+        "schema_name": "string; table_name: string"
+      },
+      "returns": "{"
+    },
+    "get_user_salon_id": {
+      "args": {},
+      "returns": "string"
+    },
+    "has_salon_access": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "increment_counter": {
+      "args": {
+        "column_name": "string",
+        "schema_name": "string",
+        "table_name": "string",
+        "where_clause": "string"
+      },
+      "returns": "undefined"
+    },
+    "is_business_hours": {
+      "args": {
+        "check_time": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_future_timestamp": {
+      "args": {
+        "ts": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_jsonb_array": {
+      "args": {
+        "data": "Json"
+      },
+      "returns": "boolean"
+    },
+    "is_jsonb_object": {
+      "args": {
+        "data": "Json"
+      },
+      "returns": "boolean"
+    },
+    "is_non_negative": {
+      "args": {
+        "value": "number"
+      },
+      "returns": "boolean"
+    },
+    "is_owner": {
+      "args": {
+        "check_user_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_past_timestamp": {
+      "args": {
+        "ts": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_positive": {
+      "args": {
+        "value": "number"
+      },
+      "returns": "boolean"
+    },
+    "is_positive_amount": {
+      "args": {
+        "amount": "number"
+      },
+      "returns": "boolean"
+    },
+    "is_read_only_query": {
+      "args": {
+        "p_query": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_staff_member": {
+      "args": {
+        "p_salon_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_email": {
+      "args": {
+        "email": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_jsonb_array": {
+      "args": {
+        "data": "Json"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_jsonb_object": {
+      "args": {
+        "data": "Json"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_operating_hours": {
+      "args": {
+        "close_time": "string; open_time: string"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_phone": {
+      "args": {
+        "phone": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_rating": {
+      "args": {
+        "rating": "number"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_sku": {
+      "args": {
+        "sku": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_slug": {
+      "args": {
+        "slug": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_timestamp_range": {
+      "args": {
+        "end_ts": "string; start_ts: string"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_url": {
+      "args": {
+        "url": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_valid_uuid": {
+      "args": {
+        "val": "string"
+      },
+      "returns": "boolean"
+    },
+    "jsonb_has_required_keys": {
+      "args": {
+        "data": "Json; required_keys: string[]"
+      },
+      "returns": "boolean"
+    },
+    "log_security_event": {
+      "args": {
+        "p_description": "string",
+        "p_event_type": "string",
+        "p_severity": "string"
+      },
+      "returns": "string"
+    },
+    "optimize_distinct_column": {
+      "args": {
+        "column_name": "string; table_name: string"
+      },
+      "returns": "undefined"
+    },
+    "optimize_pagination_index": {
+      "args": {
+        "order_column": "string",
+        "table_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "optimize_top_n_queries": {
+      "args": {
+        "rank_column": "string",
+        "table_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "prepare_search_query": {
+      "args": {
+        "query_text": "string"
+      },
+      "returns": "unknown"
+    },
+    "refresh_schema_statistics": {
+      "args": {
+        "target_schema": "string"
+      },
+      "returns": "{"
+    },
+    "retry_on_error": {
+      "args": {
+        "p_function_call": "string; p_max_retries?: number"
+      },
+      "returns": "Json"
+    },
+    "retry_with_logging": {
+      "args": {
+        "p_function_call": "string",
+        "p_function_name": "string"
+      },
+      "returns": "Json"
+    },
+    "safe_json_extract_text": {
+      "args": {
+        "data": "Json; path: string"
+      },
+      "returns": "string"
+    },
+    "search_salons": {
+      "args": {},
+      "returns": "{"
+    },
+    "subscribe_to_channels": {
+      "args": {
+        "p_user_id": "string"
+      },
+      "returns": "{"
+    },
+    "suggest_query_routing": {
+      "args": {
+        "p_query": "string"
+      },
+      "returns": "{"
+    },
+    "text_similarity": {
+      "args": {
+        "text1": "string; text2: string"
+      },
+      "returns": "number"
+    },
+    "update_real_time_metric": {
+      "args": {
+        "p_metric_name": "string; p_metric_value: number"
+      },
+      "returns": "undefined"
+    },
+    "user_can_access_service": {
+      "args": {
+        "p_service_id": "string"
+      },
+      "returns": "boolean"
+    },
+    "user_has_any_role": {
+      "args": {
+        "allowed_roles": "Database[\"public\"][\"Enums\"][\"role_type\"][]"
+      },
+      "returns": "boolean"
+    },
+    "user_has_permission": {
+      "args": {
+        "permission_name": "string; user_uuid?: string"
+      },
+      "returns": "boolean"
+    },
+    "user_has_role": {
+      "args": {
+        "check_role": "Database[\"public\"][\"Enums\"][\"role_type\"]"
+      },
+      "returns": "boolean"
+    },
+    "validate_email": {
+      "args": {
+        "email": "string"
+      },
+      "returns": "boolean"
+    },
+    "validate_no_sql_injection": {
+      "args": {
+        "input_text": "string"
+      },
+      "returns": "boolean"
+    },
+    "validate_phone_number": {
+      "args": {
+        "phone": "string"
+      },
+      "returns": "boolean"
+    },
+    "validate_positive_number": {
+      "args": {
+        "value": "number"
+      },
+      "returns": "boolean"
+    },
+    "validate_uuid": {
+      "args": {
+        "id": "string"
+      },
+      "returns": "boolean"
+    },
+    "broadcast_changes": {
+      "args": {
+        "event_name": "string",
+        "new": "Record<string, unknown>",
+        "old": "Record<string, unknown>",
+        "operation": "string",
+        "table_name": "string",
+        "table_schema": "string",
+        "topic_name": "string"
+      },
+      "returns": "undefined"
+    },
+    "build_prepared_statement_sql": {
+      "args": {
+        "columns": "Database[\"realtime\"][\"CompositeTypes\"][\"wal_column\"][]",
+        "entity": "unknown",
+        "prepared_statement_name": "string"
+      },
+      "returns": "string"
+    },
+    "cast": {
+      "args": {
+        "type_": "unknown; val: string"
+      },
+      "returns": "Json"
+    },
+    "check_equality_op": {
+      "args": {
+        "op": "Database[\"realtime\"][\"Enums\"][\"equality_op\"]",
+        "type_": "unknown",
+        "val_1": "string",
+        "val_2": "string"
+      },
+      "returns": "boolean"
+    },
+    "is_visible_through_filters": {
+      "args": {
+        "columns": "Database[\"realtime\"][\"CompositeTypes\"][\"wal_column\"][]",
+        "filters": "Database[\"realtime\"][\"CompositeTypes\"][\"user_defined_filter\"][]"
+      },
+      "returns": "boolean"
+    },
+    "list_changes": {
+      "args": {
+        "max_changes": "number",
+        "max_record_bytes": "number",
+        "publication": "unknown",
+        "slot_name": "unknown"
+      },
+      "returns": "Database[\"realtime\"][\"CompositeTypes\"][\"wal_rls\"][]"
+    },
+    "quote_wal2json": {
+      "args": {
+        "entity": "unknown"
+      },
+      "returns": "string"
+    },
+    "send": {
+      "args": {
+        "event": "string; payload: Json; private?: boolean; topic: string"
+      },
+      "returns": "undefined"
+    },
+    "to_regrole": {
+      "args": {
+        "role_name": "string"
+      },
+      "returns": "unknown"
+    },
+    "create_notification": {
+      "args": {
+        "p_message": "string",
+        "p_notification_type": "string",
+        "p_title": "string",
+        "p_user_id": "string"
+      },
+      "returns": "Json"
+    },
+    "disconnect_connection": {
+      "args": {
+        "p_connection_id": "string"
+      },
+      "returns": "Json"
+    },
+    "mark_notification_read": {
+      "args": {
+        "p_notification_id": "string; p_user_id: string"
+      },
+      "returns": "Json"
+    },
+    "process_event_delivery": {
+      "args": {
+        "p_event_id": "string"
+      },
+      "returns": "number"
+    },
+    "register_connection": {
+      "args": {
+        "p_connection_id": "string",
+        "p_user_id": "string"
+      },
+      "returns": "Json"
+    },
+    "subscribe_to_channel": {
+      "args": {
+        "p_channel_name": "string",
+        "p_connection_id": "string"
+      },
+      "returns": "Json"
+    },
+    "unsubscribe_from_channel": {
+      "args": {
+        "p_channel_name": "string; p_connection_id: string"
+      },
+      "returns": "Json"
+    },
+    "bulk_archive_appointments": {
+      "args": {
+        "p_appointment_ids": "string[]; p_archived_by?: string"
+      },
+      "returns": "{"
+    },
+    "bulk_create_appointments": {
+      "args": {
+        "p_appointments": "Json[]"
+      },
+      "returns": "{"
+    },
+    "check_appointment_conflict": {
+      "args": {
+        "p_end_time": "string",
+        "p_salon_id": "string",
+        "p_staff_id": "string",
+        "p_start_time": "string"
+      },
+      "returns": "boolean"
+    },
+    "check_resource_availability": {
+      "args": {
+        "p_end_time": "string",
+        "p_resource_id": "string",
+        "p_salon_id": "string",
+        "p_start_time": "string"
+      },
+      "returns": "boolean"
+    },
+    "check_staff_availability": {
+      "args": {
+        "p_end_time": "string",
+        "p_staff_id": "string",
+        "p_start_time": "string"
+      },
+      "returns": "boolean"
+    },
+    "create_appointment_record": {
+      "args": {
+        "p_customer_id": "string",
+        "p_duration_minutes": "number",
+        "p_salon_id": "string",
+        "p_staff_id": "string",
+        "p_start_time": "string",
+        "p_total_amount": "number"
+      },
+      "returns": "string"
+    },
+    "create_appointment_with_services": {
+      "args": {
+        "p_customer_id": "string",
+        "p_salon_id": "string",
+        "p_services": "Json",
+        "p_staff_id": "string",
+        "p_start_time": "string"
+      },
+      "returns": "string"
+    },
+    "get_appointment_stats": {
+      "args": {
+        "p_end_date": "string; p_salon_id: string; p_start_date: string"
+      },
+      "returns": "{"
+    },
+    "link_appointment_services": {
+      "args": {
+        "p_appointment_id": "string; p_services: Json; p_staff_id: string"
+      },
+      "returns": "number"
+    },
+    "log_appointment_creation": {
+      "args": {
+        "p_appointment_id": "string",
+        "p_customer_id": "string",
+        "p_services": "Json",
+        "p_total_amount": "number"
+      },
+      "returns": "undefined"
+    },
+    "validate_and_calculate_services": {
+      "args": {
+        "p_services": "Json"
+      },
+      "returns": "{"
+    },
+    "is_valid_rate_limit_metadata": {
+      "args": {
+        "metadata": "Json"
+      },
+      "returns": "boolean"
+    },
+    "require_mfa_for_operation": {
+      "args": {
+        "p_operation": "string"
+      },
+      "returns": "boolean"
+    },
+    "secure_user_lookup": {
+      "args": {
+        "user_email": "string"
+      },
+      "returns": "{"
+    },
+    "validate_and_sanitize_input": {
+      "args": {
+        "p_input": "string; p_input_type?: string"
+      },
+      "returns": "string"
+    },
+    "validate_password_strength": {
+      "args": {
+        "password": "string"
+      },
+      "returns": "boolean"
+    },
+    "can_insert_object": {
+      "args": {
+        "bucketid": "string; metadata: Json; name: string; owner: string"
+      },
+      "returns": "undefined"
+    },
+    "delete_leaf_prefixes": {
+      "args": {
+        "bucket_ids": "string[]; names: string[]"
+      },
+      "returns": "undefined"
+    },
+    "delete_prefix": {
+      "args": {
+        "_bucket_id": "string; _name: string"
+      },
+      "returns": "boolean"
+    },
+    "extension": {
+      "args": {
+        "name": "string"
+      },
+      "returns": "string"
+    },
+    "filename": {
+      "args": {
+        "name": "string"
+      },
+      "returns": "string"
+    },
+    "foldername": {
+      "args": {
+        "name": "string"
+      },
+      "returns": "string[]"
+    },
+    "get_level": {
+      "args": {
+        "name": "string"
+      },
+      "returns": "number"
+    },
+    "get_prefix": {
+      "args": {
+        "name": "string"
+      },
+      "returns": "string"
+    },
+    "get_prefixes": {
+      "args": {
+        "name": "string"
+      },
+      "returns": "string[]"
+    },
+    "list_multipart_uploads_with_delimiter": {
+      "args": {
+        "bucket_id": "string",
+        "delimiter_param": "string",
+        "prefix_param": "string"
+      },
+      "returns": "{"
+    },
+    "list_objects_with_delimiter": {
+      "args": {
+        "bucket_id": "string",
+        "delimiter_param": "string",
+        "prefix_param": "string"
+      },
+      "returns": "{"
+    },
+    "lock_top_prefixes": {
+      "args": {
+        "bucket_ids": "string[]; names: string[]"
+      },
+      "returns": "undefined"
+    },
+    "search": {
+      "args": {
+        "bucketname": "string",
+        "prefix": "string"
+      },
+      "returns": "{"
+    },
+    "search_legacy_v1": {
+      "args": {
+        "bucketname": "string",
+        "prefix": "string"
+      },
+      "returns": "{"
+    },
+    "search_v1_optimised": {
+      "args": {
+        "bucketname": "string",
+        "prefix": "string"
+      },
+      "returns": "{"
+    },
+    "search_v2": {
+      "args": {
+        "bucket_name": "string",
+        "prefix": "string"
+      },
+      "returns": "{"
+    }
+  },
+  "view_count": 77,
+  "function_count": 666
+}

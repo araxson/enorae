@@ -44,7 +44,7 @@ export async function fetchReviewAggregation(
   }
 
   const { data, error } = await client
-    .from('salon_reviews')
+    .from('salon_reviews_view')
     .select('customer_id, rating')
     .eq('salon_id', salonId)
     .in('customer_id', customerIds)

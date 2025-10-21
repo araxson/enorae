@@ -206,7 +206,7 @@ export async function createService(
 
   const { error: pricingError } = await supabase
     .schema('catalog')
-    .from('service_pricing')
+    .from('service_pricing_view')
     .insert({
       service_id: service.id,
       base_price: basePrice,
@@ -240,7 +240,7 @@ export async function createService(
 
   const { error: rulesError } = await supabase
     .schema('catalog')
-    .from('service_booking_rules')
+    .from('service_booking_rules_view')
     .insert({
       service_id: service.id,
       duration_minutes: durationMinutes,
@@ -255,7 +255,7 @@ export async function createService(
     })
 
   if (rulesError) {
-    await supabase.schema('catalog').from('service_pricing').delete().eq('service_id', service.id)
+    await supabase.schema('catalog').from('service_pricing_view').delete().eq('service_id', service.id)
     await supabase.schema('catalog').from('services').delete().eq('id', service.id)
     throw rulesError
   }

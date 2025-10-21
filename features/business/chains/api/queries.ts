@@ -131,20 +131,20 @@ export async function getChainAnalytics(chainId: string) {
   // Get appointments count and revenue
   const { data: appointmentsData } = await supabase
     .from('appointments')
-    .select('salon_id, total_amount')
+    .select('salon_id, total_price')
     .in('salon_id', salonIds)
     .eq('status', 'completed')
 
-  type AppointmentData = { salon_id: string; total_amount: number }
+  type AppointmentData = { salon_id: string; total_price: number }
   const appointments = (appointmentsData || []) as AppointmentData[]
 
   // Get ratings and counts
   const { data: ratingsData } = await supabase
     .from('salons')
-    .select('id, name, rating, review_count, services_count')
+    .select('id, name, rating_average, rating_count')
     .in('id', salonIds)
 
-  type SalonData = { id: string; name: string; rating: number; review_count: number; services_count: number }
+  type SalonData = { id: string; name: string; rating_average: number; rating_count: number }
   const ratings = (ratingsData || []) as SalonData[]
 
   // Get staff count
@@ -152,30 +152,25 @@ export async function getChainAnalytics(chainId: string) {
     .from('staff')
     .select('salon_id')
     .in('salon_id', salonIds)
-    .eq('status', 'active')
+    .eq('is_active', true)
 
   type StaffData = { salon_id: string }
   const staff = (staffData || []) as StaffData[]
 
   // Aggregate data
   const totalRevenue = appointments.reduce(
-    (sum, apt) => sum + (Number(apt.total_amount) || 0),
+    (sum, apt) => sum + (Number(apt.total_price) || 0),
     0
   )
 
   const totalAppointments = appointments.length
 
   const avgRating = ratings.length > 0
-    ? ratings.reduce((sum, s) => sum + (Number(s.rating) || 0), 0) / ratings.length
+    ? ratings.reduce((sum, s) => sum + (Number(s.rating_average) || 0), 0) / ratings.length
     : 0
 
   const totalReviews = ratings.reduce(
-    (sum, s) => sum + (Number(s.review_count) || 0),
-    0
-  )
-
-  const totalServices = ratings.reduce(
-    (sum, s) => sum + (Number(s.services_count) || 0),
+    (sum, s) => sum + (Number(s.rating_count) || 0),
     0
   )
 
@@ -196,12 +191,11 @@ export async function getChainAnalytics(chainId: string) {
       salonName: salon.name,
       appointmentCount: locationAppointments.length,
       revenue: locationAppointments.reduce(
-        (sum, apt) => sum + (Number(apt.total_amount) || 0),
+        (sum, apt) => sum + (Number(apt.total_price) || 0),
         0
       ),
-      rating: Number(locationRating?.rating) || 0,
-      reviewCount: Number(locationRating?.review_count) || 0,
-      servicesCount: Number(locationRating?.services_count) || 0,
+      rating: Number(locationRating?.rating_average) || 0,
+      reviewCount: Number(locationRating?.rating_count) || 0,
       staffCount: locationStaffCount,
     }
   })

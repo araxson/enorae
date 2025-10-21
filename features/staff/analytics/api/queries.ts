@@ -111,7 +111,7 @@ export async function getStaffPerformanceMetrics(
   let totalRevenue = 0
   if (appointmentIds.length > 0) {
     const { data: services } = await supabase
-      .from('service_pricing')
+      .from('service_pricing_view')
       .select('price')
       .in('service_id', appointmentIds)
 

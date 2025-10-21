@@ -27,7 +27,7 @@ export async function getSalonChains(): Promise<SalonChain[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salon_chains')
+    .from('salon_chains_view')
     .select('*')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -53,7 +53,7 @@ export async function getSalonChainById(
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug)
 
   const { data: chain, error: chainError } = await supabase
-    .from('salon_chains')
+    .from('salon_chains_view')
     .select('*')
     .eq(isUuid ? 'id' : 'slug', idOrSlug)
     .eq('is_active', true)

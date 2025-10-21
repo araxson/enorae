@@ -18,7 +18,7 @@ export async function getBookingRules(): Promise<BookingRuleWithService[]> {
   const { supabase, salonId } = await resolveSalonContext()
   const { data, error } = await supabase
     .schema('catalog')
-    .from('service_booking_rules')
+    .from('service_booking_rules_view')
     .select(`
       *,
       service:services!fk_service_booking_rules_service(id, name, salon_id)

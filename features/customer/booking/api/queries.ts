@@ -15,7 +15,7 @@ export async function getSalonById(salonId: string) {
     .from('salons')
     .select('*')
     .eq('id', salonId)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .single()
 
   if (error) throw error

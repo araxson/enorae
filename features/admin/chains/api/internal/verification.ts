@@ -30,7 +30,7 @@ export async function verifyChain(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('is_verified, verified_at')
       .eq('id', chainId)
       .maybeSingle()
@@ -41,7 +41,7 @@ export async function verifyChain(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         is_verified: isVerified,
         verified_at: isVerified ? new Date().toISOString() : null,
@@ -93,7 +93,7 @@ export async function updateChainActiveStatus(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('is_active')
       .eq('id', chainId)
       .maybeSingle()
@@ -104,7 +104,7 @@ export async function updateChainActiveStatus(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({ is_active: isActive })
       .eq('id', chainId)
 

@@ -23,7 +23,7 @@ export async function approveReview(formData: FormData) {
     // Get review details
     const { data: review } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .select('customer_id, salon_id, is_flagged')
       .eq('id', reviewId)
       .single<{ customer_id: string; salon_id: string; is_flagged: boolean }>()
@@ -42,7 +42,7 @@ export async function approveReview(formData: FormData) {
 
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update(updatePayload)
       .eq('id', reviewId)
 

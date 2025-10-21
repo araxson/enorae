@@ -24,7 +24,7 @@ export async function approveTimeOffRequest(formData: FormData) {
 
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .select('salon_id')
       .eq('id', id)
       .single<{ salon_id: string | null }>()
@@ -36,7 +36,7 @@ export async function approveTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update({
         status: 'approved',
         reviewed_by_id: userId,
@@ -75,7 +75,7 @@ export async function rejectTimeOffRequest(formData: FormData) {
 
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .select('salon_id')
       .eq('id', id)
       .single<{ salon_id: string | null }>()
@@ -87,7 +87,7 @@ export async function rejectTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update({
         status: 'rejected',
         review_notes: notes || null,

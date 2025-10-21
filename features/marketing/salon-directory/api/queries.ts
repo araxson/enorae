@@ -40,7 +40,7 @@ export async function getPublicSalons(params?: SalonSearchParams): Promise<Salon
         .from('salons')
         .select('*')
         .in('id', salonIds)
-        .eq('status', 'active')
+        .eq('is_active', true)
         .order('rating', { ascending: false, nullsFirst: false })
 
       if (fullError) throw fullError
@@ -54,7 +54,7 @@ export async function getPublicSalons(params?: SalonSearchParams): Promise<Salon
   let query = supabase
     .from('salons')
     .select('*')
-    .eq('status', 'active')
+    .eq('is_active', true)
     .order('rating', { ascending: false, nullsFirst: false })
 
   if (params?.limit) {
@@ -78,7 +78,7 @@ export async function getPublicSalonBySlug(slug: string): Promise<Salon | null> 
     .from('salons')
     .select('*')
     .eq('slug', slug)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .maybeSingle()
 
   if (error) throw error
@@ -95,7 +95,7 @@ export async function getPublicSalonsByCity(city: string, state?: string): Promi
   let query = supabase
     .from('salons')
     .select('*')
-    .eq('status', 'active')
+    .eq('is_active', true)
     .ilike('city', city)
 
   if (state) {
@@ -138,7 +138,7 @@ export async function getPublicSalonsByService(serviceCategory: string): Promise
     .from('salons')
     .select('*')
     .in('id', salonIds)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .order('rating', { ascending: false, nullsFirst: false })
 
   if (error) throw error
@@ -155,7 +155,7 @@ export async function getPublicSalonCities(): Promise<{ city: string; state: str
   const { data, error } = await supabase
     .from('salons')
     .select('city, state_province')
-    .eq('status', 'active')
+    .eq('is_active', true)
     .not('city', 'is', null)
     .not('state_province', 'is', null)
 
@@ -235,7 +235,7 @@ export async function getPublicPlatformStats(): Promise<{
   const { count: salonCount, error: salonError } = await supabase
     .from('salons')
     .select('*', { count: 'exact', head: true })
-    .eq('status', 'active')
+    .eq('is_active', true)
 
   if (salonError) throw salonError
 
@@ -243,7 +243,7 @@ export async function getPublicPlatformStats(): Promise<{
   const { data: cities, error: citiesError } = await supabase
     .from('salons')
     .select('city, state_province')
-    .eq('status', 'active')
+    .eq('is_active', true)
     .not('city', 'is', null)
 
   if (citiesError) throw citiesError

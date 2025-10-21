@@ -29,7 +29,7 @@ export async function approveTimeOffRequest(requestId: string, notes?: string): 
     // Verify request belongs to a salon the user can access
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .select('salon_id')
       .eq('id', requestId)
       .single<{ salon_id: string | null }>()
@@ -44,7 +44,7 @@ export async function approveTimeOffRequest(requestId: string, notes?: string): 
 
     const { error } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update({
         status: 'approved',
         reviewed_by_id: session.user.id,
@@ -86,7 +86,7 @@ export async function rejectTimeOffRequest(requestId: string, notes: string): Pr
     // Verify request belongs to a salon the user can access
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .select('salon_id')
       .eq('id', requestId)
       .single<{ salon_id: string | null }>()
@@ -101,7 +101,7 @@ export async function rejectTimeOffRequest(requestId: string, notes: string): Pr
 
     const { error } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update({
         status: 'rejected',
         reviewed_by_id: session.user.id,

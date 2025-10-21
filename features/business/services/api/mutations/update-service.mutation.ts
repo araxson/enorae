@@ -84,7 +84,7 @@ export async function updateService(
   if (pricingData && Object.keys(pricingData).length > 0) {
     const { data: existingPricing, error: fetchPricingError } = await supabase
       .schema('catalog')
-      .from('service_pricing')
+      .from('service_pricing_view')
       .select('id, base_price, sale_price, cost')
       .eq('service_id', serviceId)
       .maybeSingle<{ id: string; base_price: number; sale_price: number | null; cost: number | null }>()
@@ -139,7 +139,7 @@ export async function updateService(
 
     const { error: pricingError } = await supabase
       .schema('catalog')
-      .from('service_pricing')
+      .from('service_pricing_view')
       .update(pricingUpdates)
       .eq('service_id', serviceId)
 
@@ -149,7 +149,7 @@ export async function updateService(
   if (bookingRules && Object.keys(bookingRules).length > 0) {
     const { data: existingRules, error: fetchRulesError } = await supabase
       .schema('catalog')
-      .from('service_booking_rules')
+      .from('service_booking_rules_view')
       .select('id, duration_minutes, buffer_minutes, min_advance_booking_hours, max_advance_booking_days')
       .eq('service_id', serviceId)
       .maybeSingle<{
@@ -195,7 +195,7 @@ export async function updateService(
 
       const { error: rulesError } = await supabase
         .schema('catalog')
-        .from('service_booking_rules')
+        .from('service_booking_rules_view')
         .update(rulesUpdates)
         .eq('service_id', serviceId)
 

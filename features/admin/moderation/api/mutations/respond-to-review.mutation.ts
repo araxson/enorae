@@ -27,7 +27,7 @@ export async function respondToReview(formData: FormData) {
 
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({
         response,
         response_date: new Date().toISOString(),

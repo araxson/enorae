@@ -69,7 +69,7 @@ export async function createTimeOffRequest(formData: FormData) {
 
     const { error: insertError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .insert<TimeOffRequestInsert>(insertPayload)
 
     if (insertError) return { error: insertError.message }
@@ -102,7 +102,7 @@ export async function approveTimeOffRequest(formData: FormData) {
     // SECURITY: Verify the time-off request belongs to user's salon
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .select('salon_id')
       .eq('id', id)
       .single<{ salon_id: string | null }>()
@@ -122,7 +122,7 @@ export async function approveTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update<TimeOffRequestUpdate>(approvePayload)
       .eq('id', id)
       .eq('salon_id', staffProfile.salon_id)
@@ -158,7 +158,7 @@ export async function rejectTimeOffRequest(formData: FormData) {
     // SECURITY: Verify the time-off request belongs to user's salon
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .select('salon_id')
       .eq('id', id)
       .single<{ salon_id: string | null }>()
@@ -179,7 +179,7 @@ export async function rejectTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update<TimeOffRequestUpdate>(rejectPayload)
       .eq('id', id)
       .eq('salon_id', staffProfile.salon_id)
@@ -254,7 +254,7 @@ export async function updateTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update<TimeOffRequestUpdate>(updateData)
       .eq('id', id)
       .eq('staff_id', staffProfile.id) // Security check
@@ -315,7 +315,7 @@ export async function cancelTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update<TimeOffRequestUpdate>(cancelPayload)
       .eq('id', id)
       .eq('staff_id', staffProfile.id) // Security check

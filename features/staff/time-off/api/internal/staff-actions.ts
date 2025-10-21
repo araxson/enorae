@@ -41,7 +41,7 @@ export async function createTimeOffRequest(formData: FormData) {
 
     const { error: insertError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .insert({
         salon_id: staffProfile.salon_id,
         staff_id: staffProfile.id,
@@ -122,7 +122,7 @@ export async function updateTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update(updateData)
       .eq('id', id)
       .eq('staff_id', staffProfile.id)
@@ -172,7 +172,7 @@ export async function cancelTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .from('time_off_requests_view')
       .update({
         status: 'cancelled',
         updated_at: new Date().toISOString(),

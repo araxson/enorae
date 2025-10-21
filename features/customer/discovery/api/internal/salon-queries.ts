@@ -47,7 +47,7 @@ export async function getSalonBySlug(slug: string): Promise<Salon> {
     .from('salons')
     .select('*')
     .eq('slug', slug)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .single()
 
   if (error) throw error

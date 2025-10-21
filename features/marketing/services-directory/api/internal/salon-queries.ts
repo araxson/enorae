@@ -31,7 +31,7 @@ export async function getSalonsOfferingCategory(categorySlug: string): Promise<S
     .from('salons')
     .select('*')
     .in('id', salonIds)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .order('rating', { ascending: false, nullsFirst: false })
 
   if (salonsError) throw salonsError

@@ -30,7 +30,7 @@ export async function getServicePricing(): Promise<ServicePricingWithService[]> 
   if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
-    .from('service_pricing')
+    .from('service_pricing_view')
     .select(`
       *,
       service:services!fk_service_pricing_service(
@@ -67,7 +67,7 @@ export async function getServicePricingByServiceId(
   if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
-    .from('service_pricing')
+    .from('service_pricing_view')
     .select(`
       *,
       service:services!fk_service_pricing_service(
@@ -110,7 +110,7 @@ export async function getServicePricingById(
   if (!staffProfile?.salon_id) throw new Error('User salon not found')
 
   const { data, error } = await supabase
-    .from('service_pricing')
+    .from('service_pricing_view')
     .select(`
       *,
       service:services!fk_service_pricing_service(

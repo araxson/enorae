@@ -60,7 +60,7 @@ export async function upsertBookingRule(formData: FormData) {
 
     const { error: upsertError } = await supabase
       .schema('catalog')
-      .from('service_booking_rules')
+      .from('service_booking_rules_view')
       .upsert({
         service_id: data.serviceId,
         duration_minutes: data.durationMinutes || null,

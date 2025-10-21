@@ -18,7 +18,7 @@ export async function deleteReview(formData: FormData) {
 
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({
         deleted_at: new Date().toISOString(),
         deleted_by_id: session.user.id,

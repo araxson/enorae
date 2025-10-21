@@ -40,7 +40,7 @@ export async function hideReview(formData: FormData) {
     // Hide review (soft delete)
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({
         deleted_at: timestamp,
         deleted_by_id: session.user.id,

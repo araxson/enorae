@@ -16,7 +16,7 @@ export async function featureReview(formData: FormData) {
 
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({ is_featured: isFeatured })
       .eq('id', reviewId)
 

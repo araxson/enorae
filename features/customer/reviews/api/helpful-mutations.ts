@@ -50,7 +50,7 @@ export async function markReviewAsHelpful(reviewId: string): Promise<ActionResul
 
     // Increment the helpful_count
     const { data: review, error: fetchError } = await supabase
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .select('helpful_count')
       .eq('id', reviewId)
       .single<{ helpful_count: number | null }>()
@@ -61,7 +61,7 @@ export async function markReviewAsHelpful(reviewId: string): Promise<ActionResul
 
     const { error: updateError } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .update({
         helpful_count: currentCount + 1,
       })
@@ -97,7 +97,7 @@ export async function unmarkReviewAsHelpful(reviewId: string): Promise<ActionRes
 
     // Decrement the helpful_count
     const { data: review, error: fetchError } = await supabase
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .select('helpful_count')
       .eq('id', reviewId)
       .single<{ helpful_count: number | null }>()
@@ -109,7 +109,7 @@ export async function unmarkReviewAsHelpful(reviewId: string): Promise<ActionRes
     if (currentCount > 0) {
       const { error: updateError } = await supabase
         .schema('engagement')
-        .from('salon_reviews')
+        .from('salon_reviews_view')
         .update({
           helpful_count: currentCount - 1,
         })

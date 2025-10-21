@@ -29,7 +29,7 @@ export async function deleteChain(data: {
 
     const { data: existingChain, error: fetchError } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('is_active, deleted_at')
       .eq('id', chainId)
       .maybeSingle()
@@ -40,7 +40,7 @@ export async function deleteChain(data: {
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         deleted_at: new Date().toISOString(),
         is_active: false,
@@ -82,7 +82,7 @@ export async function restoreChain(chainId: string): Promise<ChainActionResponse
 
     const { error } = await supabase
       .schema('organization')
-      .from('salon_chains')
+      .from('salon_chains_view')
       .update({
         deleted_at: null,
       })

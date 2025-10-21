@@ -26,7 +26,7 @@ export async function getUserSalonIds(): Promise<string[]> {
     const session = await requireAuth()
 
     const { data: tenantData, error: tenantError } = await supabase
-      .from('salon_chains')
+      .from('salon_chains_view')
       .select('id')
       .eq('owner_id', session.user.id)
       .maybeSingle()

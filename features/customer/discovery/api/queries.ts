@@ -18,7 +18,7 @@ export async function getSalons(categoryFilter?: string) {
   let query = supabase
     .from('salons')
     .select('*')
-    .eq('status', 'active')
+    .eq('is_active', true)
 
   // If category filter is provided, find salons offering services in that category
   if (categoryFilter) {
@@ -50,7 +50,7 @@ export async function getSalonBySlug(slug: string) {
     .from('salons')
     .select('*')
     .eq('slug', slug)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .single()
 
   if (error) throw error
@@ -64,7 +64,7 @@ export async function searchSalons(query: string, categoryFilter?: string) {
   let salonQuery = supabase
     .from('salons')
     .select('*')
-    .eq('status', 'active')
+    .eq('is_active', true)
     .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
 
   // If category filter is provided, find salons offering services in that category

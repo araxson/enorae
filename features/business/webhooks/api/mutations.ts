@@ -26,7 +26,7 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
 
     // Get webhook to verify it exists and check status
     const { data: webhook } = await supabase
-      .from('webhook_queue')
+      .from('communication_webhook_queue')
       .select('id, status')
       .eq('id', webhookId)
       .eq('salon_id', salonId)
@@ -43,7 +43,7 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
 
     // Reset status to pending for retry
     const { error } = await supabase
-      .from('webhook_queue')
+      .from('communication_webhook_queue')
       .update({
         status: 'pending',
         last_error: null,
@@ -82,7 +82,7 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
 
     // Verify webhook exists
     const { data: webhook } = await supabase
-      .from('webhook_queue')
+      .from('communication_webhook_queue')
       .select('id')
       .eq('id', webhookId)
       .eq('salon_id', salonId)
@@ -94,7 +94,7 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
 
     // Delete the webhook
     const { error } = await supabase
-      .from('webhook_queue')
+      .from('communication_webhook_queue')
       .delete()
       .eq('id', webhookId)
       .eq('salon_id', salonId)
@@ -125,7 +125,7 @@ export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: 
 
     // Reset all failed webhooks to pending
     const { error, count } = await supabase
-      .from('webhook_queue')
+      .from('communication_webhook_queue')
       .update({
         status: 'pending',
         last_error: null,
@@ -166,7 +166,7 @@ export async function clearCompletedWebhooks(): Promise<ActionResponse<{ count: 
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
     const { error, count } = await supabase
-      .from('webhook_queue')
+      .from('communication_webhook_queue')
       .delete({ count: 'exact' })
       .eq('status', 'sent')
       .eq('salon_id', salonId)

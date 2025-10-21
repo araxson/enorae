@@ -159,7 +159,7 @@ export async function getAvailableStaffForSwap(salonId: string, excludeStaffId: 
     .from('staff')
     .select('id, full_name, title, user_id')
     .eq('salon_id', salonId)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .neq('id', excludeStaffId)
     .order('full_name')
 
