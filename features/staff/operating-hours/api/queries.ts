@@ -19,7 +19,7 @@ export async function getSalonOperatingHours(): Promise<OperatingHours[]> {
   if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')
 
   const { data, error } = await supabase
-    .from('operating_hours')
+    .from('operating_hours_view')
     .select('*')
     .eq('salon_id', staffData.salon_id)
     .is('deleted_at', null)
@@ -48,7 +48,7 @@ export async function getTodayOperatingHours(): Promise<OperatingHours | null> {
   const today = days[new Date().getDay()]
 
   const { data, error } = await supabase
-    .from('operating_hours')
+    .from('operating_hours_view')
     .select('*')
     .eq('salon_id', staffData.salon_id)
     .eq('day_of_week', today)

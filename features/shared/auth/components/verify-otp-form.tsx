@@ -102,14 +102,14 @@ export function VerifyOTPForm({
             />
 
             <div className="flex items-center justify-center gap-2">
-              <small className="text-sm font-medium text-muted-foreground">Didn&apos;t receive the code?</small>
+              <p className="text-sm font-medium text-muted-foreground">Didn&apos;t receive the code?</p>
               <ResendOTP onResend={handleResend} cooldownSeconds={60} />
             </div>
           </div>
 
           {otp.length === 6 && (
             <Alert>
-              <CheckCircle2 className="h-4 w-4 text-success" />
+              <CheckCircle2 className="h-4 w-4 text-primary" />
               <AlertDescription>Code entered. Click verify to continue.</AlertDescription>
             </Alert>
           )}
@@ -126,9 +126,9 @@ export function VerifyOTPForm({
               {loading ? 'Verifying...' : 'Verify code'}
             </Button>
 
-            <small className="text-sm font-medium text-center text-muted-foreground">
+            <p className="text-sm font-medium text-center text-muted-foreground">
               Check your spam folder if you don&apos;t see the email
-            </small>
+            </p>
           </div>
         </CardFooter>
       </Card>

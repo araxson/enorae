@@ -78,37 +78,37 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
                 <Card key={appointment.id} className="group">
                   <CardContent className="flex items-start gap-4 p-4">
                     <Avatar className="h-10 w-10 border-2 border-background">
-                      <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                         {salonInitials}
                       </AvatarFallback>
                     </Avatar>
 
                     <div className="flex-1 space-y-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium truncate">
+                        <p className="font-medium truncate text-sm text-muted-foreground">
                           {appointment.salon_name || 'Salon TBD'}
                         </p>
-                        <Badge variant={getStatusVariant(appointment.status)} className="text-xs">
+                        <Badge variant={getStatusVariant(appointment.status)}>
                           {appointment.status || 'pending'}
                         </Badge>
                       </div>
 
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          <span className="truncate">{appointmentDate}</span>
+                          <Calendar className="h-3 w-3 text-muted-foreground" />
+                          <p className="truncate text-sm text-muted-foreground">{appointmentDate}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          <span>{formatAppointmentTime(appointment.start_time)}</span>
+                          <Clock className="h-3 w-3 text-muted-foreground" />
+                          <p className="text-sm text-muted-foreground">{formatAppointmentTime(appointment.start_time)}</p>
                         </div>
                         {appointment.salon_name && (
                           <div className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            <span className="truncate">View location</span>
+                            <MapPin className="h-3 w-3 text-muted-foreground" />
+                            <p className="truncate text-sm text-muted-foreground">View location</p>
                           </div>
                         )}
                       </div>

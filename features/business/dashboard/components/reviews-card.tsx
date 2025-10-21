@@ -68,7 +68,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
           {/* Average Rating */}
           <div className="flex flex-col gap-6">
             <div>
-              <small className="text-sm font-medium text-muted-foreground">Average Rating</small>
+              <p className="text-sm font-medium text-muted-foreground">Average Rating</p>
               <div className="mt-1 flex items-baseline gap-2">
                 <div className="text-3xl font-bold">{stats.averageRating.toFixed(1)}</div>
                 <div className="flex items-center gap-2">
@@ -77,16 +77,16 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                     return (
                       <Star
                         key={i}
-                        className={`h-4 w-4 ${isFilled ? 'text-warning' : 'text-muted-foreground'}`}
+                        className={`h-4 w-4 ${isFilled ? 'text-accent' : 'text-muted-foreground'}`}
                         fill={isFilled ? 'currentColor' : 'none'}
                       />
                     )
                   })}
                 </div>
               </div>
-              <small className="text-sm font-medium text-muted-foreground mt-1">
+              <p className="text-sm font-medium text-muted-foreground mt-1">
                 Based on {stats.totalReviews} {stats.totalReviews === 1 ? 'review' : 'reviews'}
-              </small>
+              </p>
             </div>
 
             {/* Action Items */}
@@ -96,13 +96,13 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div className="flex items-center gap-2 rounded-md border px-2 py-1">
-                      <MessageSquare className="h-4 w-4 text-warning" />
-                      <small className="text-sm font-medium">
+                      <MessageSquare className="h-4 w-4 text-accent" />
+                      <p className="text-sm font-medium">
                         <Badge variant="outline" className="ml-1">
                           {stats.pendingResponses}
                         </Badge>{' '}
                         {stats.pendingResponses === 1 ? 'review needs' : 'reviews need'} response
-                      </small>
+                      </p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>Follow up to protect guest satisfaction</TooltipContent>
@@ -113,12 +113,12 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                   <TooltipTrigger asChild>
                     <div className="flex items-center gap-2 rounded-md border px-2 py-1">
                       <AlertTriangle className="h-4 w-4 text-destructive" />
-                      <small className="text-sm font-medium">
+                      <p className="text-sm font-medium">
                         <Badge variant="destructive" className="ml-1">
                           {stats.flaggedCount}
                         </Badge>{' '}
                         flagged {stats.flaggedCount === 1 ? 'review' : 'reviews'}
-                      </small>
+                      </p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>Investigate and resolve policy concerns</TooltipContent>
@@ -129,14 +129,14 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
 
           {/* Rating Distribution */}
           <div className="flex flex-col gap-2">
-            <small className="text-sm font-medium text-muted-foreground">Rating Distribution</small>
+            <p className="text-sm font-medium text-muted-foreground">Rating Distribution</p>
             {stats.ratingDistribution.map(({ rating, count }) => {
               const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
               return (
                 <div key={rating} className="flex items-center gap-2">
-                  <small className="text-sm font-medium w-12 text-right">{rating} stars</small>
+                  <p className="text-sm font-medium w-12 text-right">{rating} stars</p>
                   <Progress value={percentage} className="flex-1 h-2" />
-                  <small className="text-sm font-medium w-8 text-muted-foreground">{count}</small>
+                  <p className="text-sm font-medium w-8 text-muted-foreground">{count}</p>
                 </div>
               )
             })}

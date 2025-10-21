@@ -53,13 +53,13 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
         <div className="flex gap-4">
           <Card className="w-full">
             <CardContent className="p-4">
-              <small className="text-sm font-medium">Total Services</small>
+              <p className="text-sm font-medium">Total Services</p>
               <h3 className="scroll-m-20 text-2xl font-semibold">{pricing.length}</h3>
             </CardContent>
           </Card>
           <Card className="w-full">
             <CardContent className="p-4">
-              <small className="text-sm font-medium">Average Price</small>
+              <p className="text-sm font-medium">Average Price</p>
               <h3 className="scroll-m-20 text-2xl font-semibold">
                 ${avgPrice.toFixed(2)}
               </h3>

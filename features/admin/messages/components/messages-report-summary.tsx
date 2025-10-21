@@ -28,11 +28,11 @@ export function MessagesReportSummary({ summary }: MessagesReportSummaryProps) {
           </div>
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Pending moderator review</p>
-            <p className="text-lg font-semibold text-warning">{pendingReports}</p>
+            <p className="text-lg font-semibold text-accent">{pendingReports}</p>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Resolved</p>
-            <p className="text-lg font-semibold text-success">{resolvedReports}</p>
+            <p className="text-lg font-semibold text-primary">{resolvedReports}</p>
           </div>
         </div>
 

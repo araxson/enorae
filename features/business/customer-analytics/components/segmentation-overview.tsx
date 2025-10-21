@@ -45,7 +45,7 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
       tone === 'destructive'
         ? 'h-2 [&>div]:bg-destructive'
         : tone === 'secondary'
-          ? 'h-2 [&>div]:bg-warning'
+          ? 'h-2 [&>div]:bg-accent'
           : 'h-2'
     return (
       <div className="space-y-1">

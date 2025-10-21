@@ -13,14 +13,14 @@ interface LocationFeatureProps {
 export function LocationFeature({ myLocation, allLocations }: LocationFeatureProps) {
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Location Information</h1>
-        <p className="text-sm text-muted-foreground">Your assigned salon location and other branches</p>
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Location Information</h1>
+        <p className="text-muted-foreground">Your assigned salon location and other branches</p>
       </div>
 
       {myLocation ? (
         <div className="flex flex-col gap-4">
-          <h2 className="scroll-m-20 text-3xl font-semibold">Your Location</h2>
+          <h2 className="text-xl font-semibold">Your Location</h2>
           <LocationCard location={myLocation} />
         </div>
       ) : (
@@ -34,7 +34,7 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
 
       {allLocations.length > 1 && (
         <div className="flex flex-col gap-4">
-          <h2 className="scroll-m-20 text-3xl font-semibold">All Salon Locations</h2>
+          <h2 className="text-xl font-semibold">All Salon Locations</h2>
           <AllLocationsList
             locations={allLocations}
             currentLocationId={myLocation?.id}

@@ -39,7 +39,7 @@ export function BusinessInsightsDashboard({
       {/* Alerts Section */}
       {alerts.length > 0 && (
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Active Alerts</h3>
+          <div className="text-2xl font-semibold mb-4">Active Alerts</div>
           <div className="flex flex-col gap-6">
             {alerts.map((alert) => (
               <Alert
@@ -50,9 +50,9 @@ export function BusinessInsightsDashboard({
                   {alert.severity === 'critical' ? (
                     <AlertTriangle className="h-5 w-5" />
                   ) : alert.severity === 'warning' ? (
-                    <AlertTriangle className="h-5 w-5 text-warning" />
+                    <AlertTriangle className="h-5 w-5 text-accent" />
                   ) : (
-                    <Info className="h-5 w-5 text-info" />
+                    <Info className="h-5 w-5 text-secondary" />
                   )}
                   <div className="flex-1">
                     <AlertDescription>
@@ -69,27 +69,27 @@ export function BusinessInsightsDashboard({
 
       {/* Trend Insights */}
       <div>
-        <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Trend Analysis</h3>
+        <div className="text-2xl font-semibold mb-4">Trend Analysis</div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {trends.map((trend, idx) => (
             <Card key={idx} className="p-6">
               <div className="flex flex-col gap-6">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="scroll-m-20 text-xl font-semibold">{trend.metric}</h4>
-                    <p className="text-sm text-muted-foreground">{trend.message}</p>
+                    <div className="text-xl font-semibold">{trend.metric}</div>
+                    <div className="text-sm text-muted-foreground">{trend.message}</div>
                   </div>
                   {trend.trend === 'up' ? (
-                    <TrendingUp className={`h-6 w-6 ${trend.status === 'positive' ? 'text-success' : 'text-destructive'}`} />
+                    <TrendingUp className={`h-6 w-6 ${trend.status === 'positive' ? 'text-primary' : 'text-destructive'}`} />
                   ) : trend.trend === 'down' ? (
-                    <TrendingDown className={`h-6 w-6 ${trend.status === 'negative' ? 'text-destructive' : 'text-success'}`} />
+                    <TrendingDown className={`h-6 w-6 ${trend.status === 'negative' ? 'text-destructive' : 'text-primary'}`} />
                   ) : (
                     <Minus className="h-6 w-6 text-muted-foreground" />
                   )}
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className={`text-2xl font-bold ${
-                    trend.status === 'positive' ? 'text-success' :
+                    trend.status === 'positive' ? 'text-primary' :
                     trend.status === 'negative' ? 'text-destructive' :
                     'text-muted-foreground'
                   }`}>
@@ -112,7 +112,7 @@ export function BusinessInsightsDashboard({
       {/* AI Recommendations */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="scroll-m-20 text-2xl font-semibold">AI-Powered Recommendations</h3>
+          <div className="text-2xl font-semibold">AI-Powered Recommendations</div>
           <Badge variant="outline" className="gap-1">
             <Lightbulb className="h-3 w-3" />
             {recommendations.length} insights
@@ -125,7 +125,7 @@ export function BusinessInsightsDashboard({
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="mb-2 flex items-center gap-4">
-                      <h4 className="scroll-m-20 text-xl font-semibold">{rec.title}</h4>
+                      <div className="text-xl font-semibold">{rec.title}</div>
                       <Badge variant={
                         rec.priority === 'high' ? 'destructive' :
                         rec.priority === 'medium' ? 'default' :
@@ -135,22 +135,22 @@ export function BusinessInsightsDashboard({
                       </Badge>
                       <Badge variant="outline">{rec.category}</Badge>
                     </div>
-                    <p className="leading-7 text-sm mb-3">{rec.description}</p>
+                    <div className="text-sm mb-3">{rec.description}</div>
                     <div className="bg-muted/50 p-3 rounded-md mb-3">
                       <div className="flex items-center gap-4">
                         <Target className="h-4 w-4 text-primary" />
-                        <p className="text-sm font-medium text-muted-foreground">Impact: {rec.impact}</p>
+                        <div className="text-sm font-medium text-muted-foreground">Impact: {rec.impact}</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-2">Action Items:</p>
+                  <div className="text-sm font-medium text-muted-foreground mb-2">Action Items:</div>
                   <ul className="space-y-1.5">
                     {rec.actionItems.map((item, idx) => (
                       <li key={idx} className="flex gap-2 text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                        <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -163,9 +163,9 @@ export function BusinessInsightsDashboard({
           {recommendations.length === 0 && (
             <Card className="p-8">
               <div className="flex flex-col items-center gap-4 text-center">
-                <CheckCircle2 className="h-12 w-12 text-success" />
-                <h4 className="scroll-m-20 text-xl font-semibold">All Systems Optimal</h4>
-                <p className="text-sm text-muted-foreground">Your business metrics are performing well. Keep up the great work!</p>
+                <CheckCircle2 className="h-12 w-12 text-primary" />
+                <div className="text-xl font-semibold">All Systems Optimal</div>
+                <div className="text-sm text-muted-foreground">Your business metrics are performing well. Keep up the great work!</div>
               </div>
             </Card>
           )}
@@ -175,18 +175,18 @@ export function BusinessInsightsDashboard({
       {/* Growth Opportunities */}
       {opportunities.length > 0 && (
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Growth Opportunities</h3>
+          <div className="text-2xl font-semibold mb-4">Growth Opportunities</div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {opportunities.map((opp, idx) => (
               <Card key={idx} className="p-6">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-4">
                     <TrendingUpIcon className="h-5 w-5 text-primary" />
-                    <h4 className="scroll-m-20 text-xl font-semibold">{opp.title}</h4>
+                    <div className="text-xl font-semibold">{opp.title}</div>
                   </div>
-                  <p className="leading-7 text-sm">{opp.description}</p>
+                  <div className="text-sm">{opp.description}</div>
                   <div className="bg-primary/10 p-2 rounded-md">
-                    <p className="text-sm text-muted-foreground text-sm font-medium text-primary">{opp.potential}</p>
+                    <div className="text-sm font-medium text-primary">{opp.potential}</div>
                   </div>
                 </div>
               </Card>

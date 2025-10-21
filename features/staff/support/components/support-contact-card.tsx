@@ -22,7 +22,7 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
           <CardContent className="flex items-start justify-between gap-4 p-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-sm font-semibold">
-                <Phone className="h-4 w-4 text-info" />
+                <Phone className="h-4 w-4 text-secondary" />
                 Hotline
               </div>
               <p className="text-xs text-muted-foreground">Best for urgent issues that block work.</p>
@@ -35,7 +35,7 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
           <CardContent className="flex items-start justify-between gap-4 p-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-sm font-semibold">
-                <MessageCircle className="h-4 w-4 text-success" />
+                <MessageCircle className="h-4 w-4 text-primary" />
                 Chat
               </div>
               <p className="text-xs text-muted-foreground">Great for multi-step troubleshooting.</p>

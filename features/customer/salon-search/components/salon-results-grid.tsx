@@ -40,22 +40,22 @@ function SalonCard({ salon, featured = false }: SalonCardProps) {
             <CardTitle>{salon.name}</CardTitle>
             <div className="flex gap-1">
               {salon.is_verified && (
-                <Shield className="h-4 w-4 text-info" />
+                <Shield className="h-4 w-4 text-secondary" />
               )}
               {(featured || salon.is_featured) && (
-                <Sparkles className="h-4 w-4 text-warning" />
+                <Sparkles className="h-4 w-4 text-accent" />
               )}
             </div>
           </div>
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <MapPin className="h-3 w-3" />
-            <span>{formatAddress(salon.address)}</span>
+          <div className="flex items-center gap-1">
+            <MapPin className="h-3 w-3 text-muted-foreground" />
+            <CardDescription>{formatAddress(salon.address)}</CardDescription>
           </div>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 fill-warning text-warning" />
-            <span className="font-semibold">{formatRating(salon.rating_average)}</span>
+            <Star className="h-4 w-4 fill-accent text-accent" />
+            <p className="font-semibold text-sm text-muted-foreground">{formatRating(salon.rating_average)}</p>
             {featured && (
               <Badge variant="secondary" className="ml-auto">Featured</Badge>
             )}
@@ -81,9 +81,9 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {/* Featured Salons */}
       {showFeatured && (
         <div>
-          <div className="mb-4 flex items-center gap-2 text-xl font-semibold text-foreground">
-            <Sparkles className="h-5 w-5 text-warning" />
-            Featured Salons
+          <div className="mb-4 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-accent" />
+            <h2>Featured Salons</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {featuredSalons.map((salon) => (
@@ -96,9 +96,9 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {/* Search Results */}
       {showResults && (
         <div>
-          <div className="mb-4 flex items-center gap-2 text-xl font-semibold text-foreground">
+          <div className="mb-4 flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
-            Search Results ({results.length})
+            <h2>Search Results ({results.length})</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {results.map((salon) => (
@@ -112,9 +112,9 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {showNoResults && (
         <Card>
           <CardContent className="py-12 text-center">
-            <p className="text-muted-foreground">
+            <CardDescription>
               No salons found matching your criteria. Try adjusting your filters.
-            </p>
+            </CardDescription>
           </CardContent>
         </Card>
       )}

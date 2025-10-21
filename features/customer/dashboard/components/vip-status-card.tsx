@@ -70,7 +70,7 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
               <CardHeader>
                 <CardDescription>This month</CardDescription>
                 <div className="flex items-center gap-1">
-                  <TrendingUp className="h-4 w-4 text-success" />
+                  <TrendingUp className="h-4 w-4 text-primary" />
                   <CardTitle>${vipStatus.monthlySpend.toLocaleString()}</CardTitle>
                 </div>
                 <CardAction>

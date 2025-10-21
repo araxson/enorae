@@ -15,9 +15,9 @@ export function HealthOverview({ snapshot }: HealthOverviewProps) {
   const { healthScore, criticalIssues, warnings, recommendations } = overallStatus
 
   const getHealthIcon = (score: number) => {
-    if (score >= 90) return <CheckCircle className="h-8 w-8 text-success" />
+    if (score >= 90) return <CheckCircle className="h-8 w-8 text-primary" />
     if (score >= 70) return <TrendingUp className="h-8 w-8 text-primary" />
-    if (score >= 50) return <AlertTriangle className="h-8 w-8 text-warning" />
+    if (score >= 50) return <AlertTriangle className="h-8 w-8 text-accent" />
     return <AlertCircle className="h-8 w-8 text-destructive" />
   }
 

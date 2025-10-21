@@ -21,7 +21,7 @@ export function RolesStats({ stats }: RoleStatsProps) {
               <p className="leading-7 text-sm text-muted-foreground">Total Assignments</p>
               <p className="text-2xl font-bold">{totalAssignments}</p>
             </div>
-            <Shield className="h-4 w-4 text-info" />
+            <Shield className="h-4 w-4 text-secondary" />
           </div>
         </CardContent>
       </Card>
@@ -33,7 +33,7 @@ export function RolesStats({ stats }: RoleStatsProps) {
               <p className="leading-7 text-sm text-muted-foreground">Active Roles</p>
               <p className="text-2xl font-bold">{totalActive}</p>
             </div>
-            <UserCheck className="h-4 w-4 text-success" />
+            <UserCheck className="h-4 w-4 text-primary" />
           </div>
         </CardContent>
       </Card>
@@ -45,7 +45,7 @@ export function RolesStats({ stats }: RoleStatsProps) {
               <p className="leading-7 text-sm text-muted-foreground">Inactive Roles</p>
               <p className="text-2xl font-bold">{totalInactive}</p>
             </div>
-            <UserX className="h-4 w-4 text-warning" />
+            <UserX className="h-4 w-4 text-accent" />
           </div>
         </CardContent>
       </Card>

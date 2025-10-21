@@ -46,7 +46,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
                       </AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
-                      <small className="text-sm font-medium">{member.title || 'Staff member'}</small>
+                      <p className="text-sm font-medium">{member.title || 'Staff member'}</p>
                       {member.bio && (
                         <p className="text-sm text-muted-foreground line-clamp-1 text-xs">{member.bio}</p>
                       )}
@@ -65,11 +65,11 @@ export function StaffGrid({ staff }: StaffGridProps) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="space-y-1">
-                    <h4 className="scroll-m-20 text-xl font-semibold">{member.title || 'Staff member'}</h4>
+                    <h4 className="text-xl font-semibold">{member.title || 'Staff member'}</h4>
                     {member.bio && <p className="text-sm text-muted-foreground">{member.bio}</p>}
                   </div>
                 </div>
-                {member.bio && <p className="leading-7 text-sm text-muted-foreground">{member.bio}</p>}
+                {member.bio && <p className="text-sm text-muted-foreground">{member.bio}</p>}
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Calendar className="h-3 w-3" />
                   <span>Click to book an appointment</span>

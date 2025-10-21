@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 export function getCustomerSalonMeta() {
   return {
@@ -16,6 +17,12 @@ export interface FavoriteShortcut {
 }
 
 export async function getCustomerFavoritesSummary(userId: string): Promise<FavoriteShortcut[]> {
+  // SECURITY: Verify the authenticated user matches the requested userId
+  const session = await requireAuth()
+  if (session.user.id !== userId) {
+    throw new Error('Unauthorized: Cannot access favorites for another user')
+  }
+
   const supabase = await createClient()
 
   const { data, error } = await supabase

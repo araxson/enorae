@@ -11,8 +11,8 @@ interface ChainComplianceTableProps {
 
 export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) {
   const getComplianceColor = (rate: number) => {
-    if (rate >= 90) return 'text-success'
-    if (rate >= 70) return 'text-warning'
+    if (rate >= 90) return 'text-primary'
+    if (rate >= 70) return 'text-accent'
     return 'text-destructive'
   }
 
@@ -52,7 +52,7 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
                   <TableRow key={chain.chainId}>
                     <TableCell className="font-medium">{chain.chainName}</TableCell>
                     <TableCell className="text-right">{chain.totalSalons}</TableCell>
-                    <TableCell className="text-right text-success">
+                    <TableCell className="text-right text-primary">
                       {chain.verifiedSalons}
                     </TableCell>
                     <TableCell className="text-right text-destructive">

@@ -63,15 +63,15 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="scroll-m-20 text-3xl font-semibold mb-1">Platform Analytics Overview</h2>
-          <p className="block text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Aggregated growth and retention metrics across the platform. Last updated {lastUpdatedLabel}.
           </p>
           {error && (
-            <p className="leading-7 mt-2 text-sm text-destructive">{error}</p>
+            <p className="mt-2 text-sm text-destructive">{error}</p>
           )}
         </div>
         <div className="flex items-center gap-3">
-          <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">
             Auto-refresh 60s
           </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>

@@ -127,9 +127,9 @@ export function RevenueCard({
         <div className={cn('flex flex-col', compact ? 'gap-2' : 'gap-3')}>
           {/* Primary amount */}
           <div className="flex gap-2">
-            <h3 className={cn('scroll-m-20 text-2xl font-semibold', compact ? 'text-2xl' : 'text-3xl font-bold')}>
+            <div className={cn('font-semibold', compact ? 'text-2xl' : 'text-3xl font-bold')}>
               {formattedAmount}
-            </h3>
+            </div>
             {growthRate !== undefined && (
               <Badge
                 variant={growthRate >= 0 ? 'default' : 'destructive'}
@@ -149,18 +149,18 @@ export function RevenueCard({
           {growthRate !== undefined && (
             <div className="flex gap-2 items-center">
               {growthRate >= 0 ? (
-                <ArrowUpRight className="h-3 w-3 text-success" aria-hidden="true" />
+                <ArrowUpRight className="h-3 w-3 text-primary" aria-hidden="true" />
               ) : (
                 <ArrowDownRight className="h-3 w-3 text-destructive" aria-hidden="true" />
               )}
-              <small
+              <div
                 className={cn(
-                  'text-sm font-medium',
-                  `text-xs ${growthRate >= 0 ? 'text-success' : 'text-destructive'}`
+                  'text-xs font-medium',
+                  growthRate >= 0 ? 'text-primary' : 'text-destructive'
                 )}
               >
                 {growthRate >= 0 ? 'Growth' : 'Decline'} vs. previous period
-              </small>
+              </div>
             </div>
           )}
 
@@ -170,10 +170,10 @@ export function RevenueCard({
               <div className="flex flex-col gap-2">
                 {breakdown.map((item) => (
                   <div key={item.label} className="flex gap-4 items-center justify-between">
-                    <p className="text-sm text-muted-foreground text-xs">{item.label}</p>
-                    <small className="text-sm font-medium font-medium">
+                    <div className="text-xs text-muted-foreground">{item.label}</div>
+                    <div className="text-sm font-medium">
                       {formatCurrency(item.amount, { currency })}
-                    </small>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -181,7 +181,7 @@ export function RevenueCard({
           )}
 
           {/* Subtitle */}
-          {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
+          {subtitle && <div className="text-xs text-muted-foreground">{subtitle}</div>}
         </div>
       </CardContent>
     </Card>

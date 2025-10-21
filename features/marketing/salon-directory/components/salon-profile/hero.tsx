@@ -32,11 +32,11 @@ export function SalonHero({ salon }: SalonHeroProps) {
               </div>
             )}
             <div className="flex flex-col gap-3">
-              <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">{salon.name || 'Unnamed Salon'}</h1>
+              <h1 className="scroll-m-20">{salon.name || 'Unnamed Salon'}</h1>
               {salon.rating !== null && (
                 <div className="flex gap-3 items-center">
-                  <Star className="h-5 w-5 text-warning" fill="currentColor" />
-                  <span className="text-lg font-semibold font-semibold">{salon.rating.toFixed(1)}</span>
+                  <Star className="h-5 w-5 text-accent" fill="currentColor" />
+                  <span className="font-semibold">{salon.rating.toFixed(1)}</span>
                   {salon.review_count !== null && <p className="text-sm text-muted-foreground">({salon.review_count} reviews)</p>}
                 </div>
               )}

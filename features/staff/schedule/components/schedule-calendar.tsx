@@ -83,12 +83,12 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                               {schedule.is_active ? 'Active' : 'Inactive'}
                             </Badge>
                           </div>
-                          <p className="text-sm text-muted-foreground text-xs">
+                          <p className="text-xs text-muted-foreground">
                             {formatTime(schedule.start_time)} - {formatTime(schedule.end_time)}
                             {schedule.staff?.title && ` • ${schedule.staff.title}`}
                           </p>
                           {schedule.break_start && schedule.break_end && (
-                            <p className="text-sm text-muted-foreground text-xs mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               Break: {formatTime(schedule.break_start)} - {formatTime(schedule.break_end)}
                             </p>
                           )}

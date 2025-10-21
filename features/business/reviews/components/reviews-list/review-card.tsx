@@ -64,7 +64,7 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
             </div>
             <div className="flex gap-4 items-center">
               {renderStars(review.rating)}
-              <small className="text-sm font-medium text-muted-foreground">{formatDate(review.created_at)}</small>
+              <p className="text-sm font-medium text-muted-foreground">{formatDate(review.created_at)}</p>
             </div>
           </div>
 
@@ -168,7 +168,7 @@ function StarIcon({ filled }: StarIconProps) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`h-4 w-4 ${filled ? 'fill-warning text-warning' : 'text-muted-foreground/30'}`}
+      className={`h-4 w-4 ${filled ? 'fill-accent text-accent' : 'text-muted-foreground/30'}`}
     >
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
     </svg>

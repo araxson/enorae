@@ -14,19 +14,19 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
       title: 'Total Spending',
       value: `$${metrics.totalSpending.toFixed(2)}`,
       icon: DollarSign,
-      color: 'text-success',
+      color: 'text-primary',
     },
     {
       title: 'Total Appointments',
       value: metrics.totalAppointments.toString(),
       icon: Calendar,
-      color: 'text-info',
+      color: 'text-secondary',
     },
     {
       title: 'Completed',
       value: metrics.completedAppointments.toString(),
       icon: CheckCircle2,
-      color: 'text-success',
+      color: 'text-primary',
     },
     {
       title: 'Cancelled',

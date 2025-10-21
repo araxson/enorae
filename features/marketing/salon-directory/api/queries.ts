@@ -37,7 +37,7 @@ export async function getPublicSalons(params?: SalonSearchParams): Promise<Salon
       const results = data as Array<Pick<Salon, 'id'>>
       const salonIds = results.map(({ id }) => id).filter((id): id is string => Boolean(id))
       const { data: fullSalons, error: fullError } = await supabase
-        .from('salons')
+        .from('salons_view')
         .select('*')
         .in('id', salonIds)
         .eq('is_active', true)
@@ -52,7 +52,7 @@ export async function getPublicSalons(params?: SalonSearchParams): Promise<Salon
 
   // Default: get all active salons
   let query = supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
     .order('rating', { ascending: false, nullsFirst: false })
@@ -75,7 +75,7 @@ export async function getPublicSalonBySlug(slug: string): Promise<Salon | null> 
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('slug', slug)
     .eq('is_active', true)
@@ -93,7 +93,7 @@ export async function getPublicSalonsByCity(city: string, state?: string): Promi
   const supabase = await createClient()
 
   let query = supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
     .ilike('city', city)
@@ -119,7 +119,7 @@ export async function getPublicSalonsByService(serviceCategory: string): Promise
 
   // First, find services in this category
   const { data: services, error: servicesError } = await supabase
-    .from('services')
+    .from('services_view')
     .select('salon_id, category_name')
     .eq('is_active', true)
     .ilike('category_name', serviceCategory)
@@ -135,7 +135,7 @@ export async function getPublicSalonsByService(serviceCategory: string): Promise
 
   // Get full salon details
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .in('id', salonIds)
     .eq('is_active', true)
@@ -153,7 +153,7 @@ export async function getPublicSalonCities(): Promise<{ city: string; state: str
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('city, state_province')
     .eq('is_active', true)
     .not('city', 'is', null)
@@ -189,7 +189,7 @@ export async function getPublicServiceCategories(): Promise<string[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('category_name')
     .eq('is_active', true)
     .not('category_name', 'is', null)
@@ -209,7 +209,7 @@ export async function getPublicSalonServices(salonId: string): Promise<Service[]
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('*')
     .eq('salon_id', salonId)
     .eq('is_active', true)
@@ -233,7 +233,7 @@ export async function getPublicPlatformStats(): Promise<{
 
   // Count active salons
   const { count: salonCount, error: salonError } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*', { count: 'exact', head: true })
     .eq('is_active', true)
 
@@ -241,7 +241,7 @@ export async function getPublicPlatformStats(): Promise<{
 
   // Count unique cities
   const { data: cities, error: citiesError } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('city, state_province')
     .eq('is_active', true)
     .not('city', 'is', null)
@@ -252,7 +252,7 @@ export async function getPublicPlatformStats(): Promise<{
 
   // Count active services
   const { count: servicesCount, error: servicesError } = await supabase
-    .from('services')
+    .from('services_view')
     .select('*', { count: 'exact', head: true })
     .eq('is_active', true)
 

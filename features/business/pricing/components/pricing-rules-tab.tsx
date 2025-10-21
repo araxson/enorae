@@ -48,14 +48,14 @@ export function PricingRulesTab({ rules }: PricingRulesTabProps) {
                 <div className="flex items-center gap-2">
                   {rule.adjustment_type === 'surge' ? (
                     <>
-                      <TrendingUp className="h-4 w-4 text-success" />
+                      <TrendingUp className="h-4 w-4 text-primary" />
                       <Badge variant="default">
                         +{rule.adjustment_percentage}% Surge
                       </Badge>
                     </>
                   ) : (
                     <>
-                      <TrendingDown className="h-4 w-4 text-info" />
+                      <TrendingDown className="h-4 w-4 text-secondary" />
                       <Badge variant="outline">
                         -{rule.adjustment_percentage}% Discount
                       </Badge>

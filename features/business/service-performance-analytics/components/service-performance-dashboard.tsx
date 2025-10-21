@@ -62,9 +62,9 @@ export function ServicePerformanceDashboard({
     .slice(0, 5)
 
   const getPerformanceIcon = (cancellationRate: number) => {
-    if (cancellationRate < 10) return <TrendingUp className="h-4 w-4 text-success" />
+    if (cancellationRate < 10) return <TrendingUp className="h-4 w-4 text-primary" />
     if (cancellationRate > 20) return <TrendingDown className="h-4 w-4 text-destructive" />
-    return <BarChart3 className="h-4 w-4 text-warning" />
+    return <BarChart3 className="h-4 w-4 text-accent" />
   }
 
   const formatCurrency = (amount: number) => {
@@ -102,7 +102,7 @@ export function ServicePerformanceDashboard({
                   <div className="text-right">
                     <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Star className="h-3 w-3 text-warning" />
+                      <Star className="h-3 w-3 text-accent" />
                       {service.avg_rating?.toFixed(1) || 'N/A'}
                     </div>
                   </div>
@@ -207,7 +207,7 @@ export function ServicePerformanceDashboard({
                     <p className="text-sm text-muted-foreground">Avg Rating</p>
                     <div className="flex items-center gap-1">
                       <p className="text-xl font-semibold">{service.avg_rating?.toFixed(1) || 'N/A'}</p>
-                      <Star className="h-4 w-4 text-warning" />
+                      <Star className="h-4 w-4 text-accent" />
                     </div>
                   </div>
                   <div>

@@ -133,11 +133,13 @@ export async function CustomerDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardDescription>This month</CardDescription>
-                    <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4" />
+                    <CardTitle>
                       ${vipStatus.monthlySpend.toLocaleString()}
                     </CardTitle>
                   </CardHeader>
+                  <CardContent>
+                    <TrendingUp className="h-4 w-4" />
+                  </CardContent>
                 </Card>
               )}
             </div>

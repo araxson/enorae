@@ -19,19 +19,19 @@ export function ClientStats({ clients }: ClientStatsProps) {
       label: 'Total Clients',
       value: totalClients.toString(),
       icon: Users,
-      color: 'text-info',
+      color: 'text-secondary',
     },
     {
       label: 'Repeat Clients',
       value: repeatClients.toString(),
       icon: UserCheck,
-      color: 'text-success',
+      color: 'text-primary',
     },
     {
       label: 'Appointments',
       value: totalAppointments.toString(),
       icon: Calendar,
-      color: 'text-warning',
+      color: 'text-accent',
     },
     {
       label: 'Total Revenue',
@@ -50,7 +50,7 @@ export function ClientStats({ clients }: ClientStatsProps) {
             <CardContent className="p-4">
               <div className="flex gap-4 items-start justify-between">
                 <div>
-                  <p className="leading-7 text-sm text-muted-foreground">{stat.label}</p>
+                  <p className="text-sm text-muted-foreground">{stat.label}</p>
                   <p className="text-2xl font-bold">{stat.value}</p>
                 </div>
                 <Icon className={`h-4 w-4 ${stat.color}`} />

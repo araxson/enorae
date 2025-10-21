@@ -68,7 +68,7 @@ export function StaffAnalyticsDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Estimated Commission</CardTitle>
-            <Award className="h-4 w-4 text-success" />
+            <Award className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(earnings.estimated_commission)}</div>
@@ -127,7 +127,7 @@ export function StaffAnalyticsDashboard({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Completed</span>
-                  <Badge variant="secondary" className="bg-success/10 text-success">
+                  <Badge variant="secondary" className="bg-primary/10 text-primary">
                     {metrics.completed_appointments}
                   </Badge>
                 </div>
@@ -151,7 +151,7 @@ export function StaffAnalyticsDashboard({
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-medium">Completion Rate</span>
-                    <span className="text-sm font-bold text-success">
+                    <span className="text-sm font-bold text-primary">
                       {formatPercentage(metrics.completion_rate)}
                     </span>
                   </div>

@@ -68,7 +68,7 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
               )}
             </Button>
           </label>
-          <p className="text-sm text-muted-foreground text-xs ml-2">
+          <p className="text-xs text-muted-foreground ml-2">
             Max 5MB per image
           </p>
         </div>

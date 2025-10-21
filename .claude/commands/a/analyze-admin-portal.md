@@ -18,6 +18,105 @@ You are performing a comprehensive audit of the Admin Portal in the Enorae salon
    - Verify RLS policies exist
    - Get advisors for security and performance issues
 
+## PHASE 1.5: DATABASE SCHEMA ALIGNMENT
+
+**CRITICAL**: The database is the source of truth. All code must match the actual Supabase schema.
+
+### Step 1: Fetch Actual Database Schema
+
+Use Supabase MCP to read the ACTUAL database structure:
+
+```bash
+# List all tables in all schemas
+mcp__supabase__list_tables(project_id: "nwmcpfioxerzodvbjigw", schemas: ["public", "catalog", "scheduling", "inventory", "identity", "communication", "analytics", "engagement", "organisation"])
+
+# Get generated TypeScript types
+mcp__supabase__generate_typescript_types(project_id: "nwmcpfioxerzodvbjigw")
+```
+
+### Step 2: Document Actual Schema
+
+For each schema and table/view, document:
+- **Actual columns** (from Supabase)
+- **Column types** (actual, not assumed)
+- **What code expects** (from TypeScript errors)
+- **Gap analysis** (what's missing/wrong)
+
+### Step 3: Find All Code Mismatches in Admin Portal
+
+Scan admin codebase for:
+- Properties accessed that don't exist in database
+- Database columns not used in code
+- Type mismatches
+- RPC function calls with wrong parameters
+- Query selections that don't match view structure
+
+### Key Rules for Database Alignment:
+
+**Rule 1: Database View Properties Are Sacred**
+```ts
+// ✗ WRONG - Assuming property exists
+const amenities = salon.amenities // Property doesn't exist!
+
+// ✓ CORRECT - Use what database actually provides
+const amenities = salon.special_features || salon.tags // Use real columns
+```
+
+**Rule 2: Only Select Available Columns**
+```ts
+// ✗ WRONG - Selecting columns that don't exist
+.select('amenities, specialties, staff_count')
+
+// ✓ CORRECT - Select only what view actually has
+.select('*') // or explicitly list real columns from schema
+```
+
+**Rule 3: Transform at Application Level**
+```ts
+// ✓ CORRECT - Add computed fields in TypeScript, not database
+const extendedSalon = {
+  ...dbSalon,
+  services_count: calculateServicesCount(dbSalon.id),
+  specialties: parseSpecialtiesFromDescription(dbSalon.description),
+}
+```
+
+**Rule 4: RPC Functions Must Exist**
+```ts
+// ✗ WRONG - Calling RPC that doesn't exist
+.rpc('validate_coupon', { p_code, p_salon_id })
+
+// ✓ CORRECT - Only call RPC functions that exist in database
+// First verify RPC exists, then call with correct parameters
+```
+
+**Rule 5: Match Query Return Types Exactly**
+```ts
+// ✗ WRONG - Assuming more fields than query returns
+interface Salon {
+  id: string
+  amenities: string[] // Doesn't come from query!
+}
+
+// ✓ CORRECT - Match actual query response
+type Salon = Database['public']['Views']['salons']['Row']
+// With optional extended fields only if they're computed
+type ExtendedSalon = Salon & {
+  computed_amenities?: string[]
+}
+```
+
+### Document in Phase 2 Findings:
+
+As you analyze each layer, document database alignment issues with a dedicated section:
+- Which properties are assumed but don't exist
+- Type mismatches between code and database
+- Missing RPC functions
+- Column name mismatches
+- These become HIGH priority fixes
+
+---
+
 ## PHASE 2: SYSTEMATIC LAYER ANALYSIS
 
 Analyze admin portal in this exact order:

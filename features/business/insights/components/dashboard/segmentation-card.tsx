@@ -17,8 +17,8 @@ export function SegmentationCard({ summary }: SegmentationCardProps) {
       </CardHeader>
       <CardContent>
         <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-warning/10">
-            <Crown className="h-6 w-6 text-warning mb-2" />
+          <div className="flex flex-col items-center p-4 border rounded-lg bg-accent/10">
+            <Crown className="h-6 w-6 text-accent mb-2" />
             <div className="text-2xl font-bold">{summary.segmentation.vip}</div>
             <div className="text-xs text-muted-foreground">VIP</div>
           </div>
@@ -27,18 +27,18 @@ export function SegmentationCard({ summary }: SegmentationCardProps) {
             <div className="text-2xl font-bold">{summary.segmentation.loyal}</div>
             <div className="text-xs text-muted-foreground">Loyal</div>
           </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-info/10">
-            <Users className="h-6 w-6 text-info mb-2" />
+          <div className="flex flex-col items-center p-4 border rounded-lg bg-secondary/10">
+            <Users className="h-6 w-6 text-secondary mb-2" />
             <div className="text-2xl font-bold">{summary.segmentation.regular}</div>
             <div className="text-xs text-muted-foreground">Regular</div>
           </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-warning/10">
-            <AlertTriangle className="h-6 w-6 text-warning mb-2" />
+          <div className="flex flex-col items-center p-4 border rounded-lg bg-accent/10">
+            <AlertTriangle className="h-6 w-6 text-accent mb-2" />
             <div className="text-2xl font-bold">{summary.segmentation.at_risk}</div>
             <div className="text-xs text-muted-foreground">At Risk</div>
           </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-success/10">
-            <UserPlus className="h-6 w-6 text-success mb-2" />
+          <div className="flex flex-col items-center p-4 border rounded-lg bg-primary/10">
+            <UserPlus className="h-6 w-6 text-primary mb-2" />
             <div className="text-2xl font-bold">{summary.segmentation.new}</div>
             <div className="text-xs text-muted-foreground">New</div>
           </div>

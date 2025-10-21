@@ -111,19 +111,19 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
       </CardHeader>
       <CardContent className="space-y-4">
 
-        <div className="space-y-1 text-sm">
-          <div className="flex gap-2">
-            <small className="text-sm font-medium text-muted-foreground">From:</small>
-            <small className="text-sm font-medium">{request.start_at ? new Date(request.start_at).toLocaleDateString() : '—'}</small>
+        <div className="space-y-2">
+          <div className="flex gap-3">
+            <p className="text-sm font-medium text-muted-foreground">From:</p>
+            <p className="text-sm font-medium">{request.start_at ? new Date(request.start_at).toLocaleDateString() : '—'}</p>
           </div>
-          <div className="flex gap-2">
-            <small className="text-sm font-medium text-muted-foreground">To:</small>
-            <small className="text-sm font-medium">{request.end_at ? new Date(request.end_at).toLocaleDateString() : '—'}</small>
+          <div className="flex gap-3">
+            <p className="text-sm font-medium text-muted-foreground">To:</p>
+            <p className="text-sm font-medium">{request.end_at ? new Date(request.end_at).toLocaleDateString() : '—'}</p>
           </div>
           {request.reason && (
             <div className="space-y-1">
-              <small className="text-sm font-medium text-muted-foreground">Reason:</small>
-              <small className="text-sm font-medium">{request.reason}</small>
+              <p className="text-sm font-medium text-muted-foreground">Reason:</p>
+              <p className="text-sm font-medium">{request.reason}</p>
             </div>
           )}
         </div>

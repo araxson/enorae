@@ -18,7 +18,7 @@ export async function getPopularServices(limit: number = 10): Promise<
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('name, category_name, category_slug, salon_id, current_price')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -94,7 +94,7 @@ export async function getPublicServiceStats(): Promise<{
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('current_price, category_name')
     .eq('is_active', true)
     .is('deleted_at', null)

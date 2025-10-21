@@ -25,7 +25,7 @@ function StarRating({ rating }: { rating: number | null }) {
         <Star
           key={i}
           className={`h-4 w-4 ${
-            i < validRating ? 'fill-warning text-warning' : 'text-muted-foreground/30'
+            i < validRating ? 'fill-accent text-accent' : 'text-muted-foreground/30'
           }`}
         />
       ))}
@@ -66,11 +66,11 @@ function ReviewCard({ review }: { review: SalonReview }) {
                 </Badge>
               )}
             </div>
-            {review.title && <p className="leading-7 text-sm font-medium">{review.title}</p>}
+            {review.title && <p className="text-sm font-medium">{review.title}</p>}
           </div>
         </div>
 
-        <p className="leading-7 text-sm text-muted-foreground">{review.comment}</p>
+        <p className="text-sm text-muted-foreground">{review.comment}</p>
 
         {(review.service_quality_rating ||
           review.cleanliness_rating ||

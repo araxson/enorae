@@ -5,7 +5,7 @@ import { TableCell } from '@/components/ui/table'
 import { Package } from 'lucide-react'
 import type { PurchaseOrderWithDetails } from '../../api/queries'
 
-const COMPLETE_BADGE_CLASSES = 'text-success border-success'
+const COMPLETE_BADGE_CLASSES = 'text-primary border-primary'
 
 const renderBadge = (isComplete: boolean) =>
   isComplete ? (

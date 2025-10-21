@@ -28,13 +28,13 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
       label: 'Verified',
       value: stats.verified,
       icon: CheckCircle,
-      tone: 'text-success',
+      tone: 'text-primary',
     },
     {
       label: 'Expiring licenses',
       value: stats.expiringLicenses,
       icon: ShieldAlert,
-      tone: 'text-warning',
+      tone: 'text-accent',
     },
     {
       label: 'High risk',
@@ -51,7 +51,7 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="leading-7 text-sm text-muted-foreground">{label}</p>
+                <p className="text-sm text-muted-foreground">{label}</p>
                 <h3 className="scroll-m-20 text-2xl font-semibold">{value}</h3>
               </div>
               <Icon className={`h-4 w-4 ${tone}`} />
@@ -64,10 +64,10 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="leading-7 text-sm text-muted-foreground">Average compliance</p>
+              <p className="text-sm text-muted-foreground">Average compliance</p>
               <h3 className="scroll-m-20 text-2xl font-semibold">{stats.averageCompliance}%</h3>
             </div>
-            <Gauge className="h-4 w-4 text-info" />
+            <Gauge className="h-4 w-4 text-secondary" />
           </div>
         </CardContent>
       </Card>
@@ -85,7 +85,7 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
 function Distribution({ title, data }: { title: string; data: Record<string, number> }) {
   return (
     <div>
-      <p className="leading-7 text-sm text-muted-foreground mb-2">{title}</p>
+      <p className="text-sm text-muted-foreground mb-2">{title}</p>
       <div className="space-y-1">
         {Object.entries(data).map(([key, value]) => (
           <div key={key} className="flex justify-between text-xs">

@@ -7,10 +7,11 @@ import { ChainDetailView } from './chain-detail-view'
 import { ChainSettingsButton } from './chain-settings-button'
 
 type ChainDetailProps = {
-  chainId: string
+  params: Promise<{ chainId: string }>
 }
 
-export async function ChainDetail({ chainId }: ChainDetailProps) {
+export async function ChainDetail({ params }: ChainDetailProps) {
+  const { chainId } = await params
   const chain = await getSalonChainById(chainId)
 
   if (!chain) {
@@ -27,10 +28,10 @@ export async function ChainDetail({ chainId }: ChainDetailProps) {
               Back to Chains
             </Button>
           </Link>
-          <div>
+          <div className="space-y-1">
             <h1 className="text-3xl font-bold">{chain.name}</h1>
             {chain.legal_name && (
-              <p className="text-muted-foreground">{chain.legal_name}</p>
+              <div className="text-sm text-muted-foreground">{chain.legal_name}</div>
             )}
           </div>
         </div>

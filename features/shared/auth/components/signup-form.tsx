@@ -133,10 +133,10 @@ export function SignupForm() {
                 required
               />
               {confirmPassword && password !== confirmPassword && (
-                <small className="text-sm font-medium text-destructive">Passwords do not match</small>
+                <p className="text-sm font-medium text-destructive">Passwords do not match</p>
               )}
               {confirmPassword && password === confirmPassword && (
-                <small className="text-sm font-medium text-success">✓ Passwords match</small>
+                <p className="text-sm font-medium text-primary">✓ Passwords match</p>
               )}
             </div>
           </div>
@@ -151,12 +151,12 @@ export function SignupForm() {
             >
               {loading ? 'Creating account...' : 'Sign Up'}
             </Button>
-            <small className="text-sm font-medium text-center text-muted-foreground">
+            <p className="text-sm font-medium text-center text-muted-foreground">
               Already have an account?{' '}
               <Link href="/login" className="underline hover:text-foreground">
                 Sign in
               </Link>
-            </small>
+            </p>
           </div>
         </CardFooter>
       </form>

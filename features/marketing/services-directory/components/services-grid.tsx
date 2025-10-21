@@ -85,9 +85,9 @@ function ServiceCard({ service }: ServiceCardProps) {
             {service.duration_minutes && (
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <small className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-foreground">
                   {service.duration_minutes} minutes
-                </small>
+                </p>
               </div>
             )}
 
@@ -98,20 +98,20 @@ function ServiceCard({ service }: ServiceCardProps) {
                 <div className="flex items-center gap-4">
                   {hasSalePrice ? (
                     <>
-                      <small className="text-sm font-medium line-through text-muted-foreground">
+                      <p className="text-sm font-medium line-through text-muted-foreground">
                         ${service.current_price?.toFixed(2)}
-                      </small>
-                      <small className="text-sm font-medium font-semibold text-success">
+                      </p>
+                      <p className="text-sm font-semibold text-primary">
                         ${service.sale_price?.toFixed(2)}
-                      </small>
+                      </p>
                       <Badge variant="destructive" className="text-xs">
                         Sale
                       </Badge>
                     </>
                     ) : (
-                      <small className="text-sm font-medium font-semibold">
+                      <p className="text-sm font-semibold">
                         ${service.current_price?.toFixed(2)}
-                      </small>
+                      </p>
                     )}
                 </div>
               </div>

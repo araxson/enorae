@@ -24,7 +24,7 @@ async function getSalonContext() {
 export async function getSalonAppointments(limit = 50): Promise<AppointmentRow[]> {
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('start_time', { ascending: true })
@@ -40,7 +40,7 @@ export async function getSalonAppointmentsByStatus(
 ): Promise<AppointmentRow[]> {
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('salon_id', salonId)
     .eq('status', status)
@@ -56,7 +56,7 @@ export async function getAppointmentDetails(
 ): Promise<AppointmentRow | null> {
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('salon_id', salonId)
     .eq('id', appointmentId)

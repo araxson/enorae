@@ -56,8 +56,8 @@ type DetailRowProps = {
 function DetailRow({ label, value }: DetailRowProps) {
   return (
     <div className="flex gap-3">
-      <small className={cn('text-sm font-medium', `text-muted-foreground ${LABEL_WIDTH}`)}>{label}:</small>
-      <small className="text-sm font-medium break-all">{value}</small>
+      <p className={cn('text-sm font-medium', `text-muted-foreground ${LABEL_WIDTH}`)}>{label}:</p>
+      <p className="text-sm font-medium break-all">{value}</p>
     </div>
   )
 }

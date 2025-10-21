@@ -52,7 +52,7 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
                       </p>
                     </div>
                     <Badge variant="outline" className="gap-1 text-xs">
-                      <Star className="h-3 w-3 text-warning" fill="currentColor" />
+                      <Star className="h-3 w-3 text-accent" fill="currentColor" />
                       {review.rating || 0}/5
                     </Badge>
                   </div>

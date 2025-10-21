@@ -36,7 +36,7 @@ function getTierColor(tier: Subscription['tier']) {
     case 'basic':
       return 'bg-secondary text-secondary-foreground'
     case 'professional':
-      return 'bg-info/10 text-info'
+      return 'bg-secondary/10 text-secondary'
     case 'enterprise':
       return 'bg-primary/10 text-primary'
     default:
@@ -103,7 +103,7 @@ export function SubscriptionOverviewCard({
             <ul className="space-y-1.5">
               {tierFeatures[subscription.tier].map((feature) => (
                 <li key={feature} className="flex gap-2 text-sm">
-                  <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                   <span>{feature}</span>
                 </li>
               ))}

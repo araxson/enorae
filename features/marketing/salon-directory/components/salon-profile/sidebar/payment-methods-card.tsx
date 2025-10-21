@@ -18,7 +18,7 @@ export function PaymentMethodsCard({ salon }: PaymentMethodsCardProps) {
         <div className="flex flex-col gap-3">
           {salon.payment_methods.map((method: string) => (
             <div key={method} className="flex gap-2 items-center">
-              <CheckCircle className="h-4 w-4 text-success" />
+              <CheckCircle className="h-4 w-4 text-primary" />
               <p className="text-sm text-muted-foreground">{method}</p>
             </div>
           ))}

@@ -57,8 +57,8 @@ export function ClientDetailDialog({
             <div className="flex gap-3 items-start">
               <User className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <p className="text-sm text-muted-foreground text-xs">Name</p>
-                <p className="leading-7 font-medium">{client.customer_name || 'Walk-in Customer'}</p>
+                <p className="text-xs text-muted-foreground">Name</p>
+                <p className="font-medium">{client.customer_name || 'Walk-in Customer'}</p>
               </div>
             </div>
 
@@ -66,8 +66,8 @@ export function ClientDetailDialog({
               <div className="flex gap-3 items-start">
                 <Mail className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <p className="text-sm text-muted-foreground text-xs">Email</p>
-                  <p className="leading-7">{client.customer_email}</p>
+                  <p className="text-xs text-muted-foreground">Email</p>
+                  <p>{client.customer_email}</p>
                 </div>
               </div>
             )}
@@ -75,8 +75,8 @@ export function ClientDetailDialog({
             <div className="flex gap-3 items-start">
               <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <p className="text-sm text-muted-foreground text-xs">Total Appointments</p>
-                <p className="leading-7 font-medium">{client.total_appointments}</p>
+                <p className="text-xs text-muted-foreground">Total Appointments</p>
+                <p className="font-medium">{client.total_appointments}</p>
               </div>
             </div>
 
@@ -84,8 +84,8 @@ export function ClientDetailDialog({
               <div className="flex gap-3 items-start">
                 <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <p className="text-sm text-muted-foreground text-xs">Total Revenue</p>
-                  <p className="leading-7 font-medium">${Number(client.total_revenue).toFixed(2)}</p>
+                  <p className="text-xs text-muted-foreground">Total Revenue</p>
+                  <p className="font-medium">${Number(client.total_revenue).toFixed(2)}</p>
                 </div>
               </div>
             )}
@@ -96,9 +96,9 @@ export function ClientDetailDialog({
           <div>
             <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Appointment History</h3>
             {loading ? (
-              <p className="leading-7 text-muted-foreground">Loading...</p>
+              <p className="text-muted-foreground">Loading...</p>
             ) : appointments.length === 0 ? (
-              <p className="leading-7 text-muted-foreground">No appointments found</p>
+              <p className="text-muted-foreground">No appointments found</p>
             ) : (
               <div className="flex flex-col gap-3">
                 {appointments.map((apt) => (
@@ -113,18 +113,18 @@ export function ClientDetailDialog({
                             {apt.status}
                           </Badge>
                           {apt.start_time && (
-                            <p className="text-sm text-muted-foreground text-xs">
+                            <p className="text-xs text-muted-foreground">
                               {format(new Date(apt.start_time), 'MMM dd, yyyy • h:mm a')}
                             </p>
                           )}
                         </div>
-                        {apt.service_names && <p className="leading-7 text-sm">{apt.service_names}</p>}
+                        {apt.service_names && <p className="text-sm">{apt.service_names}</p>}
                         {apt.duration_minutes && (
-                          <p className="text-sm text-muted-foreground text-xs">{apt.duration_minutes} minutes</p>
+                          <p className="text-xs text-muted-foreground">{apt.duration_minutes} minutes</p>
                         )}
                       </div>
                       {apt.total_price !== undefined && apt.total_price !== null && (
-                        <p className="leading-7 font-medium">${Number(apt.total_price).toFixed(2)}</p>
+                        <p className="font-medium">${Number(apt.total_price).toFixed(2)}</p>
                       )}
                     </div>
                   </div>

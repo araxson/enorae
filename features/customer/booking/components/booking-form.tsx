@@ -16,6 +16,7 @@ import {
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -145,13 +146,13 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
       <CardHeader className="space-y-4">
         <div className="space-y-1">
           <CardTitle>Book an appointment</CardTitle>
-          <small className="text-sm font-medium text-muted-foreground">{salonName}</small>
+          <CardDescription>{salonName}</CardDescription>
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <small className="text-sm font-medium font-medium text-muted-foreground">Progress</small>
-            <small className="text-sm font-medium font-medium text-muted-foreground">{progress}%</small>
+          <div className="flex items-center justify-between">
+            <CardDescription>Progress</CardDescription>
+            <CardDescription>{progress}%</CardDescription>
           </div>
           <Progress value={progress} className="h-2" />
         </div>
@@ -237,30 +238,30 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
           </div>
 
           {availabilityStatus !== 'idle' && (
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-2">
               {availabilityStatus === 'checking' || isCheckingAvailability ? (
                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
               ) : availabilityStatus === 'available' ? (
-                <CheckCircle2 className="h-4 w-4 text-success" />
+                <CheckCircle2 className="h-4 w-4 text-primary" />
               ) : availabilityStatus === 'unavailable' ? (
                 <XCircle className="h-4 w-4 text-destructive" />
               ) : (
                 <AlertCircle className="h-4 w-4 text-destructive" />
               )}
-              <span
+              <CardDescription
                 className={
                   availabilityStatus === 'available'
-                    ? 'text-success'
+                    ? 'text-primary'
                     : availabilityStatus === 'unavailable'
                     ? 'text-destructive'
-                    : 'text-muted-foreground'
+                    : ''
                 }
               >
                 {availabilityMessage ??
                   (availabilityStatus === 'checking'
                     ? 'Checking staff availability...'
                     : 'Unable to determine availability.')}
-              </span>
+              </CardDescription>
             </div>
           )}
         </CardContent>

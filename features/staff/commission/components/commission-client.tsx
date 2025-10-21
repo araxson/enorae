@@ -62,7 +62,7 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${commission.todayEarnings.toFixed(2)}</div>
-          <p className="text-sm text-muted-foreground text-xs">Revenue from completed appointments</p>
+          <p className="text-xs text-muted-foreground">Revenue from completed appointments</p>
         </CardContent>
       </Card>
 
@@ -73,7 +73,7 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${commission.weekEarnings.toFixed(2)}</div>
-          <p className="text-sm text-muted-foreground text-xs">Week-to-date earnings</p>
+          <p className="text-xs text-muted-foreground">Week-to-date earnings</p>
         </CardContent>
       </Card>
 
@@ -84,7 +84,7 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${commission.monthEarnings.toFixed(2)}</div>
-          <p className="text-sm text-muted-foreground text-xs">Monthly revenue total</p>
+          <p className="text-xs text-muted-foreground">Monthly revenue total</p>
         </CardContent>
       </Card>
 
@@ -95,7 +95,7 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">${commission.avgPerAppointment.toFixed(2)}</div>
-          <p className="text-sm text-muted-foreground text-xs">{commission.totalAppointments} appointments this month</p>
+          <p className="text-xs text-muted-foreground">{commission.totalAppointments} appointments this month</p>
         </CardContent>
       </Card>
     </div>
@@ -138,17 +138,17 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
             <CardTitle>Commission summary</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="leading-7 text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Your commission is calculated based on completed appointments. The figures shown represent the total service revenue from appointments you&apos;ve completed.
             </p>
             <div className="grid gap-4 pt-4 md:grid-cols-2">
               <div>
-                <p className="text-sm text-muted-foreground text-xs uppercase">Completed appointments</p>
-                <p className="leading-7 text-lg font-semibold">{commission.totalAppointments}</p>
+                <p className="text-xs text-muted-foreground uppercase">Completed appointments</p>
+                <p className="text-lg font-semibold">{commission.totalAppointments}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground text-xs uppercase">Month revenue</p>
-                <p className="leading-7 text-lg font-semibold">${commission.monthEarnings.toFixed(2)}</p>
+                <p className="text-xs text-muted-foreground uppercase">Month revenue</p>
+                <p className="text-lg font-semibold">${commission.monthEarnings.toFixed(2)}</p>
               </div>
             </div>
           </CardContent>

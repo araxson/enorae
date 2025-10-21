@@ -10,8 +10,8 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
     <Card className="p-6">
       <div className="flex flex-col gap-6">
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold">Invoice History</h3>
-          <p className="text-sm text-muted-foreground">Download your past invoices</p>
+          <div className="text-2xl font-semibold">Invoice History</div>
+          <div className="text-sm text-muted-foreground">Download your past invoices</div>
         </div>
 
         <Separator />
@@ -23,17 +23,17 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
               className="flex gap-4 items-center justify-between py-2"
             >
               <div className="flex-1">
-                <p className="leading-7 font-medium">{invoice.id}</p>
-                <p className="text-sm text-muted-foreground text-sm">
+                <div className="font-medium">{invoice.id}</div>
+                <div className="text-sm text-muted-foreground">
                   {new Date(invoice.date).toLocaleDateString('en-US', {
                     month: 'long',
                     day: 'numeric',
                     year: 'numeric',
                   })}
-                </p>
+                </div>
               </div>
               <div className="flex items-center gap-4">
-                <p className="leading-7 font-medium">${invoice.amount}</p>
+                <div className="font-medium">${invoice.amount}</div>
                 <Badge
                   variant={invoice.status === 'paid' ? 'default' : 'destructive'}
                 >

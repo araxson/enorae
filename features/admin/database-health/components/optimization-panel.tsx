@@ -90,7 +90,7 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
               </Table>
             ) : (
               <div className="text-center py-8">
-                <AlertCircle className="h-12 w-12 mx-auto mb-4 text-success" />
+                <AlertCircle className="h-12 w-12 mx-auto mb-4 text-primary" />
                 <div className="font-semibold">No Optimization Recommendations</div>
                 <p className="text-muted-foreground">Your database is running optimally!</p>
               </div>

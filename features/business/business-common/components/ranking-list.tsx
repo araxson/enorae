@@ -73,7 +73,7 @@ type RankingListProps = {
  * <RankingList
  *   title="Top Services"
  *   icon={Star}
- *   iconColor="text-warning"
+ *   iconColor="text-accent"
  *   items={[
  *     { id: '1', name: 'Haircut', subtitle: '45 bookings', value: 3750, metric: 'revenue' },
  *     { id: '2', name: 'Color', subtitle: '32 bookings', value: 2880, metric: 'revenue' },

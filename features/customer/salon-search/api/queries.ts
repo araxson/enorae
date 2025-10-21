@@ -81,9 +81,9 @@ export async function searchSalonsWithFuzzyMatch(
   await requireAuth()
   const supabase = await createClient()
 
-  // First, get all salons
+  // First, get all salons from public view
   const { data: salons, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id, name, slug, address, rating_average, is_verified, is_featured')
     .limit(100)
 
@@ -124,9 +124,9 @@ export async function getSalonSearchSuggestions(
 
   const supabase = await createClient()
 
-  // Get salons that match the search term for autocomplete
+  // Get salons that match the search term for autocomplete from public view
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('name, slug')
     .ilike('name', `%${searchTerm}%`)
     .limit(limit)
@@ -140,9 +140,9 @@ export async function getPopularCities(): Promise<{ city: string; count: number 
   await requireAuth()
   const supabase = await createClient()
 
-  // Get all salons to extract cities
+  // Get all salons to extract cities from public view
   const { data: salons, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('address')
 
   if (error) throw error
@@ -169,7 +169,7 @@ export async function getAvailableStates(): Promise<string[]> {
   const supabase = await createClient()
 
   const { data: salons, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('address')
 
   if (error) throw error
@@ -192,7 +192,7 @@ export async function getFeaturedSalons(limit = 6): Promise<SalonSearchResult[]>
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id, name, slug, address, rating_average, is_verified, is_featured')
     .eq('is_featured', true)
     .order('rating_average', { ascending: false })
@@ -210,9 +210,9 @@ export async function getNearbyServices(
   await requireAuth()
   const supabase = await createClient()
 
-  // Get the salon's city
+  // Get the salon's city from public view
   const { data: salon } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('address')
     .eq('id', salonId)
     .single()
@@ -221,9 +221,9 @@ export async function getNearbyServices(
     return []
   }
 
-  // Find other salons in the same city
+  // Find other salons in the same city using services_view
   const { data: services, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select(`
       id,
       name,

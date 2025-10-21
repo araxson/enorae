@@ -65,9 +65,9 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <div className="flex flex-col gap-8">
           <div>
-            <p className="text-sm text-muted-foreground text-sm">
+            <div className="text-sm text-muted-foreground">
               Performance metrics from {currentDateFrom} to {currentDateTo}
-            </p>
+            </div>
           </div>
 
           {metrics.length === 0 ? (

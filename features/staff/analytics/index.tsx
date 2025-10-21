@@ -22,7 +22,7 @@ export async function StaffAnalytics() {
       <div className="flex flex-col gap-8">
         <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">My Analytics</h1>
-          <p className="leading-7 text-muted-foreground">
+          <p className="text-muted-foreground">
             Track your performance, earnings, and customer relationships
           </p>
         </div>

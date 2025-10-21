@@ -53,9 +53,9 @@ export function TestimonialCard({
             {avatar && <AvatarImage src={avatar} alt={author} />}
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
-          <div className="space-y-0.5">
-            <span className="text-sm font-semibold text-foreground">{author}</span>
-            <span className="text-xs text-muted-foreground">{role}</span>
+          <div className="flex flex-col">
+            <div className="text-sm font-semibold">{author}</div>
+            <div className="text-xs text-muted-foreground">{role}</div>
           </div>
         </CardFooter>
       </Card>

@@ -84,7 +84,7 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
               </label>
             </div>
 
-            <p className="text-sm text-muted-foreground text-xs">
+            <p className="text-xs text-muted-foreground">
               Supported formats: JPEG, PNG, WebP (Max 5MB)
             </p>
 

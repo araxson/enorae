@@ -15,7 +15,7 @@ export function SummarySection({ servicesCount, totalDuration, totalPrice }: Sum
       </div>
       <div className="text-right">
         <p className="text-sm text-muted-foreground">Total Price</p>
-        <p className="text-base text-2xl font-bold">{formatCurrency(totalPrice)}</p>
+        <p className="text-2xl font-bold">{formatCurrency(totalPrice)}</p>
       </div>
     </div>
   )

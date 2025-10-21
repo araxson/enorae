@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, Users, Sparkles, TrendingUp, Clock, Shield, Store, Award } from 'lucide-react'
 import { TestimonialCard, StatBadge, TrustBadge } from '@/components/marketing'
 
@@ -11,11 +11,11 @@ export function HomePageClient() {
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 px-4 pb-16 pt-20 text-center sm:px-6 lg:px-8">
           <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-5xl font-bold leading-tight text-transparent md:text-6xl">
+              <h1 className="scroll-m-20 text-primary font-bold">
                 Enorae
               </h1>
-              <p className="text-xl text-muted-foreground text-2xl md:text-3xl">Your Beauty Appointments, Simplified</p>
-              <p className="leading-7 mx-auto max-w-2xl text-lg text-muted-foreground">
+              <p className="text-muted-foreground">Your Beauty Appointments, Simplified</p>
+              <p className="mx-auto max-w-2xl text-muted-foreground">
                 The modern platform connecting clients with premier salons. Book appointments, manage your business, and grow your beauty brand.
               </p>
             </div>
@@ -28,10 +28,10 @@ export function HomePageClient() {
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <Button asChild size="lg" className="px-8 text-lg">
+              <Button asChild size="lg" className="px-8">
                 <Link href="/explore">Find salons</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="px-8 text-lg">
+              <Button asChild variant="outline" size="lg" className="px-8">
                 <Link href="/signup">Get started free</Link>
               </Button>
             </div>
@@ -51,8 +51,8 @@ export function HomePageClient() {
       <section className="bg-background">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="scroll-m-20 text-3xl font-semibold text-3xl font-bold md:text-4xl">Everything you need</h2>
-            <p className="leading-7 mt-4 text-muted-foreground">Powerful features for clients and salon businesses</p>
+            <h2 className="scroll-m-20">Everything you need</h2>
+            <p className="mt-4 text-muted-foreground">Powerful features for clients and salon businesses</p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -93,14 +93,16 @@ export function HomePageClient() {
                   'Enterprise-grade security with role-based access control. Your data is safe and always available.',
               },
             ].map(({ icon: Icon, title, description }) => (
-              <Card key={title} className="p-6">
-                <div className="flex flex-col gap-4">
+              <Card key={title}>
+                <CardHeader className="flex flex-row items-center gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                     <Icon className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="scroll-m-20 text-2xl font-semibold text-xl font-semibold">{title}</h3>
-                  <p className="leading-7 text-sm text-muted-foreground">{description}</p>
-                </div>
+                  <CardTitle>{title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription>{description}</CardDescription>
+                </CardContent>
               </Card>
             ))}
           </div>
@@ -110,8 +112,8 @@ export function HomePageClient() {
       <section className="bg-background">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="scroll-m-20 text-3xl font-semibold text-3xl font-bold md:text-4xl">What our users say</h2>
-            <p className="leading-7 mt-4 text-muted-foreground">Trusted by thousands of customers and salon professionals</p>
+            <h2 className="scroll-m-20">What our users say</h2>
+            <p className="mt-4 text-muted-foreground">Trusted by thousands of customers and salon professionals</p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -140,17 +142,17 @@ export function HomePageClient() {
       <section className="bg-primary/5">
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-16 text-center sm:px-6 lg:px-8">
           <div className="space-y-4">
-            <h2 className="scroll-m-20 text-3xl font-semibold text-3xl font-bold md:text-4xl">Ready to get started?</h2>
-            <p className="leading-7 text-lg text-muted-foreground">
+            <h2 className="scroll-m-20">Ready to get started?</h2>
+            <p className="text-muted-foreground">
               Join thousands of salons and clients using Enorae to streamline their beauty appointments.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button asChild size="lg" className="px-8 text-lg">
+            <Button asChild size="lg" className="px-8">
               <Link href="/signup">Start free trial</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="px-8 text-lg">
+            <Button asChild variant="outline" size="lg" className="px-8">
               <Link href="/pricing">View pricing</Link>
             </Button>
           </div>

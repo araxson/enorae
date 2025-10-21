@@ -16,7 +16,7 @@ export const getPublicSalons = cache(async function getPublicSalons(
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
     .is('deleted_at', null)

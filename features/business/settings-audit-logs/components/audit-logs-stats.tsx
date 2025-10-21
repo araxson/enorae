@@ -16,8 +16,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
     <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
       <Card className="p-6">
         <div className="flex gap-4 items-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-info/10">
-            <Activity className="h-6 w-6 text-info" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10">
+            <Activity className="h-6 w-6 text-secondary" />
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Total Events (24h)</p>
@@ -28,8 +28,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
 
       <Card className="p-6">
         <div className="flex gap-4 items-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success/10">
-            <CheckCircle2 className="h-6 w-6 text-success" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+            <CheckCircle2 className="h-6 w-6 text-primary" />
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Success Rate</p>
@@ -52,8 +52,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
 
       <Card className="p-6">
         <div className="flex gap-4 items-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10">
-            <AlertTriangle className="h-6 w-6 text-warning" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
+            <AlertTriangle className="h-6 w-6 text-accent" />
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Critical Events</p>
@@ -64,8 +64,8 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
 
       <Card className="p-6">
         <div className="flex gap-4 items-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10">
-            <AlertTriangle className="h-6 w-6 text-warning" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
+            <AlertTriangle className="h-6 w-6 text-accent" />
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-muted-foreground text-sm">Warnings</p>

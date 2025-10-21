@@ -12,8 +12,8 @@ export async function ReferralProgram() {
     <div className="mx-auto w-full px-6 max-w-6xl pb-16 pt-6">
       <div className="flex flex-col gap-8">
         <div>
-          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Referral Program</h1>
-          <p className="leading-7 text-muted-foreground">
+          <h1 className="text-4xl font-extrabold lg:text-5xl">Referral Program</h1>
+          <p className="text-muted-foreground">
             Refer friends and earn bonus points for every successful signup
           </p>
         </div>

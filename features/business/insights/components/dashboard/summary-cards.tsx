@@ -33,7 +33,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
         <CardHeader className="space-y-1 pb-2">
           <div className="flex items-center justify-between">
             <CardTitle>Avg Lifetime Value</CardTitle>
-            <DollarSign className="h-4 w-4 text-success" />
+            <DollarSign className="h-4 w-4 text-primary" />
           </div>
           <CardDescription>Revenue generated per guest over their relationship.</CardDescription>
         </CardHeader>
@@ -54,7 +54,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
         <CardHeader className="space-y-1 pb-2">
           <div className="flex items-center justify-between">
             <CardTitle>Retention Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-success" />
+            <TrendingUp className="h-4 w-4 text-primary" />
           </div>
           <CardDescription>Percent of customers returning for repeat visits.</CardDescription>
         </CardHeader>

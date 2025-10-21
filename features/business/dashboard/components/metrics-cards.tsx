@@ -47,8 +47,8 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       description: 'Active revenue stream',
       highlight: (
         <div className="flex items-center gap-2">
-          <ArrowUpRight className="h-3 w-3 text-success" aria-hidden="true" />
-          <small className="text-sm font-medium text-success">Momentum trending upward</small>
+          <ArrowUpRight className="h-3 w-3 text-primary" aria-hidden="true" />
+          <p className="text-sm font-medium text-primary">Momentum trending upward</p>
         </div>
       ),
     },
@@ -65,7 +65,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
     },
     {
       title: 'Confirmed',
-      icon: <CheckCircle className="h-4 w-4 text-success" aria-hidden="true" />,
+      icon: <CheckCircle className="h-4 w-4 text-primary" aria-hidden="true" />,
       value: metrics.confirmedAppointments,
       progress: confirmationRate,
       description: `${confirmationRate}% of total`,
@@ -73,22 +73,22 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
     },
     {
       title: 'Pending',
-      icon: <Clock className="h-4 w-4 text-warning" aria-hidden="true" />,
+      icon: <Clock className="h-4 w-4 text-accent" aria-hidden="true" />,
       value: metrics.pendingAppointments,
       progress: pendingRate,
       description: 'Awaiting confirmation',
       accent: 'border-l-warning',
-      progressClass: '[&>div]:bg-warning',
+      progressClass: '[&>div]:bg-accent',
     },
   ]
 
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <small className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Dashboard summary
-        </small>
-        <small className="text-sm font-medium text-muted-foreground">Monitor the metrics your team watches daily.</small>
+        </p>
+        <p className="text-sm font-medium text-muted-foreground">Monitor the metrics your team watches daily.</p>
       </div>
 
       {revenueMetrics.length > 0 && (
@@ -103,7 +103,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
 
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <small className="text-sm font-medium text-muted-foreground">Appointments Overview</small>
+          <p className="text-sm font-medium text-muted-foreground">Appointments Overview</p>
           <Badge variant="outline">{confirmationRate}% Confirmed</Badge>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -116,13 +116,13 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       <Separator />
 
       <div className="flex flex-col gap-4">
-        <small className="text-sm font-medium text-muted-foreground">Resources</small>
+        <p className="text-sm font-medium text-muted-foreground">Resources</p>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <AppointmentResource
                 title="Staff Members"
-                icon={<Users className="h-4 w-4 text-info" aria-hidden="true" />}
+                icon={<Users className="h-4 w-4 text-secondary" aria-hidden="true" />}
                 value={metrics.totalStaff}
                 accent="border-l-info"
                 description="Active team members"
@@ -160,7 +160,7 @@ function AppointmentResource({ title, icon, value, description, accent }: Appoin
   return (
     <div className={`overflow-hidden rounded-xl border-l-4 ${accent}`}>
       <div className="flex items-center justify-between space-y-0 border px-4 py-3">
-        <small className="text-sm font-medium">{title}</small>
+        <p className="text-sm font-medium">{title}</p>
         {icon}
       </div>
       <div className="border border-t-0 px-4 py-3">

@@ -79,13 +79,13 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <small className="text-sm font-medium text-muted-foreground">Start Date</small>
+              <p className="text-sm font-medium text-muted-foreground">Start Date</p>
               <p className="leading-7 text-sm font-medium">
                 {request.start_at ? format(new Date(request.start_at), 'MMM dd, yyyy') : 'N/A'}
               </p>
             </div>
             <div>
-              <small className="text-sm font-medium text-muted-foreground">End Date</small>
+              <p className="text-sm font-medium text-muted-foreground">End Date</p>
               <p className="leading-7 text-sm font-medium">
                 {request.end_at ? format(new Date(request.end_at), 'MMM dd, yyyy') : 'N/A'}
               </p>
@@ -101,24 +101,24 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
 
           {request.request_type && (
             <div>
-              <small className="text-sm font-medium text-muted-foreground">Type</small>
+              <p className="text-sm font-medium text-muted-foreground">Type</p>
               <p className="leading-7 text-sm capitalize">{request.request_type.replace('_', ' ')}</p>
             </div>
           )}
 
           {request.reason && (
             <div>
-              <small className="text-sm font-medium text-muted-foreground">Reason</small>
+              <p className="text-sm font-medium text-muted-foreground">Reason</p>
               <p className="leading-7 text-sm">{request.reason}</p>
             </div>
           )}
 
           {request.reviewed_at && request.reviewed_by_name && (
             <div className="pt-2 border-t">
-              <small className="text-sm font-medium text-muted-foreground">
+              <p className="text-sm font-medium text-muted-foreground">
                 Reviewed by {request.reviewed_by_name} on{' '}
                 {format(new Date(request.reviewed_at), 'MMM dd, yyyy')}
-              </small>
+              </p>
               {request.review_notes && (
                 <p className="leading-7 text-sm mt-1">{request.review_notes}</p>
               )}

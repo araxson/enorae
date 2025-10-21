@@ -33,7 +33,7 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
 
   const upcoming = chartData.filter((point) => point.actual === null)
   const nextForecast = upcoming[0]
-  const growthColor = forecast.projectedGrowth >= 0 ? 'text-success' : 'text-destructive'
+  const growthColor = forecast.projectedGrowth >= 0 ? 'text-primary' : 'text-destructive'
 
   return (
     <Card>
@@ -100,22 +100,22 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
 
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-muted-foreground">Avg daily revenue</p>
-              <p className="text-2xl font-semibold">
+              <div className="text-sm text-muted-foreground">Avg daily revenue</div>
+              <div className="text-2xl font-semibold">
                 ${forecast.averageRevenue.toFixed(0)}
-              </p>
+              </div>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">
+              <div className="text-sm text-muted-foreground">
                 Projected change (next {forecast.points.filter((p) => p.actual === undefined).length} days)
-              </p>
-              <p className={`text-xl font-semibold ${growthColor}`}>
+              </div>
+              <div className={`text-xl font-semibold ${growthColor}`}>
                 {forecast.projectedGrowth >= 0 ? '+' : ''}
                 {forecast.projectedGrowth.toFixed(1)}%
-              </p>
+              </div>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Upcoming forecast</p>
+              <div className="text-sm font-medium text-muted-foreground">Upcoming forecast</div>
               <ul className="space-y-1 text-sm">
                 {upcoming.slice(0, 4).map((point) => (
                   <li key={point.date} className="flex items-center justify-between rounded-md border px-3 py-2">

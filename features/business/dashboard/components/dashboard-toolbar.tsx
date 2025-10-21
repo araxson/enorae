@@ -58,9 +58,9 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
           </Avatar>
           <div className="flex min-w-0 flex-col gap-1">
             <span className="text-sm font-semibold text-foreground">{salonName}</span>
-            <small className="text-sm font-medium text-muted-foreground">
+            <p className="text-sm font-medium text-muted-foreground">
               Review bookings, revenue, and reputation signals at a glance.
-            </small>
+            </p>
           </div>
           {isTenantOwner && totalLocations ? (
             <Badge variant="secondary" className="gap-1">
@@ -87,7 +87,7 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <small className="text-sm font-medium text-muted-foreground">Timeframe</small>
+          <p className="text-sm font-medium text-muted-foreground">Timeframe</p>
           <Select value={timeframe} onValueChange={(value) => setTimeframe(value as typeof timeframe)}>
             <SelectTrigger className="w-40">
               <SelectValue placeholder="Select timeframe" />

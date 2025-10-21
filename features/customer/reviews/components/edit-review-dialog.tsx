@@ -102,7 +102,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
                   >
                     <Star
                       className={`h-8 w-8 ${
-                        value <= rating ? 'fill-warning text-warning' : 'text-muted-foreground/30'
+                        value <= rating ? 'fill-accent text-accent' : 'text-muted-foreground/30'
                       }`}
                     />
                   </button>

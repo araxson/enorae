@@ -57,7 +57,7 @@ export async function AdminUsersClient() {
                   <p className="leading-7 text-sm text-muted-foreground">Active Users</p>
                   <p className="text-2xl font-bold">{overview.activeUsers}</p>
                 </div>
-                <UserCheck className="h-4 w-4 text-success" />
+                <UserCheck className="h-4 w-4 text-primary" />
               </div>
             </CardContent>
           </Card>
@@ -81,7 +81,7 @@ export async function AdminUsersClient() {
                   <p className="leading-7 text-sm text-muted-foreground">With Roles</p>
                   <p className="text-2xl font-bold">{overview.usersWithRoles}</p>
                 </div>
-                <Shield className="h-4 w-4 text-info" />
+                <Shield className="h-4 w-4 text-secondary" />
               </div>
             </CardContent>
           </Card>

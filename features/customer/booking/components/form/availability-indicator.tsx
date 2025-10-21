@@ -19,7 +19,7 @@ export function AvailabilityIndicator({
       {status === 'checking' || isCheckingAvailability ? (
         <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
       ) : status === 'available' ? (
-        <CheckCircle2 className="h-4 w-4 text-success" />
+        <CheckCircle2 className="h-4 w-4 text-primary" />
       ) : status === 'unavailable' ? (
         <XCircle className="h-4 w-4 text-destructive" />
       ) : (
@@ -28,7 +28,7 @@ export function AvailabilityIndicator({
       <span
         className={
           status === 'available'
-            ? 'text-success'
+            ? 'text-primary'
             : status === 'unavailable'
             ? 'text-destructive'
             : 'text-muted-foreground'

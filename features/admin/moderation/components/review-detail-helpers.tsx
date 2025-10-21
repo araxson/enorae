@@ -32,7 +32,7 @@ export function DetailCard({ title, badge, description }: { title: string; badge
 export function StatusBadges({ review }: { review: ModerationReview }) {
   const badges: ReactNode[] = [
     <span key="rating" className="flex items-center gap-1 font-semibold">
-      <Star className="h-4 w-4 text-warning" fill="currentColor" />
+      <Star className="h-4 w-4 text-accent" fill="currentColor" />
       {review.rating}
     </span>,
   ]

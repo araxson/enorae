@@ -43,7 +43,7 @@ export function CustomerInsightsDashboard({
               {metrics.total_visits} visits
             </p>
           </div>
-          <DollarSign className="h-8 w-8 text-success" />
+          <DollarSign className="h-8 w-8 text-primary" />
         </div>
       </Card>
 
@@ -56,7 +56,7 @@ export function CustomerInsightsDashboard({
               ${metrics.total_spent.toFixed(2)} total
             </p>
           </div>
-          <TrendingUp className="h-8 w-8 text-info" />
+          <TrendingUp className="h-8 w-8 text-secondary" />
         </div>
       </Card>
 
@@ -88,7 +88,7 @@ export function CustomerInsightsDashboard({
               </Badge>
             </div>
           </div>
-          <Star className="h-8 w-8 text-warning" />
+          <Star className="h-8 w-8 text-accent" />
         </div>
       </Card>
 

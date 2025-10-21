@@ -28,7 +28,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
         <CardContent>
           <div className="flex flex-col items-center gap-4 py-8 text-center">
             <Heart className="h-12 w-12 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">No favorites yet</p>
+            <CardDescription>No favorites yet</CardDescription>
             <Button variant="outline" asChild>
               <Link href="/customer/salons">Explore salons</Link>
             </Button>
@@ -42,7 +42,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
     <Card>
       <CardHeader>
         <CardTitle>Your favorites</CardTitle>
-        <small className="text-sm font-medium">{favorites.length} saved items</small>
+        <CardDescription>{favorites.length} saved items</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <ItemGroup>

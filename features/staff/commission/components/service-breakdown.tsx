@@ -39,12 +39,12 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
               <div key={service.service_name} className="space-y-2">
                 <div className="flex gap-4 items-center justify-between">
                   <div className="flex-1">
-                    <p className="leading-7 text-sm font-medium">{service.service_name}</p>
-                    <p className="text-sm text-muted-foreground text-xs">{service.count} appointments</p>
+                    <p className="text-sm font-medium">{service.service_name}</p>
+                    <p className="text-xs text-muted-foreground">{service.count} appointments</p>
                   </div>
                   <div className="text-right">
-                    <p className="leading-7 text-sm font-bold">${service.revenue.toFixed(2)}</p>
-                    <p className="text-sm text-muted-foreground text-xs">{percentage.toFixed(1)}%</p>
+                    <p className="text-sm font-bold">${service.revenue.toFixed(2)}</p>
+                    <p className="text-xs text-muted-foreground">{percentage.toFixed(1)}%</p>
                   </div>
                 </div>
                 <Progress value={percentage} className="h-2" />

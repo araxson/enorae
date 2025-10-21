@@ -18,7 +18,7 @@ export function AmenitiesCard({ salon }: AmenitiesCardProps) {
         <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
           {salon.amenities?.map((amenity: string) => (
             <div key={amenity} className="flex gap-2 items-center">
-              <CheckCircle className="h-4 w-4 text-success" />
+              <CheckCircle className="h-4 w-4 text-primary" />
               <p className="text-sm text-muted-foreground">{amenity}</p>
             </div>
           ))}

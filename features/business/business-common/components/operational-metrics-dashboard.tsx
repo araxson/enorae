@@ -25,8 +25,8 @@ interface OperationalMetricsDashboardProps {
 
 export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashboardProps) {
   const getUtilizationColor = (percentage: number) => {
-    if (percentage >= 80) return 'text-success'
-    if (percentage >= 60) return 'text-warning'
+    if (percentage >= 80) return 'text-primary'
+    if (percentage >= 60) return 'text-accent'
     return 'text-destructive'
   }
 
@@ -40,80 +40,92 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
         <div className="flex flex-col gap-6">
           {/* Utilization Metrics */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <div className="p-4 rounded-lg border">
-              <div className="flex gap-3 items-center mb-3">
-                <Activity className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold text-sm">Capacity Utilization</h3>
-              </div>
-              <div className={`text-3xl font-bold mb-2 ${getUtilizationColor(metrics.capacityUtilization)}`}>
-                {metrics.capacityUtilization}%
-              </div>
-              <Progress value={metrics.capacityUtilization} className="h-2" />
-              <small className="text-sm font-medium text-muted-foreground mt-2">Overall capacity usage</small>
-            </div>
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <div className="flex gap-3 items-center">
+                  <Activity className="h-5 w-5 text-muted-foreground" />
+                  <div className="text-sm font-medium">Capacity Utilization</div>
+                </div>
+                <div className={`text-3xl font-bold ${getUtilizationColor(metrics.capacityUtilization)}`}>
+                  {metrics.capacityUtilization}%
+                </div>
+                <Progress value={metrics.capacityUtilization} className="h-2" />
+                <div className="text-xs text-muted-foreground">Overall capacity usage</div>
+              </CardContent>
+            </Card>
 
-            <div className="p-4 rounded-lg border">
-              <div className="flex gap-3 items-center mb-3">
-                <Users className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold text-sm">Staff Utilization</h3>
-              </div>
-              <div className={`text-3xl font-bold mb-2 ${getUtilizationColor(metrics.staffUtilization)}`}>
-                {metrics.staffUtilization}%
-              </div>
-              <Progress value={metrics.staffUtilization} className="h-2" />
-              <small className="text-sm font-medium text-muted-foreground mt-2">Staff productivity</small>
-            </div>
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <div className="flex gap-3 items-center">
+                  <Users className="h-5 w-5 text-muted-foreground" />
+                  <div className="text-sm font-medium">Staff Utilization</div>
+                </div>
+                <div className={`text-3xl font-bold ${getUtilizationColor(metrics.staffUtilization)}`}>
+                  {metrics.staffUtilization}%
+                </div>
+                <Progress value={metrics.staffUtilization} className="h-2" />
+                <div className="text-xs text-muted-foreground">Staff productivity</div>
+              </CardContent>
+            </Card>
 
-            <div className="p-4 rounded-lg border">
-              <div className="flex gap-3 items-center mb-3">
-                <Target className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold text-sm">Booking Fill Rate</h3>
-              </div>
-              <div className={`text-3xl font-bold mb-2 ${getUtilizationColor(metrics.bookingFillRate)}`}>
-                {metrics.bookingFillRate}%
-              </div>
-              <Progress value={metrics.bookingFillRate} className="h-2" />
-              <small className="text-sm font-medium text-muted-foreground mt-2">Schedule efficiency</small>
-            </div>
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <div className="flex gap-3 items-center">
+                  <Target className="h-5 w-5 text-muted-foreground" />
+                  <div className="text-sm font-medium">Booking Fill Rate</div>
+                </div>
+                <div className={`text-3xl font-bold ${getUtilizationColor(metrics.bookingFillRate)}`}>
+                  {metrics.bookingFillRate}%
+                </div>
+                <Progress value={metrics.bookingFillRate} className="h-2" />
+                <div className="text-xs text-muted-foreground">Schedule efficiency</div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Performance Indicators */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div className="p-4 rounded-lg bg-muted/50">
-              <div className="flex gap-3 items-center mb-2">
-                <Clock className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold text-base">Average Wait Time</h3>
-              </div>
-              <div className="text-2xl font-bold">{metrics.averageWaitTime} min</div>
-              <small className="text-sm font-medium text-muted-foreground">Per customer</small>
-            </div>
+            <Card className="bg-muted/50">
+              <CardContent className="p-4 space-y-2">
+                <div className="flex gap-3 items-center">
+                  <Clock className="h-5 w-5 text-muted-foreground" />
+                  <div className="text-base font-medium">Average Wait Time</div>
+                </div>
+                <div className="text-2xl font-bold">{metrics.averageWaitTime} min</div>
+                <div className="text-xs text-muted-foreground">Per customer</div>
+              </CardContent>
+            </Card>
 
-            <div className="p-4 rounded-lg bg-muted/50">
-              <div className="flex gap-3 items-center mb-2">
-                <Calendar className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold text-base">Appointments/Day</h3>
-              </div>
-              <div className="text-2xl font-bold">{metrics.appointmentsPerDay}</div>
-              <small className="text-sm font-medium text-muted-foreground">Average daily bookings</small>
-            </div>
+            <Card className="bg-muted/50">
+              <CardContent className="p-4 space-y-2">
+                <div className="flex gap-3 items-center">
+                  <Calendar className="h-5 w-5 text-muted-foreground" />
+                  <div className="text-base font-medium">Appointments/Day</div>
+                </div>
+                <div className="text-2xl font-bold">{metrics.appointmentsPerDay}</div>
+                <div className="text-xs text-muted-foreground">Average daily bookings</div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Peak Hours */}
           {metrics.peakHours.length > 0 && (
-            <div className="p-4 rounded-lg border">
-              <div className="flex gap-3 items-center mb-3">
-                <TrendingUp className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold text-base">Peak Hours</h3>
-              </div>
-              <div className="flex gap-2">
-                {metrics.peakHours.map((hour, index) => (
-                  <Badge key={index} variant="secondary">
-                    {hour}
-                  </Badge>
-                ))}
-              </div>
-              <small className="text-sm font-medium text-muted-foreground mt-2">Busiest times of day</small>
-            </div>
+            <Card>
+              <CardContent className="p-4 space-y-3">
+                <div className="flex gap-3 items-center">
+                  <TrendingUp className="h-5 w-5 text-muted-foreground" />
+                  <div className="text-base font-medium">Peak Hours</div>
+                </div>
+                <div className="flex gap-2">
+                  {metrics.peakHours.map((hour, index) => (
+                    <Badge key={index} variant="secondary">
+                      {hour}
+                    </Badge>
+                  ))}
+                </div>
+                <div className="text-xs text-muted-foreground">Busiest times of day</div>
+              </CardContent>
+            </Card>
           )}
         </div>
       </CardContent>

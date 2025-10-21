@@ -48,7 +48,7 @@ export async function createServiceCategory(formData: FormData) {
 
     const { error: insertError } = await supabase
       .schema('catalog')
-      .from('service_categories_view')
+      .from('service_categories')
       .insert({
         salon_id: staffProfile.salon_id,
         parent_id: data.parentId || null,
@@ -106,7 +106,7 @@ export async function updateServiceCategory(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('catalog')
-      .from('service_categories_view')
+      .from('service_categories')
       .update({
         parent_id: data.parentId || null,
         name: data.name,
@@ -157,7 +157,7 @@ export async function deleteServiceCategory(formData: FormData) {
 
     const { error: deleteError } = await supabase
       .schema('catalog')
-      .from('service_categories_view')
+      .from('service_categories')
       .update({
         deleted_at: new Date().toISOString(),
         updated_by_id: user.id,

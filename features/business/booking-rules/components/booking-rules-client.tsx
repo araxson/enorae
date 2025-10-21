@@ -74,7 +74,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                 <CardContent className="p-6">
                   <div className="flex flex-col gap-4">
                     <div>
-                      <h3 className="scroll-m-20 text-2xl font-semibold text-lg">{rule.service?.name || 'Unknown Service'}</h3>
+                      <h3 className="scroll-m-20 text-lg font-semibold">{rule.service?.name || 'Unknown Service'}</h3>
                       {rule.total_duration_minutes && (
                         <Badge variant="outline" className="mt-2">
                           Total: {rule.total_duration_minutes} min
@@ -86,16 +86,16 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                       {rule.duration_minutes !== null && rule.duration_minutes !== undefined && (
                         <div className="flex gap-3 items-center">
                           <Clock className="h-4 w-4 text-muted-foreground" />
-                          <small className="text-sm font-medium text-muted-foreground">Duration:</small>
-                          <small className="text-sm font-medium font-medium">{rule.duration_minutes} min</small>
+                          <p className="text-sm font-medium text-muted-foreground">Duration:</p>
+                          <p className="text-sm font-medium">{rule.duration_minutes} min</p>
                         </div>
                       )}
 
                       {rule.buffer_minutes !== null && rule.buffer_minutes !== undefined && (
                         <div className="flex gap-3 items-center">
                           <Timer className="h-4 w-4 text-muted-foreground" />
-                          <small className="text-sm font-medium text-muted-foreground">Buffer:</small>
-                          <small className="text-sm font-medium font-medium">{rule.buffer_minutes} min</small>
+                          <p className="text-sm font-medium text-muted-foreground">Buffer:</p>
+                          <p className="text-sm font-medium">{rule.buffer_minutes} min</p>
                         </div>
                       )}
 
@@ -103,10 +103,10 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                         rule.min_advance_booking_hours !== undefined && (
                           <div className="flex gap-3 items-center">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
-                            <small className="text-sm font-medium text-muted-foreground">Min Advance:</small>
-                            <small className="text-sm font-medium font-medium">
+                            <p className="text-sm font-medium text-muted-foreground">Min Advance:</p>
+                            <p className="text-sm font-medium">
                               {rule.min_advance_booking_hours}h
-                            </small>
+                            </p>
                           </div>
                         )}
 
@@ -114,10 +114,10 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                         rule.max_advance_booking_days !== undefined && (
                           <div className="flex gap-3 items-center">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
-                            <small className="text-sm font-medium text-muted-foreground">Max Advance:</small>
-                            <small className="text-sm font-medium font-medium">
+                            <p className="text-sm font-medium text-muted-foreground">Max Advance:</p>
+                            <p className="text-sm font-medium">
                               {rule.max_advance_booking_days} days
-                            </small>
+                            </p>
                           </div>
                         )}
                     </div>
@@ -136,10 +136,10 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
         {servicesWithoutRules.length > 0 && rules.length > 0 && (
           <Card>
             <CardContent>
-              <small className="text-sm font-medium text-muted-foreground">
+              <p className="text-sm font-medium text-muted-foreground">
                 {servicesWithoutRules.length} service(s) without rules:{' '}
                 {servicesWithoutRules.map((s) => s.name).join(', ')}
-              </small>
+              </p>
             </CardContent>
           </Card>
         )}

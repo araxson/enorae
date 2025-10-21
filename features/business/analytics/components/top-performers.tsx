@@ -21,7 +21,7 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Star className="h-5 w-5 text-warning" />
+            <Star className="h-5 w-5 text-accent" />
             <CardTitle>Top Services</CardTitle>
           </div>
         </CardHeader>
@@ -62,7 +62,7 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Award className="h-5 w-5 text-info" />
+            <Award className="h-5 w-5 text-secondary" />
             <CardTitle>Top Performers</CardTitle>
           </div>
         </CardHeader>

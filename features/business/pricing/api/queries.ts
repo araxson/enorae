@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
+import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
 export * from './queries/dynamic-pricing'
 
@@ -13,6 +14,13 @@ export type PricingServiceOption = {
 export async function getPricingServices(
   salonId: string,
 ): Promise<PricingServiceOption[]> {
+  // SECURITY: Require authentication and verify salon access
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const hasAccess = await canAccessSalon(salonId)
+  if (!hasAccess) {
+    throw new Error('Unauthorized: Cannot access this salon')
+  }
+
   const supabase = await createClient()
 
   const { data, error } = await supabase

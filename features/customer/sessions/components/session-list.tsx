@@ -78,8 +78,8 @@ export function SessionList({ sessions }: SessionListProps) {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-2xl font-semibold text-foreground">Active Sessions</div>
-        <Alert className="border-info/40 bg-info/10 text-info-foreground">
-          <Info className="h-4 w-4 text-info" />
+        <Alert className="border-secondary/40 bg-secondary/10 text-secondary-foreground">
+          <Info className="h-4 w-4 text-secondary" />
           <AlertTitle>Notice</AlertTitle>
           <AlertDescription>
             <div>No active sessions found.</div>
@@ -142,8 +142,8 @@ export function SessionList({ sessions }: SessionListProps) {
       )}
 
       {success && (
-        <Alert className="border-success/40 bg-success/10 text-success-foreground">
-          <CheckCircle2 className="h-4 w-4 text-success" />
+        <Alert className="border-primary/40 bg-primary/10 text-primary-foreground">
+          <CheckCircle2 className="h-4 w-4 text-primary" />
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>{success}</AlertDescription>
         </Alert>

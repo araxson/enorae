@@ -19,18 +19,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4">
-                <small className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-foreground">
                   • Password policies
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Two-factor authentication
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Session management
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Rate limiting configuration
-                </small>
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -47,18 +47,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4">
-                <small className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-foreground">
                   • SMTP provider settings
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Email templates
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Notification preferences
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Delivery monitoring
-                </small>
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -75,18 +75,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4">
-                <small className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-foreground">
                   • Admin notifications
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • System alerts
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Error notifications
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Webhook configurations
-                </small>
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -103,18 +103,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4">
-                <small className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-foreground">
                   • Connection pooling
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Query optimization
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Backup configuration
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Index management
-                </small>
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -131,18 +131,18 @@ export function AdminSettingsClient() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4">
-                <small className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-foreground">
                   • Platform name and branding
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Default locale and timezone
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Feature flags
-                </small>
-                <small className="text-sm font-medium text-muted-foreground">
+                </p>
+                <p className="text-sm font-medium text-muted-foreground">
                   • Maintenance mode
-                </small>
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -156,9 +156,9 @@ export function AdminSettingsClient() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <small className="text-sm font-medium text-muted-foreground">
+            <p className="text-sm font-medium text-muted-foreground">
               For now, platform configuration is managed through environment variables and Supabase Dashboard.
-            </small>
+            </p>
           </CardContent>
         </Card>
         </div>

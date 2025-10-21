@@ -148,14 +148,14 @@ export function MetricCard(props: MetricCardProps) {
               className={`h-1 ${props.progressClass ?? ''}`}
               aria-label={`${props.progress}% progress`}
             />
-            {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
+            {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
         )}
 
         {props.variant === 'trend' && (
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-end justify-between">
-              <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold">{value}</h3>
+              <div className="text-2xl font-bold">{value}</div>
               <Badge
                 variant={props.trend >= 0 ? 'default' : 'destructive'}
                 className="flex items-center gap-1"
@@ -168,7 +168,7 @@ export function MetricCard(props: MetricCardProps) {
                 {formatPercentage(Math.abs(props.trend))}
               </Badge>
             </div>
-            {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
+            {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
         )}
 
@@ -176,14 +176,14 @@ export function MetricCard(props: MetricCardProps) {
           <div className="flex flex-col gap-2">
             <div className="text-3xl font-bold">{value}</div>
             {props.highlight}
-            {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
+            {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
         )}
 
         {(!props.variant || props.variant === 'default') && (
           <div className="flex flex-col gap-2">
-            <h3 className="scroll-m-20 text-2xl font-semibold text-2xl font-bold">{value}</h3>
-            {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
+            <div className="text-2xl font-bold">{value}</div>
+            {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
         )}
       </CardContent>

@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowDownRight, ArrowUpRight, Equal } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import type { MetricsComparison } from '../api/analytics'
 
 type MetricKey = keyof MetricsComparison
@@ -30,7 +30,7 @@ function formatValue(value: number, unit: 'currency' | 'number' | 'percentage' =
 
 function changeIndicator(change: number) {
   if (change > 1) {
-    return { icon: <ArrowUpRight className="h-4 w-4 text-success" />, tone: 'text-success' }
+    return { icon: <ArrowUpRight className="h-4 w-4 text-primary" />, tone: 'text-primary' }
   }
   if (change < -1) {
     return { icon: <ArrowDownRight className="h-4 w-4 text-destructive" />, tone: 'text-destructive' }
@@ -43,7 +43,7 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
     <Card>
       <CardHeader>
         <CardTitle>Period Comparison</CardTitle>
-        <p className="text-sm text-muted-foreground text-sm">{periodLabel} vs prior period</p>
+        <CardDescription>{periodLabel} vs prior period</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
@@ -55,14 +55,14 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
             return (
               <Card key={key} className="border-dashed">
                 <CardContent className="p-4 space-y-3">
-                  <small className="text-sm font-medium text-muted-foreground">{meta.label}</small>
+                  <div className="text-sm font-medium text-muted-foreground">{meta.label}</div>
                   <div>
-                    <p className="text-2xl font-semibold">
+                    <div className="text-2xl font-semibold">
                       {formatValue(details.current, meta.unit)}
-                    </p>
-                    <p className="text-sm text-muted-foreground text-xs">
+                    </div>
+                    <div className="text-xs text-muted-foreground">
                       Prev: {formatValue(details.previous, meta.unit)}
-                    </p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     {indicator.icon}

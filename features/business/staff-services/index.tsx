@@ -7,10 +7,12 @@ import {
 import { StaffServicesPanel } from './components/staff-services-panel'
 
 type StaffServicesProps = {
-  staffId: string
+  params: Promise<{ 'staff-id': string }>
 }
 
-export async function StaffServices({ staffId }: StaffServicesProps) {
+export async function StaffServices({ params }: StaffServicesProps) {
+  const resolvedParams = await params
+  const staffId = resolvedParams['staff-id']
   try {
     const { staff, availableServices } = await getStaffServicesData(staffId)
 

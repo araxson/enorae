@@ -14,7 +14,7 @@ export async function getPublicSalonsByService(serviceCategory: string): Promise
 
   // First, find services in this category
   const { data: services, error: servicesError } = await supabase
-    .from('services')
+    .from('services_view')
     .select('salon_id, category_name')
     .eq('is_active', true)
     .ilike('category_name', serviceCategory)
@@ -37,7 +37,7 @@ export async function getPublicSalonsByService(serviceCategory: string): Promise
 
   // Get full salon details
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .in('id', salonIds)
     .eq('is_active', true)
@@ -56,7 +56,7 @@ export async function getPublicServiceCategories(): Promise<string[]> {
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('category_name')
     .eq('is_active', true)
     .not('category_name', 'is', null)
@@ -83,7 +83,7 @@ export async function getPublicSalonServices(salonId: string): Promise<Service[]
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('*')
     .eq('salon_id', salonId)
     .eq('is_active', true)

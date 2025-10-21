@@ -29,19 +29,19 @@ export function ServicesStats({ services }: ServicesStatsProps) {
       label: 'Total services',
       value: totalServices,
       icon: Scissors,
-      accent: 'text-info',
+      accent: 'text-secondary',
     },
     {
       label: 'Total performed',
       value: totalPerformed,
       icon: TrendingUp,
-      accent: 'text-success',
+      accent: 'text-primary',
     },
     {
       label: 'Average rating',
       value: avgRating > 0 ? avgRating.toFixed(1) : '—',
       icon: Star,
-      accent: 'text-warning',
+      accent: 'text-accent',
     },
     {
       label: 'Expert level',

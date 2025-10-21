@@ -7,6 +7,6 @@ export const metadata = genMeta({
   noIndex: true
 })
 
-export default function AuditLogsPage() {
+export default async function AuditLogsPage() {
   return <AuditLogs />
 }

@@ -24,7 +24,7 @@ export async function getBlockedTimesBySalon(salonId: string) {
 
   // Explicit salon filter for security
   const { data, error } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('start_time', { ascending: true })
@@ -44,7 +44,7 @@ export async function getBlockedTimesByStaff(staffId: string) {
 
   // Explicit staff filter for security
   const { data, error } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('*')
     .eq('staff_id', staffId)
     .order('start_time', { ascending: true })
@@ -69,7 +69,7 @@ export async function getUpcomingBlockedTimes(salonId: string) {
 
   // Explicit salon filter for security
   const { data, error } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('start_time', now)
@@ -90,7 +90,7 @@ export async function getBlockedTimeById(id: string) {
 
   // Fetch and verify ownership/scope
   const { data, error } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('*')
     .eq('id', id)
     .maybeSingle<{ salon_id: string | null }>()

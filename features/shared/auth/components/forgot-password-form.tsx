@@ -45,8 +45,8 @@ export function ForgotPasswordForm() {
         <Card>
           <CardHeader className="text-center space-y-4">
             <div className="mb-4 flex items-center justify-center">
-              <div className="rounded-full bg-success/10 p-3">
-                <Mail className="h-6 w-6 text-success" />
+              <div className="rounded-full bg-primary/10 p-3">
+                <Mail className="h-6 w-6 text-primary" />
               </div>
             </div>
             <CardTitle>Check your email</CardTitle>
@@ -58,14 +58,14 @@ export function ForgotPasswordForm() {
           <CardContent>
             <div className="flex flex-col gap-6">
               <Alert>
-                <CheckCircle2 className="h-4 w-4 text-success" />
+                <CheckCircle2 className="h-4 w-4 text-primary" />
                 <AlertDescription>
                   Click the link in the email to reset your password. The link will expire in 1
                   hour.
                 </AlertDescription>
               </Alert>
 
-              <small className="text-sm font-medium text-center text-muted-foreground">
+              <p className="text-sm font-medium text-center text-muted-foreground">
                 Didn&apos;t receive the email? Check your spam folder or{' '}
                 <button
                   type="button"
@@ -74,7 +74,7 @@ export function ForgotPasswordForm() {
                 >
                   try again
                 </button>
-              </small>
+              </p>
             </div>
           </CardContent>
 
@@ -123,9 +123,9 @@ export function ForgotPasswordForm() {
                   required
                   autoFocus
                 />
-                <small className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-foreground">
                   We&apos;ll send a password reset link to this email
-                </small>
+                </p>
               </div>
             </div>
           </CardContent>

@@ -36,11 +36,11 @@ export function WebhookMonitoringDashboard({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'delivered':
-        return 'text-success'
+        return 'text-primary'
       case 'failed':
         return 'text-destructive'
       case 'pending':
-        return 'text-warning'
+        return 'text-accent'
       default:
         return 'text-muted-foreground'
     }
@@ -76,7 +76,7 @@ export function WebhookMonitoringDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Success Rate</CardTitle>
-            <CheckCircle className="h-4 w-4 text-success" />
+            <CheckCircle className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.success_rate.toFixed(1)}%</div>

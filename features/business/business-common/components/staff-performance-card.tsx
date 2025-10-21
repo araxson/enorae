@@ -55,7 +55,7 @@ export function StaffPerformanceCard({
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        {description && <p className="text-sm text-muted-foreground text-sm">{description}</p>}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
@@ -77,7 +77,7 @@ export function StaffPerformanceCard({
                 <div className="flex-1">
                   <div className="font-medium">{member.name}</div>
                   {member.title && (
-                    <small className="text-sm font-medium text-muted-foreground">{member.title}</small>
+                    <p className="text-sm font-medium text-muted-foreground">{member.title}</p>
                   )}
                 </div>
               </div>
@@ -85,12 +85,12 @@ export function StaffPerformanceCard({
               <div className="grid gap-4 grid-cols-2 w-52">
                 <div className="flex gap-2 items-center">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <small className="text-sm font-medium font-medium">{member.appointmentCount}</small>
+                  <p className="text-sm font-medium">{member.appointmentCount}</p>
                 </div>
 
                 <div className="flex gap-2 items-center">
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <small className="text-sm font-medium font-medium">{formatCurrency(member.totalRevenue)}</small>
+                  <p className="text-sm font-medium">{formatCurrency(member.totalRevenue)}</p>
                 </div>
               </div>
 

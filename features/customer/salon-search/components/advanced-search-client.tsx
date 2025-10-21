@@ -231,7 +231,7 @@ export function AdvancedSearchClient({
       {featuredSalons.length > 0 && !searchTerm && (
         <div>
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-warning" />
+            <Sparkles className="h-5 w-5 text-accent" />
             Featured Salons
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -241,7 +241,7 @@ export function AdvancedSearchClient({
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <CardTitle>{salon.name}</CardTitle>
-                      {salon.is_verified && <Shield className="h-4 w-4 text-info" />}
+                      {salon.is_verified && <Shield className="h-4 w-4 text-secondary" />}
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground">
                       <MapPin className="h-3 w-3" />
@@ -250,7 +250,7 @@ export function AdvancedSearchClient({
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-warning text-warning" />
+                      <Star className="h-4 w-4 fill-accent text-accent" />
                       <span className="font-semibold">{formatRating(salon.rating_average)}</span>
                       <Badge variant="secondary" className="ml-auto">Featured</Badge>
                     </div>
@@ -277,8 +277,8 @@ export function AdvancedSearchClient({
                     <div className="flex items-start justify-between gap-2">
                       <CardTitle>{salon.name}</CardTitle>
                       <div className="flex gap-1">
-                        {salon.is_verified && <Shield className="h-4 w-4 text-info" />}
-                        {salon.is_featured && <Sparkles className="h-4 w-4 text-warning" />}
+                        {salon.is_verified && <Shield className="h-4 w-4 text-secondary" />}
+                        {salon.is_featured && <Sparkles className="h-4 w-4 text-accent" />}
                       </div>
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground">
@@ -288,7 +288,7 @@ export function AdvancedSearchClient({
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-warning text-warning" />
+                      <Star className="h-4 w-4 fill-accent text-accent" />
                       <span className="font-semibold">{formatRating(salon.rating_average)}</span>
                       {salon.similarity_score && (
                         <Badge variant="outline" className="ml-auto">

@@ -108,16 +108,16 @@ export function TimeOffRequestsClient({
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <p className="leading-7 text-2xl font-bold">{balance.total_days}</p>
-                    <small className="text-sm font-medium text-muted-foreground">Total</small>
+                    <p className="text-2xl font-bold">{balance.total_days}</p>
+                    <p className="text-sm text-muted-foreground">Total</p>
                   </div>
                   <div>
-                    <p className="leading-7 text-2xl font-bold text-info">{balance.used_days}</p>
-                    <small className="text-sm font-medium text-muted-foreground">Used</small>
+                    <p className="text-2xl font-bold text-secondary">{balance.used_days}</p>
+                    <p className="text-sm text-muted-foreground">Used</p>
                   </div>
                   <div>
-                    <p className="leading-7 text-2xl font-bold text-success">{balance.remaining_days}</p>
-                    <small className="text-sm font-medium text-muted-foreground">Remaining</small>
+                    <p className="text-2xl font-bold text-primary">{balance.remaining_days}</p>
+                    <p className="text-sm text-muted-foreground">Remaining</p>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -147,7 +147,7 @@ export function TimeOffRequestsClient({
             {teamCalendar.length === 0 ? (
               <Card>
                 <CardContent className="py-12 text-center">
-                  <p className="leading-7 text-muted-foreground">No upcoming team time off</p>
+                  <p className="text-muted-foreground">No upcoming team time off</p>
                 </CardContent>
               </Card>
             ) : (
@@ -170,8 +170,8 @@ export function TimeOffRequestsClient({
                     <CardContent>
                       <div className="flex items-center justify-between text-sm">
                         <div>
-                          <p className="leading-7 font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</p>
-                          <small className="text-sm font-medium text-muted-foreground capitalize">{entry.request_type.replace('_', ' ')}</small>
+                          <p className="font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</p>
+                          <p className="text-sm text-muted-foreground capitalize">{entry.request_type.replace('_', ' ')}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -194,8 +194,8 @@ export function TimeOffRequestsClient({
             {displayedRequests.length === 0 ? (
               <Card>
                 <CardContent className="flex flex-col items-center justify-center gap-2 py-12 text-center">
-                  <p className="leading-7 text-muted-foreground">No time-off requests yet</p>
-                  <p className="leading-7 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground">No time-off requests yet</p>
+                  <p className="text-sm text-muted-foreground">
                     Click the New request button to submit a time-off request
                   </p>
                 </CardContent>

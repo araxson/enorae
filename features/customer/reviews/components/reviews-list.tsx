@@ -13,9 +13,9 @@ function StarRating({ rating }: { rating: number | null }) {
   const validRating = rating ?? 0
 
   return (
-    <div className="flex items-center gap-1 text-sm">
+    <div className="flex items-center gap-1">
       {Array.from({ length: 5 }).map((_, index) => (
-        <span key={index} className={index < validRating ? 'text-warning' : 'text-muted-foreground/30'} aria-hidden="true">
+        <span key={index} className={index < validRating ? 'text-accent' : 'text-muted-foreground/30'} aria-hidden="true">
           ★
         </span>
       ))}
@@ -52,39 +52,39 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             <StarRating rating={review.rating} />
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">{review.comment}</p>
+            <CardDescription>{review.comment}</CardDescription>
 
             {(review.service_quality_rating || review.cleanliness_rating || review.value_rating) && (
-              <div className="grid gap-4 text-sm sm:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-3">
                 {review.service_quality_rating && (
                   <div className="space-y-1">
-                    <span className="text-xs font-semibold uppercase text-muted-foreground">Service</span>
+                    <p className="uppercase text-sm text-muted-foreground">Service</p>
                     <StarRating rating={review.service_quality_rating} />
                   </div>
                 )}
                 {review.cleanliness_rating && (
                   <div className="space-y-1">
-                    <span className="text-xs font-semibold uppercase text-muted-foreground">Cleanliness</span>
+                    <p className="uppercase text-sm text-muted-foreground">Cleanliness</p>
                     <StarRating rating={review.cleanliness_rating} />
                   </div>
                 )}
                 {review.value_rating && (
                   <div className="space-y-1">
-                    <span className="text-xs font-semibold uppercase text-muted-foreground">Value</span>
+                    <p className="uppercase text-sm text-muted-foreground">Value</p>
                     <StarRating rating={review.value_rating} />
                   </div>
                 )}
               </div>
             )}
 
-            <p className="text-xs text-muted-foreground">
+            <CardDescription>
               {review.created_at &&
                 new Date(review.created_at).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 })}
-            </p>
+            </CardDescription>
           </CardContent>
           <CardFooter className="flex flex-col gap-2 sm:flex-row">
             <EditReviewDialog review={review} />

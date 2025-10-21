@@ -43,14 +43,14 @@ const roleDescriptions: Record<string, string> = {
 const progressAccent: Record<string, string> = {
   super_admin: '[&>div]:bg-primary',
   platform_admin: '[&>div]:bg-primary',
-  tenant_owner: '[&>div]:bg-warning',
-  salon_owner: '[&>div]:bg-warning',
+  tenant_owner: '[&>div]:bg-accent',
+  salon_owner: '[&>div]:bg-accent',
   salon_manager: '[&>div]:bg-secondary',
-  senior_staff: '[&>div]:bg-info',
-  staff: '[&>div]:bg-info',
+  senior_staff: '[&>div]:bg-secondary',
+  staff: '[&>div]:bg-secondary',
   junior_staff: '[&>div]:bg-accent',
-  vip_customer: '[&>div]:bg-success',
-  customer: '[&>div]:bg-success',
+  vip_customer: '[&>div]:bg-primary',
+  customer: '[&>div]:bg-primary',
   guest: '[&>div]:bg-muted',
 }
 

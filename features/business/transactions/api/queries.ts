@@ -48,7 +48,7 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
 
   if (error) throw error
 
-  // Filter out any error objects and type assert
+  // Filter out error objects and ensure proper typing
   const transactions = data || []
   return transactions.filter((item: unknown): item is ManualTransactionWithDetails =>
     item !== null && typeof item === 'object' && !('error' in item)

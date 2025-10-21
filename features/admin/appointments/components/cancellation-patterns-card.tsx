@@ -14,7 +14,7 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
     <Card className="h-full">
       <CardHeader className="pb-4">
         <div className="flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 text-warning" />
+          <AlertTriangle className="h-4 w-4 text-accent" />
           <CardTitle>Cancellation Patterns</CardTitle>
         </div>
       </CardHeader>

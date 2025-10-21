@@ -45,7 +45,7 @@ export async function AdminSecurityClient() {
                     {overview.totalSecurityEvents}
                   </p>
                 </div>
-                <Shield className="h-4 w-4 text-info" />
+                <Shield className="h-4 w-4 text-secondary" />
               </div>
             </CardContent>
           </Card>
@@ -59,7 +59,7 @@ export async function AdminSecurityClient() {
                     {overview.failedLogins}
                   </p>
                 </div>
-                <UserX className="h-4 w-4 text-warning" />
+                <UserX className="h-4 w-4 text-accent" />
               </div>
             </CardContent>
           </Card>

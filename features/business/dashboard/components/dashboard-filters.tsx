@@ -59,8 +59,8 @@ export function DashboardFilters() {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          <div className="flex gap-4 items-center items-center justify-between">
-            <div className="flex gap-3 items-center items-center">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
               <Badge variant="outline" className="gap-1">
                 <Filter className="h-3.5 w-3.5" />
                 Smart filters
@@ -116,7 +116,7 @@ export function DashboardFilters() {
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <small className="text-sm font-medium font-medium text-muted-foreground">Team focus</small>
+              <p className="text-sm font-medium text-muted-foreground">Team focus</p>
               <Command>
                 <CommandInput placeholder="Filter by team group" />
                 <CommandList>
@@ -137,37 +137,37 @@ export function DashboardFilters() {
               </Command>
             </div>
 
-            <div className="flex gap-4 items-center flex-wrap items-center gap-6">
+            <div className="flex flex-wrap items-start gap-6">
               <div className="flex flex-col gap-2">
-                <small className="text-sm font-medium font-medium text-muted-foreground">Service mix</small>
+                <p className="text-sm font-medium text-muted-foreground">Service mix</p>
                 <RadioGroup value={serviceTier} onValueChange={(value) => setServiceTier(value as typeof serviceTier)}>
-                  <div className="flex gap-4 items-center items-center gap-2"><RadioGroupItem value="all" id="tier-all" /><label htmlFor="tier-all" className="text-sm text-muted-foreground">All services</label></div>
-                  <div className="flex gap-4 items-center items-center gap-2"><RadioGroupItem value="premium" id="tier-premium" /><label htmlFor="tier-premium" className="text-sm text-muted-foreground">Premium services</label></div>
-                  <div className="flex gap-4 items-center items-center gap-2"><RadioGroupItem value="standard" id="tier-standard" /><label htmlFor="tier-standard" className="text-sm text-muted-foreground">Standard services</label></div>
+                  <div className="flex items-center gap-2"><RadioGroupItem value="all" id="tier-all" /><label htmlFor="tier-all" className="text-sm text-muted-foreground">All services</label></div>
+                  <div className="flex items-center gap-2"><RadioGroupItem value="premium" id="tier-premium" /><label htmlFor="tier-premium" className="text-sm text-muted-foreground">Premium services</label></div>
+                  <div className="flex items-center gap-2"><RadioGroupItem value="standard" id="tier-standard" /><label htmlFor="tier-standard" className="text-sm text-muted-foreground">Standard services</label></div>
                 </RadioGroup>
               </div>
 
               <div className="flex flex-col gap-2 w-full max-w-xs">
-                <small className="text-sm font-medium font-medium text-muted-foreground">Booking load threshold</small>
+                <p className="text-sm font-medium text-muted-foreground">Booking load threshold</p>
                 <Slider defaultValue={[75]} aria-label="Booking load threshold" />
-                <small className="text-sm font-medium text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</small>
+                <p className="text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</p>
               </div>
 
               <div className="flex flex-col gap-2">
-                <small className="text-sm font-medium font-medium text-muted-foreground">Staff assignments</small>
-                <div className="flex gap-4 items-center items-center gap-2"><Checkbox id="assignment-balanced" defaultChecked /><label htmlFor="assignment-balanced" className="text-sm text-muted-foreground">Balanced workload</label></div>
-                <div className="flex gap-4 items-center items-center gap-2"><Checkbox id="assignment-specialist" /><label htmlFor="assignment-specialist" className="text-sm text-muted-foreground">Highlight specialists</label></div>
+                <p className="text-sm font-medium text-muted-foreground">Staff assignments</p>
+                <div className="flex items-center gap-2"><Checkbox id="assignment-balanced" defaultChecked /><label htmlFor="assignment-balanced" className="text-sm text-muted-foreground">Balanced workload</label></div>
+                <div className="flex items-center gap-2"><Checkbox id="assignment-specialist" /><label htmlFor="assignment-specialist" className="text-sm text-muted-foreground">Highlight specialists</label></div>
               </div>
             </div>
 
-            <div className="flex gap-4 items-center items-center justify-between">
-              <div className="flex gap-4 items-center items-center gap-3">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
                 <Switch id="include-cancellations" />
                 <label htmlFor="include-cancellations" className="text-sm text-muted-foreground">
                   Include cancellations
                 </label>
               </div>
-              <div className="flex gap-4 items-center items-center gap-2">
+              <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" onClick={() => {
                   setDateRange({})
                   setSelectedStylist(stylistOptions[0])

@@ -43,7 +43,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
     <Card>
       <CardHeader>
         <CardTitle>Upcoming Appointments</CardTitle>
-        <small className="text-sm font-medium">Next 7 days</small>
+        <p className="text-sm font-medium">Next 7 days</p>
       </CardHeader>
       <CardContent>
         <ItemGroup>
@@ -52,11 +52,11 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
               <Item variant="outline" size="default">
                 <ItemMedia>
                   <div className="flex flex-col items-center justify-center min-w-16 p-2 bg-primary/10 rounded-lg">
-                    <small className="text-sm font-medium font-bold text-xs">
+                    <p className="text-xs font-bold">
                       {appointment.start_time
                         ? format(new Date(appointment.start_time), 'MMM')
                         : '---'}
-                    </small>
+                    </p>
                     <div className="text-lg font-bold">
                       {appointment.start_time
                         ? format(new Date(appointment.start_time), 'd')

@@ -18,13 +18,13 @@ export function StaffStats({ stats }: { stats: StaffDashboardStats }) {
       label: 'Background cleared',
       value: stats.verifiedStaff,
       icon: ShieldCheck,
-      tone: 'text-success',
+      tone: 'text-primary',
     },
     {
       label: 'Pending verification',
       value: stats.pendingReviews,
       icon: AlertTriangle,
-      tone: 'text-warning',
+      tone: 'text-accent',
     },
     {
       label: 'Critical alerts',
@@ -36,13 +36,13 @@ export function StaffStats({ stats }: { stats: StaffDashboardStats }) {
       label: 'Average experience',
       value: `${stats.averageExperience} yrs`,
       icon: TrendingUp,
-      tone: 'text-info',
+      tone: 'text-secondary',
     },
     {
       label: 'Avg compliance score',
       value: `${stats.averageCompliance}%`,
       icon: Gauge,
-      tone: 'text-success',
+      tone: 'text-primary',
     },
   ]
 

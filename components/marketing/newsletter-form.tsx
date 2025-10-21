@@ -52,9 +52,9 @@ export function NewsletterForm({
 
   if (subscribed) {
     return (
-      <div className="flex items-center gap-2 text-success">
+      <div className="flex items-center gap-2 text-primary">
         <CheckCircle className="h-5 w-5" />
-        <span className="text-sm font-medium leading-none">Thanks for subscribing!</span>
+        <p className="font-medium text-sm">Thanks for subscribing!</p>
       </div>
     )
   }

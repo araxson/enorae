@@ -45,15 +45,15 @@ export function CustomerInsightsDashboard({
   const getSegmentIcon = (segment: string) => {
     switch (segment) {
       case 'VIP':
-        return <Crown className="h-4 w-4 text-warning" />
+        return <Crown className="h-4 w-4 text-accent" />
       case 'Loyal':
         return <Heart className="h-4 w-4 text-destructive" />
       case 'Regular':
-        return <Users className="h-4 w-4 text-info" />
+        return <Users className="h-4 w-4 text-secondary" />
       case 'At Risk':
-        return <AlertTriangle className="h-4 w-4 text-warning" />
+        return <AlertTriangle className="h-4 w-4 text-destructive" />
       case 'New':
-        return <UserPlus className="h-4 w-4 text-success" />
+        return <UserPlus className="h-4 w-4 text-primary" />
       case 'Churned':
         return <UserX className="h-4 w-4 text-muted-foreground" />
       default:
@@ -67,11 +67,11 @@ export function CustomerInsightsDashboard({
       : topCustomers.filter((c) => c.segment.toLowerCase() === selectedSegment)
 
   const segmentCards = [
-    { label: 'VIP', value: summary.segmentation.vip, icon: Crown, iconClass: 'text-warning' },
+    { label: 'VIP', value: summary.segmentation.vip, icon: Crown, iconClass: 'text-accent' },
     { label: 'Loyal', value: summary.segmentation.loyal, icon: Heart, iconClass: 'text-destructive' },
-    { label: 'Regular', value: summary.segmentation.regular, icon: Users, iconClass: 'text-info' },
-    { label: 'At Risk', value: summary.segmentation.at_risk, icon: AlertTriangle, iconClass: 'text-warning' },
-    { label: 'New', value: summary.segmentation.new, icon: UserPlus, iconClass: 'text-success' },
+    { label: 'Regular', value: summary.segmentation.regular, icon: Users, iconClass: 'text-secondary' },
+    { label: 'At Risk', value: summary.segmentation.at_risk, icon: AlertTriangle, iconClass: 'text-destructive' },
+    { label: 'New', value: summary.segmentation.new, icon: UserPlus, iconClass: 'text-primary' },
     { label: 'Churned', value: summary.segmentation.churned, icon: UserX, iconClass: 'text-muted-foreground' },
   ]
 
@@ -86,35 +86,35 @@ export function CustomerInsightsDashboard({
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{summary.total_customers}</div>
-            <p className="text-xs text-muted-foreground">{summary.active_customers} active</p>
+            <div className="text-xs text-muted-foreground">{summary.active_customers} active</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Avg Lifetime Value</CardTitle>
-            <DollarSign className="h-4 w-4 text-success" />
+            <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {formatCurrency(summary.avg_lifetime_value)}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-xs text-muted-foreground">
               {summary.avg_visits_per_customer.toFixed(1)} avg visits
-            </p>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Retention Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-success" />
+            <TrendingUp className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {formatPercentage(summary.retention_rate)}
             </div>
-            <p className="text-xs text-muted-foreground">Customer retention</p>
+            <div className="text-xs text-muted-foreground">Customer retention</div>
           </CardContent>
         </Card>
 
@@ -127,9 +127,9 @@ export function CustomerInsightsDashboard({
             <div className="text-2xl font-bold text-destructive">
               {formatPercentage(summary.churn_rate)}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-xs text-muted-foreground">
               {summary.segmentation.churned} churned customers
-            </p>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -212,7 +212,7 @@ export function CustomerInsightsDashboard({
                           </div>
                           {customer.average_rating > 0 && (
                             <div className="flex items-center gap-1">
-                              <Star className="h-3 w-3 fill-warning text-warning" />
+                              <Star className="h-3 w-3 fill-accent text-accent" />
                               <span className="font-semibold">{customer.average_rating.toFixed(1)}</span>
                             </div>
                           )}
@@ -232,9 +232,9 @@ export function CustomerInsightsDashboard({
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-muted-foreground text-center py-8">
+                  <div className="text-sm text-muted-foreground text-center py-8">
                     No customers in this segment
-                  </p>
+                  </div>
                 )}
               </div>
             </CardContent>

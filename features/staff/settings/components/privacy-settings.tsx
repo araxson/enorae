@@ -42,7 +42,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
           <div className="flex gap-4 items-center justify-between">
             <div className="flex-1">
               <Label htmlFor="profile_visible">Profile Visible to Clients</Label>
-              <p className="text-sm text-muted-foreground text-sm">Allow clients to view your profile</p>
+              <p className="text-sm text-muted-foreground">Allow clients to view your profile</p>
             </div>
             <Switch
               id="profile_visible"
@@ -54,7 +54,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
           <div className="flex gap-4 items-center justify-between">
             <div className="flex-1">
               <Label htmlFor="show_ratings">Show Ratings</Label>
-              <p className="text-sm text-muted-foreground text-sm">Display your ratings publicly</p>
+              <p className="text-sm text-muted-foreground">Display your ratings publicly</p>
             </div>
             <Switch
               id="show_ratings"
@@ -66,7 +66,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
           <div className="flex gap-4 items-center justify-between">
             <div className="flex-1">
               <Label htmlFor="show_appointments">Show Completed Appointments</Label>
-              <p className="text-sm text-muted-foreground text-sm">Display appointment count</p>
+              <p className="text-sm text-muted-foreground">Display appointment count</p>
             </div>
             <Switch
               id="show_appointments"
@@ -78,7 +78,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
           <div className="flex gap-4 items-center justify-between">
             <div className="flex-1">
               <Label htmlFor="allow_search">Allow Profile Search</Label>
-              <p className="text-sm text-muted-foreground text-sm">Let clients find you in search</p>
+              <p className="text-sm text-muted-foreground">Let clients find you in search</p>
             </div>
             <Switch
               id="allow_search"

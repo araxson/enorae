@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
+import { requireUserSalonId } from '@/lib/auth'
 
 export * from './queries/coupon-validation'
 
@@ -10,14 +11,21 @@ export type CouponServiceOption = {
 }
 
 export async function getCouponServiceOptions(
-  salonId: string,
+  salonId?: string,
 ): Promise<CouponServiceOption[]> {
   const supabase = await createClient()
+
+  // Verify user authentication
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  // Verify user has access to the salon
+  const userSalonId = salonId || await requireUserSalonId()
 
   const { data, error } = await supabase
     .from('services')
     .select('id, name')
-    .eq('salon_id', salonId)
+    .eq('salon_id', userSalonId)
     .eq('is_active', true)
     .order('name', { ascending: true })
 

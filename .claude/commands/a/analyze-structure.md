@@ -39,6 +39,38 @@ mcp__supabase__execute_sql({
 
 This ensures the structural analysis aligns with the latest framework recommendations and identifies patterns that may be outdated or could be improved using newer features.
 
+## Phase 0.5: DATABASE SCHEMA ALIGNMENT CONTEXT
+
+**CRITICAL**: While analyzing structure, keep database schema alignment in mind:
+
+### Key Principles:
+
+1. **Database is source of truth** - All code must match actual Supabase schema
+2. **Views for reads** - Never query schema tables directly, use public views
+3. **Schema tables for writes** - Use `.schema('schema_name').from('table')` for mutations
+4. **No assumed properties** - Only use columns that actually exist in database
+5. **Transform in TypeScript** - Computed fields go in application layer, not database
+
+### During Structure Analysis:
+
+Identify structural issues that may hide database alignment problems:
+- Features in wrong portals may have incorrect data access patterns
+- Misaligned queries.ts files may be accessing non-existent views
+- Orphaned files might have outdated database queries
+- Duplicate features across portals likely have conflicting database assumptions
+
+### Document Database Issues:
+
+When you find structural problems, check if they're related to:
+- Property access errors (missing columns in views)
+- RPC function calls that don't exist
+- Type mismatches between code expectations and database schema
+- Query selections that don't match view structure
+
+These structural issues often mask or are caused by database misalignments. Report them together.
+
+---
+
 ## Phase 1: Deep Analysis
 
 **CRITICAL**: Perform a comprehensive review of the **ENTIRE PROJECT STRUCTURE**. Don't limit analysis to known problem areas - examine every directory, file, and organizational pattern across the full codebase to identify all structural issues, inconsistencies, and opportunities for improvement.

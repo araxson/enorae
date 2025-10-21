@@ -20,30 +20,26 @@ export async function getStockLocations(): Promise<StockLocationWithCounts[]> {
   const supabase = await createClient()
   const salonId = await requireUserSalonId()
 
+  // Single query with nested select for stock_levels to avoid N+1 pattern
   const { data, error } = await supabase
-    .from('stock_locations')
-    .select('*')
+    .from('stock_locations_view')
+    .select(`
+      *,
+      stock_levels:stock_levels(id)
+    `)
     .eq('salon_id', salonId)
     .order('name', { ascending: true })
 
   if (error) throw error
 
-  // Get product counts for each location
-  const locationsWithCounts = await Promise.all(
-    (data || []).map(async (location: StockLocation) => {
-      const { count } = await supabase
-        .from('stock_levels')
-        .select('*', { count: 'exact', head: true })
-        .eq('location_id', location.id!)
-
-      return {
-        ...location,
-        product_count: count || 0,
-      }
-    })
-  )
-
-  return locationsWithCounts
+  // Transform to include product count from nested data
+  type LocationWithStockLevels = StockLocation & {
+    stock_levels?: { id: string }[]
+  }
+  return (data || []).map((location: LocationWithStockLevels): StockLocationWithCounts => ({
+    ...location,
+    product_count: location.stock_levels?.length || 0,
+  }))
 }
 
 /**
@@ -59,7 +55,7 @@ export async function getStockLocationById(
   const salonId = await requireUserSalonId()
 
   const { data, error } = await supabase
-    .from('stock_locations')
+    .from('stock_locations_view')
     .select('*')
     .eq('id', id)
     .eq('salon_id', salonId)

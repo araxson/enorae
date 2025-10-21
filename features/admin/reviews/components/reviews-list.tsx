@@ -40,7 +40,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                       return (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${isFilled ? 'text-warning' : 'text-muted-foreground'}`}
+                          className={`h-4 w-4 ${isFilled ? 'text-accent' : 'text-muted-foreground'}`}
                           fill={isFilled ? 'currentColor' : 'none'}
                         />
                       )

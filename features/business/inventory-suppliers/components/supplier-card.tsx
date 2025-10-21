@@ -37,11 +37,11 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
           <div className="flex flex-col gap-3">
             <div className="flex gap-4 items-start justify-between">
               <div>
-                <span className="text-lg font-semibold">{supplier.name}</span>
+                <p className="text-lg font-semibold">{supplier.name}</p>
                 {supplier.contact_name && (
-                  <small className="text-sm font-medium text-muted-foreground">
+                  <p className="text-sm font-medium text-muted-foreground">
                     Contact: {supplier.contact_name}
-                  </small>
+                  </p>
                 )}
               </div>
               <Badge variant={supplier.is_active ? 'default' : 'secondary'}>
@@ -52,22 +52,22 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
             <div className="flex flex-col gap-2">
               {supplier.contact_email && (
                 <div className="flex gap-3">
-                  <small className="text-sm font-medium text-muted-foreground">Email:</small>
-                  <small className="text-sm font-medium">{supplier.contact_email}</small>
+                  <p className="text-sm font-medium text-muted-foreground">Email:</p>
+                  <p className="text-sm font-medium">{supplier.contact_email}</p>
                 </div>
               )}
 
               {supplier.contact_phone && (
                 <div className="flex gap-3">
-                  <small className="text-sm font-medium text-muted-foreground">Phone:</small>
-                  <small className="text-sm font-medium">{supplier.contact_phone}</small>
+                  <p className="text-sm font-medium text-muted-foreground">Phone:</p>
+                  <p className="text-sm font-medium">{supplier.contact_phone}</p>
                 </div>
               )}
 
               {supplier.website && (
                 <div className="flex gap-3">
-                  <small className="text-sm font-medium text-muted-foreground">Website:</small>
-                  <small className="text-sm font-medium">
+                  <p className="text-sm font-medium text-muted-foreground">Website:</p>
+                  <p className="text-sm font-medium">
                     <a
                       href={supplier.website}
                       target="_blank"
@@ -76,28 +76,28 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
                     >
                       {supplier.website}
                     </a>
-                  </small>
+                  </p>
                 </div>
               )}
 
               {supplier.address && (
                 <div>
-                  <small className="text-sm font-medium text-muted-foreground">Address:</small>
-                  <small className="text-sm font-medium">{supplier.address}</small>
+                  <p className="text-sm font-medium text-muted-foreground">Address:</p>
+                  <p className="text-sm font-medium">{supplier.address}</p>
                 </div>
               )}
 
               {supplier.payment_terms && (
                 <div>
-                  <small className="text-sm font-medium text-muted-foreground">Payment Terms:</small>
-                  <small className="text-sm font-medium">{supplier.payment_terms}</small>
+                  <p className="text-sm font-medium text-muted-foreground">Payment Terms:</p>
+                  <p className="text-sm font-medium">{supplier.payment_terms}</p>
                 </div>
               )}
 
               {supplier.notes && (
                 <div>
-                  <small className="text-sm font-medium text-muted-foreground">Notes:</small>
-                  <small className="text-sm font-medium">{supplier.notes}</small>
+                  <p className="text-sm font-medium text-muted-foreground">Notes:</p>
+                  <p className="text-sm font-medium">{supplier.notes}</p>
                 </div>
               )}
             </div>

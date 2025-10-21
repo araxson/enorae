@@ -45,7 +45,7 @@ export function MarketingFooter() {
             <div className="flex flex-col gap-6">
               <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
                 <Sparkles className="h-6 w-6 text-primary" />
-                <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-xl font-bold text-transparent">
+                <span className="text-primary font-bold">
                   Enorae
                 </span>
               </Link>
@@ -71,7 +71,7 @@ export function MarketingFooter() {
             </div>
 
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-sm font-semibold tracking-tight">Product</h3>
+              <h3 className="font-semibold">Product</h3>
               <div className="flex flex-col gap-2">
                 {footerLinks.product.map((link) => (
                   <Link
@@ -86,7 +86,7 @@ export function MarketingFooter() {
             </div>
 
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-sm font-semibold tracking-tight">Company</h3>
+              <h3 className="font-semibold">Company</h3>
               <div className="flex flex-col gap-2">
                 {footerLinks.company.map((link) => (
                   <Link
@@ -101,7 +101,7 @@ export function MarketingFooter() {
             </div>
 
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-sm font-semibold tracking-tight">Legal</h3>
+              <h3 className="font-semibold">Legal</h3>
               <div className="flex flex-col gap-2">
                 {footerLinks.legal.map((link) => (
                   <Link

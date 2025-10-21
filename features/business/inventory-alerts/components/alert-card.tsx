@@ -64,9 +64,9 @@ export function AlertCard({ alert }: AlertCardProps) {
         <div className="flex flex-col gap-3">
           <div className="flex gap-4 items-start justify-between">
             <div>
-              <span className="text-lg font-semibold">{alert.product?.name || 'Unknown Product'}</span>
+              <p className="text-lg font-semibold">{alert.product?.name || 'Unknown Product'}</p>
               {alert.product?.sku && (
-                <small className="text-sm font-medium text-muted-foreground">SKU: {alert.product.sku}</small>
+                <p className="text-sm font-medium text-muted-foreground">SKU: {alert.product.sku}</p>
               )}
             </div>
             <div className="flex gap-2">
@@ -81,51 +81,51 @@ export function AlertCard({ alert }: AlertCardProps) {
 
           <div className="flex flex-col gap-2">
             <div className="flex gap-3">
-              <small className="text-sm font-medium text-muted-foreground">Type:</small>
-              <small className="text-sm font-medium">{getAlertTypeLabel(alert.alert_type || '')}</small>
+              <p className="text-sm font-medium text-muted-foreground">Type:</p>
+              <p className="text-sm font-medium">{getAlertTypeLabel(alert.alert_type || '')}</p>
             </div>
 
             {alert.current_quantity !== null && (
               <div className="flex gap-3">
-                <small className="text-sm font-medium text-muted-foreground">Current:</small>
-                <small className="text-sm font-medium">
+                <p className="text-sm font-medium text-muted-foreground">Current:</p>
+                <p className="text-sm font-medium">
                   {alert.current_quantity} {alert.product?.unit_of_measure || 'units'}
-                </small>
+                </p>
               </div>
             )}
 
             {alert.threshold_quantity !== null && (
               <div className="flex gap-3">
-                <small className="text-sm font-medium text-muted-foreground">Threshold:</small>
-                <small className="text-sm font-medium">
+                <p className="text-sm font-medium text-muted-foreground">Threshold:</p>
+                <p className="text-sm font-medium">
                   {alert.threshold_quantity} {alert.product?.unit_of_measure || 'units'}
-                </small>
+                </p>
               </div>
             )}
 
             {alert.location && (
               <div className="flex gap-3">
-                <small className="text-sm font-medium text-muted-foreground">Location:</small>
-                <small className="text-sm font-medium">{alert.location.name}</small>
+                <p className="text-sm font-medium text-muted-foreground">Location:</p>
+                <p className="text-sm font-medium">{alert.location.name}</p>
               </div>
             )}
 
             {alert.message && (
               <div>
-                <small className="text-sm font-medium text-muted-foreground">Message:</small>
-                <small className="text-sm font-medium">{alert.message}</small>
+                <p className="text-sm font-medium text-muted-foreground">Message:</p>
+                <p className="text-sm font-medium">{alert.message}</p>
               </div>
             )}
 
             <div className="flex gap-3">
-              <small className="text-sm font-medium text-muted-foreground">Created:</small>
-              <small className="text-sm font-medium">{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</small>
+              <p className="text-sm font-medium text-muted-foreground">Created:</p>
+              <p className="text-sm font-medium">{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</p>
             </div>
 
             {alert.resolved_at && (
               <div className="flex gap-3">
-                <small className="text-sm font-medium text-muted-foreground">Resolved:</small>
-                <small className="text-sm font-medium">{new Date(alert.resolved_at).toLocaleDateString()}</small>
+                <p className="text-sm font-medium text-muted-foreground">Resolved:</p>
+                <p className="text-sm font-medium">{new Date(alert.resolved_at).toLocaleDateString()}</p>
               </div>
             )}
           </div>

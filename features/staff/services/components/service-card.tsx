@@ -101,7 +101,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
                 </Badge>
               )}
             </div>
-            {service.category_name && <p className="text-sm text-muted-foreground text-sm">{service.category_name}</p>}
+            {service.category_name && <p className="text-sm text-muted-foreground">{service.category_name}</p>}
           </div>
           <div className="flex items-center gap-2">
             {service.proficiency_level && (
@@ -145,25 +145,25 @@ export function ServiceCard({ service }: ServiceCardProps) {
         {service.effective_duration && (
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-muted-foreground" />
-            <p className="leading-7 text-sm">{service.effective_duration} minutes</p>
+            <p className="text-sm">{service.effective_duration} minutes</p>
           </div>
         )}
         {service.effective_price && (
           <div className="flex items-center gap-2">
             <DollarSign className="h-4 w-4 text-muted-foreground" />
-            <p className="leading-7 text-sm">${service.effective_price}</p>
+            <p className="text-sm">${service.effective_price}</p>
           </div>
         )}
         {service.performed_count != null && service.performed_count > 0 && (
           <div className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground text-sm">Performed {service.performed_count} times</p>
+            <p className="text-sm text-muted-foreground">Performed {service.performed_count} times</p>
           </div>
         )}
         {service.rating_average && service.rating_count && service.rating_count > 0 && (
           <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 fill-warning text-warning" />
-            <p className="leading-7 text-sm">
+            <Star className="h-4 w-4 fill-accent text-accent" />
+            <p className="text-sm">
               {service.rating_average.toFixed(1)} ({service.rating_count} reviews)
             </p>
           </div>

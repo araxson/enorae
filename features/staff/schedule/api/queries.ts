@@ -20,7 +20,7 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
   const supabase = await createClient()
 
   const query = supabase
-    .from('staff_schedules')
+    .from('staff_schedules_view')
     .select(`
       *,
       staff:staff_id(*)
@@ -53,7 +53,7 @@ export async function getStaffMemberSchedule(staffId: string, startDate?: string
   const supabase = await createClient()
 
   const query = supabase
-    .from('staff_schedules')
+    .from('staff_schedules_view')
     .select('*')
     .eq('staff_id', staffId)
     .order('work_date', { ascending: true })
@@ -83,7 +83,7 @@ export async function getSalonStaff(salonId: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_view')
     .select('*')
     .eq('salon_id', salonId)
     .eq('status', 'active')
@@ -109,7 +109,7 @@ export async function checkScheduleConflict(
   const supabase = await createClient()
 
   let query = supabase
-    .from('staff_schedules')
+    .from('staff_schedules_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('work_date', workDate)
@@ -135,7 +135,7 @@ export async function getScheduleSalon() {
   const supabase = await createClient()
 
   const { data: salon, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id')
     .eq('owner_id', session.user.id)
     .single()
@@ -156,7 +156,7 @@ export async function getAvailableStaffForSwap(salonId: string, excludeStaffId: 
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_view')
     .select('id, full_name, title, user_id')
     .eq('salon_id', salonId)
     .eq('is_active', true)
@@ -194,7 +194,7 @@ export async function getScheduleConflicts(
 
   // Check schedule conflicts
   let scheduleQuery = supabase
-    .from('staff_schedules')
+    .from('staff_schedules_view')
     .select('*')
     .eq('staff_id', staffId)
     .gte('effective_from', workDate)
@@ -208,7 +208,7 @@ export async function getScheduleConflicts(
 
   // Check appointment conflicts
   const { data: appointments } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('id, start_time, end_time, customer_name')
     .eq('staff_id', staffId)
     .gte('start_time', `${workDate}T${startTime}`)

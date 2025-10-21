@@ -96,7 +96,7 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
 
               {profile.salon_name && (
                 <div className="w-full space-y-1 border-t pt-4">
-                  <p className="text-sm font-medium text-foreground">Salon</p>
+                  <p className="text-sm font-medium">Salon</p>
                   <p className="text-sm text-muted-foreground">{profile.salon_name}</p>
                 </div>
               )}
@@ -130,13 +130,13 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
                   <div className="grid gap-4 sm:grid-cols-2">
                     {profile.title && (
                       <div>
-                        <p className="text-sm font-medium text-foreground">Title</p>
+                        <p className="text-sm font-medium">Title</p>
                         <p className="text-sm text-muted-foreground">{profile.title}</p>
                       </div>
                     )}
                     {profile.experience_years !== null && profile.experience_years !== undefined && (
                       <div>
-                        <p className="text-sm font-medium text-foreground">Experience</p>
+                        <p className="text-sm font-medium">Experience</p>
                         <p className="text-sm text-muted-foreground">
                           {profile.experience_years} years
                         </p>
@@ -144,7 +144,7 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
                     )}
                     {profile.services_count !== null && profile.services_count !== undefined && (
                       <div>
-                        <p className="text-sm font-medium text-foreground">Services offered</p>
+                        <p className="text-sm font-medium">Services offered</p>
                         <p className="text-sm text-muted-foreground">
                           {profile.services_count} services
                         </p>
@@ -152,7 +152,7 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
                     )}
                     {profile.total_appointments !== null && profile.total_appointments !== undefined && (
                       <div>
-                        <p className="text-sm font-medium text-foreground">Total appointments</p>
+                        <p className="text-sm font-medium">Total appointments</p>
                         <p className="text-sm text-muted-foreground">
                           {profile.total_appointments} completed
                         </p>

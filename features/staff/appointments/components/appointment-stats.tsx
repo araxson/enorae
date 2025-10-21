@@ -20,19 +20,19 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
       label: 'Total',
       value: totalAppointments.toString(),
       icon: Calendar,
-      color: 'text-info',
+      color: 'text-secondary',
     },
     {
       label: 'Completed',
       value: completedAppointments.toString(),
       icon: CheckCircle,
-      color: 'text-success',
+      color: 'text-primary',
     },
     {
       label: 'Hours',
       value: totalHours,
       icon: Clock,
-      color: 'text-warning',
+      color: 'text-accent',
     },
     {
       label: 'Revenue',
@@ -51,7 +51,7 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
             <CardContent className="p-4">
               <div className="flex gap-4 items-start justify-between">
                 <div>
-                  <p className="leading-7 text-sm text-muted-foreground">{stat.label}</p>
+                  <p className="text-sm text-muted-foreground">{stat.label}</p>
                   <p className="text-2xl font-bold">{stat.value}</p>
                 </div>
                 <Icon className={`h-4 w-4 ${stat.color}`} />

@@ -50,11 +50,11 @@ export function SupportGuidesCard({ sections }: SupportGuidesCardProps) {
                 <CardContent className="space-y-4">
                   <ul className="space-y-3 text-sm text-muted-foreground">
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
                       Review the onboarding checklist to ensure nothing blocks customers from booking.
                     </li>
                     <li className="flex items-start gap-2">
-                      <Clock className="mt-0.5 h-4 w-4 text-info" />
+                      <Clock className="mt-0.5 h-4 w-4 text-secondary" />
                       Add buffer times and automated reminders for your services within scheduling preferences.
                     </li>
                     <li className="flex items-start gap-2">

@@ -72,9 +72,9 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     {appointmentDate ? (
                       <div className="flex flex-col gap-2">
                         <div>{format(appointmentDate, 'MMM dd, yyyy')}</div>
-                        <small className="text-sm font-medium text-muted-foreground">
+                        <p className="text-sm font-medium text-muted-foreground">
                           {format(appointmentDate, 'h:mm a')}
-                        </small>
+                        </p>
                       </div>
                     ) : (
                       'No date'

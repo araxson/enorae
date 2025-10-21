@@ -10,7 +10,7 @@ async function fetchPublicSalons(params?: SalonSearchParams): Promise<Salon[]> {
   // If we have search params, use the search_salons function
   if (params?.searchTerm || params?.city || params?.state) {
     let filteredQuery = supabase
-      .from('salons')
+      .from('salons_view')
       .select('*')
       .eq('is_active', true)
 
@@ -47,7 +47,7 @@ async function fetchPublicSalons(params?: SalonSearchParams): Promise<Salon[]> {
 
   // Default: get all active salons
   let query = supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
     .order('rating_average', { ascending: false, nullsFirst: false })
@@ -79,7 +79,7 @@ export async function getPublicSalonBySlug(slug: string): Promise<Salon | null> 
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('slug', slug)
     .eq('is_active', true)
@@ -97,7 +97,7 @@ export async function getPublicSalonsByCity(city: string, state?: string): Promi
   const supabase = await createPublicClient()
 
   let query = supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
     .ilike('city', city)

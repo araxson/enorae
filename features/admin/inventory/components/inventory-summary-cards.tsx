@@ -42,7 +42,7 @@ export function InventorySummaryCards({ summary }: SummaryCardsProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle>Low Stock Alerts</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-warning" />
+          <AlertTriangle className="h-4 w-4 text-accent" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{summary.lowStockAlerts}</div>

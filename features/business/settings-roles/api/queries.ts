@@ -44,7 +44,7 @@ export async function getUserRoles(): Promise<UserRoleWithDetails[]> {
 
   if (error) throw error
 
-  // Filter out any error objects and type assert
+  // Filter out error objects and ensure proper typing
   const roles = data || []
   return roles.filter((item: unknown): item is UserRoleWithDetails =>
     item !== null && typeof item === 'object' && !('error' in item)

@@ -23,7 +23,7 @@ export function SuspiciousActivityPanel({ sessions, blockedSessions }: Suspiciou
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-warning" />
+            <AlertTriangle className="h-4 w-4 text-accent" />
             <CardTitle>Suspicious Sessions</CardTitle>
           </div>
           <Badge variant={blockedSessions ? 'destructive' : 'outline'} className="text-xs">

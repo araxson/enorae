@@ -48,7 +48,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
   if (activeSessions.length === 0) {
     return (
       <Card className="p-8 text-center">
-        <p className="leading-7 text-muted-foreground">No active sessions found</p>
+        <p className="text-muted-foreground">No active sessions found</p>
       </Card>
     )
   }
@@ -81,25 +81,25 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
                 </p>
 
                 {session.ip_address && (
-                  <p className="text-sm text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     IP: {session.ip_address}
                   </p>
                 )}
 
                 {session.location && (
-                  <p className="text-sm text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     Location: {session.location}
                   </p>
                 )}
 
                 {formattedLastActive && (
-                  <p className="text-sm text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     Last active: {formattedLastActive}
                   </p>
                 )}
 
                 {formattedCreatedAt && (
-                  <p className="text-sm text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     Created: {formattedCreatedAt}
                   </p>
                 )}

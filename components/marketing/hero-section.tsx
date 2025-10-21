@@ -1,4 +1,3 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 type MarketingHeroProps = {
@@ -26,17 +25,11 @@ export function MarketingHero({
     return (
       <section className={baseSectionClasses}>
         <div className={cn('max-w-4xl py-16', baseContainerClasses)}>
-          <Card className="border-0 shadow-none">
-            <CardHeader className={cn('gap-4', headerAlignment)}>
-              <CardTitle>
-                <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{title}</h1>
-              </CardTitle>
-              <CardDescription>{subtitle}</CardDescription>
-            </CardHeader>
-            <CardContent className={cn('max-w-3xl text-muted-foreground', contentAlignment)}>
-              <p className="text-lg leading-7">{description}</p>
-            </CardContent>
-          </Card>
+          <div className={cn('space-y-4', headerAlignment)}>
+            <h1 className="scroll-m-20">{title}</h1>
+            <p className="text-muted-foreground">{subtitle}</p>
+            <p className="text-muted-foreground">{description}</p>
+          </div>
         </div>
       </section>
     )
@@ -45,17 +38,11 @@ export function MarketingHero({
   return (
     <section className={cn(baseSectionClasses, 'py-16 md:py-24 lg:py-32')}>
       <div className={cn('max-w-6xl', baseContainerClasses)}>
-        <Card className="border-0 bg-transparent shadow-none">
-          <CardHeader className={cn('gap-6', headerAlignment)}>
-            <CardTitle>
-              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{title}</h1>
-            </CardTitle>
-            <CardDescription>{subtitle}</CardDescription>
-          </CardHeader>
-          <CardContent className={cn('max-w-3xl text-muted-foreground', contentAlignment)}>
-            <p className="text-lg leading-7">{description}</p>
-          </CardContent>
-        </Card>
+        <div className={cn('space-y-6', headerAlignment)}>
+          <h1 className="scroll-m-20">{title}</h1>
+          <p className="text-muted-foreground">{subtitle}</p>
+          <p className="text-muted-foreground">{description}</p>
+        </div>
       </div>
     </section>
   )

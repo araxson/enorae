@@ -28,17 +28,17 @@ export function AppointmentIssuesCard({ aggregated }: Props) {
       <CardContent>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <p className="text-sm text-muted-foreground text-sm">Cancelled</p>
+            <div className="text-sm text-muted-foreground">Cancelled</div>
             <div className="flex items-center gap-2">
-              <p className="leading-7 text-sm font-medium">{aggregated.cancelledAppointments}</p>
-              <p className="text-sm text-muted-foreground text-xs">({cancellationRate.toFixed(1)}%)</p>
+              <div className="text-sm font-medium">{aggregated.cancelledAppointments}</div>
+              <div className="text-xs text-muted-foreground">({cancellationRate.toFixed(1)}%)</div>
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <p className="text-sm text-muted-foreground text-sm">No-Shows</p>
+            <div className="text-sm text-muted-foreground">No-Shows</div>
             <div className="flex items-center gap-2">
-              <p className="leading-7 text-sm font-medium">{aggregated.noShowAppointments}</p>
-              <p className="text-sm text-muted-foreground text-xs">({noShowRate.toFixed(1)}%)</p>
+              <div className="text-sm font-medium">{aggregated.noShowAppointments}</div>
+              <div className="text-xs text-muted-foreground">({noShowRate.toFixed(1)}%)</div>
             </div>
           </div>
         </div>

@@ -45,7 +45,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
               <Calendar className="w-8 h-8 text-muted-foreground" />
             </div>
             <div>
-              <p className="leading-7 font-medium">No Appointments</p>
+              <p className="font-medium">No Appointments</p>
               <p className="text-sm text-muted-foreground">You have no appointments in this period</p>
             </div>
           </div>
@@ -88,9 +88,9 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                   </div>
 
                   <div>
-                    <p className="leading-7 font-medium">{appointment.customer_name || 'Walk-in Customer'}</p>
+                    <p className="font-medium">{appointment.customer_name || 'Walk-in Customer'}</p>
                     {appointment.customer_email && (
-                      <p className="text-sm text-muted-foreground text-sm">{appointment.customer_email}</p>
+                      <p className="text-sm text-muted-foreground">{appointment.customer_email}</p>
                     )}
                   </div>
 

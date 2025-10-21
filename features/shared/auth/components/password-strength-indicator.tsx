@@ -75,8 +75,8 @@ export function PasswordStrengthIndicator({
       return {
         strength: 'fair' as PasswordStrength,
         percentage: 50,
-        indicatorClass: '[&_[data-slot=progress-indicator]]:bg-warning',
-        textTone: 'text-warning'
+        indicatorClass: '[&_[data-slot=progress-indicator]]:bg-accent',
+        textTone: 'text-accent'
       }
     }
 
@@ -84,16 +84,16 @@ export function PasswordStrengthIndicator({
       return {
         strength: 'good' as PasswordStrength,
         percentage: 75,
-        indicatorClass: '[&_[data-slot=progress-indicator]]:bg-info',
-        textTone: 'text-info'
+        indicatorClass: '[&_[data-slot=progress-indicator]]:bg-secondary',
+        textTone: 'text-secondary'
       }
     }
 
     return {
       strength: 'strong' as PasswordStrength,
       percentage: 100,
-      indicatorClass: '[&_[data-slot=progress-indicator]]:bg-success',
-      textTone: 'text-success'
+      indicatorClass: '[&_[data-slot=progress-indicator]]:bg-primary',
+      textTone: 'text-primary'
     }
   }, [password, requirements])
 
@@ -104,10 +104,10 @@ export function PasswordStrengthIndicator({
       {/* Strength Bar */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <small className="text-sm font-medium text-muted-foreground">Password strength:</small>
-          <small className={cn('text-sm font-medium', textTone)}>
+          <p className="text-sm font-medium text-muted-foreground">Password strength:</p>
+          <p className={cn('text-sm font-medium', textTone)}>
             {strength.charAt(0).toUpperCase() + strength.slice(1)}
-          </small>
+          </p>
         </div>
         <Progress
           value={percentage}
@@ -121,18 +121,18 @@ export function PasswordStrengthIndicator({
           {requirements.map((req, index) => (
             <div key={index} className="flex items-center gap-2">
               {req.met ? (
-                <Check className="text-success h-3.5 w-3.5 flex-shrink-0" />
+                <Check className="text-primary h-3.5 w-3.5 flex-shrink-0" />
               ) : (
                 <X className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
               )}
-              <small
+              <p
                 className={cn(
                   'text-sm font-medium', 'transition-colors',
                   req.met ? 'text-foreground' : 'text-muted-foreground'
                 )}
               >
                 {req.label}
-              </small>
+              </p>
             </div>
           ))}
         </div>

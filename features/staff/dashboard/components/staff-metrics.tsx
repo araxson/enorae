@@ -31,14 +31,14 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>Today</CardTitle>
-              <Clock className="h-4 w-4 text-warning" />
+              <Clock className="h-4 w-4 text-accent" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metrics.todayAppointments}</div>
               <p className="text-xs text-muted-foreground mt-1">Scheduled for today</p>
               {metrics.todayAppointments > 0 && (
                 <div className="mt-2">
-                  <Progress value={weekProgress} className="h-1.5 [&>div]:bg-warning" />
+                  <Progress value={weekProgress} className="h-1.5 [&>div]:bg-accent" />
                   <p className="text-xs text-muted-foreground mt-1">{Math.round(weekProgress)}% of weekly</p>
                 </div>
               )}
@@ -50,7 +50,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>This Week</CardTitle>
-              <Calendar className="h-4 w-4 text-info" />
+              <Calendar className="h-4 w-4 text-secondary" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metrics.weekAppointments}</div>
@@ -63,8 +63,8 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
                         key={i}
                         className={`h-6 flex-1 rounded ${
                           i < Math.ceil(metrics.weekAppointments / 7)
-                            ? 'bg-info'
-                            : 'bg-info/10'
+                            ? 'bg-secondary'
+                            : 'bg-secondary/10'
                         }`}
                       />
                     ))}
@@ -79,7 +79,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>This Month</CardTitle>
-              <CheckCircle className="h-4 w-4 text-success" />
+              <CheckCircle className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metrics.monthCompleted}</div>
@@ -88,7 +88,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
                 <div className="mt-2">
                   <Progress
                     value={Math.min((metrics.monthCompleted / 50) * 100, 100)}
-                    className="h-1.5 [&>div]:bg-success"
+                    className="h-1.5 [&>div]:bg-primary"
                   />
                   <p className="text-xs text-muted-foreground mt-1">Goal: 50 appointments</p>
                 </div>

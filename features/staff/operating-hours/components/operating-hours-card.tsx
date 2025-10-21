@@ -36,7 +36,7 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
                 className={cn('flex gap-4 items-center justify-between', isToday ? 'font-semibold' : '')}
               >
                 <div className="flex gap-3 items-center">
-                  <p className="leading-7 capitalize min-w-24">
+                  <p className="capitalize min-w-24">
                     {hour.day_of_week}
                   </p>
                   {isToday && (

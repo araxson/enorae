@@ -63,7 +63,7 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
   return (
     <Card id="overview">
       <CardHeader>
-        <div className="flex gap-4 items-center items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Building2 className="h-5 w-5" aria-hidden="true" />
             <CardTitle>Chain overview</CardTitle>
@@ -78,13 +78,15 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
             return (
               <Tooltip key={item.label}>
                 <TooltipTrigger asChild>
-                  <div className={`overflow-hidden rounded-xl border border-border/60 bg-card/60 p-4 transition-colors hover:border-primary/40 ${item.accent}`}>
-                    <div className="flex gap-4 items-center items-center justify-between">
-                      <small className="text-sm font-medium text-muted-foreground">{item.label}</small>
+                  <Card className={`overflow-hidden transition-colors hover:border-primary/40 ${item.accent}`}>
+                    <CardContent className="flex items-center justify-between gap-4 pt-6">
+                      <div className="flex flex-col gap-1">
+                        <div className="text-sm font-medium text-muted-foreground">{item.label}</div>
+                        <div className="text-2xl font-semibold">{item.value(metrics)}</div>
+                      </div>
                       <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                    </div>
-                    <div className="mt-2 text-2xl font-semibold text-foreground">{item.value(metrics)}</div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 </TooltipTrigger>
                 <TooltipContent>{item.tooltip}</TooltipContent>
               </Tooltip>
@@ -98,13 +100,13 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
             <AccordionContent>
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
-                  <div className="flex gap-4 items-center items-center justify-between">
-                    <small className="text-sm font-medium font-medium text-muted-foreground">Confirmation rate</small>
-                    <small className="text-sm font-medium text-muted-foreground">{appointmentFill}%</small>
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="text-sm font-medium text-muted-foreground">Confirmation rate</div>
+                    <div className="text-sm font-medium text-muted-foreground">{appointmentFill}%</div>
                   </div>
                   <Progress value={appointmentFill} aria-label="Confirmation rate progress" />
                 </div>
-                <div className="flex gap-4 items-center flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-4">
                   <Badge variant="outline">Staff: {metrics.totalStaff}</Badge>
                   <Badge variant="outline">Services: {metrics.totalServices}</Badge>
                   <Badge variant="outline">Pending: {metrics.pendingAppointments}</Badge>

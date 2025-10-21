@@ -20,7 +20,7 @@ export function MetricTrend({ value, className, showIcon = true }: MetricTrendPr
     <div
       className={cn(
         'flex items-center gap-1',
-        isPositive && 'text-success',
+        isPositive && 'text-primary',
         isNegative && 'text-destructive',
         isNeutral && 'text-muted-foreground',
         className

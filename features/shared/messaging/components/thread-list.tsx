@@ -82,9 +82,9 @@ export function ThreadList({
                         </Badge>
                       )}
                     </div>
-                    <small className="text-sm font-medium text-muted-foreground">
+                    <p className="text-sm font-medium text-muted-foreground">
                       Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
-                    </small>
+                    </p>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">

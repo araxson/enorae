@@ -112,7 +112,7 @@ export function MovementList({ movements }: MovementListProps) {
             <TableCell className="text-right">
               <span className={
                 (movement.quantity ?? 0) > 0
-                  ? 'text-success font-medium'
+                  ? 'text-primary font-medium'
                   : (movement.quantity ?? 0) < 0
                   ? 'text-destructive font-medium'
                   : 'font-medium'

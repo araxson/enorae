@@ -82,7 +82,7 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                   <div className="flex items-center gap-2">
                     <CardTitle>{location.name}</CardTitle>
                     {location.is_default && (
-                      <Star className="h-4 w-4 text-warning" fill="currentColor" />
+                      <Star className="h-4 w-4 text-accent" fill="currentColor" />
                     )}
                   </div>
                   {location.description && (

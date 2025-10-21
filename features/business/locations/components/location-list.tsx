@@ -77,7 +77,7 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                   <div className="flex items-center gap-2">
                     <CardTitle>{location.name}</CardTitle>
                     {location.is_primary && (
-                      <Star className="h-4 w-4 fill-warning text-warning" />
+                      <Star className="h-4 w-4 fill-accent text-accent" />
                     )}
                   </div>
                   <CardDescription>
@@ -86,9 +86,9 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                       <div className="flex flex-col gap-2">
                         <p className="text-sm text-muted-foreground">/{location.slug}</p>
                         {location.is_active ? (
-                          <small className="text-sm font-medium text-success">
+                          <p className="text-sm font-medium text-primary">
                             Active
-                          </small>
+                          </p>
                         ) : (
                           <p className="text-sm text-muted-foreground">Inactive</p>
                         )}

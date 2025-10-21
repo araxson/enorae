@@ -88,8 +88,8 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
                         <div
                           className={`flex items-center gap-2 text-xs text-muted-foreground ${isOwnMessage ? 'justify-end' : ''}`}
                         >
-                          <small className="text-sm font-medium">{format(new Date(message.created_at), 'PPp')}</small>
-                          {isOwnMessage && <small className="text-sm font-medium">{message.is_read ? '✓✓' : '✓'}</small>}
+                          <p className="text-sm font-medium">{format(new Date(message.created_at), 'PPp')}</p>
+                          {isOwnMessage && <p className="text-sm font-medium">{message.is_read ? '✓✓' : '✓'}</p>}
                         </div>
                       </div>
                     </div>

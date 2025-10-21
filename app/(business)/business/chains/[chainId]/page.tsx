@@ -5,6 +5,5 @@ type PageProps = {
 }
 
 export default async function ChainDetailPage({ params }: PageProps) {
-  const { chainId } = await params
-  return <ChainDetail chainId={chainId} />
+  return <ChainDetail params={params} />
 }

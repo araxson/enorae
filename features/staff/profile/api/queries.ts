@@ -18,7 +18,7 @@ export async function getMyStaffProfile(): Promise<StaffProfile | null> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_view')
     .select('*')
     .eq('user_id', session.user.id)
     .single()
@@ -46,12 +46,12 @@ export async function getMyStaffProfileDetails(): Promise<StaffProfileDetails> {
 
   const [metadataResult, profileResult] = await Promise.all([
     supabase
-      .from('profiles_metadata')
+      .from('profiles_metadata_view')
       .select('*')
       .eq('profile_id', profile.user_id)
       .maybeSingle<StaffProfileMetadata>(),
     supabase
-      .from('profiles')
+      .from('profiles_view')
       .select('username')
       .eq('id', profile.user_id)
       .maybeSingle<Pick<PublicProfile, 'username'>>(),

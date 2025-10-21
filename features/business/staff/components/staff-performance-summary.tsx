@@ -51,7 +51,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-success" />
+              <TrendingUp className="h-4 w-4 text-primary" />
               <CardTitle>Top Performer by Volume</CardTitle>
             </div>
           </CardHeader>
@@ -86,7 +86,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 text-warning" fill="currentColor" />
+              <Star className="h-4 w-4 text-accent" fill="currentColor" />
               <CardTitle>Top Rated Staff Member</CardTitle>
             </div>
           </CardHeader>

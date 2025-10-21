@@ -25,15 +25,15 @@ export function NotificationSettings({
 }: NotificationSettingsProps) {
   return (
     <div>
-      <Label className="flex items-center gap-2 mb-4">
+      <div className="flex items-center gap-2 mb-4">
         <Bell className="h-4 w-4" />
-        Notification Preferences
-      </Label>
+        <h3>Notification Preferences</h3>
+      </div>
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <Label htmlFor="email-notifications">Email Notifications</Label>
-            <small className="text-muted-foreground">Receive updates via email</small>
+            <p>Receive updates via email</p>
           </div>
           <Switch
             id="email-notifications"
@@ -45,7 +45,7 @@ export function NotificationSettings({
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <Label htmlFor="sms-notifications">SMS Notifications</Label>
-            <small className="text-muted-foreground">Receive text message alerts</small>
+            <p>Receive text message alerts</p>
           </div>
           <Switch
             id="sms-notifications"
@@ -57,7 +57,7 @@ export function NotificationSettings({
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <Label htmlFor="appointment-reminders">Appointment Reminders</Label>
-            <small className="text-muted-foreground">Get reminders before appointments</small>
+            <p>Get reminders before appointments</p>
           </div>
           <Switch
             id="appointment-reminders"
@@ -69,7 +69,7 @@ export function NotificationSettings({
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <Label htmlFor="marketing-emails">Marketing Emails</Label>
-            <small className="text-muted-foreground">Receive promotional offers and news</small>
+            <p>Receive promotional offers and news</p>
           </div>
           <Switch
             id="marketing-emails"

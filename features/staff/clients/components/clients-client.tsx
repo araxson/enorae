@@ -95,7 +95,7 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
               <Users className="w-8 h-8 text-muted-foreground" />
             </div>
             <div>
-              <p className="leading-7 font-medium">No Clients Yet</p>
+              <p className="font-medium">No Clients Yet</p>
               <p className="text-sm text-muted-foreground">Your client list will appear here once you complete appointments</p>
             </div>
           </div>
@@ -140,23 +140,23 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
             >
               <CardHeader>
                 <CardTitle>{client.customer_name || 'Walk-in Customer'}</CardTitle>
-                {client.customer_email && <p className="text-sm text-muted-foreground text-sm">{client.customer_email}</p>}
+                {client.customer_email && <p className="text-sm text-muted-foreground">{client.customer_email}</p>}
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2 text-sm">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <p className="leading-7">{client.total_appointments} appointments</p>
+                    <p>{client.total_appointments} appointments</p>
                   </div>
                   {client.total_revenue && client.total_revenue > 0 ? (
                     <div className="flex items-center gap-2 text-sm">
                       <DollarSign className="h-4 w-4 text-muted-foreground" />
-                      <p className="leading-7">${Number(client.total_revenue).toFixed(2)} lifetime value</p>
+                      <p>${Number(client.total_revenue).toFixed(2)} lifetime value</p>
                     </div>
                   ) : null}
                   {client.last_appointment_date ? (
                     <div className="text-sm">
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground">
                         Last visit: {new Date(client.last_appointment_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                       </p>
                     </div>

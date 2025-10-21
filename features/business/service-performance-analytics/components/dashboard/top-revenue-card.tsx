@@ -34,7 +34,7 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
                     #{index + 1}
                   </Badge>
                   <div>
-                    <h4 className="text-lg font-semibold font-medium">{service.service_name}</h4>
+                    <h4 className="text-lg font-semibold">{service.service_name}</h4>
                     <p className="text-xs text-muted-foreground">
                       {service.total_bookings} bookings
                     </p>

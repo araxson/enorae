@@ -1,6 +1,7 @@
 'use server'
 
 import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { PostgrestError } from '@supabase/supabase-js'
 
@@ -59,6 +60,7 @@ export async function subscribeToNewsletter(input: z.infer<typeof newsletterSche
       }
     }
 
+    revalidatePath('/')
     return { success: true }
   } catch (error) {
     console.error('[subscribeToNewsletter] unexpected error:', error)
@@ -111,6 +113,7 @@ export async function submitContactMessage(input: z.infer<typeof contactSchema>)
       }
     }
 
+    revalidatePath('/contact')
     return { success: true }
   } catch (error) {
     console.error('[submitContactMessage] unexpected error:', error)

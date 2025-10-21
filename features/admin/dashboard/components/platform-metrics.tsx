@@ -61,9 +61,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatCurrency(metrics.revenue),
       description: 'Platform-wide revenue across all salons',
       icon: DollarSign,
-      accent: 'bg-success/10 text-success',
+      accent: 'bg-primary/10 text-primary',
       progressValue: 100,
-      progressClassName: '[&>div]:bg-success',
+      progressClassName: '[&>div]:bg-primary',
       footer: (
         <HoverCard>
           <HoverCardTrigger asChild>
@@ -107,11 +107,11 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatNumber(metrics.totalUsers),
       description: 'Registered platform accounts across roles',
       icon: Users,
-      accent: 'bg-info/10 text-info',
+      accent: 'bg-secondary/10 text-secondary',
       progressValue: metrics.totalSalons
         ? Math.min(100, Math.round((metrics.totalUsers / (metrics.totalSalons * 15)) * 100))
         : 0,
-      progressClassName: '[&>div]:bg-info',
+      progressClassName: '[&>div]:bg-secondary',
       footer: (
         <Badge variant="outline" className="w-fit gap-1 text-xs">
           <TrendingUp className="h-3 w-3" />
@@ -125,9 +125,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatNumber(metrics.activeUsers),
       description: 'Users with platform activity in last 30 days',
       icon: UserCheck,
-      accent: 'bg-info/10 text-info',
+      accent: 'bg-secondary/10 text-secondary',
       progressValue: activeUserRate,
-      progressClassName: '[&>div]:bg-info',
+      progressClassName: '[&>div]:bg-secondary',
       footer: (
         <HoverCard>
           <HoverCardTrigger asChild>
@@ -168,9 +168,9 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
       value: formatNumber(metrics.activeAppointments),
       description: 'Upcoming confirmed bookings',
       icon: CheckCircle2,
-      accent: 'bg-success/10 text-success',
+      accent: 'bg-primary/10 text-primary',
       progressValue: activeRate,
-      progressClassName: '[&>div]:bg-success',
+      progressClassName: '[&>div]:bg-primary',
       footer: (
         <Badge variant="outline" className="w-fit gap-1 text-xs">
           <Activity className="h-3.5 w-3.5" />
@@ -184,8 +184,8 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
     <section className="flex flex-col gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold text-lg font-semibold">Platform metrics</h2>
-          <p className="leading-7 text-sm text-muted-foreground">
+          <h2 className="scroll-m-20 text-3xl font-semibold">Platform metrics</h2>
+          <p className="text-sm text-muted-foreground">
             Core KPIs refresh every minute so you can respond quickly.
           </p>
         </div>

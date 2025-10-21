@@ -29,7 +29,7 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
       label: 'Pending response',
       value: stats.pendingReviews,
       icon: Clock,
-      accent: 'text-warning',
+      accent: 'text-accent',
     },
     {
       label: 'High risk reviews',
@@ -41,13 +41,13 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
       label: 'Avg sentiment',
       value: stats.averageSentiment.toFixed(2),
       icon: Gauge,
-      accent: 'text-info',
+      accent: 'text-secondary',
     },
     {
       label: 'Avg quality score',
       value: `${stats.averageQuality}%`,
       icon: Gauge,
-      accent: 'text-success',
+      accent: 'text-primary',
     },
   ] as const
 

@@ -33,7 +33,7 @@ export function RevenueInsightsTab({ insights }: RevenueInsightsTabProps) {
               >
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <h4 className="text-lg font-semibold font-medium">{insight.service_name}</h4>
+                    <h4 className="text-lg font-semibold">{insight.service_name}</h4>
                     <p className="text-sm text-muted-foreground">
                       Base price: {formatCurrency(insight.base_price)}
                     </p>
@@ -44,7 +44,7 @@ export function RevenueInsightsTab({ insights }: RevenueInsightsTabProps) {
                 </div>
                 <div className="grid grid-cols-2 gap-4 mt-3">
                   <div className="flex items-center gap-2">
-                    <TrendingDown className="h-4 w-4 text-info" />
+                    <TrendingDown className="h-4 w-4 text-secondary" />
                     <div>
                       <p className="text-xs text-muted-foreground">Off-Peak Price</p>
                       <p className="text-base font-semibold">
@@ -53,7 +53,7 @@ export function RevenueInsightsTab({ insights }: RevenueInsightsTabProps) {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-success" />
+                    <TrendingUp className="h-4 w-4 text-primary" />
                     <div>
                       <p className="text-xs text-muted-foreground">Peak Price</p>
                       <p className="text-base font-semibold">

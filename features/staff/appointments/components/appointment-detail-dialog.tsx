@@ -53,8 +53,8 @@ export function AppointmentDetailDialog({
             <div className="flex gap-3 items-start">
               <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <p className="text-sm text-muted-foreground text-xs">Date</p>
-                <p className="leading-7 font-medium">
+                <p className="text-xs text-muted-foreground">Date</p>
+                <p className="font-medium">
                   {appointment.start_time
                     ? format(new Date(appointment.start_time), 'EEEE, MMMM dd, yyyy')
                     : 'N/A'}
@@ -65,8 +65,8 @@ export function AppointmentDetailDialog({
             <div className="flex gap-3 items-start">
               <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <p className="text-sm text-muted-foreground text-xs">Time</p>
-                <p className="leading-7 font-medium">
+                <p className="text-xs text-muted-foreground">Time</p>
+                <p className="font-medium">
                   {appointment.start_time
                     ? format(new Date(appointment.start_time), 'h:mm a')
                     : 'N/A'}
@@ -79,13 +79,13 @@ export function AppointmentDetailDialog({
           <Separator />
 
           <div>
-            <p className="leading-7 font-semibold mb-3">Customer Information</p>
+            <p className="font-semibold mb-3">Customer Information</p>
             <div className="flex flex-col gap-3">
               <div className="flex gap-3 items-start">
                 <User className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <p className="text-sm text-muted-foreground text-xs">Name</p>
-                  <p className="leading-7">{appointment.customer_name || 'Walk-in Customer'}</p>
+                  <p className="text-xs text-muted-foreground">Name</p>
+                  <p>{appointment.customer_name || 'Walk-in Customer'}</p>
                 </div>
               </div>
 
@@ -93,8 +93,8 @@ export function AppointmentDetailDialog({
                 <div className="flex gap-3 items-start">
                   <Mail className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-sm text-muted-foreground text-xs">Email</p>
-                    <p className="leading-7">{appointment.customer_email}</p>
+                    <p className="text-xs text-muted-foreground">Email</p>
+                    <p>{appointment.customer_email}</p>
                   </div>
                 </div>
               )}
@@ -106,12 +106,12 @@ export function AppointmentDetailDialog({
           <Separator />
 
           <div>
-            <p className="leading-7 font-semibold mb-3">Service Details</p>
+            <p className="font-semibold mb-3">Service Details</p>
             <div className="flex flex-col gap-3">
               {appointment.service_names && (
                 <div>
-                  <p className="text-sm text-muted-foreground text-xs">Services</p>
-                  <p className="leading-7">{appointment.service_names}</p>
+                  <p className="text-xs text-muted-foreground">Services</p>
+                  <p>{appointment.service_names}</p>
                 </div>
               )}
 
@@ -119,8 +119,8 @@ export function AppointmentDetailDialog({
                 <div className="flex gap-3 items-start">
                   <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-sm text-muted-foreground text-xs">Total Price</p>
-                    <p className="leading-7 font-medium">${Number(appointment.total_price).toFixed(2)}</p>
+                    <p className="text-xs text-muted-foreground">Total Price</p>
+                    <p className="font-medium">${Number(appointment.total_price).toFixed(2)}</p>
                   </div>
                 </div>
               )}

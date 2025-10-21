@@ -71,18 +71,18 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="scroll-m-20 text-3xl font-semibold mb-1">Real-Time Security Overview</h2>
-          <p className="block text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Streaming telemetry from Supabase security logs. Last updated {lastUpdatedLabel}.
           </p>
           {error && (
-            <p className="leading-7 mt-2 text-sm text-destructive">
+            <p className="mt-2 text-sm text-destructive">
               {error}
             </p>
           )}
         </div>
 
         <div className="flex items-center gap-3">
-          <p className="text-sm text-muted-foreground text-xs uppercase tracking-wide text-muted-foreground">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">
             Auto-refresh 15s
           </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>

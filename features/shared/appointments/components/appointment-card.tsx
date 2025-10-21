@@ -74,15 +74,15 @@ export function AppointmentCard({
         <div className="flex flex-col gap-3">
           <div className="flex gap-3 items-center">
             <User className="h-4 w-4 text-muted-foreground" />
-            <small className="text-sm font-medium text-muted-foreground">{staffName}</small>
+            <p className="text-sm font-medium text-muted-foreground">{staffName}</p>
           </div>
           <div className="flex gap-3 items-center">
             <Calendar className="h-4 w-4 text-muted-foreground" />
-            <small className="text-sm font-medium text-muted-foreground">{date}</small>
+            <p className="text-sm font-medium text-muted-foreground">{date}</p>
           </div>
           <div className="flex gap-3 items-center">
             <Clock className="h-4 w-4 text-muted-foreground" />
-            <small className="text-sm font-medium text-muted-foreground">{time}</small>
+            <p className="text-sm font-medium text-muted-foreground">{time}</p>
           </div>
         </div>
       </CardContent>

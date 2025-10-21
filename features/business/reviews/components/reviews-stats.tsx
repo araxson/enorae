@@ -32,7 +32,7 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
                   key={i}
                   className={`h-4 w-4 ${
                     i < Math.floor(stats.averageRating)
-                      ? 'fill-warning text-warning'
+                      ? 'fill-accent text-accent'
                       : 'text-muted-foreground/30'
                   }`}
                 />

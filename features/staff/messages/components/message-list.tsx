@@ -13,7 +13,7 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
   if (messages.length === 0) {
     return (
       <Card className="p-8 text-center">
-        <p className="leading-7 text-muted-foreground">No messages in this thread</p>
+        <p className="text-muted-foreground">No messages in this thread</p>
       </Card>
     )
   }
@@ -32,9 +32,9 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
             )}
           >
             <div className="flex flex-col gap-3">
-              <p className="leading-7 whitespace-pre-wrap">{message.content}</p>
+              <p className="whitespace-pre-wrap">{message.content}</p>
               {message.created_at && (
-                <p className="text-sm text-muted-foreground text-xs">
+                <p className="text-xs text-muted-foreground">
                   {format(new Date(message.created_at), 'PPp')}
                   {message.is_edited && ' (edited)'}
                 </p>

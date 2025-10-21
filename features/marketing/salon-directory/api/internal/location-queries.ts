@@ -12,7 +12,7 @@ export async function getPublicSalonCities(): Promise<{ city: string; state: str
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('city, state_province, is_active')
     .eq('is_active', true)
     .not('city', 'is', null)

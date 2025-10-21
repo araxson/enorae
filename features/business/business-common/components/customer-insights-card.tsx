@@ -49,31 +49,31 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             <div className="text-center p-4 rounded-lg bg-muted/50">
               <Users className="h-5 w-5 mx-auto mb-2 text-muted-foreground" />
               <div className="text-2xl font-bold">{data.totalCustomers}</div>
-              <small className="text-sm font-medium text-muted-foreground">Total Customers</small>
+              <p className="text-sm font-medium text-muted-foreground">Total Customers</p>
             </div>
 
             <div className="text-center p-4 rounded-lg bg-muted/50">
-              <UserPlus className="h-5 w-5 mx-auto mb-2 text-success" />
+              <UserPlus className="h-5 w-5 mx-auto mb-2 text-primary" />
               <div className="text-2xl font-bold">{data.newCustomers}</div>
-              <small className="text-sm font-medium text-muted-foreground">New ({newCustomerPercentage}%)</small>
+              <p className="text-sm font-medium text-muted-foreground">New ({newCustomerPercentage}%)</p>
             </div>
 
             <div className="text-center p-4 rounded-lg bg-muted/50">
-              <Repeat className="h-5 w-5 mx-auto mb-2 text-info" />
+              <Repeat className="h-5 w-5 mx-auto mb-2 text-secondary" />
               <div className="text-2xl font-bold">{data.returningCustomers}</div>
-              <small className="text-sm font-medium text-muted-foreground">Returning</small>
+              <p className="text-sm font-medium text-muted-foreground">Returning</p>
             </div>
 
             <div className="text-center p-4 rounded-lg bg-muted/50">
               <div className="flex gap-2 items-center justify-center mb-2">
                 {data.retentionRate >= 50 ? (
-                  <TrendingUp className="h-5 w-5 text-success" />
+                  <TrendingUp className="h-5 w-5 text-primary" />
                 ) : (
                   <TrendingDown className="h-5 w-5 text-destructive" />
                 )}
               </div>
               <div className="text-2xl font-bold">{data.retentionRate.toFixed(1)}%</div>
-              <small className="text-sm font-medium text-muted-foreground">Retention Rate</small>
+              <p className="text-sm font-medium text-muted-foreground">Retention Rate</p>
             </div>
           </div>
 
@@ -87,7 +87,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                 <h3 className="scroll-m-20 text-2xl font-semibold text-base">Avg Lifetime Value</h3>
               </div>
               <div className="text-3xl font-bold">{formatCurrency(data.averageLifetimeValue)}</div>
-              <small className="text-sm font-medium text-muted-foreground">Per customer</small>
+              <p className="text-sm font-medium text-muted-foreground">Per customer</p>
             </div>
 
             <div className="p-4 rounded-lg border">
@@ -96,7 +96,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                 <h3 className="scroll-m-20 text-2xl font-semibold text-base">Avg Order Value</h3>
               </div>
               <div className="text-3xl font-bold">{formatCurrency(data.averageOrderValue)}</div>
-              <small className="text-sm font-medium text-muted-foreground">Per appointment</small>
+              <p className="text-sm font-medium text-muted-foreground">Per appointment</p>
             </div>
           </div>
 
@@ -115,13 +115,13 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                       <div className="flex-1">
                         <div className="font-medium">{customer.name}</div>
                         {customer.email && (
-                          <small className="text-sm font-medium text-muted-foreground">{customer.email}</small>
+                          <p className="text-sm font-medium text-muted-foreground">{customer.email}</p>
                         )}
                       </div>
                       <div className="flex gap-4 items-center">
                         <div className="text-right">
                           <div className="font-semibold">{formatCurrency(customer.totalSpent)}</div>
-                          <small className="text-sm font-medium text-muted-foreground">{customer.visitCount} visits</small>
+                          <p className="text-sm font-medium text-muted-foreground">{customer.visitCount} visits</p>
                         </div>
                         <Badge variant="secondary">#{index + 1}</Badge>
                       </div>

@@ -66,18 +66,18 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
 
           <div className="flex flex-col gap-2">
             <div className="flex gap-3">
-              <small className="text-sm font-medium w-24 text-muted-foreground">Created:</small>
-              <small className="text-sm font-medium">{formatDate(session.created_at)}</small>
+              <p className="text-sm font-medium w-24 text-muted-foreground">Created:</p>
+              <p className="text-sm font-medium">{formatDate(session.created_at)}</p>
             </div>
 
             <div className="flex gap-3">
-              <small className="text-sm font-medium w-24 text-muted-foreground">Last Updated:</small>
-              <small className="text-sm font-medium">{formatDate(session.updated_at)}</small>
+              <p className="text-sm font-medium w-24 text-muted-foreground">Last Updated:</p>
+              <p className="text-sm font-medium">{formatDate(session.updated_at)}</p>
             </div>
 
             <div className="flex gap-3">
-              <small className="text-sm font-medium w-24 text-muted-foreground">Status:</small>
-              <small className="text-sm font-medium">{session.is_active ? 'Active' : 'Inactive'}</small>
+              <p className="text-sm font-medium w-24 text-muted-foreground">Status:</p>
+              <p className="text-sm font-medium">{session.is_active ? 'Active' : 'Inactive'}</p>
             </div>
           </div>
         </div>

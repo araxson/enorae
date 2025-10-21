@@ -88,7 +88,7 @@ export function DynamicPricingDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Active Rules</CardTitle>
-            <Zap className="h-4 w-4 text-warning" />
+            <Zap className="h-4 w-4 text-accent" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{rules.length}</div>
@@ -102,7 +102,7 @@ export function DynamicPricingDashboard({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Revenue Potential</CardTitle>
-            <TrendingUp className="h-4 w-4 text-success" />
+            <TrendingUp className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -166,15 +166,15 @@ export function DynamicPricingDashboard({
                     <div className="flex items-center gap-2">
                       {rule.adjustment_type === 'surge' ? (
                         <>
-                          <TrendingUp className="h-4 w-4 text-success" />
-                          <Badge className="bg-success/10 text-success">
+                          <TrendingUp className="h-4 w-4 text-primary" />
+                          <Badge className="bg-primary/10 text-primary">
                             +{rule.adjustment_percentage}% Surge
                           </Badge>
                         </>
                       ) : (
                         <>
-                          <TrendingDown className="h-4 w-4 text-info" />
-                          <Badge className="bg-info/10 text-info">
+                          <TrendingDown className="h-4 w-4 text-secondary" />
+                          <Badge className="bg-secondary/10 text-secondary">
                             -{rule.adjustment_percentage}% Discount
                           </Badge>
                         </>
@@ -273,13 +273,13 @@ export function DynamicPricingDashboard({
                           Base price: {formatCurrency(insight.base_price)}
                         </p>
                       </div>
-                      <Badge className="bg-success/10 text-success">
+                      <Badge className="bg-primary/10 text-primary">
                         +{formatCurrency(insight.potential_revenue_increase)}/mo
                       </Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-4 mt-3">
                       <div className="flex items-center gap-2">
-                        <TrendingDown className="h-4 w-4 text-info" />
+                        <TrendingDown className="h-4 w-4 text-secondary" />
                         <div>
                           <p className="text-xs text-muted-foreground">Off-Peak Price</p>
                           <p className="font-semibold">
@@ -288,7 +288,7 @@ export function DynamicPricingDashboard({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-success" />
+                        <TrendingUp className="h-4 w-4 text-primary" />
                         <div>
                           <p className="text-xs text-muted-foreground">Peak Price</p>
                           <p className="font-semibold">

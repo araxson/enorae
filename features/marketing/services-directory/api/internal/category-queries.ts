@@ -12,7 +12,7 @@ export async function getPublicServiceCategories(): Promise<
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('category_name, category_slug')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -54,7 +54,7 @@ export async function getPublicCategoryBySlug(
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('category_name, category_slug')
     .eq('is_active', true)
     .is('deleted_at', null)

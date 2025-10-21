@@ -22,9 +22,9 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       value: metrics.upcomingAppointments,
       description: 'Scheduled bookings',
       icon: Calendar,
-      accent: 'bg-info/10 text-info',
+      accent: 'bg-secondary/10 text-secondary',
       progress: metrics.upcomingAppointments > 0 ? 100 : 0,
-      progressClass: '[&>div]:bg-info',
+      progressClass: '[&>div]:bg-secondary',
       showHearts: undefined,
     },
     {
@@ -32,12 +32,12 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       value: metrics.completedAppointments,
       description: 'Total visits',
       icon: CheckCircle,
-      accent: 'bg-success/10 text-success',
+      accent: 'bg-primary/10 text-primary',
       progress:
         totalActivity > 0
           ? Math.round((metrics.completedAppointments / totalActivity) * 100)
           : 0,
-      progressClass: '[&>div]:bg-success',
+      progressClass: '[&>div]:bg-primary',
       showHearts: undefined,
     },
     {
@@ -55,8 +55,8 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-sm font-medium text-muted-foreground">Your activity</p>
-        <Badge variant={activityVariant} className="gap-1 text-xs">
+        <CardDescription>Your activity</CardDescription>
+        <Badge variant={activityVariant} className="gap-1">
           <TrendingUp className="h-3 w-3" />
           {activityLevel} user
         </Badge>
@@ -77,7 +77,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              <p className="text-sm text-muted-foreground">{description}</p>
+              <CardDescription>{description}</CardDescription>
 
               {typeof showHearts === 'number' && showHearts > 0 ? (
                 <div className="flex flex-wrap items-center gap-1">
@@ -85,7 +85,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
                     <Heart key={index} className="h-3.5 w-3.5 fill-accent text-accent-foreground" />
                   ))}
                   {showHearts > 5 && (
-                    <span className="text-xs text-muted-foreground">+{showHearts - 5}</span>
+                    <CardDescription>+{showHearts - 5}</CardDescription>
                   )}
                 </div>
               ) : (

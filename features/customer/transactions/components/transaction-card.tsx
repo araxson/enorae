@@ -58,9 +58,9 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           {transaction.appointment && (
             <div>
               <p className="text-sm text-muted-foreground">Related Appointment</p>
-              <small className="text-sm font-medium">
+              <p className="text-sm font-medium">
                 {format(new Date(transaction.appointment.scheduled_at || ''), 'PPP')}
-              </small>
+              </p>
             </div>
           )}
         </div>

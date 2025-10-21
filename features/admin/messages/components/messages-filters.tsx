@@ -102,7 +102,7 @@ export function MessagesFilters({
           </SelectContent>
         </Select>
         <div className="flex items-center gap-2 rounded-md border px-3 py-2">
-          <ShieldAlert className="h-4 w-4 text-warning" />
+          <ShieldAlert className="h-4 w-4 text-accent" />
           <Label htmlFor="flagged-only" className="text-sm font-medium">
             Flagged only
           </Label>

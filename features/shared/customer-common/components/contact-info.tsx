@@ -22,7 +22,7 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
         <div className="flex gap-3 items-center">
           <Phone className="h-4 w-4 text-muted-foreground" />
           <a href={`tel:${phone}`} className="hover:underline">
-            <small className="text-sm font-medium">{phone}</small>
+            <p className="text-sm font-medium">{phone}</p>
           </a>
         </div>
       )}
@@ -30,7 +30,7 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
         <div className="flex gap-3 items-center">
           <Mail className="h-4 w-4 text-muted-foreground" />
           <a href={`mailto:${email}`} className="hover:underline">
-            <small className="text-sm font-medium">{email}</small>
+            <p className="text-sm font-medium">{email}</p>
           </a>
         </div>
       )}
@@ -43,7 +43,7 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
             rel="noopener noreferrer"
             className="hover:underline"
           >
-            <small className="text-sm font-medium">Visit Website</small>
+            <p className="text-sm font-medium">Visit Website</p>
           </a>
         </div>
       )}

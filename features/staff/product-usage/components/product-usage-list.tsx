@@ -31,7 +31,7 @@ export function ProductUsageList({ productUsage }: ProductUsageListProps) {
   if (productUsage.length === 0) {
     return (
       <Card className="p-8 text-center">
-        <p className="leading-7 text-muted-foreground">No product usage records found</p>
+        <p className="text-muted-foreground">No product usage records found</p>
       </Card>
     )
   }
@@ -57,7 +57,7 @@ export function ProductUsageList({ productUsage }: ProductUsageListProps) {
               )}
 
               {usage.notes && (
-                <p className="leading-7 text-sm">{usage.notes}</p>
+                <p className="text-sm">{usage.notes}</p>
               )}
 
               {usage.created_at && (

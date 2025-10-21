@@ -37,7 +37,7 @@ export function TimeOffBalanceCard({ balance }: TimeOffBalanceCardProps) {
             <UsageRow
             label={`Pending approval: ${balance.pending_days} days`}
             percent={pendingPercent}
-            barClassName="bg-warning/10"
+            barClassName="bg-accent/10"
           />
           )}
         </div>
@@ -56,7 +56,7 @@ function BalanceStat({
   tone?: 'default' | 'info' | 'success'
 }) {
   const valueClass =
-    tone === 'info' ? 'text-info' : tone === 'success' ? 'text-success' : undefined
+    tone === 'info' ? 'text-secondary' : tone === 'success' ? 'text-primary' : undefined
 
   return (
     <div>

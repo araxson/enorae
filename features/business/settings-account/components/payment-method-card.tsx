@@ -15,8 +15,8 @@ export function PaymentMethodCard({
       <div className="flex flex-col gap-8">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="scroll-m-20 text-2xl font-semibold">Payment Method</h3>
-            <p className="text-sm text-muted-foreground">Manage your payment information</p>
+            <div className="text-2xl font-semibold">Payment Method</div>
+            <div className="text-sm text-muted-foreground">Manage your payment information</div>
           </div>
           <Button variant="outline" size="sm">
             Update
@@ -30,8 +30,8 @@ export function PaymentMethodCard({
             <CreditCard className="h-6 w-6 text-muted-foreground" />
           </div>
           <div className="flex-1">
-            <p className="leading-7 font-medium">•••• •••• •••• 4242</p>
-            <p className="text-sm text-muted-foreground text-sm">Expires 12/2026</p>
+            <div className="font-medium">•••• •••• •••• 4242</div>
+            <div className="text-sm text-muted-foreground">Expires 12/2026</div>
           </div>
           <Badge variant="outline">Default</Badge>
         </div>
@@ -40,7 +40,7 @@ export function PaymentMethodCard({
 
         <div className="flex items-center gap-4 text-sm">
           <Calendar className="h-4 w-4 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground">
             Next billing date:{' '}
             {new Date(subscription.nextBillingDate).toLocaleDateString(
               'en-US',
@@ -50,7 +50,7 @@ export function PaymentMethodCard({
                 year: 'numeric',
               },
             )}
-          </p>
+          </div>
         </div>
       </div>
     </Card>

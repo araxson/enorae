@@ -21,7 +21,7 @@ export function PricingSummaryCards({
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle>Active Rules</CardTitle>
-          <Zap className="h-4 w-4 text-warning" />
+          <Zap className="h-4 w-4 text-accent" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{rules.length}</div>
@@ -35,7 +35,7 @@ export function PricingSummaryCards({
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle>Revenue Potential</CardTitle>
-          <TrendingUp className="h-4 w-4 text-success" />
+          <TrendingUp className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">

@@ -106,9 +106,9 @@ export function CategoryForm({ category, open, onOpenChange }: CategoryFormProps
                   min="0"
                   defaultValue={category?.display_order || 0}
                 />
-                <small className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-foreground">
                   Lower numbers appear first in lists
-                </small>
+                </p>
               </div>
             </div>
           </div>

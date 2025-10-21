@@ -20,7 +20,7 @@ export async function getStaffServices(staffId: string): Promise<StaffService[]>
   if (!staffProfile) throw new Error('Unauthorized')
 
   const { data, error } = await supabase
-    .from('staff_services')
+    .from('staff_services_view')
     .select('*')
     .eq('staff_id', staffId)
     .order('service_name', { ascending: true })

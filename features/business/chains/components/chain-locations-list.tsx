@@ -80,7 +80,7 @@ export function ChainLocationsList({ locations, salons }: ChainLocationsListProp
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
-                    <Star className="h-3 w-3 text-warning" fill="currentColor" />
+                    <Star className="h-3 w-3 text-accent" fill="currentColor" />
                     <span>{location.rating.toFixed(1)}</span>
                     <span className="text-xs text-muted-foreground">
                       ({location.reviewCount})

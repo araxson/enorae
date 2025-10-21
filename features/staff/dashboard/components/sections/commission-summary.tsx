@@ -52,7 +52,7 @@ function Stat({ label, value, highlight }: { label: string; value: string; highl
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
-      <div className={`text-2xl font-bold ${highlight ? 'text-success' : ''}`}>
+      <div className={`text-2xl font-bold ${highlight ? 'text-primary' : ''}`}>
         {value}
       </div>
     </div>

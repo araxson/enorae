@@ -28,7 +28,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
     return (
       <Card className="p-8 text-center">
         <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-        <p className="leading-7 text-muted-foreground">No messages found</p>
+        <p className="text-muted-foreground">No messages found</p>
       </Card>
     )
   }
@@ -58,7 +58,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                 </div>
 
                 {thread.customer_name && (
-                  <p className="leading-7 text-sm">Customer: {thread.customer_name}</p>
+                  <p className="text-sm">Customer: {thread.customer_name}</p>
                 )}
 
                 {thread.last_message_at && (

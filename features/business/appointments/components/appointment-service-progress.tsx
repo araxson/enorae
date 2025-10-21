@@ -70,9 +70,9 @@ export function AppointmentServiceProgress({
   const getStatusIcon = (status: string | null) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle2 className="h-5 w-5 text-success" />
+        return <CheckCircle2 className="h-5 w-5 text-primary" />
       case 'in_progress':
-        return <Clock className="h-5 w-5 text-info" />
+        return <Clock className="h-5 w-5 text-secondary" />
       case 'cancelled':
         return <XCircle className="h-5 w-5 text-destructive" />
       default:
