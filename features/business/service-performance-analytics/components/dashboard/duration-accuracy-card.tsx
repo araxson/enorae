@@ -8,32 +8,30 @@ export function DurationAccuracyCard({ durationAccuracy }: { durationAccuracy: D
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Duration Accuracy</CardTitle>
-      </CardHeader>
-      <CardContent className="grid gap-3 md:grid-cols-2">
-        {durationAccuracy.map((entry) => (
-          <div key={entry.service_id} className="rounded-md border p-3">
+      <CardTitle>Duration Accuracy</CardTitle>
+    </CardHeader>
+    <CardContent className="grid gap-3 md:grid-cols-2">
+      {durationAccuracy.map((entry) => (
+        <Card key={entry.service_id}>
+          <CardContent className="space-y-2 p-4">
             <p className="text-base font-medium">{entry.service_name}</p>
             <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
-              <p className="text-base mt-0 text-sm text-muted-foreground">Scheduled</p>
-              <p className="text-base mt-0 text-sm text-muted-foreground">
-                {entry.expected_duration ? `${entry.expected_duration} min` : 'N/A'}
-              </p>
+              <span>Scheduled</span>
+              <span>{entry.expected_duration ? `${entry.expected_duration} min` : 'N/A'}</span>
             </div>
             <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <p className="text-base mt-0 text-sm text-muted-foreground">Actual</p>
-              <p className="text-base mt-0 text-sm text-muted-foreground">
-                {entry.actual_duration ? `${entry.actual_duration} min` : 'N/A'}
-              </p>
+              <span>Actual</span>
+              <span>{entry.actual_duration ? `${entry.actual_duration} min` : 'N/A'}</span>
             </div>
             {entry.variance != null && (
               <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'} className="mt-2">
                 {entry.variance > 0 ? '+' : ''}{entry.variance} min variance
               </Badge>
             )}
-          </div>
-        ))}
-      </CardContent>
-    </Card>
-  )
+          </CardContent>
+        </Card>
+      ))}
+    </CardContent>
+  </Card>
+)
 }

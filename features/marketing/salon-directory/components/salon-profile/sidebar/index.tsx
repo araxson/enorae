@@ -1,4 +1,3 @@
-import { Stack } from '@/components/layout'
 import type { Salon } from '../types'
 import { ContactCard } from './contact-card'
 import { QuickStatsCard } from './quick-stats-card'
@@ -13,12 +12,12 @@ interface SalonSidebarProps {
 
 export function SalonSidebar({ salon, location }: SalonSidebarProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <ContactCard salon={salon} location={location} />
       <QuickStatsCard salon={salon} />
       <SpecialtiesCard salon={salon} />
       <LanguagesCard salon={salon} />
       <PaymentMethodsCard salon={salon} />
-    </Stack>
+    </div>
   )
 }

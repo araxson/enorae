@@ -2,7 +2,6 @@
 
 import type { ReactNode } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Stack } from '@/components/layout'
 import type { BusinessDashboardMetrics, BusinessReviewStats } from '../types'
 import type { AppointmentWithDetails } from '../api/queries'
 import { QuickActions } from '@/features/business/business-common/components/quick-actions'
@@ -27,12 +26,12 @@ export function DashboardTabs({ metrics, reviewStats, appointments, analyticsPan
       </TabsList>
 
       <TabsContent value="overview" id="overview" className="mt-6">
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <QuickActions />
           <MetricsCards metrics={metrics} />
           <ReviewsCard stats={reviewStats} />
           <RecentBookings appointments={appointments} />
-        </Stack>
+        </div>
       </TabsContent>
 
       <TabsContent value="appointments" id="appointments" className="mt-6">

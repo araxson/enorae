@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -15,11 +14,11 @@ export function AdditionalInfoSection({ address }: Props) {
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Additional Information</h3>
           <Separator />
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="parking_instructions">Parking Instructions</Label>
             <Textarea
               id="parking_instructions"
@@ -28,9 +27,9 @@ export function AdditionalInfoSection({ address }: Props) {
               placeholder="Street parking available. Parking garage entrance on Oak Street."
               rows={3}
             />
-          </Stack>
+          </div>
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="accessibility_notes">Accessibility Notes</Label>
             <Textarea
               id="accessibility_notes"
@@ -39,8 +38,8 @@ export function AdditionalInfoSection({ address }: Props) {
               placeholder="Wheelchair accessible entrance on Main Street. Elevator available."
               rows={3}
             />
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Flex, Stack } from '@/components/layout'
 import { AdditionalInfoSection, CoordinatesSection, LocationDetailsSection, MapIntegrationSection, StreetAddressSection } from './address-form/sections'
 import { AddressValidation } from './address-validation'
 import type { LocationAddress } from './address-form/types'
@@ -62,7 +61,7 @@ export function AddressForm({ locationId, address, onSuccess }: Props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack gap="lg">
+      <div className="flex flex-col gap-6">
         {error && (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
@@ -82,12 +81,12 @@ export function AddressForm({ locationId, address, onSuccess }: Props) {
         <AdditionalInfoSection address={address} />
         <AddressValidation address={address} />
 
-        <Flex justify="end" gap="sm">
+        <div className="flex gap-3 justify-end">
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Saving...' : 'Save Address'}
           </Button>
-        </Flex>
-      </Stack>
+        </div>
+      </div>
     </form>
   )
 }

@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { Flex } from '@/components/layout/flex'
 import { RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
 
@@ -15,7 +14,7 @@ export function ErrorBoundaryActions({
   isLoading: boolean
 }) {
   return (
-    <Flex gap="sm" className="w-full">
+    <div className="flex w-full gap-6">
       <Button onClick={reset} variant="default" className="flex-1 gap-2" disabled={isLoading}>
         <RefreshCw className="h-4 w-4" />
         Try Again
@@ -26,6 +25,6 @@ export function ErrorBoundaryActions({
           {homeLabel}
         </Link>
       </Button>
-    </Flex>
+    </div>
   )
 }

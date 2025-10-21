@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 import { Edit2, Trash2, Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Box, Flex, Grid, Group } from '@/components/layout'
 import {
   Card,
   CardContent,
@@ -65,12 +64,12 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
     return (
       <Card>
         <CardContent>
-          <Box py="2xl">
-            <Stack gap="md" align="center" className="text-center">
+          <div className="py-10">
+            <div className="flex flex-col gap-4 items-center text-center">
               <Package className="h-12 w-12 text-muted-foreground" />
               <p className="leading-7 text-muted-foreground">No product categories found</p>
-            </Stack>
-          </Box>
+            </div>
+          </div>
         </CardContent>
       </Card>
     )
@@ -78,24 +77,24 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
 
   return (
     <>
-      <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {categories.map((category) => (
           <Card key={category.id}>
             <CardHeader>
-              <Flex align="start" justify="between">
-                <Box className="flex-1 space-y-2">
+              <div className="flex gap-4 items-start justify-between">
+                <div className="flex-1 space-y-2">
                   <CardTitle>{category.name}</CardTitle>
                   {category.description && (
                     <CardDescription>{category.description}</CardDescription>
                   )}
-                </Box>
+                </div>
                 <Badge variant="secondary">
                   {category.product_count || 0} products
                 </Badge>
-              </Flex>
+              </div>
             </CardHeader>
             <CardContent>
-              <Group gap="xs">
+              <div className="flex gap-2 items-center">
                 {onEdit && (
                   <Button
                     variant="outline"
@@ -114,11 +113,11 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
                   <Trash2 className="h-4 w-4 mr-2" />
                   Delete
                 </Button>
-              </Group>
+              </div>
             </CardContent>
           </Card>
         ))}
-      </Grid>
+      </div>
 
       <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent>

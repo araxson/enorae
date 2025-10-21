@@ -68,15 +68,15 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
       <CardContent className="p-0">
         <ScrollArea className="h-96">
           <div className="p-6 space-y-4">
-            {appointments.map((appointment, index) => {
+            {appointments.map((appointment) => {
               const salonInitials = getInitials(appointment.salon_name || 'Salon')
               const appointmentDate = appointment.start_time
                 ? format(new Date(appointment.start_time), 'EEEE, MMMM d, yyyy')
                 : 'Date TBD'
 
               return (
-                <div key={appointment.id}>
-                  <div className="flex items-start gap-4 group hover:bg-accent/50 -mx-2 p-2 rounded-lg transition-colors">
+                <Card key={appointment.id} className="group">
+                  <CardContent className="flex items-start gap-4 p-4">
                     <Avatar className="h-10 w-10 border-2 border-background">
                       <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
                         {salonInitials}
@@ -117,17 +117,15 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-8 px-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="h-8 px-3 opacity-0 transition-opacity group-hover:opacity-100"
                       asChild
                     >
                       <Link href={`/customer/appointments/${appointment.id}`}>
                         View
                       </Link>
                     </Button>
-                  </div>
-
-                  {index < appointments.length - 1 && <Separator className="my-4" />}
-                </div>
+                  </CardContent>
+                </Card>
               )
             })}
           </div>

@@ -2,7 +2,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack } from '@/components/layout'
 import { ImageIcon } from 'lucide-react'
 import Image from 'next/image'
 import type { Database } from '@/lib/types/database.types'
@@ -31,7 +30,7 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           {/* Logo */}
           {media.logo_url && (
             <div>
@@ -91,7 +90,7 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
               <p className="text-sm text-muted-foreground">No photos available yet</p>
             </div>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

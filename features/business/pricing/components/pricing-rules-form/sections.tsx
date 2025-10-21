@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { Grid, Stack } from '@/components/layout'
 import { dayOptions, segmentOptions, ruleLabels, type RuleType } from './constants'
 import type { PricingRuleFormState } from './types'
 
@@ -25,7 +24,7 @@ type RuleBasicsFieldsProps = {
 
 export function RuleBasicsFields({ formData, setFormData, services }: RuleBasicsFieldsProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <div>
         <Label htmlFor="rule_name">Rule Name</Label>
         <Input
@@ -39,7 +38,7 @@ export function RuleBasicsFields({ formData, setFormData, services }: RuleBasics
         />
       </div>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div>
           <Label htmlFor="rule_type">Rule Type</Label>
           <Select
@@ -83,8 +82,8 @@ export function RuleBasicsFields({ formData, setFormData, services }: RuleBasics
             </SelectContent>
           </Select>
         </div>
-      </Grid>
-    </Stack>
+      </div>
+    </div>
   )
 }
 
@@ -105,13 +104,13 @@ export function AdjustmentFields({
       : ['fixed', 'multiplier']
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       <Label>Adjustment</Label>
       <div className="text-sm text-muted-foreground">
         Applying pricing adjustments for {selectedServiceName.toLowerCase()}.
       </div>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         {adjustmentOptions.map((option) => (
           <Fragment key={option}>
             {option === 'multiplier' ? (
@@ -157,8 +156,8 @@ export function AdjustmentFields({
             )}
           </Fragment>
         ))}
-      </Grid>
-    </Stack>
+      </div>
+    </div>
   )
 }
 
@@ -182,11 +181,11 @@ export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFiel
   const shouldShowTime = ruleType === 'time_based' || ruleType === 'day_based'
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       <Label>Schedule</Label>
 
       {shouldShowTime ? (
-        <Grid cols={{ base: 1, md: 2 }} gap="md">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <div>
             <Label htmlFor="start_time">Start Time</Label>
             <Input
@@ -209,7 +208,7 @@ export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFiel
               }
             />
           </div>
-        </Grid>
+        </div>
       ) : null}
 
       <div>
@@ -228,7 +227,7 @@ export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFiel
           ))}
         </div>
       </div>
-    </Stack>
+    </div>
   )
 }
 
@@ -244,8 +243,8 @@ export function ValidityFields({
   selectedServiceName,
 }: ValidityFieldsProps) {
   return (
-    <Stack gap="lg">
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
+    <div className="flex flex-col gap-6">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div>
           <Label htmlFor="valid_from">Valid From</Label>
           <Input
@@ -268,7 +267,7 @@ export function ValidityFields({
             }
           />
         </div>
-      </Grid>
+      </div>
 
       <div>
         <Label htmlFor="customer_segment">Customer Segment</Label>
@@ -291,7 +290,7 @@ export function ValidityFields({
         </Select>
       </div>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="md" className="items-end">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 items-end">
         <div>
           <Label htmlFor="priority">Priority</Label>
           <Input
@@ -323,7 +322,7 @@ export function ValidityFields({
             }
           />
         </div>
-      </Grid>
-    </Stack>
+      </div>
+    </div>
   )
 }

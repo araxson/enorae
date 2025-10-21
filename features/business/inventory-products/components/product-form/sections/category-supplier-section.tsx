@@ -8,8 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Grid } from '@/components/layout'
-
 import type { ProductFormState, ProductCategory, Supplier } from '../types'
 
 type CategorySupplierSectionProps = {
@@ -26,7 +24,7 @@ export function CategorySupplierSection({
   suppliers,
 }: CategorySupplierSectionProps) {
   return (
-    <Grid cols={{ base: 1, md: 2 }} gap="md">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       <div className="space-y-2">
         <Label htmlFor="category">Category</Label>
         <Select
@@ -68,6 +66,6 @@ export function CategorySupplierSection({
           </SelectContent>
         </Select>
       </div>
-    </Grid>
+    </div>
   )
 }

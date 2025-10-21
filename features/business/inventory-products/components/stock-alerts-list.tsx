@@ -7,7 +7,6 @@ import { AlertTriangle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack } from '@/components/layout'
 import { resolveStockAlert } from '../api/mutations'
 import type { StockAlertWithProduct } from '../api/queries'
 
@@ -68,7 +67,7 @@ export function StockAlertsList({ alerts }: StockAlertsListProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           {alerts.map((alert, index) => {
             const alertInfo = getAlertType(alert.alert_type || 'unknown')
 
@@ -98,7 +97,7 @@ export function StockAlertsList({ alerts }: StockAlertsListProps) {
               </div>
             )
           })}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Stack } from '@/components/layout'
 import { RefreshCw, AlertCircle, CheckCircle, Clock, Activity } from 'lucide-react'
 import type { WebhookStats, WebhookDeliveryLog } from '../api/queries/monitoring'
 
@@ -61,7 +60,7 @@ export function WebhookMonitoringDashboard({
   }
 
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
@@ -219,6 +218,6 @@ export function WebhookMonitoringDashboard({
           </CardContent>
         </Card>
       )}
-    </Stack>
+    </div>
   )
 }

@@ -5,6 +5,7 @@ import { ThumbsUp, Star } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { toast } from 'sonner'
 import { markReviewAsHelpful } from '@/features/customer/reviews/api/helpful-mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -103,9 +104,11 @@ function ReviewCard({ review }: { review: SalonReview }) {
         )}
 
         {review.response && (
-          <div className="space-y-2 rounded-lg bg-muted/40 p-4">
-            <span className="text-xs font-semibold text-muted-foreground">Response from salon</span>
-            <p className="leading-7 text-sm">{review.response}</p>
+          <div className="flex flex-col gap-2">
+            <Alert>
+              <AlertTitle>Response from salon</AlertTitle>
+              <AlertDescription>{review.response}</AlertDescription>
+            </Alert>
             {review.response_date && (
               <span className="text-xs text-muted-foreground">
                 {new Date(review.response_date).toLocaleDateString('en-US', {

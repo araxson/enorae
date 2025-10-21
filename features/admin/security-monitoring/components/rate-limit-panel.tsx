@@ -39,30 +39,32 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
             {violations.length === 0 ? (
               <p className="text-sm text-muted-foreground">No identifiers are currently blocked.</p>
             ) : (
-              <ul className="space-y-2">
+              <div className="space-y-2">
                 {violations.slice(0, 6).map((violation) => (
-                  <li key={`${violation.identifier}-${violation.endpoint}`} className="rounded-md border p-3 text-sm">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-medium text-foreground">{violation.identifier}</span>
-                      <Badge variant="destructive" className="gap-1 text-xs">
-                        <Ban className="h-3 w-3" />
-                        Blocked
-                      </Badge>
-                    </div>
-                    <div className="mt-1 text-xs text-muted-foreground">
-                      Endpoint {violation.endpoint}
-                    </div>
-                    <div className="mt-1 text-xs text-muted-foreground">
-                      Requests: {violation.requestCount} · Window start {new Date(violation.windowStartAt).toLocaleTimeString()}
-                    </div>
-                    {violation.blockedUntil && (
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        Unblocks at {new Date(violation.blockedUntil).toLocaleTimeString()}
+                  <Card key={`${violation.identifier}-${violation.endpoint}`}>
+                    <CardContent className="p-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-sm font-medium">{violation.identifier}</span>
+                        <Badge variant="destructive" className="gap-1 text-xs">
+                          <Ban className="h-3 w-3" />
+                          Blocked
+                        </Badge>
                       </div>
-                    )}
-                  </li>
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        Endpoint {violation.endpoint}
+                      </div>
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        Requests: {violation.requestCount} · Window start {new Date(violation.windowStartAt).toLocaleTimeString()}
+                      </div>
+                      {violation.blockedUntil && (
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          Unblocks at {new Date(violation.blockedUntil).toLocaleTimeString()}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
                 ))}
-              </ul>
+              </div>
             )}
           </div>
 
@@ -71,21 +73,23 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
             {rules.length === 0 ? (
               <p className="text-sm text-muted-foreground">No rate limiting rules configured.</p>
             ) : (
-              <ul className="space-y-2">
+              <div className="space-y-2">
                 {rules.slice(0, 6).map((rule) => (
-                  <li key={rule.id} className="rounded-md border p-3 text-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-foreground">{rule.ruleName}</span>
-                      <Badge variant={rule.isActive ? 'outline' : 'secondary'} className="text-xs">
-                        {rule.isActive ? 'Active' : 'Inactive'}
-                      </Badge>
-                    </div>
-                    <div className="mt-1 text-xs text-muted-foreground">
-                      {rule.maxRequests} requests / {formatWindow(rule.windowSeconds)} ({rule.appliesTo})
-                    </div>
-                  </li>
+                  <Card key={rule.id}>
+                    <CardContent className="p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">{rule.ruleName}</span>
+                        <Badge variant={rule.isActive ? 'outline' : 'secondary'} className="text-xs">
+                          {rule.isActive ? 'Active' : 'Inactive'}
+                        </Badge>
+                      </div>
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        {rule.maxRequests} requests / {formatWindow(rule.windowSeconds)} ({rule.appliesTo})
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
-              </ul>
+              </div>
             )}
           </div>
         </div>

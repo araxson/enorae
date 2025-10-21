@@ -5,7 +5,6 @@ import { Edit2, Trash2, Package, AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Group, Box, Flex } from '@/components/layout'
 import {
   Table,
   TableBody,
@@ -95,12 +94,12 @@ export function ProductsTable({ products, onEdit }: ProductsTableProps) {
           {products.length === 0 ? (
             <TableRow>
               <TableCell colSpan={8}>
-                <Box py="lg" className="text-center">
-                  <Stack gap="xs" align="center" className="text-muted-foreground">
+                <div className="py-6 text-center">
+                  <div className="flex flex-col gap-2 items-center text-muted-foreground">
                     <Package className="h-8 w-8" />
                     <p className="leading-7">No products found</p>
-                  </Stack>
-                </Box>
+                  </div>
+                </div>
               </TableCell>
             </TableRow>
           ) : (
@@ -111,14 +110,14 @@ export function ProductsTable({ products, onEdit }: ProductsTableProps) {
               return (
                 <TableRow key={product.id}>
                   <TableCell>
-                    <Stack gap="none">
+                    <div className="flex flex-col gap-0">
                       <div className="font-medium">{product.name}</div>
                       {product.description && (
                         <div className="text-sm text-muted-foreground line-clamp-1">
                           {product.description}
                         </div>
                       )}
-                    </Stack>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <code className="text-xs">{product.sku || 'N/A'}</code>
@@ -127,12 +126,12 @@ export function ProductsTable({ products, onEdit }: ProductsTableProps) {
                     {product.category?.name || 'Uncategorized'}
                   </TableCell>
                   <TableCell>
-                    <Group gap="xs" align="center">
+                    <div className="flex gap-2 items-center">
                       <span className="font-medium">{totalStock}</span>
                       {(stockStatus.variant === 'destructive' || stockStatus.variant === 'secondary') && (
                         <AlertTriangle className="h-4 w-4 text-destructive" />
                       )}
-                    </Group>
+                    </div>
                   </TableCell>
                   <TableCell>{formatCurrency(product.cost_price)}</TableCell>
                   <TableCell>{formatCurrency(product.retail_price)}</TableCell>
@@ -142,7 +141,7 @@ export function ProductsTable({ products, onEdit }: ProductsTableProps) {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Flex justify="end" gap="xs">
+                    <div className="flex gap-2 justify-end">
                       {onEdit && (
                         <Button
                           variant="ghost"
@@ -161,7 +160,7 @@ export function ProductsTable({ products, onEdit }: ProductsTableProps) {
                         <Trash2 className="h-4 w-4" />
                         <span className="sr-only">Delete</span>
                       </Button>
-                    </Flex>
+                    </div>
                   </TableCell>
                 </TableRow>
               )

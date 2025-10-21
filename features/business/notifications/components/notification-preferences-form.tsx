@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Stack, Grid } from '@/components/layout'
 import { updateNotificationPreferences } from '../api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
@@ -88,7 +87,7 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
         </Button>
       </CardHeader>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           {Object.entries(state).map(([channel, events]) => (
             <Card key={channel} className="border-muted">
               <CardHeader>
@@ -100,7 +99,7 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Grid cols={{ base: 1, md: 2 }} gap="md">
+                <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                   {Object.entries(events).map(([event, value]) => (
                     <div
                       key={event}
@@ -122,11 +121,11 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
                       />
                     </div>
                   ))}
-                </Grid>
+                </div>
               </CardContent>
             </Card>
           ))}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Stack } from '@/components/layout'
 import { ScheduleForm } from './schedule-form'
 import { SchedulesGrid } from './schedules-grid'
 import type { StaffScheduleWithDetails } from '../api/queries'
@@ -22,9 +21,9 @@ export function SchedulesClient({ initialSchedules, staffMembers }: SchedulesCli
   }
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       <ScheduleForm staffMembers={staffMembers} onSuccess={handleUpdate} />
       <SchedulesGrid schedules={initialSchedules} onUpdate={handleUpdate} key={refreshKey} />
-    </Stack>
+    </div>
   )
 }

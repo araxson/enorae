@@ -2,8 +2,6 @@
 
 import { useEffect } from 'react'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Section } from '@/components/layout/primitives'
-import { Stack, Flex } from '@/components/layout/flex'
 import { DigestInfo } from './digest-info'
 import { DevelopmentDetails } from './development-details'
 import { ErrorBoundaryActions } from './actions'
@@ -40,18 +38,20 @@ export function ErrorBoundary({
   const copyDetails = `Error Type: ${errorType}\nMessage: ${error.message}\n${error.digest ? `Digest: ${error.digest}` : ''}\n${error.stack ? `Stack: ${error.stack}` : ''}`
 
   return (
-    <Section size="lg">
-      <Stack gap="xl" className="items-center justify-center min-h-[60vh]">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto flex min-h-[60vh] w-full max-w-6xl flex-col items-center gap-6 px-4 sm:px-6 lg:px-8">
         <Card className="w-full max-w-lg border-destructive/50">
           <CardHeader>
-            <Flex gap="sm" align="center">
+            <div className="flex gap-6">
               {getErrorIcon(errorType)}
-              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight m-0">{title ?? ERROR_TITLES[errorType]}</h2>
-            </Flex>
+              <h2 className="m-0 scroll-m-20 text-3xl font-semibold tracking-tight">
+                {title ?? ERROR_TITLES[errorType]}
+              </h2>
+            </div>
           </CardHeader>
 
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-6">
               <p className="leading-7 text-muted-foreground">
                 {description ?? ERROR_DESCRIPTIONS[errorType]}
               </p>
@@ -59,14 +59,14 @@ export function ErrorBoundary({
               {error.digest && <DigestInfo digest={error.digest} details={copyDetails} />}
 
               {showErrorDetails && <DevelopmentDetails message={error.message} />}
-            </Stack>
+            </div>
           </CardContent>
 
           <CardFooter>
             <ErrorBoundaryActions reset={reset} homeHref={homeHref} homeLabel={homeLabel} isLoading={false} />
           </CardFooter>
         </Card>
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

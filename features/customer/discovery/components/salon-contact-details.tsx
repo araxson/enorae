@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Stack, Group } from '@/components/layout'
 import { Phone, Mail, Globe, Facebook, Instagram, Twitter, MessageCircle } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
@@ -23,7 +22,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
         <CardTitle>Contact Information</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           {/* Phone */}
           {contactDetails.primary_phone && (
             <div className="flex items-center justify-between">
@@ -88,7 +87,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
           {socialLinks.length > 0 && (
             <div className="pt-4 border-t">
               <p className="text-sm text-muted-foreground mb-3 block">Follow us</p>
-              <Group gap="sm">
+              <div className="flex gap-3 items-center">
                 {socialLinks.map((link) => {
                   const Icon = link.icon
                   return (
@@ -106,7 +105,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
                     </Button>
                   )
                 })}
-              </Group>
+              </div>
             </div>
           )}
 
@@ -117,7 +116,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
               <div className="text-sm whitespace-pre-line">{contactDetails.hours_display_text}</div>
             </div>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { NotificationPreferences } from './components/notification-preferences'
 import { PrivacySettings } from './components/privacy-settings'
@@ -12,7 +11,7 @@ interface SettingsFeatureProps {
 
 export function SettingsFeature({ preferences }: SettingsFeatureProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Settings & Preferences</h1>
 
       <Tabs defaultValue="notifications" className="w-full">
@@ -34,7 +33,7 @@ export function SettingsFeature({ preferences }: SettingsFeatureProps) {
           <DisplayPreferences initialPreferences={preferences.display_preferences} />
         </TabsContent>
       </Tabs>
-    </Stack>
+    </div>
   )
 }
 
@@ -42,8 +41,8 @@ export async function StaffSettingsPage() {
   const preferences = await getUserPreferences()
 
   return (
-    <Section size="lg">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <SettingsFeature preferences={preferences} />
-    </Section>
+    </section>
   )
 }

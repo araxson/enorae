@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Stack } from '@/components/layout'
 import { Send } from 'lucide-react'
 import { threadMessageSchema, type ThreadMessageFormData } from '../schema'
 import { sendThreadMessage } from '../api/mutations'
@@ -47,7 +46,7 @@ export function MessageForm({ threadId, onSuccess }: MessageFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         <div>
           <Label htmlFor="content">Message</Label>
           <Textarea
@@ -69,7 +68,7 @@ export function MessageForm({ threadId, onSuccess }: MessageFormProps) {
           <Send className="h-4 w-4 mr-2" />
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>
-      </Stack>
+      </div>
     </form>
   )
 }

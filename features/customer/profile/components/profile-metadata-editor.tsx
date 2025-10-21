@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Stack } from '@/components/layout'
 import { Heart, Tag, X } from 'lucide-react'
 import { updateProfileMetadata } from '../api/mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -73,14 +72,14 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           {/* Interests */}
           <div>
             <Label className="flex items-center gap-2 mb-3">
               <Heart className="h-4 w-4" />
               Interests
             </Label>
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <div className="flex flex-wrap gap-2 min-h-10 p-2 border rounded-md">
                 {interests.length === 0 && (
                   <p className="text-xs text-muted-foreground">No interests added yet</p>
@@ -109,7 +108,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
                   Add
                 </Button>
               </div>
-            </Stack>
+            </div>
           </div>
 
           {/* Tags */}
@@ -118,7 +117,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
               <Tag className="h-4 w-4" />
               Tags
             </Label>
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <div className="flex flex-wrap gap-2 min-h-10 p-2 border rounded-md">
                 {tags.length === 0 && (
                   <p className="text-xs text-muted-foreground">No tags added yet</p>
@@ -147,7 +146,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
                   Add
                 </Button>
               </div>
-            </Stack>
+            </div>
           </div>
 
           {/* Save Button */}
@@ -158,7 +157,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
           <p className="text-xs text-center text-muted-foreground">
             Your preferences help us recommend services and salons that match your style
           </p>
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

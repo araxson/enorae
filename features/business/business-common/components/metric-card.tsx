@@ -4,7 +4,6 @@ import type { ReactNode, ComponentType } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { Stack, Flex } from '@/components/layout'
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import { formatPercentage } from '../utils/formatters'
 
@@ -142,7 +141,7 @@ export function MetricCard(props: MetricCardProps) {
       </CardHeader>
       <CardContent>
         {props.variant === 'progress' && (
-          <Stack gap="xs">
+          <div className="flex flex-col gap-2">
             <div className="text-2xl font-bold">{value}</div>
             <Progress
               value={props.progress}
@@ -150,12 +149,12 @@ export function MetricCard(props: MetricCardProps) {
               aria-label={`${props.progress}% progress`}
             />
             {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
-          </Stack>
+          </div>
         )}
 
         {props.variant === 'trend' && (
-          <Stack gap="xs">
-            <Flex align="end" justify="between">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-end justify-between">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{value}</h3>
               <Badge
                 variant={props.trend >= 0 ? 'default' : 'destructive'}
@@ -168,24 +167,24 @@ export function MetricCard(props: MetricCardProps) {
                 )}
                 {formatPercentage(Math.abs(props.trend))}
               </Badge>
-            </Flex>
+            </div>
             {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
-          </Stack>
+          </div>
         )}
 
         {props.variant === 'highlight' && (
-          <Stack gap="xs">
+          <div className="flex flex-col gap-2">
             <div className="text-3xl font-bold">{value}</div>
             {props.highlight}
             {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
-          </Stack>
+          </div>
         )}
 
         {(!props.variant || props.variant === 'default') && (
-          <Stack gap="xs">
+          <div className="flex flex-col gap-2">
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-2xl font-bold">{value}</h3>
             {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
-          </Stack>
+          </div>
         )}
       </CardContent>
     </Card>

@@ -26,7 +26,7 @@ export async function hideReview(formData: FormData) {
 
     // Get review details for audit
     const { data: review } = await supabase
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .select('customer_id, salon_id, rating, comment')
       .eq('id', reviewId)
       .single()
@@ -58,6 +58,8 @@ export async function hideReview(formData: FormData) {
       action: 'hide_review',
       entity_type: 'review',
       entity_id: reviewId,
+      target_schema: 'engagement',
+      target_table: 'salon_reviews',
       metadata: {
         reason,
         customer_id: review.customer_id,

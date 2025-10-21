@@ -106,11 +106,11 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
                 </Badge>
               )}
               {summary.emailVerified ? (
-                <Badge variant="outline" className="bg-emerald-50 text-emerald-700">
+                <Badge variant="secondary">
                   Email verified
                 </Badge>
               ) : (
-                <Badge variant="outline" className="bg-amber-50 text-amber-700">
+                <Badge variant="destructive">
                   Email unverified
                 </Badge>
               )}

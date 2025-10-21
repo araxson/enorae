@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Stack, Flex } from '@/components/layout'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
 
@@ -77,7 +76,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
         </div>
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <small className="text-sm font-medium leading-none text-muted-foreground">Start Date</small>
@@ -129,7 +128,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
           {request.status === 'pending' && (
             <div className="pt-2 border-t">
               {!showRejectForm ? (
-                <Flex gap="sm">
+                <div className="flex gap-3">
                   <Button
                     size="sm"
                     onClick={handleApprove}
@@ -145,16 +144,16 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
                   >
                     Reject
                   </Button>
-                </Flex>
+                </div>
               ) : (
-                <Stack gap="sm">
+                <div className="flex flex-col gap-3">
                   <Textarea
                     placeholder="Reason for rejection..."
                     value={rejectNotes}
                     onChange={(e) => setRejectNotes(e.target.value)}
                     rows={3}
                   />
-                  <Flex gap="sm">
+                  <div className="flex gap-3">
                     <Button
                       size="sm"
                       variant="destructive"
@@ -174,12 +173,12 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
                     >
                       Cancel
                     </Button>
-                  </Flex>
-                </Stack>
+                  </div>
+                </div>
               )}
             </div>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

@@ -3,6 +3,7 @@ import { MapPin, StickyNote } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { FavoriteWithSalon } from '../api/queries'
 import { FavoriteButton } from './favorite-button'
 import { FavoriteNotesButton } from './favorite-notes-button'
@@ -51,13 +52,11 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               {favorite.notes ? (
-                <div className="space-y-2 rounded-md bg-muted/50 p-3">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <StickyNote className="h-3 w-3" aria-hidden="true" />
-                    <span className="text-xs font-medium text-muted-foreground">My notes</span>
-                  </div>
-                  <p className="text-sm italic text-muted-foreground">{favorite.notes}</p>
-                </div>
+                <Alert>
+                  <StickyNote className="h-4 w-4" aria-hidden="true" />
+                  <AlertTitle>My notes</AlertTitle>
+                  <AlertDescription>{favorite.notes}</AlertDescription>
+                </Alert>
               ) : null}
 
               <Badge variant="secondary" className="w-fit capitalize">

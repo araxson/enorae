@@ -1,6 +1,4 @@
 'use client'
-
-import { Stack } from '@/components/layout'
 import { SubscriptionOverviewCard } from './subscription-overview-card'
 import { UsageQuotaCard } from './usage-quota-card'
 import { PaymentMethodCard } from './payment-method-card'
@@ -56,11 +54,11 @@ export function BillingSubscriptionForm({
   ]
 }: BillingSubscriptionFormProps) {
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       <SubscriptionOverviewCard subscription={subscription} />
       <UsageQuotaCard quotas={quotas} />
       <PaymentMethodCard subscription={subscription} />
       <InvoiceHistoryCard invoices={invoices} />
-    </Stack>
+    </div>
   )
 }

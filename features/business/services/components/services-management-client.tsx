@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Section, Stack, Flex, Box, Group } from '@/components/layout'
 import { ServicesGrid } from './services-grid'
 import { ServiceFormDialog } from './service-form-dialog'
 import { SearchInput } from '@/components/shared/search-input'
@@ -64,17 +63,17 @@ export function ServicesManagementClient({ salon, services }: ServicesManagement
   }, [services, searchQuery, statusFilter])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Flex justify="end" align="start">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-4 items-start justify-end">
           <Button onClick={handleAddClick}>
             <Plus className="mr-2 h-4 w-4" />
             Add Service
           </Button>
-        </Flex>
+        </div>
 
-        <Box>
-          <Group gap="md" className="flex-col sm:flex-row">
+        <div>
+          <div className="flex gap-4 items-center flex-col sm:flex-row">
             <SearchInput
               value={searchQuery}
               onChange={setSearchQuery}
@@ -91,8 +90,8 @@ export function ServicesManagementClient({ salon, services }: ServicesManagement
                 <SelectItem value="inactive">Inactive Only</SelectItem>
               </SelectContent>
             </Select>
-          </Group>
-        </Box>
+          </div>
+        </div>
 
         <ServicesGrid
           services={filteredServices}
@@ -107,7 +106,7 @@ export function ServicesManagementClient({ salon, services }: ServicesManagement
           service={editingService}
           onSuccess={handleSuccess}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

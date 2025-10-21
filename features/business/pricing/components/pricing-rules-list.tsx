@@ -4,7 +4,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
-import { Stack } from '@/components/layout'
 import { Trash2 } from 'lucide-react'
 import { togglePricingRuleStatus, deletePricingRule } from '../api/pricing-rules.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
@@ -90,7 +89,7 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
   }
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       {rules.map((rule) => (
         <Card key={rule.id} className="p-6">
           <div className="flex items-start justify-between">
@@ -137,6 +136,6 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
           </div>
         </Card>
       ))}
-    </Stack>
+    </div>
   )
 }

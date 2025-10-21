@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { Flex } from '@/components/layout'
 import { Calendar, Clock, DollarSign, CheckCircle } from 'lucide-react'
 import type { StaffAppointment } from '../api/queries'
 
@@ -50,13 +49,13 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
         return (
           <Card key={stat.label}>
             <CardContent className="p-4">
-              <Flex justify="between" align="start">
+              <div className="flex gap-4 items-start justify-between">
                 <div>
                   <p className="leading-7 text-sm text-muted-foreground">{stat.label}</p>
                   <p className="text-2xl font-bold">{stat.value}</p>
                 </div>
                 <Icon className={`h-4 w-4 ${stat.color}`} />
-              </Flex>
+              </div>
             </CardContent>
           </Card>
         )

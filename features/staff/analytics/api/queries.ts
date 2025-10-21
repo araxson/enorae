@@ -59,8 +59,7 @@ type AppointmentWithCustomerProfile = {
   customer_id: string
   created_at: string
   profiles: {
-    display_name: string | null
-    email: string | null
+    username: string | null
   } | null
 }
 
@@ -232,8 +231,7 @@ export async function getStaffCustomerRelationships(
       customer_id,
       created_at,
       profiles:customer_id (
-        display_name,
-        email
+        username
       )
     `)
     .eq('staff_id', targetStaffId)
@@ -256,7 +254,7 @@ export async function getStaffCustomerRelationships(
 
   customerAppointments.forEach((appt: AppointmentWithCustomerProfile) => {
     const customerId = appt.customer_id
-    const customerName = appt.profiles?.display_name || appt.profiles?.email || 'Unknown Customer'
+    const customerName = appt.profiles?.username || 'Unknown Customer'
 
     if (!customerMap.has(customerId)) {
       customerMap.set(customerId, {

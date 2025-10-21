@@ -2,7 +2,7 @@
 
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
-import { DynamicBreadcrumbs } from '../navigation/breadcrumbs'
+import { DynamicBreadcrumbs } from './navigation/breadcrumbs'
 
 export function PortalHeader() {
   return (

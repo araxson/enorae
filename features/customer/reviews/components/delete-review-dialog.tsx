@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Trash2 } from 'lucide-react'
 import { deleteReview } from '../api/mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -70,12 +70,10 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
         </DialogHeader>
 
         {review.title && (
-          <div className="rounded-md bg-muted p-4">
-            <p className="text-sm font-medium">{review.title}</p>
-            {review.comment && (
-              <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{review.comment}</p>
-            )}
-          </div>
+          <Alert>
+            <AlertTitle>{review.title}</AlertTitle>
+            {review.comment && <AlertDescription>{review.comment}</AlertDescription>}
+          </Alert>
         )}
 
         {error && (

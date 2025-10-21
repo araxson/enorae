@@ -11,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Stack, Group } from '@/components/layout'
 import { Search, X, MapPin, Filter } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 
@@ -53,7 +52,7 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
 
   return (
     <Card className="p-6">
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         {/* Search Input */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -67,7 +66,7 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
         </div>
 
         {/* Filter Row */}
-        <Group gap="sm" className="flex-wrap">
+        <div className="flex gap-3 items-center flex-wrap">
           {/* City Filter */}
           {cities.length > 0 && (
             <Select value={selectedCity} onValueChange={setSelectedCity}>
@@ -105,7 +104,7 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
           )}
 
           {/* Action Buttons */}
-          <Group gap="sm" className="ml-auto">
+          <div className="flex gap-3 items-center ml-auto">
             {hasActiveFilters && (
               <Button variant="outline" size="sm" onClick={handleClear}>
                 <X className="h-4 w-4 mr-2" />
@@ -115,9 +114,9 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
             <Button size="sm" onClick={handleSearch}>
               Search
             </Button>
-          </Group>
-        </Group>
-      </Stack>
+          </div>
+        </div>
+      </div>
     </Card>
   )
 }

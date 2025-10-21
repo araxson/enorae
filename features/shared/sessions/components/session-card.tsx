@@ -1,7 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
 import type { SessionWithDevice } from '../api/queries'
 
 interface SessionCardProps {
@@ -38,10 +37,10 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
   return (
     <Card>
       <CardContent className="space-y-4">
-        <Stack gap="md">
-          <Flex justify="between" align="start">
-            <Stack gap="xs">
-              <Flex gap="sm" align="center">
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-4 items-start justify-between">
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-3 items-center">
                 <p className="leading-7 font-medium">Session {session.id?.substring(0, 8) || 'Unknown'}</p>
                 {session.is_current && (
                   <Badge variant="default">Current Session</Badge>
@@ -49,9 +48,9 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
                 {session.is_suspicious && (
                   <Badge variant="destructive">Suspicious</Badge>
                 )}
-              </Flex>
+              </div>
               <p className="text-sm text-muted-foreground">{getActivityStatus(session.updated_at)}</p>
-            </Stack>
+            </div>
 
             {!session.is_current && session.id && (
               <Button
@@ -63,25 +62,25 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
                 {isRevoking ? 'Revoking...' : 'Revoke'}
               </Button>
             )}
-          </Flex>
+          </div>
 
-          <Stack gap="xs">
-            <Flex gap="sm">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-3">
               <small className="text-sm font-medium leading-none w-24 text-muted-foreground">Created:</small>
               <small className="text-sm font-medium leading-none">{formatDate(session.created_at)}</small>
-            </Flex>
+            </div>
 
-            <Flex gap="sm">
+            <div className="flex gap-3">
               <small className="text-sm font-medium leading-none w-24 text-muted-foreground">Last Updated:</small>
               <small className="text-sm font-medium leading-none">{formatDate(session.updated_at)}</small>
-            </Flex>
+            </div>
 
-            <Flex gap="sm">
+            <div className="flex gap-3">
               <small className="text-sm font-medium leading-none w-24 text-muted-foreground">Status:</small>
               <small className="text-sm font-medium leading-none">{session.is_active ? 'Active' : 'Inactive'}</small>
-            </Flex>
-          </Stack>
-        </Stack>
+            </div>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

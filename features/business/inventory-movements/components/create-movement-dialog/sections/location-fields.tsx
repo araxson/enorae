@@ -1,7 +1,6 @@
 'use client'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import type { InventoryLocationOption, MovementType } from '../types'
 
@@ -30,7 +29,7 @@ export function LocationFields({
 }: Props) {
   if (requiresSingleLocation(movementType)) {
     return (
-      <Stack gap="sm">
+      <div className="flex flex-col gap-3">
         <Label htmlFor="locationId">Location</Label>
         <Select value={locationId} onValueChange={onLocationChange} required>
           <SelectTrigger>
@@ -44,13 +43,13 @@ export function LocationFields({
             ))}
           </SelectContent>
         </Select>
-      </Stack>
+      </div>
     )
   }
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <Stack gap="sm">
+      <div className="flex flex-col gap-3">
         <Label htmlFor="fromLocationId">From Location</Label>
         <Select value={fromLocationId} onValueChange={onFromLocationChange} required>
           <SelectTrigger>
@@ -64,9 +63,9 @@ export function LocationFields({
             ))}
           </SelectContent>
         </Select>
-      </Stack>
+      </div>
 
-      <Stack gap="sm">
+      <div className="flex flex-col gap-3">
         <Label htmlFor="toLocationId">To Location</Label>
         <Select value={toLocationId} onValueChange={onToLocationChange} required>
           <SelectTrigger>
@@ -80,7 +79,7 @@ export function LocationFields({
             ))}
           </SelectContent>
         </Select>
-      </Stack>
+      </div>
     </div>
   )
 }

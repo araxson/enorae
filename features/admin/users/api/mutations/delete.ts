@@ -23,7 +23,7 @@ export async function deleteUserPermanently(formData: FormData) {
     const { data: userData, error: fetchError } = await supabase
       .schema('identity')
       .from('profiles')
-      .select('email, username')
+      .select('username')
       .eq('id', userId)
       .maybeSingle()
 
@@ -47,8 +47,9 @@ export async function deleteUserPermanently(formData: FormData) {
       action: 'delete_user_permanently',
       entity_type: 'user',
       entity_id: userId,
+      target_schema: 'identity',
+      target_table: 'profiles',
       metadata: {
-        deleted_user_email: userData?.email ?? null,
         deleted_user_username: userData?.username ?? null,
         deleted_by: session.user.id,
         reason,

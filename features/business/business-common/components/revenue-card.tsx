@@ -1,11 +1,10 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 'use client'
 
 import type { ReactNode, ComponentType } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex, Group } from '@/components/layout'
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import { formatCurrency, formatPercentage, calculateGrowthRate } from '../utils/formatters'
 
@@ -125,9 +124,9 @@ export function RevenueCard({
         )}
       </CardHeader>
       <CardContent>
-        <Stack gap={compact ? 'xs' : 'sm'}>
+        <div className={cn('flex flex-col', compact ? 'gap-2' : 'gap-3')}>
           {/* Primary amount */}
-          <Group gap="xs" align="baseline">
+          <div className="flex gap-2">
             <h3 className={cn('scroll-m-20 text-2xl font-semibold tracking-tight', compact ? 'text-2xl' : 'text-3xl font-bold')}>
               {formattedAmount}
             </h3>
@@ -144,11 +143,11 @@ export function RevenueCard({
                 {formatPercentage(Math.abs(growthRate), { includeSign: true })}
               </Badge>
             )}
-          </Group>
+          </div>
 
           {/* Growth indicator */}
           {growthRate !== undefined && (
-            <Flex gap="xs" align="center">
+            <div className="flex gap-2 items-center">
               {growthRate >= 0 ? (
                 <ArrowUpRight className="h-3 w-3 text-success" aria-hidden="true" />
               ) : (
@@ -162,28 +161,28 @@ export function RevenueCard({
               >
                 {growthRate >= 0 ? 'Growth' : 'Decline'} vs. previous period
               </small>
-            </Flex>
+            </div>
           )}
 
           {/* Breakdown */}
           {breakdown && breakdown.length > 0 && (
             <div className="pt-2 border-t">
-              <Stack gap="xs">
+              <div className="flex flex-col gap-2">
                 {breakdown.map((item) => (
-                  <Flex key={item.label} justify="between" align="center">
+                  <div key={item.label} className="flex gap-4 items-center justify-between">
                     <p className="text-sm text-muted-foreground text-xs">{item.label}</p>
                     <small className="text-sm font-medium leading-none font-medium">
                       {formatCurrency(item.amount, { currency })}
                     </small>
-                  </Flex>
+                  </div>
                 ))}
-              </Stack>
+              </div>
             </div>
           )}
 
           {/* Subtitle */}
           {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

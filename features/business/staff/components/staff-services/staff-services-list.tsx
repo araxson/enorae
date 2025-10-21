@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { EmptyState } from '@/components/shared/empty-state'
 import { SearchInput } from '@/components/shared/search-input'
-import { Box, Group, Stack } from '@/components/layout'
 import type { StaffMemberWithServices } from './types'
 
 type StaffServicesListProps = {
@@ -40,14 +39,14 @@ export function StaffServicesList({
     <Card>
       <CardHeader>
         <CardTitle>Staff Services Management</CardTitle>
-        <Box className="mt-4">
+        <div className="mt-4">
           <SearchInput
             value={searchQuery}
             onChange={onSearchChange}
             placeholder="Search by name, title, or service..."
             className="w-full"
           />
-        </Box>
+        </div>
       </CardHeader>
       <CardContent>
         {filteredStaff.length === 0 ? (
@@ -57,7 +56,7 @@ export function StaffServicesList({
             description="Try adjusting your search query"
           />
         ) : (
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             {filteredStaff.map((member) => (
               <StaffMemberCard
                 key={member.id}
@@ -65,7 +64,7 @@ export function StaffServicesList({
                 onManage={() => onManageStaff(member)}
               />
             ))}
-          </Stack>
+          </div>
         )}
       </CardContent>
     </Card>
@@ -79,7 +78,7 @@ type StaffMemberCardProps = {
 
 function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
   return (
-    <Group gap="md" className="pb-4 border-b last:border-0 last:pb-0">
+    <div className="flex gap-4 items-center pb-4 border-b last:border-0 last:pb-0">
       <Avatar>
         {member.avatar_url && (
           <AvatarImage src={member.avatar_url} alt={member.full_name || 'Staff'} />
@@ -89,7 +88,7 @@ function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
         </AvatarFallback>
       </Avatar>
 
-      <Stack gap="xs" className="flex-1">
+      <div className="flex flex-col gap-2 flex-1">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-base">{member.full_name || 'Staff Member'}</h4>
         {member.title && <p className="text-sm text-muted-foreground text-sm">{member.title}</p>}
 
@@ -102,13 +101,13 @@ function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
             ))
           )}
         </div>
-      </Stack>
+      </div>
 
       <Button variant="outline" size="sm" onClick={onManage}>
         <Scissors className="h-4 w-4 mr-2" />
         Manage Services
       </Button>
-    </Group>
+    </div>
   )
 }
 

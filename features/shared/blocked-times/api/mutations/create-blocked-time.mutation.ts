@@ -7,7 +7,7 @@ import { resolveClient, resolveSessionRoles, ensureSalonAccess, BLOCKED_TIMES_PA
 const blockedTimeSchema = z.object({
   salon_id: z.string().regex(UUID_REGEX, 'Invalid salon ID'),
   staff_id: z.string().regex(UUID_REGEX, 'Invalid staff ID').optional(),
-  block_type: z.string().min(1, 'Block type is required'),
+  block_type: z.enum(['maintenance', 'other', 'break', 'vacation', 'sick_leave', 'training', 'personal', 'lunch', 'holiday']),
   start_time: z.string().datetime(),
   end_time: z.string().datetime(),
   reason: z.string().min(1, 'Reason is required').optional(),

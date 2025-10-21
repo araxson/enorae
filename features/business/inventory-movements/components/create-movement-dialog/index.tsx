@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Stack } from '@/components/layout'
 import { ProductSelect } from './sections/product-select'
 import { MovementTypeSelect } from './sections/movement-type-select'
 import { LocationFields } from './sections/location-fields'
@@ -49,7 +48,7 @@ export function CreateMovementDialog({ open, onOpenChange, products, locations }
             </DialogDescription>
           </DialogHeader>
 
-          <Stack gap="lg" className="my-6">
+          <div className="flex flex-col gap-6 my-6">
             <ProductSelect products={products} value={state.productId} onChange={setProductId} />
             <MovementTypeSelect value={state.movementType} onChange={setMovementType} />
             <LocationFields
@@ -64,7 +63,7 @@ export function CreateMovementDialog({ open, onOpenChange, products, locations }
             />
             <QuantityFields />
             <NotesField />
-          </Stack>
+          </div>
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>

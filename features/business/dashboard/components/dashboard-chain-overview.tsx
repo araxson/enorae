@@ -6,7 +6,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { Grid, Stack, Group } from '@/components/layout'
 import type { BusinessMultiLocationMetrics } from '../types'
 
 type DashboardChainOverviewProps = {
@@ -64,26 +63,26 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
   return (
     <Card id="overview">
       <CardHeader>
-        <Group className="items-center justify-between">
+        <div className="flex gap-4 items-center items-center justify-between">
           <div className="flex items-center gap-2">
             <Building2 className="h-5 w-5" aria-hidden="true" />
             <CardTitle>Chain overview</CardTitle>
           </div>
           <Badge variant="outline">Multi-location</Badge>
-        </Group>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Grid cols={{ base: 1, md: 3 }} gap="md">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
           {overviewItems.map((item) => {
             const Icon = item.icon
             return (
               <Tooltip key={item.label}>
                 <TooltipTrigger asChild>
                   <div className={`overflow-hidden rounded-xl border border-border/60 bg-card/60 p-4 transition-colors hover:border-primary/40 ${item.accent}`}>
-                    <Group className="items-center justify-between">
+                    <div className="flex gap-4 items-center items-center justify-between">
                       <small className="text-sm font-medium leading-none text-muted-foreground">{item.label}</small>
                       <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                    </Group>
+                    </div>
                     <div className="mt-2 text-2xl font-semibold text-foreground">{item.value(metrics)}</div>
                   </div>
                 </TooltipTrigger>
@@ -91,26 +90,26 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
               </Tooltip>
             )
           })}
-        </Grid>
+        </div>
 
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="chain-health">
             <AccordionTrigger>Chain health metrics</AccordionTrigger>
             <AccordionContent>
-              <Stack gap="md">
-                <Stack gap="xs">
-                  <Group className="items-center justify-between">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-4 items-center items-center justify-between">
                     <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Confirmation rate</small>
                     <small className="text-sm font-medium leading-none text-muted-foreground">{appointmentFill}%</small>
-                  </Group>
+                  </div>
                   <Progress value={appointmentFill} aria-label="Confirmation rate progress" />
-                </Stack>
-                <Group className="flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                </div>
+                <div className="flex gap-4 items-center flex-wrap items-center gap-4 text-xs text-muted-foreground">
                   <Badge variant="outline">Staff: {metrics.totalStaff}</Badge>
                   <Badge variant="outline">Services: {metrics.totalServices}</Badge>
                   <Badge variant="outline">Pending: {metrics.pendingAppointments}</Badge>
-                </Group>
-              </Stack>
+                </div>
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

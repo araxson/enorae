@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { ActionButton } from '@/components/shared'
 import { updateSalonInfo } from '../api/mutations'
 
@@ -46,7 +45,7 @@ export function SalonInfoForm({
       </CardHeader>
       <CardContent>
         <form ref={setFormRef}>
-          <Stack gap="lg">
+          <div className="flex flex-col gap-6">
             <div>
               <Label htmlFor="business_name">Business Name</Label>
               <Input
@@ -97,7 +96,7 @@ export function SalonInfoForm({
                 Save Changes
               </ActionButton>
             </div>
-          </Stack>
+          </div>
         </form>
       </CardContent>
     </Card>

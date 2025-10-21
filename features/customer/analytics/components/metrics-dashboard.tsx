@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Grid, Stack, Box } from '@/components/layout'
 import { DollarSign, Calendar, CheckCircle2, XCircle, TrendingUp } from 'lucide-react'
 import type { CustomerMetrics } from '../api/queries'
 
@@ -38,9 +37,9 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
   ]
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       {/* Stats Cards */}
-      <Grid cols={{ base: 1, sm: 2, lg: 4 }} gap="lg">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
@@ -55,7 +54,7 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
             </Card>
           )
         })}
-      </Grid>
+      </div>
 
       {/* Favorite Services */}
       {metrics.favoriteServices.length > 0 && (
@@ -87,25 +86,25 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
           <CardContent className="space-y-3">
             {metrics.recentActivity.map((appointment) => (
               <div key={appointment.id} className="flex items-start justify-between border-b pb-3 last:border-0 last:pb-0">
-                <Box>
+                <div>
                   <p className="text-sm font-medium text-foreground">
                     {Array.isArray(appointment.service_names) && appointment.service_names.length > 0
                       ? appointment.service_names.join(', ')
                       : 'Service'}
                   </p>
                   <p className="text-sm text-muted-foreground">{appointment.salon_name || 'Salon'}</p>
-                </Box>
-                <Box className="text-right">
+                </div>
+                <div className="text-right">
                   <p className="text-sm text-foreground">
                     {appointment.start_time ? new Date(appointment.start_time).toLocaleDateString() : 'N/A'}
                   </p>
                   <p className="text-xs text-muted-foreground capitalize">{appointment.status}</p>
-                </Box>
+                </div>
               </div>
             ))}
           </CardContent>
         </Card>
       )}
-    </Stack>
+    </div>
   )
 }

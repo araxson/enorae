@@ -14,8 +14,7 @@ export type AppointmentWithProfile = {
   status: string | null
   staff_id: string | null
   profiles: {
-    display_name: string | null
-    email: string | null
+    username: string | null
   } | null
 }
 

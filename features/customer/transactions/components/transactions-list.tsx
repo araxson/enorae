@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/shared/empty-state'
 import { Receipt } from 'lucide-react'
@@ -29,10 +28,10 @@ export function TransactionsList({ transactions }: TransactionsListProps) {
   }
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       {transactions.map((transaction) => (
         <TransactionCard key={transaction.id} transaction={transaction} />
       ))}
-    </Stack>
+    </div>
   )
 }

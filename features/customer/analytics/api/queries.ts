@@ -66,8 +66,15 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
     .sort((a, b) => b.count - a.count)
     .slice(0, 5)
 
-  // Get recent activity (last 10 appointments) - cast to Appointment type
-  const recentActivity = (appointments?.slice(0, 10) || []) as unknown as Appointment[]
+  // Get recent activity (last 10 appointments)
+  const recentActivity = (appointments?.slice(0, 10) || []).map((apt) => ({
+    id: apt.id,
+    status: apt.status,
+    service_names: apt.service_names,
+    salon_name: apt.salon_name,
+    start_time: apt.start_time,
+    created_at: apt.created_at,
+  } as Partial<Appointment>)) as Appointment[]
 
   return {
     totalSpending,

@@ -3,7 +3,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack, Flex, Box } from '@/components/layout'
 import { resolveStockAlert, unresolveStockAlert } from '../api/mutations'
 import { useTransition } from 'react'
 import type { StockAlertWithProduct } from '../api/queries'
@@ -62,76 +61,76 @@ export function AlertCard({ alert }: AlertCardProps) {
   return (
     <Card>
       <CardContent className="space-y-4">
-        <Stack gap="sm">
-          <Flex justify="between" align="start">
-            <Box>
+        <div className="flex flex-col gap-3">
+          <div className="flex gap-4 items-start justify-between">
+            <div>
               <span className="text-lg font-semibold">{alert.product?.name || 'Unknown Product'}</span>
               {alert.product?.sku && (
                 <small className="text-sm font-medium leading-none text-muted-foreground">SKU: {alert.product.sku}</small>
               )}
-            </Box>
-            <Flex gap="xs">
+            </div>
+            <div className="flex gap-2">
               <Badge variant={getAlertLevelVariant(alert.alert_level || 'low')}>
                 {alert.alert_level?.toUpperCase() || 'UNKNOWN'}
               </Badge>
               {alert.is_resolved && (
                 <Badge variant="outline">Resolved</Badge>
               )}
-            </Flex>
-          </Flex>
+            </div>
+          </div>
 
-          <Stack gap="xs">
-            <Flex gap="sm">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-3">
               <small className="text-sm font-medium leading-none text-muted-foreground">Type:</small>
               <small className="text-sm font-medium leading-none">{getAlertTypeLabel(alert.alert_type || '')}</small>
-            </Flex>
+            </div>
 
             {alert.current_quantity !== null && (
-              <Flex gap="sm">
+              <div className="flex gap-3">
                 <small className="text-sm font-medium leading-none text-muted-foreground">Current:</small>
                 <small className="text-sm font-medium leading-none">
                   {alert.current_quantity} {alert.product?.unit_of_measure || 'units'}
                 </small>
-              </Flex>
+              </div>
             )}
 
             {alert.threshold_quantity !== null && (
-              <Flex gap="sm">
+              <div className="flex gap-3">
                 <small className="text-sm font-medium leading-none text-muted-foreground">Threshold:</small>
                 <small className="text-sm font-medium leading-none">
                   {alert.threshold_quantity} {alert.product?.unit_of_measure || 'units'}
                 </small>
-              </Flex>
+              </div>
             )}
 
             {alert.location && (
-              <Flex gap="sm">
+              <div className="flex gap-3">
                 <small className="text-sm font-medium leading-none text-muted-foreground">Location:</small>
                 <small className="text-sm font-medium leading-none">{alert.location.name}</small>
-              </Flex>
+              </div>
             )}
 
             {alert.message && (
-              <Box>
+              <div>
                 <small className="text-sm font-medium leading-none text-muted-foreground">Message:</small>
                 <small className="text-sm font-medium leading-none">{alert.message}</small>
-              </Box>
+              </div>
             )}
 
-            <Flex gap="sm">
+            <div className="flex gap-3">
               <small className="text-sm font-medium leading-none text-muted-foreground">Created:</small>
               <small className="text-sm font-medium leading-none">{alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'}</small>
-            </Flex>
+            </div>
 
             {alert.resolved_at && (
-              <Flex gap="sm">
+              <div className="flex gap-3">
                 <small className="text-sm font-medium leading-none text-muted-foreground">Resolved:</small>
                 <small className="text-sm font-medium leading-none">{new Date(alert.resolved_at).toLocaleDateString()}</small>
-              </Flex>
+              </div>
             )}
-          </Stack>
+          </div>
 
-          <Flex justify="end" gap="sm">
+          <div className="flex gap-3 justify-end">
             {!alert.is_resolved ? (
               <Button
                 size="sm"
@@ -151,8 +150,8 @@ export function AlertCard({ alert }: AlertCardProps) {
                 {isPending ? 'Unresolving...' : 'Reopen'}
               </Button>
             )}
-          </Flex>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

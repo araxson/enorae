@@ -2,7 +2,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Grid } from '@/components/layout'
 import { TrendingUp, TrendingDown, DollarSign, Star, BarChart3, Users, Link2 } from 'lucide-react'
 import type { ServicePerformance } from '../api/queries'
 
@@ -76,8 +75,8 @@ export function ServicePerformanceDashboard({
   }
 
   return (
-    <Stack gap="xl">
-      <Grid cols={{ base: 1, md: 3 }} gap="lg">
+    <div className="flex flex-col gap-8">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
         <Card className="md:col-span-2">
           <CardHeader>
             <div className="flex items-center gap-2">
@@ -86,7 +85,7 @@ export function ServicePerformanceDashboard({
             </div>
           </CardHeader>
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-4">
               {topServices.map((service, index) => (
                 <div key={service.service_id} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -109,7 +108,7 @@ export function ServicePerformanceDashboard({
                   </div>
                 </div>
               ))}
-            </Stack>
+            </div>
             </CardContent>
           </Card>
 
@@ -121,7 +120,7 @@ export function ServicePerformanceDashboard({
             </div>
           </CardHeader>
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-4">
               {trendingServices.map((service, index) => (
                 <div key={service.service_id} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -143,10 +142,10 @@ export function ServicePerformanceDashboard({
                   </div>
                 </div>
               ))}
-            </Stack>
+            </div>
             </CardContent>
           </Card>
-      </Grid>
+      </div>
 
       <Card>
         <CardHeader>
@@ -195,7 +194,7 @@ export function ServicePerformanceDashboard({
                   </Badge>
                 </div>
 
-                <Grid cols={{ base: 2, md: 4 }} gap="md">
+                <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Total Bookings</p>
                     <p className="text-xl font-semibold">{service.total_bookings}</p>
@@ -215,14 +214,14 @@ export function ServicePerformanceDashboard({
                     <p className="text-sm text-muted-foreground">Popularity Score</p>
                     <p className="text-xl font-semibold">{service.popularity_score?.toFixed(0) || 0}</p>
                   </div>
-                </Grid>
+                </div>
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="lg">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
@@ -232,19 +231,21 @@ export function ServicePerformanceDashboard({
           </CardHeader>
           <CardContent className="space-y-3">
             {staffPerformance.map((record) => (
-              <div key={record.service_id} className="rounded-md border p-3">
-                <p className="font-medium mb-2">{record.service_name}</p>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  {record.staff.slice(0, 3).map((staff) => (
-                    <div key={staff.staff_id} className="flex justify-between">
-                      <span>{staff.staff_name}</span>
-                      <span>
-                        {staff.appointmentCount} appts · {formatCurrency(staff.revenue)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <Card key={record.service_id}>
+                <CardContent className="space-y-2 p-4">
+                  <p className="mb-2 font-medium">{record.service_name}</p>
+                  <div className="space-y-1 text-sm text-muted-foreground">
+                    {record.staff.slice(0, 3).map((staff) => (
+                      <div key={staff.staff_id} className="flex justify-between">
+                        <span>{staff.staff_name}</span>
+                        <span>
+                          {staff.appointmentCount} appts · {formatCurrency(staff.revenue)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </CardContent>
         </Card>
@@ -258,17 +259,19 @@ export function ServicePerformanceDashboard({
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
             {pairings.map((pair) => (
-              <div key={`${pair.primary}-${pair.paired}`} className="flex items-center justify-between rounded-md border px-3 py-2">
-                <div>
-                  <p className="font-medium">{pair.primary}</p>
-                  <p className="text-xs text-muted-foreground">Often paired with {pair.paired}</p>
-                </div>
-                <Badge variant="secondary">{pair.count} combos</Badge>
-              </div>
+              <Card key={`${pair.primary}-${pair.paired}`}>
+                <CardContent className="flex items-center justify-between p-3">
+                  <div>
+                    <p className="font-medium">{pair.primary}</p>
+                    <p className="text-xs text-muted-foreground">Often paired with {pair.paired}</p>
+                  </div>
+                  <Badge variant="secondary">{pair.count} combos</Badge>
+                </CardContent>
+              </Card>
             ))}
           </CardContent>
         </Card>
-      </Grid>
+      </div>
 
       <Card>
         <CardHeader>
@@ -276,25 +279,27 @@ export function ServicePerformanceDashboard({
         </CardHeader>
         <CardContent className="grid gap-3 md:grid-cols-2">
           {durationAccuracy.map((entry) => (
-            <div key={entry.service_id} className="rounded-md border p-3">
-              <p className="font-medium">{entry.service_name}</p>
-              <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
-                <span>Scheduled</span>
-                <span>{entry.expected_duration ? `${entry.expected_duration} min` : 'N/A'}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>Actual</span>
-                <span>{entry.actual_duration ? `${entry.actual_duration} min` : 'N/A'}</span>
-              </div>
-              {entry.variance != null && (
-                <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'} className="mt-2">
-                  {entry.variance > 0 ? '+' : ''}{entry.variance} min variance
-                </Badge>
-              )}
-            </div>
+            <Card key={entry.service_id}>
+              <CardContent className="space-y-2 p-4">
+                <p className="font-medium">{entry.service_name}</p>
+                <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Scheduled</span>
+                  <span>{entry.expected_duration ? `${entry.expected_duration} min` : 'N/A'}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Actual</span>
+                  <span>{entry.actual_duration ? `${entry.actual_duration} min` : 'N/A'}</span>
+                </div>
+                {entry.variance != null && (
+                  <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'} className="mt-2">
+                    {entry.variance > 0 ? '+' : ''}{entry.variance} min variance
+                  </Badge>
+                )}
+              </CardContent>
+            </Card>
           ))}
         </CardContent>
       </Card>
-    </Stack>
+    </div>
   )
 }

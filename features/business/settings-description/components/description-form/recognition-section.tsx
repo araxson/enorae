@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 
 import { ArrayInput } from './array-input'
@@ -17,7 +16,7 @@ export function RecognitionSection({ awards, certifications, onAwardsChange, onC
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Awards & Certifications</h3>
           <Separator />
 
@@ -36,7 +35,7 @@ export function RecognitionSection({ awards, certifications, onAwardsChange, onC
             onRemove={(index) => onCertificationsChange(certifications.filter((_, idx) => idx !== index))}
             placeholder="Certified Colorist, ..."
           />
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

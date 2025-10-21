@@ -1,5 +1,4 @@
 import { subDays, format } from 'date-fns'
-import { Section, Stack, Box } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { DailyMetricsDashboard } from './components/daily-metrics-dashboard'
 import { getUserSalon } from '@/features/business/staff/api/queries'
@@ -30,23 +29,23 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
     salon = await getUserSalon()
   } catch (error) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Please log in to view analytics'}
           </AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 
   if (!salon?.id) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
           <AlertDescription>No salon found</AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 
@@ -63,13 +62,13 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
     ])
 
     return (
-      <Section size="lg">
-        <Stack gap="xl">
-          <Box>
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+        <div className="flex flex-col gap-8">
+          <div>
             <p className="text-sm text-muted-foreground text-sm">
               Performance metrics from {currentDateFrom} to {currentDateTo}
             </p>
-          </Box>
+          </div>
 
           {metrics.length === 0 ? (
             <Alert>
@@ -84,18 +83,18 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
               trends={comparison.trends}
             />
           )}
-        </Stack>
-      </Section>
+        </div>
+      </section>
     )
   } catch (error) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load analytics'}
           </AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 }

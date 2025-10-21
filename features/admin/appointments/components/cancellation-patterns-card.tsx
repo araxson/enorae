@@ -22,19 +22,21 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
         {patterns.length === 0 ? (
           <p className="text-sm text-muted-foreground">No cancellation hotspots detected.</p>
         ) : (
-          <ul className="space-y-2">
+          <div className="space-y-2">
             {patterns.slice(0, 6).map((pattern) => (
-              <li key={pattern.label} className="flex items-start justify-between gap-3 rounded-md border p-3">
-                <div>
-                  <p className="font-medium text-foreground">{pattern.label}</p>
-                  <p className="text-xs text-muted-foreground">{pattern.description}</p>
-                </div>
-                <Badge variant="outline" className="text-xs">
-                  {pattern.count} · {formatPercent(pattern.share)}
-                </Badge>
-              </li>
+              <Card key={pattern.label}>
+                <CardContent className="flex items-start justify-between gap-3 p-3">
+                  <div>
+                    <p className="font-medium text-foreground">{pattern.label}</p>
+                    <p className="text-xs text-muted-foreground">{pattern.description}</p>
+                  </div>
+                  <Badge variant="outline" className="text-xs">
+                    {pattern.count} · {formatPercent(pattern.share)}
+                  </Badge>
+                </CardContent>
+              </Card>
             ))}
-          </ul>
+          </div>
         )}
       </CardContent>
     </Card>

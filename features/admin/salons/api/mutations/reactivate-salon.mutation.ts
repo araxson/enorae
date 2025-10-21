@@ -65,6 +65,8 @@ export async function reactivateSalon(formData: FormData) {
       entity_type: 'salon',
       entity_id: salonId,
       salon_id: salonId,
+      target_schema: 'organization',
+      target_table: 'salons',
       metadata: {
         salon_name: salon.name,
         note: note || 'Salon reactivated',

@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getStaffSchedules, getStaffForScheduling } from './api/queries'
 import { SchedulesClient } from './components/schedules-client'
@@ -13,21 +12,21 @@ export async function StaffSchedulesManagement() {
     ;[schedules, staffMembers] = await Promise.all([getStaffSchedules(), getStaffForScheduling()])
   } catch (error) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Please log in to manage staff schedules'}
           </AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <SchedulesClient initialSchedules={schedules} staffMembers={staffMembers} />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

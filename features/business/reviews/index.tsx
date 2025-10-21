@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getSalonReviews, getReviewStats } from './api/queries'
 import { ReviewsList } from './components/reviews-list'
@@ -15,13 +14,13 @@ export async function SalonReviews() {
     reviews = await getSalonReviews()
   } catch (error) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Please log in to view reviews'}
           </AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 
@@ -34,12 +33,12 @@ export async function SalonReviews() {
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <ReviewsStats stats={stats} />
 
         <ReviewsList reviews={reviews} />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

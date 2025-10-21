@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Stack } from '@/components/layout'
 import { AuditLogsFilters, AuditLogFilters } from './audit-logs-filters'
 import { AuditLogsTable } from './audit-logs-table'
 import type { AuditLog } from '../api/queries'
@@ -43,9 +42,9 @@ export function AuditLogsClient({ initialLogs }: AuditLogsClientProps) {
   }
 
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <AuditLogsFilters onFilterChange={handleFilterChange} />
       <AuditLogsTable logs={filteredLogs} onExport={() => {}} />
-    </Stack>
+    </div>
   )
 }

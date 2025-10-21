@@ -1,4 +1,3 @@
-import { Grid } from '@/components/layout'
 import type { ReactNode } from 'react'
 
 interface MetricsGridProps {
@@ -42,8 +41,8 @@ export function MetricsGrid({ children, maxColumns = 4, gap = 'lg' }: MetricsGri
     : ({ base: 1, lg: 2 } as const)
 
   return (
-    <Grid cols={cols} gap={gap}>
+    <div className="grid gap-6">
       {children}
-    </Grid>
+    </div>
   )
 }

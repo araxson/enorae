@@ -4,8 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Card } from '@/components/ui/card'
-import { Flex, Group, Stack, Grid } from '@/components/layout'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { Tag, TrendingUp } from 'lucide-react'
 
@@ -24,50 +23,49 @@ export function CategoryNavigation({ categories, currentCategory }: CategoryNavi
   const pathname = usePathname()
 
   return (
-    <Card className="p-6">
-      <Stack gap="md">
-        <Flex justify="between" align="center">
-          <Group gap="sm">
+    <Card>
+      <CardHeader>
+        <div className="flex gap-3 items-center items-center justify-between">
+          <div className="flex gap-3 items-center">
             <Tag className="h-5 w-5 text-primary" />
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Service Categories</h3>
-          </Group>
+            <CardTitle>Service Categories</CardTitle>
+          </div>
           <Badge variant="secondary">{categories.length} categories</Badge>
-        </Flex>
-
-        <Grid cols={{ base: 2, sm: 3, md: 4, lg: 6 }} gap="sm">
-          {/* All Services */}
-          <Link href="/services" passHref>
-            <Button
-              variant={!currentCategory ? 'default' : 'outline'}
-              className={cn('w-full h-auto py-3 flex-col gap-1', !currentCategory && 'ring-2 ring-primary')}
-            >
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+          <Button
+            asChild
+            variant={!currentCategory ? 'default' : 'outline'}
+            className={cn('h-auto flex-col gap-1 py-3', !currentCategory && 'ring-2 ring-primary')}
+          >
+            <Link href="/services" passHref>
               <span className="font-semibold">All Services</span>
-              <p className="text-sm text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 {categories.reduce((sum, cat) => sum + cat.count, 0)} services
               </p>
-            </Button>
-          </Link>
+            </Link>
+          </Button>
 
-          {/* Categories */}
           {categories.map((category) => {
             const isActive = currentCategory === category.slug
             return (
-              <Link key={category.slug} href={`/services/${category.slug}`} passHref>
-                <Button
-                  variant={isActive ? 'default' : 'outline'}
-                  className={cn(
-                    'w-full h-auto py-3 flex-col gap-1',
-                    isActive && 'ring-2 ring-primary'
-                  )}
-                >
-                  <span className="font-semibold text-sm">{category.name}</span>
-                  <p className="text-sm text-muted-foreground text-xs">{category.count} services</p>
-                </Button>
-              </Link>
+              <Button
+                key={category.slug}
+                asChild
+                variant={isActive ? 'default' : 'outline'}
+                className={cn('h-auto flex-col gap-1 py-3', isActive && 'ring-2 ring-primary')}
+              >
+                <Link href={`/services/${category.slug}`} passHref>
+                  <span className="text-sm font-semibold">{category.name}</span>
+                  <p className="text-xs text-muted-foreground">{category.count} services</p>
+                </Link>
+              </Button>
             )
           })}
-        </Grid>
-      </Stack>
+        </div>
+      </CardContent>
     </Card>
   )
 }
@@ -86,46 +84,45 @@ export function PopularServicesWidget({ services }: PopularServicesProps) {
   if (services.length === 0) return null
 
   return (
-    <Card className="p-6">
-      <Stack gap="md">
-        <Group gap="sm">
+    <Card>
+      <CardHeader>
+        <div className="flex gap-3 items-center">
           <TrendingUp className="h-5 w-5 text-primary" />
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Popular Services</h3>
-        </Group>
-
-        <Stack gap="sm">
+          <CardTitle>Popular Services</CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-3">
           {services.map((service, index) => (
-            <Link
+            <Button
               key={`${service.name}-${service.category}`}
-              href={`/services/${service.categorySlug}`}
+              asChild
+              variant="ghost"
+              className="justify-between gap-4 px-3 py-3"
             >
-              <Flex
-                justify="between"
-                align="center"
-                className="p-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <Group gap="md" className="flex-1">
+              <Link href={`/services/${service.categorySlug}`}>
+                <div className="flex gap-4 items-center flex-1">
                   <Badge variant="secondary" className="shrink-0">
                     #{index + 1}
                   </Badge>
-                  <Stack gap="xs" className="flex-1 min-w-0">
-                    <span className="font-medium truncate">{service.name}</span>
-                    <p className="text-sm text-muted-foreground text-xs">{service.category}</p>
-                  </Stack>
-                </Group>
-                <Stack gap="xs" align="end" className="shrink-0 ml-4">
-                  <p className="text-sm text-muted-foreground text-xs">{service.salonCount} salons</p>
+                  <div className="flex flex-col gap-2 min-w-0 flex-1">
+                    <span className="truncate font-medium">{service.name}</span>
+                    <p className="text-xs text-muted-foreground">{service.category}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 items-end ml-4 shrink-0">
+                  <p className="text-xs text-muted-foreground">{service.salonCount} salons</p>
                   {service.avgPrice && (
                     <span className="text-sm font-semibold">
                       ${service.avgPrice.toFixed(0)}
                     </span>
                   )}
-                </Stack>
-              </Flex>
-            </Link>
+                </div>
+              </Link>
+            </Button>
           ))}
-        </Stack>
-      </Stack>
+        </div>
+      </CardContent>
     </Card>
   )
 }

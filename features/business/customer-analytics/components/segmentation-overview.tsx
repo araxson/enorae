@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Grid } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 
@@ -60,7 +59,7 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
   }
 
   return (
-    <Grid cols={{ base: 1, xl: 3 }} gap="md">
+    <div className="grid gap-4 grid-cols-1 xl:grid-cols-3">
       <Card className="xl:col-span-2">
         <CardHeader>
           <CardTitle>Customer Segments</CardTitle>
@@ -139,6 +138,6 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
           )}
         </CardContent>
       </Card>
-    </Grid>
+    </div>
   )
 }

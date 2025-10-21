@@ -7,7 +7,6 @@ import {
   getServiceDurationAccuracy,
 } from './api/queries'
 import { ServicePerformanceDashboard } from './components/service-performance-dashboard'
-import { Stack } from '@/components/layout'
 
 export async function ServicePerformance() {
   const salon = await getUserSalon()
@@ -42,7 +41,7 @@ export async function ServicePerformance() {
   })
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       <div>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Service Performance Analytics</h1>
         <p className="leading-7 text-muted-foreground">
@@ -57,6 +56,6 @@ export async function ServicePerformance() {
         pairings={pairings}
         durationAccuracy={durationAccuracy}
       />
-    </Stack>
+    </div>
   )
 }

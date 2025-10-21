@@ -2,6 +2,7 @@
 
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -11,12 +12,12 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Building2, Users } from 'lucide-react'
-import type { EnhancedSalon } from '../api/queries'
+import type { AdminSalon } from '../api/queries'
 import { COMPLIANCE_BADGE_VARIANT, LICENSE_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
 import { DataTableEmpty } from '@/components/shared/data-table-empty'
 
 interface SalonsTableProps {
-  salons: EnhancedSalon[]
+  salons: AdminSalon[]
 }
 
 export function SalonsTable({ salons }: SalonsTableProps) {
@@ -53,19 +54,10 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                 <TableCell>
                   <div className="min-w-0">
                     <p className="font-medium">{salon.name}</p>
-                    {salon.chain_name && (
-                      <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Building2 className="h-3 w-3" />
-                        {salon.chain_name}
-                      </p>
-                    )}
-                    {salon.owner_name && (
-                      <p className="text-xs text-muted-foreground">{salon.owner_name}</p>
-                    )}
                   </div>
                 </TableCell>
 
-                <TableCell className="text-sm capitalize">{salon.business_type || 'salon'}</TableCell>
+                <TableCell className="text-sm capitalize">salon</TableCell>
 
                 <TableCell>
                   <div className="flex flex-col">
@@ -85,7 +77,7 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                 <TableCell>
                   <div className="flex items-center gap-1">
                     <Users className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-sm">{salon.employee_count || 0}</span>
+                    <span className="text-sm">{salon.staff_count || 0}</span>
                   </div>
                   {salon.staffCapacityRatio > 1 && (
                     <span className="text-xs text-destructive">Over capacity</span>
@@ -145,85 +137,81 @@ export function SalonsTable({ salons }: SalonsTableProps) {
         </Table>
       </div>
 
-      <div className="md:hidden space-y-4">
+      <div className="space-y-4 md:hidden">
         {salons.map((salon) => (
-          <div key={salon.id} className="rounded-lg border p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-semibold">{salon.name}</p>
-                {salon.chain_name && (
-                  <p className="flex items-center gap-1 text-xs text-muted-foreground" title={salon.chain_name}>
-                    <Building2 className="h-3 w-3" />
-                    {salon.chain_name}
-                  </p>
-                )}
+          <Card key={salon.id}>
+            <CardContent className="space-y-3 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold">{salon.name}</p>
+                </div>
+                <Badge
+                  variant={
+                    COMPLIANCE_BADGE_VARIANT[
+                      salon.complianceLevel as keyof typeof COMPLIANCE_BADGE_VARIANT
+                    ]
+                  }
+                >
+                  {salon.complianceScore}
+                </Badge>
               </div>
-              <Badge
-                variant={
-                  COMPLIANCE_BADGE_VARIANT[
-                    salon.complianceLevel as keyof typeof COMPLIANCE_BADGE_VARIANT
-                  ]
-                }
-              >
-                {salon.complianceScore}
-              </Badge>
-            </div>
 
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div>
-                <span className="font-medium block">Type</span>
-                <span className="capitalize text-muted-foreground">{salon.business_type || 'salon'}</span>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <span className="block font-medium">Type</span>
+                  <span className="capitalize text-muted-foreground">salon</span>
+                </div>
+                <div>
+                  <span className="block font-medium">Rating</span>
+                  <span className="text-muted-foreground">
+                    {salon.rating_average ? salon.rating_average.toFixed(1) : 'N/A'}
+                    {salon.rating_count ? ` (${salon.rating_count})` : ''}
+                  </span>
+                </div>
+                <div>
+                  <span className="block font-medium">Revenue</span>
+                  <span className="text-muted-foreground">
+                    {salon.total_revenue ? `$${Number(salon.total_revenue).toLocaleString()}` : '$0'}
+                  </span>
+                </div>
+                <div>
+                  <span className="block font-medium">Staff</span>
+                  <span className="flex items-center gap-1 text-muted-foreground">
+                    <Users className="h-3 w-3" />
+                    {salon.staff_count || 0}
+                  </span>
+                  {salon.staffCapacityRatio > 1 && (
+                    <span className="text-xs text-destructive">Over capacity</span>
+                  )}
+                </div>
+                <div>
+                  <span className="block font-medium">License</span>
+                  <Badge
+                    variant={
+                      LICENSE_BADGE_VARIANT[
+                        salon.licenseStatus as keyof typeof LICENSE_BADGE_VARIANT
+                      ]
+                    }
+                  >
+                    {salon.licenseStatus}
+                  </Badge>
+                  {salon.licenseDaysRemaining !== null && (
+                    <span className="block text-xs text-muted-foreground">
+                      {salon.licenseDaysRemaining >= 0
+                        ? `${salon.licenseDaysRemaining} days`
+                        : `${Math.abs(salon.licenseDaysRemaining)} days overdue`}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <span className="block font-medium">Created</span>
+                  <span className="text-muted-foreground">
+                    {salon.created_at ? format(new Date(salon.created_at), 'MMM dd, yyyy') : 'N/A'}
+                  </span>
+                </div>
               </div>
-              <div>
-              <span className="font-medium block">Rating</span>
-              <span className="text-muted-foreground">
-                {salon.rating_average ? salon.rating_average.toFixed(1) : 'N/A'}
-                {salon.rating_count ? ` (${salon.rating_count})` : ''}
-              </span>
-            </div>
-            <div>
-              <span className="font-medium block">Revenue</span>
-              <span className="text-muted-foreground">
-                {salon.total_revenue ? `$${Number(salon.total_revenue).toLocaleString()}` : '$0'}
-              </span>
-            </div>
-            <div>
-              <span className="font-medium block">Staff</span>
-              <span className="text-muted-foreground flex items-center gap-1">
-                <Users className="h-3 w-3" />
-                {salon.employee_count || 0}
-              </span>
-              {salon.staffCapacityRatio > 1 && (
-                <span className="text-xs text-destructive">Over capacity</span>
-              )}
-            </div>
-            <div>
-              <span className="font-medium block">License</span>
-              <Badge
-                variant={
-                  LICENSE_BADGE_VARIANT[
-                    salon.licenseStatus as keyof typeof LICENSE_BADGE_VARIANT
-                  ]
-                }
-              >
-                {salon.licenseStatus}
-              </Badge>
-              {salon.licenseDaysRemaining !== null && (
-                <span className="block text-xs text-muted-foreground">
-                  {salon.licenseDaysRemaining >= 0
-                    ? `${salon.licenseDaysRemaining} days`
-                    : `${Math.abs(salon.licenseDaysRemaining)} days overdue`}
-                </span>
-              )}
-            </div>
-            <div>
-              <span className="font-medium block">Created</span>
-              <span className="text-muted-foreground">
-                {salon.created_at ? format(new Date(salon.created_at), 'MMM dd, yyyy') : 'N/A'}
-              </span>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </>

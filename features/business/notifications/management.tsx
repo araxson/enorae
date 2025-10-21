@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import {
   getNotificationHistory,
   getNotificationPreferences,
@@ -20,8 +19,8 @@ export async function BusinessNotificationManagement() {
   ])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Notification Center</h1>
           <p className="leading-7 text-muted-foreground">
@@ -48,7 +47,7 @@ export async function BusinessNotificationManagement() {
           </p>
           <NotificationHistoryTable history={history} />
         </div>
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

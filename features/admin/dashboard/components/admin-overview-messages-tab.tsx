@@ -39,20 +39,22 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
         <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((msg) => (
-              <div key={msg.id} className="rounded-lg border border-border/60 p-3">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold leading-tight">
-                    {msg.subject || 'No subject'}
+              <Card key={msg.id}>
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-sm font-semibold leading-tight">
+                      {msg.subject || 'No subject'}
+                    </p>
+                    <span className="text-xs text-muted-foreground">
+                      {safeFormatDate(msg.created_at, 'MMM d, HH:mm')}
+                    </span>
+                  </div>
+                  <Separator className="my-3" />
+                  <p className="text-xs text-muted-foreground">
+                    {msg.customer_name || 'Unknown customer'} • {msg.salon_name || 'Unknown salon'}
                   </p>
-                  <span className="text-xs text-muted-foreground">
-                    {safeFormatDate(msg.created_at, 'MMM d, HH:mm')}
-                  </span>
-                </div>
-                <Separator className="my-3" />
-                <p className="text-xs text-muted-foreground">
-                  {msg.customer_name || 'Unknown customer'} • {msg.salon_name || 'Unknown salon'}
-                </p>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </ScrollArea>

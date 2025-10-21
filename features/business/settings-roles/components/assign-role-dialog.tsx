@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
 import { assignUserRole } from '../api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
@@ -99,7 +98,7 @@ export function AssignRoleDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             <div className="space-y-2">
               <Label htmlFor="user">Staff Member</Label>
               <Select value={selectedUserId} onValueChange={setSelectedUserId}>
@@ -145,7 +144,7 @@ export function AssignRoleDialog({
                 {isPending ? 'Assigning...' : 'Assign Role'}
               </Button>
             </DialogFooter>
-          </Stack>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

@@ -1,17 +1,16 @@
-import { Section, Stack, Grid } from '@/components/layout'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { missionData } from './mission.data'
 
 export function Mission() {
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Stack gap="md" className="max-w-3xl mx-auto text-center">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4 max-w-3xl mx-auto text-center">
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">{missionData.title}</h2>
           <p className="leading-7 text-lg">{missionData.description}</p>
-        </Stack>
+        </div>
 
-        <Grid cols={{ base: 1, md: 3 }} gap="lg">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
           {missionData.goals.map((goal) => (
             <Card key={goal.title}>
               <CardHeader>
@@ -20,8 +19,8 @@ export function Mission() {
               </CardHeader>
             </Card>
           ))}
-        </Grid>
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

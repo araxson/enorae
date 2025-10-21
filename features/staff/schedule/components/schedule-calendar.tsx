@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Plus, Edit2, Trash2 } from 'lucide-react'
-import { Stack } from '@/components/layout'
 import type { StaffScheduleWithStaff } from '../api/queries'
 
 type ScheduleCalendarProps = {
@@ -58,7 +57,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
           </CardContent>
         </Card>
       ) : (
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           {daysOfWeek.map(day => {
             const daySchedules = schedulesByDay[day] || []
             if (daySchedules.length === 0) return null
@@ -69,7 +68,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                   <CardTitle>{formatDayName(day)}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Stack gap="sm">
+                  <div className="flex flex-col gap-3">
                     {daySchedules.map(schedule => (
                       <div
                         key={schedule.id}
@@ -118,12 +117,12 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                         </div>
                       </div>
                     ))}
-                </Stack>
+                </div>
               </CardContent>
             </Card>
             )
           })}
-        </Stack>
+        </div>
       )}
     </div>
   )

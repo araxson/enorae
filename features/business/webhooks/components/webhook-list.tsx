@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 import { Webhook } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Flex } from '@/components/layout'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   Table,
@@ -94,7 +93,7 @@ export function WebhookList({ webhooks }: WebhookListProps) {
 
   return (
     <>
-      <Flex justify="end" gap="sm" className="mb-4">
+      <div className="flex gap-3 justify-end mb-4">
         {failedCount > 0 && (
           <ConfirmDialog
             title="Retry All Failed Webhooks?"
@@ -120,7 +119,7 @@ export function WebhookList({ webhooks }: WebhookListProps) {
             </Button>
           </ConfirmDialog>
         )}
-      </Flex>
+      </div>
 
       <Table>
         <TableHeader>

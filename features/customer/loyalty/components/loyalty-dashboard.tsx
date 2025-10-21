@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { Stack, Grid, Flex } from '@/components/layout'
 import { Star, Trophy, Gift, TrendingUp, History } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import type { LoyaltyPoints, LoyaltyTransaction } from '../api/queries'
@@ -32,85 +31,78 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
   }
 
   return (
-    <Stack gap="xl">
-      <Grid cols={{ base: 1, md: 3 }} gap="lg">
+    <div className="flex flex-col gap-8">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         <Card>
-          <CardHeader>
-            <Flex justify="between" align="center">
-              <CardTitle>Total Points</CardTitle>
-              <Star className="h-5 w-5 text-warning" />
-            </Flex>
+          <CardHeader className="gap-2">
+            <div className="flex items-center justify-between gap-3">
+              <CardDescription>Total points</CardDescription>
+              <Star className="h-5 w-5" aria-hidden="true" />
+            </div>
+            <CardTitle>{formatPoints(points?.total_points || 0)}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{formatPoints(points?.total_points || 0)}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Available to redeem
-            </p>
+          <CardContent className="pt-0">
+            <CardDescription>Available to redeem</CardDescription>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader>
-            <Flex justify="between" align="center">
-              <CardTitle>Current Tier</CardTitle>
-              <Trophy className="h-5 w-5 text-info" />
-            </Flex>
+          <CardHeader className="gap-2">
+            <div className="flex items-center justify-between gap-3">
+              <CardDescription>Current tier</CardDescription>
+              <Trophy className="h-5 w-5" aria-hidden="true" />
+            </div>
+            <CardTitle>{points?.tier?.toUpperCase() || 'BRONZE'}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Badge variant={getTierBadge(points?.tier || 'bronze')} className="text-lg px-3 py-1">
-              {points?.tier?.toUpperCase() || 'BRONZE'}
-            </Badge>
-            <p className="text-sm text-muted-foreground mt-2">
-              Member tier
-            </p>
+          <CardContent className="flex flex-col gap-2 pt-0">
+            <Badge variant={getTierBadge(points?.tier || 'bronze')}>{points?.tier?.toUpperCase() || 'BRONZE'}</Badge>
+            <CardDescription>Member tier</CardDescription>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader>
-            <Flex justify="between" align="center">
-              <CardTitle>Lifetime Earned</CardTitle>
-              <TrendingUp className="h-5 w-5 text-success" />
-            </Flex>
+          <CardHeader className="gap-2">
+            <div className="flex items-center justify-between gap-3">
+              <CardDescription>Lifetime earned</CardDescription>
+              <TrendingUp className="h-5 w-5" aria-hidden="true" />
+            </div>
+            <CardTitle>{formatPoints(points?.points_earned || 0)}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{formatPoints(points?.points_earned || 0)}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Total points earned
-            </p>
+          <CardContent className="pt-0">
+            <CardDescription>Total points earned</CardDescription>
           </CardContent>
         </Card>
-      </Grid>
+      </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Progress to Next Tier</CardTitle>
         </CardHeader>
         <CardContent>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             <Progress value={tierProgress} className="h-3" />
-            <Flex justify="between" className="text-sm">
-              <span>{formatPoints(points?.total_points || 0)} points</span>
-              <span className="text-muted-foreground">
+            <div className="flex justify-between gap-4 text-muted-foreground">
+              <span className="text-foreground">{formatPoints(points?.total_points || 0)} points</span>
+              <span>
                 {formatPoints(points?.next_tier_points || 0)} needed
               </span>
-            </Flex>
-            <p className="text-sm text-muted-foreground">
+            </div>
+            <CardDescription>
               Earn {formatPoints((points?.next_tier_points || 0) - (points?.total_points || 0))} more points to reach the next tier
-            </p>
-          </Stack>
+            </CardDescription>
+          </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <Flex justify="between" align="center">
+          <div className="flex gap-4 items-center justify-between">
             <CardTitle>Redeem Rewards</CardTitle>
             <Gift className="h-5 w-5" />
-          </Flex>
+          </div>
         </CardHeader>
         <CardContent>
-          <Grid cols={{ base: 1, md: 2 }} gap="md">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>$10 Off</CardTitle>
@@ -155,39 +147,41 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
                 </Button>
               </CardContent>
             </Card>
-          </Grid>
+          </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <Flex justify="between" align="center">
+          <div className="flex gap-4 items-center justify-between">
             <CardTitle>Recent Activity</CardTitle>
             <History className="h-5 w-5" />
-          </Flex>
+          </div>
         </CardHeader>
         <CardContent>
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             {transactions.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No activity yet</p>
+              <div className="py-8 text-center">
+                <CardDescription>No activity yet</CardDescription>
+              </div>
             ) : (
               transactions.map((transaction) => (
-                <Flex key={transaction.id} justify="between" align="center" className="border-b pb-3">
+                <div key={transaction.id} className="flex gap-4 items-center justify-between border-b pb-3">
                   <div>
-                    <p className="font-medium">{transaction.description}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <div className="text-foreground">{transaction.description}</div>
+                    <CardDescription>
                       {formatDistanceToNow(new Date(transaction.created_at), { addSuffix: true })}
-                    </p>
+                    </CardDescription>
                   </div>
                   <Badge variant={transaction.type === 'earned' ? 'default' : 'secondary'}>
                     {transaction.type === 'earned' ? '+' : '-'}{formatPoints(Math.abs(transaction.points))}
                   </Badge>
-                </Flex>
+                </div>
               ))
             )}
-          </Stack>
+          </div>
         </CardContent>
       </Card>
-    </Stack>
+    </div>
   )
 }

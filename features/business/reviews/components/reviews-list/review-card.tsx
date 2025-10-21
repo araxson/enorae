@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Flex, Grid, Stack } from '@/components/layout'
 import type { NormalizedReview } from './use-reviews-list'
 
 type ReviewCardProps = {
@@ -40,9 +39,9 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
   return (
     <Card>
       <CardHeader>
-        <Flex justify="between" align="start">
-          <Stack gap="sm">
-            <Flex gap="sm" align="center">
+        <div className="flex gap-4 items-start justify-between">
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-3 items-center">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">{review.customer_name || 'Anonymous'}</h3>
               {review.is_verified && (
                 <Badge variant="outline" className="text-xs">
@@ -62,14 +61,14 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
                   Flagged
                 </Badge>
               )}
-            </Flex>
-            <Flex gap="md" align="center">
+            </div>
+            <div className="flex gap-4 items-center">
               {renderStars(review.rating)}
               <small className="text-sm font-medium leading-none text-muted-foreground">{formatDate(review.created_at)}</small>
-            </Flex>
-          </Stack>
+            </div>
+          </div>
 
-          <Flex gap="sm">
+          <div className="flex gap-3">
             {!review.response && (
               <Button size="sm" variant="outline" onClick={() => onRespond(review)}>
                 <MessageSquare className="h-4 w-4 mr-2" />
@@ -91,17 +90,17 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
             >
               <TrendingUp className={`h-4 w-4 ${review.is_featured ? 'fill-current' : ''}`} />
             </Button>
-          </Flex>
-        </Flex>
+          </div>
+        </div>
       </CardHeader>
 
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           {review.title && <p className="leading-7 font-medium">{review.title}</p>}
           {review.comment && <p className="leading-7 text-sm">{review.comment}</p>}
 
           {(review.service_quality_rating || review.cleanliness_rating || review.value_rating) && (
-            <Grid cols={{ base: 1, md: 3 }} gap="sm">
+            <div className="grid gap-3 grid-cols-1 md:grid-cols-3">
               {review.service_quality_rating && (
                 <RatingItem label="Service Quality" rating={review.service_quality_rating} />
               )}
@@ -109,13 +108,13 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
                 <RatingItem label="Cleanliness" rating={review.cleanliness_rating} />
               )}
               {review.value_rating && <RatingItem label="Value" rating={review.value_rating} />}
-            </Grid>
+            </div>
           )}
 
           {review.response && (
             <Card>
               <CardHeader>
-                <Flex justify="between" align="center">
+                <div className="flex gap-4 items-center justify-between">
                   <div>
                     <CardTitle>Response from salon</CardTitle>
                     {review.responded_by_name ? (
@@ -123,14 +122,14 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
                     ) : null}
                   </div>
                   <CardDescription>{formatDate(review.response_date)}</CardDescription>
-                </Flex>
+                </div>
               </CardHeader>
               <CardContent>
                 <p className="leading-7 text-sm">{review.response}</p>
               </CardContent>
             </Card>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

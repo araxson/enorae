@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { EnhancedSalon, SalonDashboardStats, SalonInsights } from '../api/queries'
+import type { AdminSalon, SalonDashboardStats, SalonInsights } from '../api/queries'
 import { SalonsStats } from './salons-stats'
 import { SalonsFilters } from './salons-filters'
 import { SalonsTable } from './salons-table'
@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 interface SalonsClientProps {
-  salons: EnhancedSalon[]
+  salons: AdminSalon[]
   stats: SalonDashboardStats
   insights: SalonInsights
 }
@@ -27,18 +27,15 @@ export function SalonsClient({ salons, stats, insights }: SalonsClientProps) {
     return salons.filter((salon) => {
       const matchesSearch =
         !normalizedQuery ||
-        [salon.name, salon.business_name, salon.slug]
-          .filter(Boolean)
-          .some((value) => value!.toLowerCase().includes(normalizedQuery))
+        salon.name?.toLowerCase().includes(normalizedQuery)
 
-      const matchesTier = tierFilter === 'all' || salon.subscription_tier === tierFilter
       const matchesLicense = licenseFilter === 'all' || salon.licenseStatus === licenseFilter
       const matchesCompliance =
         complianceFilter === 'all' || salon.complianceLevel === complianceFilter
 
-      return matchesSearch && matchesTier && matchesLicense && matchesCompliance
+      return matchesSearch && matchesLicense && matchesCompliance
     })
-  }, [salons, searchQuery, tierFilter, licenseFilter, complianceFilter])
+  }, [salons, searchQuery, licenseFilter, complianceFilter])
 
   return (
     <div className="flex flex-col gap-10">
@@ -84,8 +81,8 @@ export function SalonsClient({ salons, stats, insights }: SalonsClientProps) {
 type InsightCardProps = {
   title: string
   subtitle: string
-  items: EnhancedSalon[]
-  renderBadge: (salon: EnhancedSalon) => ReactNode
+  items: AdminSalon[]
+  renderBadge: (salon: AdminSalon) => ReactNode
 }
 
 function InsightCard({ title, subtitle, items, renderBadge }: InsightCardProps) {

@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Stack, Flex } from '@/components/layout'
 import { Calendar, Clock, User, DollarSign, Mail } from 'lucide-react'
 import type { StaffAppointment, AppointmentStatus } from '../api/queries'
 
@@ -45,13 +44,13 @@ export function AppointmentDetailDialog({
           <DialogTitle>Appointment Details</DialogTitle>
         </DialogHeader>
 
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <div>
             <Badge variant={config.variant}>{config.label}</Badge>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <Flex gap="sm" align="start">
+            <div className="flex gap-3 items-start">
               <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
                 <p className="text-sm text-muted-foreground text-xs">Date</p>
@@ -61,9 +60,9 @@ export function AppointmentDetailDialog({
                     : 'N/A'}
                 </p>
               </div>
-            </Flex>
+            </div>
 
-            <Flex gap="sm" align="start">
+            <div className="flex gap-3 items-start">
               <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
                 <p className="text-sm text-muted-foreground text-xs">Time</p>
@@ -74,41 +73,41 @@ export function AppointmentDetailDialog({
                   {appointment.duration_minutes && ` (${appointment.duration_minutes} min)`}
                 </p>
               </div>
-            </Flex>
+            </div>
           </div>
 
           <Separator />
 
           <div>
             <p className="leading-7 font-semibold mb-3">Customer Information</p>
-            <Stack gap="sm">
-              <Flex gap="sm" align="start">
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-3 items-start">
                 <User className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
                   <p className="text-sm text-muted-foreground text-xs">Name</p>
                   <p className="leading-7">{appointment.customer_name || 'Walk-in Customer'}</p>
                 </div>
-              </Flex>
+              </div>
 
               {appointment.customer_email && (
-                <Flex gap="sm" align="start">
+                <div className="flex gap-3 items-start">
                   <Mail className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <p className="text-sm text-muted-foreground text-xs">Email</p>
                     <p className="leading-7">{appointment.customer_email}</p>
                   </div>
-                </Flex>
+                </div>
               )}
 
               {/* TODO: Add customer_phone field to appointments view if needed */}
-            </Stack>
+            </div>
           </div>
 
           <Separator />
 
           <div>
             <p className="leading-7 font-semibold mb-3">Service Details</p>
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               {appointment.service_names && (
                 <div>
                   <p className="text-sm text-muted-foreground text-xs">Services</p>
@@ -117,19 +116,19 @@ export function AppointmentDetailDialog({
               )}
 
               {appointment.total_price !== undefined && appointment.total_price !== null && (
-                <Flex gap="sm" align="start">
+                <div className="flex gap-3 items-start">
                   <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <p className="text-sm text-muted-foreground text-xs">Total Price</p>
                     <p className="leading-7 font-medium">${Number(appointment.total_price).toFixed(2)}</p>
                   </div>
-                </Flex>
+                </div>
               )}
-            </Stack>
+            </div>
           </div>
 
           {/* TODO: Add notes field to appointments view if needed */}
-        </Stack>
+        </div>
       </DialogContent>
     </Dialog>
   )

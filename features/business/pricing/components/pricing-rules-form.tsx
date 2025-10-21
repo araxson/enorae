@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { useToast } from '@/lib/hooks/use-toast'
 import { createPricingRule } from '../api/pricing-rules.mutations'
 import type { PricingRulesFormProps, PricingRuleFormState } from './pricing-rules-form/types'
@@ -83,7 +82,7 @@ export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesF
   return (
     <Card className="p-6">
       <form onSubmit={handleSubmit}>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <RuleBasicsFields formData={formData} setFormData={setFormData} services={services} />
 
           <AdjustmentFields
@@ -114,7 +113,7 @@ export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesF
               {isLoading ? 'Saving…' : 'Create Pricing Rule'}
             </Button>
           </div>
-        </Stack>
+        </div>
       </form>
     </Card>
   )

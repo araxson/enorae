@@ -10,7 +10,7 @@ export async function markNotificationAsRead(notificationId: string) {
 
   const { error } = await supabase
     .schema('communication')
-    .from('notification_queue')
+    .from('communication_notification_queue')
     .update({
       status: 'delivered',
       delivered_at: new Date().toISOString(),
@@ -31,7 +31,7 @@ export async function markAllNotificationsAsRead() {
 
   const { error } = await supabase
     .schema('communication')
-    .from('notification_queue')
+    .from('communication_notification_queue')
     .update({
       status: 'delivered',
       delivered_at: new Date().toISOString(),
@@ -52,7 +52,7 @@ export async function deleteNotification(notificationId: string) {
 
   const { error } = await supabase
     .schema('communication')
-    .from('notification_queue')
+    .from('communication_notification_queue')
     .delete()
     .eq('id', notificationId)
     .eq('user_id', user.id)

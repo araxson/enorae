@@ -40,26 +40,28 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
             No active security incidents detected.
           </p>
         ) : (
-          <ul className="space-y-2">
+          <div className="space-y-2">
             {incidents.slice(0, 6).map((incident) => (
-              <li key={incident.id} className="rounded-md border p-3 text-sm">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="font-medium text-foreground">{incident.eventType}</div>
-                  {severityBadge(incident.severity)}
-                </div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  Detected at {new Date(incident.createdAt).toLocaleString()} · IP {incident.ipAddress ?? 'Unknown'}
-                </div>
-                {incident.description && (
-                  <div className="mt-2 text-xs text-muted-foreground">{incident.description}</div>
-                )}
-                <div className="mt-3 flex items-center gap-2 rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
-                  <AlertTriangle className="h-3 w-3 text-muted-foreground" />
-                  {guidanceFor(incident.severity)}
-                </div>
-              </li>
+              <Card key={incident.id}>
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="text-sm font-medium">{incident.eventType}</div>
+                    {severityBadge(incident.severity)}
+                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    Detected at {new Date(incident.createdAt).toLocaleString()} · IP {incident.ipAddress ?? 'Unknown'}
+                  </div>
+                  {incident.description && (
+                    <div className="mt-2 text-xs text-muted-foreground">{incident.description}</div>
+                  )}
+                  <div className="mt-3 flex items-center gap-2 rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
+                    <AlertTriangle className="h-3 w-3 text-muted-foreground" />
+                    {guidanceFor(incident.severity)}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
-          </ul>
+          </div>
         )}
       </CardContent>
     </Card>

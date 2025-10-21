@@ -24,8 +24,7 @@ export async function fetchAppointments(
       created_at,
       status,
       profiles:customer_id (
-        display_name,
-        email
+        username
       )
     `)
     .eq('salon_id', salonId)
@@ -93,7 +92,7 @@ export async function fetchNameMaps(
     staffIds.size
       ? client
           .from('profiles')
-          .select('id, display_name')
+          .select('id, username')
           .in('id', Array.from(staffIds))
       : Promise.resolve({ data: [], error: null }),
     serviceIds.size
@@ -111,7 +110,7 @@ export async function fetchNameMaps(
   ;(staffProfiles.data ?? []).forEach((entry) => {
     const profile = entry as StaffProfileRow
     if (profile.id) {
-      staffNameMap.set(profile.id, profile.display_name || 'N/A')
+      staffNameMap.set(profile.id, profile.username || 'N/A')
     }
   })
 

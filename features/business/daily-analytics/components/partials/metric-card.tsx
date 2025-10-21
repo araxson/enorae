@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack } from '@/components/layout'
 import type { ComponentType } from 'react'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import { formatPercentage } from '../utils/value-formatters'
@@ -19,7 +18,7 @@ export function MetricCard({ title, value, trend, icon: Icon, subtitle }: Props)
   return (
     <Card>
       <CardContent className="p-6">
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground text-sm">{title}</p>
             <Icon className="h-4 w-4 text-muted-foreground" />
@@ -34,7 +33,7 @@ export function MetricCard({ title, value, trend, icon: Icon, subtitle }: Props)
             )}
           </div>
           {subtitle && <p className="text-sm text-muted-foreground text-xs">{subtitle}</p>}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

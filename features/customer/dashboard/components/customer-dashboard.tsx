@@ -113,45 +113,31 @@ export async function CustomerDashboardPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Loyalty points</CardTitle>
+                  <CardDescription>Loyalty points</CardDescription>
+                  <CardTitle>{vipStatus.loyaltyPoints?.toLocaleString() ?? 0}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-2xl font-bold">
-                    {vipStatus.loyaltyPoints?.toLocaleString() ?? 0}
-                  </p>
-                </CardContent>
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Loyalty tier</CardTitle>
+                  <CardDescription>Loyalty tier</CardDescription>
+                  <CardTitle>{vipStatus.loyaltyTier ?? 'Standard'}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-2xl font-bold capitalize">
-                    {vipStatus.loyaltyTier ?? 'Standard'}
-                  </p>
-                </CardContent>
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Lifetime spend</CardTitle>
+                  <CardDescription>Lifetime spend</CardDescription>
+                  <CardTitle>${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-2xl font-bold">
-                    ${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}
-                  </p>
-                </CardContent>
               </Card>
               {vipStatus.monthlySpend !== undefined && (
                 <Card>
                   <CardHeader>
-                    <CardTitle>This month</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="flex items-center gap-2 text-2xl font-bold">
-                      <TrendingUp className="h-4 w-4 text-success" />
+                    <CardDescription>This month</CardDescription>
+                    <CardTitle className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4" />
                       ${vipStatus.monthlySpend.toLocaleString()}
-                    </p>
-                  </CardContent>
+                    </CardTitle>
+                  </CardHeader>
                 </Card>
               )}
             </div>

@@ -25,21 +25,23 @@ export function DisputesPanel({ disputes }: DisputesPanelProps) {
         {disputes.length === 0 ? (
           <p className="text-sm text-muted-foreground">No high-risk appointments awaiting review.</p>
         ) : (
-          <ul className="space-y-2">
+          <div className="space-y-2">
             {disputes.slice(0, 6).map((item) => (
-              <li key={item.appointmentId} className="rounded-md border p-3 text-sm">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-medium text-foreground">{item.customerName || 'Unknown customer'}</span>
-                  <Badge variant="secondary" className="text-xs">{item.status}</Badge>
-                </div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  {item.salonName || 'Unknown salon'} · {formatCurrency(item.amount)}
-                </div>
-                <p className="mt-2 text-xs text-muted-foreground">{item.reason}</p>
-                <p className="mt-2 text-xs text-foreground">Recommended: {item.recommendedAction}</p>
-              </li>
+              <Card key={item.appointmentId}>
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-medium">{item.customerName || 'Unknown customer'}</span>
+                    <Badge variant="secondary" className="text-xs">{item.status}</Badge>
+                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {item.salonName || 'Unknown salon'} · {formatCurrency(item.amount)}
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">{item.reason}</p>
+                  <p className="mt-2 text-xs text-foreground">Recommended: {item.recommendedAction}</p>
+                </CardContent>
+              </Card>
             ))}
-          </ul>
+          </div>
         )}
       </CardContent>
     </Card>

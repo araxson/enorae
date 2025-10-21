@@ -1,5 +1,4 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Stack, Group } from '@/components/layout'
 import { CheckCircle } from 'lucide-react'
 import type { Salon } from '../types'
 
@@ -16,14 +15,14 @@ export function PaymentMethodsCard({ salon }: PaymentMethodsCardProps) {
         <CardTitle>Payment Methods</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           {salon.payment_methods.map((method: string) => (
-            <Group gap="xs" key={method}>
+            <div key={method} className="flex gap-2 items-center">
               <CheckCircle className="h-4 w-4 text-success" />
               <p className="text-sm text-muted-foreground">{method}</p>
-            </Group>
+            </div>
           ))}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

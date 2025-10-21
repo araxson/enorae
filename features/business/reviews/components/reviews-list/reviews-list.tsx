@@ -3,7 +3,6 @@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex } from '@/components/layout'
 import { Card, CardContent } from '@/components/ui/card'
 import type { SalonReviewWithDetails } from '../../api/queries'
 import { ReviewCard } from './review-card'
@@ -18,7 +17,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
 
   return (
     <>
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         {normalizedReviews.length === 0 ? (
           <Card>
             <CardContent>
@@ -38,23 +37,23 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             />
           ))
         )}
-      </Stack>
+      </div>
 
       <Dialog open={!!state.selectedReview} onOpenChange={(open) => !open && actions.selectReview(null)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Respond to Review</DialogTitle>
           </DialogHeader>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             {state.selectedReview && (
               <Card>
                 <CardContent>
-                  <Stack gap="sm" className="pt-4">
-                    <Flex gap="sm" align="center">
+                  <div className="flex flex-col gap-3 pt-4">
+                    <div className="flex gap-3 items-center">
                       <p className="leading-7 font-medium">{state.selectedReview.customer_name || 'Anonymous'}</p>
-                    </Flex>
+                    </div>
                     {state.selectedReview.comment && <p className="leading-7 text-sm">{state.selectedReview.comment}</p>}
-                  </Stack>
+                  </div>
                 </CardContent>
               </Card>
             )}
@@ -64,7 +63,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               onChange={(event) => actions.setResponse(event.target.value)}
               rows={5}
             />
-          </Stack>
+          </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => actions.selectReview(null)} disabled={state.isSubmitting}>
               Cancel
@@ -81,14 +80,14 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           <DialogHeader>
             <DialogTitle>Flag Review</DialogTitle>
           </DialogHeader>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             <Textarea
               placeholder="Reason for flagging (e.g., inappropriate content, spam, fake review)..."
               value={state.flagReason}
               onChange={(event) => actions.setFlagReason(event.target.value)}
               rows={4}
             />
-          </Stack>
+          </div>
           <DialogFooter>
             <Button variant="outline" onClick={actions.closeFlagDialog} disabled={state.isSubmitting}>
               Cancel

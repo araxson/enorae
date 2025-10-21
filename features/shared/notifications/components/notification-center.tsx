@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Stack, Flex } from '@/components/layout'
 import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '../api/mutations'
@@ -103,7 +102,7 @@ export function NotificationCenter({ notifications }: Props) {
   return (
     <Card>
       <CardHeader>
-        <Flex justify="between" align="center">
+        <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <Bell className="h-5 w-5" />
             <CardTitle>Notification Center</CardTitle>
@@ -117,7 +116,7 @@ export function NotificationCenter({ notifications }: Props) {
               Mark all as read
             </Button>
           )}
-        </Flex>
+        </div>
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -132,7 +131,7 @@ export function NotificationCenter({ notifications }: Props) {
           </TabsList>
 
           <TabsContent value={activeTab}>
-            <Stack gap="sm" className="mt-4">
+            <div className="flex flex-col gap-3 mt-4">
               {filteredNotifications.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
                   <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
@@ -142,15 +141,15 @@ export function NotificationCenter({ notifications }: Props) {
                 filteredNotifications.map((notification) => (
                   <Card key={notification.id} className={notification.status === 'pending' ? 'border-primary' : ''}>
                     <CardContent className="p-4">
-                      <Flex justify="between" align="start" gap="md">
+                      <div className="flex justify-between items-start gap-4">
                         <div className="flex-1">
-                          <Flex align="center" gap="sm" className="mb-2">
+                          <div className="flex items-center gap-3 mb-2">
                             {getChannelIcon(notification.channels)}
                             <h4 className="font-semibold">{notification.title}</h4>
                             {notification.status === 'pending' && (
                               <Badge variant="secondary" className="text-xs">New</Badge>
                             )}
-                          </Flex>
+                          </div>
                           <p className="text-sm text-muted-foreground mb-2">
                             {notification.message}
                           </p>
@@ -167,7 +166,7 @@ export function NotificationCenter({ notifications }: Props) {
                             </div>
                           )}
                         </div>
-                        <Flex gap="xs">
+                        <div className="flex gap-1">
                           {notification.status === 'pending' && (
                             <Button
                               variant="ghost"
@@ -184,13 +183,13 @@ export function NotificationCenter({ notifications }: Props) {
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
-                        </Flex>
-                      </Flex>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 ))
               )}
-            </Stack>
+            </div>
           </TabsContent>
         </Tabs>
       </CardContent>

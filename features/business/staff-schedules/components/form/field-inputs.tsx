@@ -1,5 +1,4 @@
 import type React from 'react'
-import { Stack } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 
@@ -17,10 +16,10 @@ export function TimeInput({
   disabled: boolean
 }) {
   return (
-    <Stack gap="sm">
+    <div className="flex flex-col gap-3">
       <Label htmlFor={id}>{label}</Label>
       <Input id={id} type="time" value={value} onChange={onChange} disabled={disabled} required />
-    </Stack>
+    </div>
   )
 }
 
@@ -42,10 +41,10 @@ export function DateInput({
   disabled: boolean
 }) {
   return (
-    <Stack gap="sm">
+    <div className="flex flex-col gap-3">
       <Label htmlFor={id}>{label}</Label>
       <Input id={id} type="date" value={value} onChange={onChange} min={min} disabled={disabled} />
       <p className="text-xs text-muted-foreground">{helper}</p>
-    </Stack>
+    </div>
   )
 }

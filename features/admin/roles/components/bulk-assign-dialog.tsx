@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -132,33 +133,35 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
 
         <div className="flex flex-col gap-8">
           {rows.map((row, index) => (
-            <div key={index} className="rounded-lg border p-4 space-y-4">
-              <div className="flex flex-col gap-6 md:flex-row md:items-center">
-                <div className="flex-1 space-y-2">
-                  <Label htmlFor={`user-${index}`}>User ID *</Label>
-                  <Input
-                    id={`user-${index}`}
-                    value={row.userId}
-                    onChange={(event) => handleRowChange(index, { userId: event.target.value })}
-                    placeholder="User UUID"
-                  />
+            <Card key={index}>
+              <CardContent className="space-y-4 pt-6">
+                <div className="flex flex-col gap-6 md:flex-row md:items-center">
+                  <div className="flex-1 space-y-2">
+                    <Label htmlFor={`user-${index}`}>User ID *</Label>
+                    <Input
+                      id={`user-${index}`}
+                      value={row.userId}
+                      onChange={(event) => handleRowChange(index, { userId: event.target.value })}
+                      placeholder="User UUID"
+                    />
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => handleRemoveRow(index)} disabled={rows.length === 1}>
+                    Remove
+                  </Button>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => handleRemoveRow(index)} disabled={rows.length === 1}>
-                  Remove
-                </Button>
-              </div>
 
-              <RoleSelector
-                role={row.role}
-                onRoleChange={(value) => handleRowChange(index, { role: value })}
-                templateId={row.templateId}
-                onTemplateChange={(template) => handleTemplateSelect(index, template)}
-              />
+                <RoleSelector
+                  role={row.role}
+                  onRoleChange={(value) => handleRowChange(index, { role: value })}
+                  templateId={row.templateId}
+                  onTemplateChange={(template) => handleTemplateSelect(index, template)}
+                />
 
-              {row.role && ROLES_NEEDING_SALON.includes(row.role) && (
-                <SalonSelector salons={salons} value={row.salonId} onChange={(value) => handleRowChange(index, { salonId: value })} required />
-              )}
-            </div>
+                {row.role && ROLES_NEEDING_SALON.includes(row.role) && (
+                  <SalonSelector salons={salons} value={row.salonId} onChange={(value) => handleRowChange(index, { salonId: value })} required />
+                )}
+              </CardContent>
+            </Card>
           ))}
 
           <div className="flex items-center justify-between">

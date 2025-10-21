@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex } from '@/components/layout'
 import { StaffPerformanceSummary } from './staff-performance-summary'
 import { StaffServicesManager } from './staff-services-manager'
 import { StaffFormDialog } from './staff-form-dialog'
@@ -32,21 +31,21 @@ export function StaffManagementClient({
 
   return (
     <>
-      <Flex justify="end" align="start">
+      <div className="flex gap-4 items-start justify-end">
         <Button onClick={() => setIsDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
           Add Staff Member
         </Button>
-      </Flex>
+      </div>
 
-      <Stack gap="lg">
+      <div className="flex flex-col gap-6">
         <StaffPerformanceSummary staff={staffWithServices} />
 
         <StaffServicesManager
           staff={staffWithServices}
           availableServices={availableServices}
         />
-      </Stack>
+      </div>
 
       <StaffFormDialog
         open={isDialogOpen}

@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex } from '@/components/layout'
 import { CategoryList } from './category-list'
 import { CategoryForm } from './category-form'
 import type { ProductCategoryWithCounts } from '../api/queries'
@@ -27,13 +26,13 @@ export function ProductCategoriesClient({ initialCategories }: ProductCategories
   }
 
   return (
-    <Stack gap="xl">
-      <Flex align="center" justify="end">
+    <div className="flex flex-col gap-8">
+      <div className="flex gap-4 items-center justify-end">
         <Button onClick={() => setIsFormOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add Category
         </Button>
-      </Flex>
+      </div>
 
       <CategoryList categories={initialCategories} onEdit={handleEdit} />
 
@@ -42,6 +41,6 @@ export function ProductCategoriesClient({ initialCategories }: ProductCategories
         open={isFormOpen}
         onOpenChange={handleCloseForm}
       />
-    </Stack>
+    </div>
   )
 }

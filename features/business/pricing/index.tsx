@@ -1,4 +1,3 @@
-import { Stack } from '@/components/layout'
 import { getPricingRules, getPricingServices } from './api/queries'
 import { PricingRulesForm } from './components/pricing-rules-form'
 import { PricingRulesList } from './components/pricing-rules-list'
@@ -68,7 +67,7 @@ export async function DynamicPricing() {
   )
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       <div>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Dynamic Pricing</h1>
         <p className="leading-7 text-muted-foreground">
@@ -91,6 +90,6 @@ export async function DynamicPricing() {
         <h2 className="text-2xl font-semibold mb-4">Active Pricing Rules</h2>
       <PricingRulesList rules={normalizedRules} />
       </div>
-    </Stack>
+    </div>
   )
 }

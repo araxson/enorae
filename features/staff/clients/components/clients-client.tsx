@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react'
 import { Users, Calendar, DollarSign } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import type { ClientWithHistory } from '../api/queries'
 import { ClientStats } from './client-stats'
 import { ClientFilters } from './client-filters'
@@ -91,7 +90,7 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
     return (
       <Card>
         <CardContent className="pt-6">
-          <Stack gap="md" className="text-center py-8">
+          <div className="flex flex-col gap-4 text-center py-8">
             <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
               <Users className="w-8 h-8 text-muted-foreground" />
             </div>
@@ -99,7 +98,7 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
               <p className="leading-7 font-medium">No Clients Yet</p>
               <p className="text-sm text-muted-foreground">Your client list will appear here once you complete appointments</p>
             </div>
-          </Stack>
+          </div>
         </CardContent>
       </Card>
     )
@@ -144,7 +143,7 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
                 {client.customer_email && <p className="text-sm text-muted-foreground text-sm">{client.customer_email}</p>}
               </CardHeader>
               <CardContent>
-                <Stack gap="sm">
+                <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2 text-sm">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <p className="leading-7">{client.total_appointments} appointments</p>
@@ -162,7 +161,7 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
                       </p>
                     </div>
                   ) : null}
-                </Stack>
+                </div>
               </CardContent>
             </Card>
           ))}

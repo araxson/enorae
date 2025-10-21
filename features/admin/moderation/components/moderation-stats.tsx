@@ -60,7 +60,7 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
               <CardDescription>{label}</CardDescription>
               <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
             </div>
-            <CardTitle className="text-2xl">
+            <CardTitle>
               {typeof value === 'number' ? value : value}
             </CardTitle>
           </CardHeader>

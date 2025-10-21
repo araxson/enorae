@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const blockedTimeSchema = z.object({
   start_time: z.string(),
   end_time: z.string(),
-  block_type: z.enum(['break', 'personal', 'meeting', 'other']),
+  block_type: z.enum(['maintenance', 'other', 'break', 'vacation', 'sick_leave', 'training', 'personal', 'lunch', 'holiday']),
   reason: z.string().min(1, 'Reason is required').max(500),
   is_recurring: z.boolean(),
   recurrence_pattern: z.string().nullable().optional(),

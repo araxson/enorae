@@ -7,8 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Flex, Stack } from '@/components/layout'
-
 type ArrayInputProps = {
   label: string
   items: string[]
@@ -29,9 +27,9 @@ export function ArrayInput({ label, items, onAdd, onRemove, placeholder }: Array
   }
 
   return (
-    <Stack gap="sm">
+    <div className="flex flex-col gap-3">
       <Label>{label}</Label>
-      <Flex gap="sm">
+      <div className="flex gap-3">
         <Input
           value={value}
           onChange={(event) => setValue(event.target.value)}
@@ -46,8 +44,8 @@ export function ArrayInput({ label, items, onAdd, onRemove, placeholder }: Array
         <Button type="button" variant="outline" onClick={handleAdd}>
           Add
         </Button>
-      </Flex>
-      <Flex gap="sm" className="flex-wrap">
+      </div>
+      <div className="flex gap-3 flex-wrap">
         {items.map((item, index) => (
           <Badge key={`${item}-${index}`} variant="secondary">
             {item}
@@ -60,7 +58,7 @@ export function ArrayInput({ label, items, onAdd, onRemove, placeholder }: Array
             </button>
           </Badge>
         ))}
-      </Flex>
-    </Stack>
+      </div>
+    </div>
   )
 }

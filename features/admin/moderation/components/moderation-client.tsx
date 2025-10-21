@@ -27,11 +27,12 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
     const normalizedQuery = searchQuery.toLowerCase()
 
     return reviews.filter((review) => {
+      const customerEmail = review.customer_email?.toLowerCase() ?? ''
       const matchesSearch =
         !normalizedQuery ||
         review.salon_name?.toLowerCase().includes(normalizedQuery) ||
         review.customer_name?.toLowerCase().includes(normalizedQuery) ||
-        review.customer_email?.toLowerCase().includes(normalizedQuery) ||
+        customerEmail.includes(normalizedQuery) ||
         review.comment?.toLowerCase().includes(normalizedQuery)
 
       const matchesStatus =

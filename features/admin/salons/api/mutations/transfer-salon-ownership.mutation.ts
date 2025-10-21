@@ -51,6 +51,9 @@ export async function transferSalonOwnership(formData: FormData) {
       action: 'transfer_salon_ownership',
       entity_type: 'salon',
       entity_id: salonId,
+      salon_id: salonId,
+      target_schema: 'organization',
+      target_table: 'salons',
       metadata: {
         old_owner_id: existingSalon?.owner_id ?? null,
         new_owner_id: newOwnerId,

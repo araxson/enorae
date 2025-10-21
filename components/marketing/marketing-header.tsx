@@ -7,10 +7,9 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
-import { Container } from '@/components/layout'
 import { Sparkles } from 'lucide-react'
-import { MobileNav } from '../navigation/mobile-nav'
-import { MarketingUserNav } from '../navigation/marketing-user-nav'
+import { MobileNav } from './navigation/mobile-nav'
+import { MarketingUserNav } from './navigation/marketing-user-nav'
 import { verifySession } from '@/lib/auth/session'
 
 const navigationItems = [
@@ -27,7 +26,7 @@ export async function MarketingHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <Container>
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link
@@ -78,7 +77,7 @@ export async function MarketingHeader() {
             role={session?.role}
           />
         </div>
-      </Container>
+      </div>
     </header>
   )
 }

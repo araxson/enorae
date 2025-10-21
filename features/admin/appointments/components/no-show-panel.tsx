@@ -31,27 +31,29 @@ export function NoShowPanel({ noShows }: NoShowPanelProps) {
         {noShows.recent.length === 0 ? (
           <p className="text-sm text-muted-foreground">No recent no-show events.</p>
         ) : (
-          <ul className="space-y-2">
+          <div className="space-y-2">
             {noShows.recent.map((item) => (
-              <li key={item.id} className="rounded-md border p-3 text-sm">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-medium text-foreground">{item.customerName || 'Unknown'}</span>
-                  <Badge variant="outline" className="text-xs">
-                    {item.salonName || 'Unassigned'}
-                  </Badge>
-                </div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  {item.staffName ? `Staff: ${item.staffName} · ` : ''}
-                  {item.startTime ? new Date(item.startTime).toLocaleString() : 'Unknown time'}
-                </div>
-                {item.totalPrice && (
-                  <div className="mt-1 text-xs text-muted-foreground">
-                    Estimated value ${item.totalPrice.toFixed(2)}
+              <Card key={item.id}>
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-medium">{item.customerName || 'Unknown'}</span>
+                    <Badge variant="outline" className="text-xs">
+                      {item.salonName || 'Unassigned'}
+                    </Badge>
                   </div>
-                )}
-              </li>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {item.staffName ? `Staff: ${item.staffName} · ` : ''}
+                    {item.startTime ? new Date(item.startTime).toLocaleString() : 'Unknown time'}
+                  </div>
+                  {item.totalPrice && (
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      Estimated value ${item.totalPrice.toFixed(2)}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             ))}
-          </ul>
+          </div>
         )}
       </CardContent>
     </Card>

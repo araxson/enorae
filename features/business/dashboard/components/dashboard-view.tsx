@@ -1,7 +1,6 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { Section, Stack } from '@/components/layout'
 import type { BusinessDashboardState } from '../types'
 import { DashboardToolbar } from './dashboard-toolbar'
 import { DashboardFilters } from './dashboard-filters'
@@ -22,8 +21,8 @@ export function DashboardView({
   analyticsPanel,
 }: DashboardViewProps) {
   return (
-    <Section size="lg" fullWidth>
-      <Stack gap="lg">
+    <section className="py-10 w-full px-6">
+      <div className="flex flex-col gap-6">
         <DashboardToolbar
           salonName={salon.name ?? 'Salon'}
           isTenantOwner={isTenantOwner}
@@ -42,7 +41,7 @@ export function DashboardView({
           appointments={recentAppointments}
           analyticsPanel={analyticsPanel}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

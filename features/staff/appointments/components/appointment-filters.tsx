@@ -4,8 +4,6 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Search } from 'lucide-react'
-import { Flex } from '@/components/layout'
-
 type AppointmentFiltersProps = {
   onSearchChange?: (search: string) => void
   onStatusChange: (status: string) => void
@@ -27,7 +25,7 @@ export function AppointmentFilters({
   }
 
   return (
-    <Flex gap="md" className="flex-col sm:flex-row">
+    <div className="flex gap-4 flex-col sm:flex-row">
       {showSearch ? (
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -53,6 +51,6 @@ export function AppointmentFilters({
           <SelectItem value="no_show">No Show</SelectItem>
         </SelectContent>
       </Select>
-    </Flex>
+    </div>
   )
 }

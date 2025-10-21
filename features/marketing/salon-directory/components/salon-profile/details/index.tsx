@@ -1,4 +1,3 @@
-import { Stack } from '@/components/layout'
 import type { Salon, Service, ServicesByCategory } from '../types'
 import { AboutCard } from './about-card'
 import { ServicesCard } from './services-card'
@@ -13,11 +12,11 @@ interface SalonDetailsProps {
 
 export function SalonDetails({ salon, services, servicesByCategory }: SalonDetailsProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <AboutCard salon={salon} />
       <ServicesCard services={services} servicesByCategory={servicesByCategory} />
       <AmenitiesCard salon={salon} />
       <GalleryCard salon={salon} />
-    </Stack>
+    </div>
   )
 }

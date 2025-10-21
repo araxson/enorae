@@ -119,43 +119,44 @@ export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="gap-2">
-                  <Settings className="h-4 w-4" />
-                  Quick actions
-                </NavigationMenuTrigger>
-                <NavigationMenuContent className="w-60 rounded-md border bg-popover p-2 text-popover-foreground shadow-md">
-                  <div className="px-1 pb-2 text-xs font-medium uppercase text-muted-foreground">
-                    Navigate to
+                <NavigationMenuTrigger>
+                  <div className="flex items-center gap-2">
+                    <Settings className="h-4 w-4" />
+                    <span>Quick actions</span>
                   </div>
-                  <nav className="grid gap-1 px-1">
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/admin/analytics"
-                        className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      >
-                        <LineChart className="h-4 w-4" />
-                        Platform analytics
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/admin/moderation"
-                        className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      >
-                        <MessageSquareWarning className="h-4 w-4" />
-                        Review moderation
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/admin/security"
-                        className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      >
-                        <ShieldCheck className="h-4 w-4" />
-                        Security center
-                      </Link>
-                    </NavigationMenuLink>
-                  </nav>
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Navigate to</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-1 p-2">
+                      <NavigationMenuLink asChild>
+                        <Button variant="ghost" className="w-full justify-start gap-2" asChild>
+                          <Link href="/admin/analytics">
+                            <LineChart className="h-4 w-4" />
+                            Platform analytics
+                          </Link>
+                        </Button>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Button variant="ghost" className="w-full justify-start gap-2" asChild>
+                          <Link href="/admin/moderation">
+                            <MessageSquareWarning className="h-4 w-4" />
+                            Review moderation
+                          </Link>
+                        </Button>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Button variant="ghost" className="w-full justify-start gap-2" asChild>
+                          <Link href="/admin/security">
+                            <ShieldCheck className="h-4 w-4" />
+                            Security center
+                          </Link>
+                        </Button>
+                      </NavigationMenuLink>
+                    </CardContent>
+                  </Card>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>

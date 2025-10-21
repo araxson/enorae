@@ -21,11 +21,16 @@ export async function approveSalon(formData: FormData) {
     const supabase = await getSupabaseClient()
 
     // Get salon owner for notification
-    const { data: salon } = await supabase
+    const { data: salon, error: salonError } = await supabase
+      .schema('organization')
       .from('salons')
-      .select('owner_id, name')
+      .select('name')
       .eq('id', salonId)
-      .single()
+      .maybeSingle()
+
+    if (salonError) {
+      return { error: salonError.message }
+    }
 
     if (!salon) {
       return { error: 'Salon not found' }
@@ -63,6 +68,8 @@ export async function approveSalon(formData: FormData) {
       entity_type: 'salon',
       entity_id: salonId,
       salon_id: salonId,
+      target_schema: 'organization',
+      target_table: 'salons',
       metadata: {
         salon_name: salon.name,
         note: note || 'Salon approved for platform listing',

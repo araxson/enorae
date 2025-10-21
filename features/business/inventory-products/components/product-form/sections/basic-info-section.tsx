@@ -3,8 +3,6 @@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Grid } from '@/components/layout'
-
 import type { ProductFormState } from '../types'
 
 type BasicInfoSectionProps = {
@@ -39,7 +37,7 @@ export function BasicInfoSection({ formState, onChange }: BasicInfoSectionProps)
         />
       </div>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="sku">SKU</Label>
           <Input
@@ -61,7 +59,7 @@ export function BasicInfoSection({ formState, onChange }: BasicInfoSectionProps)
             placeholder="e.g., bottle, tube, pack"
           />
         </div>
-      </Grid>
+      </div>
     </div>
   )
 }

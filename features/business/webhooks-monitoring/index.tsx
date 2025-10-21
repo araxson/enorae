@@ -1,5 +1,4 @@
 import { generateMetadata as genMeta } from '@/lib/metadata'
-import { Section } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { MonitoringPanel } from './components/monitoring-panel'
 import { getWebhookMonitoringData } from './api/queries'
@@ -14,20 +13,20 @@ export async function WebhookMonitoring() {
     const { stats, failedWebhooks } = await getWebhookMonitoringData()
 
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <MonitoringPanel stats={stats} failedWebhooks={failedWebhooks} />
-      </Section>
+      </section>
     )
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Failed to load webhook monitoring data'
 
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert variant="destructive">
           <AlertDescription>{message}</AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 }

@@ -1,6 +1,4 @@
 'use client'
-
-import { Grid, Stack } from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -15,7 +13,7 @@ type StaffFormFieldsProps = {
 
 export function StaffFormFields({ form, disabled, staff }: StaffFormFieldsProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <section className="space-y-4">
         <h3 className="text-sm font-medium">Basic Information</h3>
 
@@ -47,7 +45,7 @@ export function StaffFormFields({ form, disabled, staff }: StaffFormFieldsProps)
           />
         </div>
 
-        <Grid cols={{ base: 1, md: 2 }} gap="md">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <div>
             <Label htmlFor="title">Job Title</Label>
             <Input
@@ -71,7 +69,7 @@ export function StaffFormFields({ form, disabled, staff }: StaffFormFieldsProps)
               placeholder="5"
             />
           </div>
-        </Grid>
+        </div>
 
         <div>
           <Label htmlFor="bio">Bio</Label>
@@ -99,6 +97,6 @@ export function StaffFormFields({ form, disabled, staff }: StaffFormFieldsProps)
           </div>
         )}
       </section>
-    </Stack>
+    </div>
   )
 }

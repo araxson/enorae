@@ -1,6 +1,6 @@
 import { Phone, Mail, Globe } from 'lucide-react'
-import { Stack, Group } from '@/components/layout'
 import { Button } from '@/components/ui/button'
+import { cn } from "@/lib/utils";
 
 interface ContactInfoProps {
   phone?: string | null
@@ -17,25 +17,25 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
   }
 
   return (
-    <Stack gap="sm" className={className}>
+    <div className={cn('flex flex-col gap-3', className)}>
       {phone && (
-        <Group gap="sm">
+        <div className="flex gap-3 items-center">
           <Phone className="h-4 w-4 text-muted-foreground" />
           <a href={`tel:${phone}`} className="hover:underline">
             <small className="text-sm font-medium leading-none">{phone}</small>
           </a>
-        </Group>
+        </div>
       )}
       {email && (
-        <Group gap="sm">
+        <div className="flex gap-3 items-center">
           <Mail className="h-4 w-4 text-muted-foreground" />
           <a href={`mailto:${email}`} className="hover:underline">
             <small className="text-sm font-medium leading-none">{email}</small>
           </a>
-        </Group>
+        </div>
       )}
       {websiteUrl && (
-        <Group gap="sm">
+        <div className="flex gap-3 items-center">
           <Globe className="h-4 w-4 text-muted-foreground" />
           <a
             href={websiteUrl}
@@ -45,9 +45,9 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
           >
             <small className="text-sm font-medium leading-none">Visit Website</small>
           </a>
-        </Group>
+        </div>
       )}
-    </Stack>
+    </div>
   )
 }
 
@@ -66,7 +66,7 @@ export function ContactButtons({ phone, email, websiteUrl, className }: ContactB
   }
 
   return (
-    <Group gap="sm" className={className}>
+    <div className={cn('flex gap-3 items-center', className)}>
       {phone && (
         <Button variant="outline" size="sm" asChild>
           <a href={`tel:${phone}`}>
@@ -91,6 +91,6 @@ export function ContactButtons({ phone, email, websiteUrl, className }: ContactB
           </a>
         </Button>
       )}
-    </Group>
+    </div>
   )
 }

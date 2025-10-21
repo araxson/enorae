@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Stack, Group } from '@/components/layout'
 import { MapPin, Phone, Mail, Globe } from 'lucide-react'
 import type { Salon } from '../types'
 
@@ -20,40 +19,40 @@ export function ContactCard({ salon, location }: ContactCardProps) {
         <CardTitle>Contact</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           {location && (
-            <Group gap="sm">
+            <div className="flex gap-3 items-center">
               <MapPin className="h-5 w-5 text-muted-foreground shrink-0" />
               <p className="text-sm text-muted-foreground text-sm">{location}</p>
-            </Group>
+            </div>
           )}
           {salon.phone && (
-            <Group gap="sm">
+            <div className="flex gap-3 items-center">
               <Phone className="h-5 w-5 text-muted-foreground shrink-0" />
               <p className="text-sm text-muted-foreground text-sm">
                 <a href={`tel:${salon.phone}`}>{salon.phone}</a>
               </p>
-            </Group>
+            </div>
           )}
           {salon.email && (
-            <Group gap="sm">
+            <div className="flex gap-3 items-center">
               <Mail className="h-5 w-5 text-muted-foreground shrink-0" />
               <p className="text-sm text-muted-foreground text-sm">
                 <a href={`mailto:${salon.email}`}>{salon.email}</a>
               </p>
-            </Group>
+            </div>
           )}
           {salon.website_url && (
-            <Group gap="sm">
+            <div className="flex gap-3 items-center">
               <Globe className="h-5 w-5 text-muted-foreground shrink-0" />
               <p className="text-sm text-muted-foreground text-sm">
                 <Link href={salon.website_url} target="_blank" rel="noopener noreferrer">
                   Website
                 </Link>
               </p>
-            </Group>
+            </div>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

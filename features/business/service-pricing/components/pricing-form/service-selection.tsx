@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack, Grid } from '@/components/layout'
 import type { PricingFormState } from './use-pricing-form'
 
 type ServiceSelectionProps = {
@@ -18,7 +17,7 @@ type ServiceSelectionProps = {
 
 export function ServiceSelection({ services, state, editing, onChange }: ServiceSelectionProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       {!editing && (
         <div className="space-y-2">
           <Label htmlFor="service">
@@ -47,13 +46,13 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
 
       <Card>
         <CardContent>
-          <Stack gap="lg">
+          <div className="flex flex-col gap-6">
             <div className="flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-primary" />
               <Label className="font-semibold">Base Pricing</Label>
             </div>
 
-            <Grid cols={{ base: 1, md: 2 }} gap="md">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="basePrice">
                   Base Price <span className="text-destructive">*</span>
@@ -84,10 +83,10 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
                 />
                 <p className="text-sm text-muted-foreground text-xs">Discounted price (optional)</p>
               </div>
-            </Grid>
-          </Stack>
+            </div>
+          </div>
         </CardContent>
       </Card>
-    </Stack>
+    </div>
   )
 }

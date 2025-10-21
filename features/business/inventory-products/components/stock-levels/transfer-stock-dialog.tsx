@@ -15,7 +15,6 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Stack } from '@/components/layout'
 import { toast } from 'sonner'
 
 import type { TransferSelection, StockLocation } from './types'
@@ -68,7 +67,7 @@ export function TransferStockDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <Stack gap="md" className="my-4">
+          <div className="flex flex-col gap-4 my-4">
             <input type="hidden" name="productId" value={selection?.productId || ''} />
             <input type="hidden" name="fromLocationId" value={selection?.fromLocationId || ''} />
 
@@ -108,7 +107,7 @@ export function TransferStockDialog({
               <Label htmlFor="notes">Notes (optional)</Label>
               <Textarea name="notes" id="notes" rows={3} />
             </div>
-          </Stack>
+          </div>
 
           <DialogFooter>
             <Button

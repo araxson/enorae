@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex, Box, Grid } from '@/components/layout'
 import { Mail, Star, Briefcase } from 'lucide-react'
 import type { StaffProfile } from '../api/queries'
 
@@ -12,76 +11,76 @@ interface StaffProfileDetailProps {
 
 export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       {/* Profile Header */}
       <Card>
         <CardHeader className="p-6 pb-4">
-          <Flex justify="between" align="start" gap="md" wrap="wrap">
-            <Box className="max-w-xl space-y-2">
+          <div className="flex gap-4 items-start justify-between flex-wrap">
+            <div className="max-w-xl space-y-2">
               <CardTitle>{profile.title || 'Staff Member'}</CardTitle>
               {profile.bio && <CardDescription>{profile.bio}</CardDescription>}
-            </Box>
+            </div>
             {profile.average_rating && (
-              <Flex gap="xs" align="center">
+              <div className="flex gap-2 items-center">
                 <Star className="h-5 w-5 fill-primary text-primary" />
                 <p className="font-semibold">{profile.average_rating.toFixed(1)}</p>
                 <p className="text-sm text-muted-foreground">
                   ({profile.review_count || 0} reviews)
                 </p>
-              </Flex>
+              </div>
             )}
-          </Flex>
+          </div>
         </CardHeader>
         <CardContent className="p-6 pt-0">
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             {profile.email && (
-              <Flex gap="sm" align="center">
+              <div className="flex gap-3 items-center">
                 <Mail className="h-4 w-4 text-muted-foreground" />
                 <p className="text-sm">{profile.email}</p>
-              </Flex>
+              </div>
             )}
 
             {profile.specialties && profile.specialties.length > 0 && (
-              <Box>
+              <div>
                 <p className="text-xs text-muted-foreground mb-2">Specialties</p>
-                <Flex gap="xs" wrap="wrap">
+                <div className="flex gap-2 flex-wrap">
                   {(profile.specialties as string[]).map((specialty, index) => (
                     <Badge key={index} variant="secondary">
                       {specialty}
                     </Badge>
                   ))}
-                </Flex>
-              </Box>
+                </div>
+              </div>
             )}
 
             {profile.certifications && profile.certifications.length > 0 && (
-              <Box>
+              <div>
                 <p className="text-xs text-muted-foreground mb-2">Certifications</p>
-                <Flex gap="xs" wrap="wrap">
+                <div className="flex gap-2 flex-wrap">
                   {(profile.certifications as string[]).map((cert, index) => (
                     <Badge key={index} variant="outline">
                       {cert}
                     </Badge>
                   ))}
-                </Flex>
-              </Box>
+                </div>
+              </div>
             )}
-          </Stack>
+          </div>
         </CardContent>
       </Card>
 
       {/* Services Offered */}
       {profile.services && profile.services.length > 0 && (
-        <Box>
+        <div>
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Services Offered</h3>
-          <Grid cols={{ base: 1, md: 2 }} gap="md">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             {profile.services.map((service) => (
               <Card key={service.id}>
                 <CardHeader className="p-4 pb-2">
-                  <Flex justify="between" align="start" gap="sm">
-                    <CardTitle className="text-lg">{service.name}</CardTitle>
+                  <div className="flex gap-3 items-start justify-between">
+                    <CardTitle>{service.name}</CardTitle>
                     {service.price && <p className="font-semibold">${service.price}</p>}
-                  </Flex>
+                  </div>
                   {service.category_name && (
                     <Badge variant="secondary" className="w-fit">
                       {service.category_name}
@@ -89,7 +88,7 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
                   )}
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
-                  <Stack gap="sm">
+                  <div className="flex flex-col gap-3">
                     {service.description && (
                       <p className="text-sm text-muted-foreground line-clamp-2">
                         {service.description}
@@ -101,12 +100,12 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
                         {service.duration_minutes} minutes
                       </p>
                     )}
-                  </Stack>
+                  </div>
                 </CardContent>
               </Card>
             ))}
-          </Grid>
-        </Box>
+          </div>
+        </div>
       )}
 
       {/* Book Appointment CTA */}
@@ -125,6 +124,6 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
           </CardFooter>
         </Card>
       )}
-    </Stack>
+    </div>
   )
 }

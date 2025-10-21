@@ -1,4 +1,3 @@
-import { Section, Stack, Grid } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import type { SalonProfileViewProps } from './salon-profile/types'
 import { buildSalonLocation, groupServicesByCategory } from './salon-profile/utils'
@@ -11,18 +10,18 @@ export function SalonProfileView({ salon, services = [] }: SalonProfileViewProps
   const servicesByCategory = groupServicesByCategory(services)
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <SalonHero salon={salon} />
         <Separator />
-        <Grid cols={{ base: 1, lg: 3 }} gap="xl">
+        <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <SalonDetails salon={salon} services={services} servicesByCategory={servicesByCategory} />
           </div>
           <SalonSidebar salon={salon} location={location} />
-        </Grid>
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }
 

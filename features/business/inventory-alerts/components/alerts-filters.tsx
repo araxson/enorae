@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Flex } from '@/components/layout'
 
 interface AlertsFiltersProps {
   unresolvedCount: number
@@ -27,34 +26,34 @@ export function AlertsFilters({
           All Alerts
         </TabsTrigger>
         <TabsTrigger value="unresolved">
-          <Flex gap="xs" align="center">
+          <div className="flex gap-2 items-center">
             Unresolved
             {unresolvedCount > 0 && (
               <Badge variant="destructive">
                 {unresolvedCount}
               </Badge>
             )}
-          </Flex>
+          </div>
         </TabsTrigger>
         <TabsTrigger value="critical">
-          <Flex gap="xs" align="center">
+          <div className="flex gap-2 items-center">
             Critical
             {criticalCount > 0 && (
               <Badge variant="destructive">
                 {criticalCount}
               </Badge>
             )}
-          </Flex>
+          </div>
         </TabsTrigger>
         <TabsTrigger value="warning">
-          <Flex gap="xs" align="center">
+          <div className="flex gap-2 items-center">
             Warning
             {warningCount > 0 && (
               <Badge variant="default">
                 {warningCount}
               </Badge>
             )}
-          </Flex>
+          </div>
         </TabsTrigger>
         <TabsTrigger value="resolved">
           Resolved

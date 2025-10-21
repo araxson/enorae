@@ -16,13 +16,9 @@ type InventoryProductCatalogTableProps = {
 
 const formatStatus = (value: boolean, fallback: string) =>
   value ? (
-    <Badge variant="outline" className="bg-emerald-50 text-emerald-700">
-      Active
-    </Badge>
+    <Badge variant="default">Active</Badge>
   ) : (
-    <Badge variant="outline" className="bg-muted text-muted-foreground">
-      {fallback}
-    </Badge>
+    <Badge variant="secondary">{fallback}</Badge>
   )
 
 export function InventoryProductCatalogTable({ products }: InventoryProductCatalogTableProps) {

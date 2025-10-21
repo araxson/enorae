@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
 import { PageLoading } from '@/components/shared'
-import { Section, Stack } from '@/components/layout'
 import {
   searchSalons,
   getPopularCities,
@@ -36,8 +35,8 @@ export async function SalonSearch({ searchParams }: SalonSearchProps) {
   ])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Find Your Perfect Salon</h1>
           <p className="leading-7 text-muted-foreground">
@@ -51,8 +50,8 @@ export async function SalonSearch({ searchParams }: SalonSearchProps) {
           availableStates={availableStates}
           featuredSalons={featuredSalons}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }
 

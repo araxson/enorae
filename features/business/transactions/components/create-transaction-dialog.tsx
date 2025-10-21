@@ -20,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
 import { createManualTransaction } from '../api/mutations'
 
 interface CreateTransactionDialogProps {
@@ -74,9 +73,9 @@ export function CreateTransactionDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <Stack gap="lg" className="my-6">
+          <div className="flex flex-col gap-6 my-6">
             {/* Transaction Date */}
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <Label htmlFor="transactionAt">Transaction Date</Label>
               <Input
                 type="date"
@@ -86,10 +85,10 @@ export function CreateTransactionDialog({
                 max={new Date().toISOString().split('T')[0]}
                 defaultValue={new Date().toISOString().split('T')[0]}
               />
-            </Stack>
+            </div>
 
             {/* Transaction Type */}
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <Label htmlFor="transactionType">Transaction Type</Label>
               <Select value={transactionType} onValueChange={setTransactionType}>
                 <SelectTrigger>
@@ -103,10 +102,10 @@ export function CreateTransactionDialog({
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
-            </Stack>
+            </div>
 
             {/* Payment Method */}
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <Label htmlFor="paymentMethod">Payment Method</Label>
               <Select value={paymentMethod} onValueChange={setPaymentMethod}>
                 <SelectTrigger>
@@ -122,11 +121,11 @@ export function CreateTransactionDialog({
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
-            </Stack>
+            </div>
 
             {/* Optional: Staff Member */}
             {staffOptions.length > 0 && (
-              <Stack gap="sm">
+              <div className="flex flex-col gap-3">
                 <Label htmlFor="staffId">Staff Member (Optional)</Label>
                 <Select name="staffId">
                   <SelectTrigger>
@@ -140,12 +139,12 @@ export function CreateTransactionDialog({
                     ))}
                   </SelectContent>
                 </Select>
-              </Stack>
+              </div>
             )}
 
             {/* Optional: Customer */}
             {customerOptions.length > 0 && (
-              <Stack gap="sm">
+              <div className="flex flex-col gap-3">
                 <Label htmlFor="customerId">Customer (Optional)</Label>
                 <Select name="customerId">
                   <SelectTrigger>
@@ -159,9 +158,9 @@ export function CreateTransactionDialog({
                     ))}
                   </SelectContent>
                 </Select>
-              </Stack>
+              </div>
             )}
-          </Stack>
+          </div>
 
           <DialogFooter>
             <Button

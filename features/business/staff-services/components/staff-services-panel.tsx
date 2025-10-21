@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import type { Database } from '@/lib/types/database.types'
 import { StaffServicesManager } from '@/features/business/staff/components/staff-services-manager'
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
@@ -15,13 +14,13 @@ export function StaffServicesPanel({
   availableServices,
 }: StaffServicesPanelProps) {
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <StaffServicesManager
           staff={[staff]}
           availableServices={availableServices}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

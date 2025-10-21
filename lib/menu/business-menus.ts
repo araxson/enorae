@@ -1,4 +1,4 @@
-import type { NavItem, NavSecondaryItem } from '@/components/layout/sidebars/types'
+import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/sidebars/types'
 
 export const BUSINESS_MENUS = {
   default: [

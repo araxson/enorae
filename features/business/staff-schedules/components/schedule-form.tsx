@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { toast } from 'sonner'
 import { upsertStaffSchedule } from '../api/mutations'
 import { useScheduleFormState } from './form/use-schedule-form-state'
@@ -87,7 +86,7 @@ export function ScheduleForm({ staffMembers, onSuccess }: ScheduleFormProps) {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             <ScheduleFormFields
               values={values}
               onChange={update}
@@ -98,7 +97,7 @@ export function ScheduleForm({ staffMembers, onSuccess }: ScheduleFormProps) {
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Saving...' : 'Save Schedule'}
             </Button>
-          </Stack>
+          </div>
         </form>
       </CardContent>
     </Card>

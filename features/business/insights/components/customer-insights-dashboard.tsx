@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Stack } from '@/components/layout'
 import {
   Users,
   DollarSign,
@@ -77,7 +76,7 @@ export function CustomerInsightsDashboard({
   ]
 
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
@@ -246,6 +245,6 @@ export function CustomerInsightsDashboard({
           </Card>
         </TabsContent>
       </Tabs>
-    </Stack>
+    </div>
   )
 }

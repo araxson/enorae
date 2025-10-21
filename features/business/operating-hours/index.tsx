@@ -1,7 +1,6 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getOperatingHoursBySalon, getOperatingHoursSalon } from './api/queries'
 import { WeeklyScheduleForm } from './components/weekly-schedule-form'
-import { Section, Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 
 export async function OperatingHoursManagement() {
@@ -11,13 +10,13 @@ export async function OperatingHoursManagement() {
     salon = await getOperatingHoursSalon()
   } catch (error) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load salon data'}
           </AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 
@@ -25,8 +24,8 @@ export async function OperatingHoursManagement() {
   const operatingHours = await getOperatingHoursBySalon(salon.id)
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <div>
           <p className="leading-7 text-base font-semibold">Operating Hours</p>
           <p className="leading-7 text-muted-foreground">
@@ -37,7 +36,7 @@ export async function OperatingHoursManagement() {
         <Separator />
 
         <WeeklyScheduleForm salonId={salon.id} initialHours={operatingHours} />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

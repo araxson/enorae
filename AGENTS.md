@@ -3,6 +3,7 @@
 Fast reference for AI when contributing to ENORAE.
 
 ---
+NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 
 ## Stack Patterns Documentation
 

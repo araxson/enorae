@@ -1,18 +1,16 @@
 'use client'
-
-import { Grid, Stack } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 
 export function QuantityFields() {
   return (
-    <Grid cols={{ base: 1, md: 2 }} gap="lg">
-      <Stack gap="sm">
+    <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+      <div className="flex flex-col gap-3">
         <Label htmlFor="quantity">Quantity</Label>
         <Input type="number" id="quantity" name="quantity" required min="1" placeholder="e.g., 10" />
-      </Stack>
+      </div>
 
-      <Stack gap="sm">
+      <div className="flex flex-col gap-3">
         <Label htmlFor="costPrice">Cost Price (optional)</Label>
         <Input
           type="number"
@@ -22,7 +20,7 @@ export function QuantityFields() {
           step="0.01"
           placeholder="e.g., 25.50"
         />
-      </Stack>
-    </Grid>
+      </div>
+    </div>
   )
 }

@@ -10,4 +10,16 @@ export const updateProfileSchema = z.object({
 export const suspendUserSchema = z.object({
   userId: z.string().regex(UUID_REGEX, 'Invalid user ID'),
   reason: z.string().optional(),
+  durationDays: z.number().optional(),
+})
+
+export const banUserSchema = z.object({
+  userId: z.string().regex(UUID_REGEX, 'Invalid user ID'),
+  reason: z.string().optional(),
+  isPermanent: z.boolean().default(true),
+})
+
+export const reactivateUserSchema = z.object({
+  userId: z.string().regex(UUID_REGEX, 'Invalid user ID'),
+  note: z.string().optional(),
 })

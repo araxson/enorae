@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Grid, Flex } from '@/components/layout'
 import { Plus, Clock, Calendar, Timer } from 'lucide-react'
 import { BookingRuleForm } from './booking-rule-form'
 import type { BookingRuleWithService } from '../api/queries'
@@ -40,8 +39,8 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
 
   return (
     <>
-      <Stack gap="lg">
-        <Flex justify="between" align="center">
+      <div className="flex flex-col gap-6">
+        <div className="flex gap-4 items-center justify-between">
           <div>
             <p className="leading-7 text-sm text-muted-foreground">
               {rules.length} {rules.length === 1 ? 'rule' : 'rules'} configured
@@ -51,7 +50,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
             <Plus className="h-4 w-4 mr-2" />
             Add Rule
           </Button>
-        </Flex>
+        </div>
 
         {rules.length === 0 ? (
           <Card>
@@ -69,11 +68,11 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
             </CardContent>
           </Card>
         ) : (
-          <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {rules.map((rule) => (
               <Card key={rule.id}>
                 <CardContent className="p-6">
-                  <Stack gap="md">
+                  <div className="flex flex-col gap-4">
                     <div>
                       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">{rule.service?.name || 'Unknown Service'}</h3>
                       {rule.total_duration_minutes && (
@@ -83,46 +82,46 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                       )}
                     </div>
 
-                    <Stack gap="sm">
+                    <div className="flex flex-col gap-3">
                       {rule.duration_minutes !== null && rule.duration_minutes !== undefined && (
-                        <Flex gap="sm" align="center">
+                        <div className="flex gap-3 items-center">
                           <Clock className="h-4 w-4 text-muted-foreground" />
                           <small className="text-sm font-medium leading-none text-muted-foreground">Duration:</small>
                           <small className="text-sm font-medium leading-none font-medium">{rule.duration_minutes} min</small>
-                        </Flex>
+                        </div>
                       )}
 
                       {rule.buffer_minutes !== null && rule.buffer_minutes !== undefined && (
-                        <Flex gap="sm" align="center">
+                        <div className="flex gap-3 items-center">
                           <Timer className="h-4 w-4 text-muted-foreground" />
                           <small className="text-sm font-medium leading-none text-muted-foreground">Buffer:</small>
                           <small className="text-sm font-medium leading-none font-medium">{rule.buffer_minutes} min</small>
-                        </Flex>
+                        </div>
                       )}
 
                       {rule.min_advance_booking_hours !== null &&
                         rule.min_advance_booking_hours !== undefined && (
-                          <Flex gap="sm" align="center">
+                          <div className="flex gap-3 items-center">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
                             <small className="text-sm font-medium leading-none text-muted-foreground">Min Advance:</small>
                             <small className="text-sm font-medium leading-none font-medium">
                               {rule.min_advance_booking_hours}h
                             </small>
-                          </Flex>
+                          </div>
                         )}
 
                       {rule.max_advance_booking_days !== null &&
                         rule.max_advance_booking_days !== undefined && (
-                          <Flex gap="sm" align="center">
+                          <div className="flex gap-3 items-center">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
                             <small className="text-sm font-medium leading-none text-muted-foreground">Max Advance:</small>
                             <small className="text-sm font-medium leading-none font-medium">
                               {rule.max_advance_booking_days} days
                             </small>
-                          </Flex>
+                          </div>
                         )}
-                    </Stack>
-                  </Stack>
+                    </div>
+                  </div>
                 </CardContent>
                 <CardFooter className="border-t p-4">
                   <Button variant="outline" size="sm" onClick={() => handleEdit(rule)} className="w-full">
@@ -131,7 +130,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                 </CardFooter>
               </Card>
             ))}
-          </Grid>
+          </div>
         )}
 
         {servicesWithoutRules.length > 0 && rules.length > 0 && (
@@ -144,7 +143,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
             </CardContent>
           </Card>
         )}
-      </Stack>
+      </div>
 
       <BookingRuleForm
         open={isFormOpen}

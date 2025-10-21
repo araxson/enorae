@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
 import { updateUserRole } from '../api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import type { UserRoleWithDetails } from '../api/queries'
@@ -95,7 +94,7 @@ export function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             <div className="space-y-2">
               <Label>User</Label>
               <div className="text-sm text-muted-foreground">
@@ -132,7 +131,7 @@ export function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps
                 {isPending ? 'Updating...' : 'Update Role'}
               </Button>
             </DialogFooter>
-          </Stack>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

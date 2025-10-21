@@ -1,4 +1,3 @@
-import { Section, Stack, Flex } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { SessionList } from './components/session-list'
 import { getMySessions, getCurrentSessionId } from './api/queries'
@@ -11,18 +10,18 @@ interface SessionsFeatureProps {
 
 export function SessionsFeature({ sessions, currentSessionId }: SessionsFeatureProps) {
   return (
-    <Stack gap="lg">
-      <Flex justify="between" align="center">
+    <div className="flex flex-col gap-6">
+      <div className="flex gap-4 items-center justify-between">
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Active Sessions</h1>
         {sessions.filter(s => s.is_active).length > 1 && (
           <Button variant="destructive" size="sm">
             Revoke All Other Sessions
           </Button>
         )}
-      </Flex>
+      </div>
 
       <SessionList sessions={sessions} currentSessionId={currentSessionId} />
-    </Stack>
+    </div>
   )
 }
 
@@ -33,8 +32,8 @@ export async function StaffSessionsPage() {
   ])
 
   return (
-    <Section size="lg">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <SessionsFeature sessions={sessions} currentSessionId={currentSessionId} />
-    </Section>
+    </section>
   )
 }

@@ -24,15 +24,15 @@ export function MessagesReportSummary({ summary }: MessagesReportSummaryProps) {
           <Separator />
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Open reports</p>
-            <p className="text-lg font-semibold text-orange-500">{openReports}</p>
+            <p className="text-lg font-semibold text-destructive">{openReports}</p>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Pending moderator review</p>
-            <p className="text-lg font-semibold text-amber-500">{pendingReports}</p>
+            <p className="text-lg font-semibold text-warning">{pendingReports}</p>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Resolved</p>
-            <p className="text-lg font-semibold text-emerald-600">{resolvedReports}</p>
+            <p className="text-lg font-semibold text-success">{resolvedReports}</p>
           </div>
         </div>
 

@@ -1,12 +1,11 @@
 import { AlertCircle, UserX } from 'lucide-react'
-import { Section } from '@/components/layout'
 import { EmptyState } from '@/components/shared'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 export function ErrorState({ message, retryHref }: { message: string; retryHref: string }) {
   return (
-    <Section size="lg" fullWidth>
+    <section className="py-10 w-full px-6">
       <EmptyState
         icon={AlertCircle}
         title="Error Loading Dashboard"
@@ -17,13 +16,13 @@ export function ErrorState({ message, retryHref }: { message: string; retryHref:
           </Button>
         }
       />
-    </Section>
+    </section>
   )
 }
 
 export function MissingProfileState() {
   return (
-    <Section size="lg" fullWidth>
+    <section className="py-10 w-full px-6">
       <EmptyState
         icon={UserX}
         title="No Staff Profile Found"
@@ -34,6 +33,6 @@ export function MissingProfileState() {
           </Button>
         }
       />
-    </Section>
+    </section>
   )
 }

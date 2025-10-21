@@ -1,5 +1,4 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Stack, Flex, Group } from '@/components/layout'
 import type { ServicesByCategory, Service } from '../types'
 
 interface ServicesCardProps {
@@ -16,20 +15,20 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
         <CardTitle>Services</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           {(Object.entries(servicesByCategory) as Array<[string, Service[]]>).map(
             ([category, categoryServices]) => (
-              <Stack gap="md" key={category}>
+              <div key={category} className="flex flex-col gap-4">
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{category}</h3>
-                <Stack gap="sm">
+                <div className="flex flex-col gap-3">
                   {categoryServices.map((service) => (
                     <ServiceRow key={service.id} service={service} />
                   ))}
-                </Stack>
-              </Stack>
+                </div>
+              </div>
             ),
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )
@@ -41,17 +40,17 @@ interface ServiceRowProps {
 
 function ServiceRow({ service }: ServiceRowProps) {
   return (
-    <Flex justify="between" align="start" className="py-2">
-      <Stack gap="xs">
+    <div className="flex gap-4 items-start justify-between py-2">
+      <div className="flex flex-col gap-2">
         <p className="leading-7 font-medium">{service.name}</p>
         {service.description && <p className="text-sm text-muted-foreground text-sm">{service.description}</p>}
-      </Stack>
-      <Group gap="sm" align="center">
+      </div>
+      <div className="flex gap-3 items-center">
         {service.duration_minutes && <p className="text-sm text-muted-foreground text-sm">{service.duration_minutes}m</p>}
         {service.sale_price && (
           <p className="leading-7 font-semibold whitespace-nowrap">${service.sale_price}</p>
         )}
-      </Group>
-    </Flex>
+      </div>
+    </div>
   )
 }

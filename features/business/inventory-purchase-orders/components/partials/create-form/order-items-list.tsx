@@ -1,6 +1,4 @@
 'use client'
-
-import { Stack } from '@/components/layout'
 import type { OrderItem, Product } from '../../types'
 import { OrderItemCard } from './order-item-card'
 import { OrderItemsEmpty } from './order-items-empty'
@@ -21,7 +19,7 @@ export function OrderItemsList({ items, products, onAddItem, onRemoveItem, onUpd
       <OrderItemsHeader onAddItem={onAddItem} />
 
       {hasItems ? (
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           {items.map((item, index) => (
             <OrderItemCard
               key={`${item.productId}-${index}`}
@@ -32,7 +30,7 @@ export function OrderItemsList({ items, products, onAddItem, onRemoveItem, onUpd
               onUpdate={onUpdateItem}
             />
           ))}
-        </Stack>
+        </div>
       ) : (
         <OrderItemsEmpty />
       )}

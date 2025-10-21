@@ -1,5 +1,4 @@
-import { MarketingHeader } from '@/components/layout/headers/marketing-header'
-import { Footer } from '@/components/layout/footer'
+import { MarketingHeader, MarketingFooter } from '@/components/marketing'
 import { Suspense } from 'react'
 
 export default function MarketingLayout({
@@ -17,7 +16,7 @@ export default function MarketingLayout({
         <MarketingHeader />
       </Suspense>
       <main className="flex-1">{children}</main>
-      <Footer />
+      <MarketingFooter />
     </div>
   )
 }

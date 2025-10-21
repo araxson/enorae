@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   InputGroup,
   InputGroupAddon,
@@ -33,7 +34,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Switch } from '@/components/ui/switch'
 import { Slider } from '@/components/ui/slider'
 import { Separator } from '@/components/ui/separator'
-import { Stack, Group } from '@/components/layout'
 const stylistOptions = ['Any stylist', 'Color specialists', 'Front desk', 'Senior stylists']
 
 export function DashboardFilters() {
@@ -52,128 +52,135 @@ export function DashboardFilters() {
   }, [dateRange])
 
   return (
-    <Stack gap="md" className="rounded-xl border bg-muted/20 p-4 shadow-sm">
-      <Group className="items-center justify-between">
-        <Group gap="sm" className="items-center">
-          <Badge variant="outline" className="gap-1">
-            <Filter className="h-3.5 w-3.5" />
-            Smart filters
-          </Badge>
-          <small className="text-sm font-medium leading-none text-muted-foreground">Fine tune the data you see today.</small>
-        </Group>
-        <Stack gap="xs" className="items-end text-xs text-muted-foreground">
-          <span>{formattedRange}</span>
-          <span>{selectedStylist}</span>
-        </Stack>
-      </Group>
+    <Card>
+      <CardHeader>
+        <CardTitle>Smart filters</CardTitle>
+        <CardDescription>Fine tune the data you see today.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-4 items-center items-center justify-between">
+            <div className="flex gap-3 items-center items-center">
+              <Badge variant="outline" className="gap-1">
+                <Filter className="h-3.5 w-3.5" />
+                Smart filters
+              </Badge>
+            </div>
+            <div className="flex flex-col gap-2 items-end text-xs text-muted-foreground">
+              <span>{formattedRange}</span>
+              <span>{selectedStylist}</span>
+            </div>
+          </div>
 
-      <Separator />
+          <Separator />
 
-      <Stack gap="md" className="md:flex-row md:items-end md:justify-between">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full justify-start gap-2 md:w-auto">
-              <CalendarIcon className="h-4 w-4" />
-              {formattedRange}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <Calendar
-              mode="range"
-              selected={{ from: dateRange.from, to: dateRange.to }}
-              onSelect={(range) => setDateRange(range ?? {})}
-              numberOfMonths={2}
-            />
-          </PopoverContent>
-        </Popover>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full justify-start gap-2 md:w-auto">
+                  <CalendarIcon className="h-4 w-4" />
+                  {formattedRange}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="range"
+                  selected={{ from: dateRange.from, to: dateRange.to }}
+                  onSelect={(range) => setDateRange(range ?? {})}
+                  numberOfMonths={2}
+                />
+              </PopoverContent>
+            </Popover>
 
-        <InputGroup className="md:max-w-xs">
-          <InputGroupAddon>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </InputGroupAddon>
-          <InputGroupInput placeholder="Search clients" onFocus={() => undefined} />
-          <InputGroupButton size="icon-xs" variant="outline">Go</InputGroupButton>
-        </InputGroup>
+            <InputGroup className="md:max-w-xs">
+              <InputGroupAddon>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </InputGroupAddon>
+              <InputGroupInput placeholder="Search clients" onFocus={() => undefined} />
+              <InputGroupButton size="icon-xs" variant="outline">Go</InputGroupButton>
+            </InputGroup>
 
-        <Select value={serviceTier} onValueChange={(value: 'all' | 'premium' | 'standard') => setServiceTier(value)}>
-          <SelectTrigger>
-            <SelectValue placeholder="Service tier" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All services</SelectItem>
-            <SelectItem value="premium">Premium only</SelectItem>
-            <SelectItem value="standard">Standard</SelectItem>
-          </SelectContent>
-        </Select>
-      </Stack>
+            <Select value={serviceTier} onValueChange={(value: 'all' | 'premium' | 'standard') => setServiceTier(value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Service tier" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All services</SelectItem>
+                <SelectItem value="premium">Premium only</SelectItem>
+                <SelectItem value="standard">Standard</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-      <Separator />
+          <Separator />
 
-      <Stack gap="md">
-        <Stack gap="xs">
-          <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Team focus</small>
-          <Command>
-            <CommandInput placeholder="Filter by team group" />
-            <CommandList>
-              <CommandEmpty>No matches.</CommandEmpty>
-              <CommandGroup heading="Groups">
-                {stylistOptions.map((option) => (
-                  <CommandItem key={option} onSelect={() => setSelectedStylist(option)}>
-                    {option}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-              <CommandSeparator />
-              <CommandGroup heading="Actions">
-                <CommandItem onSelect={() => setSelectedStylist('Any stylist')}>Reset selection</CommandItem>
-                <CommandItem onSelect={() => setSelectedStylist('Senior stylists')}>Focus on senior stylists</CommandItem>
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </Stack>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Team focus</small>
+              <Command>
+                <CommandInput placeholder="Filter by team group" />
+                <CommandList>
+                  <CommandEmpty>No matches.</CommandEmpty>
+                  <CommandGroup heading="Groups">
+                    {stylistOptions.map((option) => (
+                      <CommandItem key={option} onSelect={() => setSelectedStylist(option)}>
+                        {option}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                  <CommandSeparator />
+                  <CommandGroup heading="Actions">
+                    <CommandItem onSelect={() => setSelectedStylist('Any stylist')}>Reset selection</CommandItem>
+                    <CommandItem onSelect={() => setSelectedStylist('Senior stylists')}>Focus on senior stylists</CommandItem>
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </div>
 
-        <Group className="flex-wrap items-center gap-6">
-          <Stack gap="xs">
-            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Service mix</small>
-            <RadioGroup value={serviceTier} onValueChange={(value) => setServiceTier(value as typeof serviceTier)}>
-              <Group className="items-center gap-2"><RadioGroupItem value="all" id="tier-all" /><label htmlFor="tier-all" className="text-sm text-muted-foreground">All services</label></Group>
-              <Group className="items-center gap-2"><RadioGroupItem value="premium" id="tier-premium" /><label htmlFor="tier-premium" className="text-sm text-muted-foreground">Premium services</label></Group>
-              <Group className="items-center gap-2"><RadioGroupItem value="standard" id="tier-standard" /><label htmlFor="tier-standard" className="text-sm text-muted-foreground">Standard services</label></Group>
-            </RadioGroup>
-          </Stack>
+            <div className="flex gap-4 items-center flex-wrap items-center gap-6">
+              <div className="flex flex-col gap-2">
+                <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Service mix</small>
+                <RadioGroup value={serviceTier} onValueChange={(value) => setServiceTier(value as typeof serviceTier)}>
+                  <div className="flex gap-4 items-center items-center gap-2"><RadioGroupItem value="all" id="tier-all" /><label htmlFor="tier-all" className="text-sm text-muted-foreground">All services</label></div>
+                  <div className="flex gap-4 items-center items-center gap-2"><RadioGroupItem value="premium" id="tier-premium" /><label htmlFor="tier-premium" className="text-sm text-muted-foreground">Premium services</label></div>
+                  <div className="flex gap-4 items-center items-center gap-2"><RadioGroupItem value="standard" id="tier-standard" /><label htmlFor="tier-standard" className="text-sm text-muted-foreground">Standard services</label></div>
+                </RadioGroup>
+              </div>
 
-          <Stack gap="xs" className="w-full max-w-xs">
-            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Booking load threshold</small>
-            <Slider defaultValue={[75]} aria-label="Booking load threshold" />
-            <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</small>
-          </Stack>
+              <div className="flex flex-col gap-2 w-full max-w-xs">
+                <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Booking load threshold</small>
+                <Slider defaultValue={[75]} aria-label="Booking load threshold" />
+                <small className="text-sm font-medium leading-none text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</small>
+              </div>
 
-          <Stack gap="xs">
-            <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Staff assignments</small>
-            <Group className="items-center gap-2"><Checkbox id="assignment-balanced" defaultChecked /><label htmlFor="assignment-balanced" className="text-sm text-muted-foreground">Balanced workload</label></Group>
-            <Group className="items-center gap-2"><Checkbox id="assignment-specialist" /><label htmlFor="assignment-specialist" className="text-sm text-muted-foreground">Highlight specialists</label></Group>
-          </Stack>
-        </Group>
+              <div className="flex flex-col gap-2">
+                <small className="text-sm font-medium leading-none font-medium text-muted-foreground">Staff assignments</small>
+                <div className="flex gap-4 items-center items-center gap-2"><Checkbox id="assignment-balanced" defaultChecked /><label htmlFor="assignment-balanced" className="text-sm text-muted-foreground">Balanced workload</label></div>
+                <div className="flex gap-4 items-center items-center gap-2"><Checkbox id="assignment-specialist" /><label htmlFor="assignment-specialist" className="text-sm text-muted-foreground">Highlight specialists</label></div>
+              </div>
+            </div>
 
-        <Group className="items-center justify-between">
-          <Group className="items-center gap-3">
-            <Switch id="include-cancellations" />
-            <label htmlFor="include-cancellations" className="text-sm text-muted-foreground">
-              Include cancellations
-            </label>
-          </Group>
-          <Group className="items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={() => {
-              setDateRange({})
-              setSelectedStylist(stylistOptions[0])
-              setServiceTier('all')
-            }}>
-              Reset
-            </Button>
-            <Button size="sm">Apply filters</Button>
-          </Group>
-        </Group>
-      </Stack>
-    </Stack>
+            <div className="flex gap-4 items-center items-center justify-between">
+              <div className="flex gap-4 items-center items-center gap-3">
+                <Switch id="include-cancellations" />
+                <label htmlFor="include-cancellations" className="text-sm text-muted-foreground">
+                  Include cancellations
+                </label>
+              </div>
+              <div className="flex gap-4 items-center items-center gap-2">
+                <Button variant="ghost" size="sm" onClick={() => {
+                  setDateRange({})
+                  setSelectedStylist(stylistOptions[0])
+                  setServiceTier('all')
+                }}>
+                  Reset
+                </Button>
+                <Button size="sm">Apply filters</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   )
 }

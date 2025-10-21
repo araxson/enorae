@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack, Flex } from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -96,16 +95,16 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
-          <Flex justify="between" align="center">
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-4 items-center justify-between">
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Map & Coordinates</h3>
             <MapPin className="h-5 w-5 text-muted-foreground" />
-          </Flex>
+          </div>
           <Separator />
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="address-search">Search Address</Label>
-            <Flex gap="sm">
+            <div className="flex gap-3">
               <div className="flex-1 relative">
                 <Input
                   id="address-search"
@@ -140,9 +139,9 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
                 <Search className="h-4 w-4 mr-2" />
                 Geocode
               </Button>
-            </Flex>
+            </div>
             <p className="text-sm text-muted-foreground">Search for your address to automatically fill coordinates</p>
-          </Stack>
+          </div>
 
           {selectedAddress && (
             <Alert>
@@ -167,7 +166,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
               />
             </div>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

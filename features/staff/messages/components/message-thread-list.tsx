@@ -5,7 +5,6 @@ import { MessageCircle, Archive } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
 import { archiveThread } from '../api/mutations'
 import type { MessageThread } from '../types'
 
@@ -35,13 +34,13 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
   }
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       {threads.map((thread) => (
         <Link key={thread.id} href={`/staff/messages/${thread.id}`}>
           <Card className="p-4 hover:bg-accent transition-colors cursor-pointer">
-            <Flex justify="between" align="start">
-              <Stack gap="sm" className="flex-1">
-                <Flex align="center" gap="sm">
+            <div className="flex gap-4 items-start justify-between">
+              <div className="flex flex-col gap-3 flex-1">
+                <div className="flex gap-3 items-center">
                   <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{thread.subject}</h3>
                   {thread.unread_count_staff && thread.unread_count_staff > 0 && (
                     <Badge variant="default">
@@ -56,7 +55,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                       {thread.priority}
                     </Badge>
                   )}
-                </Flex>
+                </div>
 
                 {thread.customer_name && (
                   <p className="leading-7 text-sm">Customer: {thread.customer_name}</p>
@@ -67,7 +66,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                     Last message: {format(new Date(thread.last_message_at || ''), 'PPp')}
                   </p>
                 )}
-              </Stack>
+              </div>
 
               <Button
                 variant="ghost"
@@ -76,10 +75,10 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
               >
                 <Archive className="h-4 w-4" />
               </Button>
-            </Flex>
+            </div>
           </Card>
         </Link>
       ))}
-    </Stack>
+    </div>
   )
 }

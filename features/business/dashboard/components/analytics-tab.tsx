@@ -14,7 +14,6 @@ import {
   CustomerInsightsCard,
   OperationalMetricsDashboard,
 } from '@/features/business/business-common/components'
-import { Stack, Grid } from '@/components/layout'
 
 interface AnalyticsTabProps {
   salonId: string
@@ -39,15 +38,15 @@ export async function AnalyticsTab({ salonId }: AnalyticsTabProps) {
   ])
 
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       {/* Revenue Trend Chart */}
       <RevenueTrendChart data={revenueTrend} showBreakdown />
 
       {/* Appointment Conversion & Service Popularity */}
-      <Grid cols={{ base: 1, lg: 2 }} gap="lg">
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
         <AppointmentConversionChart data={conversionData} />
         <ServicePopularityChart data={servicePopularity} />
-      </Grid>
+      </div>
 
       {/* Customer Insights */}
       <CustomerInsightsCard data={customerInsights} />
@@ -57,6 +56,6 @@ export async function AnalyticsTab({ salonId }: AnalyticsTabProps) {
 
       {/* Staff Performance */}
       <StaffPerformanceCard staff={staffPerformance} />
-    </Stack>
+    </div>
   )
 }

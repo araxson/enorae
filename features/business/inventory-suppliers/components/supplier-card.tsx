@@ -4,7 +4,6 @@ import { useState, useTransition } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack, Flex, Box } from '@/components/layout'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { deleteSupplier } from '../api/mutations'
 import type { Supplier } from '@/lib/types/app.types'
@@ -35,38 +34,38 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
     <>
       <Card>
         <CardContent>
-          <Stack gap="sm">
-            <Flex justify="between" align="start">
-              <Box>
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-4 items-start justify-between">
+              <div>
                 <span className="text-lg font-semibold">{supplier.name}</span>
                 {supplier.contact_name && (
                   <small className="text-sm font-medium leading-none text-muted-foreground">
                     Contact: {supplier.contact_name}
                   </small>
                 )}
-              </Box>
+              </div>
               <Badge variant={supplier.is_active ? 'default' : 'secondary'}>
                 {supplier.is_active ? 'Active' : 'Inactive'}
               </Badge>
-            </Flex>
+            </div>
 
-            <Stack gap="xs">
-              {supplier.email && (
-                <Flex gap="sm">
+            <div className="flex flex-col gap-2">
+              {supplier.contact_email && (
+                <div className="flex gap-3">
                   <small className="text-sm font-medium leading-none text-muted-foreground">Email:</small>
-                  <small className="text-sm font-medium leading-none">{supplier.email}</small>
-                </Flex>
+                  <small className="text-sm font-medium leading-none">{supplier.contact_email}</small>
+                </div>
               )}
 
-              {supplier.phone && (
-                <Flex gap="sm">
+              {supplier.contact_phone && (
+                <div className="flex gap-3">
                   <small className="text-sm font-medium leading-none text-muted-foreground">Phone:</small>
-                  <small className="text-sm font-medium leading-none">{supplier.phone}</small>
-                </Flex>
+                  <small className="text-sm font-medium leading-none">{supplier.contact_phone}</small>
+                </div>
               )}
 
               {supplier.website && (
-                <Flex gap="sm">
+                <div className="flex gap-3">
                   <small className="text-sm font-medium leading-none text-muted-foreground">Website:</small>
                   <small className="text-sm font-medium leading-none">
                     <a
@@ -78,32 +77,32 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
                       {supplier.website}
                     </a>
                   </small>
-                </Flex>
+                </div>
               )}
 
               {supplier.address && (
-                <Box>
+                <div>
                   <small className="text-sm font-medium leading-none text-muted-foreground">Address:</small>
                   <small className="text-sm font-medium leading-none">{supplier.address}</small>
-                </Box>
+                </div>
               )}
 
               {supplier.payment_terms && (
-                <Box>
+                <div>
                   <small className="text-sm font-medium leading-none text-muted-foreground">Payment Terms:</small>
                   <small className="text-sm font-medium leading-none">{supplier.payment_terms}</small>
-                </Box>
+                </div>
               )}
 
               {supplier.notes && (
-                <Box>
+                <div>
                   <small className="text-sm font-medium leading-none text-muted-foreground">Notes:</small>
                   <small className="text-sm font-medium leading-none">{supplier.notes}</small>
-                </Box>
+                </div>
               )}
-            </Stack>
+            </div>
 
-            <Flex justify="end" gap="sm">
+            <div className="flex gap-3 justify-end">
               <Button
                 size="sm"
                 variant="outline"
@@ -112,8 +111,8 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
                 {supplier.is_active ? 'Deactivate' : 'Delete'}
               </Button>
               <Button size="sm">Edit</Button>
-            </Flex>
-          </Stack>
+            </div>
+          </div>
         </CardContent>
       </Card>
 

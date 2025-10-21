@@ -1,4 +1,5 @@
 import { Progress } from '@/components/ui/progress'
+import { Card, CardContent } from '@/components/ui/card'
 import type { InventoryValuationSummary } from '../api/queries'
 import { formatCurrency } from './inventory-utils'
 
@@ -32,23 +33,25 @@ export function InventoryValuationBreakdown({ valuation }: InventoryValuationBre
 
       <div className="space-y-4">
         {valuation.categories.map((category) => (
-          <div key={category.categoryName} className="space-y-2 rounded-lg border p-4">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="font-medium leading-tight">{category.categoryName}</p>
-                <p className="text-xs text-muted-foreground">
-                  {category.productCount} products • {category.salonCount} salons
-                </p>
+          <Card key={category.categoryName}>
+            <CardContent className="space-y-2 pt-6">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="font-medium leading-tight">{category.categoryName}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {category.productCount} products • {category.salonCount} salons
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="font-semibold">{formatCurrency(category.stockValue)}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {(category.contribution * 100).toFixed(1)}% of stock
+                  </p>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="font-semibold">{formatCurrency(category.stockValue)}</p>
-                <p className="text-xs text-muted-foreground">
-                  {(category.contribution * 100).toFixed(1)}% of stock
-                </p>
-              </div>
-            </div>
-            <Progress value={Math.min(category.contribution * 100, 100)} />
-          </div>
+              <Progress value={Math.min(category.contribution * 100, 100)} />
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

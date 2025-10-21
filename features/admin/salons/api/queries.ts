@@ -17,8 +17,7 @@ interface ComplianceInput {
   ratingAverage: number | null
   totalBookings: number | null
   totalRevenue: number | null
-  employeeCount: number | null
-  maxStaff: number | null
+  staffCount: number | null
 }
 
 interface ComplianceResult {
@@ -31,8 +30,7 @@ interface HealthInput {
   ratingAverage: number | null
   totalBookings: number | null
   totalRevenue: number | null
-  employeeCount: number | null
-  maxStaff: number | null
+  staffCount: number | null
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -63,11 +61,6 @@ function computeCompliance(input: ComplianceInput): ComplianceResult {
       break
   }
 
-  if ((input.maxStaff ?? 0) > 0 && (input.employeeCount ?? 0) > (input.maxStaff ?? 0)) {
-    issues.push('Staff count exceeds limit')
-    score -= 15
-  }
-
   if ((input.ratingAverage ?? 0) < 3) {
     issues.push('Low customer rating')
     score -= 10
@@ -93,24 +86,19 @@ function calculateHealthScore({
   ratingAverage,
   totalBookings,
   totalRevenue,
-  employeeCount,
-  maxStaff,
+  staffCount,
 }: HealthInput): number {
   const ratingScore = clamp((ratingAverage ?? 0) / 5, 0, 1)
   const bookingScore = clamp((totalBookings ?? 0) / 200, 0, 1)
   const revenueScore = clamp((totalRevenue ?? 0) / 150000, 0, 1)
-  const staffCapacity = clamp(
-    (employeeCount ?? 0) / Math.max(maxStaff ?? employeeCount ?? 1, 1),
-    0,
-    1,
-  )
+  const staffScore = clamp((staffCount ?? 0) / 50, 0, 1)
 
   const weighted =
-    ratingScore * 0.35 + bookingScore * 0.25 + revenueScore * 0.3 + staffCapacity * 0.1
+    ratingScore * 0.35 + bookingScore * 0.25 + revenueScore * 0.3 + staffScore * 0.1
   return Math.round(weighted * 100)
 }
 
-export type EnhancedSalon = AdminSalonRow & {
+export type AdminSalon = AdminSalonRow & {
   isVerified: boolean
   licenseStatus: LicenseStatus
   licenseExpiresAt: string | null
@@ -129,17 +117,15 @@ export interface SalonDashboardStats {
   expiringLicenses: number
   highRisk: number
   averageCompliance: number
-  byTier: Record<string, number>
-  byType: Record<string, number>
 }
 
 export interface SalonInsights {
-  highRisk: EnhancedSalon[]
-  expiring: EnhancedSalon[]
+  highRisk: AdminSalon[]
+  expiring: AdminSalon[]
 }
 
 export interface SalonsResponse {
-  salons: EnhancedSalon[]
+  salons: AdminSalon[]
   stats: SalonDashboardStats
   insights: SalonInsights
 }
@@ -204,7 +190,7 @@ export async function getAllSalons(): Promise<SalonsResponse> {
     (baseResult.data as SalonBaseRow[] | null | undefined)?.map((row) => [row.id, row]) || []
   )
 
-  const enhancedSalons: EnhancedSalon[] = salons.map((salon) => {
+  const adminSalons: AdminSalon[] = salons.map((salon) => {
     const settings = settingsMap.get(salon.id ?? '')
     const baseRecord = baseMap.get(salon.id ?? '')
 
@@ -217,20 +203,18 @@ export async function getAllSalons(): Promise<SalonsResponse> {
       ratingAverage: salon.rating_average,
       totalBookings: salon.total_bookings,
       totalRevenue: salon.total_revenue,
-      employeeCount: salon.employee_count,
-      maxStaff: settings?.max_staff ?? salon.max_staff,
+      staffCount: salon.staff_count,
     })
 
     const healthScore = calculateHealthScore({
       ratingAverage: salon.rating_average,
       totalBookings: salon.total_bookings,
       totalRevenue: salon.total_revenue,
-      employeeCount: salon.employee_count,
-      maxStaff: settings?.max_staff ?? salon.max_staff,
+      staffCount: salon.staff_count,
     })
 
     const staffCapacityRatio = settings?.max_staff
-      ? Math.min((salon.employee_count ?? 0) / settings.max_staff, 2)
+      ? Math.min((salon.staff_count ?? 0) / settings.max_staff, 2)
       : 0
 
     return {
@@ -247,24 +231,22 @@ export async function getAllSalons(): Promise<SalonsResponse> {
     }
   })
 
-  const verified = enhancedSalons.filter((salon) => salon.isVerified).length
-  const expiring = enhancedSalons.filter((salon) => salon.licenseStatus === 'expiring' || salon.licenseStatus === 'expired')
-  const highRisk = enhancedSalons.filter((salon) => salon.complianceLevel === 'high')
-  const averageCompliance = enhancedSalons.length
+  const verified = adminSalons.filter((salon) => salon.isVerified).length
+  const expiring = adminSalons.filter((salon) => salon.licenseStatus === 'expiring' || salon.licenseStatus === 'expired')
+  const highRisk = adminSalons.filter((salon) => salon.complianceLevel === 'high')
+  const averageCompliance = adminSalons.length
     ? Math.round(
-        enhancedSalons.reduce((total, salon) => total + salon.complianceScore, 0) / enhancedSalons.length
+        adminSalons.reduce((total, salon) => total + salon.complianceScore, 0) / adminSalons.length
       )
     : 0
 
   const stats: SalonDashboardStats = {
-    total: enhancedSalons.length,
-    active: enhancedSalons.filter((salon) => salon.is_accepting_bookings).length,
+    total: adminSalons.length,
+    active: adminSalons.filter((salon) => salon.is_accepting_bookings).length,
     verified,
     expiringLicenses: expiring.length,
     highRisk: highRisk.length,
     averageCompliance,
-    byTier: countBy(enhancedSalons, (salon) => salon.subscription_tier || 'free'),
-    byType: countBy(enhancedSalons, (salon) => salon.business_type || 'salon'),
   }
 
   const insights: SalonInsights = {
@@ -278,7 +260,7 @@ export async function getAllSalons(): Promise<SalonsResponse> {
       .slice(0, 6),
   }
 
-  return { salons: enhancedSalons, stats, insights }
+  return { salons: adminSalons, stats, insights }
 }
 
 export interface SalonFilters {

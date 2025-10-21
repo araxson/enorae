@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Upload, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Stack, Grid } from '@/components/layout'
 import { uploadPortfolioImage } from '../api/mutations'
 import Image from 'next/image'
 
@@ -40,7 +39,7 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
 
   return (
     <Card className="p-6">
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Portfolio Gallery</h3>
 
         <div>
@@ -79,7 +78,7 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
         )}
 
         {portfolioImages.length > 0 ? (
-          <Grid cols={{ base: 2, md: 3, lg: 4 }} gap="md">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {portfolioImages.map((url, index) => (
               <div key={index} className="relative aspect-square">
                 <Image
@@ -90,14 +89,14 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
                 />
               </div>
             ))}
-          </Grid>
+          </div>
         ) : (
           <Card className="p-8 text-center border-dashed">
             <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
             <p className="text-sm text-muted-foreground">No portfolio images yet. Add your best work!</p>
           </Card>
         )}
-      </Stack>
+      </div>
     </Card>
   )
 }

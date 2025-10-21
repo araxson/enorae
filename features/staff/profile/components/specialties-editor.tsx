@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
 import { updateStaffMetadata } from '../api/mutations'
 
 interface SpecialtiesEditorProps {
@@ -56,10 +55,10 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
 
   return (
     <Card className="p-6">
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Specialties & Skills</h3>
 
-        <Flex gap="sm">
+        <div className="flex gap-3">
           <Input
             placeholder="Add specialty..."
             value={newSpecialty}
@@ -79,10 +78,10 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
           >
             <Plus className="h-4 w-4" />
           </Button>
-        </Flex>
+        </div>
 
         {specialties.length > 0 ? (
-          <Flex wrap="wrap" gap="sm">
+          <div className="flex gap-3 flex-wrap">
             {specialties.map((specialty) => (
               <Badge key={specialty} variant="outline">
                 {specialty}
@@ -96,7 +95,7 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
                 </button>
               </Badge>
             ))}
-          </Flex>
+          </div>
         ) : (
           <p className="text-sm text-muted-foreground">No specialties added yet</p>
         )}
@@ -104,7 +103,7 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
         {error && (
           <p className="text-sm text-destructive">{error}</p>
         )}
-      </Stack>
+      </div>
     </Card>
   )
 }

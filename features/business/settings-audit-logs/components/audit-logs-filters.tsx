@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Grid, Stack, Flex } from '@/components/layout'
 import { Filter, X } from 'lucide-react'
 
 export interface AuditLogFilters {
@@ -56,8 +55,8 @@ export function AuditLogsFilters({ onFilterChange }: AuditLogsFiltersProps) {
 
   return (
     <Card className="p-4">
-      <Stack gap="md">
-        <Flex justify="between" align="center">
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-4 items-center justify-between">
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4" />
             <span className="font-medium">Filters</span>
@@ -66,9 +65,9 @@ export function AuditLogsFilters({ onFilterChange }: AuditLogsFiltersProps) {
             <X className="h-4 w-4" />
             Clear
           </Button>
-        </Flex>
+        </div>
 
-        <Grid cols={{ base: 1, md: 2, lg: 5 }} gap="md">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
           <div>
             <Label htmlFor="action">Action</Label>
             <Select value={filters.action} onValueChange={(v) => handleFilterChange('action', v)}>
@@ -136,8 +135,8 @@ export function AuditLogsFilters({ onFilterChange }: AuditLogsFiltersProps) {
               </SelectContent>
             </Select>
           </div>
-        </Grid>
-      </Stack>
+        </div>
+      </div>
     </Card>
   )
 }

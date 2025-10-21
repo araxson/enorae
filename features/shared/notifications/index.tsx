@@ -1,13 +1,12 @@
-import { Section } from '@/components/layout'
 import { getNotifications } from './api/queries'
 import { NotificationCenter } from './components/notification-center'
 
 export async function Notifications() {
   const notifications = await getNotifications()
   return (
-    <Section size="lg">
+    <section className="py-16 md:py-24 lg:py-32">
       <NotificationCenter notifications={notifications} />
-    </Section>
+    </section>
   )
 }
 

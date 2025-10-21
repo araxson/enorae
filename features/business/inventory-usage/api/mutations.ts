@@ -166,7 +166,7 @@ export async function updateUsageRate(formData: FormData) {
       const { error: updateError } = await supabase
         .schema(INVENTORY_SCHEMA)
         .from('service_product_usage')
-        .update({ quantity_per_use: data.rate })
+        .update({ quantity_per_service: data.rate })
         .eq('id', existingRate.id)
 
       if (updateError) {
@@ -181,7 +181,7 @@ export async function updateUsageRate(formData: FormData) {
           salon_id: salonId,
           service_id: data.serviceId,
           product_id: data.productId,
-          quantity_per_use: data.rate,
+          quantity_per_service: data.rate,
         })
 
       if (insertError) {

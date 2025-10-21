@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Globe, DollarSign, Clock, AlertCircle } from 'lucide-react'
-import { Stack } from '@/components/layout'
 import { updateAdvancedPreferences } from '../api/mutations'
 
 interface AdvancedPreferences {
@@ -108,8 +107,8 @@ export function AdvancedPreferencesForm({
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <Stack gap="lg">
-            <Stack gap="sm">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 <Label htmlFor="timezone">Timezone</Label>
@@ -134,9 +133,9 @@ export function AdvancedPreferencesForm({
               <p className="text-sm text-muted-foreground">
                 Appointments and times will be displayed in your selected timezone
               </p>
-            </Stack>
+            </div>
 
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-muted-foreground" />
                 <Label htmlFor="locale">Language & Region</Label>
@@ -161,9 +160,9 @@ export function AdvancedPreferencesForm({
               <p className="text-sm text-muted-foreground">
                 Affects date formats, number formats, and interface language
               </p>
-            </Stack>
+            </div>
 
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
                 <Label htmlFor="currency">Currency</Label>
@@ -188,7 +187,7 @@ export function AdvancedPreferencesForm({
               <p className="text-sm text-muted-foreground">
                 Prices and amounts will be displayed in your selected currency
               </p>
-            </Stack>
+            </div>
 
             {error && (
               <Alert variant="destructive">
@@ -207,7 +206,7 @@ export function AdvancedPreferencesForm({
             <Button type="submit" disabled={isLoading}>
               {isLoading ? 'Saving...' : 'Save Preferences'}
             </Button>
-          </Stack>
+          </div>
         </form>
       </CardContent>
     </Card>

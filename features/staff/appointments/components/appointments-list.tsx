@@ -5,7 +5,6 @@ import { format } from 'date-fns'
 import { Calendar, Clock, CheckCircle, XCircle, Play } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack } from '@/components/layout'
 import { ActionButton } from '@/components/shared'
 import {
   markAppointmentCompleted,
@@ -41,7 +40,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
     return (
       <Card>
         <CardContent className="pt-6">
-          <Stack gap="md" className="text-center py-8">
+          <div className="flex flex-col gap-4 text-center py-8">
             <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
               <Calendar className="w-8 h-8 text-muted-foreground" />
             </div>
@@ -49,7 +48,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
               <p className="leading-7 font-medium">No Appointments</p>
               <p className="text-sm text-muted-foreground">You have no appointments in this period</p>
             </div>
-          </Stack>
+          </div>
         </CardContent>
       </Card>
     )
@@ -62,24 +61,25 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
         <p className="text-sm text-muted-foreground">{appointments.length} appointment{appointments.length !== 1 ? 's' : ''}</p>
       </CardHeader>
       <CardContent>
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           {appointments.map((appointment) => {
             const status = appointment.status as AppointmentStatus
             const config = statusConfig[status] || statusConfig.pending
             const isActionable = status === 'confirmed' || status === 'pending' || status === 'in_progress'
 
             return (
-              <div
+              <Card
                 key={appointment.id}
-                className="flex items-start gap-4 p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors cursor-pointer"
+                className="cursor-pointer transition-colors hover:bg-accent/50"
                 onClick={() => setSelectedAppointment(appointment)}
               >
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Badge variant={config.variant}>{config.label}</Badge>
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Calendar className="w-4 h-4" />
-                      {appointment.start_time ? format(new Date(appointment.start_time), 'MMM dd, yyyy') : 'N/A'}
+                <CardContent className="flex items-start gap-4 p-4">
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Badge variant={config.variant}>{config.label}</Badge>
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Calendar className="w-4 h-4" />
+                        {appointment.start_time ? format(new Date(appointment.start_time), 'MMM dd, yyyy') : 'N/A'}
                     </div>
                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
                       <Clock className="w-4 h-4" />
@@ -106,12 +106,12 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                       <span>{appointment.duration_minutes} minutes</span>
                     </div>
                   )}
-                </div>
+                  </div>
 
-                {showActions && isActionable && (
-                  <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-                    {status === 'pending' && (
-                      <ActionButton
+                  {showActions && isActionable && (
+                    <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                      {status === 'pending' && (
+                        <ActionButton
                         size="sm"
                         variant="outline"
                         onAction={async () => {
@@ -170,10 +170,11 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                     )}
                   </div>
                 )}
-              </div>
+                </CardContent>
+              </Card>
             )
           })}
-        </Stack>
+        </div>
       </CardContent>
 
       <AppointmentDetailDialog

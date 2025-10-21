@@ -1,4 +1,3 @@
-import { Section, Stack, Grid } from '@/components/layout'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Heart, Lightbulb, Eye, Shield } from 'lucide-react'
 import { valuesData } from './values.data'
@@ -12,11 +11,11 @@ const iconMap = {
 
 export function Values() {
   return (
-    <Section size="lg" className="bg-muted/30">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl bg-muted/30">
+      <div className="flex flex-col gap-8">
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-center">{valuesData.title}</h2>
 
-        <Grid cols={{ base: 1, md: 2 }} gap="lg">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
           {valuesData.values.map((value) => {
             const Icon = iconMap[value.icon as keyof typeof iconMap]
             return (
@@ -29,8 +28,8 @@ export function Values() {
               </Card>
             )
           })}
-        </Grid>
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

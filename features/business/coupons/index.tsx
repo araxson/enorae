@@ -1,4 +1,3 @@
-import { Stack } from '@/components/layout'
 import { getCouponAnalytics, getCouponServiceOptions } from './api/queries'
 import { CouponForm } from './components/coupon-form'
 import { CouponsList } from './components/coupons-list'
@@ -16,7 +15,7 @@ export async function CouponManagement() {
   const services = await getCouponServiceOptions(salon.id)
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       <div>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Coupon & Promotion Management</h1>
         <p className="leading-7 text-muted-foreground">
@@ -38,6 +37,6 @@ export async function CouponManagement() {
           services={services}
         />
       </div>
-    </Stack>
+    </div>
   )
 }

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack, Flex } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import { MapPin, Globe, CheckCircle } from 'lucide-react'
 import { bulkUpdateAddresses, geocodeAllAddresses } from '../api/bulk-address.mutations'
@@ -76,7 +75,7 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
         <CardTitle>Bulk Address Actions</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <Alert>
             <AlertDescription>
               {selectedIds.length > 0 ? (
@@ -90,9 +89,9 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
             </AlertDescription>
           </Alert>
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label>Update Country for Selected Locations</Label>
-            <Flex gap="sm">
+            <div className="flex gap-3">
               <Select value={countryCode} onValueChange={setCountryCode}>
                 <SelectTrigger className="flex-1">
                   <SelectValue />
@@ -114,10 +113,10 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
                 <Globe className="h-4 w-4 mr-2" />
                 Update
               </Button>
-            </Flex>
-          </Stack>
+            </div>
+          </div>
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label>Geocode Missing Coordinates</Label>
             <Button
               type="button"
@@ -129,8 +128,8 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
               <MapPin className="h-4 w-4 mr-2" />
               {isUpdating ? 'Processing...' : 'Geocode All Addresses Without Coordinates'}
             </Button>
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

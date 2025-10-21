@@ -85,32 +85,34 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
       <CardHeader className="pb-2">
         <CardTitle>Recent activity</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <ul className="space-y-3">
+      <CardContent className="space-y-3">
+        <div className="flex flex-col gap-3">
           {profile.activity.map((event) => (
-            <li key={`${event.id}-${event.createdAt ?? ''}`} className="rounded-lg border px-4 py-3">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="text-sm font-medium capitalize">
-                    {event.eventType?.replace(/_/g, ' ') ?? 'Unknown event'}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {event.entityType ? `${event.entityType} · ` : ''}
-                    {event.entityId ?? 'No entity id'}
-                  </p>
+            <Card key={`${event.id}-${event.createdAt ?? ''}`}>
+              <CardContent className="space-y-2 p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-medium capitalize">
+                      {event.eventType?.replace(/_/g, ' ') ?? 'Unknown event'}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {event.entityType ? `${event.entityType} · ` : ''}
+                      {event.entityId ?? 'No entity id'}
+                    </p>
+                  </div>
+                  <Badge variant={severityVariant(event.severity)} className="capitalize">
+                    {event.severity ?? 'info'}
+                  </Badge>
                 </div>
-                <Badge variant={severityVariant(event.severity)} className="capitalize">
-                  {event.severity ?? 'info'}
-                </Badge>
-              </div>
-              <div className="mt-2 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
-                <span>{formatDate(event.createdAt)}</span>
-                {event.ipAddress && <span>IP {event.ipAddress}</span>}
-                {event.userAgent && <span className="truncate md:max-w-md">{event.userAgent}</span>}
-              </div>
-            </li>
+                <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
+                  <span>{formatDate(event.createdAt)}</span>
+                  {event.ipAddress && <span>IP {event.ipAddress}</span>}
+                  {event.userAgent && <span className="truncate md:max-w-md">{event.userAgent}</span>}
+                </div>
+              </CardContent>
+            </Card>
           ))}
-        </ul>
+        </div>
       </CardContent>
     </Card>
   )

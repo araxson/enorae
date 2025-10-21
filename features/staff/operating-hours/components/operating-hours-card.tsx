@@ -1,8 +1,8 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
 import { Clock } from 'lucide-react'
 import type { OperatingHours } from '../types'
+import { cn } from "@/lib/utils";
 
 interface OperatingHoursCardProps {
   hours: OperatingHours[]
@@ -20,24 +20,22 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
   return (
     <Card>
       <CardHeader className="p-6 pb-4">
-        <Flex align="center" gap="sm">
+        <div className="flex gap-3 items-center">
           <Clock className="h-5 w-5" />
           <CardTitle>Operating Hours</CardTitle>
-        </Flex>
+        </div>
       </CardHeader>
       <CardContent className="p-6 pt-0">
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           {sortedHours.map((hour) => {
             const isToday = hour.day_of_week === today
 
             return (
-              <Flex
+              <div
                 key={hour.id}
-                justify="between"
-                align="center"
-                className={isToday ? 'font-semibold' : ''}
+                className={cn('flex gap-4 items-center justify-between', isToday ? 'font-semibold' : '')}
               >
-                <Flex align="center" gap="sm">
+                <div className="flex gap-3 items-center">
                   <p className="leading-7 capitalize min-w-24">
                     {hour.day_of_week}
                   </p>
@@ -46,17 +44,17 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
                       Today
                     </Badge>
                   )}
-                </Flex>
+                </div>
 
                 {hour.is_closed ? (
                   <Badge variant="secondary">Closed</Badge>
                 ) : (
                   <p className="text-sm text-muted-foreground">{hour.hours_display}</p>
                 )}
-              </Flex>
+              </div>
             )
           })}
-        </Stack>
+        </div>
       </CardContent>
       {sortedHours[0]?.salon_name && (
         <CardFooter className="border-t p-6 pt-4">

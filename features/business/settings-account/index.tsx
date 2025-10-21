@@ -4,7 +4,6 @@ import { PasswordForm } from './components/password-form'
 import { BillingSubscriptionForm } from './components/billing-subscription-form'
 import { MetadataForm } from '@/features/shared/profile-metadata/components/metadata-form'
 import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
-import { Section, Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 
 export async function AccountSettings() {
@@ -12,15 +11,15 @@ export async function AccountSettings() {
   const metadata = await getCurrentUserMetadata()
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <div>
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Account Information</h2>
-          <Stack gap="lg" className="mt-6">
+          <div className="flex flex-col gap-6 mt-6">
             <AccountInfoForm profile={profile} />
             <PasswordForm />
             <MetadataForm metadata={metadata} />
-          </Stack>
+          </div>
         </div>
 
         <Separator className="my-4" />
@@ -31,7 +30,7 @@ export async function AccountSettings() {
             <BillingSubscriptionForm />
           </div>
         </div>
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

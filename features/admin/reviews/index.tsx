@@ -1,9 +1,8 @@
-import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ReviewsClient } from './components/reviews-client'
 import { getAllReviews } from './api/queries'
 import { LastUpdated } from '@/features/admin/admin-common/components'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 export async function AdminReviews() {
   let reviews
@@ -40,36 +39,28 @@ export async function AdminReviews() {
         {/* Moderation Stats */}
         <div className="flex flex-wrap gap-6">
           {[{
-            label: 'Total Reviews',
+            label: 'Total reviews',
             value: reviews.length,
-            tone: 'text-foreground',
           },
           {
             label: 'Flagged',
             value: flaggedCount,
-            tone: 'text-destructive',
           },
           {
             label: 'Unverified',
             value: unverifiedCount,
-            tone: 'text-warning',
           },
           {
-            label: 'Needs Response',
+            label: 'Needs response',
             value: needsResponseCount,
-            tone: 'text-info',
-          }].map(stat => (
+          }].map((stat) => (
             <Card key={stat.label} className="min-w-40">
-              <CardContent className="py-4">
-                <div className="flex flex-col gap-2">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                    {stat.label}
-                  </p>
-                  <p className={cn('text-2xl font-semibold leading-7', stat.tone)}>
-                    {stat.value}
-                  </p>
-                </div>
-              </CardContent>
+              <CardHeader className="gap-1">
+                <CardDescription>
+                  {stat.label}
+                </CardDescription>
+                <CardTitle>{stat.value}</CardTitle>
+              </CardHeader>
             </Card>
           ))}
         </div>

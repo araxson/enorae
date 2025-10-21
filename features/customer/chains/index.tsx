@@ -1,4 +1,3 @@
-import { Section, Stack, Box } from '@/components/layout'
 import { notFound } from 'next/navigation'
 import { getSalonChains, getSalonChainById } from './api/queries'
 import { ChainsList } from './components/chains-list'
@@ -11,18 +10,18 @@ export async function SalonChains() {
 
 export function CustomerChainsPage() {
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Box>
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
+        <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Salon Chains</h1>
           <p className="leading-7 text-muted-foreground">
             Discover salon chains with multiple locations
           </p>
-        </Box>
+        </div>
 
         <SalonChains />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }
 
@@ -34,9 +33,9 @@ export async function SalonChainDetailPage({ slug }: { slug: string }) {
   }
 
   return (
-    <Section size="lg">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <ChainDetail chain={chain} />
-    </Section>
+    </section>
   )
 }
 

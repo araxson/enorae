@@ -10,7 +10,6 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { Separator } from '@/components/ui/separator'
-import { Stack, Group } from '@/components/layout'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
 import { MapPin, Star } from 'lucide-react'
 import {
@@ -84,15 +83,15 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           )}
         </div>
 
-        <Stack gap="lg" className="px-6 py-6">
+        <div className="flex flex-col gap-6 px-6 py-6">
           {/* Header with name and favorite button */}
           <div className="flex items-start justify-between gap-4">
-            <Stack gap="sm" className="flex-1">
+            <div className="flex flex-col gap-3 flex-1">
               <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">{salon.name}</h2>
               {salon.short_description && (
                 <p className="leading-7 text-muted-foreground">{salon.short_description}</p>
               )}
-            </Stack>
+            </div>
             {salon.id && (
               <FavoriteButton
                 salonId={salon.id}
@@ -103,9 +102,9 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           </div>
 
           {/* Rating and Location */}
-          <Group gap="md">
+          <div className="flex gap-4 items-center">
             {salon.rating && (
-              <Group gap="xs">
+              <div className="flex gap-2 items-center">
                 <Star className="h-4 w-4 fill-warning text-warning" />
                 <small className="text-sm font-medium leading-none font-medium">{Number(salon.rating).toFixed(1)}</small>
                 {salon.review_count && (
@@ -113,24 +112,24 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
                     ({salon.review_count} {salon.review_count === 1 ? 'review' : 'reviews'})
                   </small>
                 )}
-              </Group>
+              </div>
             )}
             {salon.full_address && (
-              <Group gap="xs">
+              <div className="flex gap-2 items-center">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
                 <small className="text-sm font-medium leading-none text-muted-foreground">{salon.full_address}</small>
-              </Group>
+              </div>
             )}
-          </Group>
+          </div>
 
           <Separator />
 
           {/* Description */}
           {salon.description && (
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <p className="leading-7 font-medium">About</p>
               <p className="leading-7 text-muted-foreground">{salon.description}</p>
-            </Stack>
+            </div>
           )}
 
           {/* Stats */}
@@ -138,34 +137,34 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
 
           {/* Specialties */}
           {salon.specialties && salon.specialties.length > 0 && (
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <p className="leading-7 font-medium">Specialties</p>
               <SpecialtiesTags specialties={salon.specialties} />
-            </Stack>
+            </div>
           )}
 
           {/* Amenities */}
           {salon.amenities && salon.amenities.length > 0 && (
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <p className="leading-7 font-medium">Amenities</p>
               <AmenitiesBadges amenities={salon.amenities} />
-            </Stack>
+            </div>
           )}
 
           <Separator />
 
           {/* Contact and Social */}
           <div className="grid gap-6 md:grid-cols-2">
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <p className="leading-7 font-medium">Contact</p>
               <ContactInfo
                 phone={salon.phone}
                 email={salon.email}
                 websiteUrl={salon.website_url}
               />
-            </Stack>
+            </div>
             {(salon.instagram_url || salon.facebook_url || salon.twitter_url || salon.tiktok_url) && (
-              <Stack gap="sm">
+              <div className="flex flex-col gap-3">
                 <p className="leading-7 font-medium">Social Media</p>
                 <SocialLinks
                   instagramUrl={salon.instagram_url}
@@ -173,10 +172,10 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
                   twitterUrl={salon.twitter_url}
                   tiktokUrl={salon.tiktok_url}
                 />
-              </Stack>
+              </div>
             )}
           </div>
-        </Stack>
+        </div>
       </CardContent>
       </Card>
     </div>

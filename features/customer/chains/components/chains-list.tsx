@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { Grid } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/shared/empty-state'
 import { Building2 } from 'lucide-react'
@@ -31,10 +30,10 @@ export function ChainsList({ chains }: ChainsListProps) {
   }
 
   return (
-    <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
+    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {chains.map((chain) => (
         <ChainCard key={chain.id} chain={chain} />
       ))}
-    </Grid>
+    </div>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Grid, Stack, Box, Flex } from '@/components/layout'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -38,85 +37,85 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
         <CardDescription>Real-time operational performance indicators</CardDescription>
       </CardHeader>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           {/* Utilization Metrics */}
-          <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="md">
-            <Box className="p-4 rounded-lg border">
-              <Flex align="center" gap="sm" className="mb-3">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="p-4 rounded-lg border">
+              <div className="flex gap-3 items-center mb-3">
                 <Activity className="h-5 w-5 text-muted-foreground" />
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-sm">Capacity Utilization</h3>
-              </Flex>
+              </div>
               <div className={`text-3xl font-bold mb-2 ${getUtilizationColor(metrics.capacityUtilization)}`}>
                 {metrics.capacityUtilization}%
               </div>
               <Progress value={metrics.capacityUtilization} className="h-2" />
               <small className="text-sm font-medium leading-none text-muted-foreground mt-2">Overall capacity usage</small>
-            </Box>
+            </div>
 
-            <Box className="p-4 rounded-lg border">
-              <Flex align="center" gap="sm" className="mb-3">
+            <div className="p-4 rounded-lg border">
+              <div className="flex gap-3 items-center mb-3">
                 <Users className="h-5 w-5 text-muted-foreground" />
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-sm">Staff Utilization</h3>
-              </Flex>
+              </div>
               <div className={`text-3xl font-bold mb-2 ${getUtilizationColor(metrics.staffUtilization)}`}>
                 {metrics.staffUtilization}%
               </div>
               <Progress value={metrics.staffUtilization} className="h-2" />
               <small className="text-sm font-medium leading-none text-muted-foreground mt-2">Staff productivity</small>
-            </Box>
+            </div>
 
-            <Box className="p-4 rounded-lg border">
-              <Flex align="center" gap="sm" className="mb-3">
+            <div className="p-4 rounded-lg border">
+              <div className="flex gap-3 items-center mb-3">
                 <Target className="h-5 w-5 text-muted-foreground" />
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-sm">Booking Fill Rate</h3>
-              </Flex>
+              </div>
               <div className={`text-3xl font-bold mb-2 ${getUtilizationColor(metrics.bookingFillRate)}`}>
                 {metrics.bookingFillRate}%
               </div>
               <Progress value={metrics.bookingFillRate} className="h-2" />
               <small className="text-sm font-medium leading-none text-muted-foreground mt-2">Schedule efficiency</small>
-            </Box>
-          </Grid>
+            </div>
+          </div>
 
           {/* Performance Indicators */}
-          <Grid cols={{ base: 1, md: 2 }} gap="md">
-            <Box className="p-4 rounded-lg bg-muted/50">
-              <Flex align="center" gap="sm" className="mb-2">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            <div className="p-4 rounded-lg bg-muted/50">
+              <div className="flex gap-3 items-center mb-2">
                 <Clock className="h-5 w-5 text-muted-foreground" />
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">Average Wait Time</h3>
-              </Flex>
+              </div>
               <div className="text-2xl font-bold">{metrics.averageWaitTime} min</div>
               <small className="text-sm font-medium leading-none text-muted-foreground">Per customer</small>
-            </Box>
+            </div>
 
-            <Box className="p-4 rounded-lg bg-muted/50">
-              <Flex align="center" gap="sm" className="mb-2">
+            <div className="p-4 rounded-lg bg-muted/50">
+              <div className="flex gap-3 items-center mb-2">
                 <Calendar className="h-5 w-5 text-muted-foreground" />
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">Appointments/Day</h3>
-              </Flex>
+              </div>
               <div className="text-2xl font-bold">{metrics.appointmentsPerDay}</div>
               <small className="text-sm font-medium leading-none text-muted-foreground">Average daily bookings</small>
-            </Box>
-          </Grid>
+            </div>
+          </div>
 
           {/* Peak Hours */}
           {metrics.peakHours.length > 0 && (
-            <Box className="p-4 rounded-lg border">
-              <Flex align="center" gap="sm" className="mb-3">
+            <div className="p-4 rounded-lg border">
+              <div className="flex gap-3 items-center mb-3">
                 <TrendingUp className="h-5 w-5 text-muted-foreground" />
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-base">Peak Hours</h3>
-              </Flex>
-              <Flex gap="xs" wrap>
+              </div>
+              <div className="flex gap-2">
                 {metrics.peakHours.map((hour, index) => (
                   <Badge key={index} variant="secondary">
                     {hour}
                   </Badge>
                 ))}
-              </Flex>
+              </div>
               <small className="text-sm font-medium leading-none text-muted-foreground mt-2">Busiest times of day</small>
-            </Box>
+            </div>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

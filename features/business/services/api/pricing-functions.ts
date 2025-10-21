@@ -54,13 +54,14 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
     throw new Error('Unauthorized: Service not found for your salon')
   }
 
-  const { data, error } = await supabase
-    // @ts-expect-error - RPC function exists but not in generated types
-    .rpc<number>('calculate_service_price', {
+  const { data, error } = await supabase.rpc<number>(
+    'calculate_service_price',
+    {
       p_service_id: serviceId,
       p_customer_id: customerId ?? null,
       p_booking_time: bookingTime.toISOString(),
-    })
+    }
+  )
 
   if (error) {
     throw new Error(error.message)

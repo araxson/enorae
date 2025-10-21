@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Group } from '@/components/layout'
 import { EmptyState } from '@/components/shared/empty-state'
 import { Users } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
@@ -29,12 +28,11 @@ export function StaffList({ staff }: StaffListProps) {
         <CardTitle>Staff Members</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           {staff.map((member) => (
-            <Group
+            <div
               key={member.id || ''}
-              gap="md"
-              className="pb-4 border-b last:border-0 last:pb-0"
+              className="flex gap-4 items-center pb-4 border-b last:border-0 last:pb-0"
             >
               <Avatar>
                 {member.avatar_url && <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />}
@@ -43,17 +41,17 @@ export function StaffList({ staff }: StaffListProps) {
                 </AvatarFallback>
               </Avatar>
 
-              <Stack gap="xs" className="flex-1">
+              <div className="flex flex-col gap-2 flex-1">
                 <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-base">{member.title || 'Staff Member'}</h4>
                 {member.bio && <p className="text-sm text-muted-foreground line-clamp-2">{member.bio}</p>}
-              </Stack>
+              </div>
 
               <Badge variant="default">
                 Active
               </Badge>
-            </Group>
+            </div>
           ))}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

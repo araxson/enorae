@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { ArrowLeft, FileQuestion, Home } from 'lucide-react'
-import { Section, Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 type NotFoundPageProps = {
   title: string
@@ -20,16 +19,16 @@ export function NotFoundPage({
   homeLabel = 'Go Home',
 }: NotFoundPageProps) {
   return (
-    <Section size="lg">
-      <Stack gap="xl" className="items-center text-center py-16">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-4 text-center sm:px-6 lg:px-8">
         <div className="rounded-full bg-destructive/10 p-6">
           <FileQuestion className="h-16 w-16 text-destructive" />
         </div>
 
-        <Stack gap="md" className="items-center">
+        <div className="flex max-w-md flex-col gap-6">
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{title}</h1>
-          <p className="text-xl text-muted-foreground max-w-md">{description}</p>
-        </Stack>
+          <p className="text-xl text-muted-foreground">{description}</p>
+        </div>
 
         <div className="flex gap-4">
           <Button asChild variant="outline">
@@ -45,7 +44,7 @@ export function NotFoundPage({
             </Link>
           </Button>
         </div>
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { CustomerInsightsCard } from '@/features/business/business-common/components/customer-insights-card'
 import { CohortsTable } from '@/features/business/analytics/components/sections/cohorts-table'
 import { SegmentationOverview } from './components/segmentation-overview'
@@ -29,8 +28,8 @@ export async function CustomerAnalytics() {
   ])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Customer Intelligence</h1>
           <p className="leading-7 text-muted-foreground">
@@ -64,7 +63,7 @@ export async function CustomerAnalytics() {
           <h2 className="text-2xl font-semibold mb-3">Cohort Retention</h2>
           <CohortsTable cohorts={cohorts} start={start} end={end} />
         </div>
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

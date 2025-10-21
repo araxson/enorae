@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, CheckCircle, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import { updatePassword } from '../api/mutations'
@@ -61,7 +60,7 @@ export function PasswordForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <Stack gap="lg">
+          <div className="flex flex-col gap-6">
             {success && (
               <Alert>
                 <CheckCircle className="h-4 w-4" />
@@ -172,7 +171,7 @@ export function PasswordForm() {
               {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Update Password
             </Button>
-          </Stack>
+          </div>
         </form>
       </CardContent>
     </Card>

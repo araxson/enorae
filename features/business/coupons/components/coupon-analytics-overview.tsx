@@ -2,7 +2,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Grid, Stack } from '@/components/layout'
 import { DollarSign, CalendarClock, Award, Activity } from 'lucide-react'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
@@ -18,8 +17,8 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
   const summary = buildCouponEffectiveness(analytics)
 
   return (
-    <Stack gap="xl">
-      <Grid cols={{ base: 1, md: 4 }} gap="md">
+    <div className="flex flex-col gap-8">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Total Discount Issued</CardTitle>
@@ -84,7 +83,7 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
             )}
           </CardContent>
         </Card>
-      </Grid>
+      </div>
 
       <Card>
         <CardHeader>
@@ -180,6 +179,6 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
           </CardContent>
         </Card>
       ) : null}
-    </Stack>
+    </div>
   )
 }

@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Card } from '@/components/ui/card'
-import { Stack, Grid } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import type { ManualTransactionWithDetails } from '../api/queries'
@@ -96,10 +95,10 @@ export function TransactionsReportDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           {report.dateRange && (
             <Card className="p-4">
-              <Stack gap="sm">
+              <div className="flex flex-col gap-3">
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">Report Period</h3>
                 <p className="leading-7">
                   {format(report.dateRange.earliest, 'MMM dd, yyyy')} -{' '}
@@ -108,15 +107,15 @@ export function TransactionsReportDialog({
                 <p className="text-sm text-muted-foreground text-sm">
                   Total Transactions: {report.total}
                 </p>
-              </Stack>
+              </div>
             </Card>
           )}
 
           <Card className="p-4">
-            <Stack gap="md">
+            <div className="flex flex-col gap-4">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Transaction Type</h3>
               <Separator />
-              <Grid cols={{ base: 2, md: 3 }} gap="md">
+              <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                 {Object.entries(report.byType).map(([type, count]) => (
                   <div key={type} className="flex items-center justify-between">
                     <Badge variant="secondary" className="capitalize">
@@ -125,30 +124,30 @@ export function TransactionsReportDialog({
                     <p className="text-sm text-muted-foreground">{count}</p>
                   </div>
                 ))}
-              </Grid>
-            </Stack>
+              </div>
+            </div>
           </Card>
 
           <Card className="p-4">
-            <Stack gap="md">
+            <div className="flex flex-col gap-4">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Payment Method</h3>
               <Separator />
-              <Grid cols={{ base: 2, md: 3 }} gap="md">
+              <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                 {Object.entries(report.byPaymentMethod).map(([method, count]) => (
                   <div key={method} className="flex items-center justify-between">
                     <p className="leading-7 capitalize text-sm">{method}</p>
                     <p className="text-sm text-muted-foreground">{count}</p>
                   </div>
                 ))}
-              </Grid>
-            </Stack>
+              </div>
+            </div>
           </Card>
 
           <Card className="p-4">
-            <Stack gap="md">
+            <div className="flex flex-col gap-4">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-lg">By Staff Member</h3>
               <Separator />
-              <Stack gap="sm">
+              <div className="flex flex-col gap-3">
                 {Object.entries(report.byStaff)
                   .sort(([, a], [, b]) => b - a)
                   .slice(0, 10)
@@ -158,10 +157,10 @@ export function TransactionsReportDialog({
                       <Badge variant="outline">{count}</Badge>
                     </div>
                   ))}
-              </Stack>
-            </Stack>
+              </div>
+            </div>
           </Card>
-        </Stack>
+        </div>
       </DialogContent>
     </Dialog>
   )

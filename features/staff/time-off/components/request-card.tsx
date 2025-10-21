@@ -101,8 +101,8 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
       <CardHeader className="flex items-start justify-between gap-3">
         <div className="space-y-1">
           <CardTitle>{request.staff?.profiles?.username || 'Staff member'}</CardTitle>
-          <CardDescription className="capitalize">
-            {request.request_type?.replace('_', ' ') || 'N/A'}
+          <CardDescription>
+            {request.request_type?.replace('_', ' ').toUpperCase() || 'N/A'}
           </CardDescription>
         </div>
         <Badge variant={getStatusVariant(request.status || '')} className="capitalize">

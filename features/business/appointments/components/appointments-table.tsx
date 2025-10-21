@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Group, Stack } from '@/components/layout'
 import { format } from 'date-fns'
 import { confirmAppointment, cancelAppointment, completeAppointment } from '../api/mutations'
 import type { AppointmentWithDetails } from '../api/queries'
@@ -71,12 +70,12 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                 <TableRow key={appointment.id}>
                   <TableCell>
                     {appointmentDate ? (
-                      <Stack gap="xs">
+                      <div className="flex flex-col gap-2">
                         <div>{format(appointmentDate, 'MMM dd, yyyy')}</div>
                         <small className="text-sm font-medium leading-none text-muted-foreground">
                           {format(appointmentDate, 'h:mm a')}
                         </small>
-                      </Stack>
+                      </div>
                     ) : (
                       'No date'
                     )}
@@ -88,7 +87,7 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                   </TableCell>
                   <TableCell>
                     {appointment.staff_name ||
-                     appointment.staff_title ||
+                     appointment.staff_name ||
                      'N/A'}
                   </TableCell>
                   <TableCell>
@@ -97,7 +96,7 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Group gap="xs">
+                    <div className="flex gap-2 items-center">
                       {appointment.status === 'pending' && appointment.id && (
                         <form action={handleConfirm}>
                           <input type="hidden" name="id" value={appointment.id} />
@@ -122,7 +121,7 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                           </Button>
                         </form>
                       )}
-                    </Group>
+                    </div>
                   </TableCell>
                 </TableRow>
               )

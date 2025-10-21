@@ -3,7 +3,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Stack, Grid } from '@/components/layout'
 import type { PricingFormState } from './use-pricing-form'
 
 type CostProfitSectionProps = {
@@ -16,10 +15,10 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <Label className="font-semibold">Cost & Profitability</Label>
 
-          <Grid cols={{ base: 1, md: 2 }} gap="md">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="cost">Cost</Label>
               <Input
@@ -41,8 +40,8 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
               </div>
               <p className="text-sm text-muted-foreground text-xs">Auto-calculated from price & cost</p>
             </div>
-          </Grid>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

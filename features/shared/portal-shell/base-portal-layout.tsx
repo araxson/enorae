@@ -6,8 +6,8 @@ import {
   SIDEBAR_COOKIE_NAME,
   isSidebarOpenFromCookie,
 } from '@/components/ui/sidebar'
-import { PortalSidebarWrapper } from '../sidebars/portal-sidebar-wrapper'
-import { PortalHeader } from '../headers/portal-header'
+import { PortalSidebarWrapper } from './sidebars/portal-sidebar-wrapper'
+import { PortalHeader } from './portal-header'
 import { BusinessSalonSwitcher } from '@/features/business/business-common/components/salon-switcher'
 import { verifySession } from '@/lib/auth/session'
 import { DEFAULT_ROUTES, ROLE_HIERARCHY } from '@/lib/auth/permissions/roles'

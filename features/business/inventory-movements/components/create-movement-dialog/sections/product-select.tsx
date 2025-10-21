@@ -1,7 +1,6 @@
 'use client'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import type { InventoryProductOption } from '../types'
 
@@ -13,7 +12,7 @@ type Props = {
 
 export function ProductSelect({ products, value, onChange }: Props) {
   return (
-    <Stack gap="sm">
+    <div className="flex flex-col gap-3">
       <Label htmlFor="productId">Product</Label>
       <Select value={value} onValueChange={onChange} required>
         <SelectTrigger>
@@ -27,6 +26,6 @@ export function ProductSelect({ products, value, onChange }: Props) {
           ))}
         </SelectContent>
       </Select>
-    </Stack>
+    </div>
   )
 }

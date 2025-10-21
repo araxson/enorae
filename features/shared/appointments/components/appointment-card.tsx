@@ -12,7 +12,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Stack, Group } from '@/components/layout'
 import { Calendar, Clock, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -63,34 +62,34 @@ export function AppointmentCard({
   return (
     <Card className={cn('w-full', className)}>
       <CardHeader>
-        <Group gap="sm" className="items-center">
+        <div className="flex gap-3 items-center items-center">
           <div className="flex-1">
             <CardTitle>{title}</CardTitle>
           </div>
           <Badge variant={config.variant}>{config.label}</Badge>
-        </Group>
+        </div>
       </CardHeader>
 
       <CardContent>
-        <Stack gap="sm">
-          <Group gap="sm">
+        <div className="flex flex-col gap-3">
+          <div className="flex gap-3 items-center">
             <User className="h-4 w-4 text-muted-foreground" />
             <small className="text-sm font-medium leading-none text-muted-foreground">{staffName}</small>
-          </Group>
-          <Group gap="sm">
+          </div>
+          <div className="flex gap-3 items-center">
             <Calendar className="h-4 w-4 text-muted-foreground" />
             <small className="text-sm font-medium leading-none text-muted-foreground">{date}</small>
-          </Group>
-          <Group gap="sm">
+          </div>
+          <div className="flex gap-3 items-center">
             <Clock className="h-4 w-4 text-muted-foreground" />
             <small className="text-sm font-medium leading-none text-muted-foreground">{time}</small>
-          </Group>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
 
       {(onReschedule || onViewDetails || onCancel) && (
         <CardFooter>
-          <Group gap="sm" className="w-full">
+          <div className="flex gap-3 items-center w-full">
             {onViewDetails && (
               <Button variant="outline" size="sm" onClick={onViewDetails}>
                 View Details
@@ -126,7 +125,7 @@ export function AppointmentCard({
                 </AlertDialogContent>
               </AlertDialog>
             )}
-          </Group>
+          </div>
         </CardFooter>
       )}
     </Card>

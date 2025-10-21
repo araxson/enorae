@@ -4,7 +4,6 @@ import { Camera, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Stack, Flex } from '@/components/layout'
 import { uploadPortfolioImage } from '../api/mutations'
 
 interface ProfilePhotoUploadProps {
@@ -47,16 +46,16 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
 
   return (
     <Card className="p-6">
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Profile Photo</h3>
 
-        <Flex align="center" gap="lg">
+        <div className="flex gap-6 items-center">
           <Avatar className="h-24 w-24">
             <AvatarImage src={currentPhotoUrl || undefined} alt={userName} />
             <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
           </Avatar>
 
-          <Stack gap="sm" className="flex-1">
+          <div className="flex flex-col gap-3 flex-1">
             <div>
               <input
                 type="file"
@@ -92,9 +91,9 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
             {error && (
               <p className="text-sm text-destructive">{error}</p>
             )}
-          </Stack>
-        </Flex>
-      </Stack>
+          </div>
+        </div>
+      </div>
     </Card>
   )
 }

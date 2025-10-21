@@ -2,7 +2,6 @@
 
 import { ArrowDownRight, ArrowUpRight, Equal } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Grid } from '@/components/layout'
 import type { MetricsComparison } from '../api/analytics'
 
 type MetricKey = keyof MetricsComparison
@@ -31,10 +30,10 @@ function formatValue(value: number, unit: 'currency' | 'number' | 'percentage' =
 
 function changeIndicator(change: number) {
   if (change > 1) {
-    return { icon: <ArrowUpRight className="h-4 w-4 text-emerald-500" />, tone: 'text-emerald-600' }
+    return { icon: <ArrowUpRight className="h-4 w-4 text-success" />, tone: 'text-success' }
   }
   if (change < -1) {
-    return { icon: <ArrowDownRight className="h-4 w-4 text-rose-500" />, tone: 'text-rose-600' }
+    return { icon: <ArrowDownRight className="h-4 w-4 text-destructive" />, tone: 'text-destructive' }
   }
   return { icon: <Equal className="h-4 w-4 text-muted-foreground" />, tone: 'text-muted-foreground' }
 }
@@ -47,7 +46,7 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
         <p className="text-sm text-muted-foreground text-sm">{periodLabel} vs prior period</p>
       </CardHeader>
       <CardContent>
-        <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="lg">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {(Object.keys(metricCopy) as MetricKey[]).map((key) => {
             const meta = metricCopy[key]
             const details = comparison[key]
@@ -76,7 +75,7 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
               </Card>
             )
           })}
-        </Grid>
+        </div>
       </CardContent>
     </Card>
   )

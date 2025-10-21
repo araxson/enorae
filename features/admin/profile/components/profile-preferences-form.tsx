@@ -112,36 +112,40 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
             </div>
           </div>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-lg border px-4 py-3">
-              <div>
-                <p className="text-sm font-medium">Marketing emails</p>
-                <p className="text-xs text-muted-foreground">
-                  Send product updates and promotional campaigns.
-                </p>
-              </div>
-              <Switch
-                checked={marketingEmails}
-                onCheckedChange={setMarketingEmails}
-                disabled={isPending}
-                aria-label="Toggle marketing emails"
-              />
-            </div>
+          <div className="flex flex-col gap-3">
+            <Card>
+              <CardContent className="flex items-center justify-between gap-4 p-4">
+                <div>
+                  <p className="text-sm font-medium">Marketing emails</p>
+                  <p className="text-xs text-muted-foreground">
+                    Send product updates and promotional campaigns.
+                  </p>
+                </div>
+                <Switch
+                  checked={marketingEmails}
+                  onCheckedChange={setMarketingEmails}
+                  disabled={isPending}
+                  aria-label="Toggle marketing emails"
+                />
+              </CardContent>
+            </Card>
 
-            <div className="flex items-center justify-between rounded-lg border px-4 py-3">
-              <div>
-                <p className="text-sm font-medium">SMS alerts</p>
-                <p className="text-xs text-muted-foreground">
-                  Enable SMS notifications where available.
-                </p>
-              </div>
-              <Switch
-                checked={smsAlerts}
-                onCheckedChange={setSmsAlerts}
-                disabled={isPending}
-                aria-label="Toggle SMS alerts"
-              />
-            </div>
+            <Card>
+              <CardContent className="flex items-center justify-between gap-4 p-4">
+                <div>
+                  <p className="text-sm font-medium">SMS alerts</p>
+                  <p className="text-xs text-muted-foreground">
+                    Enable SMS notifications where available.
+                  </p>
+                </div>
+                <Switch
+                  checked={smsAlerts}
+                  onCheckedChange={setSmsAlerts}
+                  disabled={isPending}
+                  aria-label="Toggle SMS alerts"
+                />
+              </CardContent>
+            </Card>
           </div>
 
           {feedback && (

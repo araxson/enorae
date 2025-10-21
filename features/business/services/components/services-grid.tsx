@@ -3,7 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Grid, Stack, Flex } from '@/components/layout'
 import { EmptyState } from '@/components/shared/empty-state'
 import { Scissors, Edit, DollarSign, Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
@@ -32,20 +31,20 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
   }
 
   return (
-    <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
+    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {services.map((service) => (
         <Card key={service.id}>
           <CardHeader>
-            <Flex align="start" justify="between" gap="sm">
+            <div className="flex gap-3 items-start justify-between">
               <CardTitle>{service.name}</CardTitle>
               <Badge variant={service.is_active ? 'default' : 'secondary'}>
                 {service.is_active ? 'Active' : 'Inactive'}
               </Badge>
-            </Flex>
+            </div>
           </CardHeader>
 
           <CardContent>
-            <Stack gap="md">
+            <div className="flex flex-col gap-4">
               {service.description && (
                 <p className="leading-7 text-muted-foreground text-sm line-clamp-2">{service.description}</p>
               )}
@@ -69,7 +68,7 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
               </div>
 
               {service.category_name && <p className="text-sm text-muted-foreground text-xs">{service.category_name}</p>}
-            </Stack>
+            </div>
           </CardContent>
 
           {onEditService && (
@@ -87,6 +86,6 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
           )}
         </Card>
       ))}
-    </Grid>
+    </div>
   )
 }

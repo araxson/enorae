@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { Grid, Stack } from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -15,11 +14,11 @@ export function StreetAddressSection({ address }: Props) {
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Street Address</h3>
           <Separator />
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="street_address">
               Street Address <span className="text-destructive">*</span>
             </Label>
@@ -30,9 +29,9 @@ export function StreetAddressSection({ address }: Props) {
               defaultValue={address?.street_address || ''}
               placeholder="123 Main Street"
             />
-          </Stack>
+          </div>
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="street_address_2">Apartment, Suite, etc.</Label>
             <Input
               id="street_address_2"
@@ -40,10 +39,10 @@ export function StreetAddressSection({ address }: Props) {
               defaultValue={address?.street_address_2 || ''}
               placeholder="Suite 100"
             />
-          </Stack>
+          </div>
 
-          <Grid cols={{ base: 1, md: 3 }} gap="lg">
-            <Stack gap="sm">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
+            <div className="flex flex-col gap-3">
               <Label htmlFor="city">
                 City <span className="text-destructive">*</span>
               </Label>
@@ -54,9 +53,9 @@ export function StreetAddressSection({ address }: Props) {
                 defaultValue={address?.city || ''}
                 placeholder="San Francisco"
               />
-            </Stack>
+            </div>
 
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <Label htmlFor="state_province">
                 State/Province <span className="text-destructive">*</span>
               </Label>
@@ -67,9 +66,9 @@ export function StreetAddressSection({ address }: Props) {
                 defaultValue={address?.state_province || ''}
                 placeholder="CA"
               />
-            </Stack>
+            </div>
 
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <Label htmlFor="postal_code">
                 Postal Code <span className="text-destructive">*</span>
               </Label>
@@ -80,10 +79,10 @@ export function StreetAddressSection({ address }: Props) {
                 defaultValue={address?.postal_code || ''}
                 placeholder="94102"
               />
-            </Stack>
-          </Grid>
+            </div>
+          </div>
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="country_code">Country Code</Label>
             <Input
               id="country_code"
@@ -93,8 +92,8 @@ export function StreetAddressSection({ address }: Props) {
               maxLength={2}
             />
             <p className="text-sm text-muted-foreground">2-letter country code (e.g., US, CA, UK)</p>
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

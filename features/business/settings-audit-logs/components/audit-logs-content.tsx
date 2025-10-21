@@ -2,7 +2,6 @@ import { getUserSalonId } from '@/lib/auth'
 import { getAuditLogs, getAuditLogStats } from '../api/queries'
 import { AuditLogsStats } from './audit-logs-stats'
 import { AuditLogsClient } from './audit-logs-client'
-import { Stack } from '@/components/layout'
 
 export async function AuditLogsContent() {
   const salonId = await getUserSalonId()
@@ -14,7 +13,7 @@ export async function AuditLogsContent() {
   ])
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       <div>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Security Audit Logs</h1>
         <p className="leading-7 text-muted-foreground">
@@ -24,6 +23,6 @@ export async function AuditLogsContent() {
 
       <AuditLogsStats stats={stats} />
       <AuditLogsClient initialLogs={logs} />
-    </Stack>
+    </div>
   )
 }

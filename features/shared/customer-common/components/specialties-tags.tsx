@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Scissors, Sparkles, Heart, Crown } from 'lucide-react'
-import { Group } from '@/components/layout'
+import { cn } from "@/lib/utils";
 
 interface SpecialtiesTagsProps {
   specialties: string[] | null
@@ -25,7 +25,7 @@ export function SpecialtiesTags({ specialties, limit, className }: SpecialtiesTa
   const hasMore = limit && specialties.length > limit
 
   return (
-    <Group gap="xs" className={className}>
+    <div className={cn('flex gap-2 items-center', className)}>
       {displaySpecialties.map((specialty) => {
         const Icon = SPECIALTY_ICONS[specialty]
         return (
@@ -40,6 +40,6 @@ export function SpecialtiesTags({ specialties, limit, className }: SpecialtiesTa
           +{specialties.length - limit!} more
         </Badge>
       )}
-    </Group>
+    </div>
   )
 }

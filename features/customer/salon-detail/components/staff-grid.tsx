@@ -35,22 +35,24 @@ export function StaffGrid({ staff }: StaffGridProps) {
           {staff.map((member) => (
             <HoverCard key={member.id || ''}>
               <HoverCardTrigger asChild>
-                <div className="flex items-center gap-3 rounded-lg p-3 transition-colors hover:bg-muted/50">
-                  <Avatar>
-                    {member.avatar_url && (
-                      <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />
-                    )}
-                    <AvatarFallback>
-                      {member.title?.slice(0, 2).toUpperCase() || 'ST'}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-1">
-                    <small className="text-sm font-medium leading-none">{member.title || 'Staff member'}</small>
-                    {member.bio && (
-                      <p className="text-sm text-muted-foreground line-clamp-1 text-xs">{member.bio}</p>
-                    )}
-                  </div>
-                </div>
+                <Card className="transition-colors hover:bg-muted/50">
+                  <CardContent className="flex items-center gap-3 p-3">
+                    <Avatar>
+                      {member.avatar_url && (
+                        <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />
+                      )}
+                      <AvatarFallback>
+                        {member.title?.slice(0, 2).toUpperCase() || 'ST'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <small className="text-sm font-medium leading-none">{member.title || 'Staff member'}</small>
+                      {member.bio && (
+                        <p className="text-sm text-muted-foreground line-clamp-1 text-xs">{member.bio}</p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
               </HoverCardTrigger>
               <HoverCardContent className="w-80 space-y-3">
                 <div className="flex items-center gap-3">

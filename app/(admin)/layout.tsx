@@ -1,4 +1,4 @@
-import { BasePortalLayout } from '@/components/layout/layouts/base-portal-layout'
+import { BasePortalLayout } from '@/features/shared/portal-shell'
 import { AdminKeyboardShortcuts } from '@/features/admin/admin-common/components/admin-keyboard-shortcuts'
 
 export const runtime = 'nodejs'

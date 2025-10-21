@@ -6,7 +6,6 @@ import {
   StatusFilter,
   DateRangeFilter,
 } from '@/features/business/business-common/components'
-import { Stack } from '@/components/layout'
 
 interface AppointmentsFiltersProps {
   searchTerm: string
@@ -36,7 +35,7 @@ export function AppointmentsFilters({
   ]
 
   return (
-    <Stack gap="md" className="flex-row flex-wrap items-center">
+    <div className="flex flex-col gap-4 flex-row flex-wrap items-center">
       <BusinessSearchInput
         value={searchTerm}
         onChange={onSearchChange}
@@ -56,6 +55,6 @@ export function AppointmentsFilters({
         onDateChange={onDateChange}
         placeholder="Filter by date range"
       />
-    </Stack>
+    </div>
   )
 }

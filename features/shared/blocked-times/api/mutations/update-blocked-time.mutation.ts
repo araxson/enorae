@@ -6,7 +6,7 @@ import { resolveClient, resolveSessionRoles, ensureSalonAccess, BLOCKED_TIMES_PA
 
 const updateSchema = z.object({
   staff_id: z.string().regex(UUID_REGEX).optional(),
-  block_type: z.string().min(1).optional(),
+  block_type: z.enum(['maintenance', 'other', 'break', 'vacation', 'sick_leave', 'training', 'personal', 'lunch', 'holiday']).optional(),
   start_time: z.string().datetime().optional(),
   end_time: z.string().datetime().optional(),
   reason: z.string().min(1).optional(),

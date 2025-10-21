@@ -1,4 +1,5 @@
-import { Stack } from '@/components/layout'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 type PayloadSectionProps = {
   payload: unknown
@@ -6,13 +7,17 @@ type PayloadSectionProps = {
 
 export function WebhookPayloadSection({ payload }: PayloadSectionProps) {
   return (
-    <Stack gap="sm">
-      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Payload</h4>
-      <div className="rounded-md bg-muted p-4 overflow-x-auto">
-        <pre className="text-xs">
-          <code>{JSON.stringify(payload, null, 2)}</code>
-        </pre>
-      </div>
-    </Stack>
+    <Card>
+      <CardHeader>
+        <CardTitle>Payload</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ScrollArea className="max-h-60">
+          <pre className="whitespace-pre-wrap text-xs text-muted-foreground">
+            <code>{JSON.stringify(payload, null, 2)}</code>
+          </pre>
+        </ScrollArea>
+      </CardContent>
+    </Card>
   )
 }

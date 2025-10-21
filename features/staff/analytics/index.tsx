@@ -6,8 +6,6 @@ import {
   getStaffEarningsSummary,
 } from './api/queries'
 import { StaffAnalyticsDashboard } from './components/staff-analytics-dashboard'
-import { Section, Stack } from '@/components/layout'
-
 export const staffAnalyticsMetadata = genMeta({
   title: 'My Analytics',
   description: 'Track your performance, earnings, and customer relationships',
@@ -20,8 +18,8 @@ export async function StaffAnalytics() {
   const earnings = await getStaffEarningsSummary()
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">My Analytics</h1>
           <p className="leading-7 text-muted-foreground">
@@ -35,7 +33,7 @@ export async function StaffAnalytics() {
           customerRelationships={customerRelationships}
           earnings={earnings}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

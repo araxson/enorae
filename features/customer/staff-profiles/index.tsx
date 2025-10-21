@@ -1,4 +1,3 @@
-import { Section } from '@/components/layout'
 import { notFound } from 'next/navigation'
 import { getStaffProfile } from './api/queries'
 import { StaffProfileDetail } from './components/staff-profile-detail'
@@ -11,9 +10,9 @@ export async function StaffProfilePage({ staffId }: { staffId: string }) {
   }
 
   return (
-    <Section size="lg">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <StaffProfileDetail profile={profile} />
-    </Section>
+    </section>
   )
 }
 

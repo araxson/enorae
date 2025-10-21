@@ -39,35 +39,37 @@ export function SuspiciousActivityPanel({ sessions, blockedSessions }: Suspiciou
         ) : (
           <div className="space-y-3">
             {sessions.map((session) => (
-              <div key={session.id} className="rounded-md border p-3">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    {riskBadge(session.suspiciousScore ?? 0)}
-                    <span className="text-sm font-semibold text-foreground">
-                      Suspicious score {session.suspiciousScore ?? 'n/a'}
-                    </span>
+              <Card key={session.id}>
+                <CardContent className="p-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      {riskBadge(session.suspiciousScore ?? 0)}
+                      <span className="text-sm font-semibold text-foreground">
+                        Suspicious score {session.suspiciousScore ?? 'n/a'}
+                      </span>
+                    </div>
+                    {session.isBlocked && (
+                      <Badge variant="destructive" className="gap-1 text-xs">
+                        <ShieldOff className="h-3 w-3" />
+                        Blocked
+                      </Badge>
+                    )}
                   </div>
-                  {session.isBlocked && (
-                    <Badge variant="destructive" className="gap-1 text-xs">
-                      <ShieldOff className="h-3 w-3" />
-                      Blocked
-                    </Badge>
-                  )}
-                </div>
-                <div className="mt-2 grid gap-1 text-sm text-muted-foreground">
-                  <span>IP: {session.ipAddress ?? 'Unknown'}</span>
-                  <span>User: {session.userId ?? 'Anonymous'}</span>
-                  {session.userAgent && (
-                    <span className="truncate">Agent: {session.userAgent}</span>
-                  )}
-                </div>
-                {session.lastActivityAt && (
-                  <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
-                    <Clock3 className="h-3 w-3" />
-                    Last activity {formatDistanceToNow(new Date(session.lastActivityAt), { addSuffix: true })}
+                  <div className="mt-2 grid gap-1 text-sm text-muted-foreground">
+                    <span>IP: {session.ipAddress ?? 'Unknown'}</span>
+                    <span>User: {session.userId ?? 'Anonymous'}</span>
+                    {session.userAgent && (
+                      <span className="truncate">Agent: {session.userAgent}</span>
+                    )}
                   </div>
-                )}
-              </div>
+                  {session.lastActivityAt && (
+                    <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+                      <Clock3 className="h-3 w-3" />
+                      Last activity {formatDistanceToNow(new Date(session.lastActivityAt), { addSuffix: true })}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}

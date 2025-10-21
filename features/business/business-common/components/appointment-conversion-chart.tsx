@@ -43,8 +43,8 @@ export function AppointmentConversionChart({ data }: AppointmentConversionChartP
           <ResponsiveContainer width="100%" height="100%">
             <FunnelChart>
               <Funnel dataKey="value" data={chartData} isAnimationActive>
-                <LabelList position="right" fill="#000" stroke="none" dataKey="name" />
-                <LabelList position="inside" fill="#fff" stroke="none" dataKey="value" />
+                <LabelList position="right" fill="hsl(var(--foreground))" stroke="none" dataKey="name" />
+                <LabelList position="inside" fill="hsl(var(--background))" stroke="none" dataKey="value" />
               </Funnel>
               <ChartTooltip content={<ChartTooltipContent />} />
             </FunnelChart>

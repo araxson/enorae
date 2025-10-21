@@ -29,12 +29,12 @@ export async function createBlockedTime(data: BlockedTimeFormData) {
       staff_id: session.user.id,
       start_time: validated.start_time,
       end_time: validated.end_time,
-      block_type: validated.block_type as 'break' | 'personal' | 'meeting' | 'other',
+      block_type: validated.block_type,
       reason: validated.reason,
       is_recurring: validated.is_recurring,
       recurrence_pattern: validated.recurrence_pattern ?? null,
       created_by_id: session.user.id,
-      is_active: true,
+      updated_by_id: session.user.id,
     })
 
   if (error) throw error

@@ -37,6 +37,8 @@ export async function deleteReview(formData: FormData) {
       action: 'delete_review',
       entity_type: 'review',
       entity_id: reviewId,
+      target_schema: 'engagement',
+      target_table: 'salon_reviews',
       metadata: {
         deleted_by: session.user.id,
         reason,

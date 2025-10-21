@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
 import { PageLoading } from '@/components/shared'
-import { Container, Stack } from '@/components/layout'
 import { getReferralCode, getReferralStats, getReferralHistory } from './api/queries'
 import { ReferralDashboard } from './components/referral-dashboard'
 
@@ -10,8 +9,8 @@ export async function ReferralProgram() {
   const history = await getReferralHistory()
 
   return (
-    <Container size="lg" className="pb-16 pt-6">
-      <Stack gap="xl">
+    <div className="mx-auto w-full px-6 max-w-6xl pb-16 pt-6">
+      <div className="flex flex-col gap-8">
         <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Referral Program</h1>
           <p className="leading-7 text-muted-foreground">
@@ -24,8 +23,8 @@ export async function ReferralProgram() {
           stats={stats}
           history={history}
         />
-      </Stack>
-    </Container>
+      </div>
+    </div>
   )
 }
 

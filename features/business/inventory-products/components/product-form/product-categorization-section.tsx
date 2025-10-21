@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Grid } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import type { Database } from '@/lib/types/database.types'
 
@@ -32,7 +31,7 @@ export function ProductCategorizationSection({
   onSupplierChange,
 }: ProductCategorizationSectionProps) {
   return (
-    <Grid cols={{ base: 1, md: 2 }} gap="md">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       <div className="space-y-2">
         <Label htmlFor="category">Category</Label>
         <Select value={categoryId} onValueChange={onCategoryChange}>
@@ -68,6 +67,6 @@ export function ProductCategorizationSection({
           </SelectContent>
         </Select>
       </div>
-    </Grid>
+    </div>
   )
 }

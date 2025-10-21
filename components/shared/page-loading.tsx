@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { Spinner } from '@/components/ui/spinner'
 
 /**
@@ -6,10 +5,10 @@ import { Spinner } from '@/components/ui/spinner'
  */
 export function PageLoading() {
   return (
-    <Section size="lg">
-      <Stack gap="xl" className="min-h-[60vh] items-center justify-center">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto flex min-h-[60vh] w-full max-w-6xl flex-col items-center justify-center gap-6 px-4 sm:px-6 lg:px-8">
         <Spinner className="size-8" />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

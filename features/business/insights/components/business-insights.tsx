@@ -6,7 +6,6 @@ import {
   getGrowthOpportunities,
 } from './api/business-insights'
 import { BusinessInsightsDashboard } from './components/business-insights-dashboard'
-import { Section, Stack } from '@/components/layout'
 
 export async function BusinessInsights() {
   const salonId = await getUserSalonId()
@@ -20,8 +19,8 @@ export async function BusinessInsights() {
   ])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Business Insights</h1>
           <p className="leading-7 text-muted-foreground">
@@ -35,7 +34,7 @@ export async function BusinessInsights() {
           alerts={alerts}
           opportunities={opportunities}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

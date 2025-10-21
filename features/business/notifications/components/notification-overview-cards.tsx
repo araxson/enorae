@@ -1,10 +1,10 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Grid } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { Bell, Wifi, AlertTriangle, Inbox } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
+import { cn } from '@/lib/utils'
 
 type NotificationStatus = Database['public']['Enums']['notification_status']
 type NotificationChannel = Database['public']['Enums']['notification_channel']
@@ -33,7 +33,7 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
   const topChannel = Object.entries(channels).sort(([, a], [, b]) => b - a)[0]
 
   return (
-    <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="md">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle>Notifications Processed</CardTitle>
@@ -53,7 +53,7 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
           <AlertTriangle className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent className="space-y-1">
-          <div className={`text-2xl font-bold ${failureRate > 5 ? 'text-rose-600' : ''}`}>
+          <div className={cn('text-2xl font-bold', failureRate > 5 && 'text-destructive')}>
             {failureRate.toFixed(1)}%
           </div>
           <CardDescription>
@@ -105,6 +105,6 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
           })}
         </CardContent>
       </Card>
-    </Grid>
+    </div>
   )
 }

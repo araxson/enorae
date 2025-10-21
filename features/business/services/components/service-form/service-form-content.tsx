@@ -4,8 +4,6 @@ import { Loader2 } from 'lucide-react'
 
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Stack } from '@/components/layout'
-
 import { ServiceBasicSection } from './service-basic-section'
 import { ServiceDurationSection } from './service-duration-section'
 import { ServicePricingSection } from './service-pricing-section'
@@ -67,7 +65,7 @@ export function ServiceFormContent({ service, state, actions, handlers }: Servic
       </DialogHeader>
 
       <form onSubmit={handleSubmit}>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <ServiceBasicSection
             name={name}
             description={description}
@@ -110,7 +108,7 @@ export function ServiceFormContent({ service, state, actions, handlers }: Servic
           {error && (
             <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">{error}</div>
           )}
-        </Stack>
+        </div>
 
         <DialogFooter className="mt-6">
           <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>

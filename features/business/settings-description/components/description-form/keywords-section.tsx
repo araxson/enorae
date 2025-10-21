@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 
 import { ArrayInput } from './array-input'
@@ -15,7 +14,7 @@ export function KeywordsSection({ keywords, onKeywordsChange }: KeywordsSectionP
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">SEO Keywords</h3>
           <Separator />
 
@@ -26,7 +25,7 @@ export function KeywordsSection({ keywords, onKeywordsChange }: KeywordsSectionP
             onRemove={(index) => onKeywordsChange(keywords.filter((_, idx) => idx !== index))}
             placeholder="Salon, Spa, Beauty, ..."
           />
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

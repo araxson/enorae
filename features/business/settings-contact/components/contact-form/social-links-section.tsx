@@ -3,7 +3,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Stack, Grid } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 
 type PrimitiveValue = string | null | undefined
@@ -34,13 +33,13 @@ export function SocialLinksSection({ initialValues }: SocialLinksSectionProps) {
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Social Media Links</h3>
           <Separator />
 
-          <Grid cols={{ base: 1, md: 2 }} gap="lg">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
             {SOCIAL_FIELDS.map(({ id, label, placeholder }) => (
-              <Stack gap="sm" key={id}>
+              <div key={id} className="flex flex-col gap-3">
                 <Label htmlFor={id}>{label}</Label>
                 <Input
                   id={id}
@@ -49,10 +48,10 @@ export function SocialLinksSection({ initialValues }: SocialLinksSectionProps) {
                   defaultValue={initialValues[id] ?? ''}
                   placeholder={placeholder}
                 />
-              </Stack>
+              </div>
             ))}
-          </Grid>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack, Flex, Grid } from '@/components/layout'
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
 
@@ -91,7 +90,7 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
@@ -104,7 +103,7 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
               return (
                 <Card key={index}>
                   <CardContent className="p-4">
-                    <Grid cols={{ base: 1, md: 4 }} gap="md" className="items-end">
+                    <div className="grid gap-4 grid-cols-1 md:grid-cols-4 items-end">
                       <div className="md:col-span-1">
                         <Label className="font-semibold">{day}</Label>
                       </div>
@@ -135,7 +134,7 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
                         />
                       </div>
 
-                      <Flex gap="sm" align="center">
+                      <div className="flex gap-3 items-center">
                         <Switch
                           id={`closed-${index}`}
                           checked={dayHours.is_closed}
@@ -146,20 +145,20 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
                         <Label htmlFor={`closed-${index}`}>
                           Closed
                         </Label>
-                      </Flex>
-                    </Grid>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               )
             })}
-          </Stack>
+          </div>
         </CardContent>
         <CardFooter>
-          <Flex justify="end">
+          <div className="flex gap-4 justify-end">
             <Button type="submit" disabled={isLoading}>
               {isLoading ? 'Saving...' : 'Save Operating Hours'}
             </Button>
-          </Flex>
+          </div>
         </CardFooter>
       </form>
     </Card>

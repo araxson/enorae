@@ -2,9 +2,9 @@
 
 import { memo, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
-import { Stack, Grid } from '@/components/layout'
+import { Badge } from '@/components/ui/badge'
 import {
   Copy,
   Trash2,
@@ -53,7 +53,7 @@ export const CouponCard = memo(function CouponCard({
 
   return (
     <Card className="p-6">
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
@@ -73,7 +73,7 @@ export const CouponCard = memo(function CouponCard({
             <p className="text-sm text-muted-foreground mb-2">
               {coupon.description}
             </p>
-            <Grid cols={{ base: 1, sm: 2 }} gap="md" className="text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="font-medium flex items-center gap-2">
                   <Gift className="h-4 w-4 text-muted-foreground" />
@@ -102,7 +102,7 @@ export const CouponCard = memo(function CouponCard({
                   <p className="text-muted-foreground">{coupon.max_uses} total</p>
                 </div>
               ) : null}
-            </Grid>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <Switch
@@ -127,47 +127,45 @@ export const CouponCard = memo(function CouponCard({
           </div>
         </div>
 
-        <Grid
-          cols={{ base: 1, md: 3 }}
-          gap="md"
-          className="rounded-md border p-4 bg-muted/30"
-        >
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">
-              Total Uses
-            </p>
-            <p className="text-xl font-semibold flex items-center gap-2">
-              {coupon.stats.totalUses}
-              <TrendingUp className="h-4 w-4 text-success" />
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {coupon.stats.uniqueCustomers} unique customers
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">
-              Discount Given
-            </p>
-            <p className="text-xl font-semibold">
-              ${coupon.stats.totalDiscount.toFixed(2)}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Avg ${coupon.stats.averageDiscount.toFixed(2)} per redemption
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">
-              Last Used
-            </p>
-            <p className="text-sm font-medium">
-              {coupon.stats.lastUsedAt
-                ? formatDistanceToNow(new Date(coupon.stats.lastUsedAt), {
-                    addSuffix: true,
-                  })
-                : 'No usage yet'}
-            </p>
-          </div>
-        </Grid>
+        <Card>
+          <CardContent className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                Total Uses
+              </p>
+              <p className="flex items-center gap-2 text-xl font-semibold">
+                {coupon.stats.totalUses}
+                <TrendingUp className="h-4 w-4 text-success" />
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {coupon.stats.uniqueCustomers} unique customers
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                Discount Given
+              </p>
+              <p className="text-xl font-semibold">
+                ${coupon.stats.totalDiscount.toFixed(2)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Avg ${coupon.stats.averageDiscount.toFixed(2)} per redemption
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                Last Used
+              </p>
+              <p className="text-sm font-medium">
+                {coupon.stats.lastUsedAt
+                  ? formatDistanceToNow(new Date(coupon.stats.lastUsedAt), {
+                      addSuffix: true,
+                    })
+                  : 'No usage yet'}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
         {serviceNames.length ? (
           <div className="flex flex-wrap items-center gap-2">
@@ -189,7 +187,7 @@ export const CouponCard = memo(function CouponCard({
             Targeted to {coupon.applicable_customer_ids.length} specific customers
           </div>
         ) : null}
-      </Stack>
+      </div>
     </Card>
   )
 })

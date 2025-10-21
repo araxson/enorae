@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Stack, Grid, Flex } from '@/components/layout'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Users, Gift, Copy, Mail, MessageSquare, Check } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { useToast } from '@/lib/hooks/use-toast'
@@ -68,68 +68,60 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
 
   const statCards = [
     {
-      title: 'Total Referrals',
+      title: 'Total referrals',
       value: stats.total_referrals,
       description: 'Friends referred',
       icon: Users,
-      tone: 'text-info',
     },
     {
       title: 'Successful',
       value: stats.successful_referrals,
       description: 'Completed signups',
       icon: Check,
-      tone: 'text-success',
     },
     {
       title: 'Pending',
       value: stats.pending_referrals,
       description: 'Awaiting signup',
       icon: MessageSquare,
-      tone: 'text-warning',
     },
     {
-      title: 'Bonus Points',
+      title: 'Bonus points',
       value: stats.total_bonus_points,
       description: 'Points earned',
       icon: Gift,
-      tone: 'text-primary',
     },
   ] as const
 
   return (
-    <Stack gap="xl">
-      <Grid cols={{ base: 1, md: 4 }} gap="lg">
+    <div className="flex flex-col gap-8">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
         {statCards.map((card) => (
           <Card key={card.title}>
-            <CardHeader>
-              <Flex justify="between" align="center">
-                <CardTitle>{card.title}</CardTitle>
-                <card.icon className={`h-5 w-5 ${card.tone}`} />
-              </Flex>
+            <CardHeader className="gap-2">
+              <div className="flex items-center justify-between gap-3">
+                <CardDescription>{card.title}</CardDescription>
+                <card.icon className="h-5 w-5" aria-hidden="true" />
+              </div>
+              <CardTitle>{card.value}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-1">
-              <div className="text-3xl font-semibold">{card.value}</div>
+            <CardContent className="pt-0">
               <CardDescription>{card.description}</CardDescription>
             </CardContent>
           </Card>
         ))}
-      </Grid>
+      </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Your Referral Code</CardTitle>
         </CardHeader>
         <CardContent>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             {referralCode ? (
               <>
                 <div className="flex items-center gap-3">
-                  <Input
-                    value={referralCode.code}
-                    readOnly
-                    className="font-mono text-lg"
-                  />
+                  <Input value={referralCode.code} readOnly />
                   <Button
                     variant="outline"
                     size="icon"
@@ -139,12 +131,12 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
                   </Button>
                 </div>
 
-                <div className="border rounded-lg p-4 bg-muted/30">
-                  <p className="text-sm font-medium mb-2">Share your referral link:</p>
-                  <p className="text-xs text-muted-foreground break-all">{shareUrl}</p>
-                </div>
+                <Alert>
+                  <AlertTitle>Share your referral link</AlertTitle>
+                  <AlertDescription>{shareUrl}</AlertDescription>
+                </Alert>
 
-                <Grid cols={{ base: 1, md: 3 }} gap="sm">
+                <div className="grid gap-3 grid-cols-1 md:grid-cols-3">
                   <Button variant="outline" className="w-full">
                     <Mail className="h-4 w-4 mr-2" />
                     Share via Email
@@ -157,11 +149,11 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
                     <Copy className="h-4 w-4 mr-2" />
                     {copied ? 'Copied!' : 'Copy Link'}
                   </Button>
-                </Grid>
+                </div>
 
                 <div className="border-t pt-4">
-                  <h4 className="font-semibold mb-2">How it works:</h4>
-                  <ol className="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
+                  <CardDescription>How it works</CardDescription>
+                  <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
                     <li>Share your unique referral code with friends</li>
                     <li>They sign up using your code</li>
                     <li>You both earn 100 bonus points!</li>
@@ -179,7 +171,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
                 </Button>
               </div>
             )}
-          </Stack>
+          </div>
         </CardContent>
       </Card>
 
@@ -188,12 +180,12 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
           <CardTitle>Referral History</CardTitle>
         </CardHeader>
         <CardContent>
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             {history.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">No referrals yet</p>
             ) : (
               history.map((referral) => (
-                <Flex key={referral.id} justify="between" align="center" className="border-b pb-3">
+                <div key={referral.id} className="flex gap-4 items-center justify-between border-b pb-3">
                   <div>
                     <p className="font-medium">Referral Code: {referral.code}</p>
                     <p className="text-sm text-muted-foreground">
@@ -203,12 +195,12 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
                   <Badge variant={referral.status === 'completed' ? 'default' : 'secondary'}>
                     {referral.status === 'completed' ? 'Completed' : 'Pending'}
                   </Badge>
-                </Flex>
+                </div>
               ))
             )}
-          </Stack>
+          </div>
         </CardContent>
       </Card>
-    </Stack>
+    </div>
   )
 }

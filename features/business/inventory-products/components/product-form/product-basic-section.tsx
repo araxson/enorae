@@ -3,7 +3,6 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Grid } from '@/components/layout'
 
 interface ProductBasicSectionProps {
   name: string
@@ -52,7 +51,7 @@ export function ProductBasicSection({
         />
       </div>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="sku">SKU</Label>
           <Input
@@ -72,7 +71,7 @@ export function ProductBasicSection({
             placeholder="e.g., bottle, tube, pack"
           />
         </div>
-      </Grid>
+      </div>
     </section>
   )
 }

@@ -5,7 +5,6 @@ import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
 import { deleteProductUsage } from '../api/mutations'
 import type { ProductUsage } from '../types'
 
@@ -38,14 +37,14 @@ export function ProductUsageList({ productUsage }: ProductUsageListProps) {
   }
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       {productUsage.map((usage) => (
         <Card key={usage.id} className="p-4">
-          <Flex justify="between" align="start">
-            <Stack gap="sm" className="flex-1">
-              <Flex align="center" gap="sm">
+          <div className="flex gap-4 items-start justify-between">
+            <div className="flex flex-col gap-3 flex-1">
+              <div className="flex gap-3 items-center">
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Product {usage.product_id}</h3>
-              </Flex>
+              </div>
 
               <p className="text-sm text-muted-foreground">
                 Quantity: {usage.quantity_used}
@@ -66,7 +65,7 @@ export function ProductUsageList({ productUsage }: ProductUsageListProps) {
                   {format(new Date(usage.created_at), 'PPp')}
                 </p>
               )}
-            </Stack>
+            </div>
 
             <Button
               variant="ghost"
@@ -76,9 +75,9 @@ export function ProductUsageList({ productUsage }: ProductUsageListProps) {
             >
               <Trash2 className="h-4 w-4" />
             </Button>
-          </Flex>
+          </div>
         </Card>
       ))}
-    </Stack>
+    </div>
   )
 }

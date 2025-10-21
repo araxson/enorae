@@ -1,6 +1,5 @@
 import { getAppointments, getUserSalon } from './api/queries'
 import { AppointmentsTableClient } from './components/appointments-table-client'
-import { Section, Stack } from '@/components/layout'
 import { EmptyState } from '@/components/shared'
 import { AlertCircle, Calendar } from 'lucide-react'
 
@@ -10,35 +9,35 @@ export async function AppointmentsManagement() {
     salon = await getUserSalon()
   } catch {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <EmptyState
           icon={AlertCircle}
           title="Authentication Required"
           description="Please log in to view appointments"
         />
-      </Section>
+      </section>
     )
   }
 
   if (!salon || !salon.id) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <EmptyState
           icon={Calendar}
           title="No Salon Found"
           description="Please create a salon to manage appointments"
         />
-      </Section>
+      </section>
     )
   }
 
   const appointments = await getAppointments(salon.id)
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <AppointmentsTableClient appointments={appointments} />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { productUsageSchema, type ProductUsageFormData } from '../schema'
 import { recordProductUsage } from '../api/mutations'
@@ -71,7 +70,7 @@ export function ProductUsageForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         <div>
           <Label htmlFor="product_id">Product</Label>
           <Select value={productId} onValueChange={handleProductChange}>
@@ -146,7 +145,7 @@ export function ProductUsageForm({
             {isSubmitting ? 'Recording...' : 'Record Usage'}
           </Button>
         </div>
-      </Stack>
+      </div>
     </form>
   )
 }

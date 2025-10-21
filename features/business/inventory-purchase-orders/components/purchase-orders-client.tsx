@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex } from '@/components/layout'
 import { OrderList } from './order-list'
 import { OrderDetailDialog } from './order-detail-dialog'
 import { CreateOrderForm } from './create-order-form'
@@ -32,13 +31,13 @@ export function PurchaseOrdersClient({
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
 
   return (
-    <Stack gap="xl">
-      <Flex align="center" justify="end">
+    <div className="flex flex-col gap-8">
+      <div className="flex gap-4 items-center justify-end">
         <Button onClick={() => setIsCreateFormOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Create Order
         </Button>
-      </Flex>
+      </div>
 
       <OrderList orders={initialOrders} onView={setViewingOrder} />
 
@@ -54,6 +53,6 @@ export function PurchaseOrdersClient({
         suppliers={suppliers}
         products={products}
       />
-    </Stack>
+    </div>
   )
 }

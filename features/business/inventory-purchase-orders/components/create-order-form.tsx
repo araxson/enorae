@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Stack } from '@/components/layout'
 import type { Supplier, Product } from './types'
 import { OrderMetadataFields } from './partials/create-form/order-metadata-fields'
 import { OrderItemsList } from './partials/create-form/order-items-list'
@@ -49,7 +48,7 @@ export function CreateOrderForm({ open, onOpenChange, suppliers, products }: Cre
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <Stack gap="lg">
+          <div className="flex flex-col gap-6">
             <OrderMetadataFields suppliers={suppliers} />
 
             <OrderItemsList
@@ -67,7 +66,7 @@ export function CreateOrderForm({ open, onOpenChange, suppliers, products }: Cre
               isSubmitting={isSubmitting}
               canSubmit={items.length > 0}
             />
-          </Stack>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

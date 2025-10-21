@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Stack, Flex } from '@/components/layout'
 import { updateUserPreferences } from '../api/mutations'
 import type { DisplayPreferences } from '../types'
 
@@ -33,13 +32,13 @@ export function DisplayPreferences({ initialPreferences }: DisplayPreferencesPro
 
   return (
     <Card className="p-6">
-      <Stack gap="lg">
+      <div className="flex flex-col gap-6">
         <div>
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Display Preferences</h3>
           <p className="text-sm text-muted-foreground">Customize your interface</p>
         </div>
 
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           <div>
             <Label htmlFor="theme">Theme</Label>
             <Select
@@ -89,14 +88,14 @@ export function DisplayPreferences({ initialPreferences }: DisplayPreferencesPro
               </SelectContent>
             </Select>
           </div>
-        </Stack>
+        </div>
 
-        <Flex justify="end">
+        <div className="flex gap-4 justify-end">
           <Button onClick={handleSave} disabled={isSaving}>
             {isSaving ? 'Saving...' : 'Save Changes'}
           </Button>
-        </Flex>
-      </Stack>
+        </div>
+      </div>
     </Card>
   )
 }

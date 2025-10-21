@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Stack, Box } from '@/components/layout'
 import {
   Dialog,
   DialogContent,
@@ -70,13 +69,13 @@ export function CategoryForm({ category, open, onOpenChange }: CategoryFormProps
             </DialogDescription>
           </DialogHeader>
 
-          <Box py="md">
-            <Stack gap="md">
+          <div className="py-4">
+            <div className="flex flex-col gap-4">
               {category?.id && (
                 <input type="hidden" name="id" value={category.id} />
               )}
 
-              <Stack gap="xs">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="name">Name *</Label>
                 <Input
                   id="name"
@@ -85,9 +84,9 @@ export function CategoryForm({ category, open, onOpenChange }: CategoryFormProps
                   required
                   maxLength={100}
                 />
-              </Stack>
+              </div>
 
-              <Stack gap="xs">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
@@ -96,9 +95,9 @@ export function CategoryForm({ category, open, onOpenChange }: CategoryFormProps
                   maxLength={500}
                   rows={3}
                 />
-              </Stack>
+              </div>
 
-              <Stack gap="xs">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="displayOrder">Display Order</Label>
                 <Input
                   id="displayOrder"
@@ -110,9 +109,9 @@ export function CategoryForm({ category, open, onOpenChange }: CategoryFormProps
                 <small className="text-sm font-medium leading-none text-muted-foreground">
                   Lower numbers appear first in lists
                 </small>
-              </Stack>
-            </Stack>
-          </Box>
+              </div>
+            </div>
+          </div>
 
           <DialogFooter>
             <Button

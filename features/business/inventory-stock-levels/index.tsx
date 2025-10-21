@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { StockLevelsTable } from '@/features/business/inventory-products/components/stock-levels-table'
 import { getStockLevels, getStockLocations } from './api/queries'
@@ -14,19 +13,19 @@ export async function StockLevels() {
     ])
   } catch (error) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert variant="destructive">
           <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load stock levels'}
           </AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <StockLevelsTable
           stockLevels={stockLevels}
           locations={locations.map((loc) => ({
@@ -36,7 +35,7 @@ export async function StockLevels() {
           onTransfer={transferStock}
           onAdjust={adjustStock}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

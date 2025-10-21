@@ -1,7 +1,6 @@
 'use client'
 
 import type React from 'react'
-import { Stack, Grid } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import {
@@ -26,9 +25,9 @@ type ScheduleFormFieldsProps = {
 
 export function ScheduleFormFields({ values, onChange, staffMembers, disabled }: ScheduleFormFieldsProps) {
   return (
-    <Stack gap="md">
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
-        <Stack gap="sm">
+    <div className="flex flex-col gap-4">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+        <div className="flex flex-col gap-3">
           <Label htmlFor="staff">Staff Member</Label>
           <Select value={values.staffId} onValueChange={(value) => onChange('staffId', value)} disabled={disabled}>
             <SelectTrigger id="staff">
@@ -42,9 +41,9 @@ export function ScheduleFormFields({ values, onChange, staffMembers, disabled }:
               ))}
             </SelectContent>
           </Select>
-        </Stack>
+        </div>
 
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           <Label htmlFor="day">Day of Week</Label>
           <Select value={values.dayOfWeek} onValueChange={(value) => onChange('dayOfWeek', value as SchedulePayload['dayOfWeek'])} disabled={disabled}>
             <SelectTrigger id="day">
@@ -58,10 +57,10 @@ export function ScheduleFormFields({ values, onChange, staffMembers, disabled }:
               ))}
             </SelectContent>
           </Select>
-        </Stack>
-      </Grid>
+        </div>
+      </div>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <TimeInput
           id="startTime"
           label="Start Time"
@@ -76,9 +75,9 @@ export function ScheduleFormFields({ values, onChange, staffMembers, disabled }:
           onChange={(event) => onChange('endTime', event.target.value)}
           disabled={disabled}
         />
-      </Grid>
+      </div>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <TimeInput
           id="breakStart"
           label="Break Start (optional)"
@@ -93,9 +92,9 @@ export function ScheduleFormFields({ values, onChange, staffMembers, disabled }:
           onChange={(event) => onChange('breakEnd', event.target.value)}
           disabled={disabled}
         />
-      </Grid>
+      </div>
 
-      <Grid cols={{ base: 1, md: 2 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <DateInput
           id="effectiveFrom"
           label="Effective From (optional)"
@@ -113,8 +112,8 @@ export function ScheduleFormFields({ values, onChange, staffMembers, disabled }:
           min={values.effectiveFrom || undefined}
           disabled={disabled}
         />
-      </Grid>
-    </Stack>
+      </div>
+    </div>
   )
 }
 
@@ -132,9 +131,9 @@ function TimeInput({
   disabled: boolean
 }) {
   return (
-    <Stack gap="sm">
+    <div className="flex flex-col gap-3">
       <Label htmlFor={id}>{label}</Label>
       <Input id={id} type="time" value={value} onChange={onChange} disabled={disabled} required />
-    </Stack>
+    </div>
   )
 }

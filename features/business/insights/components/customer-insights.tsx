@@ -1,6 +1,5 @@
 import { getInsightsSummary, getCustomerInsights } from './api/queries'
 import { CustomerInsightsDashboard } from './components/customer-insights-dashboard'
-import { Stack } from '@/components/layout'
 
 export async function CustomerInsights() {
   const [summary, topCustomers] = await Promise.all([
@@ -9,7 +8,7 @@ export async function CustomerInsights() {
   ])
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       <div>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Customer Insights</h1>
         <p className="leading-7 text-muted-foreground">
@@ -18,6 +17,6 @@ export async function CustomerInsights() {
       </div>
 
       <CustomerInsightsDashboard summary={summary} topCustomers={topCustomers} />
-    </Stack>
+    </div>
   )
 }

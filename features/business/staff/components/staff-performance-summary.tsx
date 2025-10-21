@@ -3,7 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Grid, Stack, Flex } from '@/components/layout'
 import { Star, TrendingUp } from 'lucide-react'
 import type { StaffWithServices } from '../api/queries'
 
@@ -15,17 +14,17 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
   // Calculate performance metrics
   const staffWithMetrics = staff
     .map((member) => {
-      const totalPerformed = member.services.reduce((sum, s) => sum + (s.performed_count || 0), 0)
+      const totalPerformed = member.services.reduce((sum: number, s) => sum + (s.performed_count || 0), 0)
       const servicesWithRatings = member.services.filter((s) => s.rating_average && s.rating_average > 0)
       const avgRating = servicesWithRatings.length > 0
-        ? servicesWithRatings.reduce((sum, s) => sum + Number(s.rating_average || 0), 0) / servicesWithRatings.length
+        ? servicesWithRatings.reduce((sum: number, s) => sum + Number(s.rating_average || 0), 0) / servicesWithRatings.length
         : 0
 
       return {
         ...member,
         totalPerformed,
         avgRating,
-        totalRatings: member.services.reduce((sum, s) => sum + (s.rating_count || 0), 0),
+        totalRatings: member.services.reduce((sum: number, s) => sum + (s.rating_count || 0), 0),
       }
     })
     .filter((m) => m.totalPerformed > 0 || m.avgRating > 0)
@@ -46,7 +45,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
   }
 
   return (
-    <Grid cols={{ base: 1, md: 2 }} gap="md">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       {/* Top Performer by Volume */}
       {topPerformer && topPerformer.totalPerformed > 0 && (
         <Card>
@@ -57,7 +56,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
             </div>
           </CardHeader>
           <CardContent>
-            <Flex gap="md" align="center">
+            <div className="flex gap-4 items-center">
               <Avatar className="h-12 w-12">
                 {topPerformer.avatar_url && (
                   <AvatarImage src={topPerformer.avatar_url} alt={topPerformer.full_name || 'Staff'} />
@@ -67,7 +66,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 </AvatarFallback>
               </Avatar>
 
-              <Stack gap="xs" className="flex-1">
+              <div className="flex flex-col gap-2 flex-1">
                 <p className="leading-7 font-semibold">{topPerformer.full_name || 'Staff Member'}</p>
                 {topPerformer.title && <p className="text-sm text-muted-foreground">{topPerformer.title}</p>}
                 <div className="flex items-center gap-2 mt-1">
@@ -76,8 +75,8 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                     {topPerformer.totalPerformed} services performed
                   </Badge>
                 </div>
-              </Stack>
-            </Flex>
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}
@@ -92,7 +91,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
             </div>
           </CardHeader>
           <CardContent>
-            <Flex gap="md" align="center">
+            <div className="flex gap-4 items-center">
               <Avatar className="h-12 w-12">
                 {topRated.avatar_url && (
                   <AvatarImage src={topRated.avatar_url} alt={topRated.full_name || 'Staff'} />
@@ -102,7 +101,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 </AvatarFallback>
               </Avatar>
 
-              <Stack gap="xs" className="flex-1">
+              <div className="flex flex-col gap-2 flex-1">
                 <p className="leading-7 font-semibold">{topRated.full_name || 'Staff Member'}</p>
                 {topRated.title && <p className="text-sm text-muted-foreground">{topRated.title}</p>}
                 <div className="flex items-center gap-2 mt-1">
@@ -112,11 +111,11 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                   </Badge>
                   <p className="text-sm text-muted-foreground">({topRated.totalRatings} reviews)</p>
                 </div>
-              </Stack>
-            </Flex>
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}
-    </Grid>
+    </div>
   )
 }

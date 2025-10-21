@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { format } from 'date-fns'
-import { Stack } from '@/components/layout'
 
 interface DateRangeFilterProps {
   startDate?: Date
@@ -44,7 +43,7 @@ export function DateRangeFilter({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <Stack gap="md" className="p-4">
+        <div className="flex flex-col gap-4 p-4">
           <div>
             <p className="text-sm font-medium mb-2">Start Date</p>
             <CalendarComponent
@@ -81,7 +80,7 @@ export function DateRangeFilter({
               Apply
             </Button>
           </div>
-        </Stack>
+        </div>
       </PopoverContent>
     </Popover>
   )

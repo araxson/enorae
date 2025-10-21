@@ -71,7 +71,7 @@ export async function getTopStaff(
 
   const { data, error } = await supabase
     .from('appointments')
-    .select('staff_id, staff_name, staff_title, total_price')
+    .select('staff_id, staff_name, staff_name, total_price')
     .eq('salon_id', salonId)
     .eq('status', 'completed')
     .gte('start_time', startDate)
@@ -89,7 +89,7 @@ export async function getTopStaff(
     if (!stats.has(appointment.staff_id)) {
       stats.set(appointment.staff_id, {
         name: appointment.staff_name || 'Unknown',
-        title: appointment.staff_title,
+        title: appointment.staff_name,
         count: 0,
         revenue: 0,
       })

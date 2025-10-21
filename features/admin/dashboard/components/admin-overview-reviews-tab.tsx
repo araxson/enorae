@@ -40,26 +40,28 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
         <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((review) => (
-              <div key={review.id} className="rounded-lg border border-border/60 p-3">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-semibold leading-tight">
-                      {review.salon_name || 'Unknown salon'}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      By {review.customer_name || 'Anonymous'}
-                    </p>
+              <Card key={review.id}>
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-semibold leading-tight">
+                        {review.salon_name || 'Unknown salon'}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        By {review.customer_name || 'Anonymous'}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="gap-1 text-xs">
+                      <Star className="h-3 w-3 text-warning" fill="currentColor" />
+                      {review.rating || 0}/5
+                    </Badge>
                   </div>
-                  <Badge variant="outline" className="gap-1 text-xs">
-                    <Star className="h-3 w-3 text-warning" fill="currentColor" />
-                    {review.rating || 0}/5
-                  </Badge>
-                </div>
-                <Separator className="my-3" />
-                <p className="line-clamp-3 text-sm text-muted-foreground">
-                  {review.comment || 'No comment provided.'}
-                </p>
-              </div>
+                  <Separator className="my-3" />
+                  <p className="line-clamp-3 text-sm text-muted-foreground">
+                    {review.comment || 'No comment provided.'}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </ScrollArea>

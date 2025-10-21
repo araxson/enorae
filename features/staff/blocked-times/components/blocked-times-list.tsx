@@ -5,7 +5,6 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
 import { deleteBlockedTime } from '../api/mutations'
 import type { BlockedTime } from '../types'
 
@@ -41,23 +40,23 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
   }
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       {blockedTimes.map((blockedTime) => (
         <Card key={blockedTime.id}>
           <CardHeader className="p-4 pb-0">
-            <Flex justify="between" align="start" gap="sm">
-              <Stack gap="sm" className="flex-1">
-                <Flex align="center" gap="sm" wrap="wrap">
+            <div className="flex gap-3 items-start justify-between">
+              <div className="flex flex-col gap-3 flex-1">
+                <div className="flex gap-3 items-center flex-wrap">
                   <CardTitle>{blockedTime.reason || 'Blocked time'}</CardTitle>
                   <Badge variant="outline">{blockedTime.block_type}</Badge>
                   {blockedTime.is_recurring && <Badge variant="secondary">Recurring</Badge>}
-                </Flex>
+                </div>
                 <CardDescription>
                   {blockedTime.start_time && format(new Date(blockedTime.start_time), 'PPp')} –{' '}
                   {blockedTime.end_time && format(new Date(blockedTime.end_time), 'p')}
                 </CardDescription>
-              </Stack>
-              <Flex gap="sm">
+              </div>
+              <div className="flex gap-3">
                 {onEdit && (
                   <Button
                     variant="ghost"
@@ -75,8 +74,8 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
-              </Flex>
-            </Flex>
+              </div>
+            </div>
           </CardHeader>
           {blockedTime.duration_minutes ? (
             <CardContent className="p-4 pt-0">
@@ -87,6 +86,6 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
           ) : null}
         </Card>
       ))}
-    </Stack>
+    </div>
   )
 }

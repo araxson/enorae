@@ -1,6 +1,5 @@
 import { DollarSign } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Grid, Box } from '@/components/layout'
 type Props = {
   commission: {
     todayRevenue: number
@@ -24,7 +23,7 @@ export function CommissionSummary({ commission }: Props) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Grid cols={{ base: 2, md: 3, lg: 6 }} gap="md">
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
           <Stat label="Today's Revenue" value={`$${commission.todayRevenue.toFixed(2)}`} />
           <Stat
             label="Today's Commission"
@@ -43,7 +42,7 @@ export function CommissionSummary({ commission }: Props) {
             value={`$${commission.monthCommission.toFixed(2)}`}
             highlight
           />
-        </Grid>
+        </div>
       </CardContent>
     </Card>
   )
@@ -51,11 +50,11 @@ export function CommissionSummary({ commission }: Props) {
 
 function Stat({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
-    <Box>
+    <div>
       <p className="text-xs text-muted-foreground">{label}</p>
       <div className={`text-2xl font-bold ${highlight ? 'text-success' : ''}`}>
         {value}
       </div>
-    </Box>
+    </div>
   )
 }

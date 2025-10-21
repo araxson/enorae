@@ -1,7 +1,6 @@
 'use client'
 import { format } from 'date-fns'
 import { Card } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import type { Message } from '../types'
 import { cn } from '@/lib/utils'
 
@@ -20,7 +19,7 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
   }
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       {messages.map((message) => {
         const isFromMe = message.from_user_id === currentUserId
 
@@ -32,7 +31,7 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
               isFromMe ? 'ml-auto bg-primary/10' : 'mr-auto'
             )}
           >
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <p className="leading-7 whitespace-pre-wrap">{message.content}</p>
               {message.created_at && (
                 <p className="text-sm text-muted-foreground text-xs">
@@ -40,10 +39,10 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
                   {message.is_edited && ' (edited)'}
                 </p>
               )}
-            </Stack>
+            </div>
           </Card>
         )
       })}
-    </Stack>
+    </div>
   )
 }

@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
-import { Stack, Group } from '@/components/layout'
 
 export function DashboardQuickFiltersDrawer() {
   const [open, setOpen] = useState(false)
@@ -20,11 +19,11 @@ export function DashboardQuickFiltersDrawer() {
         <DrawerHeader>
           <DrawerTitle>Quick filters</DrawerTitle>
         </DrawerHeader>
-        <Stack gap="md" className="px-4 pb-4">
+        <div className="flex flex-col gap-4 px-4 pb-4">
           <FilterToggle label="Show confirmed only" defaultChecked />
           <FilterToggle label="Include flagged reviews" />
           <FilterToggle label="Highlight upsell opportunities" defaultChecked />
-        </Stack>
+        </div>
       </DrawerContent>
     </Drawer>
   )
@@ -37,9 +36,9 @@ type FilterToggleProps = {
 
 function FilterToggle({ label, defaultChecked }: FilterToggleProps) {
   return (
-    <Group className="items-center justify-between">
+    <div className="flex gap-4 items-center items-center justify-between">
       <span className="text-sm text-muted-foreground">{label}</span>
       <Switch defaultChecked={defaultChecked} />
-    </Group>
+    </div>
   )
 }

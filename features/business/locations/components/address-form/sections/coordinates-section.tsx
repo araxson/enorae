@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { Grid, Stack } from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -15,12 +14,12 @@ export function CoordinatesSection({ address }: Props) {
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Coordinates (Optional)</h3>
           <Separator />
 
-          <Grid cols={{ base: 1, md: 2 }} gap="lg">
-            <Stack gap="sm">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+            <div className="flex flex-col gap-3">
               <Label htmlFor="latitude">Latitude</Label>
               <Input
                 id="latitude"
@@ -30,9 +29,9 @@ export function CoordinatesSection({ address }: Props) {
                 defaultValue={address?.latitude?.toString() || ''}
                 placeholder="37.7749"
               />
-            </Stack>
+            </div>
 
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               <Label htmlFor="longitude">Longitude</Label>
               <Input
                 id="longitude"
@@ -42,11 +41,11 @@ export function CoordinatesSection({ address }: Props) {
                 defaultValue={address?.longitude?.toString() || ''}
                 placeholder="-122.4194"
               />
-            </Stack>
-          </Grid>
+            </div>
+          </div>
 
           <p className="text-sm text-muted-foreground">Used for map display and location-based search</p>
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

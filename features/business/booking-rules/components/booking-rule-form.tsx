@@ -14,7 +14,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Stack } from '@/components/layout'
 import type { BookingRuleWithService } from '../api/queries'
 
 interface BookingRuleFormProps {
@@ -64,7 +63,7 @@ export function BookingRuleForm({
             </DialogDescription>
           </DialogHeader>
 
-          <Stack gap="md" className="my-4">
+          <div className="flex flex-col gap-4 my-4">
             <div>
               <Label htmlFor="serviceId">Service</Label>
               <select
@@ -152,7 +151,7 @@ export function BookingRuleForm({
                 How far in advance customers can book (maximum)
               </p>
             </div>
-          </Stack>
+          </div>
 
           <DialogFooter>
             <Button

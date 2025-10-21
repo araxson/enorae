@@ -21,14 +21,16 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
         {items.length === 0 ? (
           <p className="text-sm text-muted-foreground">No feature usage telemetry returned.</p>
         ) : (
-          <ul className="space-y-2 text-sm">
+          <div className="space-y-2">
             {items.map((item) => (
-              <li key={item.key} className="flex items-center justify-between rounded-md border p-2">
-                <span className="font-medium text-foreground">{item.key}</span>
-                <span className="text-xs text-muted-foreground">{item.count.toLocaleString('en-US')} hits</span>
-              </li>
+              <Card key={item.key}>
+                <CardContent className="flex items-center justify-between p-3">
+                  <span className="text-sm font-medium">{item.key}</span>
+                  <span className="text-xs text-muted-foreground">{item.count.toLocaleString('en-US')} hits</span>
+                </CardContent>
+              </Card>
             ))}
-          </ul>
+          </div>
         )}
       </CardContent>
     </Card>

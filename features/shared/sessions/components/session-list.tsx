@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Stack, Flex } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { SessionCard } from './session-card'
@@ -66,26 +65,26 @@ export function SessionList({ sessions }: SessionListProps) {
 
   if (sessions.length === 0) {
     return (
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Active Sessions</h2>
         <Alert>
           <AlertDescription>
             <p className="leading-7">No active sessions found.</p>
           </AlertDescription>
         </Alert>
-      </Stack>
+      </div>
     )
   }
 
   return (
-    <Stack gap="lg">
-      <Flex justify="between" align="center">
-        <Stack gap="xs">
+    <div className="flex flex-col gap-6">
+      <div className="flex gap-4 items-center justify-between">
+        <div className="flex flex-col gap-2">
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Active Sessions</h2>
           <p className="text-sm text-muted-foreground">
             You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
           </p>
-        </Stack>
+        </div>
 
         {otherSessions.length > 0 && (
           <ConfirmDialog
@@ -102,7 +101,7 @@ export function SessionList({ sessions }: SessionListProps) {
             </Button>
           </ConfirmDialog>
         )}
-      </Flex>
+      </div>
 
       {error && (
         <Alert variant="destructive">
@@ -116,7 +115,7 @@ export function SessionList({ sessions }: SessionListProps) {
         </Alert>
       )}
 
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         {sessions.map((session) => (
           <SessionCard
             key={session.id}
@@ -125,19 +124,19 @@ export function SessionList({ sessions }: SessionListProps) {
             isRevoking={revokingId === session.id}
           />
         ))}
-      </Stack>
+      </div>
 
       <Alert>
         <AlertDescription>
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <p className="leading-7 font-medium">Security Tip</p>
             <p className="text-sm text-muted-foreground">
               If you see a session you don&apos;t recognize, revoke it immediately and change your password.
               Your current session is marked with a badge and cannot be revoked from this page.
             </p>
-          </Stack>
+          </div>
         </AlertDescription>
       </Alert>
-    </Stack>
+    </div>
   )
 }

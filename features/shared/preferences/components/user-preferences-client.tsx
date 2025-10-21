@@ -1,6 +1,4 @@
 'use client'
-
-import { Stack } from '@/components/layout'
 import { NotificationPreferencesForm } from './notification-preferences-form'
 import { AdvancedPreferencesForm } from './advanced-preferences-form'
 import type { Database } from '@/lib/types/database.types'
@@ -54,10 +52,10 @@ export function UserPreferencesClient({ initialPreferences }: UserPreferencesCli
         </p>
       </div>
 
-      <Stack gap="xl">
+      <div className="flex flex-col gap-8">
         <AdvancedPreferencesForm initialPreferences={advancedPrefs} />
         <NotificationPreferencesForm initialPreferences={notificationPrefs} />
-      </Stack>
+      </div>
     </div>
   )
 }

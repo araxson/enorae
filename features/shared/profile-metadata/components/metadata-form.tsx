@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import type { Database } from '@/lib/types/database.types'
@@ -41,7 +40,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack gap="xl">
+      <div className="flex flex-col gap-8">
         {error && (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
@@ -56,7 +55,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
 
         <Card>
           <CardContent>
-            <Stack gap="lg">
+            <div className="flex flex-col gap-6">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Profile Images</h3>
               <Separator />
               <ProfileImagesSection
@@ -67,23 +66,23 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
                 onAvatarUpload={handleAvatarUpload}
                 onCoverUpload={handleCoverUpload}
               />
-            </Stack>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent>
-            <Stack gap="lg">
+            <div className="flex flex-col gap-6">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Social Profiles</h3>
               <Separator />
               <SocialProfilesSection defaults={socialProfiles} />
-            </Stack>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent>
-            <Stack gap="lg">
+            <div className="flex flex-col gap-6">
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Interests & Tags</h3>
               <Separator />
               <InterestsTagsSection
@@ -94,14 +93,14 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
                 onAddTag={handleAddTag}
                 onRemoveTag={handleRemoveTag}
               />
-            </Stack>
+            </div>
           </CardContent>
         </Card>
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Saving...' : 'Save Profile'}
         </Button>
-      </Stack>
+      </div>
     </form>
   )
 }

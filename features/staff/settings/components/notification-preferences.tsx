@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex } from '@/components/layout'
 import { updateUserPreferences } from '../api/mutations'
 import type { NotificationPreferences, NotificationChannel } from '../types'
 
@@ -53,7 +52,7 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
 
   return (
     <Card className="p-6">
-      <Stack gap="lg">
+      <div className="flex flex-col gap-6">
         <div>
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Notification Preferences</h3>
           <p className="text-sm text-muted-foreground">Choose how you want to be notified</p>
@@ -87,12 +86,12 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
           </table>
         </div>
 
-        <Flex justify="end">
+        <div className="flex gap-4 justify-end">
           <Button onClick={handleSave} disabled={isSaving}>
             {isSaving ? 'Saving...' : 'Save Changes'}
           </Button>
-        </Flex>
-      </Stack>
+        </div>
+      </div>
     </Card>
   )
 }

@@ -1,6 +1,4 @@
 'use client'
-
-import { Grid } from '@/components/layout'
 import {
   Activity,
   Calendar,
@@ -20,7 +18,7 @@ export function KeyMetricsGrid({ aggregated, trends }: Props) {
       : 0
 
   return (
-    <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="lg">
+    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       <MetricCard
         title="Total Revenue"
         value={formatCurrency(aggregated.totalRevenue)}
@@ -51,6 +49,6 @@ export function KeyMetricsGrid({ aggregated, trends }: Props) {
         icon={Activity}
         subtitle="Average staff utilization"
       />
-    </Grid>
+    </div>
   )
 }

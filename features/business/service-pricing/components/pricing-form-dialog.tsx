@@ -12,8 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Stack } from '@/components/layout'
-
 import type { ServicePricingWithService } from '../api/queries'
 import {
   CostProfitSection,
@@ -61,7 +59,7 @@ export function PricingFormDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <Stack gap="lg">
+          <div className="flex flex-col gap-6">
             <ServiceSelection
               services={services}
               state={state}
@@ -81,7 +79,7 @@ export function PricingFormDialog({
             />
 
             <TaxCommissionSection state={state} onChange={actions.setField} />
-          </Stack>
+          </div>
 
           <DialogFooter className="mt-6">
             <Button

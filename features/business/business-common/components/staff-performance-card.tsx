@@ -3,7 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Grid, Flex, Box } from '@/components/layout'
 import { TrendingUp, Calendar, DollarSign } from 'lucide-react'
 
 interface StaffPerformanceCardProps {
@@ -59,11 +58,11 @@ export function StaffPerformanceCard({
         {description && <p className="text-sm text-muted-foreground text-sm">{description}</p>}
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           {topStaff.map((member, index) => (
-            <Flex key={member.id} justify="between" align="center" className="p-3 rounded-lg hover:bg-muted/50 transition-colors">
-              <Flex gap="md" align="center" className="flex-1">
-                <Box className="flex items-center gap-3">
+            <div key={member.id} className="flex gap-4 items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
+              <div className="flex gap-4 items-center flex-1">
+                <div className="flex items-center gap-3">
                   <span className="flex h-6 w-6 items-center justify-center text-sm font-semibold text-muted-foreground">
                     #{index + 1}
                   </span>
@@ -73,27 +72,27 @@ export function StaffPerformanceCard({
                       {member.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                </Box>
+                </div>
 
-                <Box className="flex-1">
-                  <Box className="font-medium">{member.name}</Box>
+                <div className="flex-1">
+                  <div className="font-medium">{member.name}</div>
                   {member.title && (
                     <small className="text-sm font-medium leading-none text-muted-foreground">{member.title}</small>
                   )}
-                </Box>
-              </Flex>
+                </div>
+              </div>
 
-              <Grid cols={2} gap="md" className="w-52">
-                <Flex align="center" gap="xs">
+              <div className="grid gap-4 grid-cols-2 w-52">
+                <div className="flex gap-2 items-center">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <small className="text-sm font-medium leading-none font-medium">{member.appointmentCount}</small>
-                </Flex>
+                </div>
 
-                <Flex align="center" gap="xs">
+                <div className="flex gap-2 items-center">
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
                   <small className="text-sm font-medium leading-none font-medium">{formatCurrency(member.totalRevenue)}</small>
-                </Flex>
-              </Grid>
+                </div>
+              </div>
 
               {member.trend && member.trendPercentage !== undefined && (
                 <Badge
@@ -104,9 +103,9 @@ export function StaffPerformanceCard({
                   {member.trendPercentage}%
                 </Badge>
               )}
-            </Flex>
+            </div>
           ))}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

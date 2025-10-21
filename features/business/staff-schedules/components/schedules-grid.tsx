@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Grid } from '@/components/layout'
 import { toast } from 'sonner'
 import { deleteStaffSchedule, toggleScheduleActive } from '../api/mutations'
 import type { StaffScheduleWithDetails } from '../api/queries'
@@ -114,7 +113,7 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
   }
 
   return (
-    <Grid cols={{ base: 1 }} gap="md">
+    <div className="grid gap-4 grid-cols-1">
       {Object.values(staffGroups).map((group) => (
         <Card key={group.staffId || 'unknown'}>
           <CardHeader>
@@ -189,6 +188,6 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
           </CardContent>
         </Card>
       ))}
-    </Grid>
+    </div>
   )
 }

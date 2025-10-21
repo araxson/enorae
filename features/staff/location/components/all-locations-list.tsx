@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex, Grid } from '@/components/layout'
 import { MapPin } from 'lucide-react'
 import type { StaffLocationDetail } from '../types'
 
@@ -21,7 +20,7 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
   }
 
   return (
-    <Grid cols={{ base: 1, md: 2 }} gap="md">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       {locations.map((location) => {
         const isCurrent = location.id === currentLocationId
         const address = [
@@ -33,34 +32,34 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
         return (
           <Card key={location.id}>
             <CardHeader className="p-4 pb-2">
-              <Flex align="center" gap="sm" wrap="wrap">
-                <CardTitle className="text-base">
+              <div className="flex gap-3 items-center flex-wrap">
+                <CardTitle>
                   {location.location_name || location.name}
                 </CardTitle>
                 {isCurrent && <Badge variant="default" className="text-xs">Your Location</Badge>}
                 {location.is_primary && <Badge variant="outline" className="text-xs">Primary</Badge>}
-              </Flex>
+              </div>
             </CardHeader>
             {(address || location.phone_number) && (
               <CardContent className="p-4 pt-0">
-                <Stack gap="sm">
+                <div className="flex flex-col gap-3">
                   {address && (
-                    <Flex align="start" gap="sm">
+                    <div className="flex gap-3 items-start">
                       <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
                       <p className="text-sm text-muted-foreground">{address}</p>
-                    </Flex>
+                    </div>
                   )}
                   {location.phone_number && (
                     <p className="text-sm text-muted-foreground">
                       {location.phone_number}
                     </p>
                   )}
-                </Stack>
+                </div>
               </CardContent>
             )}
           </Card>
         )
       })}
-    </Grid>
+    </div>
   )
 }

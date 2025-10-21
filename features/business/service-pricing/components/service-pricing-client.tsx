@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Section, Stack, Box, Flex } from '@/components/layout'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { PricingGrid } from './pricing-grid'
 import { PricingFormDialog } from './pricing-form-dialog'
 import type { ServicePricingWithService } from '../api/queries'
@@ -38,30 +38,34 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Flex justify="between" align="start">
-          <Box>
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-4 items-start justify-between">
+          <div>
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Service Pricing</h1>
             <p className="text-sm text-muted-foreground">
               Manage pricing for your salon services
             </p>
-          </Box>
+          </div>
           <Button onClick={handleAddPricing}>Add Pricing</Button>
-        </Flex>
+        </div>
 
-        <Flex gap="md">
-          <Box className="rounded-lg border p-4">
-            <small className="text-sm font-medium leading-none">Total Services</small>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{pricing.length}</h3>
-          </Box>
-          <Box className="rounded-lg border p-4">
-            <small className="text-sm font-medium leading-none">Average Price</small>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-              ${avgPrice.toFixed(2)}
-            </h3>
-          </Box>
-        </Flex>
+        <div className="flex gap-4">
+          <Card className="w-full">
+            <CardContent className="p-4">
+              <small className="text-sm font-medium leading-none">Total Services</small>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{pricing.length}</h3>
+            </CardContent>
+          </Card>
+          <Card className="w-full">
+            <CardContent className="p-4">
+              <small className="text-sm font-medium leading-none">Average Price</small>
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                ${avgPrice.toFixed(2)}
+              </h3>
+            </CardContent>
+          </Card>
+        </div>
 
         <PricingGrid pricing={pricing} onEdit={handleEditPricing} />
 
@@ -71,7 +75,7 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
           services={services}
           editPricing={editPricing}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

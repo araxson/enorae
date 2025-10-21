@@ -26,7 +26,7 @@ export async function banReviewAuthor(formData: FormData) {
 
     // Get review and customer info
     const { data: review } = await supabase
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .select('customer_id, salon_id, rating, comment')
       .eq('id', reviewId)
       .single()
@@ -50,6 +50,7 @@ export async function banReviewAuthor(formData: FormData) {
     // Mark user profile as restricted from reviews
     // Using metadata in profiles_metadata to track review ban
     const { data: profileMetadata } = await supabase
+      .schema('identity')
       .from('profiles')
       .select('id')
       .eq('id', review.customer_id)
@@ -75,6 +76,8 @@ export async function banReviewAuthor(formData: FormData) {
       action: 'ban_review_author',
       entity_type: 'user',
       entity_id: review.customer_id,
+      target_schema: 'engagement',
+      target_table: 'salon_reviews',
       metadata: {
         reason,
         review_id: reviewId,

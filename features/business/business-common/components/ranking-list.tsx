@@ -3,7 +3,6 @@
 import type { ReactNode, ComponentType } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Flex } from '@/components/layout'
 import { formatCurrency } from '../utils/formatters'
 
 export type RankingItem = {
@@ -123,13 +122,13 @@ export function RankingList({
             <p>{emptyMessage}</p>
           </div>
         ) : (
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             {displayItems.map((item, index) => (
               <div
                 key={item.id}
                 className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent/50 transition-colors"
               >
-                <Flex gap="sm" align="center">
+                <div className="flex gap-3 items-center">
                   <Badge
                     variant={index === 0 ? 'default' : 'outline'}
                     className="w-8 justify-center"
@@ -142,7 +141,7 @@ export function RankingList({
                       <p className="text-sm text-muted-foreground text-xs">{item.subtitle}</p>
                     )}
                   </div>
-                </Flex>
+                </div>
                 <div className="text-right">
                   <div className="font-semibold">{formatValue(item.value)}</div>
                   {item.metric && (
@@ -151,7 +150,7 @@ export function RankingList({
                 </div>
               </div>
             ))}
-          </Stack>
+          </div>
         )}
       </CardContent>
     </Card>

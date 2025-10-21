@@ -1,5 +1,4 @@
 import type { FormEvent } from 'react'
-import { Stack } from '@/components/layout'
 import type { CouponFormState } from './coupon-form.types'
 import { CouponBasicSection } from './coupon-form/basic-section'
 import { CouponDiscountSection } from './coupon-form/discount-section'
@@ -34,7 +33,7 @@ export function CouponFormFields({
 }: CouponFormFieldsProps) {
   return (
     <form onSubmit={onSubmit}>
-      <Stack gap="lg">
+      <div className="flex flex-col gap-6">
         <CouponBasicSection
           formData={formData}
           onChange={onFormDataChange}
@@ -50,7 +49,7 @@ export function CouponFormFields({
         <CouponCustomersSection formData={formData} onChange={onFormDataChange} />
         <CouponActivationSection formData={formData} onChange={onFormDataChange} />
         <CouponSubmitSection isLoading={isLoading} isEditing={isEditing} />
-      </Stack>
+      </div>
     </form>
   )
 }

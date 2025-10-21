@@ -1,7 +1,6 @@
 'use client'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Stack } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 import type { MovementType } from '../types'
 
@@ -23,7 +22,7 @@ type Props = {
 
 export function MovementTypeSelect({ value, onChange }: Props) {
   return (
-    <Stack gap="sm">
+    <div className="flex flex-col gap-3">
       <Label htmlFor="movementType">Movement Type</Label>
       <Select value={value} onValueChange={(next) => onChange(next as MovementType)}>
         <SelectTrigger>
@@ -37,6 +36,6 @@ export function MovementTypeSelect({ value, onChange }: Props) {
           ))}
         </SelectContent>
       </Select>
-    </Stack>
+    </div>
   )
 }

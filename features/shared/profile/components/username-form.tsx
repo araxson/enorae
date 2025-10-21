@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import { updateUsername } from '../api/mutations'
 import { toast } from 'sonner'
 
@@ -49,7 +48,7 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <Stack gap="lg">
+          <div className="flex flex-col gap-6">
             <div>
               <Label htmlFor="username">Username</Label>
               <Input
@@ -75,7 +74,7 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
                 Update Username
               </Button>
             </div>
-          </Stack>
+          </div>
         </form>
       </CardContent>
     </Card>

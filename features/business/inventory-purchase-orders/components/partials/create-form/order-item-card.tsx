@@ -4,7 +4,6 @@ import { Trash2 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Flex } from '@/components/layout'
 import {
   Select,
   SelectContent,
@@ -70,7 +69,7 @@ export function OrderItemCard({ item, index, products, onRemove, onUpdate }: Pro
         </div>
 
         <div>
-          <Flex justify="between" align="center">
+          <div className="flex gap-4 items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground text-xs">Total</p>
               <p className="leading-7 font-semibold">${formatOrderItemTotal(item)}</p>
@@ -78,7 +77,7 @@ export function OrderItemCard({ item, index, products, onRemove, onUpdate }: Pro
             <Button type="button" variant="ghost" size="sm" onClick={() => onRemove(index)}>
               <Trash2 className="h-4 w-4 text-destructive" />
             </Button>
-          </Flex>
+          </div>
         </div>
       </div>
     </Card>

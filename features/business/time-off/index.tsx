@@ -1,4 +1,3 @@
-import { Section, Stack, Box, Grid } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { TimeOffRequestCard } from './components/time-off-request-card'
 import { getSalonTimeOffRequests, getPendingSalonTimeOffRequests } from './api/queries'
@@ -14,25 +13,25 @@ export async function BusinessTimeOff() {
     ])
   } catch (error) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert variant="destructive">
           <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load time-off requests'}
           </AlertDescription>
         </Alert>
-      </Section>
+      </section>
     )
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         {pendingRequests.length > 0 && (
-          <Box className="rounded-lg bg-secondary/10 p-4 border">
+          <div className="rounded-lg bg-secondary/10 p-4 border">
             <small className="text-sm font-medium leading-none font-semibold">
               {pendingRequests.length} pending request{pendingRequests.length !== 1 ? 's' : ''} need review
             </small>
-          </Box>
+          </div>
         )}
 
         {allRequests.length === 0 ? (
@@ -40,7 +39,7 @@ export async function BusinessTimeOff() {
             <AlertDescription>No time-off requests found</AlertDescription>
           </Alert>
         ) : (
-          <Grid cols={{ base: 1, md: 2, lg: 3 }} gap="lg">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {allRequests.map((request) => (
               <TimeOffRequestCard
                 key={request.id}
@@ -49,9 +48,9 @@ export async function BusinessTimeOff() {
                 onReject={rejectTimeOffRequest}
               />
             ))}
-          </Grid>
+          </div>
         )}
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

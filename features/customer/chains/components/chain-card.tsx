@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Flex } from '@/components/layout'
 import { MapPin, Store } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
@@ -19,22 +18,22 @@ export function ChainCard({ chain }: ChainCardProps) {
           <div className="space-y-1">
             <CardTitle>{chain.name}</CardTitle>
             {chain.headquarters_address ? (
-              <Flex align="center" gap="xs">
+              <div className="flex gap-2 items-center">
                 <MapPin className="h-3 w-3 text-muted-foreground" aria-hidden="true" />
                 <CardDescription>{chain.headquarters_address}</CardDescription>
-              </Flex>
+              </div>
             ) : null}
           </div>
           {chain.is_verified ? <Badge variant="default">Verified</Badge> : null}
         </CardHeader>
 
         <CardContent>
-          <Flex align="center" gap="sm">
+          <div className="flex gap-3 items-center">
             <Store className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">
               {chain.salon_count || 0} {chain.salon_count === 1 ? 'Location' : 'Locations'}
             </p>
-          </Flex>
+          </div>
         </CardContent>
 
         {chain.website ? (

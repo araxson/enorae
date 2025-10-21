@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { MapPin } from 'lucide-react'
 import { LocationCard } from './components/location-card'
@@ -13,17 +12,17 @@ interface LocationFeatureProps {
 
 export function LocationFeature({ myLocation, allLocations }: LocationFeatureProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <div>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Location Information</h1>
         <p className="text-sm text-muted-foreground">Your assigned salon location and other branches</p>
       </div>
 
       {myLocation ? (
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Your Location</h2>
           <LocationCard location={myLocation} />
-        </Stack>
+        </div>
       ) : (
         <Alert>
           <MapPin className="h-4 w-4" />
@@ -34,15 +33,15 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
       )}
 
       {allLocations.length > 1 && (
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">All Salon Locations</h2>
           <AllLocationsList
             locations={allLocations}
             currentLocationId={myLocation?.id}
           />
-        </Stack>
+        </div>
       )}
-    </Stack>
+    </div>
   )
 }
 
@@ -53,8 +52,8 @@ export async function StaffLocationPage() {
   ])
 
   return (
-    <Section size="lg">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <LocationFeature myLocation={myLocation} allLocations={allLocations} />
-    </Section>
+    </section>
   )
 }

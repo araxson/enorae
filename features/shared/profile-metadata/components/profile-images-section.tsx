@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Stack, Flex } from '@/components/layout'
 type ProfileImagesSectionProps = {
   avatarUrl: string
   coverUrl: string
@@ -30,17 +29,17 @@ export function ProfileImagesSection({
   const coverInputRef = useRef<HTMLInputElement | null>(null)
 
   return (
-    <Stack gap="lg">
-      <Stack gap="sm">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-3">
         <Label>Avatar</Label>
-        <Flex gap="lg" align="center">
+        <div className="flex gap-6 items-center">
           <Avatar className="h-24 w-24">
             <AvatarImage src={avatarUrl} />
             <AvatarFallback>
               <User className="h-12 w-12" />
             </AvatarFallback>
           </Avatar>
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Input
               ref={avatarInputRef}
               type="file"
@@ -59,18 +58,18 @@ export function ProfileImagesSection({
               {isUploadingAvatar ? 'Uploading...' : 'Upload Avatar'}
             </Button>
             <p className="text-sm text-muted-foreground">Max 5MB, JPG or PNG</p>
-          </Stack>
-        </Flex>
-      </Stack>
+          </div>
+        </div>
+      </div>
 
-      <Stack gap="sm">
+      <div className="flex flex-col gap-3">
         <Label>Cover Image</Label>
         {coverUrl && (
           <div className="w-full h-48 rounded-lg overflow-hidden bg-muted relative">
             <Image src={coverUrl} alt="Cover" fill className="object-cover" />
           </div>
         )}
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           <Input
             ref={coverInputRef}
             type="file"
@@ -89,8 +88,8 @@ export function ProfileImagesSection({
             {isUploadingCover ? 'Uploading...' : 'Upload Cover Image'}
           </Button>
           <p className="text-sm text-muted-foreground">Max 10MB, JPG or PNG, recommended 1200x400px</p>
-        </Stack>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   )
 }

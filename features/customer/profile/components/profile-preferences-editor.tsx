@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Bell, Globe, DollarSign, Shield } from 'lucide-react'
 import { updateProfilePreferences } from '../api/mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -91,14 +91,14 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           {/* Regional Settings */}
           <div>
             <Label className="flex items-center gap-2 mb-4">
               <Globe className="h-4 w-4" />
               Regional Settings
             </Label>
-            <Stack gap="md">
+            <div className="flex flex-col gap-4">
               <div>
                 <Label htmlFor="timezone" className="text-sm mb-2 block">
                   Timezone
@@ -156,7 +156,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
                   </SelectContent>
                 </Select>
               </div>
-            </Stack>
+            </div>
           </div>
 
           <Separator />
@@ -167,7 +167,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <Bell className="h-4 w-4" />
               Notification Preferences
             </Label>
-            <Stack gap="md">
+            <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="email-notifications">Email Notifications</Label>
@@ -215,28 +215,26 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
                   onCheckedChange={setMarketingEmails}
                 />
               </div>
-            </Stack>
+            </div>
           </div>
 
           <Separator />
 
           {/* Privacy Notice */}
-          <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-            <Shield className="h-5 w-5 text-muted-foreground mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-sm text-muted-foreground text-xs font-medium">Privacy & Data</p>
-              <p className="text-sm text-muted-foreground text-xs">
-                Your preferences are stored securely and only used to improve your experience.
-                You can update these settings at any time.
-              </p>
-            </div>
-          </div>
+          <Alert>
+            <Shield className="h-4 w-4" />
+            <AlertTitle>Privacy &amp; Data</AlertTitle>
+            <AlertDescription>
+              Your preferences are stored securely and only used to improve your experience.
+              You can update these settings at any time.
+            </AlertDescription>
+          </Alert>
 
           {/* Save Button */}
           <Button onClick={handleSave} disabled={isSaving} className="w-full">
             {isSaving ? 'Saving...' : 'Save Preferences'}
           </Button>
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

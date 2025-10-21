@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Grid } from '@/components/layout'
 import { Calendar, CheckCircle, Clock, TrendingUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -27,7 +26,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
         </Badge>
       </div>
 
-      <Grid cols={{ base: 1, sm: 3 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         <div className="rounded-xl border-l-4 border-l-warning">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -97,7 +96,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
             </CardContent>
           </Card>
         </div>
-      </Grid>
+      </div>
     </div>
   )
 }

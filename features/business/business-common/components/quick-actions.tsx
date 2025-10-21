@@ -13,8 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
-import { Stack } from '@/components/layout'
-
 const primaryActions = [
   {
     href: '/business/appointments',
@@ -76,7 +74,7 @@ export function QuickActions() {
         </DropdownMenu>
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           <ButtonGroup className="w-full">
             <ButtonGroupText className="hidden sm:flex">
               Core operations
@@ -128,7 +126,7 @@ export function QuickActions() {
               <TooltipContent>Configure salon preferences</TooltipContent>
             </Tooltip>
           </ButtonGroup>
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

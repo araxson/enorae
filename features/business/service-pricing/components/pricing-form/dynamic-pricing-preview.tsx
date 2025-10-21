@@ -6,7 +6,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Flex, Stack } from '@/components/layout'
 import { calculateDynamicPrice } from '@/features/business/services/api/pricing-functions'
 
 type DynamicPricingPreviewProps = {
@@ -81,13 +80,13 @@ export function DynamicPricingPreview({ serviceId, currencyCode }: DynamicPricin
   return (
     <Card>
       <CardContent>
-        <Stack gap="md">
-          <Stack gap="xs">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             <Label className="font-semibold">Dynamic Pricing Preview</Label>
             <p className="text-sm text-muted-foreground text-xs">
               Calculate the real-time price based on the selected booking time.
             </p>
-          </Stack>
+          </div>
 
           <div className="flex flex-col md:flex-row gap-4 items-end">
             <div className="w-full md:max-w-xs space-y-2">
@@ -123,7 +122,7 @@ export function DynamicPricingPreview({ serviceId, currencyCode }: DynamicPricin
               Choose a service to enable dynamic pricing calculations.
             </p>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

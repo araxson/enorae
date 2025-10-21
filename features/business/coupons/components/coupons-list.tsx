@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/card'
-import { Stack } from '@/components/layout'
 import {
   Dialog,
   DialogContent,
@@ -91,7 +90,7 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
 
   return (
     <>
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         {coupons.map((coupon) => (
           <CouponCard
             key={coupon.id}
@@ -108,7 +107,7 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
             }
           />
         ))}
-      </Stack>
+      </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-2xl">

@@ -3,7 +3,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Stack } from '@/components/layout'
 import {
   DollarSign,
   Users,
@@ -50,7 +49,7 @@ export function StaffAnalyticsDashboard({
   }
 
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       {/* Key Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
@@ -244,6 +243,6 @@ export function StaffAnalyticsDashboard({
           </Card>
         </TabsContent>
       </Tabs>
-    </Stack>
+    </div>
   )
 }

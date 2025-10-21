@@ -1,7 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Stack, Flex } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { Download } from 'lucide-react'
 import type { Invoice } from './billing-subscription-form'
@@ -9,7 +8,7 @@ import type { Invoice } from './billing-subscription-form'
 export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
   return (
     <Card className="p-6">
-      <Stack gap="lg">
+      <div className="flex flex-col gap-6">
         <div>
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Invoice History</h3>
           <p className="text-sm text-muted-foreground">Download your past invoices</p>
@@ -17,13 +16,11 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
 
         <Separator />
 
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           {invoices.map((invoice) => (
-            <Flex
+            <div
               key={invoice.id}
-              justify="between"
-              align="center"
-              className="py-2"
+              className="flex gap-4 items-center justify-between py-2"
             >
               <div className="flex-1">
                 <p className="leading-7 font-medium">{invoice.id}</p>
@@ -47,10 +44,10 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
                   Download
                 </Button>
               </div>
-            </Flex>
+            </div>
           ))}
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </Card>
   )
 }

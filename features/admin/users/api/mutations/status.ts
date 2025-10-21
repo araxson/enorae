@@ -66,6 +66,8 @@ export async function suspendUser(formData: FormData) {
       action: 'suspend_user',
       entity_type: 'user',
       entity_id: userId,
+      target_schema: 'identity',
+      target_table: 'profiles',
       metadata: {
         reason: reason || 'No reason provided',
         duration_days: duration ? parseInt(duration, 10) : null,
@@ -125,6 +127,8 @@ export async function reactivateUser(formData: FormData) {
       action: 'reactivate_user',
       entity_type: 'user',
       entity_id: userId,
+      target_schema: 'identity',
+      target_table: 'profiles',
       metadata: {
         note: note || 'No note provided',
         reactivated_by: session.user.id,
@@ -204,6 +208,8 @@ export async function banUser(formData: FormData) {
       action: 'ban_user',
       entity_type: 'user',
       entity_id: userId,
+      target_schema: 'identity',
+      target_table: 'profiles',
       metadata: {
         reason,
         is_permanent: permanent,
@@ -302,6 +308,8 @@ export async function batchUpdateUserStatus(formData: FormData) {
       severity: 'warning',
       user_id: session.user.id,
       action: `batch_${action}_users`,
+      target_schema: 'identity',
+      target_table: 'profiles',
       metadata: {
         user_ids: userIds,
         action,

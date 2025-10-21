@@ -20,37 +20,39 @@ export function IpAccessPanel({ events }: IpAccessPanelProps) {
         {events.length === 0 ? (
           <p className="text-sm text-muted-foreground">No access attempts recorded.</p>
         ) : (
-          <ul className="space-y-2">
+          <div className="space-y-2">
             {events.slice(0, 8).map((event) => (
-              <li key={event.id} className="rounded-md border p-3 text-sm">
-                <div className="flex items-center justify-between gap-2">
-                  <div>
-                    <div className="font-mono text-sm text-foreground">{event.ipAddress ?? 'Unknown IP'}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {event.action} · {event.resourceType}
+              <Card key={event.id}>
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <div className="font-mono text-sm text-foreground">{event.ipAddress ?? 'Unknown IP'}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {event.action} · {event.resourceType}
+                      </div>
                     </div>
+                    <Badge variant={event.isGranted ? 'outline' : 'destructive'} className="gap-1 text-xs">
+                      {event.isGranted ? (
+                        <CheckCircle2 className="h-3 w-3" />
+                      ) : (
+                        <XCircle className="h-3 w-3" />
+                      )}
+                      {event.isGranted ? 'Allowed' : 'Blocked'}
+                    </Badge>
                   </div>
-                  <Badge variant={event.isGranted ? 'outline' : 'destructive'} className="gap-1 text-xs">
-                    {event.isGranted ? (
-                      <CheckCircle2 className="h-3 w-3" />
-                    ) : (
-                      <XCircle className="h-3 w-3" />
-                    )}
-                    {event.isGranted ? 'Allowed' : 'Blocked'}
-                  </Badge>
-                </div>
-                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  <span>User: {event.userId ?? 'Anonymous'}</span>
-                  <span>At {new Date(event.createdAt).toLocaleString()}</span>
-                </div>
-                {event.userAgent && (
-                  <div className="mt-1 truncate text-xs text-muted-foreground">
-                    Agent: {event.userAgent}
+                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <span>User: {event.userId ?? 'Anonymous'}</span>
+                    <span>At {new Date(event.createdAt).toLocaleString()}</span>
                   </div>
-                )}
-              </li>
+                  {event.userAgent && (
+                    <div className="mt-1 truncate text-xs text-muted-foreground">
+                      Agent: {event.userAgent}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             ))}
-          </ul>
+          </div>
         )}
       </CardContent>
     </Card>

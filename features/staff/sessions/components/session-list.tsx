@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack, Flex } from '@/components/layout'
 import { revokeSession } from '../api/mutations'
 import type { StaffSessionDetail } from '../types'
 
@@ -55,7 +54,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
   }
 
   return (
-    <Stack gap="md">
+    <div className="flex flex-col gap-4">
       {activeSessions.map((session) => {
         const isCurrent = session.id === currentSessionId
         const lastActiveValue = typeof session.last_active_at === "string" ? session.last_active_at : null
@@ -67,15 +66,15 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
 
         return (
           <Card key={session.id} className="p-4">
-            <Flex justify="between" align="start">
-              <Stack gap="sm" className="flex-1">
-                <Flex align="center" gap="sm">
+            <div className="flex gap-4 items-start justify-between">
+              <div className="flex flex-col gap-3 flex-1">
+                <div className="flex gap-3 items-center">
                   {getDeviceIcon(session.device_type)}
                   <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{session.device_name || 'Unknown Device'}</h3>
                   {isCurrent && (
                     <Badge variant="default">Current</Badge>
                   )}
-                </Flex>
+                </div>
 
                 <p className="text-sm text-muted-foreground">
                   {session.browser_name} {session.browser_version && `v${session.browser_version}`}
@@ -104,7 +103,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
                     Created: {formattedCreatedAt}
                   </p>
                 )}
-              </Stack>
+              </div>
 
               {!isCurrent && (
                 <Button
@@ -116,7 +115,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
                   <X className="h-4 w-4" />
                 </Button>
               )}
-            </Flex>
+            </div>
           </Card>
         )
       })}
@@ -129,6 +128,6 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
           </AlertDescription>
         </Alert>
       )}
-    </Stack>
+    </div>
   )
 }

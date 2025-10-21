@@ -1,6 +1,4 @@
 'use client'
-
-import { Group } from '@/components/layout'
 import { ExportButton } from '@/features/business/business-common/components'
 import { TopPerformers } from '../top-performers'
 import type { getTopServices, getTopStaff } from '../../api/queries'
@@ -18,7 +16,7 @@ type Props = {
 export function TopPerformersSection({ start, end, services, staff }: Props) {
   return (
     <>
-      <Group className="items-center justify-between">
+      <div className="flex gap-4 items-center items-center justify-between">
         <div className="sr-only">Top performers exports</div>
         <ExportButton
           data={services.map((service) => ({
@@ -37,7 +35,7 @@ export function TopPerformersSection({ start, end, services, staff }: Props) {
           }))}
           filename={`top-staff-${start}-to-${end}`}
         />
-      </Group>
+      </div>
       <TopPerformers services={services} staff={staff} />
     </>
   )

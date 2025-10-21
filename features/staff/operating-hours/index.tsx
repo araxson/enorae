@@ -1,4 +1,3 @@
-import { Stack } from '@/components/layout'
 import { OperatingHoursCard } from './components/operating-hours-card'
 import { TodayHoursBanner } from './components/today-hours-banner'
 import type { OperatingHours } from './types'
@@ -10,9 +9,9 @@ interface OperatingHoursFeatureProps {
 
 export function OperatingHoursFeature({ hours, todayHours }: OperatingHoursFeatureProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <TodayHoursBanner hours={todayHours} />
       <OperatingHoursCard hours={hours} />
-    </Stack>
+    </div>
   )
 }

@@ -90,32 +90,34 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
                 const percentage = stats.totalUsers > 0 ? (count / stats.totalUsers) * 100 : 0
                 const label = roleLabels[role] || role
                 return (
-                  <div key={role} className="space-y-2 rounded-lg border border-border/60 p-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="space-y-1">
-                        <p className="text-sm font-semibold leading-tight">{label}</p>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="text-xs text-muted-foreground">
+                  <Card key={role}>
+                    <CardContent className="space-y-2 p-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="space-y-1">
+                          <p className="text-sm font-semibold leading-tight">{label}</p>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="text-xs text-muted-foreground">
+                                {roleDescriptions[role] || 'No description available'}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs text-xs text-muted-foreground">
                               {roleDescriptions[role] || 'No description available'}
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent className="max-w-xs text-xs text-muted-foreground">
-                            {roleDescriptions[role] || 'No description available'}
-                          </TooltipContent>
-                        </Tooltip>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                        <Badge variant="outline" className="gap-1 text-xs">
+                          {count.toLocaleString()}
+                        </Badge>
                       </div>
-                      <Badge variant="outline" className="gap-1 text-xs">
-                        {count.toLocaleString()}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-muted'}`} />
-                      <span className="w-14 text-right text-xs font-medium text-muted-foreground">
-                        {percentage.toFixed(1)}%
-                      </span>
-                    </div>
-                  </div>
+                      <div className="flex items-center gap-3">
+                        <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-muted'}`} />
+                        <span className="w-14 text-right text-xs font-medium text-muted-foreground">
+                          {percentage.toFixed(1)}%
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
                 )
               })}
             </div>

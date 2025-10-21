@@ -1,5 +1,5 @@
 import { Users, Scissors } from 'lucide-react'
-import { Group } from '@/components/layout'
+import { cn } from "@/lib/utils";
 
 interface SalonStatsProps {
   staffCount?: number | null
@@ -15,23 +15,23 @@ export function SalonStats({ staffCount, servicesCount, className }: SalonStatsP
   }
 
   return (
-    <Group gap="md" className={className}>
+    <div className={cn('flex gap-4 items-center', className)}>
       {staffCount && staffCount > 0 && (
-        <Group gap="xs">
+        <div className="flex gap-2 items-center">
           <Users className="h-4 w-4 text-muted-foreground" />
           <small className="text-sm font-medium leading-none text-muted-foreground">
             {staffCount} {staffCount === 1 ? 'staff member' : 'staff'}
           </small>
-        </Group>
+        </div>
       )}
       {servicesCount && servicesCount > 0 && (
-        <Group gap="xs">
+        <div className="flex gap-2 items-center">
           <Scissors className="h-4 w-4 text-muted-foreground" />
           <small className="text-sm font-medium leading-none text-muted-foreground">
             {servicesCount} {servicesCount === 1 ? 'service' : 'services'}
           </small>
-        </Group>
+        </div>
       )}
-    </Group>
+    </div>
   )
 }

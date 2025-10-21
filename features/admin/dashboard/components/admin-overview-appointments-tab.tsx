@@ -40,33 +40,35 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
         <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((apt) => (
-              <div key={apt.id} className="rounded-lg border border-border/60 p-3">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-semibold leading-tight">
-                      {apt.salon_name || 'Unknown salon'}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {apt.customer_name || 'Unknown customer'} • {apt.service_name || 'Service pending'}
-                    </p>
+              <Card key={apt.id}>
+                <CardContent className="p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-semibold leading-tight">
+                        {apt.salon_name || 'Unknown salon'}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {apt.customer_name || 'Unknown customer'} • {apt.service_name || 'Service pending'}
+                      </p>
+                    </div>
+                    <Badge
+                      variant={appointmentStatusVariant[apt.status ?? ''] ?? 'secondary'}
+                      className="capitalize"
+                    >
+                      {apt.status || 'pending'}
+                    </Badge>
                   </div>
-                  <Badge
-                    variant={appointmentStatusVariant[apt.status ?? ''] ?? 'secondary'}
-                    className="capitalize"
-                  >
-                    {apt.status || 'pending'}
-                  </Badge>
-                </div>
-                <Separator className="my-3" />
-                <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
-                  <span>
-                    Created {safeFormatDate(apt.created_at, 'MMM d, yyyy', 'recently')}
-                  </span>
-                  <span>
-                    Scheduled {safeFormatDate(apt.start_time, 'MMM d, yyyy p', 'TBD')}
-                  </span>
-                </div>
-              </div>
+                  <Separator className="my-3" />
+                  <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+                    <span>
+                      Created {safeFormatDate(apt.created_at, 'MMM d, yyyy', 'recently')}
+                    </span>
+                    <span>
+                      Scheduled {safeFormatDate(apt.start_time, 'MMM d, yyyy p', 'TBD')}
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </ScrollArea>

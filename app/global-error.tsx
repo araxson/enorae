@@ -3,9 +3,8 @@
 import { useEffect, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack, Flex } from '@/components/layout/flex'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ServerCrash, RefreshCw, Home } from 'lucide-react'
 
 /**
@@ -31,51 +30,44 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body>
-        <div className="flex min-h-screen items-center justify-center p-4 bg-background">
+        <div className="flex min-h-screen items-center justify-center bg-background p-4">
           <Card className="w-full max-w-lg border-destructive/50">
-            <CardHeader>
-              <Flex gap="sm" align="center">
-                <ServerCrash className="h-6 w-6 text-destructive" />
-                <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight m-0">Critical Application Error</h2>
-              </Flex>
+            <CardHeader className="flex items-center gap-4">
+              <ServerCrash className="h-6 w-6 text-destructive" aria-hidden="true" />
+              <CardTitle>Critical Application Error</CardTitle>
             </CardHeader>
 
-            <CardContent>
-              <Stack gap="md">
-                <p className="leading-7 text-muted-foreground">
-                  A critical error occurred that prevented the application from loading.
-                  Please try refreshing the page. If the problem persists, contact support.
-                </p>
+            <CardContent className="space-y-6">
+              <CardDescription>
+                A critical error occurred that prevented the application from loading. Please try refreshing the page.
+                If the problem persists, contact support.
+              </CardDescription>
 
-                {error.digest && (
-                  <Alert>
-                    <AlertDescription>
-                      <p className="text-sm text-muted-foreground font-mono text-xs">
-                        Error ID: {error.digest}
-                      </p>
-                    </AlertDescription>
-                  </Alert>
-                )}
+              {error.digest && (
+                <Alert>
+                  <AlertTitle>Error ID</AlertTitle>
+                  <AlertDescription>
+                    <code className="block whitespace-pre-wrap break-words text-muted-foreground">
+                      {error.digest}
+                    </code>
+                  </AlertDescription>
+                </Alert>
+              )}
 
-                {process.env.NODE_ENV === 'development' && (
-                  <Alert variant="destructive">
-                    <AlertDescription>
-                      <Stack gap="xs">
-                        <p className="text-sm text-muted-foreground font-semibold text-xs">
-                          Development Details:
-                        </p>
-                        <p className="text-sm text-muted-foreground font-mono text-xs break-all">
-                          {error.message}
-                        </p>
-                      </Stack>
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </Stack>
+              {process.env.NODE_ENV === 'development' && (
+                <Alert variant="destructive">
+                  <AlertTitle>Development details</AlertTitle>
+                  <AlertDescription>
+                    <code className="block whitespace-pre-wrap break-words text-muted-foreground">
+                      {error.message}
+                    </code>
+                  </AlertDescription>
+                </Alert>
+              )}
             </CardContent>
 
             <CardFooter>
-              <Flex gap="sm" className="w-full">
+              <div className="flex w-full gap-6">
                 <Button
                   onClick={() => {
                     startNavigation(async () => {
@@ -105,7 +97,7 @@ export default function GlobalError({
                   <Home className="h-4 w-4" />
                   Home
                 </Button>
-              </Flex>
+              </div>
             </CardFooter>
           </Card>
         </div>

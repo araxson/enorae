@@ -5,7 +5,6 @@ import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
-import { Section, Stack } from '@/components/layout'
 import { ProductsTable } from './products-table'
 import { InventoryStats } from './inventory-stats'
 import { StockAlertsList } from './stock-alerts-list'
@@ -67,8 +66,8 @@ export function InventoryManagementClient({
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         {/* Actions */}
         <div className="flex items-center justify-end">
           <Button onClick={handleAddProduct}>
@@ -129,7 +128,7 @@ export function InventoryManagementClient({
           suppliers={suppliers}
           editProduct={editProduct}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

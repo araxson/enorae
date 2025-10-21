@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { MapPin, Navigation, ParkingCircle, Accessibility } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
@@ -33,7 +32,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
         </div>
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           {/* Formatted Address */}
           {locationAddress.formatted_address && (
             <div>
@@ -48,7 +47,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
           {!locationAddress.formatted_address && (
             <div>
               <p className="mb-2 text-xs text-muted-foreground">Address</p>
-              <Stack gap="xs">
+              <div className="flex flex-col gap-2">
                 {locationAddress.street_address && <p className="text-sm text-foreground">{locationAddress.street_address}</p>}
                 {locationAddress.street_address_2 && <p className="text-sm text-foreground">{locationAddress.street_address_2}</p>}
                 <p className="text-sm text-foreground">
@@ -57,7 +56,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
                   {locationAddress.postal_code && ` ${locationAddress.postal_code}`}
                 </p>
                 {locationAddress.country_code && <p className="text-sm text-foreground">{locationAddress.country_code}</p>}
-              </Stack>
+              </div>
             </div>
           )}
 
@@ -133,7 +132,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
               {locationAddress.latitude}, {locationAddress.longitude}
             </p>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

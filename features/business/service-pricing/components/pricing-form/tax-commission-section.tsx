@@ -4,7 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Grid, Stack } from '@/components/layout'
 import type { PricingFormState } from './use-pricing-form'
 
 type TaxCommissionSectionProps = {
@@ -16,10 +15,10 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <Label className="font-semibold">Tax & Commission</Label>
 
-          <Grid cols={{ base: 1, md: 2 }} gap="md">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="taxRate">Tax Rate (%)</Label>
               <Input
@@ -49,7 +48,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
               />
               <p className="text-sm text-muted-foreground text-xs">Staff commission percentage</p>
             </div>
-          </Grid>
+          </div>
 
           <div className="flex items-center space-x-2">
             <Checkbox
@@ -74,7 +73,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
             />
             <p className="text-sm text-muted-foreground text-xs">ISO currency code (e.g., USD, EUR)</p>
           </div>
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )

@@ -4,7 +4,6 @@ import { Loader2 } from 'lucide-react'
 
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Stack } from '@/components/layout'
 import type { Database } from '@/lib/types/database.types'
 
 import { ProductBasicSection } from './product-basic-section'
@@ -46,7 +45,7 @@ export function ProductFormContent({
       </DialogHeader>
 
       <form onSubmit={handleSubmit}>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <ProductBasicSection
             name={formData.name}
             description={formData.description}
@@ -87,7 +86,7 @@ export function ProductFormContent({
             onActiveChange={(value) => updateField('is_active', value)}
             onTrackedChange={(value) => updateField('is_tracked', value)}
           />
-        </Stack>
+        </div>
 
         <DialogFooter className="mt-6">
           <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>

@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import { verifySession } from '@/lib/auth'
 import { getThreadById, getMessagesBetweenUsers } from '../api/queries'
 import { MessageThread } from './message-thread'
-import { Section, Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -25,8 +24,8 @@ export async function MessageThreadDetail({ threadId }: MessageThreadDetailProps
   ])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <div>
           <Link href="/customer/messages">
             <Button variant="ghost" size="sm" className="mb-4">
@@ -42,7 +41,7 @@ export async function MessageThreadDetail({ threadId }: MessageThreadDetailProps
         <Separator />
 
         <MessageThread threadId={threadId} messages={messages} currentUserId={session.user.id} />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

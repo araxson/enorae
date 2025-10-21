@@ -1,13 +1,12 @@
 import { getSalonBusinessInfo } from './api/queries'
 import { SalonInfoForm } from './components/salon-info-form'
-import { Section, Stack } from '@/components/layout'
 
 export async function SalonBusinessInfo() {
   const salon = await getSalonBusinessInfo()
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         <SalonInfoForm
           salonId={salon.id!}
           salonName={salon.name}
@@ -15,7 +14,7 @@ export async function SalonBusinessInfo() {
           businessType={salon.business_type}
           establishedAt={salon.established_at}
         />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

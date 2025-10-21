@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Wifi, Car, Accessibility, Coffee, CreditCard, DollarSign } from 'lucide-react'
-import { Group } from '@/components/layout'
+import { cn } from "@/lib/utils";
 
 interface AmenitiesBadgesProps {
   amenities: string[] | null
@@ -26,7 +26,7 @@ export function AmenitiesBadges({ amenities, limit, className }: AmenitiesBadges
   const hasMore = limit && amenities.length > limit
 
   return (
-    <Group gap="xs" className={className}>
+    <div className={cn('flex gap-2 items-center', className)}>
       {displayAmenities.map((amenity) => {
         const Icon = AMENITY_ICONS[amenity]
         return (
@@ -41,6 +41,6 @@ export function AmenitiesBadges({ amenities, limit, className }: AmenitiesBadges
           +{amenities.length - limit!} more
         </Badge>
       )}
-    </Group>
+    </div>
   )
 }

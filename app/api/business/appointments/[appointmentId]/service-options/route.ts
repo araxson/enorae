@@ -12,10 +12,10 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
 
 export async function GET(
   _request: Request,
-  { params }: { params: { appointmentId: string } }
+  { params }: { params: Promise<{ appointmentId: string }> }
 ) {
   try {
-    const appointmentId = params.appointmentId
+    const { appointmentId } = await params
 
     if (!UUID_REGEX.test(appointmentId)) {
       return NextResponse.json({ error: 'Invalid appointment id' }, { status: 400 })

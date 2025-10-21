@@ -1,8 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Flex } from '@/components/layout'
-
 type Props = {
   onCancel: () => void
   isSubmitting: boolean
@@ -11,13 +9,13 @@ type Props = {
 
 export function OrderFormActions({ onCancel, isSubmitting, canSubmit }: Props) {
   return (
-    <Flex justify="end" gap="sm">
+    <div className="flex gap-3 justify-end">
       <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
         Cancel
       </Button>
       <Button type="submit" disabled={isSubmitting || !canSubmit}>
         {isSubmitting ? 'Creating...' : 'Create Purchase Order'}
       </Button>
-    </Flex>
+    </div>
   )
 }

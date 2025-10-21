@@ -1,4 +1,3 @@
-import { Section, Stack, Flex } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { SuppliersGrid } from './components/suppliers-grid'
@@ -11,13 +10,13 @@ export async function Suppliers() {
   const inactiveCount = suppliers.filter((s) => !s.is_active).length
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Flex justify="end" align="start">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-4 items-start justify-end">
           <Button>Add Supplier</Button>
-        </Flex>
+        </div>
 
-        <Flex gap="md">
+        <div className="flex gap-4">
           <Card>
             <CardContent>
               <p className="text-sm text-muted-foreground">Total Suppliers</p>
@@ -36,10 +35,10 @@ export async function Suppliers() {
               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-muted-foreground">{inactiveCount}</h3>
             </CardContent>
           </Card>
-        </Flex>
+        </div>
 
         <SuppliersGrid suppliers={suppliers} />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

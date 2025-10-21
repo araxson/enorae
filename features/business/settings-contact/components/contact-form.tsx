@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Stack } from '@/components/layout'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 
 import type { Database } from '@/lib/types/database.types'
@@ -24,7 +23,7 @@ export function ContactForm({ salonId, contactDetails }: ContactFormProps) {
 
   return (
     <form onSubmit={handlers.handleSubmit}>
-      <Stack gap="xl">
+      <div className="flex flex-col gap-8">
         {state.error && (
           <Alert variant="destructive">
             <AlertDescription>{state.error}</AlertDescription>
@@ -75,7 +74,7 @@ export function ContactForm({ salonId, contactDetails }: ContactFormProps) {
             {state.isSubmitting ? 'Saving...' : 'Save Contact Details'}
           </Button>
         </div>
-      </Stack>
+      </div>
     </form>
   )
 }

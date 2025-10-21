@@ -12,7 +12,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack } from '@/components/layout'
 import type { Database } from '@/lib/types/database.types'
 import { retryWebhook, deleteWebhook } from '../api/mutations'
 import { WebhookStatusSection } from './webhook-status-section'
@@ -94,7 +93,7 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
           </DialogDescription>
         </DialogHeader>
 
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -119,7 +118,7 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
               <WebhookErrorSection error={webhook.last_error || 'None'} />
             </>
           )}
-        </Stack>
+        </div>
 
         <DialogFooter>
           <WebhookActionButtons

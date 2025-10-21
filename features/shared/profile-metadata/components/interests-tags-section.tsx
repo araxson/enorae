@@ -1,7 +1,4 @@
 'use client'
-
-import { Stack } from '@/components/layout'
-
 import { ArrayInput } from './array-input'
 
 type InterestsTagsSectionProps = {
@@ -22,7 +19,7 @@ export function InterestsTagsSection({
   onRemoveTag,
 }: InterestsTagsSectionProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <ArrayInput
         label="Interests"
         items={interests}
@@ -37,6 +34,6 @@ export function InterestsTagsSection({
         onRemove={onRemoveTag}
         placeholder="e.g., Professional, Certified, Experienced"
       />
-    </Stack>
+    </div>
   )
 }

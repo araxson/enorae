@@ -1,12 +1,11 @@
-import { Stack } from '@/components/layout'
 import { Hero } from '../components/sections/hero'
 import { Questions } from '../components/sections/questions'
 
 export function FAQPage() {
   return (
-    <Stack gap="none">
+    <div className="flex flex-col gap-0">
       <Hero />
       <Questions />
-    </Stack>
+    </div>
   )
 }

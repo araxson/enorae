@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Stack, Section, Box } from '@/components/layout'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { SalonFilters } from './components/salon-filters'
 import { SalonGrid } from './components/salon-grid'
@@ -27,25 +26,25 @@ export async function SalonDirectory({ searchParams }: SalonDirectoryProps) {
   ])
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
         {/* Header */}
-        <Box>
-          <Stack gap="md">
+        <div>
+          <div className="flex flex-col gap-4">
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Discover Salons</h1>
             <p className="leading-7 text-muted-foreground">
               Find and book appointments at the best salons in your area
             </p>
-          </Stack>
-        </Box>
+          </div>
+        </div>
 
         {/* Filters */}
         <SalonFilters cities={cities} categories={categories} />
 
         {/* Results */}
         <SalonGrid salons={salons} />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }
 

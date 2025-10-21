@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { Stack, Grid } from '@/components/layout'
 import { bulkGenerateCoupons } from '../api/coupons.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
@@ -79,8 +78,8 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <Stack gap="lg">
-            <Grid cols={{ base: 1, md: 3 }} gap="md">
+          <div className="flex flex-col gap-6">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
               <div>
                 <Label htmlFor="prefix">Code Prefix</Label>
                 <Input
@@ -132,9 +131,9 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
                   </SelectContent>
                 </Select>
               </div>
-            </Grid>
+            </div>
 
-            <Grid cols={{ base: 1, md: 2 }} gap="md">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               <div>
                 <Label htmlFor="discount-value">
                   Discount Value {formState.discount_type === 'percentage' ? '(%)' : '($)'}
@@ -166,9 +165,9 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
                   required
                 />
               </div>
-            </Grid>
+            </div>
 
-            <Grid cols={{ base: 1, md: 2 }} gap="md">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               <div>
                 <Label htmlFor="valid-from">Valid From</Label>
                 <Input
@@ -193,9 +192,9 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
                   required
                 />
               </div>
-            </Grid>
+            </div>
 
-            <Grid cols={{ base: 1, md: 2 }} gap="md">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               <div>
                 <Label htmlFor="min-purchase">Minimum Purchase ($)</Label>
                 <Input
@@ -232,7 +231,7 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
                   }
                 />
               </div>
-            </Grid>
+            </div>
 
             <div className="flex items-center justify-between rounded-md border px-3 py-2">
               <div>
@@ -255,7 +254,7 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? 'Generating...' : `Generate ${formState.count} Coupons`}
             </Button>
-          </Stack>
+          </div>
         </form>
       </CardContent>
     </Card>

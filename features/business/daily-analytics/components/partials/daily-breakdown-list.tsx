@@ -18,15 +18,12 @@ export function DailyBreakdownList({ metrics }: Props) {
         <CardTitle>Daily Breakdown</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2 max-h-96 overflow-y-auto">
+        <div className="max-h-96 space-y-2 overflow-y-auto">
           {metrics.map((metric) => (
-            <div
-              key={metric.id}
-              className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50"
-            >
-              <div className="flex items-center gap-4">
+            <Card key={metric.id}>
+              <CardContent className="flex items-center justify-between gap-6 p-3">
                 <div>
-                  <p className="leading-7 font-medium">
+                  <p className="font-medium leading-7">
                     {metric.metric_at &&
                       new Date(metric.metric_at).toLocaleDateString('en-US', {
                         weekday: 'short',
@@ -34,19 +31,25 @@ export function DailyBreakdownList({ metrics }: Props) {
                         day: 'numeric',
                       })}
                   </p>
-                  <p className="text-sm text-muted-foreground text-xs">{metric.total_appointments || 0} appointments</p>
+                  <p className="text-xs text-muted-foreground">
+                    {metric.total_appointments || 0} appointments
+                  </p>
                 </div>
-              </div>
-              <div className="flex items-center gap-6">
-                <div className="text-right">
-                  <p className="leading-7 font-medium">{formatCurrency(metric.total_revenue || 0)}</p>
-                  <p className="text-sm text-muted-foreground text-xs">{metric.completed_appointments || 0} completed</p>
+                <div className="flex items-center gap-6">
+                  <div className="text-right">
+                    <p className="font-medium leading-7">
+                      {formatCurrency(metric.total_revenue || 0)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {metric.completed_appointments || 0} completed
+                    </p>
+                  </div>
+                  <div className="min-w-16 text-right">
+                    <Badge variant="outline">{(metric.utilization_rate || 0).toFixed(1)}%</Badge>
+                  </div>
                 </div>
-                <div className="text-right min-w-16">
-                  <Badge variant="outline">{(metric.utilization_rate || 0).toFixed(1)}%</Badge>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </CardContent>

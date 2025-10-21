@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Grid } from '@/components/layout'
 import type { Salon } from '../types'
 
 interface GalleryCardProps {
@@ -16,7 +15,7 @@ export function GalleryCard({ salon }: GalleryCardProps) {
         <CardTitle>Gallery</CardTitle>
       </CardHeader>
       <CardContent>
-        <Grid cols={{ base: 2, md: 3 }} gap="md">
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
           {salon.gallery_urls.map((url: string, index: number) => (
             <div
               key={`${url}-${index}`}
@@ -25,7 +24,7 @@ export function GalleryCard({ salon }: GalleryCardProps) {
               <Image src={url} alt={`Gallery ${index + 1}`} fill className="object-cover" />
             </div>
           ))}
-        </Grid>
+        </div>
       </CardContent>
     </Card>
   )

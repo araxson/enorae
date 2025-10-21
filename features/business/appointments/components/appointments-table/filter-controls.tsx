@@ -1,6 +1,4 @@
 'use client'
-
-import { Group, Box } from '@/components/layout'
 import { SearchInput } from '@/components/shared'
 import {
   Select,
@@ -27,8 +25,8 @@ type FilterControlsProps = {
 
 export function AppointmentsFilterControls({ searchQuery, onSearchChange, statusFilter, onStatusChange }: FilterControlsProps) {
   return (
-    <Box className="mt-4">
-      <Group gap="md" className="flex-col sm:flex-row">
+    <div className="mt-4">
+      <div className="flex gap-4 items-center flex-col sm:flex-row">
         <SearchInput
           value={searchQuery}
           onChange={onSearchChange}
@@ -47,7 +45,7 @@ export function AppointmentsFilterControls({ searchQuery, onSearchChange, status
             ))}
           </SelectContent>
         </Select>
-      </Group>
-    </Box>
+      </div>
+    </div>
   )
 }

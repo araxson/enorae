@@ -9,7 +9,6 @@ import type { AppointmentWithDetails } from './api/queries'
 import type { BusinessDashboardMetrics, BusinessMultiLocationMetrics, BusinessReviewStats } from './types'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/shared/empty-state'
-import { Section, Stack } from '@/components/layout'
 import { Spinner } from '@/components/ui/spinner'
 import { AnalyticsTab } from './components/analytics-tab'
 import { DashboardView } from './components/dashboard-view'
@@ -43,7 +42,7 @@ export async function BusinessDashboardPage() {
     }
     if (message.includes('role required')) {
       return (
-        <Section size="lg" fullWidth>
+        <section className="py-10 w-full px-6">
           <EmptyState
             icon={ShieldAlert}
             title="Access denied"
@@ -54,7 +53,7 @@ export async function BusinessDashboardPage() {
               </Button>
             }
           />
-        </Section>
+        </section>
       )
     }
     throw error
@@ -62,7 +61,7 @@ export async function BusinessDashboardPage() {
 
   if (!salon || !salon.id) {
     return (
-      <Section size="lg" fullWidth>
+      <section className="py-10 w-full px-6">
         <EmptyState
           icon={Store}
           title="No Salon Found"
@@ -73,7 +72,7 @@ export async function BusinessDashboardPage() {
             </Button>
           }
         />
-      </Section>
+      </section>
     )
   }
 
@@ -98,9 +97,9 @@ export async function BusinessDashboardPage() {
       analyticsPanel={
         <Suspense
           fallback={
-            <Stack gap="lg" className="items-center justify-center py-12">
+            <div className="flex flex-col gap-6 items-center justify-center py-12">
               <Spinner className="size-8" />
-            </Stack>
+            </div>
           }
         >
           <AnalyticsTab salonId={salon.id} />

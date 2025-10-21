@@ -1,4 +1,3 @@
-import { Section, Stack } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
@@ -16,10 +15,10 @@ interface MessagesFeatureProps {
 
 export function MessagesFeature({ threads }: MessagesFeatureProps) {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Messages</h1>
       <MessageThreadList threads={threads} />
-    </Stack>
+    </div>
   )
 }
 
@@ -27,9 +26,9 @@ export async function StaffMessagesPage() {
   const threads = await getMyMessageThreads()
 
   return (
-    <Section size="lg">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <MessagesFeature threads={threads} />
-    </Section>
+    </section>
   )
 }
 
@@ -53,8 +52,8 @@ export async function StaffMessageThreadPage({ threadId }: StaffMessageThreadPag
   }
 
   return (
-    <Section size="lg">
-      <Stack gap="lg">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-6">
         <div>
           <Link href="/staff/messages">
             <Button variant="ghost" size="sm">
@@ -73,7 +72,7 @@ export async function StaffMessageThreadPage({ threadId }: StaffMessageThreadPag
 
         <MessageList messages={messages} currentUserId={session.user.id} />
         <MessageForm threadId={threadId} />
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

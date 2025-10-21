@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Stack, Grid, Box } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { Activity, TrendingUp, AlertTriangle, Clock, Calendar } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
@@ -32,13 +31,13 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
   const busiestDayName = dayNames[busiestDay] || 'Unknown'
 
   return (
-    <Stack gap="lg">
-      <Box>
+    <div className="flex flex-col gap-6">
+      <div>
         <h2 className="text-2xl font-bold tracking-tight">Operational Intelligence</h2>
         <p className="text-sm text-muted-foreground">Real-time operational insights and forecasting</p>
-      </Box>
+      </div>
 
-      <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="md">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle>Peak Hour</CardTitle>
@@ -84,7 +83,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
             <p className="text-xs text-muted-foreground">Prediction confidence</p>
           </CardContent>
         </Card>
-      </Grid>
+      </div>
 
       <Card>
         <CardHeader>
@@ -95,20 +94,20 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
           <CardDescription>Live operational updates</CardDescription>
         </CardHeader>
         <CardContent>
-          <Stack gap="md">
-            <Box className="flex items-center justify-between">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Real-time Updates</span>
               <Badge variant="secondary">{realtimeUpdates} updates</Badge>
-            </Box>
+            </div>
             {metrics.last_real_time_update && (
-              <Box className="flex items-center justify-between">
+              <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Last Update</span>
                 <span className="text-sm text-muted-foreground">
                   {new Date(metrics.last_real_time_update).toLocaleString()}
                 </span>
-              </Box>
+              </div>
             )}
-          </Stack>
+          </div>
         </CardContent>
       </Card>
 
@@ -139,6 +138,6 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
           </CardContent>
         </Card>
       )}
-    </Stack>
+    </div>
   )
 }

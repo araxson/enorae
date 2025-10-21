@@ -8,7 +8,6 @@ import {
   ContextMenuTrigger,
   ContextMenuSeparator,
 } from '@/components/ui/context-menu'
-import { Stack, Group } from '@/components/layout'
 import { MapPin, Star, Share2, Info, Calendar, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
@@ -77,10 +76,10 @@ export function SalonCard({
       )}
 
       <CardHeader>
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           <CardTitle>{name}</CardTitle>
           {rating !== undefined && (
-            <Group gap="xs">
+            <div className="flex gap-2 items-center">
               <Star className="h-4 w-4 text-warning" fill="currentColor" />
               <small className="text-sm font-medium leading-none font-medium">{rating.toFixed(1)}</small>
               {reviewCount !== undefined && (
@@ -88,36 +87,36 @@ export function SalonCard({
                   ({reviewCount} reviews)
                 </small>
               )}
-            </Group>
+            </div>
           )}
-        </Stack>
+        </div>
       </CardHeader>
 
       <CardContent>
-        <Stack gap="sm">
+        <div className="flex flex-col gap-3">
           {description && (
             <p className="leading-7 text-muted-foreground line-clamp-2">
               {description}
             </p>
           )}
-          <Group gap="xs">
+          <div className="flex gap-2 items-center">
             <MapPin className="h-4 w-4 text-muted-foreground" />
             <small className="text-sm font-medium leading-none text-muted-foreground">{location}</small>
-          </Group>
+          </div>
           {hours && (
-            <Group gap="xs">
+            <div className="flex gap-2 items-center">
               <Clock className="h-4 w-4 text-muted-foreground" />
               <small className="text-sm font-medium leading-none text-muted-foreground">{hours}</small>
-            </Group>
+            </div>
           )}
           <SalonStats staffCount={staffCount} servicesCount={servicesCount} />
           <SpecialtiesTags specialties={specialties || null} limit={3} />
           <AmenitiesBadges amenities={amenities || null} limit={3} />
-        </Stack>
+        </div>
       </CardContent>
 
       <CardFooter className="p-6 pt-0">
-        <Group gap="sm" className="w-full">
+        <div className="flex gap-3 items-center w-full">
           <Button
             className="flex-1"
             onClick={onBook}
@@ -126,7 +125,7 @@ export function SalonCard({
             {isAcceptingBookings ? 'Book Appointment' : 'Not Accepting Bookings'}
           </Button>
           {favoriteAction ?? null}
-        </Group>
+        </div>
       </CardFooter>
     </Card>
       </ContextMenuTrigger>

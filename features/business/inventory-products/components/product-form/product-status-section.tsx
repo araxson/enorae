@@ -1,7 +1,6 @@
 'use client'
 
 import { Checkbox } from '@/components/ui/checkbox'
-import { Grid } from '@/components/layout'
 import { Label } from '@/components/ui/label'
 
 interface ProductStatusSectionProps {
@@ -18,7 +17,7 @@ export function ProductStatusSection({
   onTrackedChange,
 }: ProductStatusSectionProps) {
   return (
-    <Grid cols={{ base: 1, md: 2 }} gap="md">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       <div className="flex items-center space-x-2">
         <Checkbox
           id="is_active"
@@ -40,6 +39,6 @@ export function ProductStatusSection({
           Track Inventory
         </Label>
       </div>
-    </Grid>
+    </div>
   )
 }

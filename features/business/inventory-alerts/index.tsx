@@ -1,4 +1,3 @@
-import { Section, Stack, Box } from '@/components/layout'
 import { AlertsGrid } from './components/alerts-grid'
 import { getStockAlerts } from './api/queries'
 
@@ -9,21 +8,21 @@ export async function StockAlerts() {
   const unresolvedCount = alerts.filter((a) => !a.is_resolved).length
 
   return (
-    <Section size="lg">
-      <Stack gap="xl">
-        <Stack gap="md">
+    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4">
           {unresolvedCount > 0 && (
-            <Box className="rounded-lg bg-destructive/10 p-4 border border-destructive/20">
+            <div className="rounded-lg bg-destructive/10 p-4 border border-destructive/20">
               <small className="text-sm font-medium leading-none font-semibold text-destructive">
                 {unresolvedCount} unresolved alert{unresolvedCount > 1 ? 's' : ''} require
                 {unresolvedCount === 1 ? 's' : ''} attention
               </small>
-            </Box>
+            </div>
           )}
 
           <AlertsGrid alerts={alerts} />
-        </Stack>
-      </Stack>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

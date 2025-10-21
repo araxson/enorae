@@ -1,6 +1,4 @@
 'use client'
-
-import { Group } from '@/components/layout'
 import { ExportButton } from '@/features/business/business-common/components'
 import { CustomerInsightsCard } from '@/features/business/business-common/components/customer-insights-card'
 import type { getCustomerInsights } from '../../api/queries'
@@ -16,7 +14,7 @@ type Props = {
 export function CustomerInsightsSection({ start, end, insights }: Props) {
   return (
     <>
-      <Group className="items-center justify-between">
+      <div className="flex gap-4 items-center items-center justify-between">
         <div className="sr-only">Customer insights export</div>
         <ExportButton
           data={[
@@ -31,7 +29,7 @@ export function CustomerInsightsSection({ start, end, insights }: Props) {
           ]}
           filename={`customer-insights-${start}-to-${end}`}
         />
-      </Group>
+      </div>
       <CustomerInsightsCard
         data={{
           totalCustomers: insights.totalCustomers,

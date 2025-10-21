@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Stack, Grid } from '@/components/layout'
 import { PenLine, PlusCircle, Trash2 } from 'lucide-react'
 import { useToast } from '@/lib/hooks/use-toast'
 import type { NotificationTemplate } from '../api/queries'
@@ -155,7 +154,7 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
               </AlertDescription>
             </Alert>
           ) : (
-            <Grid cols={{ base: 1, md: 2 }} gap="md">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               {templates.map((template) => (
                 <Card key={template.id} className="border-muted">
                   <CardHeader>
@@ -206,7 +205,7 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
                   </CardContent>
                 </Card>
               ))}
-            </Grid>
+            </div>
           )}
         </CardContent>
       </Card>
@@ -216,8 +215,8 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
           <DialogHeader>
             <DialogTitle>{editingTemplate ? 'Edit Template' : 'Create Template'}</DialogTitle>
           </DialogHeader>
-          <Stack gap="lg">
-            <Grid cols={{ base: 1, md: 2 }} gap="md">
+          <div className="flex flex-col gap-6">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               <div>
                 <label className="text-sm font-medium">Name</label>
                 <Input
@@ -246,8 +245,8 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
                   </SelectContent>
                 </Select>
               </div>
-            </Grid>
-            <Grid cols={{ base: 1, md: 2 }} gap="md">
+            </div>
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               <div>
                 <label className="text-sm font-medium">Channel</label>
                 <Select
@@ -276,7 +275,7 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
                   placeholder="Used for email or push notifications"
                 />
               </div>
-            </Grid>
+            </div>
             <div>
               <label className="text-sm font-medium">Description</label>
               <Input
@@ -302,7 +301,7 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
                 {isPending ? 'Saving...' : 'Save Template'}
               </Button>
             </div>
-          </Stack>
+          </div>
         </DialogContent>
       </Dialog>
     </>

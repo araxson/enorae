@@ -26,8 +26,8 @@ export function groupAppointmentsByCustomer(
     if (!customerMap.has(appointment.customer_id)) {
       customerMap.set(appointment.customer_id, {
         customerId: appointment.customer_id,
-        name: appointment.profiles?.display_name || 'Unknown',
-        email: appointment.profiles?.email || '',
+        name: appointment.profiles?.username || 'Unknown',
+        email: '',
         appointments: [],
       })
     }

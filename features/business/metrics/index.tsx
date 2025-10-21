@@ -3,7 +3,6 @@ import { MetricsOverview } from './components/metrics-overview'
 import { RevenueChart } from './components/revenue-chart'
 import { ComparativeMetrics } from './components/comparative-metrics'
 import { RevenueForecastCard } from './components/revenue-forecast-card'
-import { Stack, Grid } from '@/components/layout'
 import { StaffPerformanceCard, ServicePopularityChart } from '@/features/business/business-common/components'
 import { getTopStaff, getTopServices } from '@/features/business/analytics/api/queries'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
@@ -61,20 +60,20 @@ export async function SalonMetrics() {
   }))
 
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       <MetricsOverview metrics={latestMetrics} />
       <ComparativeMetrics comparison={comparison} />
       <RevenueChart data={recentMetrics} />
       <RevenueForecastCard forecast={forecast} />
-      <Grid cols={{ base: 1, xl: 2 }} gap="xl">
+      <div className="grid gap-8 grid-cols-1 xl:grid-cols-2">
         <StaffPerformanceCard staff={staffLeaderboard} />
         <ServicePopularityChart
           data={popularServices}
           title="Service Popularity"
           description="Top services by bookings and revenue"
         />
-      </Grid>
+      </div>
       <OperationalDashboard metrics={operationalMetrics} />
-    </Stack>
+    </div>
   )
 }

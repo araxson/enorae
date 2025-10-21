@@ -9,7 +9,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
-import { Stack } from '@/components/layout'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
 import { Search, MapPin, Star, Shield, Sparkles, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import type { SalonSearchResult } from '../api/queries'
@@ -38,12 +45,14 @@ export function AdvancedSearchClient({
   const [suggestions, setSuggestions] = useState<{ name: string; slug: string }[]>([])
   const [results, setResults] = useState<SalonSearchResult[]>(initialResults)
   const [isSearching, setIsSearching] = useState(false)
+  const [suggestionsOpen, setSuggestionsOpen] = useState(false)
 
   // Fetch suggestions as user types
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (searchTerm.length < 2) {
         setSuggestions([])
+        setSuggestionsOpen(false)
         return
       }
 
@@ -53,6 +62,7 @@ export function AdvancedSearchClient({
       if (response.ok) {
         const data = await response.json()
         setSuggestions(data)
+        setSuggestionsOpen(data.length > 0)
       }
     }
 
@@ -82,8 +92,21 @@ export function AdvancedSearchClient({
     return parts.join(', ') || 'Location not available'
   }
 
+  const handleSuggestionSelect = (slug: string) => {
+    setSuggestions([])
+    setSuggestionsOpen(false)
+    router.push(`/customer/salons/${slug}`)
+  }
+
+  const handleSuggestionOpenChange = (open: boolean) => {
+    if (!open) {
+      setSuggestions([])
+    }
+    setSuggestionsOpen(open)
+  }
+
   return (
-    <Stack gap="xl">
+    <div className="flex flex-col gap-8">
       {/* Search Bar with Advanced Filters */}
       <Card>
         <CardHeader>
@@ -96,33 +119,40 @@ export function AdvancedSearchClient({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Stack gap="md">
+          <div className="flex flex-col gap-4">
             {/* Search Term with Suggestions */}
-            <div className="relative">
-              <Input
-                placeholder="Search by salon name..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="pr-10"
-              />
-              <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-
-              {/* Suggestions Dropdown */}
-              {suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-card shadow-lg z-10">
-                  {suggestions.map((suggestion) => (
-                    <Link
-                      key={suggestion.slug}
-                      href={`/customer/salons/${suggestion.slug}`}
-                      className="block px-4 py-2 text-sm hover:bg-muted"
-                    >
-                      {suggestion.name}
-                    </Link>
-                  ))}
+            <Popover open={suggestionsOpen} onOpenChange={handleSuggestionOpenChange}>
+              <PopoverTrigger asChild>
+                <div className="relative">
+                  <Input
+                    placeholder="Search by salon name..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                    className="pr-10"
+                  />
+                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 </div>
-              )}
-            </div>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="p-0">
+                <Command>
+                  <CommandList>
+                    <CommandEmpty>No matches found.</CommandEmpty>
+                    <CommandGroup heading="Salons">
+                      {suggestions.map((suggestion) => (
+                        <CommandItem
+                          key={suggestion.slug}
+                          value={suggestion.name}
+                          onSelect={() => handleSuggestionSelect(suggestion.slug)}
+                        >
+                          {suggestion.name}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
 
             {/* Filters Grid */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -193,7 +223,7 @@ export function AdvancedSearchClient({
             <Button onClick={handleSearch} className="w-full" disabled={isSearching}>
               {isSearching ? 'Searching...' : 'Search Salons'}
             </Button>
-          </Stack>
+          </div>
         </CardContent>
       </Card>
 
@@ -284,6 +314,6 @@ export function AdvancedSearchClient({
           </CardContent>
         </Card>
       )}
-    </Stack>
+    </div>
   )
 }

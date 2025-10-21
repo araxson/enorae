@@ -161,7 +161,7 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
   // Get profile info
   const { data: profile } = await supabase
     .from('profiles')
-    .select('display_name, email, phone')
+    .select('username')
     .eq('id', customerId)
     .single()
 
@@ -176,9 +176,9 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
 
   return {
     customer_id: customerId,
-    customer_name: profile?.display_name || typedAppointments[0].customer_name || null,
-    customer_email: profile?.email || typedAppointments[0].customer_email || null,
-    customer_phone: profile?.phone || null,
+    customer_name: profile?.username || typedAppointments[0].customer_name || null,
+    customer_email: typedAppointments[0].customer_email || null,
+    customer_phone: null,
     total_appointments: appointments.length,
     completed_appointments: completed.length,
     cancelled_appointments: cancelled.length,

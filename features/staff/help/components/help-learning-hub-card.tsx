@@ -23,27 +23,29 @@ export function HelpLearningHubCard({ tracks }: HelpLearningHubCardProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {tracks.map((track, index) => (
-          <div key={track.title} className="space-y-3 rounded-lg border p-3">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="text-sm font-semibold">{track.title}</h3>
-                <p className="text-xs text-muted-foreground">{track.duration} • {track.level}</p>
-              </div>
-              <Badge variant={index === 0 ? 'secondary' : 'outline'}>
-                {index === 0 ? 'Recommended' : 'Track'}
-              </Badge>
-            </div>
-            <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-              {track.tags.map((tag) => (
-                <Badge key={tag} variant="outline">
-                  {tag}
+          <Card key={track.title}>
+            <CardContent className="space-y-3 pt-6">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold">{track.title}</h3>
+                  <p className="text-xs text-muted-foreground">{track.duration} • {track.level}</p>
+                </div>
+                <Badge variant={index === 0 ? 'secondary' : 'outline'}>
+                  {index === 0 ? 'Recommended' : 'Track'}
                 </Badge>
-              ))}
-            </div>
-            <Button size="sm" variant="outline" className="w-full">
-              Start lesson
-            </Button>
-          </div>
+              </div>
+              <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                {track.tags.map((tag) => (
+                  <Badge key={tag} variant="outline">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+              <Button size="sm" variant="outline" className="w-full">
+                Start lesson
+              </Button>
+            </CardContent>
+          </Card>
         ))}
 
         <Separator />

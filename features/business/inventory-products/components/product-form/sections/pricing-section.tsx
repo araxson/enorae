@@ -2,8 +2,6 @@
 
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Grid } from '@/components/layout'
-
 import type { ProductFormState } from '../types'
 
 export function PricingSection({
@@ -14,7 +12,7 @@ export function PricingSection({
   onChange: (state: ProductFormState) => void
 }) {
   return (
-    <Grid cols={{ base: 1, md: 2 }} gap="md">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       <div className="space-y-2">
         <Label htmlFor="cost_price">Cost Price ($)</Label>
         <Input
@@ -39,6 +37,6 @@ export function PricingSection({
           placeholder="0.00"
         />
       </div>
-    </Grid>
+    </div>
   )
 }

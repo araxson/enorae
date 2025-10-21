@@ -4,7 +4,6 @@ import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { Group, Stack } from '@/components/layout'
 import type { AppointmentWithDetails } from '../../api/queries'
 import { STATUS_CONFIG } from './status-config'
 
@@ -25,21 +24,21 @@ export function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCan
     <TableRow>
       <TableCell>
         {appointmentDate ? (
-          <Stack gap="xs">
+          <div className="flex flex-col gap-2">
             <div>{format(appointmentDate, 'MMM dd, yyyy')}</div>
             <small className="text-sm font-medium leading-none text-muted-foreground">{format(appointmentDate, 'h:mm a')}</small>
-          </Stack>
+          </div>
         ) : (
           'No date'
         )}
       </TableCell>
       <TableCell>{appointment.customer_name || appointment.customer_email || 'N/A'}</TableCell>
-      <TableCell>{appointment.staff_name || appointment.staff_title || 'N/A'}</TableCell>
+      <TableCell>{appointment.staff_name || appointment.staff_name || 'N/A'}</TableCell>
       <TableCell>
         <Badge variant={config?.variant}>{config?.label || appointment.status}</Badge>
       </TableCell>
       <TableCell>
-        <Group gap="xs">
+        <div className="flex gap-2 items-center">
           {appointment.status === 'pending' && appointment.id && (
             <form action={onConfirm}>
               <input type="hidden" name="id" value={appointment.id} />
@@ -64,7 +63,7 @@ export function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCan
               </Button>
             </form>
           )}
-        </Group>
+        </div>
       </TableCell>
     </TableRow>
   )

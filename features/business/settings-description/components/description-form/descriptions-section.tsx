@@ -3,7 +3,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Stack } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 
 type DescriptionFieldState = {
@@ -21,11 +20,11 @@ export function DescriptionsSection({ values }: DescriptionsSectionProps) {
   return (
     <Card>
       <CardContent>
-        <Stack gap="lg">
+        <div className="flex flex-col gap-6">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Salon Descriptions</h3>
           <Separator />
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="short_description">Short Description</Label>
             <Textarea
               id="short_description"
@@ -35,9 +34,9 @@ export function DescriptionsSection({ values }: DescriptionsSectionProps) {
               rows={3}
             />
             <p className="text-sm text-muted-foreground">Shown on overview pages and search results (max 160 characters)</p>
-          </Stack>
+          </div>
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="full_description">Full Description</Label>
             <Textarea
               id="full_description"
@@ -47,9 +46,9 @@ export function DescriptionsSection({ values }: DescriptionsSectionProps) {
               rows={6}
             />
             <p className="text-sm text-muted-foreground">Displayed on your salon profile page</p>
-          </Stack>
+          </div>
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="welcome_message">Welcome Message</Label>
             <Textarea
               id="welcome_message"
@@ -58,9 +57,9 @@ export function DescriptionsSection({ values }: DescriptionsSectionProps) {
               placeholder="Warm greeting shown to new customers"
               rows={3}
             />
-          </Stack>
+          </div>
 
-          <Stack gap="sm">
+          <div className="flex flex-col gap-3">
             <Label htmlFor="cancellation_policy">Cancellation Policy</Label>
             <Textarea
               id="cancellation_policy"
@@ -69,8 +68,8 @@ export function DescriptionsSection({ values }: DescriptionsSectionProps) {
               placeholder="Outline how customers should cancel or reschedule"
               rows={4}
             />
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )

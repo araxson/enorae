@@ -33,24 +33,26 @@ export function FraudAlertsPanel({ alerts }: FraudAlertsPanelProps) {
         {alerts.length === 0 ? (
           <p className="text-sm text-muted-foreground">No suspicious activity detected.</p>
         ) : (
-          <ul className="space-y-2">
+          <div className="space-y-2">
             {alerts.slice(0, 8).map((alert) => (
-              <li key={alert.id} className="rounded-md border p-3 text-sm">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-medium text-foreground">{LABELS[alert.type]}</span>
-                  <Badge variant={getVariant(alert.score)} className="text-xs">
-                    Risk {(alert.score * 100).toFixed(0)}%
-                  </Badge>
-                </div>
-                <p className="mt-1 text-xs text-muted-foreground">{alert.summary}</p>
-                <div className="mt-2 text-xs text-muted-foreground">
-                  {alert.relatedAppointmentIds.length} linked appointment(s)
-                  {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
-                  {alert.salonId ? ` · Salon ${alert.salonId}` : ''}
-                </div>
-              </li>
+              <Card key={alert.id}>
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-medium">{LABELS[alert.type]}</span>
+                    <Badge variant={getVariant(alert.score)} className="text-xs">
+                      Risk {(alert.score * 100).toFixed(0)}%
+                    </Badge>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">{alert.summary}</p>
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    {alert.relatedAppointmentIds.length} linked appointment(s)
+                    {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
+                    {alert.salonId ? ` · Salon ${alert.salonId}` : ''}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
-          </ul>
+          </div>
         )}
       </CardContent>
     </Card>

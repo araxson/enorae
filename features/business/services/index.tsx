@@ -1,6 +1,5 @@
 import { getServices, getUserSalon } from './api/queries'
 import { ServicesManagementClient } from './components/services-management-client'
-import { Section } from '@/components/layout'
 import { EmptyState } from '@/components/shared'
 import { AlertCircle, Scissors } from 'lucide-react'
 
@@ -10,25 +9,25 @@ export async function ServicesManagement() {
     salon = await getUserSalon()
   } catch {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <EmptyState
           icon={AlertCircle}
           title="Authentication Required"
           description="Please log in to manage services"
         />
-      </Section>
+      </section>
     )
   }
 
   if (!salon || !salon.id) {
     return (
-      <Section size="lg">
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <EmptyState
           icon={Scissors}
           title="No Salon Found"
           description="Please create a salon to manage services"
         />
-      </Section>
+      </section>
     )
   }
 

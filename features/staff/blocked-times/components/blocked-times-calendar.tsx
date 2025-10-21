@@ -4,7 +4,6 @@ import { useMemo } from 'react'
 import { format, startOfWeek, addDays, isSameDay, parseISO } from 'date-fns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Stack, Grid, Box } from '@/components/layout'
 import { Calendar, Clock, Ban } from 'lucide-react'
 import type { BlockedTime } from '../types'
 
@@ -52,7 +51,7 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
         </p>
       </CardHeader>
       <CardContent>
-        <Grid cols={{ base: 1, sm: 2, lg: 7 }} gap="sm">
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-7">
           {weekDays.map((day) => {
             const { blocked, appointments: dayApts } = getDayItems(day)
             const isToday = isSameDay(day, new Date())
@@ -60,21 +59,21 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
             return (
               <Card key={day.toISOString()} className={isToday ? 'border-primary' : ''}>
                 <CardContent className="p-3">
-                  <Stack gap="sm">
-                    <Box>
+                  <div className="flex flex-col gap-3">
+                    <div>
                       <p className="text-sm font-semibold text-foreground">
                         {format(day, 'EEE')}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {format(day, 'MMM d')}
                       </p>
-                    </Box>
+                    </div>
 
                     {/* Appointments */}
                     {dayApts.length > 0 && (
-                      <Stack gap="xs">
+                      <div className="flex flex-col gap-2">
                         {dayApts.slice(0, 3).map((apt) => (
-                          <Box key={apt.id} className="rounded bg-info/10 p-2">
+                          <div key={apt.id} className="rounded bg-info/10 p-2">
                             <div className="flex items-start gap-1">
                               <Clock className="h-3 w-3 mt-0.5 flex-shrink-0 text-info" />
                               <div className="flex-1 min-w-0">
@@ -86,21 +85,21 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                                 </p>
                               </div>
                             </div>
-                          </Box>
+                          </div>
                         ))}
                         {dayApts.length > 3 && (
                           <p className="text-xs text-muted-foreground">
                             +{dayApts.length - 3} more
                           </p>
                         )}
-                      </Stack>
+                      </div>
                     )}
 
                     {/* Blocked Times */}
                     {blocked.length > 0 && (
-                      <Stack gap="xs">
+                      <div className="flex flex-col gap-2">
                         {blocked.slice(0, 2).map((bt) => (
-                          <Box key={bt.id} className="rounded bg-destructive/10 p-2">
+                          <div key={bt.id} className="rounded bg-destructive/10 p-2">
                             <div className="flex items-start gap-1">
                               <Ban className="h-3 w-3 mt-0.5 flex-shrink-0 text-destructive" />
                               <div className="flex-1 min-w-0">
@@ -113,14 +112,14 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                                 </p>
                               </div>
                             </div>
-                          </Box>
+                          </div>
                         ))}
                         {blocked.length > 2 && (
                           <p className="text-xs text-muted-foreground">
                             +{blocked.length - 2} more
                           </p>
                         )}
-                      </Stack>
+                      </div>
                     )}
 
                     {/* Empty state */}
@@ -143,12 +142,12 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                         )}
                       </div>
                     )}
-                  </Stack>
+                  </div>
                 </CardContent>
               </Card>
             )
           })}
-        </Grid>
+        </div>
 
         {/* Legend */}
         <div className="flex gap-4 mt-4 pt-4 border-t">

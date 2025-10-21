@@ -65,22 +65,24 @@ export function FailedLoginsPanel({ summary }: FailedLoginsPanelProps) {
           {summary.attempts.length === 0 ? (
             <p className="text-sm text-muted-foreground">No failed logins recorded.</p>
           ) : (
-            <ul className="space-y-2">
+            <div className="space-y-2">
               {summary.attempts.slice(0, 6).map((attempt) => (
-                <li key={attempt.id} className="rounded-md border p-2 text-sm text-muted-foreground">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span>IP: {attempt.ipAddress ?? 'Unknown'}</span>
-                    <span>User: {attempt.userId ?? 'Anonymous'}</span>
-                  </div>
-                  {attempt.userAgent && (
-                    <div className="mt-1 truncate text-xs">Agent: {attempt.userAgent}</div>
-                  )}
-                  <div className="mt-1 text-xs">
-                    Occurred at {new Date(attempt.createdAt).toLocaleString()}
-                  </div>
-                </li>
+                <Card key={attempt.id}>
+                  <CardContent className="p-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
+                      <span>IP: {attempt.ipAddress ?? 'Unknown'}</span>
+                      <span>User: {attempt.userId ?? 'Anonymous'}</span>
+                    </div>
+                    {attempt.userAgent && (
+                      <div className="mt-1 truncate text-xs">Agent: {attempt.userAgent}</div>
+                    )}
+                    <div className="mt-1 text-xs">
+                      Occurred at {new Date(attempt.createdAt).toLocaleString()}
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
-            </ul>
+            </div>
           )}
         </div>
       </CardContent>

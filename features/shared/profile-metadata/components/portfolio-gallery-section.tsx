@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Stack, Grid } from '@/components/layout'
 import { X, Upload, Image as ImageIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 
@@ -59,8 +58,8 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
   }
 
   return (
-    <Stack gap="lg">
-      <Stack gap="sm">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-3">
         <Label htmlFor="portfolio-upload">Upload Image</Label>
         <Input
           id="portfolio-upload"
@@ -69,11 +68,11 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
           onChange={handleFileUpload}
           disabled={isUploading}
         />
-      </Stack>
+      </div>
 
       <div className="text-center text-sm text-muted-foreground">or</div>
 
-      <Stack gap="sm">
+      <div className="flex flex-col gap-3">
         <Label htmlFor="image-url">Image URL</Label>
         <Input
           id="image-url"
@@ -81,9 +80,9 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
           onChange={(e) => setImageUrl(e.target.value)}
           placeholder="https://example.com/image.jpg"
         />
-      </Stack>
+      </div>
 
-      <Stack gap="sm">
+      <div className="flex flex-col gap-3">
         <Label htmlFor="image-caption">Caption (Optional)</Label>
         <Input
           id="image-caption"
@@ -91,7 +90,7 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
           onChange={(e) => setCaption(e.target.value)}
           placeholder="Describe this image..."
         />
-      </Stack>
+      </div>
 
       <Button
         type="button"
@@ -109,7 +108,7 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
           <Badge variant="secondary" className="mb-4">
             {images.length} image{images.length !== 1 ? 's' : ''} in portfolio
           </Badge>
-          <Grid cols={{ base: 2, md: 3, lg: 4 }} gap="md">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {images.map((image, index) => (
               <div key={index} className="relative group">
                 <div className="aspect-square rounded-md overflow-hidden border bg-muted">
@@ -141,9 +140,9 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
                 </Button>
               </div>
             ))}
-          </Grid>
+          </div>
         </div>
       )}
-    </Stack>
+    </div>
   )
 }

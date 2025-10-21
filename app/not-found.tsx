@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Section, Stack } from '@/components/layout'
 import { Home, Search } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <Section size="lg">
-      <Stack gap="xl" className="items-center justify-center min-h-[60vh]">
+    <section className="py-16 md:py-24 lg:py-32">
+      <div className="mx-auto flex min-h-[60vh] w-full max-w-6xl flex-col items-center justify-center gap-6 px-4 sm:px-6 lg:px-8">
         <Card className="w-full max-w-md text-center">
           <CardHeader className="space-y-2">
             <div className="text-6xl font-bold">404</div>
@@ -17,11 +16,11 @@ export default function NotFound() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Stack gap="sm">
+            <div className="flex flex-col gap-6">
               <p className="text-sm text-muted-foreground">
                 Check the URL or head back to the dashboard to continue exploring salons.
               </p>
-            </Stack>
+            </div>
           </CardContent>
           <CardFooter className="flex gap-2">
             <Button asChild className="flex-1">
@@ -38,7 +37,7 @@ export default function NotFound() {
             </Button>
           </CardFooter>
         </Card>
-      </Stack>
-    </Section>
+      </div>
+    </section>
   )
 }

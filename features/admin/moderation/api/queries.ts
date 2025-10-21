@@ -177,6 +177,8 @@ export interface ModerationFilters {
 }
 
 export interface ModerationReview extends ReviewRow {
+  customer_email: string | null
+  flagged_reason: string | null
   sentimentScore: number
   sentimentLabel: 'positive' | 'neutral' | 'negative'
   fakeLikelihoodScore: number
@@ -239,8 +241,46 @@ export async function getReviewsForModeration(
   const reviewerIds = Array.from(
     new Set(reviews.map((review) => review.customer_id).filter(Boolean) as string[])
   ).slice(0, 500)
+  const reviewIds = Array.from(
+    new Set(reviews.map((review) => review.id).filter(Boolean) as string[])
+  )
 
   const reviewerStats = await fetchReviewerStats(supabase, reviewerIds)
+
+  let reviewerProfilesData: { id: string | null; email: string | null }[] = []
+  if (reviewerIds.length) {
+    const { data: profilesData, error: profilesError } = await supabase
+      .from('admin_users_overview')
+      .select('id, email')
+      .in('id', reviewerIds)
+
+    if (profilesError) throw profilesError
+    reviewerProfilesData = profilesData ?? []
+  }
+
+  let reviewDetailsData: { id: string | null; flagged_reason: string | null }[] = []
+  if (reviewIds.length) {
+    const { data: detailsData, error: detailsError } = await supabase
+      .schema('engagement')
+      .from('salon_reviews')
+      .select('id, flagged_reason')
+      .in('id', reviewIds)
+
+    if (detailsError) throw detailsError
+    reviewDetailsData = detailsData ?? []
+  }
+
+  const customerEmailMap = new Map(
+    reviewerProfilesData
+      .filter((profile): profile is { id: string; email: string | null } => Boolean(profile.id))
+      .map((profile) => [profile.id, profile.email ?? null]),
+  )
+
+  const flaggedReasonMap = new Map(
+    reviewDetailsData
+      .filter((detail): detail is { id: string; flagged_reason: string | null } => Boolean(detail.id))
+      .map(({ id, flagged_reason }) => [id, flagged_reason ?? null]),
+  )
 
   return reviews.map((review) => {
     const commentLength = review.comment?.length ?? 0
@@ -269,6 +309,8 @@ export async function getReviewsForModeration(
 
     return {
       ...review,
+      customer_email: customerEmailMap.get(review.customer_id ?? '') ?? null,
+      flagged_reason: flaggedReasonMap.get(review.id ?? '') ?? null,
       sentimentScore: sentiment.score,
       sentimentLabel: sentiment.label,
       fakeLikelihoodScore: fake.score,
@@ -332,20 +374,24 @@ export async function getModerationStats(): Promise<ModerationStats> {
   const [totalResult, flaggedResult, pendingResult, highRiskResult, sampleResult] = await Promise.all([
     // We need raw engagement.salon_reviews data for admin-only moderation metrics that are not exposed via views.
     supabase
+      .schema('engagement')
       .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
       .is('deleted_at', null),
     supabase
+      .schema('engagement')
       .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
       .eq('is_flagged', true)
       .is('deleted_at', null),
     supabase
+      .schema('engagement')
       .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
       .is('response', null)
       .is('deleted_at', null),
     supabase
+      .schema('engagement')
       .from('salon_reviews')
       .select('*', { count: 'exact', head: true })
       .or('is_flagged.eq.true,is_verified.eq.false')
@@ -394,6 +440,7 @@ async function fetchReviewerStats(
 
   const { data, error } = await supabase
     // Admin reviewer reputation analysis requires per-review rows, so we access the underlying table with platform admin credentials.
+    .schema('engagement')
     .from('salon_reviews')
     .select('customer_id, is_flagged')
     .in('customer_id', reviewerIds)

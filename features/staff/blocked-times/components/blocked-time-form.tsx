@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { Stack } from '@/components/layout'
 import { blockedTimeSchema, type BlockedTimeFormData } from '../schema'
 import { createBlockedTime, updateBlockedTime } from '../api/mutations'
 import type { BlockedTime } from '../types'
@@ -71,7 +70,7 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap="md">
+      <div className="flex flex-col gap-4">
         <div>
           <Label htmlFor="start_time">Start Time</Label>
           <Input
@@ -152,7 +151,7 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
             {isSubmitting ? 'Saving...' : blockedTime ? 'Update' : 'Create'}
           </Button>
         </div>
-      </Stack>
+      </div>
     </form>
   )
 }

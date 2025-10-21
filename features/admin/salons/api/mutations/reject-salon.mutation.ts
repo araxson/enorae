@@ -25,11 +25,16 @@ export async function rejectSalon(formData: FormData) {
     const supabase = await getSupabaseClient()
 
     // Get salon info for notification
-    const { data: salon } = await supabase
+    const { data: salon, error: fetchError } = await supabase
+      .schema('organization')
       .from('salons')
-      .select('owner_id, name')
+      .select('name')
       .eq('id', salonId)
-      .single()
+      .maybeSingle()
+
+    if (fetchError) {
+      return { error: fetchError.message }
+    }
 
     if (!salon) {
       return { error: 'Salon not found' }
@@ -67,6 +72,8 @@ export async function rejectSalon(formData: FormData) {
       entity_type: 'salon',
       entity_id: salonId,
       salon_id: salonId,
+      target_schema: 'organization',
+      target_table: 'salons',
       metadata: {
         salon_name: salon.name,
         reason,

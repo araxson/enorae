@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { Flex } from '@/components/layout'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
 import { RefreshCw, Trash2 } from 'lucide-react'
 
@@ -21,7 +20,7 @@ export function WebhookActionButtons({
   isDeleting,
 }: WebhookActionProps) {
   return (
-    <Flex gap="sm" justify="between" className="w-full">
+    <div className="flex gap-3 justify-between w-full">
       <ConfirmDialog
         title="Delete Webhook Entry?"
         description="This will permanently remove the webhook record."
@@ -34,7 +33,7 @@ export function WebhookActionButtons({
         </Button>
       </ConfirmDialog>
 
-      <Flex gap="sm">
+      <div className="flex gap-3">
         <Button variant="outline" onClick={onClose}>
           Close
         </Button>
@@ -45,7 +44,7 @@ export function WebhookActionButtons({
             {isRetrying ? 'Retrying...' : 'Retry'}
           </Button>
         )}
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   )
 }

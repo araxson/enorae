@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Stack, Flex } from '@/components/layout'
 import { CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { LocationAddress } from './address-form/types'
 
@@ -119,13 +118,13 @@ export function AddressValidation({ address }: Props) {
   return (
     <Card>
       <CardHeader>
-        <Flex justify="between" align="center">
+        <div className="flex gap-4 items-center justify-between">
           <CardTitle>Address Validation</CardTitle>
           {getStatusBadge()}
-        </Flex>
+        </div>
       </CardHeader>
       <CardContent>
-        <Stack gap="md">
+        <div className="flex flex-col gap-4">
           <Button
             type="button"
             variant="outline"
@@ -171,7 +170,7 @@ export function AddressValidation({ address }: Props) {
               </AlertDescription>
             </Alert>
           )}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   )
