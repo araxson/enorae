@@ -31,43 +31,52 @@ export function SupportTicketCard() {
             <Label>Priority</Label>
             <RadioGroup defaultValue="standard" className="grid grid-cols-3 gap-3">
               <Card>
-                <CardContent className="space-y-2 p-4">
-                  <div className="flex items-start gap-2">
-                    <RadioGroupItem id="priority-low" value="low" />
+                <CardHeader className="space-y-0">
+                  <div className="flex items-start gap-3">
+                    <RadioGroupItem
+                      id="priority-low"
+                      value="low"
+                      aria-labelledby="priority-low-title"
+                      aria-describedby="priority-low-description"
+                    />
                     <div className="space-y-1">
-                      <Label htmlFor="priority-low" className="text-sm font-semibold">
-                        Low
-                      </Label>
-                      <span className="text-muted-foreground">Informational</span>
+                      <CardTitle id="priority-low-title">Low</CardTitle>
+                      <CardDescription id="priority-low-description">Informational</CardDescription>
                     </div>
                   </div>
-                </CardContent>
+                </CardHeader>
               </Card>
               <Card>
-                <CardContent className="space-y-2 p-4">
-                  <div className="flex items-start gap-2">
-                    <RadioGroupItem id="priority-standard" value="standard" />
+                <CardHeader className="space-y-0">
+                  <div className="flex items-start gap-3">
+                    <RadioGroupItem
+                      id="priority-standard"
+                      value="standard"
+                      aria-labelledby="priority-standard-title"
+                      aria-describedby="priority-standard-description"
+                    />
                     <div className="space-y-1">
-                      <Label htmlFor="priority-standard" className="text-sm font-semibold">
-                        Standard
-                      </Label>
-                      <span className="text-muted-foreground">Needs attention</span>
+                      <CardTitle id="priority-standard-title">Standard</CardTitle>
+                      <CardDescription id="priority-standard-description">Needs attention</CardDescription>
                     </div>
                   </div>
-                </CardContent>
+                </CardHeader>
               </Card>
               <Card>
-                <CardContent className="space-y-2 p-4">
-                  <div className="flex items-start gap-2">
-                    <RadioGroupItem id="priority-urgent" value="urgent" />
+                <CardHeader className="space-y-0">
+                  <div className="flex items-start gap-3">
+                    <RadioGroupItem
+                      id="priority-urgent"
+                      value="urgent"
+                      aria-labelledby="priority-urgent-title"
+                      aria-describedby="priority-urgent-description"
+                    />
                     <div className="space-y-1">
-                      <Label htmlFor="priority-urgent" className="text-sm font-semibold text-destructive">
-                        Urgent
-                      </Label>
-                      <span className="text-muted-foreground">Blocking work</span>
+                      <CardTitle id="priority-urgent-title">Urgent</CardTitle>
+                      <CardDescription id="priority-urgent-description">Blocking work</CardDescription>
                     </div>
                   </div>
-                </CardContent>
+                </CardHeader>
               </Card>
             </RadioGroup>
           </div>
@@ -93,14 +102,19 @@ export function SupportTicketCard() {
           </div>
 
           <Card>
-            <CardContent className="flex items-start justify-between gap-4 p-4">
-              <div className="space-y-1">
-                <Label className="text-sm font-medium" htmlFor="attach-logs">
-                  Attach logs automatically
-                </Label>
-                <p className="text-xs text-muted-foreground">Include the last 10 events from your activity timeline.</p>
-              </div>
-              <Switch id="attach-logs" defaultChecked />
+            <CardHeader className="space-y-1">
+              <CardTitle id="attach-logs-title">Attach logs automatically</CardTitle>
+              <CardDescription id="attach-logs-description">
+                Include the last 10 events from your activity timeline.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-end">
+              <Switch
+                id="attach-logs"
+                defaultChecked
+                aria-labelledby="attach-logs-title"
+                aria-describedby="attach-logs-description"
+              />
             </CardContent>
           </Card>
 
