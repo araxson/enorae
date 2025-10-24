@@ -18,7 +18,7 @@ export async function IncidentResponseTimeline() {
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Incidents</CardTitle>
+              <CardTitle>Total Incidents</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{snapshot.totalCount}</div>
@@ -27,19 +27,19 @@ export async function IncidentResponseTimeline() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Critical</CardTitle>
+              <CardTitle>Critical</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">{snapshot.criticalCount}</div>
+              <div className="text-2xl font-bold text-destructive">{snapshot.criticalCount}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending</CardTitle>
+              <CardTitle>Pending</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{snapshot.pendingCount}</div>
+              <div className="text-2xl font-bold text-secondary">{snapshot.pendingCount}</div>
             </CardContent>
           </Card>
         </div>

@@ -17,10 +17,10 @@ interface QueryPerformanceTableProps {
 
 export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
   const getPerformanceColor = (meanTime: number) => {
-    if (meanTime > 500) return 'text-red-600'
-    if (meanTime > 200) return 'text-orange-600'
-    if (meanTime > 50) return 'text-yellow-600'
-    return 'text-green-600'
+    if (meanTime > 500) return 'text-destructive'
+    if (meanTime > 200) return 'text-primary'
+    if (meanTime > 50) return 'text-secondary'
+    return 'text-foreground'
   }
 
   const formatBytes = (bytes: number) => {

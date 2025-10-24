@@ -85,10 +85,10 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
   }
 
   const getUsageColor = (percentage: number) => {
-    if (percentage >= 100) return 'text-red-600'
-    if (percentage >= 80) return 'text-orange-600'
-    if (percentage >= 60) return 'text-yellow-600'
-    return 'text-green-600'
+    if (percentage >= 100) return 'text-destructive'
+    if (percentage >= 80) return 'text-primary'
+    if (percentage >= 60) return 'text-secondary'
+    return 'text-foreground'
   }
 
   return (
@@ -138,9 +138,8 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          size="sm"
+                          size="icon"
                           disabled={isLoading}
-                          className="h-8 w-8 p-0"
                         >
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>

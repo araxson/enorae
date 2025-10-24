@@ -114,9 +114,8 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
-                        size="sm"
+                        size="icon"
                         disabled={isLoading}
-                        className="h-8 w-8 p-0"
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
@@ -125,7 +124,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
                       <DropdownMenuItem
                         onClick={() => handleDelete(rule.id, rule.endpoint)}
                         disabled={isLoading}
-                        className="text-red-600"
+                        className="text-destructive"
                       >
                         Delete Rule
                       </DropdownMenuItem>

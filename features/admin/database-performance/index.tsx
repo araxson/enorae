@@ -18,7 +18,7 @@ export async function PerformanceDiagnostics() {
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Queries</CardTitle>
+              <CardTitle>Total Queries</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{snapshot.totalCount}</div>
@@ -27,17 +27,17 @@ export async function PerformanceDiagnostics() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Slow Queries</CardTitle>
+              <CardTitle>Slow Queries</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">{snapshot.slowQueryCount}</div>
+              <div className="text-2xl font-bold text-destructive">{snapshot.slowQueryCount}</div>
               <p className="text-xs text-muted-foreground">&gt; 100ms</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg Mean Time</CardTitle>
+              <CardTitle>Avg Mean Time</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{snapshot.avgMeanTime}ms</div>
