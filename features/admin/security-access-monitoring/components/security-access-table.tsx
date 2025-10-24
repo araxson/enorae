@@ -115,10 +115,10 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
   }
 
   const getRiskColor = (riskScore: number) => {
-    if (riskScore >= 80) return 'text-red-600'
-    if (riskScore >= 60) return 'text-orange-600'
-    if (riskScore >= 40) return 'text-yellow-600'
-    return 'text-green-600'
+    if (riskScore >= 80) return 'text-destructive'
+    if (riskScore >= 60) return 'text-primary'
+    if (riskScore >= 40) return 'text-secondary'
+    return 'text-foreground'
   }
 
   return (
@@ -164,9 +164,8 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
-                        size="sm"
+                        size="icon"
                         disabled={isLoading}
-                        className="h-8 w-8 p-0"
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>

@@ -26,7 +26,7 @@ export async function ToastStorageAudit() {
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Tables</CardTitle>
+              <CardTitle>Total Tables</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{snapshot.totalCount}</div>
@@ -35,17 +35,17 @@ export async function ToastStorageAudit() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">High TOAST Usage</CardTitle>
+              <CardTitle>High TOAST Usage</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">{snapshot.highToastCount}</div>
+              <div className="text-2xl font-bold text-destructive">{snapshot.highToastCount}</div>
               <p className="text-xs text-muted-foreground">&gt; 20% bloat</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total TOAST</CardTitle>
+              <CardTitle>Total TOAST</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{formatBytes(snapshot.totalToastBytes)}</div>

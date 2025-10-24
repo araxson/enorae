@@ -43,10 +43,10 @@ export function FreshnessTable({ tables }: FreshnessTableProps) {
     const days = Math.floor(
       (Date.now() - new Date(date).getTime()) / (1000 * 60 * 60 * 24),
     )
-    if (days > 30) return 'text-red-600'
-    if (days > 7) return 'text-orange-600'
-    if (days > 1) return 'text-yellow-600'
-    return 'text-green-600'
+    if (days > 30) return 'text-destructive'
+    if (days > 7) return 'text-primary'
+    if (days > 1) return 'text-secondary'
+    return 'text-foreground'
   }
 
   const formatNumber = (num: number) => {

@@ -50,7 +50,7 @@ export function IncidentTimeline({ incidents }: IncidentTimelineProps) {
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <CardTitle className="text-base">{incident.event_type}</CardTitle>
+                  <CardTitle>{incident.event_type}</CardTitle>
                   <CardDescription>
                     {format(new Date(incident.occurred_at), 'PPp')}
                   </CardDescription>

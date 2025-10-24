@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { SecurityAccessTable } from './security-access-table'
 import type { SecurityAccessSnapshot } from '@/features/admin/security-access-monitoring/api/queries'
 
@@ -24,7 +24,7 @@ export function SecurityAccessClient({ snapshot }: SecurityAccessClientProps) {
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Access Events</CardTitle>
+            <CardTitle>Total Access Events</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{snapshot.totalCount}</div>
@@ -34,30 +34,30 @@ export function SecurityAccessClient({ snapshot }: SecurityAccessClientProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Blocked Access</CardTitle>
+            <CardTitle>Blocked Access</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{snapshot.blockedCount}</div>
+            <div className="text-2xl font-bold text-destructive">{snapshot.blockedCount}</div>
             <p className="text-xs text-muted-foreground">Failed or blocked attempts</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Flagged Events</CardTitle>
+            <CardTitle>Flagged Events</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{snapshot.flaggedCount}</div>
+            <div className="text-2xl font-bold text-primary">{snapshot.flaggedCount}</div>
             <p className="text-xs text-muted-foreground">Suspicious activities</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Review</CardTitle>
+            <CardTitle>Pending Review</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{snapshot.pendingCount}</div>
+            <div className="text-2xl font-bold text-secondary">{snapshot.pendingCount}</div>
             <p className="text-xs text-muted-foreground">Awaiting acknowledgement</p>
           </CardContent>
         </Card>
@@ -73,36 +73,27 @@ export function SecurityAccessClient({ snapshot }: SecurityAccessClientProps) {
         </CardHeader>
         <CardContent>
           <div className="mb-4 flex gap-2">
-            <button
+            <Button
               onClick={() => setSelectedStatus(null)}
-              className={`px-3 py-1 rounded text-sm ${
-                selectedStatus === null
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted hover:bg-muted/80'
-              }`}
+              size="sm"
+              variant={selectedStatus === null ? 'default' : 'secondary'}
             >
               All
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setSelectedStatus('blocked')}
-              className={`px-3 py-1 rounded text-sm ${
-                selectedStatus === 'blocked'
-                  ? 'bg-red-600 text-white'
-                  : 'bg-muted hover:bg-muted/80'
-              }`}
+              size="sm"
+              variant={selectedStatus === 'blocked' ? 'destructive' : 'secondary'}
             >
               Blocked
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setSelectedStatus('flagged')}
-              className={`px-3 py-1 rounded text-sm ${
-                selectedStatus === 'flagged'
-                  ? 'bg-orange-600 text-white'
-                  : 'bg-muted hover:bg-muted/80'
-              }`}
+              size="sm"
+              variant={selectedStatus === 'flagged' ? 'default' : 'secondary'}
             >
               Flagged
-            </button>
+            </Button>
           </div>
           <SecurityAccessTable records={filteredRecords} />
         </CardContent>

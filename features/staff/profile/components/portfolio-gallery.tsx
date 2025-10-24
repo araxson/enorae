@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { Upload, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { uploadPortfolioImage } from '@/features/staff/profile/api/mutations'
 import Image from 'next/image'
@@ -90,12 +91,11 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-8 text-center">
+            <Alert variant="secondary" className="flex flex-col items-center gap-3 py-6">
               <Upload className="h-12 w-12 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">
-                No portfolio images yet. Add your best work!
-              </p>
-            </div>
+              <AlertTitle>No portfolio images yet</AlertTitle>
+              <AlertDescription>Add your best work!</AlertDescription>
+            </Alert>
           )}
         </div>
       </CardContent>
