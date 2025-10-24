@@ -1,7 +1,7 @@
 import 'server-only'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import type { UserPreferences } from '../types'
+import type { UserPreferences } from '@/features/staff/settings/types'
 
 type ProfilesMetadataWithPreferences = {
   preferences?: UserPreferences | null

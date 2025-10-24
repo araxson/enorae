@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { deleteBlockedTime } from '../api/mutations'
+import { deleteBlockedTime } from '@/features/shared/blocked-times/api/mutations'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -81,10 +81,12 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
                     {format(new Date(blockedTime.start_time), 'PPP')}
                   </CardTitle>
                   {blockedTime.is_recurring && (
-                    <Badge variant="secondary" className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       <Repeat className="h-3 w-3" />
-                      {getRecurrenceLabel(blockedTime.recurrence_pattern)}
-                    </Badge>
+                      <Badge variant="secondary">
+                        {getRecurrenceLabel(blockedTime.recurrence_pattern)}
+                      </Badge>
+                    </div>
                   )}
                 </div>
                 <CardDescription>

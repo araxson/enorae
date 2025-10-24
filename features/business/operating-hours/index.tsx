@@ -27,8 +27,8 @@ export async function OperatingHoursManagement() {
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
         <div>
-          <p className="leading-7 text-base font-semibold">Operating Hours</p>
-          <p className="leading-7 text-muted-foreground">
+          <p>Operating Hours</p>
+          <p className="text-muted-foreground">
             Configure your salon&apos;s weekly operating schedule
           </p>
         </div>

@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { ChainActions } from './chain-actions'
@@ -22,6 +22,10 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
 
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Salon Chains</CardTitle>
+        <CardDescription>Review chain memberships and platform status.</CardDescription>
+      </CardHeader>
       <CardContent className="p-6">
         {chains.length === 0 ? (
           <div className="text-center py-12">

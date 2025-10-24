@@ -6,7 +6,6 @@ export type AdminSalonRow = Database['public']['Views']['admin_salons_overview']
 export type AdminUserRow = Database['public']['Views']['admin_users_overview']['Row']
 export type AdminReviewRow = Database['public']['Views']['admin_reviews_overview']['Row']
 export type AdminStaffRow = Database['public']['Views']['admin_staff_overview']['Row']
-export type AdminInventoryRow = Database['public']['Views']['admin_inventory_overview']['Row']
 export type AdminRevenueRow = Database['public']['Views']['admin_revenue_overview']['Row']
 export type AdminMessageRow = Database['public']['Views']['admin_messages_overview']['Row']
 

@@ -23,7 +23,7 @@ export async function updateAppointmentStatus(
 
   // Get the appointment to verify ownership
   const { data: appointment } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('staff_id')
     .eq('id', appointmentId)
     .single()
@@ -35,7 +35,7 @@ export async function updateAppointmentStatus(
   // Verify the staff member owns this appointment
   const appt = appointment as { staff_id: string | null }
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', appt.staff_id!)
@@ -81,7 +81,7 @@ export async function cancelAppointment(appointmentId: string) {
 
   // Get the appointment to verify ownership
   const { data: appointment } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('staff_id')
     .eq('id', appointmentId)
     .single()
@@ -93,7 +93,7 @@ export async function cancelAppointment(appointmentId: string) {
   // Verify ownership
   const appt2 = appointment as { staff_id: string | null }
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', appt2.staff_id!)
@@ -140,7 +140,7 @@ export async function addAppointmentNotes(
 
     // Verify appointment ownership
     const { data: appointment } = await supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('staff_id, customer_id, salon_id')
       .eq('id', appointmentId)
       .single<{ staff_id: string; customer_id: string; salon_id: string }>()
@@ -149,8 +149,8 @@ export async function addAppointmentNotes(
       return { success: false, error: 'Appointment not found' }
     }
 
-    const { data: staffProfile } = await supabase
-      .from('staff')
+  const { data: staffProfile } = await supabase
+    .from('staff_profiles_view')
       .select('id')
       .eq('user_id', session.user.id)
       .eq('id', appointment.staff_id)

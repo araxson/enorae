@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import type { Json } from '@/lib/types/database.types'
-import type { UserPreferences } from '../types'
+import type { UserPreferences } from '@/features/staff/settings/types'
 
 export async function updateUserPreferences(preferences: Partial<UserPreferences>) {
   const session = await verifySession()

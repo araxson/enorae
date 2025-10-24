@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState, useTransition } from 'react'
 
-import { getProfileDetailAction, searchProfilesAction } from '../api/actions'
-import type { ProfileDetail, ProfileSearchResult } from '../api/types'
+import { getProfileDetailAction, searchProfilesAction } from '@/features/admin/profile/api/actions'
+import type { ProfileDetail, ProfileSearchResult } from '@/features/admin/profile/api/types'
 import { useDebouncedCallback } from '@/lib/performance'
 import { ProfileSearchPanel } from './profile-search-panel'
 import { ProfileSummaryCard } from './profile-summary-card'

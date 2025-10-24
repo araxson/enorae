@@ -19,8 +19,8 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/lib/hooks/use-toast'
-import { updateAppointmentService } from '../api/mutations'
-import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
+import { updateAppointmentService } from '@/features/business/appointments/api/mutations'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 
 interface EditServiceDialogProps {
   service: AppointmentServiceDetails

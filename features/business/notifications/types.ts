@@ -1,3 +1,17 @@
+import type { Database } from '@/lib/types/database.types'
+
+/**
+ * Communication and notification types
+ * Used by messaging and notification features
+ */
+
+// Database views
+export type MessageThread = Database['public']['Views']['communication_message_threads']['Row']
+export type Message = Database['public']['Views']['communication_messages']['Row']
+export type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
+export type NotificationQueueEntry = Database['public']['Views']['communication_notification_queue']['Row']
+
+// Notification payload types
 export type NotificationPayload = Record<string, unknown>
 
 export type NotificationEntry = {

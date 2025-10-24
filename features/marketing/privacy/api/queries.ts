@@ -1,4 +1,4 @@
 import 'server-only'
 
-export { heroData } from '../components/sections/hero/hero.data'
-export { contentData as privacyContentData } from '../components/sections/content/content.data'
+export { heroData } from '@/features/marketing/privacy/components/sections/hero/hero.data'
+export { contentData as privacyContentData } from '@/features/marketing/privacy/components/sections/content/content.data'

@@ -1,6 +1,5 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 
 export async function redeemLoyaltyPoints(points: number, rewardId?: string) {
@@ -8,21 +7,8 @@ export async function redeemLoyaltyPoints(points: number, rewardId?: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { error } = await supabase
-    .schema('engagement')
-    .from('loyalty_transactions')
-    .insert({
-      customer_id: user.id,
-      points: -points,
-      type: 'redeemed',
-      description: rewardId ? `Redeemed for reward ${rewardId}` : 'Points redeemed',
-      created_at: new Date().toISOString(),
-    })
-
-  if (error) throw error
-
-  revalidatePath('/customer/loyalty')
-  return { success: true }
+  // TODO: loyalty_transactions table not yet in database schema
+  throw new Error('Loyalty points feature not yet implemented')
 }
 
 export async function generateReferralCode() {
@@ -30,15 +16,8 @@ export async function generateReferralCode() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .rpc('generate_referral_code', {
-      p_user_id: user.id,
-    })
-
-  if (error) throw error
-
-  revalidatePath('/customer/referrals')
-  return { success: true, code: data }
+  // TODO: referrals table not yet in database schema
+  throw new Error('Referral codes feature not yet implemented')
 }
 
 export async function trackReferralUse(referralCode: string) {
@@ -46,18 +25,6 @@ export async function trackReferralUse(referralCode: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { error } = await supabase
-    .schema('engagement')
-    .from('referrals')
-    .update({
-      used_at: new Date().toISOString(),
-      referred_user_id: user.id,
-    })
-    .eq('code', referralCode)
-    .is('used_at', null)
-
-  if (error) throw error
-
-  revalidatePath('/customer/referrals')
-  return { success: true }
+  // TODO: referrals table not yet in database schema
+  throw new Error('Referral tracking feature not yet implemented')
 }

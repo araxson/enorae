@@ -1,7 +1,7 @@
 import 'server-only'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import type { BlockedTime } from '../types'
+import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
 export async function getMyBlockedTimes(): Promise<BlockedTime[]> {
   const session = await verifySession()
@@ -9,7 +9,7 @@ export async function getMyBlockedTimes(): Promise<BlockedTime[]> {
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('*')
     .eq('staff_id', session.user.id)
     .eq('is_active', true)
@@ -25,7 +25,7 @@ export async function getBlockedTimeById(id: string): Promise<BlockedTime | null
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('*')
     .eq('id', id)
     .eq('staff_id', session.user.id)
@@ -44,7 +44,7 @@ export async function getUpcomingBlockedTimes(): Promise<BlockedTime[]> {
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('*')
     .eq('staff_id', session.user.id)
     .eq('is_active', true)

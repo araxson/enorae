@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Bell, Globe, DollarSign, Shield } from 'lucide-react'
-import { updateProfilePreferences } from '../api/mutations'
+import { updateProfilePreferences } from '@/features/customer/profile/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
 type ProfilePreferences = Database['public']['Views']['profiles_preferences']['Row']

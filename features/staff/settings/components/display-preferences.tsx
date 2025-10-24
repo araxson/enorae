@@ -1,11 +1,11 @@
 'use client'
 import { useState } from 'react'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { updateUserPreferences } from '../api/mutations'
-import type { DisplayPreferences } from '../types'
+import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
+import type { DisplayPreferences } from '@/features/staff/settings/types'
 
 interface DisplayPreferencesProps {
   initialPreferences: DisplayPreferences
@@ -31,13 +31,12 @@ export function DisplayPreferences({ initialPreferences }: DisplayPreferencesPro
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-6">
-        <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold">Display Preferences</h3>
-          <p className="text-sm text-muted-foreground">Customize your interface</p>
-        </div>
-
+    <Card>
+      <CardHeader>
+        <CardTitle>Display Preferences</CardTitle>
+        <CardDescription>Customize your interface.</CardDescription>
+      </CardHeader>
+      <CardContent>
         <div className="flex flex-col gap-4">
           <div>
             <Label htmlFor="theme">Theme</Label>
@@ -89,13 +88,14 @@ export function DisplayPreferences({ initialPreferences }: DisplayPreferencesPro
             </Select>
           </div>
         </div>
-
-        <div className="flex gap-4 justify-end">
+      </CardContent>
+      <CardFooter>
+        <div className="flex w-full justify-end">
           <Button onClick={handleSave} disabled={isSaving}>
             {isSaving ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
-      </div>
+      </CardFooter>
     </Card>
   )
 }

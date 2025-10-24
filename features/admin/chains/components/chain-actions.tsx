@@ -21,8 +21,9 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { MoreHorizontal, CheckCircle2, XCircle, Trash2, Power, PowerOff, CreditCard } from 'lucide-react'
-import { verifyChain, updateChainActiveStatus, updateChainSubscription, deleteChain } from '../api/mutations'
+import { verifyChain, updateChainActiveStatus, updateChainSubscription, deleteChain } from '@/features/admin/chains/api/mutations'
 import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
 
 interface ChainActionsProps {
   chainId: string
@@ -163,7 +164,7 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={() => openDialog('delete')} className="text-destructive">
+          <DropdownMenuItem onClick={() => openDialog('delete')}>
             <Trash2 className="mr-2 h-4 w-4" />
             Delete Chain
           </DropdownMenuItem>
@@ -174,16 +175,11 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{getActionText().title}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {getActionText().description}
-              <br />
-              <strong className="mt-2 block">Chain: {chainName}</strong>
-            </AlertDialogDescription>
+            <AlertDialogDescription>{getActionText().description}</AlertDialogDescription>
+            <AlertDialogDescription className="mt-2">Chain: {chainName}</AlertDialogDescription>
           </AlertDialogHeader>
           <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="chain-reason">
-              Reason (required)
-            </label>
+            <Label htmlFor="chain-reason">Reason (required)</Label>
             <Textarea
               id="chain-reason"
               value={reason}

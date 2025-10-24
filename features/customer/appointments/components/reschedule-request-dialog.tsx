@@ -15,9 +15,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Calendar } from 'lucide-react'
-import { requestReschedule } from '../api/mutations'
+import { requestReschedule } from '@/features/customer/appointments/api/mutations'
 
 interface RescheduleRequestDialogProps {
   appointmentId: string
@@ -121,6 +121,7 @@ export function RescheduleRequestDialog({
 
             <Alert>
               <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Reschedule request</AlertTitle>
               <AlertDescription>
                 Your reschedule request will be sent to the salon for approval. You&apos;ll be
                 notified once they respond.
@@ -130,6 +131,7 @@ export function RescheduleRequestDialog({
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Submission failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

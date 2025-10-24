@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import type { AppointmentServiceDetails } from '../../api/queries/appointment-services'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import type { StaffOption, ServiceFormData } from './types'
 
 interface FormFieldsProps {

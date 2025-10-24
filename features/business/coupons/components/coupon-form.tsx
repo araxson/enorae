@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/lib/hooks/use-toast'
-import { COUPONS_UNSUPPORTED_MESSAGE } from '../api/coupons.mutations'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/coupons.mutations'
 import { CouponFormFields } from './coupon-form-fields'
 import {
   defaultCouponFormState,
@@ -85,18 +85,24 @@ export function CouponForm({ salonId, services, coupon, onSuccess }: CouponFormP
   }
 
   return (
-    <Card className="p-6">
-      <CouponFormFields
-        formData={formData}
-        services={services}
-        selectedServiceIds={selectedServiceIds}
-        isLoading={isLoading}
-        isEditing={isEditing}
-        onSubmit={handleSubmit}
-        onGenerateCode={generateCode}
-        onFormDataChange={setFormData}
-        onToggleService={toggleService}
-      />
+    <Card>
+      <CardHeader>
+        <CardTitle>{isEditing ? 'Edit Coupon' : 'Create Coupon'}</CardTitle>
+        <CardDescription>Generate and manage customer-facing coupon settings.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <CouponFormFields
+          formData={formData}
+          services={services}
+          selectedServiceIds={selectedServiceIds}
+          isLoading={isLoading}
+          isEditing={isEditing}
+          onSubmit={handleSubmit}
+          onGenerateCode={generateCode}
+          onFormDataChange={setFormData}
+          onToggleService={toggleService}
+        />
+      </CardContent>
     </Card>
   )
 }

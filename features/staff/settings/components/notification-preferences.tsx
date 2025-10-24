@@ -1,11 +1,11 @@
 'use client'
 import { useState } from 'react'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { updateUserPreferences } from '../api/mutations'
-import type { NotificationPreferences, NotificationChannel } from '../types'
+import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
+import type { NotificationPreferences, NotificationChannel } from '@/features/staff/settings/types'
 
 interface NotificationPreferencesProps {
   initialPreferences: NotificationPreferences
@@ -51,29 +51,30 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-6">
-        <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold">Notification Preferences</h3>
-          <p className="text-sm text-muted-foreground">Choose how you want to be notified</p>
-        </div>
-
+    <Card>
+      <CardHeader>
+        <CardTitle>Notification Preferences</CardTitle>
+        <CardDescription>Choose how you want to be notified.</CardDescription>
+      </CardHeader>
+      <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b">
-                <th className="text-left p-2">Type</th>
-                {channels.map(channel => (
-                  <th key={channel.value} className="text-center p-2">{channel.label}</th>
+                <th className="p-2 text-left">Type</th>
+                {channels.map((channel) => (
+                  <th key={channel.value} className="p-2 text-center">
+                    {channel.label}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {notificationTypes.map(type => (
+              {notificationTypes.map((type) => (
                 <tr key={type.key} className="border-b">
                   <td className="p-2">{type.label}</td>
-                  {channels.map(channel => (
-                    <td key={channel.value} className="text-center p-2">
+                  {channels.map((channel) => (
+                    <td key={channel.value} className="p-2 text-center">
                       <Checkbox
                         checked={preferences[type.key].includes(channel.value)}
                         onCheckedChange={() => handleToggle(type.key, channel.value)}
@@ -85,13 +86,14 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
             </tbody>
           </table>
         </div>
-
-        <div className="flex gap-4 justify-end">
+      </CardContent>
+      <CardFooter>
+        <div className="flex w-full justify-end">
           <Button onClick={handleSave} disabled={isSaving}>
             {isSaving ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
-      </div>
+      </CardFooter>
     </Card>
   )
 }

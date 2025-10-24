@@ -2,6 +2,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getMyStaffProfileDetails } from './api/queries'
 import { ProfileClient } from './components/profile-client'
 
+// Export types
+export type * from './types'
+
 export async function StaffProfile() {
   let details: Awaited<ReturnType<typeof getMyStaffProfileDetails>>
 

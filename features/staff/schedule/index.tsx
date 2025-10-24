@@ -1,6 +1,6 @@
 import { requireAuth } from '@/lib/auth'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { getStaffProfile } from '../appointments/api/queries'
+import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import { getStaffMemberSchedule } from './api/queries'
 import { getBlockedTimesByStaff } from '@/features/shared/blocked-times/api/queries'
 import { StaffScheduleClient } from './components/schedule-client'

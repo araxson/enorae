@@ -1,20 +1,20 @@
+import type { ComponentProps } from 'react'
 import { Activity, AlertTriangle, ShieldAlert, UserX, Lock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
-import type { SecurityMonitoringSnapshot, SecurityMetric } from '../api/types'
+import type { SecurityMonitoringSnapshot, SecurityMetric } from '@/features/admin/security-monitoring/api/types'
 
 interface OverviewCardsProps {
   snapshot: SecurityMonitoringSnapshot
 }
 
-const STATUS_STYLES: Record<SecurityMetric['status'], string> = {
-  ok: 'border-primary/30 bg-primary/10 text-primary',
-  healthy: 'border-primary/30 bg-primary/10 text-primary',
-  info: 'border-secondary/30 bg-secondary/10 text-secondary',
-  warning: 'border-accent/30 bg-accent/10 text-accent',
-  critical: 'border-destructive/30 bg-destructive/10 text-destructive',
-  unknown: 'border-border bg-muted text-muted-foreground',
+const STATUS_VARIANT: Record<SecurityMetric['status'], ComponentProps<typeof Badge>['variant']> = {
+  ok: 'secondary',
+  healthy: 'secondary',
+  info: 'secondary',
+  warning: 'default',
+  critical: 'destructive',
+  unknown: 'outline',
 }
 
 const overviewDescriptors = [
@@ -69,15 +69,15 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         {overviewDescriptors.map(({ key, label, description, icon: Icon }) => (
           <Card key={key}>
-            <CardHeader className="flex flex-row items-start justify-between pb-2">
-              <CardTitle>{label}</CardTitle>
-              <Icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent className="space-y-1">
-              <div className="text-2xl font-bold text-foreground">
-                {formatNumber(overview[key as OverviewKey] ?? 0)}
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>{label}</CardTitle>
+                <Icon className="h-4 w-4" aria-hidden="true" />
               </div>
               <CardDescription>{description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <strong>{formatNumber(overview[key as OverviewKey] ?? 0)}</strong>
             </CardContent>
           </Card>
         ))}
@@ -87,26 +87,23 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {metrics.slice(0, 8).map((metric) => (
             <Card key={metric.key}>
-              <CardHeader className="flex flex-row items-start justify-between pb-2">
-                <CardTitle>
-                  {metric.label}
-                </CardTitle>
-                <Badge
-                  variant="outline"
-                  className={cn('text-xs capitalize', STATUS_STYLES[metric.status] ?? STATUS_STYLES.unknown)}
-                >
-                  {statusLabel(metric.status)}
-                </Badge>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <div className="text-2xl font-bold text-foreground">
-                  {formatNumber(metric.value)}
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>{metric.label}</CardTitle>
+                  <Badge variant={STATUS_VARIANT[metric.status] ?? 'outline'}>
+                    {statusLabel(metric.status)}
+                  </Badge>
                 </div>
-                <CardDescription>
-                  {metric.threshold
-                    ? `Threshold ${metric.threshold.toLocaleString('en-US')}`
-                    : 'No threshold configured'}
-                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-1">
+                  <strong>{formatNumber(metric.value)}</strong>
+                  <CardDescription>
+                    {metric.threshold
+                      ? `Threshold ${metric.threshold.toLocaleString('en-US')}`
+                      : 'No threshold configured'}
+                  </CardDescription>
+                </div>
               </CardContent>
             </Card>
           ))}

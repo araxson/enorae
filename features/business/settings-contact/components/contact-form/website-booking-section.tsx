@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -17,10 +17,11 @@ type WebsiteBookingSectionProps = {
 export function WebsiteBookingSection({ initialValues }: WebsiteBookingSectionProps) {
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Website & Booking</CardTitle>
+      </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold">Website & Booking</h3>
-          <Separator />
 
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
             <div className="flex flex-col gap-3">

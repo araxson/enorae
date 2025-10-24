@@ -14,7 +14,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import type { BookingRuleWithService } from '../api/queries'
+import type { BookingRuleWithService } from '@/features/business/booking-rules/api/queries'
 
 interface BookingRuleFormProps {
   open: boolean
@@ -82,7 +82,7 @@ export function BookingRuleForm({
                 ))}
               </select>
               {rule && (
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-muted-foreground mt-1">
                   Service cannot be changed. Create a new rule for different services.
                 </p>
               )}
@@ -99,7 +99,7 @@ export function BookingRuleForm({
                 defaultValue={rule?.duration_minutes || ''}
                 placeholder="e.g., 60"
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1">
                 How long the service takes
               </p>
             </div>
@@ -115,7 +115,7 @@ export function BookingRuleForm({
                 defaultValue={rule?.buffer_minutes || ''}
                 placeholder="e.g., 15"
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1">
                 Time between appointments for cleanup/preparation
               </p>
             </div>
@@ -131,7 +131,7 @@ export function BookingRuleForm({
                 defaultValue={rule?.min_advance_booking_hours || ''}
                 placeholder="e.g., 2"
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1">
                 How far in advance customers must book (minimum)
               </p>
             </div>
@@ -147,7 +147,7 @@ export function BookingRuleForm({
                 defaultValue={rule?.max_advance_booking_days || ''}
                 placeholder="e.g., 90"
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1">
                 How far in advance customers can book (maximum)
               </p>
             </div>

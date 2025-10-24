@@ -27,29 +27,22 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
   // Get all appointments
   const { data: appointments, error: appointmentsError } = await supabase
     .from('appointments')
-    .select('id, status, service_names, salon_name, start_time, created_at')
+    .select('*')
     .eq('customer_id', session.user.id)
     .order('start_time', { ascending: false })
+    .returns<Appointment[]>()
 
   if (appointmentsError) throw appointmentsError
-
-  // Get all transactions
-  const { data: transactions, error: transactionsError } = await supabase
-    .from('manual_transactions')
-    .select('amount')
-    .eq('customer_id', session.user.id)
-
-  if (transactionsError) throw transactionsError
 
   // Calculate metrics
   const totalAppointments = appointments?.length || 0
   const completedAppointments = appointments?.filter(a => a.status === 'completed').length || 0
   const cancelledAppointments = appointments?.filter(a => a.status === 'cancelled').length || 0
 
-  // Calculate total spending from transactions
-  const totalSpending = transactions?.reduce((sum, t) => {
-    const amount = typeof t.amount === 'number' ? t.amount : 0
-    return sum + amount
+  // Calculate total spending from appointment prices
+  const totalSpending = appointments?.reduce((sum, apt) => {
+    const price = typeof apt.total_price === 'number' ? apt.total_price : 0
+    return sum + price
   }, 0) || 0
 
   // Get favorite services (most frequently booked)
@@ -67,14 +60,7 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
     .slice(0, 5)
 
   // Get recent activity (last 10 appointments)
-  const recentActivity = (appointments?.slice(0, 10) || []).map((apt) => ({
-    id: apt.id,
-    status: apt.status,
-    service_names: apt.service_names,
-    salon_name: apt.salon_name,
-    start_time: apt.start_time,
-    created_at: apt.created_at,
-  } as Partial<Appointment>)) as Appointment[]
+  const recentActivity = (appointments?.slice(0, 10) || []) as Appointment[]
 
   return {
     totalSpending,
@@ -97,9 +83,10 @@ export async function getAppointmentFrequency(): Promise<{ month: string; count:
 
   const { data: appointments, error } = await supabase
     .from('appointments')
-    .select('start_time, status')
+    .select('*')
     .eq('customer_id', session.user.id)
     .gte('start_time', new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString())
+    .returns<Appointment[]>()
 
   if (error) throw error
 

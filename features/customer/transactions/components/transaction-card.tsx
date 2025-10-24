@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { format } from 'date-fns'
-import type { CustomerTransactionWithDetails } from '../api/queries'
+import type { CustomerTransactionWithDetails } from '@/features/customer/transactions/api/queries'
 
 interface TransactionCardProps {
   transaction: CustomerTransactionWithDetails
@@ -26,9 +26,9 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
 
   return (
     <Card>
-      <CardHeader className="p-6 pb-4">
-        <div className="flex gap-4 items-start justify-between">
-          <div>
+      <CardHeader>
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-1">
             <CardTitle>{transaction.salon?.name || 'Unknown Salon'}</CardTitle>
             <CardDescription>
               {format(transactionDate, 'PPP')} at {format(transactionDate, 'p')}
@@ -39,7 +39,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="p-6 pt-0">
+      <CardContent>
         <div className="flex flex-col gap-4">
           {transaction.staff && (
             <div>
@@ -58,7 +58,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           {transaction.appointment && (
             <div>
               <p className="text-sm text-muted-foreground">Related Appointment</p>
-              <p className="text-sm font-medium">
+              <p className="text-sm">
                 {format(new Date(transaction.appointment.scheduled_at || ''), 'PPP')}
               </p>
             </div>

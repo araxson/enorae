@@ -12,8 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Card, CardContent } from '@/components/ui/card'
-import { updateSalonSettings } from '../api/mutations'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { updateSalonSettings } from '@/features/business/settings/api/mutations'
 import { toast } from 'sonner'
 import type { Database } from '@/lib/types/database.types'
 
@@ -53,9 +53,11 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
       <div className="flex flex-col gap-8">
         {/* Booking Status */}
         <Card>
+          <CardHeader>
+            <CardTitle>Booking Status</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold">Booking Status</h3>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Accept New Bookings</Label>
@@ -72,9 +74,11 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
 
         {/* Booking Rules */}
         <Card>
+          <CardHeader>
+            <CardTitle>Booking Rules</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold">Booking Rules</h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                   <Label htmlFor="booking_lead_time_hours">Lead Time (hours)</Label>
@@ -124,9 +128,11 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
 
         {/* Account Limits */}
         <Card>
+          <CardHeader>
+            <CardTitle>Account Limits</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold">Account Limits</h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div>
                   <Label htmlFor="max_services">Max Services</Label>

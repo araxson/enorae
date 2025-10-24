@@ -1,7 +1,6 @@
 import { Crown, TrendingUp } from 'lucide-react'
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -10,7 +9,7 @@ import {
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
-import type { CustomerVipStatus } from '../api/queries/vip'
+import type { CustomerVipStatus } from '@/features/customer/dashboard/api/queries'
 
 type VIPStatusCardProps = {
   vipStatus: CustomerVipStatus
@@ -19,77 +18,90 @@ type VIPStatusCardProps = {
 export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
   if (!vipStatus.isVIP) return null
 
+  const insights = [
+    {
+      title: 'Loyalty points',
+      value: vipStatus.loyaltyPoints?.toLocaleString() ?? 0,
+      badgeText: 'Spendable',
+      description: 'Total points available',
+      footer: 'Usable on eligible rewards immediately.',
+    },
+    {
+      title: 'Tier',
+      value: vipStatus.loyaltyTier ?? 'Standard',
+      badgeText: 'Membership',
+      description: 'Current membership level',
+      footer: 'Higher tiers unlock extra perks.',
+    },
+    {
+      title: 'Lifetime spend',
+      value: `$${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}`,
+      badgeText: 'All time',
+      description: 'All-time total',
+      footer: 'Cumulative spend across all visits.',
+    },
+  ]
+
   return (
-    <Card className="border border-primary/10">
-      <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2 text-primary">
-          <Crown className="h-5 w-5" />
-          <CardTitle>VIP status</CardTitle>
-        </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <span className="flex items-center gap-2">
+            <Crown className="h-5 w-5" />
+            VIP status
+          </span>
+        </CardTitle>
         <CardDescription>Exclusive benefits and rewards</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid gap-4 sm:grid-cols-2 lg:grid-cols-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs">
-          {[
-            {
-              title: 'Loyalty points',
-              value: vipStatus.loyaltyPoints?.toLocaleString() ?? 0,
-              badgeText: 'Spendable',
-              footer: 'Usable on eligible rewards immediately.',
-            },
-            {
-              title: 'Tier',
-              value: vipStatus.loyaltyTier ?? 'Standard',
-              badgeText: 'Membership',
-              footer: 'Higher tiers unlock extra perks.',
-            },
-            {
-              title: 'Lifetime spend',
-              value: `$${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}`,
-              badgeText: 'All time',
-              footer: 'Cumulative spend across all visits.',
-            },
-          ].map(({ title, value, badgeText, footer }) => (
-            <Card key={title} className="@container/card">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {insights.map(({ title, value, badgeText, description, footer }) => (
+            <Card key={title}>
               <CardHeader>
-                <CardDescription>{title}</CardDescription>
-                <CardTitle>
-                  {value}
-                </CardTitle>
-                <CardAction>
-                  <Badge variant="outline">{badgeText}</Badge>
-                </CardAction>
+                <CardTitle>{title}</CardTitle>
+                <CardDescription>{description}</CardDescription>
               </CardHeader>
-              <CardFooter className="flex flex-col items-start gap-1.5 text-sm">
-                <div className="text-muted-foreground">{footer}</div>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <p className="text-2xl font-semibold text-foreground">{value}</p>
+                  <Badge variant="outline">{badgeText}</Badge>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <p className="text-sm text-muted-foreground">{footer}</p>
               </CardFooter>
             </Card>
           ))}
           {vipStatus.monthlySpend !== undefined ? (
-            <Card className="@container/card">
+            <Card>
               <CardHeader>
-                <CardDescription>This month</CardDescription>
-                <div className="flex items-center gap-1">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <CardTitle>${vipStatus.monthlySpend.toLocaleString()}</CardTitle>
-                </div>
-                <CardAction>
-                  <Badge variant="outline">Monthly total</Badge>
-                </CardAction>
+                <CardTitle>This month</CardTitle>
+                <CardDescription>Current monthly spend</CardDescription>
               </CardHeader>
-              <CardFooter className="flex flex-col items-start gap-1.5 text-sm">
-                <div className="text-muted-foreground">
-                  Points will post once appointments complete.
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
+                    <p className="text-2xl font-semibold text-foreground">
+                      ${vipStatus.monthlySpend.toLocaleString()}
+                    </p>
+                  </div>
+                  <Badge variant="outline">Monthly total</Badge>
                 </div>
+              </CardContent>
+              <CardFooter>
+                <p className="text-sm text-muted-foreground">
+                  Points will post once appointments complete.
+                </p>
               </CardFooter>
             </Card>
           ) : null}
         </div>
       </CardContent>
-      <CardFooter className="pt-0">
-        <CardDescription>
+      <CardFooter>
+        <p className="text-sm text-muted-foreground">
           Maintain VIP status by meeting monthly spend requirements.
-        </CardDescription>
+        </p>
       </CardFooter>
     </Card>
   )

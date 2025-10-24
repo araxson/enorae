@@ -1,4 +1,4 @@
-import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/sidebars/types'
+import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/types'
 
 export const ADMIN_MENUS = {
   default: [
@@ -12,9 +12,28 @@ export const ADMIN_MENUS = {
     { title: 'Salon Chains', url: '/admin/chains', icon: 'building2' },
     { title: 'Users', url: '/admin/users', icon: 'users' },
     { title: 'Roles', url: '/admin/roles', icon: 'shield' },
-    { title: 'Inventory', url: '/admin/inventory', icon: 'package' },
     { title: 'Moderation', url: '/admin/moderation', icon: 'shieldAlert' },
-    { title: 'Security', url: '/admin/security', icon: 'lock' },
+    {
+      title: 'Security',
+      url: '/admin/security',
+      icon: 'lock',
+      items: [
+        { title: 'Policy Enforcement', url: '/admin/security' },
+        { title: 'Access Monitoring', url: '/admin/security/monitoring' },
+        { title: 'Incidents', url: '/admin/security/incidents' },
+        { title: 'Rate Limiting', url: '/admin/security-monitoring' },
+      ],
+    },
+    {
+      title: 'Database Health',
+      url: '/admin/database-health',
+      icon: 'database',
+      items: [
+        { title: 'Performance', url: '/admin/database-health' },
+        { title: 'Statistics', url: '/admin/database-health' },
+        { title: 'TOAST Usage', url: '/admin/database-health' },
+      ],
+    },
   ] as NavItem[],
   superAdmin: [
     {
@@ -24,6 +43,7 @@ export const ADMIN_MENUS = {
       items: [
         { title: 'General', url: '/admin/settings' },
         { title: 'Preferences', url: '/admin/settings/preferences' },
+        { title: 'Sessions', url: '/admin/settings/sessions' },
         { title: 'Profile', url: '/admin/profile' },
       ],
     },

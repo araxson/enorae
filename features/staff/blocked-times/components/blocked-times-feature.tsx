@@ -3,11 +3,12 @@
 import { useState } from 'react'
 import { Plus, List, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BlockedTimesList } from './blocked-times-list'
 import { BlockedTimesCalendar } from './blocked-times-calendar'
 import { BlockedTimeDialog } from './blocked-time-dialog'
-import type { BlockedTime } from '../types'
+import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
 interface BlockedTimesFeatureProps {
   blockedTimes: BlockedTime[]
@@ -30,13 +31,17 @@ export function BlockedTimesFeature({ blockedTimes }: BlockedTimesFeatureProps) 
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex gap-4 items-center justify-between">
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Blocked Times</h1>
-        <Button onClick={handleCreate}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Blocked Time
-        </Button>
-      </div>
+      <Card>
+        <CardHeader>
+          <div className="flex flex-row items-center justify-between">
+            <CardTitle>Blocked Times</CardTitle>
+            <Button onClick={handleCreate}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Blocked Time
+            </Button>
+          </div>
+        </CardHeader>
+      </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>

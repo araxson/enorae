@@ -1,4 +1,4 @@
-import type { CouponWithStats } from '../api/queries/coupon-validation'
+import type { CouponWithStats } from '@/features/business/coupons/api/queries/coupon-validation'
 
 export interface CouponFormProps {
   salonId: string

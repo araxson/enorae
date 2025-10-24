@@ -75,7 +75,7 @@ export async function getStaffForScheduling(): Promise<
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id, full_name, title')
     .eq('salon_id', salonId)
     .order('full_name')

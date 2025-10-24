@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { MessageActivityPoint } from '../api/queries'
+import type { MessageActivityPoint } from '@/features/admin/messages/api/queries'
 
 interface MessagesActivityTableProps {
   activity: MessageActivityPoint[]

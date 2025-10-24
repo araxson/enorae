@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Mail, ShieldQuestion, UserCircle2 } from 'lucide-react'
-import type { ProfileDetail } from '../api/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 
 interface ProfileSummaryCardProps {
   profile: ProfileDetail | null
@@ -91,16 +91,16 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
             </div>
             <div className="flex flex-wrap gap-2">
               {summary.status && (
-                <Badge variant="outline" className="capitalize">
-                  {summary.status.replace(/_/g, ' ')}
+                <Badge variant="outline">
+                  {summary.status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                 </Badge>
               )}
               {summary.primaryRole ? (
-                <Badge variant="default" className="capitalize">
-                  {summary.primaryRole.replace(/_/g, ' ')}
+                <Badge variant="default">
+                  {summary.primaryRole.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                 </Badge>
               ) : (
-                <Badge variant="secondary" className="capitalize">
+                <Badge variant="secondary">
                   <ShieldQuestion className="mr-1 h-3 w-3" />
                   Role missing
                 </Badge>
@@ -141,12 +141,12 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
 
         {roles.length > 0 && (
           <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase text-muted-foreground">Active roles</p>
+            <p className="text-xs font-semibold text-muted-foreground">Active roles</p>
             <div className="flex flex-wrap gap-2">
               {roles.map((role) => (
-                <Badge key={role.id} variant="outline" className="capitalize">
+                <Badge key={role.id} variant="outline">
                   <UserCircle2 className="mr-1 h-3 w-3" />
-                  {role.role.replace(/_/g, ' ')}
+                  {role.role.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                 </Badge>
               ))}
             </div>
@@ -157,7 +157,7 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
           <div className="grid gap-4 sm:grid-cols-2">
             {metadata.tags.length > 0 && (
               <div>
-                <p className="text-xs font-semibold uppercase text-muted-foreground">Tags</p>
+                <p className="text-xs font-semibold text-muted-foreground">Tags</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {metadata.tags.map((tag) => (
                     <Badge key={tag} variant="secondary">
@@ -169,7 +169,7 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
             )}
             {metadata.interests.length > 0 && (
               <div>
-                <p className="text-xs font-semibold uppercase text-muted-foreground">Interests</p>
+                <p className="text-xs font-semibold text-muted-foreground">Interests</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {metadata.interests.map((interest) => (
                     <Badge key={interest} variant="secondary">

@@ -30,8 +30,8 @@ export function AmenitiesBadges({ amenities, limit, className }: AmenitiesBadges
       {displayAmenities.map((amenity) => {
         const Icon = AMENITY_ICONS[amenity]
         return (
-          <Badge key={amenity} variant="secondary" className="gap-1">
-            {Icon && <Icon className="h-3 w-3" />}
+          <Badge key={amenity} variant="secondary">
+            {Icon && <Icon className="mr-1 h-3 w-3" />}
             {amenity}
           </Badge>
         )

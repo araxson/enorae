@@ -1,7 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
-import type { SalonLocation } from '@/lib/types/app.types'
+import type { SalonLocation } from '@/features/business/locations'
 
 /**
  * Get all locations for the user's salon

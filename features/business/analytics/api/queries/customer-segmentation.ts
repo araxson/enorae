@@ -3,7 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
-import type { Appointment } from '../analytics.types'
+import type { Appointment } from '@/features/business/analytics/api/analytics.types'
 
 export async function getCustomerSegmentation(
   salonId: string,

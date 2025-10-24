@@ -14,12 +14,6 @@ type UseDescriptionFormParams = {
 }
 
 export type ArrayFieldState = {
-  amenities: string[]
-  specialties: string[]
-  paymentMethods: string[]
-  languages: string[]
-  awards: string[]
-  certifications: string[]
   keywords: string[]
 }
 
@@ -55,12 +49,6 @@ export function useDescriptionForm({ salonId, description }: UseDescriptionFormP
   const [success, setSuccess] = useState(false)
 
   const [arrays, setArrays] = useState<ArrayFieldState>({
-    amenities: description?.amenities ?? [],
-    specialties: description?.specialties ?? [],
-    paymentMethods: description?.payment_methods ?? [],
-    languages: description?.languages_spoken ?? [],
-    awards: description?.awards ?? [],
-    certifications: description?.certifications ?? [],
     keywords: description?.meta_keywords ?? [],
   })
 
@@ -93,12 +81,6 @@ export function useDescriptionForm({ salonId, description }: UseDescriptionFormP
       meta_title: (formData.get('meta_title') as string) || null,
       meta_description: (formData.get('meta_description') as string) || null,
       meta_keywords: arrays.keywords.length > 0 ? arrays.keywords : null,
-      amenities: arrays.amenities.length > 0 ? arrays.amenities : null,
-      specialties: arrays.specialties.length > 0 ? arrays.specialties : null,
-      payment_methods: arrays.paymentMethods.length > 0 ? arrays.paymentMethods : null,
-      languages_spoken: arrays.languages.length > 0 ? arrays.languages : null,
-      awards: arrays.awards.length > 0 ? arrays.awards : null,
-      certifications: arrays.certifications.length > 0 ? arrays.certifications : null,
     }
 
     const result = await updateSalonDescription(salonId, input)

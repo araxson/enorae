@@ -1,7 +1,7 @@
 import 'server-only'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import type { OperatingHours } from '../types'
+import type { OperatingHours } from '@/features/staff/operating-hours/types'
 
 export async function getSalonOperatingHours(): Promise<OperatingHours[]> {
   const session = await verifySession()
@@ -11,7 +11,7 @@ export async function getSalonOperatingHours(): Promise<OperatingHours[]> {
 
   // Get user's salon_id
   const { data: staffData, error: staffError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string }>()
@@ -22,7 +22,6 @@ export async function getSalonOperatingHours(): Promise<OperatingHours[]> {
     .from('operating_hours_view')
     .select('*')
     .eq('salon_id', staffData.salon_id)
-    .is('deleted_at', null)
     .order('day_of_week', { ascending: true })
 
   if (error) throw error
@@ -37,7 +36,7 @@ export async function getTodayOperatingHours(): Promise<OperatingHours | null> {
 
   // Get user's salon_id
   const { data: staffData, error: staffError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string }>()
@@ -52,7 +51,6 @@ export async function getTodayOperatingHours(): Promise<OperatingHours | null> {
     .select('*')
     .eq('salon_id', staffData.salon_id)
     .eq('day_of_week', today)
-    .is('deleted_at', null)
     .single()
 
   if (error) {

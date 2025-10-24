@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { RequestCard } from './request-card'
 import { CreateRequestDialog } from './create-request-dialog'
-import type { TimeOffRequestWithStaff, TimeOffBalance, TeamTimeOffCalendar } from '../api/queries'
+import type { TimeOffRequestWithStaff, TimeOffBalance, TeamTimeOffCalendar } from '@/features/staff/time-off/api/queries'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface TimeOffRequestsClientProps {
@@ -105,37 +105,39 @@ export function TimeOffRequestsClient({
                 <CardTitle>Time Off Balance ({balance.year})</CardTitle>
                 <CardDescription>Your annual time off allocation and usage</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div>
-                    <p className="text-2xl font-bold">{balance.total_days}</p>
-                    <p className="text-sm text-muted-foreground">Total</p>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                      <p className="text-2xl font-semibold">{balance.total_days}</p>
+                      <p className="text-sm text-muted-foreground">Total</p>
+                    </div>
+                    <div>
+                      <p className="text-2xl font-semibold text-secondary">{balance.used_days}</p>
+                      <p className="text-sm text-muted-foreground">Used</p>
+                    </div>
+                    <div>
+                      <p className="text-2xl font-semibold text-primary">{balance.remaining_days}</p>
+                      <p className="text-sm text-muted-foreground">Remaining</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-2xl font-bold text-secondary">{balance.used_days}</p>
-                    <p className="text-sm text-muted-foreground">Used</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-primary">{balance.remaining_days}</p>
-                    <p className="text-sm text-muted-foreground">Remaining</p>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Used: {balance.used_days} days</span>
-                    <span>{usagePercent.toFixed(0)}%</span>
-                  </div>
-                  <Progress value={usagePercent} className="h-2" />
-                </div>
-                {balance.pending_days > 0 && (
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>Pending approval: {balance.pending_days} days</span>
-                      <span>{pendingPercent.toFixed(0)}%</span>
+                      <span>Used: {balance.used_days} days</span>
+                      <span>{usagePercent.toFixed(0)}%</span>
                     </div>
-                    <Progress value={pendingPercent} className="h-2" />
+                    <Progress value={usagePercent} className="h-2" />
                   </div>
-                )}
+                  {balance.pending_days > 0 && (
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Pending approval: {balance.pending_days} days</span>
+                        <span>{pendingPercent.toFixed(0)}%</span>
+                      </div>
+                      <Progress value={pendingPercent} className="h-2" />
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -143,11 +145,13 @@ export function TimeOffRequestsClient({
 
         {activeTab === 'team' && (
           <div className="space-y-4">
-            <h3 className="scroll-m-20 text-2xl font-semibold">Team Time Off Calendar</h3>
+            <h3 className="text-lg font-semibold">Team Time Off Calendar</h3>
             {teamCalendar.length === 0 ? (
               <Card>
-                <CardContent className="py-12 text-center">
-                  <p className="text-muted-foreground">No upcoming team time off</p>
+                <CardContent>
+                  <div className="py-12 text-center">
+                    <p className="text-muted-foreground">No upcoming team time off</p>
+                  </div>
                 </CardContent>
               </Card>
             ) : (
@@ -193,11 +197,13 @@ export function TimeOffRequestsClient({
 
             {displayedRequests.length === 0 ? (
               <Card>
-                <CardContent className="flex flex-col items-center justify-center gap-2 py-12 text-center">
-                  <p className="text-muted-foreground">No time-off requests yet</p>
-                  <p className="text-sm text-muted-foreground">
-                    Click the New request button to submit a time-off request
-                  </p>
+                <CardContent>
+                  <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
+                    <p className="text-muted-foreground">No time-off requests yet</p>
+                    <p className="text-sm text-muted-foreground">
+                      Click the New request button to submit a time-off request
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             ) : (

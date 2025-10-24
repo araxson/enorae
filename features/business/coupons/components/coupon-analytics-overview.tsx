@@ -6,8 +6,8 @@ import { DollarSign, CalendarClock, Award, Activity } from 'lucide-react'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { format } from 'date-fns'
-import type { CouponAnalyticsSnapshot } from '../api/queries/coupon-validation'
-import { buildCouponEffectiveness } from '../api/queries/coupon-validation'
+import type { CouponAnalyticsSnapshot } from '@/features/business/coupons/api/queries/coupon-validation'
+import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries/coupon-validation'
 
 type CouponAnalyticsOverviewProps = {
   analytics: CouponAnalyticsSnapshot
@@ -67,9 +67,9 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
             {summary.topCoupon ? (
               <>
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="font-mono text-sm">
-                    {summary.topCoupon.code}
-                  </Badge>
+                  <div className="font-mono text-sm">
+                    <Badge variant="secondary">{summary.topCoupon.code}</Badge>
+                  </div>
                   <span className="text-sm text-muted-foreground">
                     {summary.topCoupon.stats.totalUses} uses
                   </span>
@@ -161,9 +161,9 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
                 <div key={coupon.id} className="flex items-center justify-between rounded-md border px-4 py-2">
                   <div>
                     <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="font-mono text-xs">
-                        {coupon.code}
-                      </Badge>
+                      <div className="font-mono text-xs">
+                        <Badge variant="secondary">{coupon.code}</Badge>
+                      </div>
                       <span className="text-sm font-medium">{coupon.description}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">

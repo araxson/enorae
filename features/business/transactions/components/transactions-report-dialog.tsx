@@ -9,16 +9,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Card } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import type { ManualTransactionWithDetails } from '../api/queries'
+import type { ManualTransactionWithDetails } from '@/features/business/transactions/api/queries'
 
 interface TransactionsReportDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   transactions: ManualTransactionWithDetails[]
 }
+
+const formatLabel = (value: string) =>
+  value.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
 
 export function TransactionsReportDialog({
   open,
@@ -97,55 +100,61 @@ export function TransactionsReportDialog({
 
         <div className="flex flex-col gap-6">
           {report.dateRange && (
-            <Card className="p-4">
-              <div className="flex flex-col gap-3">
-                <h3 className="text-lg font-semibold">Report Period</h3>
-                <p className="leading-7">
+            <Card>
+              <CardHeader>
+                <CardTitle>Report Period</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3">
+                <p>
                   {format(report.dateRange.earliest, 'MMM dd, yyyy')} -{' '}
                   {format(report.dateRange.latest, 'MMM dd, yyyy')}
                 </p>
-                <p className="text-sm text-muted-foreground text-sm">
+                <p className="text-muted-foreground">
                   Total Transactions: {report.total}
                 </p>
-              </div>
+              </CardContent>
             </Card>
           )}
 
-          <Card className="p-4">
-            <div className="flex flex-col gap-4">
-              <h3 className="text-lg font-semibold">By Transaction Type</h3>
+          <Card>
+            <CardHeader>
+              <CardTitle>By Transaction Type</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
               <Separator />
               <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                 {Object.entries(report.byType).map(([type, count]) => (
                   <div key={type} className="flex items-center justify-between">
-                    <Badge variant="secondary" className="capitalize">
-                      {type}
-                    </Badge>
-                    <p className="text-sm text-muted-foreground">{count}</p>
+                    <Badge variant="secondary">{formatLabel(type)}</Badge>
+                    <p className="text-muted-foreground">{count}</p>
                   </div>
                 ))}
               </div>
-            </div>
+            </CardContent>
           </Card>
 
-          <Card className="p-4">
-            <div className="flex flex-col gap-4">
-              <h3 className="text-lg font-semibold">By Payment Method</h3>
+          <Card>
+            <CardHeader>
+              <CardTitle>By Payment Method</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
               <Separator />
               <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                 {Object.entries(report.byPaymentMethod).map(([method, count]) => (
                   <div key={method} className="flex items-center justify-between">
-                    <p className="leading-7 capitalize text-sm">{method}</p>
-                    <p className="text-sm text-muted-foreground">{count}</p>
+                    <p className="capitalize">{method}</p>
+                    <p className="text-muted-foreground">{count}</p>
                   </div>
                 ))}
               </div>
-            </div>
+            </CardContent>
           </Card>
 
-          <Card className="p-4">
-            <div className="flex flex-col gap-4">
-              <h3 className="text-lg font-semibold">By Staff Member</h3>
+          <Card>
+            <CardHeader>
+              <CardTitle>By Staff Member</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
               <Separator />
               <div className="flex flex-col gap-3">
                 {Object.entries(report.byStaff)
@@ -153,12 +162,12 @@ export function TransactionsReportDialog({
                   .slice(0, 10)
                   .map(([staff, count]) => (
                     <div key={staff} className="flex items-center justify-between">
-                      <p className="leading-7 text-sm">{staff}</p>
+                      <p>{staff}</p>
                       <Badge variant="outline">{count}</Badge>
                     </div>
                   ))}
               </div>
-            </div>
+            </CardContent>
           </Card>
         </div>
       </DialogContent>

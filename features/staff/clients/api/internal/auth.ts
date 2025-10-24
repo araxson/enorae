@@ -16,14 +16,14 @@ type StaffProfile = {
  */
 export async function verifyStaffOwnership(staffId?: string): Promise<{
   session: Session
-  supabase: SupabaseClient<Database>
+  supabase: Awaited<ReturnType<typeof createClient>>
   staffProfile: StaffProfile
 }> {
   const session = await requireAuth()
   const supabase = await createClient()
 
   let query = supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id, salon_id')
     .eq('user_id', session.user.id)
     .limit(1)

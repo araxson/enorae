@@ -45,90 +45,101 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
       <CardContent>
         <div className="flex flex-col gap-6">
           {/* Key Metrics */}
-          <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
-            <div className="text-center p-4 rounded-lg bg-muted/50">
-              <Users className="h-5 w-5 mx-auto mb-2 text-muted-foreground" />
-              <div className="text-2xl font-bold">{data.totalCustomers}</div>
-              <p className="text-sm font-medium text-muted-foreground">Total Customers</p>
-            </div>
-
-            <div className="text-center p-4 rounded-lg bg-muted/50">
-              <UserPlus className="h-5 w-5 mx-auto mb-2 text-primary" />
-              <div className="text-2xl font-bold">{data.newCustomers}</div>
-              <p className="text-sm font-medium text-muted-foreground">New ({newCustomerPercentage}%)</p>
-            </div>
-
-            <div className="text-center p-4 rounded-lg bg-muted/50">
-              <Repeat className="h-5 w-5 mx-auto mb-2 text-secondary" />
-              <div className="text-2xl font-bold">{data.returningCustomers}</div>
-              <p className="text-sm font-medium text-muted-foreground">Returning</p>
-            </div>
-
-            <div className="text-center p-4 rounded-lg bg-muted/50">
-              <div className="flex gap-2 items-center justify-center mb-2">
-                {data.retentionRate >= 50 ? (
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                ) : (
-                  <TrendingDown className="h-5 w-5 text-destructive" />
-                )}
-              </div>
-              <div className="text-2xl font-bold">{data.retentionRate.toFixed(1)}%</div>
-              <p className="text-sm font-medium text-muted-foreground">Retention Rate</p>
-            </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {[
+              {
+                icon: <Users className="h-5 w-5 text-muted-foreground" />,
+                title: data.totalCustomers,
+                description: 'Total Customers',
+              },
+              {
+                icon: <UserPlus className="h-5 w-5 text-primary" />,
+                title: data.newCustomers,
+                description: `New (${newCustomerPercentage}%)`,
+              },
+              {
+                icon: <Repeat className="h-5 w-5 text-secondary" />,
+                title: data.returningCustomers,
+                description: 'Returning',
+              },
+              {
+                icon:
+                  data.retentionRate >= 50 ? (
+                    <TrendingUp className="h-5 w-5 text-primary" />
+                  ) : (
+                    <TrendingDown className="h-5 w-5 text-destructive" />
+                  ),
+                title: `${data.retentionRate.toFixed(1)}%`,
+                description: 'Retention Rate',
+              },
+            ].map((metric) => (
+              <Card key={metric.description}>
+                <CardHeader className="items-center space-y-2 text-center">
+                  <div className="flex items-center justify-center">{metric.icon}</div>
+                  <CardTitle>{metric.title}</CardTitle>
+                  <CardDescription>{metric.description}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
           </div>
 
           <Separator />
 
           {/* Value Metrics */}
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div className="p-4 rounded-lg border">
-              <div className="flex gap-3 items-center mb-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Avg Lifetime Value</CardTitle>
                 <DollarSign className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold text-base">Avg Lifetime Value</h3>
-              </div>
-              <div className="text-3xl font-bold">{formatCurrency(data.averageLifetimeValue)}</div>
-              <p className="text-sm font-medium text-muted-foreground">Per customer</p>
-            </div>
+              </CardHeader>
+              <CardContent className="space-y-1">
+                <CardTitle>{formatCurrency(data.averageLifetimeValue)}</CardTitle>
+                <CardDescription>Per customer</CardDescription>
+              </CardContent>
+            </Card>
 
-            <div className="p-4 rounded-lg border">
-              <div className="flex gap-3 items-center mb-2">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Avg Order Value</CardTitle>
                 <DollarSign className="h-5 w-5 text-muted-foreground" />
-                <h3 className="scroll-m-20 text-2xl font-semibold text-base">Avg Order Value</h3>
-              </div>
-              <div className="text-3xl font-bold">{formatCurrency(data.averageOrderValue)}</div>
-              <p className="text-sm font-medium text-muted-foreground">Per appointment</p>
-            </div>
+              </CardHeader>
+              <CardContent className="space-y-1">
+                <CardTitle>{formatCurrency(data.averageOrderValue)}</CardTitle>
+                <CardDescription>Per appointment</CardDescription>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Top Customers */}
           {data.topCustomers.length > 0 && (
             <>
               <Separator />
-              <div>
-                <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Top Customers</h3>
-                <div className="flex flex-col gap-3">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Top Customers</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-3">
                   {data.topCustomers.map((customer, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-4 items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors"
-                    >
-                      <div className="flex-1">
-                        <div className="font-medium">{customer.name}</div>
-                        {customer.email && (
-                          <p className="text-sm font-medium text-muted-foreground">{customer.email}</p>
-                        )}
-                      </div>
-                      <div className="flex gap-4 items-center">
-                        <div className="text-right">
-                          <div className="font-semibold">{formatCurrency(customer.totalSpent)}</div>
-                          <p className="text-sm font-medium text-muted-foreground">{customer.visitCount} visits</p>
+                    <Card key={customer.name}>
+                      <CardContent className="flex items-center justify-between gap-4">
+                        <div className="flex-1">
+                          <p className="font-medium">{customer.name}</p>
+                          {customer.email && (
+                            <p className="text-sm text-muted-foreground">{customer.email}</p>
+                          )}
                         </div>
-                        <Badge variant="secondary">#{index + 1}</Badge>
-                      </div>
-                    </div>
+                        <div className="flex items-center gap-4">
+                          <div className="text-right">
+                            <p className="font-semibold">{formatCurrency(customer.totalSpent)}</p>
+                            <p className="text-sm text-muted-foreground">{customer.visitCount} visits</p>
+                          </div>
+                          <Badge variant="secondary">#{index + 1}</Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))}
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </>
           )}
         </div>

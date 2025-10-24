@@ -19,12 +19,12 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
   if (!metrics) {
     return (
       <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
+        <CardHeader className="items-center text-center">
+          <CardTitle>No metrics data available</CardTitle>
+          <CardDescription>Metrics will be generated automatically.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center py-6">
           <DollarSign className="h-12 w-12 text-muted-foreground mb-4" />
-          <p className="text-sm text-muted-foreground">No metrics data available</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Metrics will be generated automatically
-          </p>
         </CardContent>
       </Card>
     )

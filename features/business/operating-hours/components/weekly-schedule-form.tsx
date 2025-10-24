@@ -3,13 +3,13 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { bulkUpdateOperatingHours } from '../api/mutations'
+import { bulkUpdateOperatingHours } from '@/features/business/operating-hours/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
 
 interface OperatingHour {
@@ -83,10 +83,10 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
   return (
     <Card>
       <CardHeader>
-        <h3 className="scroll-m-20 text-2xl font-semibold">Weekly Operating Hours</h3>
-        <p className="leading-7 text-muted-foreground">
+        <CardTitle>Weekly Operating Hours</CardTitle>
+        <CardDescription>
           Set your salon&apos;s operating hours for each day of the week
-        </p>
+        </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent>
@@ -102,12 +102,11 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
               const dayHours = hours.find((h) => h.day_of_week === index)!
               return (
                 <Card key={index}>
-                  <CardContent className="p-4">
+                  <CardHeader className="pb-2">
+                    <CardTitle>{day}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0">
                     <div className="grid gap-4 grid-cols-1 md:grid-cols-4 items-end">
-                      <div className="md:col-span-1">
-                        <Label className="font-semibold">{day}</Label>
-                      </div>
-
                       <div>
                         <Label htmlFor={`open-${index}`} className="text-sm">
                           Open Time

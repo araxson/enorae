@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
-import type { TeamTimeOffCalendar } from '../api/queries'
+import type { TeamTimeOffCalendar } from '@/features/staff/time-off/api/queries'
 
 interface TeamTimeOffCalendarProps {
   entries: TeamTimeOffCalendar[]
@@ -15,11 +15,12 @@ export function TeamTimeOffCalendarSection({ entries }: TeamTimeOffCalendarProps
       <span className="text-2xl font-semibold text-foreground">Team Time Off Calendar</span>
       {entries.length === 0 ? (
         <Card>
-          <CardContent className="py-12 text-center">
-            <CardDescription>
-              No upcoming team time off
-            </CardDescription>
-          </CardContent>
+          <CardHeader>
+            <div className="flex flex-col items-center text-center">
+              <CardTitle>No upcoming time off</CardTitle>
+              <CardDescription>No upcoming team time off</CardDescription>
+            </div>
+          </CardHeader>
         </Card>
       ) : (
         <div className="grid gap-6">

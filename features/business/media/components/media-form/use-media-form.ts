@@ -3,8 +3,8 @@
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
-import { addGalleryImage, removeGalleryImage, updateSalonMedia } from '../../api/mutations'
-import type { SalonMedia as SalonMediaRow } from '@/lib/types/app.types'
+import { addGalleryImage, removeGalleryImage, updateSalonMedia } from '@/features/business/media/api/mutations'
+import type { SalonMedia as SalonMediaRow } from '@/features/business/locations'
 
 type SalonMedia = SalonMediaRow
 

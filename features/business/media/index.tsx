@@ -16,8 +16,8 @@ export async function SalonMedia() {
       <section className="py-16 md:py-24 lg:py-32">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4">
-            <p className="leading-7 text-base font-semibold">Salon Media</p>
-            <p className="leading-7">No salon found. Please create a salon first.</p>
+            <p>Salon Media</p>
+            <p className="text-muted-foreground">No salon found. Please create a salon first.</p>
           </div>
         </div>
       </section>
@@ -32,8 +32,8 @@ export async function SalonMedia() {
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10">
         <div>
-          <p className="leading-7 text-base font-semibold">Salon Media</p>
-          <p className="text-sm text-muted-foreground">
+          <p>Salon Media</p>
+          <p className="text-muted-foreground">
             Manage photos, branding, and social media links for {salonName}
           </p>
         </div>

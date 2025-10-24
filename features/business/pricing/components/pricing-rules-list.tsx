@@ -2,7 +2,7 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Trash2 } from 'lucide-react'
 import { togglePricingRuleStatus, deletePricingRule } from '../api/pricing-rules.mutations'
@@ -79,11 +79,11 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
 
   if (rules.length === 0) {
     return (
-      <Card className="p-12 text-center">
-        <p className="text-muted-foreground">No pricing rules configured yet.</p>
-        <p className="text-sm text-muted-foreground mt-2">
-          Create your first dynamic pricing rule to optimize revenue.
-        </p>
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle>No pricing rules configured yet.</CardTitle>
+          <CardDescription>Create your first dynamic pricing rule to optimize revenue.</CardDescription>
+        </CardHeader>
       </Card>
     )
   }
@@ -91,49 +91,45 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
   return (
     <div className="flex flex-col gap-4">
       {rules.map((rule) => (
-        <Card key={rule.id} className="p-6">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h3 className="font-semibold">{rule.rule_name}</h3>
-                <Badge variant="outline">{getRuleTypeLabel(rule.rule_type)}</Badge>
-                {rule.is_active && <Badge variant="default">Active</Badge>}
-              </div>
-
-              <div className="text-sm text-muted-foreground space-y-1">
-                {rule.multiplier && rule.multiplier !== 1 && (
-                  <p>Multiplier: {rule.multiplier}x ({((rule.multiplier - 1) * 100).toFixed(0)}% {rule.multiplier > 1 ? 'increase' : 'decrease'})</p>
-                )}
-                {rule.fixed_adjustment && rule.fixed_adjustment !== 0 && (
-                  <p>Fixed: {rule.fixed_adjustment > 0 ? '+' : ''}{rule.fixed_adjustment}</p>
-                )}
-                {rule.start_time && rule.end_time && (
-                  <p>Time: {rule.start_time} - {rule.end_time}</p>
-                )}
-                {(rule.valid_from || rule.valid_until) && (
-                  <p>Season: {rule.valid_from || 'now'} → {rule.valid_until || 'ongoing'}</p>
-                )}
-                {rule.customer_segment && (
-                  <p>Segment: {rule.customer_segment.replace(/_/g, ' ')}</p>
-                )}
-                <p>Priority: {rule.priority}</p>
-              </div>
+        <Card key={rule.id}>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <CardTitle>{rule.rule_name}</CardTitle>
+              <Badge variant="outline">{getRuleTypeLabel(rule.rule_type)}</Badge>
+              {rule.is_active ? <Badge variant="default">Active</Badge> : null}
             </div>
-
+            <CardDescription>
+              Priority {rule.priority}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3 pt-0">
+            <div className="text-sm text-muted-foreground space-y-1">
+              {rule.multiplier && rule.multiplier !== 1 ? (
+                <p>Multiplier: {rule.multiplier}x ({((rule.multiplier - 1) * 100).toFixed(0)}% {rule.multiplier > 1 ? 'increase' : 'decrease'})</p>
+              ) : null}
+              {rule.fixed_adjustment && rule.fixed_adjustment !== 0 ? (
+                <p>Fixed: {rule.fixed_adjustment > 0 ? '+' : ''}{rule.fixed_adjustment}</p>
+              ) : null}
+              {rule.start_time && rule.end_time ? (
+                <p>Time: {rule.start_time} - {rule.end_time}</p>
+              ) : null}
+              {(rule.valid_from || rule.valid_until) ? (
+                <p>Season: {rule.valid_from || 'now'} → {rule.valid_until || 'ongoing'}</p>
+              ) : null}
+              {rule.customer_segment ? (
+                <p>Segment: {rule.customer_segment.replace(/_/g, ' ')}</p>
+              ) : null}
+            </div>
             <div className="flex items-center gap-2">
               <Switch
                 checked={rule.is_active}
                 onCheckedChange={() => handleToggle(rule.id, rule.is_active)}
               />
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleDelete(rule.id)}
-              >
+              <Button variant="ghost" size="icon" onClick={() => handleDelete(rule.id)}>
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-          </div>
+          </CardContent>
         </Card>
       ))}
     </div>

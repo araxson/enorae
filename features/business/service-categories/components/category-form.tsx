@@ -21,8 +21,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { createServiceCategory, updateServiceCategory } from '../api/mutations'
-import type { ServiceCategoryWithCounts } from '../api/queries'
+import { createServiceCategory, updateServiceCategory } from '@/features/business/service-categories/api/mutations'
+import type { ServiceCategoryWithCounts } from '@/features/business/service-categories/api/queries'
 
 type CategoryFormProps = {
   category?: ServiceCategoryWithCounts | null
@@ -117,7 +117,7 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
                   ))}
                 </SelectContent>
               </Select>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground">
                 Optional: Create a subcategory under an existing category
               </p>
             </div>

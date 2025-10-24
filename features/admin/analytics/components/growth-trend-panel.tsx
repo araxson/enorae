@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { PlatformAnalyticsSnapshot } from '../api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface GrowthTrendPanelProps {
   series: PlatformAnalyticsSnapshot['growth']['series']

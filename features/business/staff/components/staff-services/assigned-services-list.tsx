@@ -23,13 +23,15 @@ export function AssignedServicesList({ services, onUnassign }: AssignedServicesL
       <p className="leading-7 text-sm font-medium">Currently Assigned</p>
       <div className="flex flex-wrap gap-2">
         {services.map((service) => (
-          <Badge key={service.id} variant="outline" className="flex items-center gap-2">
-            {service.service_name}
-            {service.service_id && (
-              <Button variant="ghost" size="sm" onClick={() => onUnassign(service.service_id!)}>
-                Remove
-              </Button>
-            )}
+          <Badge key={service.id} variant="outline">
+            <span className="flex items-center gap-2">
+              <span>{service.service_name}</span>
+              {service.service_id && (
+                <Button variant="ghost" size="sm" onClick={() => onUnassign(service.service_id!)}>
+                  Remove
+                </Button>
+              )}
+            </span>
           </Badge>
         ))}
       </div>

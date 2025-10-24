@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, Users, Sparkles, TrendingUp, Clock, Shield, Store, Award } from 'lucide-react'
-import { TestimonialCard, StatBadge, TrustBadge } from '@/components/marketing'
+import { TestimonialCard, StatBadge, TrustBadge } from '@/features/marketing/common-components'
 
 export function HomePageClient() {
   return (
@@ -11,7 +11,7 @@ export function HomePageClient() {
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 px-4 pb-16 pt-20 text-center sm:px-6 lg:px-8">
           <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="scroll-m-20 text-primary font-bold">
+              <h1 className="scroll-m-20 text-primary">
                 Enorae
               </h1>
               <p className="text-muted-foreground">Your Beauty Appointments, Simplified</p>

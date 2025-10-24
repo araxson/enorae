@@ -17,6 +17,9 @@ import { CustomerInsightsSection } from './components/sections/customer-insights
 import { CohortsTable } from './components/sections/cohorts-table'
 import { ChainAnalyticsSection } from './components/sections/chain-analytics-section'
 
+// Export types
+export type * from './types'
+
 type EnhancedAnalyticsProps = {
   startDate?: string
   endDate?: string

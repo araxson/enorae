@@ -17,7 +17,7 @@ export async function getPublicPlatformStats(): Promise<{
 
   // Count active salons
   const { count: salonCount, error: salonError } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('*', { count: 'exact', head: true })
     .eq('is_active', true)
 
@@ -25,7 +25,7 @@ export async function getPublicPlatformStats(): Promise<{
 
   // Count unique cities
   const { data: cities, error: citiesError } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('city, state_province')
     .eq('is_active', true)
     .not('city', 'is', null)
@@ -45,7 +45,7 @@ export async function getPublicPlatformStats(): Promise<{
 
   // Count active services
   const { count: servicesCount, error: servicesError } = await supabase
-    .from('services_view')
+    .from('services')
     .select('*', { count: 'exact', head: true })
     .eq('is_active', true)
 

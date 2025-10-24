@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { Card, CardContent, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Carousel,
   CarouselContent,
@@ -11,17 +11,15 @@ import {
 } from '@/components/ui/carousel'
 import { Separator } from '@/components/ui/separator'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
-import { MapPin, Star } from 'lucide-react'
+import { Clock, MapPin, Star } from 'lucide-react'
 import {
-  AmenitiesBadges,
-  SpecialtiesTags,
   ContactInfo,
-  SocialLinks,
-  SalonStats,
 } from '@/features/shared/customer-common/components'
 import type { Database } from '@/lib/types/database.types'
 
-type Salon = Database['public']['Views']['salons']['Row']
+type Salon = Database['public']['Views']['salons_view']['Row'] & {
+  booking_lead_time_hours?: number | null
+}
 type SalonMedia = Database['public']['Views']['salon_media_view']['Row']
 
 interface SalonHeaderProps {
@@ -48,11 +46,10 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
   const hasMultipleImages = images.length > 1
 
   return (
-    <div className="overflow-hidden rounded-xl border">
-      <Card>
-        <CardContent className="p-0">
-          <div className="relative">
-            {hasMultipleImages ? (
+    <Card>
+      <CardContent className="p-0">
+        <div className="relative">
+          {hasMultipleImages ? (
             <Carousel className="w-full">
               <CarouselContent>
                 {images.map((image, index) => (
@@ -82,102 +79,76 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
             </div>
           )}
         </div>
-
-        <div className="flex flex-col gap-6 px-6 py-6">
-          {/* Header with name and favorite button */}
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex flex-col gap-3 flex-1">
-              <h1>{salon.name}</h1>
-              {salon.short_description && (
-                <CardDescription>{salon.short_description}</CardDescription>
+      </CardContent>
+      <CardHeader className="gap-3">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 space-y-2">
+            <CardTitle>{salon.name}</CardTitle>
+            {salon.short_description && <CardDescription>{salon.short_description}</CardDescription>}
+          </div>
+          {salon.id && (
+            <FavoriteButton
+              salonId={salon.id}
+              initialFavorited={isFavorited}
+              variant="default"
+            />
+          )}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6 px-6 pb-6">
+        <div className="flex flex-wrap items-center gap-4">
+          {salon.rating_average && (
+            <div className="flex items-center gap-2">
+              <Star className="h-4 w-4 fill-accent text-accent" />
+              <span className="text-sm text-muted-foreground">
+                {Number(salon.rating_average).toFixed(1)}
+              </span>
+              {salon.rating_count && (
+                <span className="text-sm text-muted-foreground">
+                  ({salon.rating_count} {salon.rating_count === 1 ? 'review' : 'reviews'})
+                </span>
               )}
             </div>
-            {salon.id && (
-              <FavoriteButton
-                salonId={salon.id}
-                initialFavorited={isFavorited}
-                variant="default"
-              />
-            )}
-          </div>
-
-          {/* Rating and Location */}
-          <div className="flex gap-4 items-center">
-            {salon.rating && (
-              <div className="flex gap-2 items-center">
-                <Star className="h-4 w-4 fill-accent text-accent" />
-                <CardDescription>{Number(salon.rating).toFixed(1)}</CardDescription>
-                {salon.review_count && (
-                  <CardDescription>
-                    ({salon.review_count} {salon.review_count === 1 ? 'review' : 'reviews'})
-                  </CardDescription>
-                )}
-              </div>
-            )}
-            {salon.full_address && (
-              <div className="flex gap-2 items-center">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-                <CardDescription>{salon.full_address}</CardDescription>
-              </div>
-            )}
-          </div>
-
-          <Separator />
-
-          {/* Description */}
-          {salon.description && (
-            <div className="flex flex-col gap-3">
-              <h3>About</h3>
-              <CardDescription>{salon.description}</CardDescription>
+          )}
+          {salon.formatted_address && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <MapPin className="h-4 w-4" />
+              <span>{salon.formatted_address}</span>
             </div>
           )}
-
-          {/* Stats */}
-          <SalonStats staffCount={salon.staff_count} servicesCount={salon.services_count} />
-
-          {/* Specialties */}
-          {salon.specialties && salon.specialties.length > 0 && (
-            <div className="flex flex-col gap-3">
-              <h3>Specialties</h3>
-              <SpecialtiesTags specialties={salon.specialties} />
+          {typeof salon.booking_lead_time_hours === 'number' && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="h-4 w-4" />
+              <span>
+                Booking lead time:&nbsp;
+                {salon.booking_lead_time_hours === 0
+                  ? 'Same day'
+                  : `${salon.booking_lead_time_hours} ${salon.booking_lead_time_hours === 1 ? 'hour' : 'hours'}`}
+              </span>
             </div>
           )}
+        </div>
 
-          {/* Amenities */}
-          {salon.amenities && salon.amenities.length > 0 && (
-            <div className="flex flex-col gap-3">
-              <h3>Amenities</h3>
-              <AmenitiesBadges amenities={salon.amenities} />
-            </div>
-          )}
+        <Separator />
 
-          <Separator />
-
-          {/* Contact and Social */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="flex flex-col gap-3">
-              <h3>Contact</h3>
-              <ContactInfo
-                phone={salon.phone}
-                email={salon.email}
-                websiteUrl={salon.website_url}
-              />
-            </div>
-            {(salon.instagram_url || salon.facebook_url || salon.twitter_url || salon.tiktok_url) && (
-              <div className="flex flex-col gap-3">
-                <h3>Social Media</h3>
-                <SocialLinks
-                  instagramUrl={salon.instagram_url}
-                  facebookUrl={salon.facebook_url}
-                  twitterUrl={salon.twitter_url}
-                  tiktokUrl={salon.tiktok_url}
-                />
-              </div>
-            )}
+        {salon.full_description && (
+          <div className="space-y-3">
+            <span className="text-sm text-foreground">About</span>
+            <p className="text-sm text-muted-foreground">{salon.full_description}</p>
           </div>
+        )}
+
+        <Separator />
+
+        <div className="space-y-3">
+          <span className="text-sm text-foreground">Contact</span>
+          <ContactInfo
+            phone={salon.primary_phone}
+            email={salon.primary_email}
+            websiteUrl={salon.website_url}
+          />
         </div>
       </CardContent>
-      </Card>
-    </div>
+    </Card>
   )
 }

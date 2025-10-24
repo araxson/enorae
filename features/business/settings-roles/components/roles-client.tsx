@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { RolesList } from './roles-list'
 import { AssignRoleDialog } from './assign-role-dialog'
 import { EditRoleDialog } from './edit-role-dialog'
-import type { UserRoleWithDetails } from '../api/queries'
-import { deactivateUserRole } from '../api/mutations'
+import type { UserRoleWithDetails } from '@/features/business/settings-roles/api/queries'
+import { deactivateUserRole } from '@/features/business/settings-roles/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
 interface RolesClientProps {

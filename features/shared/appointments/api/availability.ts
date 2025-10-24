@@ -54,37 +54,38 @@ export async function checkStaffAvailability(params: AvailabilityArgs): Promise<
 
   const supabase = await createClient()
 
-  const { data, error } = await supabase
+  // Check for conflicting appointments
+  const { data: appointments, error: apptError } = await supabase
     .schema('scheduling')
-    .rpc('check_staff_availability', {
-      p_staff_id: staffId,
-      p_start_time: startTime.toISOString(),
-      p_end_time: endTime.toISOString(),
-    })
+    .from('appointments')
+    .select('id')
+    .eq('staff_id', staffId)
+    .neq('status', 'cancelled')
+    .or(`and(start_time.lt.${endTime.toISOString()},end_time.gt.${startTime.toISOString()})`)
 
-  if (error) {
-    throw new Error(error.message)
+  if (apptError) {
+    throw new Error(apptError.message)
   }
 
-  const available = Boolean(data)
+  // Check for blocked times
+  const { data: blockedTime } = await supabase
+    .schema('scheduling')
+    .from('blocked_times')
+    .select('reason, block_type')
+    .eq('staff_id', staffId)
+    .eq('is_active', true)
+    .is('deleted_at', null)
+    .lte('start_time', endTime.toISOString())
+    .gte('end_time', startTime.toISOString())
+    .maybeSingle()
 
-  if (!available) {
-    const { data: blockedTime } = await supabase
-      .from('blocked_times')
-      .select('reason, block_type')
-      .eq('staff_id', staffId)
-      .eq('is_active', true)
-      .is('deleted_at', null)
-      .lte('start_time', endTime.toISOString())
-      .gte('end_time', startTime.toISOString())
-      .maybeSingle()
+  const available = !appointments?.length && !blockedTime
 
-    if (blockedTime && typeof blockedTime === 'object') {
-      return {
-        available: false,
-        reason: (blockedTime as { reason?: string | null; block_type?: string | null }).reason || undefined,
-        blockType: (blockedTime as { reason?: string | null; block_type?: string | null }).block_type || undefined,
-      }
+  if (!available && blockedTime && typeof blockedTime === 'object') {
+    return {
+      available: false,
+      reason: (blockedTime as { reason?: string | null; block_type?: string | null }).reason || undefined,
+      blockType: (blockedTime as { reason?: string | null; block_type?: string | null }).block_type || undefined,
     }
   }
 
@@ -109,21 +110,22 @@ export async function checkAppointmentConflict(params: ConflictArgs): Promise<Co
 
   const supabase = await createClient()
 
-  const { data, error } = await supabase
+  // Check for overlapping appointments
+  const { data: conflicts, error } = await supabase
     .schema('scheduling')
-    .rpc('check_appointment_conflict', {
-      p_salon_id: salonId,
-      p_staff_id: staffId,
-      p_start_time: startTime.toISOString(),
-      p_end_time: endTime.toISOString(),
-    })
+    .from('appointments')
+    .select('id')
+    .eq('salon_id', salonId)
+    .eq('staff_id', staffId)
+    .neq('status', 'cancelled')
+    .or(`and(start_time.lt.${endTime.toISOString()},end_time.gt.${startTime.toISOString()})`)
 
   if (error) {
     throw new Error(error.message)
   }
 
   return {
-    hasConflict: Boolean(data),
+    hasConflict: Boolean(conflicts?.length),
   }
 }
 

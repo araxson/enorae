@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { ManualTransactionWithDetails } from '../api/queries'
+import type { ManualTransactionWithDetails } from '@/features/business/transactions/api/queries'
 import { format } from 'date-fns'
 
 type TransactionsListProps = {

@@ -2,7 +2,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSupabaseClient, revalidateNotifications, notificationChannels, notificationEvents } from './helpers'
-import type { NotificationTemplate } from '../queries'
+import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 
 const templateSchema = z.object({
   id: z.string().uuid().optional(),
@@ -14,9 +14,7 @@ const templateSchema = z.object({
   body: z.string().min(10),
 })
 
-function getTemplateId(template: NotificationTemplate) {
-  return template.id ?? globalThis.crypto.randomUUID()
-}
+type TemplateInput = z.infer<typeof templateSchema>
 
 function normalizeTemplates(
   existing: NotificationTemplate[] | undefined,
@@ -31,7 +29,7 @@ function normalizeTemplates(
 }
 
 export async function upsertNotificationTemplate(
-  template: NotificationTemplate,
+  template: TemplateInput,
 ) {
   const supabase = await getSupabaseClient()
 
@@ -54,15 +52,20 @@ export async function upsertNotificationTemplate(
       | undefined) ?? []
 
   const timestamp = new Date().toISOString()
-  const templateId = getTemplateId(validation.data)
+  const templateId = validation.data.id ?? globalThis.crypto.randomUUID()
 
   const existing = currentTemplates.find(
     (entry) => entry.id === validation.data.id,
   )
 
   const updatedTemplate: NotificationTemplate = {
-    ...validation.data,
     id: templateId,
+    name: validation.data.name,
+    description: validation.data.description,
+    channel: validation.data.channel,
+    event: validation.data.event,
+    subject: validation.data.subject,
+    body: validation.data.body,
     updated_at: timestamp,
     created_at: existing?.created_at ?? timestamp,
   }

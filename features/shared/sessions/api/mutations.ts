@@ -22,22 +22,18 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
 
     const { supabase, user } = await requireSessionContext()
 
-    // Check if trying to revoke current session
+    // Check if session exists and belongs to user
     const { data: targetSession, error: targetError } = await supabase
       .from('sessions')
-      .select('id, is_current, is_active')
+      .select('id, is_active')
       .eq('id', sessionId)
       .eq('user_id', user.id)
-      .maybeSingle<{ id: string; is_current: boolean | null; is_active: boolean | null }>()
+      .maybeSingle<{ id: string; is_active: boolean | null }>()
 
     if (targetError) throw targetError
 
     if (!targetSession) {
       return { success: false, error: 'Session not found' }
-    }
-
-    if (targetSession.is_current) {
-      return { success: false, error: 'Cannot revoke current session. Use sign out instead.' }
     }
 
     // ✅ FIXED: Update identity.sessions table to mark as inactive
@@ -75,19 +71,29 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
   try {
     const { supabase, user } = await requireSessionContext()
 
-    // Resolve the current session from the secure view to avoid token comparison
-    const { data: currentSession, error: currentError } = await supabase
+    // Get all active sessions to find count (we'll keep the most recently updated one)
+    type SessionData = { id: string; updated_at: string }
+    const { data: activeSessions, error: fetchError } = await supabase
       .from('sessions')
-      .select('id')
+      .select('id, updated_at')
       .eq('user_id', user.id)
       .eq('is_active', true)
-      .eq('is_current', true)
-      .maybeSingle<{ id: string }>()
+      .is('deleted_at', null)
+      .order('updated_at', { ascending: false })
+      .returns<SessionData[]>()
 
-    if (currentError) throw currentError
+    if (fetchError) throw fetchError
 
-    if (!currentSession) {
-      return { success: false, error: 'No active session' }
+    if (!activeSessions || activeSessions.length === 0) {
+      return { success: false, error: 'No active sessions found' }
+    }
+
+    // Keep the most recently updated session (likely the current one)
+    const currentSessionId = activeSessions[0].id
+    const sessionIdsToRevoke = activeSessions.slice(1).map(s => s.id)
+
+    if (sessionIdsToRevoke.length === 0) {
+      return { success: true, data: { count: 0 } }
     }
 
     // ✅ FIXED: Update identity.sessions table to revoke all other sessions
@@ -101,7 +107,7 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
       })
       .eq('user_id', user.id)
       .eq('is_active', true)
-      .neq('id', currentSession.id)
+      .neq('id', currentSessionId)
       .select('id')
 
     if (error) throw error

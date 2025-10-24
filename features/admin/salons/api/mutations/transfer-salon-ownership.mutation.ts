@@ -1,8 +1,8 @@
-'use server'
+import 'server-only'
 
 import { revalidatePath } from 'next/cache'
-import { UUID_REGEX } from '../utils/schemas'
-import { ensurePlatformAdmin, getSupabaseClient } from './shared'
+import { UUID_REGEX } from '@/features/admin/salons/utils/schemas'
+import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 import { sanitizeAdminText } from '@/features/admin/admin-common'
 
 export async function transferSalonOwnership(formData: FormData) {

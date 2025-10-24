@@ -1,4 +1,4 @@
-import { getChainSalons, getChainAnalytics } from '../api/queries'
+import { getChainSalons, getChainAnalytics } from '@/features/business/chains/api/queries'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Building2, DollarSign, Star, Users, Calendar, Briefcase } from 'lucide-react'

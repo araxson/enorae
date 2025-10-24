@@ -41,16 +41,9 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
           <div className="space-y-3">
             {rows.map((apt) => (
               <Card key={apt.id}>
-                <CardContent className="p-4">
+                <CardHeader className="pb-2">
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-semibold leading-tight">
-                        {apt.salon_name || 'Unknown salon'}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {apt.customer_name || 'Unknown customer'} • {apt.service_name || 'Service pending'}
-                      </p>
-                    </div>
+                    <CardTitle>{apt.salon_name || 'Unknown salon'}</CardTitle>
                     <Badge
                       variant={appointmentStatusVariant[apt.status ?? ''] ?? 'secondary'}
                       className="capitalize"
@@ -58,7 +51,12 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
                       {apt.status || 'pending'}
                     </Badge>
                   </div>
-                  <Separator className="my-3" />
+                  <CardDescription>
+                    {apt.customer_name || 'Unknown customer'} • {apt.service_name || 'Service pending'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 pt-0">
+                  <Separator />
                   <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
                     <span>
                       Created {safeFormatDate(apt.created_at, 'MMM d, yyyy', 'recently')}

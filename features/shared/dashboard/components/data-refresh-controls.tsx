@@ -7,14 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 import { RefreshCw, Clock, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-type DataRefreshControlsProps = {
-  generatedAt?: string
-  className?: string
-  buttonLabel?: string
-  loadingLabel?: string
-  tooltip?: string
-}
+import type { DataRefreshControlsProps } from '@/features/shared/dashboard/types'
 
 const DEFAULT_LOADING = 'Refreshing...'
 const DEFAULT_LABEL = 'Refresh'

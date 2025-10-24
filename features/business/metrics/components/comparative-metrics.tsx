@@ -54,8 +54,10 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
 
             return (
               <Card key={key} className="border-dashed">
-                <CardContent className="p-4 space-y-3">
-                  <div className="text-sm font-medium text-muted-foreground">{meta.label}</div>
+                <CardHeader className="pb-2">
+                  <CardDescription>{meta.label}</CardDescription>
+                </CardHeader>
+                <CardContent className="p-4 pt-0 space-y-3">
                   <div>
                     <div className="text-2xl font-semibold">
                       {formatValue(details.current, meta.unit)}

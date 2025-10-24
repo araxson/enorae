@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { AdminRevenueRow } from '../types'
+import type { AdminRevenueRow } from '@/features/admin/finance/api/types'
 import { requireAdminClient } from './client'
 
 export async function getRevenueBySalon(

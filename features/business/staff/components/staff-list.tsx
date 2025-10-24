@@ -5,7 +5,7 @@ import { EmptyState } from '@/components/shared/empty-state'
 import { Users } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
-type Staff = Database['public']['Views']['staff']['Row']
+type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 interface StaffListProps {
   staff: Staff[]
@@ -42,7 +42,7 @@ export function StaffList({ staff }: StaffListProps) {
               </Avatar>
 
               <div className="flex flex-col gap-2 flex-1">
-                <h4 className="scroll-m-20 text-xl font-semibold text-base">{member.title || 'Staff Member'}</h4>
+                <div className="text-base">{member.title || 'Staff Member'}</div>
                 {member.bio && <p className="text-sm text-muted-foreground line-clamp-2">{member.bio}</p>}
               </div>
 

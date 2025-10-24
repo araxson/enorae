@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CategoryList } from './category-list'
 import { CategoryForm } from './category-form'
-import type { ServiceCategoryWithCounts } from '../api/queries'
+import type { ServiceCategoryWithCounts } from '@/features/business/service-categories/api/queries'
 
 type ServiceCategoriesClientProps = {
   initialCategories: ServiceCategoryWithCounts[]
@@ -29,8 +29,8 @@ export function ServiceCategoriesClient({ initialCategories }: ServiceCategories
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold">Service Categories</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h2>Service Categories</h2>
+          <p className="text-muted-foreground mt-1">
             Organize your services with categories
           </p>
         </div>

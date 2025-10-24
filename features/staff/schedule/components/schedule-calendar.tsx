@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Plus, Edit2, Trash2 } from 'lucide-react'
-import type { StaffScheduleWithStaff } from '../api/queries'
+import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
 
 type ScheduleCalendarProps = {
   schedules: StaffScheduleWithStaff[]
@@ -49,8 +49,8 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
 
       {schedules.length === 0 ? (
         <Card>
-          <CardContent className="py-12">
-            <div className="text-center text-muted-foreground">
+          <CardContent>
+            <div className="py-12 text-center text-muted-foreground">
               <p>No schedules found</p>
               <p className="text-sm text-muted-foreground">Click &quot;Add Schedule&quot; to create weekly schedules</p>
             </div>

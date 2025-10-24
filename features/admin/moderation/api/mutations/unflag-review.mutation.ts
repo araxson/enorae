@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import { revalidatePath } from 'next/cache'
 import { resolveAdminClient, UUID_REGEX, MODERATION_PATHS } from './shared'

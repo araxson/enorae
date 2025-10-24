@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -14,9 +14,12 @@ type TaxCommissionSectionProps = {
 export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionProps) {
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Tax & Commission</CardTitle>
+        <CardDescription>Set taxation and staff commission details.</CardDescription>
+      </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
-          <Label className="font-semibold">Tax & Commission</Label>
 
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">

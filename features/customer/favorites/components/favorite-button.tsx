@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { toggleFavorite } from '../api/mutations'
+import { toggleFavorite } from '@/features/customer/favorites/api/mutations'
 
 interface FavoriteButtonProps {
   salonId: string

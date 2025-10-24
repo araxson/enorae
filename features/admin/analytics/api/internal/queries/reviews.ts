@@ -1,6 +1,6 @@
 import 'server-only';
-import { requireAdminClient } from '../../admin-analytics-shared'
-import type { AdminReviewRow } from '../../admin-analytics-types'
+import { requireAdminClient } from '@/features/admin/analytics/api/internal/admin-analytics-shared'
+import type { AdminReviewRow } from '@/features/admin/analytics/api/internal/admin-analytics-types'
 
 const REVIEWS_TABLE = 'admin_reviews_overview'
 

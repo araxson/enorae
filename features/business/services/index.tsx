@@ -3,6 +3,9 @@ import { ServicesManagementClient } from './components/services-management-clien
 import { EmptyState } from '@/components/shared'
 import { AlertCircle, Scissors } from 'lucide-react'
 
+// Export types
+export type * from './types'
+
 export async function ServicesManagement() {
   let salon
   try {

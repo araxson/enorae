@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Globe, DollarSign, Clock, AlertCircle } from 'lucide-react'
-import { updateAdvancedPreferences } from '../api/mutations'
+import { updateAdvancedPreferences } from '@/features/shared/preferences/api/mutations'
 
 interface AdvancedPreferences {
   timezone?: string | null

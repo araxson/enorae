@@ -1,0 +1,172 @@
+'use client'
+
+import { useState } from 'react'
+import { format } from 'date-fns'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { toast } from 'sonner'
+import { MoreHorizontal } from 'lucide-react'
+import type { RateLimitRecord } from '@/features/admin/rate-limit-tracking/api/queries'
+import {
+  unblockIdentifier,
+  purgeStaleRecords,
+} from '@/features/admin/rate-limit-tracking/api/mutations'
+
+interface RateLimitTableProps {
+  records: RateLimitRecord[]
+}
+
+export function RateLimitTable({ records }: RateLimitTableProps) {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleUnblock = async (identifier: string) => {
+    setIsLoading(true)
+    try {
+      const formData = new FormData()
+      formData.append('identifier', identifier)
+      formData.append('reason', 'Manual admin unblock')
+      const result = await unblockIdentifier(formData)
+      if (result.error) {
+        toast.error(result.error)
+      } else {
+        toast.success('Identifier unblocked')
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handlePurge = async (identifier: string, endpoint: string) => {
+    setIsLoading(true)
+    try {
+      const formData = new FormData()
+      formData.append('identifier', identifier)
+      formData.append('endpoint', endpoint)
+      const result = await purgeStaleRecords(formData)
+      if (result.error) {
+        toast.error(result.error)
+      } else {
+        toast.success('Stale records purged')
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'blocked':
+        return <Badge variant="destructive">Blocked</Badge>
+      case 'warning':
+        return <Badge variant="outline">Warning</Badge>
+      case 'active':
+        return <Badge variant="secondary">Active</Badge>
+      default:
+        return <Badge>Unknown</Badge>
+    }
+  }
+
+  const getUsagePercentage = (current: number, limit: number) => {
+    return Math.round((current / limit) * 100)
+  }
+
+  const getUsageColor = (percentage: number) => {
+    if (percentage >= 100) return 'text-red-600'
+    if (percentage >= 80) return 'text-orange-600'
+    if (percentage >= 60) return 'text-yellow-600'
+    return 'text-green-600'
+  }
+
+  return (
+    <div className="overflow-x-auto rounded-lg border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Identifier</TableHead>
+            <TableHead>Endpoint</TableHead>
+            <TableHead>Limit</TableHead>
+            <TableHead>Current Count</TableHead>
+            <TableHead>Usage %</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Last Attempt</TableHead>
+            <TableHead>Next Reset</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {records.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                No rate limit records found
+              </TableCell>
+            </TableRow>
+          ) : (
+            records.map((record) => {
+              const usage = getUsagePercentage(record.current_count, record.limit_threshold)
+              return (
+                <TableRow key={record.id}>
+                  <TableCell className="font-mono text-sm">{record.identifier}</TableCell>
+                  <TableCell className="font-mono text-sm">{record.endpoint}</TableCell>
+                  <TableCell>{record.limit_threshold}</TableCell>
+                  <TableCell className="font-semibold">{record.current_count}</TableCell>
+                  <TableCell className={`font-semibold ${getUsageColor(usage)}`}>
+                    {usage}%
+                  </TableCell>
+                  <TableCell>{getStatusBadge(record.status)}</TableCell>
+                  <TableCell className="text-sm">
+                    {format(new Date(record.last_attempt), 'MMM dd, HH:mm')}
+                  </TableCell>
+                  <TableCell className="text-sm">
+                    {format(new Date(record.next_reset), 'MMM dd, HH:mm')}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          disabled={isLoading}
+                          className="h-8 w-8 p-0"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => handleUnblock(record.identifier)}
+                          disabled={isLoading}
+                        >
+                          Unblock
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handlePurge(record.identifier, record.endpoint)}
+                          disabled={isLoading}
+                        >
+                          Purge Stale Records
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              )
+            })
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}

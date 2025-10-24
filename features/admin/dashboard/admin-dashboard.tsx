@@ -141,7 +141,7 @@ export async function AdminDashboardPage() {
 
             <Badge
               variant="outline"
-              className="flex w-fit items-center gap-2 rounded-full border-foreground/20 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+              className="flex w-fit items-center gap-2 rounded-full border-foreground/20 px-3 py-1 text-xs font-semibold text-muted-foreground"
             >
               <Activity className="h-3.5 w-3.5" />
               Live feed
@@ -155,24 +155,6 @@ export async function AdminDashboardPage() {
             <span>
               {`Synced across ${platformMetrics.totalSalons.toLocaleString()} ${platformMetrics.totalSalons === 1 ? 'salon' : 'salons'}`}
             </span>
-            {platformMetrics.lowStockAlerts > 0 && (
-              <>
-                <Separator orientation="vertical" className="hidden h-4 lg:flex" />
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link href="/admin/inventory">
-                      <Badge variant="destructive" className="gap-1.5 hover:bg-destructive/90">
-                        <AlertTriangle className="h-3 w-3" />
-                        {platformMetrics.lowStockAlerts} {platformMetrics.lowStockAlerts === 1 ? 'stock alert' : 'stock alerts'}
-                      </Badge>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    Click to view inventory alerts and resolve low stock issues
-                  </TooltipContent>
-                </Tooltip>
-              </>
-            )}
             {platformMetrics.pendingVerifications > 0 && (
               <>
                 <Separator orientation="vertical" className="hidden h-4 lg:flex" />
@@ -250,7 +232,6 @@ export async function AdminDashboardPage() {
         revenue={adminOverview.revenue ?? []}
         appointments={adminOverview.appointments ?? []}
         reviews={adminOverview.reviews ?? []}
-        inventory={adminOverview.inventory ?? []}
         messages={adminOverview.messages ?? []}
         staff={adminOverview.staff ?? []}
       />

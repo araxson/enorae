@@ -2,7 +2,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Users } from 'lucide-react'
 
 interface UserRoleStatsProps {
@@ -91,31 +90,20 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
                 const label = roleLabels[role] || role
                 return (
                   <Card key={role}>
-                    <CardContent className="space-y-2 p-3">
+                    <CardHeader className="pb-2">
                       <div className="flex items-center justify-between gap-3">
-                        <div className="space-y-1">
-                          <p className="text-sm font-semibold leading-tight">{label}</p>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <span className="text-xs text-muted-foreground">
-                                {roleDescriptions[role] || 'No description available'}
-                              </span>
-                            </TooltipTrigger>
-                            <TooltipContent className="max-w-xs text-xs text-muted-foreground">
-                              {roleDescriptions[role] || 'No description available'}
-                            </TooltipContent>
-                          </Tooltip>
-                        </div>
+                        <CardTitle>{label}</CardTitle>
                         <Badge variant="outline" className="gap-1 text-xs">
                           {count.toLocaleString()}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-muted'}`} />
-                        <span className="w-14 text-right text-xs font-medium text-muted-foreground">
-                          {percentage.toFixed(1)}%
-                        </span>
-                      </div>
+                      <CardDescription>{roleDescriptions[role] || 'No description available'}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex items-center gap-3 pt-0">
+                      <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-muted'}`} />
+                      <span className="w-14 text-right text-xs font-medium text-muted-foreground">
+                        {percentage.toFixed(1)}%
+                      </span>
                     </CardContent>
                   </Card>
                 )

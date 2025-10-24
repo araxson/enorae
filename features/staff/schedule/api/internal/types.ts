@@ -1,7 +1,7 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type StaffSchedule = Database['public']['Views']['staff_schedules']['Row']
-export type Staff = Database['public']['Views']['staff']['Row']
+export type StaffSchedule = Database['public']['Views']['staff_schedules_view']['Row']
+export type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 export type StaffScheduleWithStaff = StaffSchedule & {
   staff: Staff | null

@@ -1071,10 +1071,10 @@ enorae/
 
 ## 🗄️ DATABASE
 
-- **Tables**: 42 tables across 8 business schemas
+- **Tables**: 42 tables across 7 business schemas
 - **Functions**: 108 database functions
 - **Views**: 10 public queryable views
-- **Schemas**: organization, catalog, scheduling, identity, analytics, communication, engagement, inventory
+- **Schemas**: organization, catalog, scheduling, identity, analytics, communication, engagement
 
 ---
 

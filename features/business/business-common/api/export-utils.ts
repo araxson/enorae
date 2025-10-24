@@ -182,7 +182,7 @@ export async function exportAppointmentsToCSV(
 }
 
 /**
- * Export products/inventory to CSV
+ * Export products to CSV
  */
 export async function exportProductsToCSV(
   products: Array<Record<string, unknown>>

@@ -4,7 +4,7 @@ import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from 
 import type { Database } from '@/lib/types/database.types'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 
-type Staff = Database['public']['Views']['staff']['Row']
+type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 // Re-export getUserSalon from shared location
 export { getUserSalon }
@@ -20,7 +20,7 @@ export async function getStaff(salonId: string) {
 
   // Explicit salon filter for security
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('full_name')
@@ -44,7 +44,7 @@ export async function getStaffById(staffId: string): Promise<Staff | null> {
 
   // Get staff member, verify they belong to the same salon
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('id', staffId)
     .eq('salon_id', salonId)
@@ -58,4 +58,5 @@ export {
   getStaffWithServices,
   getAvailableServices,
   getStaffServices,
+  type StaffWithServices,
 } from './internal/staff-services'

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ActionButton } from '@/components/shared'
-import { updateSalonInfo } from '../api/mutations'
+import { updateSalonInfo } from '@/features/business/settings-salon/api/mutations'
 
 interface SalonInfoFormProps {
   salonId: string

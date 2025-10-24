@@ -14,10 +14,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Trash2 } from 'lucide-react'
-import { deleteReview } from '../api/mutations'
-import type { Database } from '@/lib/types/database.types'
-
-type Review = Database['public']['Views']['salon_reviews_view']['Row']
+import { deleteReview } from '@/features/customer/reviews/api/mutations'
+import type { Review } from '@/features/customer/reviews/types'
 
 interface DeleteReviewDialogProps {
   review: Review
@@ -69,16 +67,17 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
           </DialogDescription>
         </DialogHeader>
 
-        {review.title && (
+        {review.comment && (
           <Alert>
-            <AlertTitle>{review.title}</AlertTitle>
-            {review.comment && <AlertDescription>{review.comment}</AlertDescription>}
+            <AlertTitle>Your review</AlertTitle>
+            <AlertDescription>{review.comment}</AlertDescription>
           </Alert>
         )}
 
         {error && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Delete failed</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}

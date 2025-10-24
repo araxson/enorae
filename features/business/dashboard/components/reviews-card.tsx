@@ -98,8 +98,8 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                     <div className="flex items-center gap-2 rounded-md border px-2 py-1">
                       <MessageSquare className="h-4 w-4 text-accent" />
                       <p className="text-sm font-medium">
-                        <Badge variant="outline" className="ml-1">
-                          {stats.pendingResponses}
+                        <Badge variant="outline">
+                          <span className="ml-1">{stats.pendingResponses}</span>
                         </Badge>{' '}
                         {stats.pendingResponses === 1 ? 'review needs' : 'reviews need'} response
                       </p>
@@ -114,8 +114,8 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                     <div className="flex items-center gap-2 rounded-md border px-2 py-1">
                       <AlertTriangle className="h-4 w-4 text-destructive" />
                       <p className="text-sm font-medium">
-                        <Badge variant="destructive" className="ml-1">
-                          {stats.flaggedCount}
+                        <Badge variant="destructive">
+                          <span className="ml-1">{stats.flaggedCount}</span>
                         </Badge>{' '}
                         flagged {stats.flaggedCount === 1 ? 'review' : 'reviews'}
                       </p>

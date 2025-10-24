@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import type { FavoriteWithSalon } from '../api/queries'
+import type { FavoriteWithSalon } from '@/features/customer/favorites/api/queries'
 import { FavoriteButton } from './favorite-button'
 import { FavoriteNotesButton } from './favorite-notes-button'
 
@@ -43,10 +43,10 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
             <div className="aspect-video w-full bg-muted" />
             <CardHeader className="space-y-1">
               <CardTitle>{salon.name || 'Unnamed salon'}</CardTitle>
-              {salon.full_address ? (
+              {salon.formatted_address ? (
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-4 w-4" aria-hidden="true" />
-                  <CardDescription>{salon.full_address}</CardDescription>
+                  <CardDescription>{salon.formatted_address}</CardDescription>
                 </div>
               ) : null}
             </CardHeader>
@@ -59,9 +59,11 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
                 </Alert>
               ) : null}
 
-              <Badge variant="secondary" className="w-fit capitalize">
-                {salon.is_accepting_bookings ? 'Accepting bookings' : 'Not accepting bookings'}
-              </Badge>
+              <div>
+                <Badge variant="secondary">
+                  {salon.is_accepting_bookings ? 'Accepting bookings' : 'Not accepting bookings'}
+                </Badge>
+              </div>
             </CardContent>
             <CardFooter className="flex flex-wrap items-center gap-2">
               <Button asChild className="flex-1 min-w-36">

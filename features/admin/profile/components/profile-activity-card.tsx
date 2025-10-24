@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { ProfileDetail } from '../api/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 
 interface ProfileActivityCardProps {
   profile: ProfileDetail | null
@@ -89,26 +89,22 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
         <div className="flex flex-col gap-3">
           {profile.activity.map((event) => (
             <Card key={`${event.id}-${event.createdAt ?? ''}`}>
-              <CardContent className="space-y-2 p-4">
+              <CardHeader className="pb-2">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-medium capitalize">
-                      {event.eventType?.replace(/_/g, ' ') ?? 'Unknown event'}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {event.entityType ? `${event.entityType} · ` : ''}
-                      {event.entityId ?? 'No entity id'}
-                    </p>
-                  </div>
-                  <Badge variant={severityVariant(event.severity)} className="capitalize">
-                    {event.severity ?? 'info'}
+                  <CardTitle>{event.eventType?.replace(/_/g, ' ') ?? 'Unknown event'}</CardTitle>
+                  <Badge variant={severityVariant(event.severity)}>
+                    {(event.severity ?? 'info').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                   </Badge>
                 </div>
-                <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
-                  <span>{formatDate(event.createdAt)}</span>
-                  {event.ipAddress && <span>IP {event.ipAddress}</span>}
-                  {event.userAgent && <span className="truncate md:max-w-md">{event.userAgent}</span>}
-                </div>
+                <CardDescription>
+                  {event.entityType ? `${event.entityType} · ` : ''}
+                  {event.entityId ?? 'No entity id'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-wrap items-center justify-between gap-3 pt-0 text-xs text-muted-foreground">
+                <span>{formatDate(event.createdAt)}</span>
+                {event.ipAddress ? <span>IP {event.ipAddress}</span> : null}
+                {event.userAgent ? <span className="truncate md:max-w-md">{event.userAgent}</span> : null}
               </CardContent>
             </Card>
           ))}

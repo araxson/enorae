@@ -22,9 +22,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       value: metrics.upcomingAppointments,
       description: 'Scheduled bookings',
       icon: Calendar,
-      accent: 'bg-secondary/10 text-secondary',
       progress: metrics.upcomingAppointments > 0 ? 100 : 0,
-      progressClass: '[&>div]:bg-secondary',
       showHearts: undefined,
     },
     {
@@ -32,12 +30,10 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       value: metrics.completedAppointments,
       description: 'Total visits',
       icon: CheckCircle,
-      accent: 'bg-primary/10 text-primary',
       progress:
         totalActivity > 0
           ? Math.round((metrics.completedAppointments / totalActivity) * 100)
           : 0,
-      progressClass: '[&>div]:bg-primary',
       showHearts: undefined,
     },
     {
@@ -45,9 +41,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
       value: metrics.favorites,
       description: 'Saved salons',
       icon: Heart,
-      accent: 'bg-accent/10 text-accent-foreground',
       progress: undefined,
-      progressClass: undefined,
       showHearts: metrics.favorites,
     },
   ]
@@ -55,41 +49,39 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between gap-2">
-        <CardDescription>Your activity</CardDescription>
-        <Badge variant={activityVariant} className="gap-1">
+        <p className="text-sm text-muted-foreground">Your activity</p>
+        <div className="flex items-center gap-2">
           <TrendingUp className="h-3 w-3" />
-          {activityLevel} user
-        </Badge>
+          <Badge variant={activityVariant}>{activityLevel} user</Badge>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {cards.map(({ label, value, description, icon: Icon, accent, progress, showHearts, progressClass }) => (
-          <Card key={label} className="overflow-hidden border border-border/70">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <div className="space-y-1">
-                <CardDescription>{label}</CardDescription>
-                <CardTitle>
-                  {value}
-                </CardTitle>
-              </div>
-              <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${accent}`}>
+        {cards.map(({ label, value, description, icon: Icon, progress, showHearts }) => (
+          <Card key={label}>
+            <CardHeader>
+              <CardTitle>{label}</CardTitle>
+              <CardDescription>{description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <p className="text-2xl font-semibold text-foreground">{value}</p>
                 <Icon className="h-5 w-5" aria-hidden="true" />
               </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <CardDescription>{description}</CardDescription>
 
               {typeof showHearts === 'number' && showHearts > 0 ? (
-                <div className="flex flex-wrap items-center gap-1">
+                <div className="flex flex-wrap items-center gap-1 pt-3">
                   {Array.from({ length: Math.min(showHearts, 5) }).map((_, index) => (
-                    <Heart key={index} className="h-3.5 w-3.5 fill-accent text-accent-foreground" />
+                    <Heart key={index} className="h-3.5 w-3.5" aria-hidden="true" />
                   ))}
                   {showHearts > 5 && (
-                    <CardDescription>+{showHearts - 5}</CardDescription>
+                    <p className="text-xs text-muted-foreground">+{showHearts - 5}</p>
                   )}
                 </div>
               ) : (
-                <Progress value={progress} className={`h-1.5 ${progressClass ?? ''}`} />
+                <div className="pt-3">
+                  <Progress value={progress ?? 0} />
+                </div>
               )}
             </CardContent>
           </Card>

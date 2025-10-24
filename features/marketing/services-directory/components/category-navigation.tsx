@@ -41,8 +41,8 @@ export function CategoryNavigation({ categories, currentCategory }: CategoryNavi
             className={cn('h-auto flex-col gap-1 py-3', !currentCategory && 'ring-2 ring-primary')}
           >
             <Link href="/services" passHref>
-              <span className="font-semibold">All Services</span>
-              <p className="text-xs text-muted-foreground">
+              <span>All Services</span>
+              <p className="text-muted-foreground">
                 {categories.reduce((sum, cat) => sum + cat.count, 0)} services
               </p>
             </Link>
@@ -58,8 +58,8 @@ export function CategoryNavigation({ categories, currentCategory }: CategoryNavi
                 className={cn('h-auto flex-col gap-1 py-3', isActive && 'ring-2 ring-primary')}
               >
                 <Link href={`/services/${category.slug}`} passHref>
-                  <span className="text-sm font-semibold">{category.name}</span>
-                  <p className="text-xs text-muted-foreground">{category.count} services</p>
+                  <span>{category.name}</span>
+                  <p className="text-muted-foreground">{category.count} services</p>
                 </Link>
               </Button>
             )
@@ -100,20 +100,20 @@ export function PopularServicesWidget({ services }: PopularServicesProps) {
               variant="ghost"
               className="justify-between gap-4 px-3 py-3"
             >
-              <Link href={`/services/${service.categorySlug}`}>
-                <div className="flex gap-4 items-center flex-1">
-                  <Badge variant="secondary" className="shrink-0">
-                    #{index + 1}
-                  </Badge>
-                  <div className="flex flex-col gap-2 min-w-0 flex-1">
-                    <span className="truncate font-medium">{service.name}</span>
-                    <p className="text-xs text-muted-foreground">{service.category}</p>
+                <Link href={`/services/${service.categorySlug}`}>
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="shrink-0">
+                      <Badge variant="secondary">#{index + 1}</Badge>
+                    </div>
+                    <div className="flex flex-col gap-2 min-w-0 flex-1">
+                      <span className="truncate">{service.name}</span>
+                      <p className="text-muted-foreground">{service.category}</p>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 items-end ml-4 shrink-0">
-                  <p className="text-xs text-muted-foreground">{service.salonCount} salons</p>
+                  <p className="text-muted-foreground">{service.salonCount} salons</p>
                   {service.avgPrice && (
-                    <span className="text-sm font-semibold">
+                    <span>
                       ${service.avgPrice.toFixed(0)}
                     </span>
                   )}

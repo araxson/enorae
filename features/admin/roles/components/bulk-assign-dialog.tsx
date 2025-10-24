@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { bulkAssignRoles } from '../api/mutations'
+import { bulkAssignRoles } from '@/features/admin/roles/api/mutations'
 import { RoleSelector } from './role-selector'
 import { SalonSelector } from './salon-selector'
 import type { RoleTemplate } from './role-templates'
@@ -134,7 +134,11 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
         <div className="flex flex-col gap-8">
           {rows.map((row, index) => (
             <Card key={index}>
-              <CardContent className="space-y-4 pt-6">
+              <CardHeader className="pb-2">
+                <CardTitle>Assignment {index + 1}</CardTitle>
+                <CardDescription>Configure user, role, and optional salon.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4 pt-0">
                 <div className="flex flex-col gap-6 md:flex-row md:items-center">
                   <div className="flex-1 space-y-2">
                     <Label htmlFor={`user-${index}`}>User ID *</Label>

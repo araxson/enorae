@@ -13,11 +13,11 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
-import { assignRole } from '../api/mutations'
+import { assignRole } from '@/features/admin/roles/api/mutations'
 import { PermissionsEditor } from './permissions-editor'
 import { RoleSelector } from './role-selector'
 import { SalonSelector } from './salon-selector'
-import type { RoleTemplate } from '../utils/templates'
+import type { RoleTemplate } from '@/features/admin/roles/utils/templates'
 import type { RoleValue } from './types'
 
 type AssignRoleFormProps = {

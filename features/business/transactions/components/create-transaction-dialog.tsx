@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { createManualTransaction } from '../api/mutations'
+import { createManualTransaction } from '@/features/business/transactions/api/mutations'
 
 interface CreateTransactionDialogProps {
   open: boolean

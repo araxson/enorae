@@ -1,11 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { EmptyState } from '@/components/shared'
-import type { AppointmentWithDetails } from '@/lib/types/app.types'
+import type { AppointmentWithDetails } from '@/features/business/appointments'
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
 import { format } from 'date-fns'
@@ -76,55 +76,44 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
 
               return (
                 <Card key={appointment.id} className="group">
-                  <CardContent className="flex items-start gap-4 p-4">
+                  <CardHeader className="flex flex-row items-start gap-4">
                     <Avatar className="h-10 w-10 border-2 border-background">
-                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                      <AvatarFallback className="bg-primary/10 text-primary">
                         {salonInitials}
                       </AvatarFallback>
                     </Avatar>
-
                     <div className="flex-1 space-y-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium truncate text-sm text-muted-foreground">
-                          {appointment.salon_name || 'Salon TBD'}
-                        </p>
-                        <Badge variant={getStatusVariant(appointment.status)}>
-                          {appointment.status || 'pending'}
-                        </Badge>
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3 text-muted-foreground" />
-                          <p className="truncate text-sm text-muted-foreground">{appointmentDate}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3 text-muted-foreground" />
-                          <p className="text-sm text-muted-foreground">{formatAppointmentTime(appointment.start_time)}</p>
-                        </div>
-                        {appointment.salon_name && (
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3 text-muted-foreground" />
-                            <p className="truncate text-sm text-muted-foreground">View location</p>
-                          </div>
-                        )}
-                      </div>
+                      <CardTitle>{appointment.salon_name || 'Salon TBD'}</CardTitle>
+                      <CardDescription>{appointmentDate}</CardDescription>
                     </div>
-
+                    <Badge variant={getStatusVariant(appointment.status)}>
+                      {appointment.status || 'pending'}
+                    </Badge>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-3">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="h-3 w-3" />
+                      <span>{formatAppointmentTime(appointment.start_time)}</span>
+                    </div>
+                    {appointment.salon_name && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <MapPin className="h-3 w-3" />
+                        <span>View location</span>
+                      </div>
+                    )}
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-8 px-3 opacity-0 transition-opacity group-hover:opacity-100"
+                      className="opacity-0 transition-opacity group-hover:opacity-100"
                       asChild
                     >
                       <Link href={`/customer/appointments/${appointment.id}`}>
                         View
                       </Link>
                     </Button>
-                  </CardContent>
+                  </CardFooter>
                 </Card>
               )
             })}
@@ -132,14 +121,14 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
         </ScrollArea>
       </CardContent>
       <Separator />
-      <CardContent className="pt-4">
+      <CardFooter className="pt-4">
         <Button variant="outline" asChild className="w-full">
           <Link href="/customer/salons">
             <Store className="mr-2 h-4 w-4" />
             Book Another Appointment
           </Link>
         </Button>
-      </CardContent>
+      </CardFooter>
     </Card>
   )
 }

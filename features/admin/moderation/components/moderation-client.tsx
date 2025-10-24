@@ -6,7 +6,7 @@ import { ModerationStats } from './moderation-stats'
 import { ModerationFilters } from './moderation-filters'
 import { ReviewsTable } from './reviews-table'
 import { ReviewDetailDialog } from './review-detail-dialog'
-import type { ModerationReview, ModerationStats as ModerationStatsType } from '../api/queries'
+import type { ModerationReview, ModerationStats as ModerationStatsType } from '@/features/admin/moderation/api/queries'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
@@ -75,8 +75,8 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
   return (
     <div className="space-y-8">
       <div className="space-y-1">
-        <p className="leading-7 text-base font-semibold">Content moderation</p>
-        <p className="text-sm text-muted-foreground text-sm">
+        <p className="text-base font-semibold">Content moderation</p>
+        <p className="text-sm text-muted-foreground">
           Monitor at-risk reviews, sentiment trends, and reviewer reputation across the platform.
         </p>
       </div>

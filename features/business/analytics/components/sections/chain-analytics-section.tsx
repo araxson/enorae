@@ -77,11 +77,13 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
           <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
             {breakdown.slice(0, 6).map((row) => (
               <Card key={row.salonId}>
-                <CardContent className="p-4">
-                  <div className="font-medium">{row.salonName}</div>
-                  <div className="text-sm text-muted-foreground">
+                <CardHeader className="pb-2">
+                  <CardTitle>{row.salonName}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <p className="text-sm text-muted-foreground">
                     ${row.revenue.toLocaleString()} • {row.appointments} appts
-                  </div>
+                  </p>
                 </CardContent>
               </Card>
             ))}

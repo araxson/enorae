@@ -6,7 +6,7 @@ import {
   APPOINTMENT_STATUS_BADGE_VARIANT,
   STATUS_BADGE_VARIANT,
   PRIORITY_BADGE_VARIANT,
-} from '../constants/badge-variants'
+} from '@/features/admin/admin-common/constants/badge-variants'
 
 export function getAdminBadgeVariantConfig() {
   return {

@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -11,7 +11,7 @@ import {
   getSupabaseClient,
   type SupabaseServerClient,
 } from './shared'
-import { deriveBookingDurations, derivePricingMetrics } from '../utils/calculations'
+import { deriveBookingDurations, derivePricingMetrics } from '@/features/business/services/api/utils/calculations'
 
 export type ServiceFormData = {
   name: string
@@ -206,7 +206,7 @@ export async function createService(
 
   const { error: pricingError } = await supabase
     .schema('catalog')
-    .from('service_pricing_view')
+    .from('service_pricing')
     .insert({
       service_id: service.id,
       base_price: basePrice,
@@ -240,7 +240,7 @@ export async function createService(
 
   const { error: rulesError } = await supabase
     .schema('catalog')
-    .from('service_booking_rules_view')
+    .from('service_booking_rules')
     .insert({
       service_id: service.id,
       duration_minutes: durationMinutes,
@@ -255,7 +255,7 @@ export async function createService(
     })
 
   if (rulesError) {
-    await supabase.schema('catalog').from('service_pricing_view').delete().eq('service_id', service.id)
+    await supabase.schema('catalog').from('service_pricing').delete().eq('service_id', service.id)
     await supabase.schema('catalog').from('services').delete().eq('id', service.id)
     throw rulesError
   }

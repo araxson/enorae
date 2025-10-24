@@ -7,7 +7,7 @@ import type {
   MessageStats,
   MessageThreadWithInsights,
   ModerationQueueItem,
-} from '../api/queries'
+} from '@/features/admin/messages/api/queries'
 import { MessagesStats } from './messages-stats'
 import { MessagesFilters } from './messages-filters'
 import { MessagesTable } from './messages-table'
@@ -65,8 +65,8 @@ export function MessagesClient({
   return (
     <div className="flex flex-col gap-10">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Messages Oversight</h1>
-        <p className="leading-7 text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold">Messages Oversight</h1>
+        <p className="text-muted-foreground">
           Monitor platform-wide communications, moderate flagged content, and track response performance.
         </p>
       </div>

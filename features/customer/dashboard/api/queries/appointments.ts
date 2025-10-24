@@ -1,7 +1,7 @@
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
-import type { AppointmentWithDetails } from '@/lib/types/app.types'
+import type { AppointmentWithDetails } from '@/features/business/appointments'
 
 const UPCOMING_LIMIT = 5
 const PAST_LIMIT = 5

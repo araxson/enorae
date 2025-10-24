@@ -1,6 +1,6 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Clock } from 'lucide-react'
-import type { OperatingHours } from '../types'
+import type { OperatingHours } from '@/features/staff/operating-hours/types'
 
 interface TodayHoursBannerProps {
   hours: OperatingHours | null
@@ -14,11 +14,10 @@ export function TodayHoursBanner({ hours }: TodayHoursBannerProps) {
       <Clock className="h-4 w-4" />
       <AlertDescription>
         {hours.is_closed ? (
-          <span className="font-semibold">Salon is closed today</span>
+          <>Salon is closed today</>
         ) : (
           <>
-            <span className="font-semibold">Today&apos;s hours: </span>
-            {hours.hours_display}
+            Today&apos;s hours: {hours.hours_display}
           </>
         )}
       </AlertDescription>

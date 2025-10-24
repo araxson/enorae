@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { StatCard } from '@/components/shared/stat-card'
 import { Activity, CreditCard, Users, Building2 } from 'lucide-react'
-import type { TransactionMetrics, ManualTransactionRow } from '../api/types'
+import type { TransactionMetrics, ManualTransactionRow } from '@/features/admin/finance/api/types'
 
 interface TransactionMonitoringProps {
   metrics: TransactionMetrics

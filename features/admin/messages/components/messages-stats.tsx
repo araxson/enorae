@@ -1,5 +1,5 @@
-import { Card } from '@/components/ui/card'
-import type { MessageStats } from '../api/queries'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import type { MessageStats } from '@/features/admin/messages/api/queries'
 import { MessageSquare, AlertTriangle, ShieldAlert, GitPullRequest, Clock, Timer, MailWarning } from 'lucide-react'
 
 interface MessagesStatsProps {
@@ -25,93 +25,105 @@ const formatPercentage = (value: number | null) => {
 export function MessagesStats({ stats }: MessagesStatsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Total Threads</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold">{stats.totalThreads}</h3>
-            <p className="text-xs text-muted-foreground">
-              Open {stats.openThreads} · In progress {stats.inProgressThreads}
-            </p>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Total Threads</CardTitle>
+            <MessageSquare className="h-8 w-8 text-muted-foreground" />
           </div>
-          <MessageSquare className="h-8 w-8 text-muted-foreground" />
-        </div>
+          <CardDescription>
+            Open {stats.openThreads} · In progress {stats.inProgressThreads}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-semibold">{stats.totalThreads}</p>
+        </CardContent>
       </Card>
 
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Urgent Threads</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold text-accent">{stats.urgentThreads}</h3>
-            <p className="text-xs text-muted-foreground">
-              High priority {stats.highPriorityThreads}
-            </p>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Urgent Threads</CardTitle>
+            <AlertTriangle className="h-8 w-8 text-accent" />
           </div>
-          <AlertTriangle className="h-8 w-8 text-accent" />
-        </div>
+          <CardDescription>High priority {stats.highPriorityThreads}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-semibold">{stats.urgentThreads}</p>
+        </CardContent>
       </Card>
 
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Flagged Messages</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold text-destructive">{stats.flaggedMessages}</h3>
-            <p className="text-xs text-muted-foreground">
-              Threads affected {stats.flaggedThreads}
-            </p>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Flagged Messages</CardTitle>
+            <ShieldAlert className="h-8 w-8 text-destructive" />
           </div>
-          <ShieldAlert className="h-8 w-8 text-destructive" />
-        </div>
+          <CardDescription>Threads affected {stats.flaggedThreads}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-semibold">{stats.flaggedMessages}</p>
+        </CardContent>
       </Card>
 
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Open Escalations</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold text-accent">{stats.openEscalations}</h3>
-            <p className="text-xs text-muted-foreground">
-              Resolved {stats.resolvedThreads + stats.closedThreads + stats.archivedThreads}
-            </p>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Open Escalations</CardTitle>
+            <GitPullRequest className="h-8 w-8 text-accent" />
           </div>
-          <GitPullRequest className="h-8 w-8 text-accent" />
-        </div>
+          <CardDescription>
+            Resolved {stats.resolvedThreads + stats.closedThreads + stats.archivedThreads}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-semibold">{stats.openEscalations}</p>
+        </CardContent>
       </Card>
 
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Avg First Response</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold">{formatMinutes(stats.avgFirstResponseMinutes)}</h3>
-            <p className="text-xs text-muted-foreground">
-              Based on {stats.totalMeasuredResponses} responses
-            </p>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Avg First Response</CardTitle>
+            <Clock className="h-8 w-8 text-secondary" />
           </div>
-          <Clock className="h-8 w-8 text-secondary" />
-        </div>
+          <CardDescription>
+            Based on {stats.totalMeasuredResponses} responses
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-semibold">
+            {formatMinutes(stats.avgFirstResponseMinutes)}
+          </p>
+        </CardContent>
       </Card>
 
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Responses ≤ 1h</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold text-primary">
-              {formatPercentage(stats.responsesWithinHourRate)}
-            </h3>
-            <p className="text-xs text-muted-foreground">Customer SLA coverage</p>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Responses ≤ 1h</CardTitle>
+            <Timer className="h-8 w-8 text-primary" />
           </div>
-          <Timer className="h-8 w-8 text-primary" />
-        </div>
+          <CardDescription>Customer SLA coverage</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-semibold">
+            {formatPercentage(stats.responsesWithinHourRate)}
+          </p>
+        </CardContent>
       </Card>
 
-      <Card className="p-6 md:col-span-2 xl:col-span-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Unread Messages</p>
-            <h3 className="scroll-m-20 text-2xl font-semibold">{stats.totalUnread}</h3>
-            <p className="text-xs text-muted-foreground">Across customers and staff</p>
+      <Card className="md:col-span-2 xl:col-span-3">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Unread Messages</CardTitle>
+            <MailWarning className="h-8 w-8 text-secondary" />
           </div>
-          <MailWarning className="h-8 w-8 text-secondary" />
-        </div>
+          <CardDescription>Across customers and staff</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-semibold">{stats.totalUnread}</p>
+        </CardContent>
       </Card>
     </div>
   )

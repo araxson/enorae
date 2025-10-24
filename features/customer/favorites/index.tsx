@@ -4,6 +4,9 @@ import { generateMetadata as genMeta } from '@/lib/metadata'
 import { getUserFavorites } from './api/queries'
 import { FavoritesList } from './components/favorites-list'
 
+// Export types
+export type * from './types'
+
 export const favoritesMetadata = genMeta({
   title: 'My Favorites',
   description: 'View and manage your favorite salons',

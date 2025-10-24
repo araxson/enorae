@@ -14,7 +14,9 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
   // Calculate performance metrics
   const staffWithMetrics = staff
     .map((member) => {
-      const totalPerformed = member.services.reduce((sum: number, s) => sum + (s.performed_count || 0), 0)
+      // Note: performed_count and rating_count are not available in the staff_services view
+      // We count available services as a proxy for activity
+      const totalPerformed = member.services.filter((s) => s.is_available).length
       const servicesWithRatings = member.services.filter((s) => s.rating_average && s.rating_average > 0)
       const avgRating = servicesWithRatings.length > 0
         ? servicesWithRatings.reduce((sum: number, s) => sum + Number(s.rating_average || 0), 0) / servicesWithRatings.length
@@ -24,7 +26,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
         ...member,
         totalPerformed,
         avgRating,
-        totalRatings: member.services.reduce((sum: number, s) => sum + (s.rating_count || 0), 0),
+        totalRatings: servicesWithRatings.length,
       }
     })
     .filter((m) => m.totalPerformed > 0 || m.avgRating > 0)
@@ -70,9 +72,11 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 <p className="leading-7 font-semibold">{topPerformer.full_name || 'Staff Member'}</p>
                 {topPerformer.title && <p className="text-sm text-muted-foreground">{topPerformer.title}</p>}
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="default" className="text-xs">
-                    <TrendingUp className="h-3 w-3 mr-1" />
-                    {topPerformer.totalPerformed} services performed
+                  <Badge variant="default">
+                    <span className="flex items-center gap-2 text-xs">
+                      <TrendingUp className="h-3 w-3" />
+                      {topPerformer.totalPerformed} services performed
+                    </span>
                   </Badge>
                 </div>
               </div>
@@ -105,9 +109,11 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 <p className="leading-7 font-semibold">{topRated.full_name || 'Staff Member'}</p>
                 {topRated.title && <p className="text-sm text-muted-foreground">{topRated.title}</p>}
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="default" className="text-xs flex items-center gap-1">
-                    <Star className="h-3 w-3 fill-white" />
-                    {topRated.avgRating.toFixed(1)} average rating
+                  <Badge variant="default">
+                    <span className="flex items-center gap-1 text-xs">
+                      <Star className="h-3 w-3 fill-white" />
+                      {topRated.avgRating.toFixed(1)} average rating
+                    </span>
                   </Badge>
                   <p className="text-sm text-muted-foreground">({topRated.totalRatings} reviews)</p>
                 </div>

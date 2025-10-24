@@ -1,3 +1,3 @@
 'use server'
 
-export * from './mutations'
+export * from './mutations/index'

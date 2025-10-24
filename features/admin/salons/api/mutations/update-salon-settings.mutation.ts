@@ -1,8 +1,8 @@
-'use server'
+import 'server-only'
 
 import { revalidatePath } from 'next/cache'
-import { updateSettingsSchema, UUID_REGEX } from '../utils/schemas'
-import { ensurePlatformAdmin, getSupabaseClient } from './shared'
+import { updateSettingsSchema, UUID_REGEX } from '@/features/admin/salons/utils/schemas'
+import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 
 export async function updateSalonSettings(formData: FormData) {
   try {

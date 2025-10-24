@@ -1,10 +1,12 @@
-import { DatabaseHealth } from '@/features/admin/database-health'
+import { Suspense } from 'react'
+import { DatabaseHealthDashboard } from '@/features/admin/database-health'
 
-export const metadata = {
-  title: 'Database Health | Admin',
-  description: 'Monitor database performance, optimization, and health metrics',
-}
+export const metadata = { title: 'Database Health | Admin' }
 
 export default function DatabaseHealthPage() {
-  return <DatabaseHealth />
+  return (
+    <Suspense fallback={null}>
+      <DatabaseHealthDashboard />
+    </Suspense>
+  )
 }

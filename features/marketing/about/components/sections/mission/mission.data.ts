@@ -9,7 +9,7 @@ export const missionData = {
     },
     {
       title: 'Empower Businesses',
-      description: 'Provide salons with robust tools to manage appointments, staff, and inventory.',
+      description: 'Provide salons with robust tools to manage appointments, staff, and operations.',
     },
     {
       title: 'Build Community',

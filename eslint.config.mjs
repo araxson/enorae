@@ -24,6 +24,12 @@ const eslintConfig = [
     rules: {
       // Downgrade no-explicit-any from error to warning for intentional database type workarounds
       "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-empty-object-type": [
+        "error",
+        {
+          allowInterfaces: "always",
+        },
+      ],
 
       // Ban legacy layout component imports (migration to shadcn/ui complete)
       "no-restricted-imports": [

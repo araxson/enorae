@@ -19,7 +19,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import type { UserRole } from '@/lib/types/app.types'
+import type { UserRole } from '@/lib/types'
+
+const formatRoleLabel = (role: string | null | undefined) =>
+  role ? role.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()) : 'N/A'
 
 type Props = {
   roles: UserRole[]
@@ -67,10 +70,10 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="gap-1">
+                    <div className="flex items-center gap-1">
                       <Shield className="h-3 w-3" />
-                      {role.role?.replace(/_/g, ' ') || 'N/A'}
-                    </Badge>
+                      <Badge variant="outline">{formatRoleLabel(role.role)}</Badge>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm text-muted-foreground">{displaySalonId}</span>
@@ -108,7 +111,10 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
                           </DropdownMenuItem>
                         ) : null}
                         {canDelete && (
-                          <DropdownMenuItem onClick={() => onDelete(role)} variant="destructive">
+                          <DropdownMenuItem
+                            onClick={() => onDelete(role)}
+                            className="text-destructive focus:text-destructive"
+                          >
                             <Trash2 className="mr-2 h-4 w-4" />
                             Delete Permanently
                           </DropdownMenuItem>

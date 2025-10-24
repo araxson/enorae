@@ -1,5 +1,5 @@
 import { AppointmentCard } from '@/features/shared/appointments'
-import { Card, CardDescription, CardHeader } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Database } from '@/lib/types/database.types'
 import { format } from 'date-fns'
 
@@ -23,7 +23,8 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center py-10 text-center">
+        <CardHeader className="items-center text-center">
+          <CardTitle>Appointments</CardTitle>
           <CardDescription>No appointments yet</CardDescription>
         </CardHeader>
       </Card>

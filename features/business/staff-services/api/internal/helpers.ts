@@ -7,7 +7,7 @@ import type { Database } from '@/lib/types/database.types'
 import { UUID_REGEX } from './constants'
 
 export type Salon = Database['public']['Views']['salons']['Row']
-export type Staff = Database['public']['Views']['staff']['Row']
+export type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 export type Service = Database['public']['Views']['services']['Row']
 
 export async function getAuthorizedContext(staffId: string) {
@@ -30,7 +30,7 @@ export async function getAuthorizedContext(staffId: string) {
   }
 
   const { data: staff } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('id', staffId)
     .single()

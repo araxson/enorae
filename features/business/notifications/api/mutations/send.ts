@@ -1,5 +1,6 @@
 import 'server-only'
 
+import type { Json } from '@/lib/types/database.types'
 import { notificationSchema, getSupabaseClient, ensureRecipientAuthorized, revalidateNotifications, notificationIdsSchema } from './helpers'
 
 export async function sendNotification(input: {
@@ -21,17 +22,19 @@ export async function sendNotification(input: {
 
   await ensureRecipientAuthorized(supabase, userId)
 
-  const { data: notificationId, error } = await supabase.rpc(
-    'send_notification',
-    {
+  // Send notification using RPC function
+  const payloadData = data ? (JSON.parse(JSON.stringify(data)) as Json) : undefined
+
+  const { data: notificationId, error } = await supabase
+    .schema('communication')
+    .rpc('send_notification', {
       p_user_id: userId,
       p_title: title,
       p_message: message,
       p_type: type,
-      p_channels: channels,
-      p_data: data,
-    },
-  )
+      p_channels: channels || ['in_app'],
+      p_data: payloadData,
+    })
 
   if (error) throw error
 
@@ -55,16 +58,16 @@ export async function markNotificationsRead(notificationIds?: string[]) {
   if (authError) throw authError
   if (!user) throw new Error('Unauthorized')
 
-  const { data: count, error } = await supabase.rpc(
-    'mark_notifications_read',
-    {
+  // Mark notifications as read using RPC function
+  const { data: markedCount, error } = await supabase
+    .schema('communication')
+    .rpc('mark_notifications_read', {
       p_user_id: user.id,
       p_notification_ids: validation.data,
-    },
-  )
+    })
 
   if (error) throw error
 
   revalidateNotifications()
-  return { success: true, markedCount: count }
+  return { success: true, markedCount: markedCount ?? 0 }
 }

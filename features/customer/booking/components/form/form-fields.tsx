@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Combobox } from '@/components/ui/combobox'
 
-import type { BookingFormValues, Service, Staff } from '../../types'
+import type { BookingFormValues, Service, Staff } from '@/features/customer/booking/types'
 
 interface FormFieldsProps {
   services: Service[]

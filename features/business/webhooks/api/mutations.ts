@@ -26,10 +26,9 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
 
     // Get webhook to verify it exists and check status
     const { data: webhook } = await supabase
-      .from('communication_webhook_queue')
+      .from('webhook_queue')
       .select('id, status')
       .eq('id', webhookId)
-      .eq('salon_id', salonId)
       .single<{ id: string; status: string | null }>()
 
     if (!webhook) {
@@ -43,14 +42,13 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
 
     // Reset status to pending for retry
     const { error } = await supabase
-      .from('communication_webhook_queue')
+      .from('webhook_queue')
       .update({
         status: 'pending',
         last_error: null,
         updated_at: new Date().toISOString(),
       })
       .eq('id', webhookId)
-      .eq('salon_id', salonId)
 
     if (error) throw error
 
@@ -82,10 +80,9 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
 
     // Verify webhook exists
     const { data: webhook } = await supabase
-      .from('communication_webhook_queue')
+      .from('webhook_queue')
       .select('id')
       .eq('id', webhookId)
-      .eq('salon_id', salonId)
       .single()
 
     if (!webhook) {
@@ -94,10 +91,9 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
 
     // Delete the webhook
     const { error } = await supabase
-      .from('communication_webhook_queue')
+      .from('webhook_queue')
       .delete()
       .eq('id', webhookId)
-      .eq('salon_id', salonId)
 
     if (error) throw error
 
@@ -125,13 +121,12 @@ export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: 
 
     // Reset all failed webhooks to pending
     const { error, count } = await supabase
-      .from('communication_webhook_queue')
+      .from('webhook_queue')
       .update({
         status: 'pending',
         last_error: null,
         updated_at: new Date().toISOString(),
       }, { count: 'exact' })
-      .eq('salon_id', salonId)
       .eq('status', 'failed')
 
     if (error) throw error
@@ -166,10 +161,9 @@ export async function clearCompletedWebhooks(): Promise<ActionResponse<{ count: 
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
     const { error, count } = await supabase
-      .from('communication_webhook_queue')
+      .from('webhook_queue')
       .delete({ count: 'exact' })
-      .eq('status', 'sent')
-      .eq('salon_id', salonId)
+      .eq('status', 'completed')
       .lt('completed_at', thirtyDaysAgo.toISOString())
 
     if (error) throw error

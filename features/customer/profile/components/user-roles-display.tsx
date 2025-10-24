@@ -46,44 +46,42 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          {roles.map((userRole) => (
-            <Card key={userRole.id}>
-              <CardContent className="flex items-start justify-between gap-4 pt-6">
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant={getRoleBadgeVariant(userRole.role)}>
-                      {getRoleDisplayName(userRole.role)}
-                    </Badge>
-                  </div>
+          {roles.map((userRole) => {
+            const badgeLabel = userRole.salon_id ? 'Salon role' : 'Account role'
 
+            return (
+              <Card key={userRole.id}>
+                <CardHeader className="flex items-center justify-between gap-3">
+                  <CardTitle>{getRoleDisplayName(userRole.role)}</CardTitle>
+                  <Badge variant={getRoleBadgeVariant(userRole.role)}>{badgeLabel}</Badge>
+                </CardHeader>
+                <CardContent className="space-y-3">
                   {userRole.salon_id && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Building2 className="h-3 w-3" />
-                      <span className="text-xs text-muted-foreground">Salon-specific role</span>
+                      <span>Salon-specific role</span>
                     </div>
                   )}
 
                   {userRole.permissions && Array.isArray(userRole.permissions) && userRole.permissions.length > 0 && (
-                    <div className="mt-2">
-                      <span className="mb-1 block text-xs text-muted-foreground">Permissions:</span>
-                      <div className="flex flex-wrap gap-1">
+                    <div className="space-y-2">
+                      <span className="text-xs text-muted-foreground">Permissions</span>
+                      <div className="flex flex-wrap gap-1 text-xs">
                         {userRole.permissions.slice(0, 5).map((permission, idx) => (
-                          <Badge key={idx} variant="outline" className="text-xs">
+                          <Badge key={idx} variant="outline">
                             {String(permission)}
                           </Badge>
                         ))}
                         {userRole.permissions.length > 5 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{userRole.permissions.length - 5} more
-                          </Badge>
+                          <Badge variant="outline">+{userRole.permissions.length - 5} more</Badge>
                         )}
                       </div>
                     </div>
                   )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            )
+          })}
 
           {roles.length === 1 && roles[0]?.role === 'customer' && (
             <p className="py-2 text-center text-xs text-muted-foreground">

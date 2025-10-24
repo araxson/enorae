@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useTransition } from 'react'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -79,14 +79,12 @@ export function DynamicPricingPreview({ serviceId, currencyCode }: DynamicPricin
 
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Dynamic Pricing Preview</CardTitle>
+        <CardDescription>Calculate the real-time price for a specific booking time.</CardDescription>
+      </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <Label className="font-semibold">Dynamic Pricing Preview</Label>
-            <p className="text-sm text-muted-foreground text-xs">
-              Calculate the real-time price based on the selected booking time.
-            </p>
-          </div>
 
           <div className="flex flex-col md:flex-row gap-4 items-end">
             <div className="w-full md:max-w-xs space-y-2">

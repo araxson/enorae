@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -171,22 +171,22 @@ export function UsersTable({
 
           return (
             <Card key={user.id}>
-              <CardContent className="space-y-3 p-4">
+              <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold" title={displayName}>
-                      {displayName}
-                    </p>
-                    {user.username && user.username !== displayName && (
-                      <p className="text-xs text-muted-foreground">@{user.username}</p>
-                    )}
+                  <div className="space-y-1">
+                    <CardTitle title={displayName}>{displayName}</CardTitle>
+                    {user.username && user.username !== displayName ? (
+                      <CardDescription>@{user.username}</CardDescription>
+                    ) : null}
                   </div>
                   <Badge variant={STATUS_BADGE_VARIANT[isActive ? 'active' : 'suspended']}>
                     {isActive ? 'Active' : 'Suspended'}
                   </Badge>
                 </div>
-
-                <div className="text-sm">
+                <CardDescription>Created {createdLabel}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3 pt-0 text-sm">
+                <div>
                   <span className="font-medium">Email:</span>{' '}
                   <span>{user.email || 'No email'}</span>
                 </div>
@@ -207,26 +207,24 @@ export function UsersTable({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between">
                   <div>
                     <span className="font-medium">Sessions: </span>
                     <Badge variant={(user.session_count ?? 0) > 0 ? 'default' : 'outline'}>
                       {user.session_count ?? 0}
                     </Badge>
                   </div>
-                  <div className="text-xs text-muted-foreground">Created {createdLabel}</div>
+                  <UserActionsMenu
+                    userId={user.id}
+                    userName={displayName}
+                    isActive={isActive}
+                    onSuspend={onSuspend}
+                    onReactivate={onReactivate}
+                    onTerminateSessions={onTerminateSessions}
+                    onDelete={onDelete}
+                    onLoadingChange={(loading) => setLoadingUserId(loading ? user.id : null)}
+                  />
                 </div>
-
-                <UserActionsMenu
-                  userId={user.id}
-                  userName={displayName}
-                  isActive={isActive}
-                  onSuspend={onSuspend}
-                  onReactivate={onReactivate}
-                  onTerminateSessions={onTerminateSessions}
-                  onDelete={onDelete}
-                  onLoadingChange={(loading) => setLoadingUserId(loading ? user.id : null)}
-                />
               </CardContent>
             </Card>
           )

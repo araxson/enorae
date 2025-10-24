@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { Loader2, Search } from 'lucide-react'
-import type { ProfileSearchResult } from '../api/types'
+import type { ProfileSearchResult } from '@/features/admin/profile/api/types'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface ProfileSearchPanelProps {
@@ -84,9 +84,11 @@ export function ProfileSearchPanel({
                         </div>
                         <div className="space-y-1 text-right">
                           {profile.primaryRole && (
-                            <Badge variant="outline" className="text-xs capitalize">
-                              {profile.primaryRole.replace(/_/g, ' ')}
-                            </Badge>
+                            <div className="text-xs">
+                              <Badge variant="outline">
+                                {profile.primaryRole.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                              </Badge>
+                            </div>
                           )}
                           {profile.status && (
                             <p className="text-xs text-muted-foreground">{profile.status}</p>

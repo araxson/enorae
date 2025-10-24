@@ -1,12 +1,7 @@
 import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
-import type { User } from '@supabase/supabase-js'
-
-export interface SessionContext {
-  supabase: Awaited<ReturnType<typeof createClient>>
-  user: User
-}
+import type { SessionContext } from '@/features/shared/sessions/types'
 
 export async function requireSessionContext(): Promise<SessionContext> {
   const supabase = await createClient()

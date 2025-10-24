@@ -2,7 +2,7 @@ import 'server-only'
 
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
-import type { AppointmentWithDetails } from '../types'
+import type { AppointmentWithDetails } from '@/features/business/dashboard/api/types'
 
 export async function getRecentAppointments(
   salonId: string,

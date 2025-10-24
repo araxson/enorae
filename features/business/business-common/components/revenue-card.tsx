@@ -6,7 +6,7 @@ import type { ReactNode, ComponentType } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react'
-import { formatCurrency, formatPercentage, calculateGrowthRate } from '../utils/formatters'
+import { formatCurrency, formatPercentage, calculateGrowthRate } from '@/features/business/business-common/utils/formatters'
 
 type RevenueCardProps = {
   /**

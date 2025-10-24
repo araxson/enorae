@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: 'Manage personal preferences for your admin account.',
 }
 
-export default async function AdminPreferencesPage() {
+export default function AdminPreferencesPage() {
   return <UserPreferences />
 }

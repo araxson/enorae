@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { deleteSalonLocation } from '../api/mutations'
-import type { SalonLocation } from '@/lib/types/app.types'
+import type { SalonLocation } from '@/features/business/locations'
 
 type LocationListProps = {
   locations: SalonLocation[]
@@ -58,9 +58,12 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
   if (locations.length === 0) {
     return (
       <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
+        <CardHeader className="items-center text-center">
+          <CardTitle>No salon locations found</CardTitle>
+          <CardDescription>Add your first location to manage scheduling and staff.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center py-6">
           <MapPin className="h-12 w-12 text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">No salon locations found</p>
         </CardContent>
       </Card>
     )

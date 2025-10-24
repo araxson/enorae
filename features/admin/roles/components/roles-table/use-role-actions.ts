@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { revokeRole, deleteRole } from '../../api/mutations'
-import type { RoleActionResponse } from '../../api/mutations'
-import type { UserRole } from '@/lib/types/app.types'
+import { revokeRole, deleteRole } from '@/features/admin/roles/api/mutations'
+import type { RoleActionResponse } from '@/features/admin/roles/api/mutations'
+import type { UserRole } from '@/lib/types'
 
 export function useRoleActions() {
   const [targetRole, setTargetRole] = useState<UserRole | null>(null)

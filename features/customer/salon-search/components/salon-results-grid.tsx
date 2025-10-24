@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { MapPin, Star, Shield, Sparkles, TrendingUp } from 'lucide-react'
-import type { SalonSearchResult } from '../api/queries'
+import type { SalonSearchResult } from '@/features/customer/salon-search/api/queries'
 
 interface SalonResultsGridProps {
   results: SalonSearchResult[]
@@ -36,31 +36,31 @@ function SalonCard({ salon, featured = false }: SalonCardProps) {
     >
       <Card className="h-full">
         <CardHeader>
-          <div className="flex items-start justify-between">
-            <CardTitle>{salon.name}</CardTitle>
-            <div className="flex gap-1">
-              {salon.is_verified && (
-                <Shield className="h-4 w-4 text-secondary" />
-              )}
-              {(featured || salon.is_featured) && (
-                <Sparkles className="h-4 w-4 text-accent" />
-              )}
-            </div>
-          </div>
-          <div className="flex items-center gap-1">
-            <MapPin className="h-3 w-3 text-muted-foreground" />
-            <CardDescription>{formatAddress(salon.address)}</CardDescription>
-          </div>
+          <CardTitle>
+            <span className="flex items-start justify-between gap-2">
+              <span>{salon.name}</span>
+              <span className="flex gap-1">
+                {salon.is_verified && <Shield className="h-4 w-4 text-secondary" />}
+                {(featured || salon.is_featured) && <Sparkles className="h-4 w-4 text-accent" />}
+              </span>
+            </span>
+          </CardTitle>
+          <CardDescription>
+            <span className="flex items-center gap-1">
+              <MapPin className="h-3 w-3 text-muted-foreground" />
+              {formatAddress(salon.address)}
+            </span>
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 fill-accent text-accent" />
-            <p className="font-semibold text-sm text-muted-foreground">{formatRating(salon.rating_average)}</p>
-            {featured && (
-              <Badge variant="secondary" className="ml-auto">Featured</Badge>
-            )}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Star className="h-4 w-4 fill-accent text-accent" />
+              <p className="text-sm text-muted-foreground">{formatRating(salon.rating_average)}</p>
+            </div>
+            {featured && <Badge variant="secondary">Featured</Badge>}
             {!featured && salon.similarity_score && (
-              <Badge variant="outline" className="ml-auto">
+              <Badge variant="outline">
                 {Math.round(salon.similarity_score * 100)}% match
               </Badge>
             )}
@@ -111,10 +111,18 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {/* No Results */}
       {showNoResults && (
         <Card>
-          <CardContent className="py-12 text-center">
+          <CardHeader>
+            <CardTitle>
+              <span className="block text-center">No salons found</span>
+            </CardTitle>
             <CardDescription>
-              No salons found matching your criteria. Try adjusting your filters.
+              <span className="block text-center">Nothing matches your current filters.</span>
             </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground text-center">
+              Adjust your search term or remove filters to broaden the results.
+            </p>
           </CardContent>
         </Card>
       )}

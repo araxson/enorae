@@ -1,7 +1,7 @@
 # Admin Portal Deep Analysis
 
 ADMIN PORTAL DEEP ANALYSIS
-
+**Key Principle:** The database is the source of truth. All code must match the database, not the other way around.
 You are performing a comprehensive audit of the Admin Portal in the Enorae salon booking platform.
 
 ## PHASE 1: GATHER BEST PRACTICES & CONTEXT
@@ -132,12 +132,12 @@ Output: docs/admin-portal/01_PAGES_ANALYSIS.md
 
 ### LAYER 2: QUERIES (features/admin/**/api/queries.ts)
 - Find all query files
-- Check 'import server-only' directive (CLAUDE.md Rule 4)
+- Check 'import server-only' directive 
 - Verify auth checks in every function
-- Check uses getUser() not getSession() (CLAUDE.md Rule 8)
-- Verify queries use Views not Tables (CLAUDE.md Rule 1)
-- Check return types use Database['public']['Views'] (CLAUDE.md Rule 2)
-- Find any 'any' types (CLAUDE.md Rule 11)
+- Check uses getUser() not getSession() 
+- Verify queries use Views not Tables 
+- Check return types use Database['public']['Views']
+- Find any 'any' types 
 - Use Supabase MCP to verify views exist
 
 Output: docs/admin-portal/02_QUERIES_ANALYSIS.md

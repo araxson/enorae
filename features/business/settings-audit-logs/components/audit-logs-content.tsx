@@ -1,5 +1,5 @@
 import { getUserSalonId } from '@/lib/auth'
-import { getAuditLogs, getAuditLogStats } from '../api/queries'
+import { getAuditLogs, getAuditLogStats } from '@/features/business/settings-audit-logs/api/queries'
 import { AuditLogsStats } from './audit-logs-stats'
 import { AuditLogsClient } from './audit-logs-client'
 
@@ -15,7 +15,7 @@ export async function AuditLogsContent() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Security Audit Logs</h1>
+        <h1 className="text-4xl font-bold">Security Audit Logs</h1>
         <p className="leading-7 text-muted-foreground">
           Track all system activities and security events
         </p>

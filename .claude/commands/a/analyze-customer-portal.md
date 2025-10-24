@@ -1,7 +1,7 @@
 # Customer Portal Deep Analysis
 
 CUSTOMER PORTAL DEEP ANALYSIS
-
+**Key Principle:** The database is the source of truth. All code must match the database, not the other way around.
 You are performing a comprehensive audit of the Customer Portal in the Enorae salon booking platform.
 
 ## PHASE 1: GATHER BEST PRACTICES & CONTEXT

@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
-import type { StaffWithMetrics } from '../api/queries'
+import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 
 export function formatDate(value: string | null) {
   if (!value) return '—'

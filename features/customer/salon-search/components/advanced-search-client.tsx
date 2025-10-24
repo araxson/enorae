@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/command'
 import { Search, MapPin, Star, Shield, Sparkles, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
-import type { SalonSearchResult } from '../api/queries'
+import type { SalonSearchResult } from '@/features/customer/salon-search/api/queries'
 
 interface AdvancedSearchClientProps {
   initialResults: SalonSearchResult[]
@@ -230,14 +230,14 @@ export function AdvancedSearchClient({
       {/* Featured Salons */}
       {featuredSalons.length > 0 && !searchTerm && (
         <div>
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <h2 className="text-xl mb-4 flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-accent" />
             Featured Salons
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {featuredSalons.map((salon) => (
               <Link key={salon.id} href={`/customer/salons/${salon.slug}`}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <Card className="h-full">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <CardTitle>{salon.name}</CardTitle>
@@ -249,10 +249,12 @@ export function AdvancedSearchClient({
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-accent text-accent" />
-                      <span className="font-semibold">{formatRating(salon.rating_average)}</span>
-                      <Badge variant="secondary" className="ml-auto">Featured</Badge>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <Star className="h-4 w-4 fill-accent text-accent" />
+                        <span>{formatRating(salon.rating_average)}</span>
+                      </div>
+                      <Badge variant="secondary">Featured</Badge>
                     </div>
                   </CardContent>
                 </Card>
@@ -265,14 +267,14 @@ export function AdvancedSearchClient({
       {/* Search Results */}
       {results.length > 0 && (
         <div>
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <h2 className="text-xl mb-4 flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
             Search Results ({results.length})
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {results.map((salon) => (
               <Link key={salon.id} href={`/customer/salons/${salon.slug}`}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <Card className="h-full">
                   <CardHeader>
                     <div className="flex items-start justify-between gap-2">
                       <CardTitle>{salon.name}</CardTitle>
@@ -287,11 +289,13 @@ export function AdvancedSearchClient({
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-accent text-accent" />
-                      <span className="font-semibold">{formatRating(salon.rating_average)}</span>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <Star className="h-4 w-4 fill-accent text-accent" />
+                        <span>{formatRating(salon.rating_average)}</span>
+                      </div>
                       {salon.similarity_score && (
-                        <Badge variant="outline" className="ml-auto">
+                        <Badge variant="outline">
                           {Math.round(salon.similarity_score * 100)}% match
                         </Badge>
                       )}
@@ -307,10 +311,14 @@ export function AdvancedSearchClient({
       {/* No Results */}
       {results.length === 0 && searchTerm && (
         <Card>
-          <CardContent className="py-12 text-center">
-            <p className="text-muted-foreground">
-              No salons found matching your criteria. Try adjusting your filters.
-            </p>
+          <CardHeader className="items-center text-center">
+            <CardTitle>No salons found</CardTitle>
+            <CardDescription>
+              No salons match your filters right now.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground text-center">
+            Try searching a nearby city or lowering your rating threshold.
           </CardContent>
         </Card>
       )}

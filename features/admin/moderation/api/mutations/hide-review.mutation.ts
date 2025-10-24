@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'

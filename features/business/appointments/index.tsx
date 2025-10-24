@@ -3,6 +3,9 @@ import { AppointmentsTableClient } from './components/appointments-table-client'
 import { EmptyState } from '@/components/shared'
 import { AlertCircle, Calendar } from 'lucide-react'
 
+// Export types
+export type * from './types'
+
 export async function AppointmentsManagement() {
   let salon
   try {

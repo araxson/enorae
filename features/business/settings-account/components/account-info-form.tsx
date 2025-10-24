@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react'
-import { updateProfile } from '../api/mutations'
+import { updateProfile } from '@/features/business/settings-account/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
 type Profile = Database['public']['Views']['profiles']['Row']

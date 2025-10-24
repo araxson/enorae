@@ -55,12 +55,14 @@ export function ServicesStats({ services }: ServicesStatsProps) {
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       {items.map(({ label, value, icon: Icon, accent }) => (
         <Card key={label}>
-          <CardHeader className="flex items-start justify-between space-y-0">
-            <div className="space-y-1">
-              <CardTitle>{value}</CardTitle>
-              <CardDescription>{label}</CardDescription>
+          <CardHeader>
+            <div className="flex items-start justify-between space-y-0">
+              <div className="space-y-1">
+                <CardTitle>{value}</CardTitle>
+                <CardDescription>{label}</CardDescription>
+              </div>
+              <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
             </div>
-            <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
           </CardHeader>
         </Card>
       ))}

@@ -1,4 +1,4 @@
-import type { Salon, Service, ServicesByCategory } from '../types'
+import type { Salon, Service, ServicesByCategory } from '@/features/marketing/salon-directory/components/salon-profile/types'
 import { AboutCard } from './about-card'
 import { ServicesCard } from './services-card'
 import { AmenitiesCard } from './amenities-card'

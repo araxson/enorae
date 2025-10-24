@@ -8,7 +8,6 @@ import type {
   AdminRevenueOverviewRow,
   AdminAppointmentsOverviewRow,
   AdminReviewsOverviewRow,
-  AdminInventoryOverviewRow,
   AdminMessagesOverviewRow,
   AdminStaffOverviewRow,
 } from './types'
@@ -29,7 +28,6 @@ export async function getAdminOverview(): Promise<AdminOverview> {
     revenueData,
     appointmentsData,
     reviewsData,
-    inventoryData,
     messagesData,
     staffData,
   ] = await Promise.all([
@@ -37,7 +35,6 @@ export async function getAdminOverview(): Promise<AdminOverview> {
     supabase.from('admin_revenue_overview').select('*').order('date', { ascending: false }).limit(10),
     supabase.from('admin_appointments_overview').select('*').order('created_at', { ascending: false }).limit(10),
     supabase.from('admin_reviews_overview').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('admin_inventory_overview').select('*').limit(10),
     supabase.from('admin_messages_overview').select('*').order('created_at', { ascending: false }).limit(10),
     supabase.from('admin_staff_overview').select('*').order('created_at', { ascending: false }).limit(10),
   ])
@@ -47,7 +44,6 @@ export async function getAdminOverview(): Promise<AdminOverview> {
   if (revenueData.error) logSupabaseError('admin_revenue_overview', revenueData.error)
   if (appointmentsData.error) logSupabaseError('admin_appointments_overview', appointmentsData.error)
   if (reviewsData.error) logSupabaseError('admin_reviews_overview', reviewsData.error)
-  if (inventoryData.error) logSupabaseError('admin_inventory_overview', inventoryData.error)
   if (messagesData.error) logSupabaseError('admin_messages_overview', messagesData.error)
   if (staffData.error) logSupabaseError('admin_staff_overview', staffData.error)
 
@@ -56,7 +52,6 @@ export async function getAdminOverview(): Promise<AdminOverview> {
     revenue: (revenueData.data as AdminRevenueOverviewRow[] | null) ?? [],
     appointments: (appointmentsData.data as AdminAppointmentsOverviewRow[] | null) ?? [],
     reviews: (reviewsData.data as AdminReviewsOverviewRow[] | null) ?? [],
-    inventory: (inventoryData.data as AdminInventoryOverviewRow[] | null) ?? [],
     messages: (messagesData.data as AdminMessagesOverviewRow[] | null) ?? [],
     staff: (staffData.data as AdminStaffOverviewRow[] | null) ?? [],
   }

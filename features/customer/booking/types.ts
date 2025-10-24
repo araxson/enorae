@@ -9,3 +9,11 @@ export interface BookingFormProps {
   services: Service[]
   staff: Staff[]
 }
+
+export interface BookingFormValues {
+  serviceId: string
+  staffId: string
+  date: string
+  time: string
+  notes?: string
+}

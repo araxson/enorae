@@ -7,7 +7,7 @@ import { EmptyState } from '@/components/shared/empty-state'
 import { Star } from 'lucide-react'
 import { EditReviewDialog } from './edit-review-dialog'
 import { DeleteReviewDialog } from './delete-review-dialog'
-import type { ReviewsListProps } from '../types'
+import type { ReviewsListProps } from '@/features/customer/reviews/types'
 
 function StarRating({ rating }: { rating: number | null }) {
   const validRating = rating ?? 0
@@ -44,51 +44,33 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
     <div className="grid gap-6">
       {reviews.map((review) => (
         <Card key={review.id}>
-          <CardHeader className="sm:flex-row sm:items-start sm:justify-between sm:gap-4 sm:space-y-0">
-            <div className="space-y-1">
-              <CardTitle>Salon review</CardTitle>
-              {review.title && <CardDescription>{review.title}</CardDescription>}
-            </div>
-            <StarRating rating={review.rating} />
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <CardDescription>{review.comment}</CardDescription>
-
-            {(review.service_quality_rating || review.cleanliness_rating || review.value_rating) && (
-              <div className="grid gap-4 sm:grid-cols-3">
-                {review.service_quality_rating && (
-                  <div className="space-y-1">
-                    <p className="uppercase text-sm text-muted-foreground">Service</p>
-                    <StarRating rating={review.service_quality_rating} />
-                  </div>
-                )}
-                {review.cleanliness_rating && (
-                  <div className="space-y-1">
-                    <p className="uppercase text-sm text-muted-foreground">Cleanliness</p>
-                    <StarRating rating={review.cleanliness_rating} />
-                  </div>
-                )}
-                {review.value_rating && (
-                  <div className="space-y-1">
-                    <p className="uppercase text-sm text-muted-foreground">Value</p>
-                    <StarRating rating={review.value_rating} />
-                  </div>
-                )}
+          <CardHeader>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+              <div className="space-y-1">
+                <CardTitle>Salon review</CardTitle>
+                {review.salon_name && <CardDescription>{review.salon_name}</CardDescription>}
               </div>
-            )}
-
-            <CardDescription>
-              {review.created_at &&
-                new Date(review.created_at).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-            </CardDescription>
+              <StarRating rating={review.rating} />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">{review.comment}</p>
+              <p className="text-xs text-muted-foreground">
+                {review.created_at &&
+                  new Date(review.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+              </p>
+            </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-2 sm:flex-row">
-            <EditReviewDialog review={review} />
-            <DeleteReviewDialog review={review} />
+          <CardFooter>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <EditReviewDialog review={review} />
+              <DeleteReviewDialog review={review} />
+            </div>
           </CardFooter>
         </Card>
       ))}

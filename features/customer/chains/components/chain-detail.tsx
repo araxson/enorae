@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { MapPin, Store, Globe, Mail, Phone } from 'lucide-react'
-import type { SalonChainWithLocations } from '../api/queries'
+import { Store, Users, MapPin } from 'lucide-react'
+import type { SalonChainWithLocations } from '@/features/customer/chains/api/queries'
 
 interface ChainDetailProps {
   chain: SalonChainWithLocations
@@ -25,47 +25,21 @@ export function ChainDetail({ chain }: ChainDetailProps) {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            {chain.headquarters_address ? (
-              <div className="flex gap-3 items-start">
-                <MapPin className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Headquarters</p>
-                  <p className="text-sm text-foreground">{chain.headquarters_address}</p>
-                </div>
+            <div className="flex gap-3 items-start">
+              <Store className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              <div>
+                <p className="text-xs text-muted-foreground">Locations</p>
+                <p className="text-sm text-foreground">{chain.salon_count || 0} {chain.salon_count === 1 ? 'salon' : 'salons'}</p>
               </div>
-            ) : null}
+            </div>
 
-            {chain.corporate_phone ? (
-              <div className="flex gap-3 items-start">
-                <Phone className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Corporate phone</p>
-                  <p className="text-sm text-foreground">{chain.corporate_phone}</p>
-                </div>
+            <div className="flex gap-3 items-start">
+              <Users className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              <div>
+                <p className="text-xs text-muted-foreground">Staff members</p>
+                <p className="text-sm text-foreground">{chain.staff_count || 0}</p>
               </div>
-            ) : null}
-
-            {chain.corporate_email ? (
-              <div className="flex gap-3 items-start">
-                <Mail className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Corporate email</p>
-                  <p className="text-sm text-foreground">{chain.corporate_email}</p>
-                </div>
-              </div>
-            ) : null}
-
-            {chain.website ? (
-              <div className="flex gap-3 items-start">
-                <Globe className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Website</p>
-                  <a href={chain.website} target="_blank" rel="noopener noreferrer" className="text-sm text-primary underline-offset-4 hover:underline">
-                    Visit website
-                  </a>
-                </div>
-              </div>
-            ) : null}
+            </div>
           </div>
         </CardContent>
         <CardFooter>
@@ -80,7 +54,7 @@ export function ChainDetail({ chain }: ChainDetailProps) {
 
       {/* Locations */}
       <div>
-        <h3 className="mb-4 text-xl font-semibold text-foreground">Locations</h3>
+        <h3 className="mb-4 text-xl text-foreground">Locations</h3>
         {chain.locations && chain.locations.length > 0 ? (
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             {chain.locations.map((salon) => (

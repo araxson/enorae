@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Building2, MapPin, Star } from 'lucide-react'
-import type { ChainSalon } from '../api/queries'
+import type { ChainSalon } from '@/features/admin/chains/api/queries'
 
 interface ChainHierarchyProps {
   chainName: string

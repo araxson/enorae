@@ -17,13 +17,6 @@ const usernameSchema = z.object({
     .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, hyphens, and underscores'),
 })
 
-const profileUpdateSchema = z.object({
-  full_name: z.string().min(1, 'Full name is required').max(100).optional(),
-  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number').optional().or(z.literal('')),
-  bio: z.string().max(500, 'Bio must be less than 500 characters').optional(),
-  date_of_birth: z.string().optional(),
-})
-
 /**
  * Update user's username
  * Available to all authenticated users
@@ -54,6 +47,7 @@ export async function updateUsername(formData: FormData): Promise<ActionResponse
 
     // Check if username is already taken
     const { data: existing } = await supabase
+      .schema('identity')
       .from('profiles')
       .select('id')
       .eq('username', username)
@@ -87,56 +81,6 @@ export async function updateUsername(formData: FormData): Promise<ActionResponse
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update username',
-    }
-  }
-}
-
-/**
- * Update user profile information
- * Available to all authenticated users
- */
-export async function updateProfile(formData: FormData): Promise<ActionResponse> {
-  try {
-    const session = await requireAuth()
-    const supabase = await createClient()
-
-    // Validate input
-    const result = profileUpdateSchema.safeParse({
-      full_name: formData.get('full_name'),
-      phone: formData.get('phone'),
-      bio: formData.get('bio'),
-      date_of_birth: formData.get('date_of_birth'),
-    })
-
-    if (!result.success) {
-      return { success: false, error: result.error.errors[0].message }
-    }
-
-    const updateData = result.data
-
-    // Update profile
-    const { error: updateError } = await supabase
-      .schema('identity')
-      .from('profiles')
-      .update({
-        ...updateData,
-        updated_at: new Date().toISOString(),
-        updated_by_id: session.user.id,
-      })
-      .eq('id', session.user.id)
-
-    if (updateError) throw updateError
-
-    revalidatePath('/customer/profile')
-    revalidatePath('/staff/profile')
-    revalidatePath('/business/profile')
-
-    return { success: true, data: undefined }
-  } catch (error) {
-    console.error('Error updating profile:', error)
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to update profile',
     }
   }
 }
@@ -185,16 +129,15 @@ export async function uploadAvatar(formData: FormData): Promise<ActionResponse<{
       .from('avatars')
       .getPublicUrl(uploadData.path)
 
-    // Update profile with avatar URL
+    // Update profile metadata with avatar URL
     const { error: updateError } = await supabase
       .schema('identity')
-      .from('profiles')
-      .update({
+      .from('profiles_metadata')
+      .upsert({
+        profile_id: session.user.id,
         avatar_url: publicUrl,
         updated_at: new Date().toISOString(),
-        updated_by_id: session.user.id,
       })
-      .eq('id', session.user.id)
 
     if (updateError) throw updateError
 

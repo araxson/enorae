@@ -14,8 +14,8 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
     return (
       <div className="text-center py-12">
         <div className="flex flex-col gap-4">
-          <h3 className="scroll-m-20 text-2xl font-semibold">No salons found</h3>
-          <p className="text-sm text-muted-foreground">No salons currently offer {categoryName} services</p>
+          <h3 className="scroll-m-20">No salons found</h3>
+          <p className="text-muted-foreground">No salons currently offer {categoryName} services</p>
         </div>
       </div>
     )
@@ -23,7 +23,7 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground">
         {salons.length} salon{salons.length !== 1 ? 's' : ''} offering {categoryName}
       </p>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -36,11 +36,11 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
               key={salon.id}
               salonId={salon.id || undefined}
               name={salon.name || 'Unnamed Salon'}
-              description={salon.short_description || salon.description || undefined}
-              image={salon.cover_image_url || salon.logo_url || undefined}
+              description={salon.short_description || undefined}
+              image={undefined}
               location={location}
-              rating={salon.rating || undefined}
-              reviewCount={salon.review_count || undefined}
+              rating={salon.rating_average || undefined}
+              reviewCount={salon.rating_count || undefined}
               hours={undefined}
               onBook={() => {
                 window.location.href = `/salons/${salon.slug}`
@@ -52,7 +52,7 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
                 if (navigator.share) {
                   navigator.share({
                     title: salon.name || 'Salon',
-                    text: salon.short_description || salon.description || '',
+                    text: salon.short_description || '',
                     url: `/salons/${salon.slug}`,
                   })
                 } else {

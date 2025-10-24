@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import { revalidatePath } from 'next/cache'
 import { sanitizeAdminText } from '@/features/admin/admin-common'

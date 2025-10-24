@@ -12,7 +12,14 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Search, X, MapPin, Filter } from 'lucide-react'
-import { Card } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 interface SalonFiltersProps {
   cities?: { city: string; state: string; count: number }[]
@@ -51,9 +58,14 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
   const hasActiveFilters = searchTerm || selectedCity || selectedState || selectedCategory
 
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-4">
-        {/* Search Input */}
+    <Card>
+      <CardHeader>
+        <CardTitle>Filter salons</CardTitle>
+        <CardDescription>
+          Refine results by search term, location, and category.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -64,14 +76,11 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
             className="pl-10"
           />
         </div>
-
-        {/* Filter Row */}
-        <div className="flex gap-3 items-center flex-wrap">
-          {/* City Filter */}
+        <div className="flex flex-wrap items-center gap-3">
           {cities.length > 0 && (
             <Select value={selectedCity} onValueChange={setSelectedCity}>
               <SelectTrigger className="w-52">
-                <MapPin className="h-4 w-4 mr-2" />
+                <MapPin className="mr-2 h-4 w-4" />
                 <SelectValue placeholder="Select city" />
               </SelectTrigger>
               <SelectContent>
@@ -85,11 +94,10 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
             </Select>
           )}
 
-          {/* Category Filter */}
           {categories.length > 0 && (
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-52">
-                <Filter className="h-4 w-4 mr-2" />
+                <Filter className="mr-2 h-4 w-4" />
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
@@ -102,21 +110,19 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
               </SelectContent>
             </Select>
           )}
-
-          {/* Action Buttons */}
-          <div className="flex gap-3 items-center ml-auto">
-            {hasActiveFilters && (
-              <Button variant="outline" size="sm" onClick={handleClear}>
-                <X className="h-4 w-4 mr-2" />
-                Clear
-              </Button>
-            )}
-            <Button size="sm" onClick={handleSearch}>
-              Search
-            </Button>
-          </div>
         </div>
-      </div>
+      </CardContent>
+      <CardFooter className="flex flex-wrap items-center justify-end gap-3">
+        {hasActiveFilters && (
+          <Button variant="outline" size="sm" onClick={handleClear}>
+            <X className="mr-2 h-4 w-4" />
+            Clear
+          </Button>
+        )}
+        <Button size="sm" onClick={handleSearch}>
+          Search
+        </Button>
+      </CardFooter>
     </Card>
   )
 }

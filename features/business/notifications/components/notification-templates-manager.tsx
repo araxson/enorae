@@ -10,8 +10,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { PenLine, PlusCircle, Trash2 } from 'lucide-react'
 import { useToast } from '@/lib/hooks/use-toast'
-import type { NotificationTemplate } from '../api/queries'
-import { deleteNotificationTemplate, upsertNotificationTemplate } from '../api/mutations'
+import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
+import { deleteNotificationTemplate, upsertNotificationTemplate } from '@/features/business/notifications/api/mutations'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 type NotificationTemplatesManagerProps = {
@@ -92,9 +92,14 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
     startTransition(async () => {
       try {
         await upsertNotificationTemplate({
-          ...(editingTemplate ?? {}),
-          ...draft,
-        } as NotificationTemplate)
+          id: editingTemplate?.id,
+          name: draft.name,
+          description: draft.description || undefined,
+          event: draft.event,
+          channel: draft.channel,
+          subject: draft.subject || undefined,
+          body: draft.body,
+        })
 
         toast({
           title: 'Template saved',
@@ -166,11 +171,11 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
                         </CardDescription>
                       </div>
                       <div className="flex gap-2">
-                        <Badge variant="outline" className="capitalize">
-                          {template.channel}
+                        <Badge variant="outline">
+                          <span className="capitalize">{template.channel}</span>
                         </Badge>
-                        <Badge variant="secondary" className="capitalize">
-                          {template.event.replace(/_/g, ' ')}
+                        <Badge variant="secondary">
+                          <span className="capitalize">{template.event.replace(/_/g, ' ')}</span>
                         </Badge>
                       </div>
                     </div>

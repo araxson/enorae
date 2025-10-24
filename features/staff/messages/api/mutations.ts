@@ -2,7 +2,7 @@
 import { revalidatePath } from 'next/cache'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import { messageSchema, threadMessageSchema, type MessageFormData, type ThreadMessageFormData } from '../schema'
+import { messageSchema, threadMessageSchema, type MessageFormData, type ThreadMessageFormData } from '@/features/staff/messages/schema'
 
 export async function sendMessage(data: MessageFormData) {
   const session = await verifySession()

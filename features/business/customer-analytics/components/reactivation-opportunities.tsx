@@ -31,19 +31,17 @@ export function ReactivationOpportunities({ total, customers }: ReactivationOppo
         <div className="space-y-3">
           {customers.slice(0, 5).map((customer) => (
             <Card key={customer.id}>
-              <CardContent className="flex items-center justify-between p-4">
-                <div>
-                  <p className="font-medium">{customer.name}</p>
-                  <p className="text-xs text-muted-foreground">{customer.email}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-muted-foreground">
-                    Last visit {format(new Date(customer.lastVisit), 'MMM d, yyyy')}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {customer.daysSinceLastVisit} days ago
-                  </p>
-                </div>
+              <CardHeader className="pb-2">
+                <CardTitle>{customer.name}</CardTitle>
+                <CardDescription>{customer.email}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex items-center justify-between pt-0">
+                <p className="text-sm text-muted-foreground">
+                  Last visit {format(new Date(customer.lastVisit), 'MMM d, yyyy')}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {customer.daysSinceLastVisit} days ago
+                </p>
               </CardContent>
             </Card>
           ))}

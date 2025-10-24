@@ -1,24 +1,28 @@
 /**
  * Central Types Export
  *
- * Re-export all types from a single location for easier imports.
- * Import from this file instead of individual type files.
+ * Exports only TRULY SHARED types used across 3+ features.
+ * Feature-specific types should be in features/{portal}/{feature}/types.ts
+ *
+ * COLOCATE TYPES WITH FEATURES - only core/generic types here
  *
  * @example
- * import type { Database, Env, AppointmentStatus } from '@/lib/types'
+ * import type { Database, Env } from '@/lib/types'
+ * import type { Appointment } from '@/features/business/appointments'
  */
 
-// Database Types
+import type { Database } from './database.types'
+
+// ============================================================================
+// DATABASE TYPES (Generated from Supabase)
+// ============================================================================
+
 export type { Database } from './database.types'
 
-// Environment Types
-export type { Env } from '../env'
+// ============================================================================
+// CORE VIEW TYPES (Used by multiple portals/features)
+// ============================================================================
 
-// Validation Types
-export type { LoginInput, SignupInput } from '../validations/auth'
-export type { BookingInput } from '../validations/booking'
-
-// Database View Types (commonly used)
 export type Salon = Database['public']['Views']['salons']['Row']
 export type Service = Database['public']['Views']['services']['Row']
 export type Staff = Database['public']['Views']['staff']['Row']
@@ -26,7 +30,43 @@ export type Appointment = Database['public']['Views']['appointments']['Row']
 export type Profile = Database['public']['Views']['profiles']['Row']
 export type UserRole = Database['public']['Views']['user_roles']['Row']
 
-// Constants as Types
+// ============================================================================
+// ENVIRONMENT & VALIDATION TYPES
+// ============================================================================
+
+export type { Env } from '../env'
+export type { LoginInput, SignupInput } from '../validations/auth'
+export type { BookingInput } from '../validations/booking'
+
+// ============================================================================
+// GENERIC UI & COMPONENT TYPES (Used everywhere)
+// ============================================================================
+
+export type { WithClassName, WithChildren, WithOptionalChildren } from './app/components'
+export type { PageProps, LayoutProps } from './app/page'
+export type { ApiResponse, ApiError, PaginatedResponse } from './app/api'
+export type { FormState } from './app/forms'
+export type {
+  ButtonClickHandler,
+  DivClickHandler,
+  FormSubmitHandler,
+  InputChangeHandler,
+  TextAreaChangeHandler,
+  SelectChangeHandler,
+  KeyboardHandler,
+  FocusHandler,
+} from './app/events'
+
+// ============================================================================
+// UTILITY TYPES (Generic helpers used across codebase)
+// ============================================================================
+
+export type { Nullable, Optional, MaybeNull, PickExact, PartialBy, RequiredBy } from './app/utility'
+
+// ============================================================================
+// CONSTANTS AS TYPES (Shared domain enums)
+// ============================================================================
+
 export type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'no_show'
 export type StaffStatus = 'active' | 'inactive' | 'on_leave'
 export type UserRoleType =
@@ -42,5 +82,14 @@ export type UserRoleType =
   | 'customer'
   | 'guest'
 
-// Re-export from database types for convenience
-import type { Database } from './database.types'
+// ============================================================================
+// FEATURE-SPECIFIC TYPES
+// ============================================================================
+//
+// DO NOT ADD FEATURE TYPES HERE!
+// Import feature-specific types directly from their features:
+//
+// ❌ DON'T:  import { AppointmentWithDetails } from '@/lib/types'
+// ✅ DO:     import { AppointmentWithDetails } from '@/features/business/appointments'
+//
+// ============================================================================

@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type ManualTransaction = Database['public']['Views']['manual_transactions']['Row']
+type ManualTransaction = Database['public']['Views']['manual_transactions_view']['Row']
 
 export type ManualTransactionWithDetails = ManualTransaction & {
   created_by?: {
@@ -35,7 +35,7 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
 
   // PERFORMANCE: Use join syntax to eliminate N+1 queries (300+ → 1 query)
   const { data, error } = await supabase
-    .from('manual_transactions')
+    .from('manual_transactions_view')
     .select(`
       *,
       created_by:created_by_id(id, full_name),
@@ -72,7 +72,7 @@ export async function getManualTransactionById(
 
   // ✅ FIXED: Single query with nested SELECT for all relations (consistent with getManualTransactions)
   const { data, error } = await supabase
-    .from('manual_transactions')
+    .from('manual_transactions_view')
     .select(`
       *,
       created_by:created_by_id(id, full_name),

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { TransactionsList } from './transactions-list'
 import { CreateTransactionDialog } from './create-transaction-dialog'
 import { TransactionsReportDialog } from './transactions-report-dialog'
-import type { ManualTransactionWithDetails } from '../api/queries'
+import type { ManualTransactionWithDetails } from '@/features/business/transactions/api/queries'
 import { format } from 'date-fns'
 
 interface TransactionsClientProps {

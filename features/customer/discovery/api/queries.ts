@@ -2,44 +2,44 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import type { PostgrestError } from '@supabase/supabase-js'
 
-type Salon = Database['public']['Views']['salons']['Row']
-type Service = Database['public']['Views']['services']['Row']
-type OperatingHours = Database['public']['Views']['operating_hours']['Row']
-type SalonContactDetails = Database['public']['Views']['salon_contact_details']['Row']
-type SalonDescription = Database['public']['Views']['salon_descriptions']['Row']
+type Salon = Database['public']['Views']['salons_view']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
+type OperatingHours = Database['public']['Views']['operating_hours_view']['Row']
+type SalonContactDetails = Database['public']['Views']['salon_contact_details_view']['Row']
+type SalonDescription = Database['public']['Views']['salon_descriptions_view']['Row']
 type SalonMediaView = Database['public']['Views']['salon_media_view']['Row']
-type LocationAddress = Database['public']['Views']['location_addresses']['Row']
+type LocationAddress = Database['public']['Views']['location_addresses_view']['Row']
+type ServiceCategory = Database['public']['Views']['service_categories_view']['Row']
 
 export async function getSalons(categoryFilter?: string) {
   await requireAuth()
   const supabase = await createClient()
 
   let query = supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
 
   // If category filter is provided, find salons offering services in that category
   if (categoryFilter) {
     const { data: servicesData } = await supabase
-      .from('services')
+      .from('services_view')
       .select('salon_id, category_name')
       .eq('category_name', categoryFilter)
-      .eq('is_active', true)
+      .eq('is_active', true) as { data: Service[] | null; error: PostgrestError | null }
 
     if (servicesData && servicesData.length > 0) {
-      const salonIds = [...new Set(servicesData.map(s => s.salon_id).filter(Boolean) as string[])]
-      query = query.in('id', salonIds)
+      const salonIds = [...new Set(servicesData.map((s: Service) => s.salon_id).filter(Boolean) as string[])]
+      query = supabase.from('salons_view').select('*').in('id', salonIds).eq('is_active', true)
     }
   }
 
-  query = query.order('created_at', { ascending: false })
-
-  const { data, error } = await query
+  const { data, error } = await query.order('created_at', { ascending: false })
 
   if (error) throw error
-  return data as Salon[]
+  return data || []
 }
 
 export async function getSalonBySlug(slug: string) {
@@ -47,14 +47,14 @@ export async function getSalonBySlug(slug: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('slug', slug)
     .eq('is_active', true)
-    .single()
+    .single() as { data: Salon | null; error: PostgrestError | null }
 
   if (error) throw error
-  return data as Salon
+  return data
 }
 
 export async function searchSalons(query: string, categoryFilter?: string) {
@@ -62,31 +62,34 @@ export async function searchSalons(query: string, categoryFilter?: string) {
   const supabase = await createClient()
 
   let salonQuery = supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
-    .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
+    .ilike('name', `%${query}%`)
 
   // If category filter is provided, find salons offering services in that category
   if (categoryFilter) {
     const { data: servicesData } = await supabase
-      .from('services')
+      .from('services_view')
       .select('salon_id, category_name')
       .eq('category_name', categoryFilter)
-      .eq('is_active', true)
+      .eq('is_active', true) as { data: Service[] | null; error: PostgrestError | null }
 
     if (servicesData && servicesData.length > 0) {
-      const salonIds = [...new Set(servicesData.map(s => s.salon_id).filter(Boolean) as string[])]
-      salonQuery = salonQuery.in('id', salonIds)
+      const salonIds = [...new Set(servicesData.map((s: Service) => s.salon_id).filter(Boolean) as string[])]
+      salonQuery = supabase
+        .from('salons_view')
+        .select('*')
+        .in('id', salonIds)
+        .eq('is_active', true)
+        .ilike('name', `%${query}%`)
     }
   }
 
-  salonQuery = salonQuery.order('created_at', { ascending: false })
-
-  const { data, error } = await salonQuery
+  const { data, error } = await salonQuery.order('created_at', { ascending: false })
 
   if (error) throw error
-  return data as Salon[]
+  return data || []
 }
 
 /**
@@ -97,16 +100,17 @@ export async function getServiceCategories(): Promise<string[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services')
-    .select('category_name')
-    .eq('is_active', true)
-    .not('category_name', 'is', null)
+    .from('service_categories_view')
+    .select('name')
+    .order('name', { ascending: true }) as { data: ServiceCategory[] | null; error: PostgrestError | null }
 
   if (error) throw error
 
   // Get unique category names
-  const uniqueCategories = [...new Set(data.map(s => s.category_name).filter(Boolean) as string[])]
-  return uniqueCategories.sort()
+  const uniqueCategories = [
+    ...new Set((data || []).map((category) => category.name).filter(Boolean) as string[]),
+  ]
+  return uniqueCategories
 }
 
 /**
@@ -117,16 +121,16 @@ export async function getPopularCategories(limit: number = 10): Promise<{ catego
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('category_name')
     .eq('is_active', true)
-    .not('category_name', 'is', null)
+    .not('category_name', 'is', null) as { data: Service[] | null; error: PostgrestError | null }
 
   if (error) throw error
 
   // Count occurrences of each category
   const categoryCounts: Record<string, number> = {}
-  data.forEach((service) => {
+  ;(data || []).forEach((service) => {
     if (service.category_name) {
       categoryCounts[service.category_name] = (categoryCounts[service.category_name] || 0) + 1
     }
@@ -149,10 +153,9 @@ export async function getSalonOperatingHours(salonId: string): Promise<Operating
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('operating_hours')
+    .from('operating_hours_view')
     .select('*')
     .eq('salon_id', salonId)
-    .is('deleted_at', null)
     .order('day_of_week', { ascending: true })
 
   if (error) throw error
@@ -207,7 +210,7 @@ export async function getSalonContactDetails(salonId: string): Promise<SalonCont
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salon_contact_details')
+    .from('salon_contact_details_view')
     .select('*')
     .eq('salon_id', salonId)
     .maybeSingle()
@@ -224,7 +227,7 @@ export async function getSalonDescription(salonId: string): Promise<SalonDescrip
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salon_descriptions')
+    .from('salon_descriptions_view')
     .select('*')
     .eq('salon_id', salonId)
     .maybeSingle()
@@ -258,7 +261,7 @@ export async function getSalonLocationAddress(locationId: string): Promise<Locat
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('location_addresses')
+    .from('location_addresses_view')
     .select('*')
     .eq('location_id', locationId)
     .maybeSingle()

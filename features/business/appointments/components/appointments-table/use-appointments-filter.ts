@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { format } from 'date-fns'
-import type { AppointmentWithDetails } from '../../api/queries'
+import type { AppointmentWithDetails } from '@/features/business/appointments/api/queries'
 
 type StatusFilter = string
 

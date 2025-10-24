@@ -21,6 +21,15 @@ export function NotificationPreviewPanel({ templates }: NotificationPreviewPanel
 
   const template = templates.find((item) => item.id === selectedId)
 
+  const formatEventLabel = (value: string) =>
+    value
+      .split('_')
+      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+      .join(' ')
+
+  const formatChannelLabel = (value: string) =>
+    value.charAt(0).toUpperCase() + value.slice(1)
+
   const handleSend = () => {
     if (!selectedId) {
       toast({
@@ -73,23 +82,23 @@ export function NotificationPreviewPanel({ templates }: NotificationPreviewPanel
 
         {template ? (
           <Card>
-            <CardContent className="space-y-3 p-4">
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="capitalize">
-                {template.event.replace(/_/g, ' ')}
+            <CardHeader className="flex flex-row items-center gap-2 pb-2">
+              <Badge variant="outline">
+                {formatEventLabel(template.event)}
               </Badge>
-              <Badge variant="secondary" className="capitalize">
-                {template.channel}
+              <Badge variant="secondary">
+                {formatChannelLabel(template.channel)}
               </Badge>
-            </div>
-            {template.subject ? (
-              <p className="text-sm font-semibold">{template.subject}</p>
-            ) : null}
-            <ScrollArea className="max-h-48 text-sm">
-              <pre className="whitespace-pre-wrap font-sans text-sm">
-                {template.body}
-              </pre>
-            </ScrollArea>
+            </CardHeader>
+            <CardContent className="space-y-3 pt-0">
+              {template.subject ? (
+                <p className="text-sm font-semibold">{template.subject}</p>
+              ) : null}
+              <ScrollArea className="max-h-48 text-sm">
+                <pre className="whitespace-pre-wrap font-sans text-sm">
+                  {template.body}
+                </pre>
+              </ScrollArea>
             </CardContent>
           </Card>
         ) : null}

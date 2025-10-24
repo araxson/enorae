@@ -29,7 +29,7 @@ export async function updateStaffInfo(formData: FormData): Promise<ActionRespons
     // Get staff profile ID using user_id
     // The staff view includes sp.id from organization.staff_profiles
     const { data: staffProfile, error: profileError } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id')
       .eq('user_id', session.user.id)
       .single<{ id: string }>()
@@ -161,7 +161,7 @@ export async function uploadPortfolioImage(formData: FormData): Promise<ActionRe
 
     // Get staff profile
     const { data: staff } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id, salon_id')
       .eq('user_id', session.user.id)
       .single<{ id: string; salon_id: string }>()

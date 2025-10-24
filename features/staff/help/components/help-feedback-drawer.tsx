@@ -39,13 +39,15 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
             <div className="grid gap-2">
               <Label>Notify me when</Label>
               <Card>
-                <CardContent className="space-y-2 p-4 text-sm">
-                <Label className="flex items-center gap-2">
-                  <Checkbox defaultChecked /> New resources are added
-                </Label>
-                <Label className="flex items-center gap-2">
-                  <Checkbox /> Content is updated
-                </Label>
+                <CardContent>
+                  <div className="space-y-2 p-4 text-sm">
+                    <Label className="flex items-center gap-2">
+                      <Checkbox defaultChecked /> New resources are added
+                    </Label>
+                    <Label className="flex items-center gap-2">
+                      <Checkbox /> Content is updated
+                    </Label>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -60,12 +62,14 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
             </div>
 
             <Card>
-              <CardContent className="flex items-start justify-between gap-4 p-4">
-                <div className="space-y-1 text-sm">
-                  <p className="font-medium">Share anonymously</p>
-                  <p className="text-xs text-muted-foreground">We will only record the feedback message.</p>
+              <CardContent>
+                <div className="flex items-start justify-between gap-4 p-4">
+                  <div className="space-y-1">
+                    <p>Share anonymously</p>
+                    <p className="text-muted-foreground">We will only record the feedback message.</p>
+                  </div>
+                  <Switch defaultChecked />
                 </div>
-                <Switch defaultChecked />
               </CardContent>
             </Card>
           </div>

@@ -91,26 +91,32 @@ export function AddressValidation({ address }: Props) {
 
     if (result.isValid) {
       return (
-        <Badge variant="default" className="gap-1">
-          <CheckCircle className="h-3 w-3" />
-          Valid ({result.score}%)
+        <Badge variant="default">
+          <span className="flex items-center gap-1">
+            <CheckCircle className="h-3 w-3" />
+            Valid ({result.score}%)
+          </span>
         </Badge>
       )
     }
 
     if (result.score >= 50) {
       return (
-        <Badge variant="secondary" className="gap-1">
-          <AlertTriangle className="h-3 w-3" />
-          Needs Improvement ({result.score}%)
+        <Badge variant="secondary">
+          <span className="flex items-center gap-1">
+            <AlertTriangle className="h-3 w-3" />
+            Needs Improvement ({result.score}%)
+          </span>
         </Badge>
       )
     }
 
     return (
-      <Badge variant="destructive" className="gap-1">
-        <XCircle className="h-3 w-3" />
-        Invalid ({result.score}%)
+      <Badge variant="destructive">
+        <span className="flex items-center gap-1">
+          <XCircle className="h-3 w-3" />
+          Invalid ({result.score}%)
+        </span>
       </Badge>
     )
   }

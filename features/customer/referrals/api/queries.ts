@@ -16,17 +16,8 @@ export async function getReferralCode() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .schema('engagement')
-    .from('referrals')
-    .select('*')
-    .eq('referrer_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .single()
-
-  if (error && error.code !== 'PGRST116') throw error
-  return data as Referral | null
+  // TODO: referrals table not yet in database schema
+  return null
 }
 
 export async function getReferralStats() {
@@ -34,22 +25,13 @@ export async function getReferralStats() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .schema('engagement')
-    .from('referrals')
-    .select('*')
-    .eq('referrer_id', user.id)
-
-  if (error) throw error
-
-  const stats = {
-    total_referrals: data.length,
-    successful_referrals: data.filter(r => r.status === 'completed').length,
-    pending_referrals: data.filter(r => r.status === 'pending').length,
-    total_bonus_points: data.reduce((sum, r) => sum + (r.bonus_points || 0), 0),
+  // TODO: referrals table not yet in database schema
+  return {
+    total_referrals: 0,
+    successful_referrals: 0,
+    pending_referrals: 0,
+    total_bonus_points: 0,
   }
-
-  return stats
 }
 
 export async function getReferralHistory() {
@@ -57,14 +39,6 @@ export async function getReferralHistory() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .schema('engagement')
-    .from('referrals')
-    .select('*')
-    .eq('referrer_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(50)
-
-  if (error) throw error
-  return data as Referral[]
+  // TODO: referrals table not yet in database schema
+  return []
 }

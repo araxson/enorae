@@ -8,9 +8,9 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { blockedTimeSchema, type BlockedTimeFormData } from '../schema'
-import { createBlockedTime, updateBlockedTime } from '../api/mutations'
-import type { BlockedTime } from '../types'
+import { blockedTimeSchema, type BlockedTimeFormData } from '@/features/staff/blocked-times/schema'
+import { createBlockedTime, updateBlockedTime } from '@/features/staff/blocked-times/api/mutations'
+import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
 interface BlockedTimeFormProps {
   blockedTime?: BlockedTime
@@ -33,14 +33,14 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
     defaultValues: blockedTime ? {
       start_time: new Date(blockedTime.start_time || '').toISOString().slice(0, 16),
       end_time: new Date(blockedTime.end_time || '').toISOString().slice(0, 16),
-      block_type: (blockedTime.block_type || 'break') as 'break' | 'personal' | 'meeting' | 'other',
+      block_type: blockedTime.block_type || 'break',
       reason: blockedTime.reason || '',
       is_recurring: blockedTime.is_recurring || false,
       recurrence_pattern: blockedTime.recurrence_pattern || null,
     } : {
       start_time: new Date().toISOString().slice(0, 16),
       end_time: new Date(Date.now() + 3600000).toISOString().slice(0, 16),
-      block_type: 'break' as const,
+      block_type: 'break',
       reason: '',
       is_recurring: false,
       recurrence_pattern: null,
@@ -79,7 +79,7 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
             {...register('start_time')}
           />
           {errors.start_time && (
-            <p className="text-sm text-destructive mt-1">{errors.start_time.message}</p>
+            <p className="text-destructive mt-1">{errors.start_time.message}</p>
           )}
         </div>
 
@@ -91,7 +91,7 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
             {...register('end_time')}
           />
           {errors.end_time && (
-            <p className="text-sm text-destructive mt-1">{errors.end_time.message}</p>
+            <p className="text-destructive mt-1">{errors.end_time.message}</p>
           )}
         </div>
 
@@ -99,20 +99,25 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
           <Label htmlFor="block_type">Block Type</Label>
           <Select
             value={watch('block_type')}
-            onValueChange={(value) => setValue('block_type', value as 'break' | 'personal' | 'meeting' | 'other')}
+            onValueChange={(value) => setValue('block_type', value as BlockedTimeFormData['block_type'])}
           >
             <SelectTrigger id="block_type">
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="break">Break</SelectItem>
+              <SelectItem value="lunch">Lunch</SelectItem>
               <SelectItem value="personal">Personal</SelectItem>
-              <SelectItem value="meeting">Meeting</SelectItem>
+              <SelectItem value="vacation">Vacation</SelectItem>
+              <SelectItem value="sick_leave">Sick Leave</SelectItem>
+              <SelectItem value="training">Training</SelectItem>
+              <SelectItem value="holiday">Holiday</SelectItem>
+              <SelectItem value="maintenance">Maintenance</SelectItem>
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>
           {errors.block_type && (
-            <p className="text-sm text-destructive mt-1">{errors.block_type.message}</p>
+            <p className="text-destructive mt-1">{errors.block_type.message}</p>
           )}
         </div>
 
@@ -124,7 +129,7 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
             {...register('reason')}
           />
           {errors.reason && (
-            <p className="text-sm text-destructive mt-1">{errors.reason.message}</p>
+            <p className="text-destructive mt-1">{errors.reason.message}</p>
           )}
         </div>
 
@@ -138,7 +143,7 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
         </div>
 
         {error && (
-          <p className="text-sm text-destructive">{error}</p>
+          <p className="text-destructive">{error}</p>
         )}
 
         <div className="flex justify-end gap-2">

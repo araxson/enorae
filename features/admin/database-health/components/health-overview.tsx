@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 import { Badge } from '@/components/ui/badge'
 import { AlertCircle, CheckCircle, AlertTriangle, TrendingUp } from 'lucide-react'
-import type { DatabaseHealthFullSnapshot } from '../api/internal/snapshot'
+import type { DatabaseHealthFullSnapshot } from '@/features/admin/database-health/api/internal/snapshot'
 
 interface HealthOverviewProps {
   snapshot: DatabaseHealthFullSnapshot

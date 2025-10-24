@@ -3,7 +3,7 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type StaffService = Database['public']['Views']['staff_services']['Row']
+type StaffService = Database['public']['Views']['staff_services_view']['Row']
 
 export async function getStaffServices(staffId: string): Promise<StaffService[]> {
   const session = await requireAuth()
@@ -11,7 +11,7 @@ export async function getStaffServices(staffId: string): Promise<StaffService[]>
 
   // Security: Verify staff ownership
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', staffId)

@@ -1,7 +1,7 @@
 import { AlertTriangle, ShieldCheck } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { SecurityIncident } from '../api/types'
+import type { SecurityIncident } from '@/features/admin/security-monitoring/api/types'
 
 interface IncidentResponsePanelProps {
   incidents: SecurityIncident[]
@@ -27,36 +27,38 @@ const guidanceFor = (severity: string) =>
 
 export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
+    <Card>
+      <CardHeader>
         <div className="flex items-center gap-2">
-          <ShieldCheck className="h-4 w-4 text-muted-foreground" />
+          <ShieldCheck className="h-4 w-4" aria-hidden="true" />
           <CardTitle>Security Incident Response</CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent>
         {incidents.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No active security incidents detected.
-          </p>
+          <CardDescription>No active security incidents detected.</CardDescription>
         ) : (
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             {incidents.slice(0, 6).map((incident) => (
               <Card key={incident.id}>
-                <CardContent className="p-3">
+                <CardHeader>
                   <div className="flex items-center justify-between gap-2">
-                    <div className="text-sm font-medium">{incident.eventType}</div>
+                    <CardTitle>{incident.eventType}</CardTitle>
                     {severityBadge(incident.severity)}
                   </div>
-                  <div className="mt-1 text-xs text-muted-foreground">
+                  <CardDescription>
                     Detected at {new Date(incident.createdAt).toLocaleString()} · IP {incident.ipAddress ?? 'Unknown'}
-                  </div>
-                  {incident.description && (
-                    <div className="mt-2 text-xs text-muted-foreground">{incident.description}</div>
-                  )}
-                  <div className="mt-3 flex items-center gap-2 rounded-md bg-muted/50 p-2 text-xs text-muted-foreground">
-                    <AlertTriangle className="h-3 w-3 text-muted-foreground" />
-                    {guidanceFor(incident.severity)}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col gap-2">
+                    {incident.description ? (
+                      <CardDescription>{incident.description}</CardDescription>
+                    ) : null}
+                    <div className="flex items-start gap-2">
+                      <AlertTriangle className="h-3 w-3" aria-hidden="true" />
+                      <CardDescription>{guidanceFor(incident.severity)}</CardDescription>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

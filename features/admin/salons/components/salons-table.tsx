@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Building2, Users } from 'lucide-react'
-import type { AdminSalon } from '../api/queries'
+import type { AdminSalon } from '@/features/admin/salons/api/queries'
 import { COMPLIANCE_BADGE_VARIANT, LICENSE_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
 import { DataTableEmpty } from '@/components/shared/data-table-empty'
 
@@ -33,29 +33,31 @@ export function SalonsTable({ salons }: SalonsTableProps) {
 
   return (
     <>
-      <div className="hidden md:block overflow-x-auto rounded-lg border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Salon</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Rating</TableHead>
-              <TableHead>Revenue</TableHead>
-              <TableHead>Staff</TableHead>
-              <TableHead>Compliance</TableHead>
-              <TableHead>License</TableHead>
-              <TableHead>Health</TableHead>
-              <TableHead>Created</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {salons.map((salon) => (
-              <TableRow key={salon.id} className="hover:bg-accent/50">
-                <TableCell>
-                  <div className="min-w-0">
-                    <p className="font-medium">{salon.name}</p>
-                  </div>
-                </TableCell>
+      <Card className="hidden md:block">
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Salon</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Rating</TableHead>
+                  <TableHead>Revenue</TableHead>
+                  <TableHead>Staff</TableHead>
+                  <TableHead>Compliance</TableHead>
+                  <TableHead>License</TableHead>
+                  <TableHead>Health</TableHead>
+                  <TableHead>Created</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {salons.map((salon) => (
+                  <TableRow key={salon.id} className="hover:bg-accent/50">
+                    <TableCell>
+                      <div className="min-w-0">
+                        <p className="font-medium">{salon.name}</p>
+                      </div>
+                    </TableCell>
 
                 <TableCell className="text-sm capitalize">salon</TableCell>
 
@@ -128,23 +130,23 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                   <span className="text-sm font-semibold">{salon.healthScore}%</span>
                 </TableCell>
 
-                <TableCell className="text-sm text-muted-foreground">
-                  {salon.created_at ? format(new Date(salon.created_at), 'MMM dd, yyyy') : 'N/A'}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {salon.created_at ? format(new Date(salon.created_at), 'MMM dd, yyyy') : 'N/A'}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="space-y-4 md:hidden">
         {salons.map((salon) => (
           <Card key={salon.id}>
-            <CardContent className="space-y-3 p-4">
+            <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold">{salon.name}</p>
-                </div>
+                <CardTitle>{salon.name}</CardTitle>
                 <Badge
                   variant={
                     COMPLIANCE_BADGE_VARIANT[
@@ -155,8 +157,12 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                   {salon.complianceScore}
                 </Badge>
               </div>
-
-              <div className="grid grid-cols-2 gap-3 text-sm">
+              <CardDescription>
+                {salon.created_at ? format(new Date(salon.created_at), 'MMM dd, yyyy') : 'Created date unavailable'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3 pt-0 text-sm">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <span className="block font-medium">Type</span>
                   <span className="capitalize text-muted-foreground">salon</span>
@@ -202,12 +208,6 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                         : `${Math.abs(salon.licenseDaysRemaining)} days overdue`}
                     </span>
                   )}
-                </div>
-                <div>
-                  <span className="block font-medium">Created</span>
-                  <span className="text-muted-foreground">
-                    {salon.created_at ? format(new Date(salon.created_at), 'MMM dd, yyyy') : 'N/A'}
-                  </span>
                 </div>
               </div>
             </CardContent>

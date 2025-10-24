@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
   Accordion,
@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
-type Service = Database['public']['Views']['services']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
 interface ServiceListProps {
   services: Service[]
@@ -20,9 +20,10 @@ export function ServiceList({ services }: ServiceListProps) {
   if (services.length === 0) {
     return (
       <Card>
-        <CardContent className="py-10 text-center text-muted-foreground">
-          No services available
-        </CardContent>
+        <CardHeader className="items-center text-center">
+          <CardTitle>Services</CardTitle>
+          <CardDescription>No services available</CardDescription>
+        </CardHeader>
       </Card>
     )
   }
@@ -35,14 +36,14 @@ export function ServiceList({ services }: ServiceListProps) {
       <CardContent>
         <Accordion type="multiple" className="w-full space-y-2">
           {services.map((service, index) => (
-            <AccordionItem key={service.id || ''} value={`service-${index}`} className="rounded-md border">
+            <AccordionItem key={service.id || ''} value={`service-${index}`}>
               <AccordionTrigger>
-                <div className="flex flex-col gap-2 px-4 py-3 text-left sm:flex-row sm:items-center sm:justify-between">
-                  <h6 className="text-base font-semibold">{service.name || 'Service'}</h6>
+                <div className="flex w-full flex-col gap-2 px-4 py-3 text-left sm:flex-row sm:items-center sm:justify-between">
+                  <h6 className="text-base">{service.name || 'Service'}</h6>
                   {service.category_name && (
-                    <Badge variant="secondary" className="w-fit">
-                      {service.category_name}
-                    </Badge>
+                    <div className="sm:ml-auto">
+                      <Badge variant="secondary">{service.category_name}</Badge>
+                    </div>
                   )}
                 </div>
               </AccordionTrigger>

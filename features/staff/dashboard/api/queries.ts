@@ -1,7 +1,8 @@
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
-import type { StaffView, AppointmentWithDetails } from '@/lib/types/app.types'
+import type { StaffView } from '@/features/staff/profile'
+import type { AppointmentWithDetails } from '@/features/business/appointments'
 import { getDateRanges } from '@/lib/utils/dates'
 import { getClientRetentionMetrics, type ClientRetentionMetrics } from '@/features/staff/clients/api/queries'
 
@@ -30,7 +31,7 @@ export async function getStaffProfile(): Promise<StaffView | null> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('user_id', session.user.id)
     .single()
@@ -52,7 +53,7 @@ export async function getTodayAppointments(staffId: string): Promise<Appointment
 
   // IMPROVED: appointments view already includes customer/service data
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .gte('start_time', today.start)
@@ -73,7 +74,7 @@ export async function getUpcomingAppointments(staffId: string): Promise<Appointm
 
   // IMPROVED: appointments view already includes customer/service data
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .gte('start_time', now)
@@ -96,21 +97,21 @@ export async function getStaffMetrics(staffId: string): Promise<StaffMetricsSumm
   const [{ count: todayCount }, { count: weekCount }, { count: monthCompleted }] = await Promise.all([
     // Today's appointments count
     supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('*', { count: 'exact', head: true })
       .eq('staff_id', staffId)
       .gte('start_time', today.start)
       .lte('start_time', today.end),
     // Week's appointments count
     supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('*', { count: 'exact', head: true })
       .eq('staff_id', staffId)
       .gte('start_time', week.start)
       .lte('start_time', week.end),
     // Month's completed appointments
     supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('*', { count: 'exact', head: true })
       .eq('staff_id', staffId)
       .eq('status', 'completed')

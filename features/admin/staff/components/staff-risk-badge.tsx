@@ -1,7 +1,7 @@
 'use client'
 
 import { Badge } from '@/components/ui/badge'
-import type { StaffWithMetrics } from '../api/queries'
+import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 
 function getVariant(risk: StaffWithMetrics['compliance']['riskLabel']) {
   if (risk === 'high') return 'destructive' as const

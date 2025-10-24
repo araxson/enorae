@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 
-import type { ServiceRevenue } from '../api/queries'
+import type { ServiceRevenue } from '@/features/staff/commission/api/queries'
 
 type ServiceBreakdownProps = {
   data: ServiceRevenue[]
@@ -43,7 +43,7 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
                     <p className="text-xs text-muted-foreground">{service.count} appointments</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold">${service.revenue.toFixed(2)}</p>
+                    <p className="text-sm font-semibold">${service.revenue.toFixed(2)}</p>
                     <p className="text-xs text-muted-foreground">{percentage.toFixed(1)}%</p>
                   </div>
                 </div>

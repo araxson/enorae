@@ -9,8 +9,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Users, Gift, Copy, Mail, MessageSquare, Check } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { useToast } from '@/lib/hooks/use-toast'
-import { generateReferralCode } from '../api/mutations'
-import type { Referral } from '../api/queries'
+import { generateReferralCode } from '@/features/customer/referrals/api/mutations'
+import type { Referral } from '@/features/customer/referrals/api/queries'
+import { Separator } from '@/components/ui/separator'
 
 type Props = {
   referralCode: Referral | null
@@ -151,7 +152,8 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
                   </Button>
                 </div>
 
-                <div className="border-t pt-4">
+                <Separator />
+                <div className="pt-4">
                   <CardDescription>How it works</CardDescription>
                   <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
                     <li>Share your unique referral code with friends</li>
@@ -184,17 +186,20 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
             {history.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">No referrals yet</p>
             ) : (
-              history.map((referral) => (
-                <div key={referral.id} className="flex gap-4 items-center justify-between border-b pb-3">
-                  <div>
-                    <p className="font-medium">Referral Code: {referral.code}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {formatDistanceToNow(new Date(referral.created_at), { addSuffix: true })}
-                    </p>
+              history.map((referral, index) => (
+                <div key={referral.id} className="space-y-3">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p>Referral Code: {referral.code}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {formatDistanceToNow(new Date(referral.created_at), { addSuffix: true })}
+                      </p>
+                    </div>
+                    <Badge variant={referral.status === 'completed' ? 'default' : 'secondary'}>
+                      {referral.status === 'completed' ? 'Completed' : 'Pending'}
+                    </Badge>
                   </div>
-                  <Badge variant={referral.status === 'completed' ? 'default' : 'secondary'}>
-                    {referral.status === 'completed' ? 'Completed' : 'Pending'}
-                  </Badge>
+                  {index < history.length - 1 && <Separator />}
                 </div>
               ))
             )}

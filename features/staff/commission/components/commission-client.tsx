@@ -5,7 +5,7 @@ import { DollarSign, TrendingUp, Calendar, PieChart } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { CommissionData, DailyEarnings, ServiceRevenue, CommissionRate, PayoutSchedule } from '../api/queries'
+import type { CommissionData, DailyEarnings, ServiceRevenue, CommissionRate, PayoutSchedule } from '@/features/staff/commission/api/queries'
 import { EarningsChart } from './earnings-chart'
 import { ServiceBreakdown } from './service-breakdown'
 
@@ -56,45 +56,53 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
   const metricsCards = (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle>Today&apos;s Earnings</CardTitle>
-          <DollarSign className="h-4 w-4 text-muted-foreground" />
+        <CardHeader>
+          <div className="flex flex-row items-center justify-between pb-2">
+            <CardTitle>Today&apos;s Earnings</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">${commission.todayEarnings.toFixed(2)}</div>
+          <div className="text-2xl font-semibold">${commission.todayEarnings.toFixed(2)}</div>
           <p className="text-xs text-muted-foreground">Revenue from completed appointments</p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle>This Week</CardTitle>
-          <Calendar className="h-4 w-4 text-muted-foreground" />
+        <CardHeader>
+          <div className="flex flex-row items-center justify-between pb-2">
+            <CardTitle>This Week</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">${commission.weekEarnings.toFixed(2)}</div>
+          <div className="text-2xl font-semibold">${commission.weekEarnings.toFixed(2)}</div>
           <p className="text-xs text-muted-foreground">Week-to-date earnings</p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle>This Month</CardTitle>
-          <TrendingUp className="h-4 w-4 text-muted-foreground" />
+        <CardHeader>
+          <div className="flex flex-row items-center justify-between pb-2">
+            <CardTitle>This Month</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">${commission.monthEarnings.toFixed(2)}</div>
+          <div className="text-2xl font-semibold">${commission.monthEarnings.toFixed(2)}</div>
           <p className="text-xs text-muted-foreground">Monthly revenue total</p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle>Avg Per Appointment</CardTitle>
-          <PieChart className="h-4 w-4 text-muted-foreground" />
+        <CardHeader>
+          <div className="flex flex-row items-center justify-between pb-2">
+            <CardTitle>Avg Per Appointment</CardTitle>
+            <PieChart className="h-4 w-4 text-muted-foreground" />
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">${commission.avgPerAppointment.toFixed(2)}</div>
+          <div className="text-2xl font-semibold">${commission.avgPerAppointment.toFixed(2)}</div>
           <p className="text-xs text-muted-foreground">{commission.totalAppointments} appointments this month</p>
         </CardContent>
       </Card>
@@ -137,18 +145,20 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
           <CardHeader>
             <CardTitle>Commission summary</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Your commission is calculated based on completed appointments. The figures shown represent the total service revenue from appointments you&apos;ve completed.
-            </p>
-            <div className="grid gap-4 pt-4 md:grid-cols-2">
-              <div>
-                <p className="text-xs text-muted-foreground uppercase">Completed appointments</p>
-                <p className="text-lg font-semibold">{commission.totalAppointments}</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground uppercase">Month revenue</p>
-                <p className="text-lg font-semibold">${commission.monthEarnings.toFixed(2)}</p>
+          <CardContent>
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Your commission is calculated based on completed appointments. The figures shown represent the total service revenue from appointments you&apos;ve completed.
+              </p>
+              <div className="grid gap-4 pt-4 md:grid-cols-2">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase">Completed appointments</p>
+                  <p className="text-lg font-semibold">{commission.totalAppointments}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase">Month revenue</p>
+                  <p className="text-lg font-semibold">${commission.monthEarnings.toFixed(2)}</p>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -157,4 +167,3 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
     </StaffPageShell>
   )
 }
-

@@ -10,9 +10,9 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { PermissionsEditor } from './permissions-editor'
-import { updateRolePermissions } from '../api/mutations'
+import { updateRolePermissions } from '@/features/admin/roles/api/mutations'
 import { toast } from 'sonner'
-import type { UserRole } from '@/lib/types/app.types'
+import type { UserRole } from '@/lib/types'
 
 interface EditPermissionsDialogProps {
   role: UserRole | null

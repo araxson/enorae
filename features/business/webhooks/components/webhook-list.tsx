@@ -18,7 +18,7 @@ import {
 import type { Database } from '@/lib/types/database.types'
 import { format } from 'date-fns'
 import { WebhookDetailDialog } from './webhook-detail-dialog'
-import { retryAllFailedWebhooks, clearCompletedWebhooks } from '../api/mutations'
+import { retryAllFailedWebhooks, clearCompletedWebhooks } from '@/features/business/webhooks/api/mutations'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
 
 type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
@@ -42,7 +42,7 @@ export function WebhookList({ webhooks }: WebhookListProps) {
   const [isClearing, setIsClearing] = useState(false)
 
   const failedCount = webhooks.filter(w => w.status === 'failed').length
-  const completedCount = webhooks.filter(w => w.status === 'sent').length
+  const completedCount = webhooks.filter(w => w.status === 'completed').length
 
   const handleRowClick = (webhook: WebhookQueue) => {
     setSelectedWebhook(webhook)

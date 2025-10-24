@@ -28,12 +28,12 @@ export async function getSalonMetadata(salonId: string) {
 
   const { data, error } = await supabase
     .from('salons')
-    .select('name, description')
+    .select('name, short_description')
     .eq('id', salonId)
     .single()
 
   if (error) return null
-  return data as { name: string | null; description: string | null } | null
+  return data as { name: string | null; short_description: string | null } | null
 }
 
 export async function getAvailableServices(salonId: string) {

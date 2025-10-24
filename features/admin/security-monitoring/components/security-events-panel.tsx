@@ -1,5 +1,6 @@
+import type { ComponentProps } from 'react'
 import { Shield, AlertCircle } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -10,44 +11,49 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { formatDistanceToNow } from 'date-fns'
-import type { SecurityEvent } from '../api/types'
+import type { SecurityEvent } from '@/features/admin/security-monitoring/api/types'
 
 interface SecurityEventsPanelProps {
   events: SecurityEvent[]
 }
 
+const severityVariant: Record<string, ComponentProps<typeof Badge>['variant']> = {
+  critical: 'destructive',
+  high: 'destructive',
+  warning: 'default',
+  info: 'secondary',
+  low: 'secondary',
+}
+
 const severityBadge = (severity: string) => {
   const normalized = severity.toLowerCase()
-  if (['critical', 'high'].includes(normalized)) {
-    return (
-      <Badge variant="destructive" className="gap-1">
-        <AlertCircle className="h-3 w-3" />
-        {normalized}
-      </Badge>
-    )
-  }
-
-  if (normalized === 'warning') {
-    return <Badge variant="secondary">Warning</Badge>
-  }
-
-  return <Badge variant="outline">{severity}</Badge>
+  const label = normalized.replace(/\b\w/g, (char) => char.toUpperCase())
+  const variant = severityVariant[normalized] ?? 'outline'
+  return (
+    <Badge variant={variant}>
+      {['critical', 'high'].includes(normalized) ? (
+        <>
+          <AlertCircle className="h-3 w-3" aria-hidden="true" />
+          {' '}
+        </>
+      ) : null}
+      {label}
+    </Badge>
+  )
 }
 
 export function SecurityEventsPanel({ events }: SecurityEventsPanelProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
+    <Card>
+      <CardHeader>
         <div className="flex items-center gap-2">
-          <Shield className="h-4 w-4 text-muted-foreground" />
+          <Shield className="h-4 w-4" aria-hidden="true" />
           <CardTitle>Security Event Stream</CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent>
         {events.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No security events recorded for the selected timeframe.
-          </p>
+          <CardDescription>No security events recorded for the selected timeframe.</CardDescription>
         ) : (
           <div className="max-h-96 overflow-y-auto rounded-md border">
             <Table>
@@ -64,19 +70,17 @@ export function SecurityEventsPanel({ events }: SecurityEventsPanelProps) {
                 {events.map((event) => (
                   <TableRow key={event.id}>
                     <TableCell>
-                      <div className="font-medium text-foreground">{event.eventType}</div>
-                      {event.description && (
-                        <div className="text-xs text-muted-foreground">{event.description}</div>
-                      )}
+                      <div>{event.eventType}</div>
+                      {event.description ? (
+                        <CardDescription>{event.description}</CardDescription>
+                      ) : null}
                     </TableCell>
                     <TableCell>{severityBadge(event.severity)}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {event.userId ?? 'System'}
+                    <TableCell>{event.userId ?? 'System'}</TableCell>
+                    <TableCell>
+                      <code>{event.ipAddress ?? 'Unknown'}</code>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground font-mono">
-                      {event.ipAddress ?? 'Unknown'}
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell>
                       {formatDistanceToNow(new Date(event.createdAt), { addSuffix: true })}
                     </TableCell>
                   </TableRow>

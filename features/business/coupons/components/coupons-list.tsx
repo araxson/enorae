@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -9,10 +9,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog'
-import { COUPONS_UNSUPPORTED_MESSAGE } from '../api/coupons.mutations'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/coupons.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import { CouponForm } from './coupon-form'
-import type { CouponWithStats } from '../api/queries/coupon-validation'
+import type { CouponWithStats } from '@/features/business/coupons/api/queries/coupon-validation'
 import { CouponCard } from './coupon-card'
 
 type ServiceOption = { id: string; name: string }
@@ -60,11 +60,14 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
 
   if (coupons.length === 0) {
     return (
-      <Card className="p-12 text-center">
-        <p className="text-muted-foreground">No coupons created yet.</p>
-        <p className="text-sm text-muted-foreground mt-2">
-          Create your first coupon to attract and retain customers.
-        </p>
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle>No coupons created yet</CardTitle>
+          <CardDescription>Create your first coupon to attract and retain customers.</CardDescription>
+        </CardHeader>
+        <CardContent className="text-center">
+          <p className="text-muted-foreground">Coupon programs are currently unavailable.</p>
+        </CardContent>
       </Card>
     )
   }

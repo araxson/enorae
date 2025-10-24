@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import type { StaffWithMetrics } from '../api/queries'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 import { StaffRiskBadge } from './staff-risk-badge'
 import { formatDate, renderBackgroundBadge } from './staff-table-helpers'
 
@@ -13,21 +13,22 @@ export function StaffTableMobile({ staff }: StaffTableMobileProps) {
     <div className="space-y-4 md:hidden">
       {staff.map((member) => (
         <Card key={member.id}>
-          <CardContent className="space-y-3 p-4">
+          <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-base font-semibold">{member.fullName || member.title || 'Unnamed staff'}</p>
-                <p className="text-xs text-muted-foreground">Experience: {member.experienceYears} yrs</p>
-                {member.metrics.lastAppointmentAt && (
-                  <p className="text-xs text-muted-foreground">
-                    Last appointment: {formatDate(member.metrics.lastAppointmentAt)}
-                  </p>
-                )}
+              <div className="space-y-1">
+                <CardTitle>{member.fullName || member.title || 'Unnamed staff'}</CardTitle>
+                <CardDescription>Experience {member.experienceYears} yrs</CardDescription>
+                {member.metrics.lastAppointmentAt ? (
+                  <CardDescription>
+                    Last appointment {formatDate(member.metrics.lastAppointmentAt)}
+                  </CardDescription>
+                ) : null}
               </div>
               <StaffRiskBadge staff={member} />
             </div>
-
-            <div className="grid grid-cols-2 gap-3 text-sm">
+          </CardHeader>
+          <CardContent className="space-y-3 pt-0 text-sm">
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <span className="block font-medium">Role</span>
                 <span className="capitalize text-muted-foreground">

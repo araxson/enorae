@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { TrendingUp, TrendingDown } from 'lucide-react'
-import { formatPercentage } from '../utils/formatters'
+import { formatPercentage } from '@/features/business/business-common/utils/formatters'
 
 export type MetricCardVariant = 'default' | 'progress' | 'trend' | 'highlight'
 

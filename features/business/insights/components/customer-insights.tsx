@@ -1,5 +1,5 @@
-import { getInsightsSummary, getCustomerInsights } from './api/queries'
-import { CustomerInsightsDashboard } from './components/customer-insights-dashboard'
+import { getInsightsSummary, getCustomerInsights } from '@/features/business/insights/api/queries'
+import { CustomerInsightsDashboard } from './customer-insights-dashboard'
 
 export async function CustomerInsights() {
   const [summary, topCustomers] = await Promise.all([
@@ -9,9 +9,9 @@ export async function CustomerInsights() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Customer Insights</h1>
-        <p className="leading-7 text-muted-foreground">
+      <div className="flex flex-col gap-2">
+        <div className="text-3xl font-bold tracking-tight">Customer Insights</div>
+        <p className="text-muted-foreground">
           Customer segmentation, lifetime value analysis, and retention metrics
         </p>
       </div>

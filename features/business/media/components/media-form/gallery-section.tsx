@@ -60,7 +60,7 @@ export function GallerySection({
               ))}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">No gallery images yet. Add your first image above.</p>
+            <p className="text-muted-foreground">No gallery images yet. Add your first image above.</p>
           )}
         </div>
       </CardContent>

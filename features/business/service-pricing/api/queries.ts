@@ -1,7 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import type { ServicePricing } from '@/lib/types/app.types'
+import type { ServicePricing } from '@/features/business/services'
 
 export type ServicePricingWithService = ServicePricing & {
   service: {

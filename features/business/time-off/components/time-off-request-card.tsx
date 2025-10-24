@@ -69,7 +69,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
               <CardTitle>{request.staff_name || 'Unknown Staff'}</CardTitle>
             </div>
             {request.staff_title && (
-              <p className="text-sm text-muted-foreground text-sm">{request.staff_title}</p>
+              <p className="text-muted-foreground">{request.staff_title}</p>
             )}
           </div>
           <Badge variant={statusColor}>{request.status}</Badge>
@@ -79,21 +79,21 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Start Date</p>
-              <p className="leading-7 text-sm font-medium">
+              <p className="text-muted-foreground">Start Date</p>
+              <p>
                 {request.start_at ? format(new Date(request.start_at), 'MMM dd, yyyy') : 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">End Date</p>
-              <p className="leading-7 text-sm font-medium">
+              <p className="text-muted-foreground">End Date</p>
+              <p>
                 {request.end_at ? format(new Date(request.end_at), 'MMM dd, yyyy') : 'N/A'}
               </p>
             </div>
           </div>
 
           {request.duration_days && (
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-muted-foreground" />
               <span>{request.duration_days} day(s)</span>
             </div>
@@ -101,26 +101,26 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
 
           {request.request_type && (
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Type</p>
-              <p className="leading-7 text-sm capitalize">{request.request_type.replace('_', ' ')}</p>
+              <p className="text-muted-foreground">Type</p>
+              <p className="capitalize">{request.request_type.replace('_', ' ')}</p>
             </div>
           )}
 
           {request.reason && (
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Reason</p>
-              <p className="leading-7 text-sm">{request.reason}</p>
+              <p className="text-muted-foreground">Reason</p>
+              <p>{request.reason}</p>
             </div>
           )}
 
           {request.reviewed_at && request.reviewed_by_name && (
             <div className="pt-2 border-t">
-              <p className="text-sm font-medium text-muted-foreground">
+              <p className="text-muted-foreground">
                 Reviewed by {request.reviewed_by_name} on{' '}
                 {format(new Date(request.reviewed_at), 'MMM dd, yyyy')}
               </p>
               {request.review_notes && (
-                <p className="leading-7 text-sm mt-1">{request.review_notes}</p>
+                <p className="mt-1">{request.review_notes}</p>
               )}
             </div>
           )}

@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import type { UserRoleWithDetails } from '../api/queries'
+import type { UserRoleWithDetails } from '@/features/business/settings-roles/api/queries'
 import { format } from 'date-fns'
 
 type RolesListProps = {

@@ -81,14 +81,16 @@ export async function getUnreadCount() {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
+  // Use RPC function to get unread count
+  const { data: count, error } = await supabase
+    .schema('communication')
     .rpc('get_unread_count', {
       p_user_id: user.id,
     })
 
   if (error) throw error
 
-  return data as number
+  return count ?? 0
 }
 
 /**
@@ -103,20 +105,23 @@ export async function getUnreadCounts() {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Use RPC function to get unread counts
   const { data, error } = await supabase
+    .schema('communication')
     .rpc('get_unread_counts', {
       p_user_id: user.id,
     })
 
   if (error) throw error
 
-  return (
-    data as {
-      messages: number
-      notifications: number
-      total: number
-    }[]
-  )?.[0] || { messages: 0, notifications: 0, total: 0 }
+  // Return first result or defaults
+  const result = data && data.length > 0 ? data[0] : { messages: 0, notifications: 0, total: 0 }
+
+  return {
+    messages: result.messages ?? 0,
+    notifications: result.notifications ?? 0,
+    total: result.total ?? 0,
+  }
 }
 
 /**
@@ -215,6 +220,7 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
   // Note: communication_notification_queue table doesn't exist yet
   // Using messages table with system context as a workaround for notification history
   const { data, error } = await supabase
+    .schema('communication')
     .from('messages')
     .select('id, created_at, content, context_type')
     .eq('to_user_id', user.id)

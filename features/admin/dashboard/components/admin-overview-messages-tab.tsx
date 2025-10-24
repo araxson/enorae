@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import type { MessagesOverview } from './admin-overview-types'
 import { safeFormatDate } from './admin-overview-utils'
 
@@ -40,18 +39,15 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
           <div className="space-y-3">
             {rows.map((msg) => (
               <Card key={msg.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm font-semibold leading-tight">
-                      {msg.subject || 'No subject'}
-                    </p>
-                    <span className="text-xs text-muted-foreground">
-                      {safeFormatDate(msg.created_at, 'MMM d, HH:mm')}
-                    </span>
-                  </div>
-                  <Separator className="my-3" />
-                  <p className="text-xs text-muted-foreground">
+                <CardHeader className="pb-2">
+                  <CardTitle>{msg.subject || 'No subject'}</CardTitle>
+                  <CardDescription>
                     {msg.customer_name || 'Unknown customer'} • {msg.salon_name || 'Unknown salon'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <p className="text-xs text-muted-foreground">
+                    {safeFormatDate(msg.created_at, 'MMM d, HH:mm')}
                   </p>
                 </CardContent>
               </Card>

@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { AppointmentOverviewRow } from '../api/types'
+import type { AppointmentOverviewRow } from '@/features/admin/appointments/api/types'
 
 interface RecentAppointmentsTableProps {
   appointments: AppointmentOverviewRow[]
@@ -70,9 +70,11 @@ export function RecentAppointmentsTable({ appointments }: RecentAppointmentsTabl
                     {appointment.staff_name || 'Unassigned'}
                   </TableCell>
                   <TableCell>
-                    <Badge variant={STATUS_VARIANTS[appointment.status ?? 'pending'] ?? 'secondary'} className="text-xs capitalize">
-                      {appointment.status || 'pending'}
-                    </Badge>
+                    <div className="text-xs">
+                      <Badge variant={STATUS_VARIANTS[appointment.status ?? 'pending'] ?? 'secondary'}>
+                        {(appointment.status || 'pending').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                      </Badge>
+                    </div>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
                     {formatDateTime(appointment.start_time)}

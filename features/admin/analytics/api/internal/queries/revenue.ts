@@ -1,6 +1,6 @@
 import 'server-only';
-import { requireAdminClient } from '../../admin-analytics-shared'
-import type { AdminRevenueRow } from '../../admin-analytics-types'
+import { requireAdminClient } from '@/features/admin/analytics/api/internal/admin-analytics-shared'
+import type { AdminRevenueRow } from '@/features/admin/analytics/api/internal/admin-analytics-types'
 
 const REVENUE_TABLE = 'admin_revenue_overview'
 const DEFAULT_LIMIT = 30

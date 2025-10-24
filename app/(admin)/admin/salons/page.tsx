@@ -1,5 +1,5 @@
 import { AdminSalons } from '@/features/admin/salons'
 
-export default async function SalonsPage() {
+export default function SalonsPage() {
   return <AdminSalons />
 }

@@ -1,7 +1,7 @@
 import { ArrowUpRight, ArrowDownRight, Users, Store, CalendarDays, PieChart } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { PlatformAnalyticsSnapshot, GrowthDelta } from '../api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot, GrowthDelta } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface MetricSummaryCardsProps {
   growth: PlatformAnalyticsSnapshot['growth']['summary']
@@ -68,18 +68,18 @@ export function MetricSummaryCards({ growth, acquisition, retention }: MetricSum
               <CardTitle>{title}</CardTitle>
             </div>
             {delta.icon ? (
-              <Badge variant={delta.variant} className="flex items-center gap-1 text-xs">
+              <div className="flex items-center gap-1 text-xs">
                 <delta.icon className="h-3 w-3" />
-                {delta.label}
-              </Badge>
+                <Badge variant={delta.variant}>{delta.label}</Badge>
+              </div>
             ) : (
-              <Badge variant={delta.variant} className="text-xs">
-                {delta.label}
-              </Badge>
+              <div className="text-xs">
+                <Badge variant={delta.variant}>{delta.label}</Badge>
+              </div>
             )}
           </CardHeader>
           <CardContent className="space-y-1">
-            <div className="text-2xl font-bold text-foreground">{value}</div>
+            <div className="text-2xl font-semibold">{value}</div>
             <p className="text-xs text-muted-foreground">{helper}</p>
           </CardContent>
         </Card>

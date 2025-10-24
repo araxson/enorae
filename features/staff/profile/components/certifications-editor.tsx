@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { updateStaffMetadata } from '../api/mutations'
+import { updateStaffMetadata } from '@/features/staff/profile/api/mutations'
 
 interface CertificationsEditorProps {
   initialCertifications?: string[]
@@ -54,56 +54,54 @@ export function CertificationsEditor({ initialCertifications = [] }: Certificati
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-4">
-        <h3 className="scroll-m-20 text-2xl font-semibold">Certifications & Licenses</h3>
-
-        <div className="flex gap-3">
-          <Input
-            placeholder="Add certification..."
-            value={newCert}
-            onChange={(e) => setNewCert(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault()
-                handleAdd()
-              }
-            }}
-            disabled={isSaving}
-          />
-          <Button
-            type="button"
-            onClick={handleAdd}
-            disabled={!newCert.trim() || isSaving}
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-
-        {certifications.length > 0 ? (
-          <div className="flex gap-3 flex-wrap">
-            {certifications.map((cert) => (
-              <Badge key={cert} variant="secondary">
-                {cert}
-                <button
-                  type="button"
-                  onClick={() => handleRemove(cert)}
-                  className="ml-2 hover:text-destructive"
-                  disabled={isSaving}
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
+    <Card>
+      <CardHeader>
+        <CardTitle>Certifications & Licenses</CardTitle>
+        <CardDescription>Keep your credentials current.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-3">
+            <Input
+              placeholder="Add certification..."
+              value={newCert}
+              onChange={(e) => setNewCert(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  handleAdd()
+                }
+              }}
+              disabled={isSaving}
+            />
+            <Button type="button" onClick={handleAdd} disabled={!newCert.trim() || isSaving}>
+              <Plus className="h-4 w-4" />
+            </Button>
           </div>
-        ) : (
-          <p className="text-sm text-muted-foreground">No certifications added yet</p>
-        )}
 
-        {error && (
-          <p className="text-sm text-destructive">{error}</p>
-        )}
-      </div>
+          {certifications.length > 0 ? (
+            <div className="flex flex-wrap gap-3">
+              {certifications.map((cert) => (
+                <Badge key={cert} variant="secondary">
+                  {cert}
+                  <button
+                    type="button"
+                    onClick={() => handleRemove(cert)}
+                    className="ml-2 hover:text-destructive"
+                    disabled={isSaving}
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">No certifications added yet</p>
+          )}
+
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+        </div>
+      </CardContent>
     </Card>
   )
 }

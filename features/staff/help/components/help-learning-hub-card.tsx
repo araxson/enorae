@@ -21,40 +21,43 @@ export function HelpLearningHubCard({ tracks }: HelpLearningHubCardProps) {
         <CardTitle>Learning hub</CardTitle>
         <CardDescription>Follow tailored training tracks to sharpen your craft.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {tracks.map((track, index) => (
-          <Card key={track.title}>
-            <CardContent className="space-y-3 pt-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold">{track.title}</h3>
-                  <p className="text-xs text-muted-foreground">{track.duration} • {track.level}</p>
+      <CardContent>
+        <div className="space-y-4">
+          {tracks.map((track, index) => (
+            <Card key={track.title}>
+              <CardContent>
+                <div className="space-y-3 pt-6">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1">
+                      <CardTitle>{track.title}</CardTitle>
+                      <CardDescription>{track.duration} • {track.level}</CardDescription>
+                    </div>
+                    <Badge variant={index === 0 ? 'secondary' : 'outline'}>
+                      {index === 0 ? 'Recommended' : 'Track'}
+                    </Badge>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {track.tags.map((tag) => (
+                      <Badge key={tag} variant="outline">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button size="sm" variant="outline" className="w-full">
+                    Start lesson
+                  </Button>
                 </div>
-                <Badge variant={index === 0 ? 'secondary' : 'outline'}>
-                  {index === 0 ? 'Recommended' : 'Track'}
-                </Badge>
-              </div>
-              <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                {track.tags.map((tag) => (
-                  <Badge key={tag} variant="outline">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-              <Button size="sm" variant="outline" className="w-full">
-                Start lesson
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
 
-        <Separator />
+          <Separator />
 
-        <p className="text-xs text-muted-foreground">
-          New tracks are dropped every other Thursday. Follow a track to get notified when content refreshes.
-        </p>
+          <p className="text-muted-foreground">
+            New tracks are dropped every other Thursday. Follow a track to get notified when content refreshes.
+          </p>
+        </div>
       </CardContent>
     </Card>
   )
 }
-

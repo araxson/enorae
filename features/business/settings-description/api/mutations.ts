@@ -16,12 +16,6 @@ export interface DescriptionInput {
   meta_title?: string | null
   meta_description?: string | null
   meta_keywords?: string[] | null
-  amenities?: string[] | null
-  specialties?: string[] | null
-  payment_methods?: string[] | null
-  languages_spoken?: string[] | null
-  awards?: string[] | null
-  certifications?: string[] | null
 }
 
 export async function updateSalonDescription(

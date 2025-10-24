@@ -6,16 +6,15 @@ import {
   getFavorites,
   getCustomerMetrics,
   getVIPStatus,
-} from './api/queries'
-import { CustomerMetrics } from './components/customer-metrics'
-import { UpcomingBookings } from './components/upcoming-bookings'
-import { FavoritesList } from './components/favorites-list'
+} from '@/features/customer/dashboard/api/queries'
+import { CustomerMetrics } from './customer-metrics'
+import { UpcomingBookings } from './upcoming-bookings'
+import { FavoritesList } from './favorites-list'
 import {
   Calendar,
   Heart,
   History,
   Crown,
-  TrendingUp,
   AlertCircle,
 } from 'lucide-react'
 import {
@@ -34,6 +33,8 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { EmptyState, RefreshButton, LastUpdated } from '@/components/shared'
+import { Separator } from '@/components/ui/separator'
+import { VIPStatusCard } from './vip-status-card'
 
 export async function CustomerDashboardPage() {
   let upcomingAppointments
@@ -83,69 +84,24 @@ export async function CustomerDashboardPage() {
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-12 pt-6 sm:px-6 lg:px-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         {vipStatus?.isVIP ? (
-          <Badge variant="default" className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <Crown className="h-3.5 w-3.5" />
-            VIP {vipStatus.loyaltyTier?.toUpperCase()}
-          </Badge>
+            <Badge variant="default">VIP {vipStatus.loyaltyTier?.toUpperCase()}</Badge>
+          </div>
         ) : (
-          <span className="text-sm font-medium text-muted-foreground">
+          <span className="text-sm text-muted-foreground">
             Welcome back
           </span>
         )}
 
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <LastUpdated />
-          <div className="hidden h-4 w-px bg-border sm:block" />
+          <Separator orientation="vertical" className="hidden h-4 sm:block" />
           <RefreshButton />
         </div>
       </div>
 
-      {vipStatus?.isVIP && (
-        <Card>
-          <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-2 text-primary">
-              <Crown className="h-5 w-5" />
-              <CardTitle>VIP status</CardTitle>
-            </div>
-            <CardDescription>Exclusive benefits and rewards</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Card>
-                <CardHeader>
-                  <CardDescription>Loyalty points</CardDescription>
-                  <CardTitle>{vipStatus.loyaltyPoints?.toLocaleString() ?? 0}</CardTitle>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardDescription>Loyalty tier</CardDescription>
-                  <CardTitle>{vipStatus.loyaltyTier ?? 'Standard'}</CardTitle>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardDescription>Lifetime spend</CardDescription>
-                  <CardTitle>${vipStatus.lifetimeSpend?.toLocaleString() ?? 0}</CardTitle>
-                </CardHeader>
-              </Card>
-              {vipStatus.monthlySpend !== undefined && (
-                <Card>
-                  <CardHeader>
-                    <CardDescription>This month</CardDescription>
-                    <CardTitle>
-                      ${vipStatus.monthlySpend.toLocaleString()}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <TrendingUp className="h-4 w-4" />
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {vipStatus && vipStatus.isVIP ? <VIPStatusCard vipStatus={vipStatus} /> : null}
 
       <CustomerMetrics metrics={metrics} />
 
@@ -202,17 +158,18 @@ export async function CustomerDashboardPage() {
 
                     return (
                       <Card key={appointment.id}>
-                        <CardContent className="space-y-2">
+                        <CardHeader>
+                          <CardTitle>{appointment.service_names?.[0] ?? 'Service'}</CardTitle>
+                          <CardDescription>
+                            {appointment.salon_name ? `at ${appointment.salon_name}` : 'Salon not specified'}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
                           <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div>
-                              <p className="text-sm font-medium">
-                                {appointment.service_names?.[0] ?? 'Service'}
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                {appointment.salon_name ? `at ${appointment.salon_name}` : 'Salon not specified'}
-                              </p>
-                            </div>
-                            <p className="text-sm text-muted-foreground">{appointmentDate}</p>
+                            <span className="text-sm text-muted-foreground">{appointmentDate}</span>
+                            <span className="text-sm text-muted-foreground capitalize">
+                              {appointment.status ?? 'pending'}
+                            </span>
                           </div>
                         </CardContent>
                       </Card>

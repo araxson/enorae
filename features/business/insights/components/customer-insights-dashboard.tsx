@@ -17,7 +17,7 @@ import {
   UserPlus,
   UserX,
 } from 'lucide-react'
-import type { CustomerMetrics, InsightsSummary } from '../api/queries'
+import type { CustomerMetrics, InsightsSummary } from '@/features/business/insights/api/queries'
 import { cn } from '@/lib/utils'
 
 interface CustomerInsightsDashboardProps {
@@ -146,10 +146,12 @@ export function CustomerInsightsDashboard({
           <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
             {segmentCards.map(({ label, value, icon: Icon, iconClass }) => (
               <Card key={label}>
-                <CardContent className="flex flex-col items-center gap-2 p-4">
+                <CardHeader className="items-center text-center pb-2">
                   <Icon className={cn('h-6 w-6', iconClass)} />
+                  <CardTitle>{label}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0 text-center">
                   <div className="text-2xl font-bold">{value}</div>
-                  <div className="text-xs text-muted-foreground">{label}</div>
                 </CardContent>
               </Card>
             ))}
@@ -190,9 +192,11 @@ export function CustomerInsightsDashboard({
                       <div className="space-y-2 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="font-semibold">{customer.customer_name}</span>
-                          <Badge variant="outline" className="flex items-center gap-1">
-                            {getSegmentIcon(customer.segment)}
-                            <span>{customer.segment}</span>
+                          <Badge variant="outline">
+                            <span className="flex items-center gap-1">
+                              {getSegmentIcon(customer.segment)}
+                              <span>{customer.segment}</span>
+                            </span>
                           </Badge>
                         </div>
 
@@ -224,8 +228,10 @@ export function CustomerInsightsDashboard({
                         </div>
 
                         {customer.cancellation_rate > 20 && (
-                          <Badge variant="destructive" className="text-xs">
-                            High cancellation rate ({formatPercentage(customer.cancellation_rate)})
+                          <Badge variant="destructive">
+                            <span className="text-xs">
+                              High cancellation rate ({formatPercentage(customer.cancellation_rate)})
+                            </span>
                           </Badge>
                         )}
                       </div>

@@ -1,10 +1,11 @@
 import { SalonBusinessInfo } from '@/features/business/settings-salon'
-import type { Metadata } from 'next'
+import { generateMetadata as genMeta } from '@/lib/metadata'
 
-export const metadata: Metadata = {
+export const metadata = genMeta({
   title: 'Salon Information',
-  description: 'Manage your salon business details and legal information',
-}
+  description: 'Manage salon business details and legal information',
+  noIndex: true,
+})
 
 export default async function SalonBusinessInfoPage() {
   return <SalonBusinessInfo />

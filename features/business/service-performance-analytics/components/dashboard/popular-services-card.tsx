@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp } from 'lucide-react'
-import type { ServicePerformance } from '../../api/queries'
+import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 import { formatCurrency } from './utils'
 
 export function PopularServicesCard({ services }: { services: ServicePerformance[] }) {

@@ -1,3 +1,4 @@
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import {
   getStaffPerformanceMetrics,
@@ -20,12 +21,14 @@ export async function StaffAnalytics() {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
-        <div>
-          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">My Analytics</h1>
-          <p className="text-muted-foreground">
-            Track your performance, earnings, and customer relationships
-          </p>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>My Analytics</CardTitle>
+            <CardDescription>
+              Track your performance, earnings, and customer relationships
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
         <StaffAnalyticsDashboard
           metrics={metrics}

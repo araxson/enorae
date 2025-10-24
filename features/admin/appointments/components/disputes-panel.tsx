@@ -1,7 +1,7 @@
 import { Scale } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { DisputeCandidate } from '../api/types'
+import type { DisputeCandidate } from '@/features/admin/appointments/api/types'
 
 interface DisputesPanelProps {
   disputes: DisputeCandidate[]
@@ -28,16 +28,22 @@ export function DisputesPanel({ disputes }: DisputesPanelProps) {
           <div className="space-y-2">
             {disputes.slice(0, 6).map((item) => (
               <Card key={item.appointmentId}>
-                <CardContent className="p-3">
+                <CardHeader className="pb-2">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-sm font-medium">{item.customerName || 'Unknown customer'}</span>
-                    <Badge variant="secondary" className="text-xs">{item.status}</Badge>
+                    <CardTitle>{item.customerName || 'Unknown customer'}</CardTitle>
+                    <div className="text-xs">
+                      <Badge variant="secondary">
+                        {(item.status || '').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="mt-1 text-xs text-muted-foreground">
+                  <CardDescription>
                     {item.salonName || 'Unknown salon'} · {formatCurrency(item.amount)}
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground">{item.reason}</p>
-                  <p className="mt-2 text-xs text-foreground">Recommended: {item.recommendedAction}</p>
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2 pt-0">
+                  <p className="text-xs text-muted-foreground">{item.reason}</p>
+                  <p className="text-xs text-foreground">Recommended: {item.recommendedAction}</p>
                 </CardContent>
               </Card>
             ))}

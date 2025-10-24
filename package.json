@@ -8,8 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "lint:shadcn": "tsx scripts/check-shadcn-slots.ts",
     "db:types": "python3 scripts/generate-types.py",
-    "test": "tsx --test \"tests/**/*.test.ts\""
+    "test": "tsx --test \"tests/**/*.test.ts\"",
+    "validate:migration": "tsx scripts/validate-migration.ts",
+    "validate:migrations:all": "tsx scripts/validate-migration.ts supabase/migrations/*.sql"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -69,6 +72,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
+    "supabase": "^2.53.6",
     "tailwindcss": "^4",
     "ts-morph": "^27.0.2",
     "tsx": "^4.19.1",

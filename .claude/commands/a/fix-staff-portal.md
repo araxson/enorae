@@ -3,7 +3,7 @@ description: Fix issues found in Staff Portal analysis systematically
 ---
 
 # Fix Staff Portal Issues
-
+**Key Principle:** The database is the source of truth. All code must match the database, not the other way around.
 You are fixing issues from the Staff Portal deep analysis.
 
 ## Context

@@ -1,9 +1,9 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown, DollarSign, Star, BarChart3, Users, Link2 } from 'lucide-react'
-import type { ServicePerformance } from '../api/queries'
+import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 
 type ServiceProfitability = {
   service_id: string
@@ -93,15 +93,15 @@ export function ServicePerformanceDashboard({
                       #{index + 1}
                     </Badge>
                     <div>
-                      <h4 className="font-medium">{service.service_name}</h4>
-                      <p className="text-sm text-muted-foreground">
+                      <h4>{service.service_name}</h4>
+                      <p className="text-muted-foreground">
                         {service.total_bookings} bookings
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                    <p>{formatCurrency(service.total_revenue)}</p>
+                    <div className="flex items-center gap-1 text-muted-foreground">
                       <Star className="h-3 w-3 text-accent" />
                       {service.avg_rating?.toFixed(1) || 'N/A'}
                     </div>
@@ -128,15 +128,15 @@ export function ServicePerformanceDashboard({
                       #{index + 1}
                     </Badge>
                     <div>
-                      <h4 className="font-medium">{service.service_name}</h4>
-                      <p className="text-sm text-muted-foreground">
+                      <h4>{service.service_name}</h4>
+                      <p className="text-muted-foreground">
                         Popularity: {service.popularity_score?.toFixed(0) || 0}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold">{service.total_bookings} bookings</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="">{service.total_bookings} bookings</p>
+                    <p className="text-muted-foreground">
                       {formatCurrency(service.total_revenue)}
                     </p>
                   </div>
@@ -155,13 +155,13 @@ export function ServicePerformanceDashboard({
           {mostProfitable.map((entry) => (
             <div key={entry.service_id} className="flex items-center justify-between rounded-md border px-3 py-2">
               <div>
-                <p className="font-medium">{entry.service_name}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="">{entry.service_name}</p>
+                <p className="text-muted-foreground">
                   Margin {Number.isFinite(entry.margin) ? entry.margin.toFixed(1) : '0'}%
                 </p>
               </div>
-              <div className="text-right text-sm">
-                <p className="font-semibold">{formatCurrency(entry.profit)}</p>
+              <div className="text-right">
+                <p className="">{formatCurrency(entry.profit)}</p>
                 <p className="text-muted-foreground">
                   Revenue {formatCurrency(entry.revenue)} · Cost {formatCurrency(entry.cost)}
                 </p>
@@ -181,10 +181,10 @@ export function ServicePerformanceDashboard({
               <div key={service.service_id} className="border rounded-lg p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h4 className="font-semibold text-lg">{service.service_name}</h4>
+                    <h4>{service.service_name}</h4>
                     <div className="flex items-center gap-2 mt-1">
                       {getPerformanceIcon(service.cancellation_rate || 0)}
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-muted-foreground">
                         {service.cancellation_rate?.toFixed(1) || 0}% cancellation rate
                       </span>
                     </div>
@@ -196,23 +196,23 @@ export function ServicePerformanceDashboard({
 
                 <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Total Bookings</p>
-                    <p className="text-xl font-semibold">{service.total_bookings}</p>
+                    <p className="text-muted-foreground">Total Bookings</p>
+                    <p className="">{service.total_bookings}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Revenue</p>
-                    <p className="text-xl font-semibold">{formatCurrency(service.total_revenue)}</p>
+                    <p className="text-muted-foreground">Revenue</p>
+                    <p className="">{formatCurrency(service.total_revenue)}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Avg Rating</p>
+                    <p className="text-muted-foreground">Avg Rating</p>
                     <div className="flex items-center gap-1">
-                      <p className="text-xl font-semibold">{service.avg_rating?.toFixed(1) || 'N/A'}</p>
+                      <p className="">{service.avg_rating?.toFixed(1) || 'N/A'}</p>
                       <Star className="h-4 w-4 text-accent" />
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Popularity Score</p>
-                    <p className="text-xl font-semibold">{service.popularity_score?.toFixed(0) || 0}</p>
+                    <p className="text-muted-foreground">Popularity Score</p>
+                    <p className="">{service.popularity_score?.toFixed(0) || 0}</p>
                   </div>
                 </div>
               </div>
@@ -232,18 +232,18 @@ export function ServicePerformanceDashboard({
           <CardContent className="space-y-3">
             {staffPerformance.map((record) => (
               <Card key={record.service_id}>
-                <CardContent className="space-y-2 p-4">
-                  <p className="mb-2 font-medium">{record.service_name}</p>
-                  <div className="space-y-1 text-sm text-muted-foreground">
-                    {record.staff.slice(0, 3).map((staff) => (
-                      <div key={staff.staff_id} className="flex justify-between">
-                        <span>{staff.staff_name}</span>
-                        <span>
-                          {staff.appointmentCount} appts · {formatCurrency(staff.revenue)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                <CardHeader className="pb-2">
+                  <CardTitle>{record.service_name}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-1 pt-0 text-muted-foreground">
+                  {record.staff.slice(0, 3).map((staff) => (
+                    <div key={staff.staff_id} className="flex justify-between">
+                      <span>{staff.staff_name}</span>
+                      <span>
+                        {staff.appointmentCount} appts · {formatCurrency(staff.revenue)}
+                      </span>
+                    </div>
+                  ))}
                 </CardContent>
               </Card>
             ))}
@@ -257,14 +257,14 @@ export function ServicePerformanceDashboard({
               <CardTitle>Service Pairings</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="space-y-2 text-sm">
+          <CardContent className="space-y-2">
             {pairings.map((pair) => (
               <Card key={`${pair.primary}-${pair.paired}`}>
-                <CardContent className="flex items-center justify-between p-3">
-                  <div>
-                    <p className="font-medium">{pair.primary}</p>
-                    <p className="text-xs text-muted-foreground">Often paired with {pair.paired}</p>
-                  </div>
+                <CardHeader className="pb-2">
+                  <CardTitle>{pair.primary}</CardTitle>
+                  <CardDescription>Often paired with {pair.paired}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex items-center justify-between pt-0">
                   <Badge variant="secondary">{pair.count} combos</Badge>
                 </CardContent>
               </Card>
@@ -280,21 +280,23 @@ export function ServicePerformanceDashboard({
         <CardContent className="grid gap-3 md:grid-cols-2">
           {durationAccuracy.map((entry) => (
             <Card key={entry.service_id}>
-              <CardContent className="space-y-2 p-4">
-                <p className="font-medium">{entry.service_name}</p>
-                <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle>{entry.service_name}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 pt-0 text-muted-foreground">
+                <div className="flex items-center justify-between">
                   <span>Scheduled</span>
                   <span>{entry.expected_duration ? `${entry.expected_duration} min` : 'N/A'}</span>
                 </div>
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <div className="flex items-center justify-between">
                   <span>Actual</span>
                   <span>{entry.actual_duration ? `${entry.actual_duration} min` : 'N/A'}</span>
                 </div>
-                {entry.variance != null && (
-                  <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'} className="mt-2">
+                {entry.variance != null ? (
+                  <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'}>
                     {entry.variance > 0 ? '+' : ''}{entry.variance} min variance
                   </Badge>
-                )}
+                ) : null}
               </CardContent>
             </Card>
           ))}

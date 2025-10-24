@@ -3,7 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
-import type { AppointmentService, Appointment, ServiceStats, StaffStats } from '../analytics.types'
+import type { AppointmentService, Appointment, ServiceStats, StaffStats } from '@/features/business/analytics/api/analytics.types'
 
 export type ServicePerformance = ServiceStats
 export type StaffPerformance = StaffStats

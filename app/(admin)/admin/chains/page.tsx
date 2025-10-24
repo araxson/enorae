@@ -5,6 +5,6 @@ export const metadata = {
   description: 'Manage multi-location salon chains',
 }
 
-export default async function SalonChainsPage() {
+export default function SalonChainsPage() {
   return <AdminChains />
 }

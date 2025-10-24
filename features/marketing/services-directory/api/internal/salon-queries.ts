@@ -11,7 +11,7 @@ export async function getSalonsOfferingCategory(categorySlug: string): Promise<S
 
   // First, get all service IDs in this category
   const { data: services, error: servicesError } = await supabase
-    .from('services_view')
+    .from('services')
     .select('salon_id')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -28,11 +28,11 @@ export async function getSalonsOfferingCategory(categorySlug: string): Promise<S
 
   // Get full salon details
   const { data: salons, error: salonsError } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('*')
     .in('id', salonIds)
     .eq('is_active', true)
-    .order('rating', { ascending: false, nullsFirst: false })
+    .order('rating_average', { ascending: false, nullsFirst: false })
 
   if (salonsError) throw salonsError
   return (salons ?? []) as Salon[]

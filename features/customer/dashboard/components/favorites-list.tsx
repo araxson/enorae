@@ -11,7 +11,7 @@ import {
   ItemDescription,
   ItemSeparator,
 } from '@/components/ui/item'
-import type { CustomerFavoriteView } from '@/lib/types/app.types'
+import type { CustomerFavoriteView } from '@/features/customer/favorites'
 
 interface FavoritesListProps {
   favorites: CustomerFavoriteView[]

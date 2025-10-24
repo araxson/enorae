@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { updateProfilePreferences } from '../../api/mutations'
-import { profilePreferencesFormSchema } from '../../schema'
+import { updateProfilePreferences } from '@/features/customer/profile/api/mutations'
+import { profilePreferencesFormSchema } from '@/features/customer/profile/schema'
 import type { ProfilePreferences } from './types'
 import { parsePreferences } from './types'
 
@@ -63,11 +63,9 @@ export function usePreferencesForm(preferences: ProfilePreferences | null) {
       }
 
       const result = await updateProfilePreferences(formData)
-      if (!result.success) {
-        toast.error(result.error)
-        return
+      if (result.success) {
+        toast.success('Preferences updated')
       }
-      toast.success('Preferences updated')
     } catch (error) {
       console.error('Failed to save preferences:', error)
       toast.error('Failed to save preferences. Please try again.')

@@ -9,14 +9,32 @@ export async function calculateCustomerFavoriteStaff(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Find most frequently booked staff member
   const { data, error } = await supabase
-    .rpc('calculate_customer_favorite_staff', {
-      p_customer_id: customerId,
-      p_salon_id: salonId,
-    })
+    .schema('scheduling')
+    .from('appointments')
+    .select('staff_id')
+    .eq('customer_id', customerId)
+    .eq('salon_id', salonId)
+    .eq('status', 'completed')
 
   if (error) throw error
-  return data as string | null
+  if (!data?.length) return null
+
+  // Count occurrences of each staff member
+  const staffCounts = data.reduce((acc, apt) => {
+    if (apt.staff_id) {
+      acc[apt.staff_id] = (acc[apt.staff_id] || 0) + 1
+    }
+    return acc
+  }, {} as Record<string, number>)
+
+  // Find staff with most appointments
+  const favoriteStaffId = Object.entries(staffCounts).reduce((a, b) =>
+    a[1] > b[1] ? a : b
+  )[0]
+
+  return favoriteStaffId
 }
 
 export async function getCustomerVisitFrequency(
@@ -27,12 +45,27 @@ export async function getCustomerVisitFrequency(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Get completed appointments ordered by date
   const { data, error } = await supabase
-    .rpc('calculate_avg_days_between_visits', {
-      p_customer_id: customerId,
-      p_salon_id: salonId,
-    })
+    .schema('scheduling')
+    .from('appointments')
+    .select('start_time')
+    .eq('customer_id', customerId)
+    .eq('salon_id', salonId)
+    .eq('status', 'completed')
+    .order('start_time', { ascending: true })
 
   if (error) throw error
-  return data as number | null
+  if (!data || data.length < 2) return null
+
+  // Calculate average days between consecutive visits
+  let totalDaysBetween = 0
+  for (let i = 1; i < data.length; i++) {
+    const prevDate = new Date(data[i - 1].start_time)
+    const currDate = new Date(data[i].start_time)
+    const daysDiff = Math.floor((currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24))
+    totalDaysBetween += daysDiff
+  }
+
+  return Math.round(totalDaysBetween / (data.length - 1))
 }

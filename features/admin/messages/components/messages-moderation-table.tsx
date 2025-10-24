@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { formatDistanceToNow } from 'date-fns'
-import type { ModerationQueueItem } from '../api/queries'
+import type { ModerationQueueItem } from '@/features/admin/messages/api/queries'
 
 interface MessagesModerationTableProps {
   items: ModerationQueueItem[]
@@ -59,13 +59,17 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
                       </p>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={severityVariant(item.severity)} className="mb-1">
-                        {item.severity}
-                      </Badge>
+                      <div className="mb-1">
+                        <Badge variant={severityVariant(item.severity)}>
+                          {item.severity.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                        </Badge>
+                      </div>
                       <p className="text-xs text-muted-foreground line-clamp-2">{item.reason}</p>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{item.status}</Badge>
+                      <Badge variant="outline">
+                        {item.status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                      </Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}

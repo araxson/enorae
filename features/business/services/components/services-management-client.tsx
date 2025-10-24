@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { Service, ServicesManagementClientProps } from '../types'
+import type { Service, ServicesManagementClientProps } from '@/features/business/services/types'
 
 export function ServicesManagementClient({ salon, services }: ServicesManagementClientProps) {
   const router = useRouter()

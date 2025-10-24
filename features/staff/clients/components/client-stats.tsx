@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Users, UserCheck, Calendar, DollarSign } from 'lucide-react'
-import type { ClientWithHistory } from '../api/queries'
+import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 
 type ClientStatsProps = {
   clients: ClientWithHistory[]
@@ -47,13 +47,15 @@ export function ClientStats({ clients }: ClientStatsProps) {
         const Icon = stat.icon
         return (
           <Card key={stat.label}>
-            <CardContent className="p-4">
-              <div className="flex gap-4 items-start justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
+            <CardContent>
+              <div className="p-4">
+                <div className="flex gap-4 items-start justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                    <p className="text-2xl font-semibold">{stat.value}</p>
+                  </div>
+                  <Icon className={`h-4 w-4 ${stat.color}`} />
                 </div>
-                <Icon className={`h-4 w-4 ${stat.color}`} />
               </div>
             </CardContent>
           </Card>

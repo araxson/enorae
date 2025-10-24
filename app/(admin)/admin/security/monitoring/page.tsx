@@ -1,5 +1,12 @@
-import { SecurityMonitoring } from '@/features/admin/security-monitoring'
+import { Suspense } from 'react'
+import { SecurityAccessMonitoring } from '@/features/admin/security-access-monitoring'
 
-export default async function SecurityMonitoringPage() {
-  return <SecurityMonitoring />
+export const metadata = { title: 'Security Access Monitoring | Admin' }
+
+export default function SecurityAccessMonitoringPage() {
+  return (
+    <Suspense fallback={null}>
+      <SecurityAccessMonitoring />
+    </Suspense>
+  )
 }

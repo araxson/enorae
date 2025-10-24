@@ -23,16 +23,8 @@ export async function getLoyaltyPoints() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .schema('engagement')
-    .from('loyalty_points')
-    .select('*')
-    .eq('customer_id', user.id)
-    .single()
-
-  if (error && error.code !== 'PGRST116') throw error
-
-  return data as LoyaltyPoints | null
+  // TODO: loyalty_points table not yet in database schema
+  return null
 }
 
 export async function getLoyaltyTransactions(limit = 50) {
@@ -40,27 +32,8 @@ export async function getLoyaltyTransactions(limit = 50) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .schema('engagement')
-    .from('loyalty_transactions')
-    .select('*')
-    .eq('customer_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(limit)
-
-  if (error) throw error
-  const rows = (data ?? []) as Array<Partial<LoyaltyTransaction>>
-
-  return rows
-    .filter((row): row is LoyaltyTransaction => Boolean(row.id && row.points !== undefined && row.type && row.description && row.created_at))
-    .map((row) => ({
-      id: row.id,
-      points: row.points,
-      type: row.type,
-      description: row.description,
-      appointment_id: row.appointment_id ?? null,
-      created_at: row.created_at,
-    }))
+  // TODO: loyalty_transactions table not yet in database schema
+  return []
 }
 
 export async function calculateLoyaltyValue() {
@@ -68,11 +41,11 @@ export async function calculateLoyaltyValue() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .rpc('calculate_loyalty_value', {
-      p_customer_id: user.id,
-    })
-
-  if (error) throw error
-  return data
+  // TODO: loyalty_transactions table not yet in database schema
+  return {
+    total_points: 0,
+    points_earned: 0,
+    points_redeemed: 0,
+    monetary_value: 0,
+  }
 }

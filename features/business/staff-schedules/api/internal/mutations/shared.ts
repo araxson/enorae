@@ -32,7 +32,7 @@ export async function ensureStaffAccess(
   salonId: string,
 ) {
   const { data: staff } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('id', staffId)
     .single<{ salon_id: string | null }>()

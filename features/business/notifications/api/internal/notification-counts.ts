@@ -15,7 +15,8 @@ export async function getUnreadCount() {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
+  // Use RPC function to get unread count
+  const { data: count, error } = await supabase
     .schema('communication')
     .rpc('get_unread_count', {
       p_user_id: user.id,
@@ -23,7 +24,7 @@ export async function getUnreadCount() {
 
   if (error) throw error
 
-  return (data as Database['communication']['Functions']['get_unread_count']['Returns']) ?? 0
+  return count ?? 0
 }
 
 /**
@@ -38,6 +39,7 @@ export async function getUnreadCounts() {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Use RPC function to get unread counts
   const { data, error } = await supabase
     .schema('communication')
     .rpc('get_unread_counts', {
@@ -46,8 +48,12 @@ export async function getUnreadCounts() {
 
   if (error) throw error
 
-  const [counts] =
-    (data as Database['communication']['Functions']['get_unread_counts']['Returns']) ?? []
+  // Return first result or defaults
+  const result = data && data.length > 0 ? data[0] : { messages: 0, notifications: 0, total: 0 }
 
-  return counts ?? { messages: 0, notifications: 0, total: 0 }
+  return {
+    messages: result.messages ?? 0,
+    notifications: result.notifications ?? 0,
+    total: result.total ?? 0,
+  }
 }

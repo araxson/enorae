@@ -55,6 +55,108 @@ export async function BusinessSummary({ businessId }: { businessId: string }) {
 }
 ```
 
+#### Server Component Data Fetching Best Practices
+
+```tsx
+// ✅ CORRECT - Use cache() to deduplicate requests
+import { cache } from 'react'
+import 'server-only'
+import { createClient } from '@/lib/supabase/server'
+
+const getSupabase = cache(async () => createClient())
+
+export async function getAppointments(businessId: string) {
+  const supabase = await getSupabase()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('appointments_view')
+    .select('*')
+    .eq('business_id', businessId)
+    .eq('user_id', user.id)
+
+  if (error) throw error
+  return data
+}
+
+// ✅ CORRECT - Parallel fetching in Server Component
+export async function DashboardPanel({ businessId }: { businessId: string }) {
+  // These run in parallel automatically
+  const [appointments, revenue, staff] = await Promise.all([
+    getAppointments(businessId),
+    getRevenue(businessId),
+    getStaff(businessId),
+  ])
+
+  return (
+    <div className="grid gap-4">
+      <AppointmentsCard data={appointments} />
+      <RevenueCard data={revenue} />
+      <StaffCard data={staff} />
+    </div>
+  )
+}
+
+// ✅ CORRECT - Streaming with Suspense boundaries
+export async function Dashboard({ businessId }: { businessId: string }) {
+  // Fast data fetched immediately
+  const quickMetrics = await getQuickMetrics(businessId)
+
+  return (
+    <div className="space-y-6">
+      {/* Show immediately */}
+      <MetricsHeader metrics={quickMetrics} />
+
+      {/* Stream slow data */}
+      <Suspense fallback={<SkeletonChart />}>
+        <RevenueChart businessId={businessId} />
+      </Suspense>
+
+      <Suspense fallback={<SkeletonTable />}>
+        <AppointmentsTable businessId={businessId} />
+      </Suspense>
+    </div>
+  )
+}
+
+// ❌ WRONG - Fetching in Client Component
+'use client'
+export function BadComponent() {
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    // ❌ Never fetch from database in client component
+    const supabase = createClient()
+    supabase.from('appointments_view').select('*').then(({ data }) => setData(data))
+  }, [])
+
+  return <div>{data?.map(...)}</div>
+}
+
+// ✅ CORRECT - Pass data from Server Component to Client Component
+export async function GoodComponent() {
+  const data = await getAppointments()  // Server Component fetches
+
+  return <AppointmentsList data={data} />  // Client Component displays
+}
+
+'use client'
+function AppointmentsList({ data }) {
+  const [selected, setSelected] = useState(null)
+
+  return (
+    <ul>
+      {data.map(appointment => (
+        <li key={appointment.id} onClick={() => setSelected(appointment.id)}>
+          {appointment.title}
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
 ### Client Components
 
 - Opt in with `'use client'`.
@@ -190,6 +292,8 @@ export function SettingsForm({ defaults }: { defaults: Record<string, string> })
   )
 }
 ```
+
+> The action receives `(previousState, formData)` and must return the next state object. Leverage `redirect()` inside the Server Action when you need to exit early—`useActionState` will stop rendering after the redirect (React 19 docs).
 
 ### `useOptimistic`
 
@@ -415,4 +519,4 @@ export function AppointmentPanel({ businessId }: { businessId: string }) {
 
 ---
 
-**Last Updated:** 2025-10-19
+**Last Updated:** 2025-10-21 (Enhanced Server Component data fetching best practices)

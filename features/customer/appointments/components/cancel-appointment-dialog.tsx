@@ -12,9 +12,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
-import { cancelAppointment } from '../api/mutations'
+import { cancelAppointment } from '@/features/customer/appointments/api/mutations'
 
 interface CancelAppointmentDialogProps {
   appointmentId: string
@@ -73,6 +73,7 @@ export function CancelAppointmentDialog({
         {!canCancel && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Cancellation unavailable</AlertTitle>
             <AlertDescription>
               Appointments must be cancelled at least 24 hours in advance. Please contact the salon
               directly to cancel this appointment.
@@ -83,6 +84,7 @@ export function CancelAppointmentDialog({
         {canCancel && (
           <Alert>
             <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Cancellation policy</AlertTitle>
             <AlertDescription>
               Cancellation policy: Appointments must be cancelled at least 24 hours in advance.
               Hours remaining: {Math.floor(hoursUntil)}h {Math.floor((hoursUntil % 1) * 60)}m
@@ -93,6 +95,7 @@ export function CancelAppointmentDialog({
         {error && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Cancellation failed</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}

@@ -10,7 +10,7 @@ import {
   toSecurityEvent,
   toSuspiciousSession,
   toIpAccessEvent,
-} from '../helpers'
+} from '@/features/admin/security-monitoring/api/helpers'
 import type {
   AuditLogRow,
   AccessMonitoringRow,
@@ -18,13 +18,13 @@ import type {
   RateLimitTrackingRow,
   RateLimitRuleRow,
   SecurityAuditLogRow,
-} from '../helpers'
-import { groupFailedLogins } from '../failed-logins'
+} from '@/features/admin/security-monitoring/api/helpers'
+import { groupFailedLogins } from '@/features/admin/security-monitoring/api/failed-logins'
 import type {
   RateLimitViolation,
   SecurityMetric,
   SecurityMonitoringSnapshot,
-} from '../types'
+} from '@/features/admin/security-monitoring/api/types'
 
 interface SnapshotOptions {
   windowInHours?: number

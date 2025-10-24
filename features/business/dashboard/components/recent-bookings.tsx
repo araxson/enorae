@@ -13,7 +13,7 @@ import {
   ButtonGroupText,
 } from '@/components/ui/button-group'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import type { AppointmentWithDetails } from '@/lib/types/app.types'
+import type { AppointmentWithDetails } from '@/features/business/appointments'
 import { getStatusConfig } from '@/lib/constants/appointment-statuses'
 import { formatAppointmentDate, formatAppointmentTime } from '@/lib/utils/dates'
 import { Calendar, User, Clock, MoreHorizontal, ChevronRight } from 'lucide-react'
@@ -92,7 +92,7 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
                           <p className="truncate text-sm font-medium">
                             {appointment.customer_name || 'Guest'}
                           </p>
-                          <Badge variant={statusConfig.variant} className="text-xs">
+                          <Badge variant={statusConfig.variant}>
                             {statusConfig.label}
                           </Badge>
                         </div>
@@ -130,7 +130,9 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>View Details</DropdownMenuItem>
                           <DropdownMenuItem>Edit Appointment</DropdownMenuItem>
-                          <DropdownMenuItem variant="destructive">Cancel</DropdownMenuItem>
+                          <DropdownMenuItem className="text-destructive focus:text-destructive">
+                            Cancel
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>

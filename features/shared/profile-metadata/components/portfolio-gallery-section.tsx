@@ -105,9 +105,11 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
 
       {images.length > 0 && (
         <div>
-          <Badge variant="secondary" className="mb-4">
-            {images.length} image{images.length !== 1 ? 's' : ''} in portfolio
-          </Badge>
+          <div className="mb-4">
+            <Badge variant="secondary">
+              {images.length} image{images.length !== 1 ? 's' : ''} in portfolio
+            </Badge>
+          </div>
           <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {images.map((image, index) => (
               <div key={index} className="relative group">

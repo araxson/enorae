@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { NotificationTemplate } from '../queries'
+import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 import { getSupabaseClient } from './helpers'
 import { sendNotification } from './send'
 

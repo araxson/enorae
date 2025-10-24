@@ -22,7 +22,7 @@ export async function generateSalonDetailMetadata({
   const name = salon.name || 'Salon'
   return genMeta({
     title: name,
-    description: salon.description || `${name} - Professional salon services`,
-    keywords: [name, 'salon', 'beauty', salon.location_address || 'professional services'],
+    description: salon.full_description || `${name} - Professional salon services`,
+    keywords: [name, 'salon', 'beauty', salon.formatted_address || 'professional services'],
   })
 }

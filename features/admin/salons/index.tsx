@@ -1,6 +1,9 @@
 import { getAllSalons } from './api/queries'
 import { SalonsClient } from './components/salons-client'
 
+// Export types
+export type { AdminSalon } from './types'
+
 export async function AdminSalons() {
   const { salons, stats, insights } = await getAllSalons()
 

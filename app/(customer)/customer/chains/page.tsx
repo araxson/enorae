@@ -5,6 +5,6 @@ export const metadata = {
   description: 'Browse salon chains and their locations',
 }
 
-export default async function ChainsPage() {
+export default function ChainsPage() {
   return <CustomerChainsPage />
 }

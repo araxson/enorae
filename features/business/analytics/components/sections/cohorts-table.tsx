@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ExportButton } from '@/features/business/business-common/components'
-import type { getCustomerCohorts } from '../../api/queries'
+import type { getCustomerCohorts } from '@/features/business/analytics/api/queries'
 
 type CustomerCohort = Awaited<ReturnType<typeof getCustomerCohorts>>[number]
 

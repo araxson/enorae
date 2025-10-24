@@ -6,7 +6,7 @@ import {
   getStaffMetrics,
   getStaffCommission,
   getClientRetentionMetrics,
-} from '../api/queries'
+} from '@/features/staff/dashboard/api/queries'
 import { getStaffRoleLevel } from '@/lib/auth'
 import { JuniorDashboard } from './sections/junior-dashboard'
 import { FullDashboard } from './sections/full-dashboard'

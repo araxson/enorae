@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import type { Session } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'

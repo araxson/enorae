@@ -3,8 +3,8 @@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import type { SalonReviewWithDetails } from '../../api/queries'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 import { ReviewCard } from './review-card'
 import { useReviewsList } from './use-reviews-list'
 
@@ -20,11 +20,10 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
       <div className="flex flex-col gap-4">
         {normalizedReviews.length === 0 ? (
           <Card>
-            <CardContent>
-              <div className="py-8 text-center">
-                <p className="leading-7 text-muted-foreground">No reviews yet</p>
-              </div>
-            </CardContent>
+            <CardHeader className="text-center">
+              <CardTitle>No reviews yet</CardTitle>
+              <CardDescription>Reviews will appear once customers share feedback.</CardDescription>
+            </CardHeader>
           </Card>
         ) : (
           normalizedReviews.map((review) => (
@@ -47,13 +46,13 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           <div className="flex flex-col gap-4">
             {state.selectedReview && (
               <Card>
-                <CardContent>
-                  <div className="flex flex-col gap-3 pt-4">
-                    <div className="flex gap-3 items-center">
-                      <p className="leading-7 font-medium">{state.selectedReview.customer_name || 'Anonymous'}</p>
-                    </div>
-                    {state.selectedReview.comment && <p className="leading-7 text-sm">{state.selectedReview.comment}</p>}
-                  </div>
+                <CardHeader className="pb-2">
+                  <CardTitle>{state.selectedReview.customer_name || 'Anonymous'}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  {state.selectedReview.comment ? (
+                    <p className="leading-7 text-sm">{state.selectedReview.comment}</p>
+                  ) : null}
                 </CardContent>
               </Card>
             )}

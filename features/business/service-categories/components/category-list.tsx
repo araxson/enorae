@@ -5,12 +5,7 @@ import { Edit2, Trash2, Scissors } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,8 +16,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { deleteServiceCategory } from '../api/mutations'
-import type { ServiceCategoryWithCounts } from '../api/queries'
+import { deleteServiceCategory } from '@/features/business/service-categories/api/mutations'
+import type { ServiceCategoryWithCounts } from '@/features/business/service-categories/api/queries'
 
 type CategoryListProps = {
   categories: ServiceCategoryWithCounts[]
@@ -58,9 +53,12 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
   if (categories.length === 0) {
     return (
       <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
+        <CardHeader className="items-center text-center">
+          <CardTitle>No service categories found</CardTitle>
+          <CardDescription>Create a category to organize your services.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center py-6">
           <Scissors className="h-12 w-12 text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">No service categories found</p>
         </CardContent>
       </Card>
     )

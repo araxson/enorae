@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Clock } from 'lucide-react'
-import type { OperatingHours } from '../types'
+import type { OperatingHours } from '@/features/staff/operating-hours/types'
 import { cn } from "@/lib/utils";
 
 interface OperatingHoursCardProps {
@@ -19,14 +19,16 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
 
   return (
     <Card>
-      <CardHeader className="p-6 pb-4">
-        <div className="flex gap-3 items-center">
-          <Clock className="h-5 w-5" />
-          <CardTitle>Operating Hours</CardTitle>
+      <CardHeader>
+        <div className="p-6 pb-4">
+          <div className="flex gap-3 items-center">
+            <Clock className="h-5 w-5" />
+            <CardTitle>Operating Hours</CardTitle>
+          </div>
         </div>
       </CardHeader>
-      <CardContent className="p-6 pt-0">
-        <div className="flex flex-col gap-3">
+      <CardContent>
+        <div className="flex flex-col gap-3 p-6 pt-0">
           {sortedHours.map((hour) => {
             const isToday = hour.day_of_week === today
 
@@ -39,11 +41,7 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
                   <p className="capitalize min-w-24">
                     {hour.day_of_week}
                   </p>
-                  {isToday && (
-                    <Badge variant="default" className="text-xs">
-                      Today
-                    </Badge>
-                  )}
+                  {isToday && <Badge variant="default">Today</Badge>}
                 </div>
 
                 {hour.is_closed ? (
@@ -57,8 +55,10 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
         </div>
       </CardContent>
       {sortedHours[0]?.salon_name && (
-        <CardFooter className="border-t p-6 pt-4">
-          <p className="text-xs text-muted-foreground">{sortedHours[0].salon_name}</p>
+        <CardFooter>
+          <div className="border-t p-6 pt-4">
+            <p className="text-xs text-muted-foreground">{sortedHours[0].salon_name}</p>
+          </div>
         </CardFooter>
       )}
     </Card>

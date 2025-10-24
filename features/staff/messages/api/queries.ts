@@ -1,7 +1,7 @@
 import 'server-only'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import type { MessageThread, Message } from '../types'
+import type { MessageThread, Message } from '@/features/staff/messages/types'
 
 export async function getMyMessageThreads(): Promise<MessageThread[]> {
   const session = await verifySession()

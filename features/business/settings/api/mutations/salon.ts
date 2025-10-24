@@ -1,8 +1,10 @@
 import 'server-only'
 
 import { z } from 'zod'
-import type { SupabaseClient } from '@/lib/supabase/server'
 import { getSalonContext, revalidateSettings } from './helpers'
+import type { ServerSupabaseClient } from '@/lib/supabase/server'
+
+type Client = ServerSupabaseClient
 
 const salonSettingsSchema = z.object({
   is_accepting_bookings: z.boolean(),
@@ -25,7 +27,7 @@ function parseFeatures(raw: FormDataEntryValue | null): string[] | null {
 }
 
 async function upsertSalonSettings(
-  supabase: SupabaseClient,
+  supabase: Client,
   salonId: string,
   payload: z.infer<typeof salonSettingsSchema>,
 ) {

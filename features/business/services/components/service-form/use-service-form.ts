@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import { createService, updateService } from '../../api/mutations'
+import { createService, updateService } from '@/features/business/services/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
 type Service = Database['public']['Views']['services']['Row']

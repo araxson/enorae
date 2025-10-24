@@ -2,7 +2,7 @@
 import { revalidatePath } from 'next/cache'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import { blockedTimeSchema, type BlockedTimeFormData } from '../schema'
+import { blockedTimeSchema, type BlockedTimeFormData } from '@/features/staff/blocked-times/schema'
 
 export async function createBlockedTime(data: BlockedTimeFormData) {
   const session = await verifySession()
@@ -14,7 +14,7 @@ export async function createBlockedTime(data: BlockedTimeFormData) {
 
   // Get user's salon_id from staff view
   const { data: staffData, error: staffError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string }>()
@@ -53,7 +53,7 @@ export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
 
   // Verify ownership
   const { data: existing } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('staff_id')
     .eq('id', id)
     .single<{ staff_id: string | null }>()
@@ -68,11 +68,11 @@ export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
     .update({
       start_time: validated.start_time,
       end_time: validated.end_time,
-      block_type: validated.block_type as 'break' | 'personal' | 'meeting' | 'other',
+      block_type: validated.block_type,
       reason: validated.reason,
       is_recurring: validated.is_recurring,
       recurrence_pattern: validated.recurrence_pattern ?? null,
-      updated_at: new Date().toISOString(),
+      updated_by_id: session.user.id,
     })
     .eq('id', id)
 
@@ -90,7 +90,7 @@ export async function deleteBlockedTime(id: string) {
 
   // Verify ownership
   const { data: existing } = await supabase
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('staff_id')
     .eq('id', id)
     .single<{ staff_id: string | null }>()

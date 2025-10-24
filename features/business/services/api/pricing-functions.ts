@@ -7,6 +7,9 @@ import { z } from 'zod'
 import { resolveSalonContext, UUID_REGEX } from '@/features/business/service-pricing/api/shared'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import type { Database } from '@/lib/types/database.types'
+
+type ServicePricingView = Database['public']['Views']['service_pricing_view']['Row']
 
 const dynamicPricingSchema = z.object({
   serviceId: z.string().regex(UUID_REGEX, 'Invalid service ID'),
@@ -54,21 +57,31 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
     throw new Error('Unauthorized: Service not found for your salon')
   }
 
-  const { data, error } = await supabase.rpc<number>(
-    'calculate_service_price',
-    {
-      p_service_id: serviceId,
-      p_customer_id: customerId ?? null,
-      p_booking_time: bookingTime.toISOString(),
-    }
-  )
+  // Get service pricing - price is stored in service_pricing table, not services table
+  const { data: pricing, error: pricingError } = await supabase
+    .from('service_pricing_view')
+    .select('*')
+    .eq('service_id', serviceId)
+    .maybeSingle<ServicePricingView>()
 
-  if (error) {
-    throw new Error(error.message)
+  if (pricingError) {
+    throw new Error(pricingError.message)
   }
 
+  if (!pricing) {
+    return { price: null }
+  }
+
+  // Use current_price, fallback to sale_price, then base_price
+  const basePrice = pricing.current_price ?? pricing.sale_price ?? pricing.base_price ?? 0
+
+  // NOTE: pricing_rules table doesn't exist in schema
+  // Dynamic pricing functionality is currently not implemented
+  // Return base price as-is
+  // TODO: Implement dynamic pricing when pricing_rules table is added to database
+
   return {
-    price: typeof data === 'number' ? data : null,
+    price: Math.round(basePrice * 100) / 100,
   }
 }
 

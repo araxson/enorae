@@ -33,7 +33,6 @@ A **production-ready** salon booking platform with role-based portals for custom
 - 📊 Real-time analytics dashboard
 - 👥 Staff management and scheduling
 - 💼 Service and pricing management
-- 📦 Inventory tracking
 - 💰 Financial reports and insights
 - ⚙️ Business settings and configuration
 
@@ -76,13 +75,12 @@ A **production-ready** salon booking platform with role-based portals for custom
 | **organization** | 8 | 8 | Salons, staff, locations, chains |
 | **catalog** | 5 | 20 | Services, pricing, categories |
 | **scheduling** | 5 | 19 | Appointments, availability |
-| **inventory** | 11 | 2 | Products, stock, suppliers |
 | **identity** | 5 | 21 | Users, profiles, roles |
 | **communication** | 3 | 14 | Messages, notifications |
 | **analytics** | 3 | 20 | Metrics, reports |
 | **engagement** | 1 | 4 | Favorites |
 
-**Total**: 42 tables, 108 functions, 10 queryable public views
+**Total**: 31 tables, 106 functions, 10 queryable public views
 
 ### 11 Roles:
 - Platform: `super_admin`, `platform_admin`
@@ -298,7 +296,6 @@ pnpm db:types         # Generate TypeScript types from Supabase
 - [ ] Analytics & reporting
 
 ### Phase 3: Advanced Features
-- [ ] Inventory management
 - [ ] Customer messaging
 - [ ] Reviews & ratings
 - [ ] Multi-location support

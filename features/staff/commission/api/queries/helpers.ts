@@ -4,7 +4,7 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type StaffRow = Database['public']['Views']['staff']['Row']
+type StaffRow = Database['public']['Views']['staff_profiles_view']['Row']
 
 export interface AuthorizedContext {
   supabase: Awaited<ReturnType<typeof createClient>>
@@ -18,7 +18,7 @@ export async function authorizeStaffAccess(
   const supabase = await createClient()
 
   const { data: staffProfile, error } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
@@ -32,8 +32,11 @@ export async function authorizeStaffAccess(
   return { supabase, staff: staffProfile }
 }
 
-export function toDateOnly(value: string | null | undefined) {
+export function toDateOnly(value: string | Date | null | undefined) {
   if (!value) return null
+  if (value instanceof Date) {
+    return value.toISOString().split('T')[0]
+  }
   return new Date(value).toISOString().split('T')[0]
 }
 

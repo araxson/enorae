@@ -5,8 +5,8 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { deleteBlockedTime } from '../api/mutations'
-import type { BlockedTime } from '../types'
+import { deleteBlockedTime } from '@/features/staff/blocked-times/api/mutations'
+import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
 interface BlockedTimesListProps {
   blockedTimes: BlockedTime[]
@@ -32,8 +32,10 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
   if (blockedTimes.length === 0) {
     return (
       <Card>
-        <CardContent className="p-8 text-center">
-          <p className="text-muted-foreground">No blocked times found</p>
+        <CardContent>
+          <div className="p-8 text-center">
+            <p className="text-muted-foreground">No blocked times found</p>
+          </div>
         </CardContent>
       </Card>
     )
@@ -43,45 +45,49 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
     <div className="flex flex-col gap-4">
       {blockedTimes.map((blockedTime) => (
         <Card key={blockedTime.id}>
-          <CardHeader className="p-4 pb-0">
-            <div className="flex gap-3 items-start justify-between">
-              <div className="flex flex-col gap-3 flex-1">
-                <div className="flex gap-3 items-center flex-wrap">
-                  <CardTitle>{blockedTime.reason || 'Blocked time'}</CardTitle>
-                  <Badge variant="outline">{blockedTime.block_type}</Badge>
-                  {blockedTime.is_recurring && <Badge variant="secondary">Recurring</Badge>}
+          <CardHeader>
+            <div className="p-4 pb-0">
+              <div className="flex gap-3 items-start justify-between">
+                <div className="flex flex-col gap-3 flex-1">
+                  <div className="flex gap-3 items-center flex-wrap">
+                    <CardTitle>{blockedTime.reason || 'Blocked time'}</CardTitle>
+                    <Badge variant="outline">{blockedTime.block_type}</Badge>
+                    {blockedTime.is_recurring && <Badge variant="secondary">Recurring</Badge>}
+                  </div>
+                  <CardDescription>
+                    {blockedTime.start_time && format(new Date(blockedTime.start_time), 'PPp')} –{' '}
+                    {blockedTime.end_time && format(new Date(blockedTime.end_time), 'p')}
+                  </CardDescription>
                 </div>
-                <CardDescription>
-                  {blockedTime.start_time && format(new Date(blockedTime.start_time), 'PPp')} –{' '}
-                  {blockedTime.end_time && format(new Date(blockedTime.end_time), 'p')}
-                </CardDescription>
-              </div>
-              <div className="flex gap-3">
-                {onEdit && (
+                <div className="flex gap-3">
+                  {onEdit && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => onEdit(blockedTime)}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  )}
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => onEdit(blockedTime)}
+                    onClick={() => blockedTime.id && handleDelete(blockedTime.id)}
+                    disabled={deletingId === blockedTime.id}
                   >
-                    <Pencil className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4" />
                   </Button>
-                )}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => blockedTime.id && handleDelete(blockedTime.id)}
-                  disabled={deletingId === blockedTime.id}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                </div>
               </div>
             </div>
           </CardHeader>
           {blockedTime.duration_minutes ? (
-            <CardContent className="p-4 pt-0">
-              <p className="text-sm text-muted-foreground">
-                Duration: {blockedTime.duration_minutes} minutes
-              </p>
+            <CardContent>
+              <div className="p-4 pt-0">
+                <p className="text-muted-foreground">
+                  Duration: {blockedTime.duration_minutes} minutes
+                </p>
+              </div>
             </CardContent>
           ) : null}
         </Card>

@@ -1,7 +1,7 @@
 import { Activity, CalendarCheck, CalendarX, Clock4, DollarSign, TrendingUp } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { AppointmentSnapshot } from '../api/types'
+import type { AppointmentSnapshot } from '@/features/admin/appointments/api/types'
 
 interface MetricsSummaryProps {
   totals: AppointmentSnapshot['totals']
@@ -65,7 +65,7 @@ export function MetricsSummary({ totals, performance }: MetricsSummaryProps) {
             {badge && <Badge variant="destructive">{badge}</Badge>}
           </CardHeader>
           <CardContent className="space-y-1">
-            <div className="text-2xl font-bold text-foreground">{value}</div>
+            <div className="text-2xl font-semibold">{value}</div>
             <p className="text-xs text-muted-foreground">{helper}</p>
           </CardContent>
         </Card>

@@ -12,7 +12,7 @@ import {
   getRevenueByChain,
   getTransactionMonitoring,
   getPaymentMethodStats,
-} from '../api/queries'
+} from '@/features/admin/finance/api/queries'
 
 interface FinanceDashboardProps {
   startDate?: string

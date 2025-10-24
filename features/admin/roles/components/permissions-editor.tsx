@@ -42,17 +42,17 @@ export function PermissionsEditor({ permissions, onAdd, onRemove }: PermissionsE
       ) : (
         <div className="flex flex-wrap gap-2">
           {permissions.map((permission) => (
-            <Badge key={permission} variant="secondary" className="flex items-center gap-1">
-              {permission}
+            <div key={permission} className="flex items-center gap-1">
+              <Badge variant="secondary">{permission}</Badge>
               <button
                 type="button"
                 onClick={() => onRemove(permission)}
-                className="ml-1 text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground"
                 aria-label={`Remove permission ${permission}`}
               >
                 <X className="h-3 w-3" aria-hidden="true" />
               </button>
-            </Badge>
+            </div>
           ))}
         </div>
       )}

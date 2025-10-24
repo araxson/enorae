@@ -12,12 +12,28 @@ export async function getUnreadCounts(userId: string): Promise<UnreadCounts | nu
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .rpc('get_unread_counts', { p_user_id: userId })
-    .single()
+  // Count unread messages
+  const { count: messagesCount } = await supabase
+    .from('communication_messages')
+    .select('*', { count: 'exact', head: true })
+    .eq('to_user_id', userId)
+    .eq('is_read', false)
 
-  if (error) throw error
-  return data as UnreadCounts | null
+  // Count unread notifications
+  const { count: notificationsCount } = await supabase
+    .from('communication_notification_queue')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', userId)
+    .eq('status', 'pending')
+
+  const messages = messagesCount || 0
+  const notifications = notificationsCount || 0
+
+  return {
+    messages,
+    notifications,
+    total: messages + notifications,
+  }
 }
 
 export async function getMyUnreadCounts(): Promise<UnreadCounts | null> {
@@ -25,10 +41,5 @@ export async function getMyUnreadCounts(): Promise<UnreadCounts | null> {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .rpc('get_unread_counts', { p_user_id: user.id })
-    .single()
-
-  if (error) throw error
-  return data as UnreadCounts | null
+  return getUnreadCounts(user.id)
 }

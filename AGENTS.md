@@ -1,10 +1,9 @@
 # Claude Agent Guide
 
-Fast reference for AI when contributing to ENORAE.
-
+Fast reference for Claude Code when contributing to ENORAE.
+Never Edit the database.type.ts
 ---
 NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
-
 ## Stack Patterns Documentation
 
 **Complete, standalone pattern files for the ENORAE tech stack.**
@@ -24,6 +23,7 @@ NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 | **Forms & validation** | `docs/stack-patterns/forms-patterns.md` |
 | **Type safety** | `docs/stack-patterns/typescript-patterns.md` |
 | **React components** | `docs/stack-patterns/react-patterns.md` |
+| **File organization** | `docs/stack-patterns/file-organization-patterns.md` |
 
 **💡 Tip:** Each pattern file is self-contained with complete examples, detection commands, and best practices. No cross-references needed.
 
@@ -253,10 +253,9 @@ features/{portal}/{feature}/
 ```
 
 ### Database Schemas
-- `organisation` - Organization/tenant data
+- `organization` - Organization/tenant data (US spelling)
 - `catalog` - Products, services, pricing
 - `scheduling` - Appointments, bookings
-- `inventory` - Stock, supplies
 - `identity` - Users, profiles, auth
 - `communication` - Messages, notifications
 - `analytics` - Metrics, reports
@@ -379,6 +378,110 @@ cat UPDATE_PATTERNS_PROMPT.md
 
 ---
 
+## Database Schema Synchronization Agents
+
+### Two-Step Schema Sync Process
+
+When TypeScript code and database schema are out of sync, use these agents in sequence:
+
+**Step 1: Analyze (database-schema-analyzer)**
+- Reads actual Supabase database schema using MCP
+- Scans codebase for mismatches
+- Generates organized reports in `docs/schema-sync/`
+- Creates task lists with [ ] checkboxes for each issue
+- Does NOT modify any code or database
+
+**Step 2: Fix (database-schema-fixer)**
+- Reads analysis reports from `docs/schema-sync/`
+- Applies fixes systematically (database = source of truth)
+- Updates task lists with [x] as it completes fixes
+- Runs typecheck after each batch
+- Generates completion report
+
+### When to Use
+
+**Use database-schema-analyzer when:**
+- TypeScript errors reference missing database properties
+- Database schema has been updated
+- You want to audit code/schema alignment
+- Planning a schema migration
+- Quarterly code health checks
+
+**Use database-schema-fixer when:**
+- You have analysis reports in `docs/schema-sync/`
+- Ready to apply schema alignment fixes
+- TypeScript errors need systematic resolution
+
+### Example Workflow
+
+```bash
+# 1. Generate analysis reports
+# Claude will use database-schema-analyzer agent
+
+# 2. Review reports
+cat docs/schema-sync/00-ANALYSIS-INDEX.md
+cat docs/schema-sync/09-fix-priority.md
+
+# 3. Apply fixes
+# Claude will use database-schema-fixer agent
+
+# 4. Verify
+npm run typecheck
+cat docs/schema-sync/10-FIX-COMPLETION-REPORT.md
+```
+
+### Report Structure
+
+Analysis creates organized reports:
+```
+docs/schema-sync/
+├── 00-ANALYSIS-INDEX.md          # Navigation hub
+├── 01-schema-overview.md          # Actual database schema (source of truth)
+├── 02-mismatch-summary.md         # Statistics
+├── 03-missing-properties.md       # Category A + task list
+├── 04-wrong-column-names.md       # Category B + task list
+├── 05-type-mismatches.md          # Category C + task list
+├── 06-nonexistent-rpcs.md         # Category D + task list
+├── 07-nonexistent-tables.md       # Category E + task list
+├── 08-incorrect-selects.md        # Category F + task list
+├── 09-fix-priority.md             # Prioritized action plan
+└── 10-FIX-COMPLETION-REPORT.md    # Generated after fixes
+```
+
+### Task List Format
+
+Reports use standardized task tracking:
+
+**Before fixing:**
+```markdown
+- [ ] Fix features/business/dashboard/api/queries.ts:45 - Property amenities does not exist
+```
+
+**After fixing:**
+```markdown
+- [x] Fix features/business/dashboard/api/queries.ts:45 - Property amenities does not exist
+  - **Fixed:** Removed amenities access, using actual schema columns only
+  - **Date:** 2025-10-22
+```
+
+### Critical Rules
+
+**Analyzer Agent:**
+- ✅ READ database schema using Supabase MCP
+- ✅ Generate ALL report files with task lists
+- ✅ Categorize by severity (Critical/High/Medium/Low)
+- ❌ NEVER modify code or database
+
+**Fixer Agent:**
+- ✅ READ analysis reports first
+- ✅ Use database schema as SOURCE OF TRUTH
+- ✅ Update task lists with [x] as you complete them
+- ✅ Run typecheck after each batch
+- ❌ NEVER modify database schema
+- ❌ NEVER use `any` or `@ts-ignore`
+
+---
+
 ## Getting Help
 
 **Need pattern examples?** → Read `docs/stack-patterns/{topic}-patterns.md`
@@ -393,12 +496,28 @@ cat UPDATE_PATTERNS_PROMPT.md
 
 **Building forms?** → `docs/stack-patterns/forms-patterns.md`
 
+**Database/code out of sync?** → Use `database-schema-analyzer` then `database-schema-fixer`
+
 **All pattern files are standalone and portable** - read any file independently.
 
 ---
 
+## Available Agents
+
+| Agent | Purpose | When to Use |
+|-------|---------|-------------|
+| `database-schema-analyzer` | Analyze database/code mismatches | Before fixing schema issues |
+| `database-schema-fixer` | Apply schema synchronization fixes | After analysis reports generated |
+| `stack-patterns-validator` | Audit ENORAE patterns compliance | Before major releases |
+| `ui-pattern-enforcer` | Enforce shadcn/ui patterns | UI consistency audits |
+
+**Agent Documentation:** `.claude/agents/`
+
+---
+
 **Maintained by:** Development Team
-**Last Updated:** 2025-10-19
-**Pattern Files:** `docs/stack-patterns/` (7 files, 100% standalone)
+**Last Updated:** 2025-10-22
+**Pattern Files:** `docs/stack-patterns/` (8 files, 100% standalone)
+**Agents:** `.claude/agents/` (Database schema sync, pattern validation, UI enforcement)
 
 Stay within these patterns to keep ENORAE consistent, accessible, secure, and maintainable.

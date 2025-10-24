@@ -5,6 +5,6 @@ export const metadata = {
   description: 'View your payment and transaction history',
 }
 
-export default async function TransactionsPage() {
+export default function TransactionsPage() {
   return <CustomerTransactionsPage />
 }

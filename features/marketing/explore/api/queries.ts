@@ -16,11 +16,10 @@ export const getPublicSalons = cache(async function getPublicSalons(
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('*')
     .eq('is_active', true)
-    .is('deleted_at', null)
-    .order('rating', { ascending: false })
+    .order('rating_average', { ascending: false })
     .order('created_at', { ascending: false })
     .limit(limit)
 

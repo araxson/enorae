@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import type { ProfileDetail } from '../api/types'
-import { updateProfileMetadataAction, type ActionResponse } from '../api/mutations'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
+import { updateProfileMetadataAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
 interface ProfileMetadataFormProps {
   profile: ProfileDetail | null

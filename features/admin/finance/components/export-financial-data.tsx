@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Download, Loader2, CheckCircle2, XCircle } from 'lucide-react'
-import { exportFinancialDataToCSV } from '../api/mutations'
+import { exportFinancialDataToCSV } from '@/features/admin/finance/api/mutations'
 
 export function ExportFinancialData() {
   const [isLoading, setIsLoading] = useState(false)

@@ -1,8 +1,8 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ShieldCheck, AlertTriangle, ClipboardCheck, Users, TrendingUp, Gauge } from 'lucide-react'
-import type { StaffDashboardStats } from '../api/queries'
+import type { StaffDashboardStats } from '@/features/admin/staff/api/queries'
 
 const STAT_ICON_CLASSES = 'h-4 w-4'
 
@@ -52,14 +52,15 @@ export function StaffStats({ stats }: { stats: StaffDashboardStats }) {
         const Icon = card.icon
         return (
           <Card key={card.label}>
-            <CardContent className="p-4">
+            <CardHeader>
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="leading-7 text-sm text-muted-foreground">{card.label}</p>
-                  <p className="text-2xl font-semibold mt-1">{card.value}</p>
-                </div>
+                <CardTitle>{card.label}</CardTitle>
                 <Icon className={`${STAT_ICON_CLASSES} ${card.tone}`} />
               </div>
+              <CardDescription>Staff readiness indicator.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-semibold">{card.value}</p>
             </CardContent>
           </Card>
         )

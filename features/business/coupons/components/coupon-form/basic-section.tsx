@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import type { CouponFormState } from '../coupon-form.types'
+import type { CouponFormState } from '@/features/business/coupons/components/coupon-form/coupon-form.types'
 
 interface CouponBasicSectionProps {
   formData: CouponFormState

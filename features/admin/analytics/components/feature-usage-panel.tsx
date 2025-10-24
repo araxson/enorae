@@ -1,6 +1,6 @@
 import { Sparkles } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { PlatformAnalyticsSnapshot } from '../api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface FeatureUsagePanelProps {
   featureUsage: PlatformAnalyticsSnapshot['featureUsage']
@@ -24,9 +24,13 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
           <div className="space-y-2">
             {items.map((item) => (
               <Card key={item.key}>
-                <CardContent className="flex items-center justify-between p-3">
-                  <span className="text-sm font-medium">{item.key}</span>
-                  <span className="text-xs text-muted-foreground">{item.count.toLocaleString('en-US')} hits</span>
+                <CardHeader className="pb-2">
+                  <CardTitle>{item.key}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <p className="text-sm text-muted-foreground">
+                    {item.count.toLocaleString('en-US')} hits
+                  </p>
                 </CardContent>
               </Card>
             ))}

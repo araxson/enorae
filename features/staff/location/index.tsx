@@ -1,4 +1,5 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { MapPin } from 'lucide-react'
 import { LocationCard } from './components/location-card'
 import { AllLocationsList } from './components/all-locations-list'
@@ -13,16 +14,22 @@ interface LocationFeatureProps {
 export function LocationFeature({ myLocation, allLocations }: LocationFeatureProps) {
   return (
     <div className="flex flex-col gap-6">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Location Information</h1>
-        <p className="text-muted-foreground">Your assigned salon location and other branches</p>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Location Information</CardTitle>
+          <CardDescription>Your assigned salon location and other branches</CardDescription>
+        </CardHeader>
+      </Card>
 
       {myLocation ? (
-        <div className="flex flex-col gap-4">
-          <h2 className="text-xl font-semibold">Your Location</h2>
-          <LocationCard location={myLocation} />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Your Location</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <LocationCard location={myLocation} />
+          </CardContent>
+        </Card>
       ) : (
         <Alert>
           <MapPin className="h-4 w-4" />
@@ -33,13 +40,17 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
       )}
 
       {allLocations.length > 1 && (
-        <div className="flex flex-col gap-4">
-          <h2 className="text-xl font-semibold">All Salon Locations</h2>
-          <AllLocationsList
-            locations={allLocations}
-            currentLocationId={myLocation?.id}
-          />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>All Salon Locations</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AllLocationsList
+              locations={allLocations}
+              currentLocationId={myLocation?.id}
+            />
+          </CardContent>
+        </Card>
       )}
     </div>
   )

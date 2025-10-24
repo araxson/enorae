@@ -1,5 +1,5 @@
-import { getReviewsForModeration, getModerationStats } from './api/queries'
-import { ModerationClient } from './components/moderation-client'
+import { getReviewsForModeration, getModerationStats } from '@/features/admin/moderation/api/queries'
+import { ModerationClient } from '@/features/admin/moderation/components/moderation-client'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
 export async function AdminModeration() {

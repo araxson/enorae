@@ -1,5 +1,5 @@
 import { AdminStaff } from '@/features/admin/staff'
 
-export default async function AdminStaffPage() {
+export default function AdminStaffPage() {
   return <AdminStaff />
 }

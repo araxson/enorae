@@ -38,35 +38,41 @@ export function SupportGuidesCard({ sections }: SupportGuidesCardProps) {
           </TabsList>
 
           {sections.map((section) => (
-            <TabsContent key={`section-${section.id}`} value={section.id} className="space-y-4">
-              <Card>
-                <CardHeader className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <CardTitle>{section.title}</CardTitle>
-                    <Badge variant="outline">Updated weekly</Badge>
-                  </div>
-                  <CardDescription>{section.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
-                      Review the onboarding checklist to ensure nothing blocks customers from booking.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Clock className="mt-0.5 h-4 w-4 text-secondary" />
-                      Add buffer times and automated reminders for your services within scheduling preferences.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <FileText className="mt-0.5 h-4 w-4 text-accent" />
-                      Download printable cheat sheets for front-desk team members joining midweek.
-                    </li>
-                  </ul>
-                  <Button variant="secondary" size="sm">
-                    View full playbook
-                  </Button>
-                </CardContent>
-              </Card>
+            <TabsContent key={`section-${section.id}`} value={section.id}>
+              <div className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <CardTitle>{section.title}</CardTitle>
+                        <Badge variant="outline">Updated weekly</Badge>
+                      </div>
+                      <CardDescription>{section.description}</CardDescription>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <ul className="space-y-3 text-sm text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
+                          Review the onboarding checklist to ensure nothing blocks customers from booking.
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Clock className="mt-0.5 h-4 w-4 text-secondary" />
+                          Add buffer times and automated reminders for your services within scheduling preferences.
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <FileText className="mt-0.5 h-4 w-4 text-accent" />
+                          Download printable cheat sheets for front-desk team members joining midweek.
+                        </li>
+                      </ul>
+                      <Button variant="secondary" size="sm">
+                        View full playbook
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </TabsContent>
           ))}
         </Tabs>

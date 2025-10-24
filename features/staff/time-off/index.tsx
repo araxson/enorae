@@ -6,7 +6,7 @@ import {
   getTimeOffBalance,
   getTeamTimeOffCalendar
 } from './api/queries'
-import { getStaffProfile } from '../appointments/api/queries'
+import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 
 export async function TimeOffRequests() {
   let staffProfile

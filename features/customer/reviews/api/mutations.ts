@@ -30,10 +30,10 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
 
     const validated = reviewSchema.parse(data)
 
-    // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
+    // Note: .schema() required for INSERT/UPDATE/DELETE on tables (not views)
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .insert({
         salon_id: validated.salonId,
         customer_id: session.user.id,
@@ -66,11 +66,14 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
     const supabase = await createClient()
 
     // Verify ownership and check edit window
+    type ReviewRow = { customer_id: string; created_at: string; salon_id: string }
+
     const { data: review, error: fetchError } = await supabase
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .select('customer_id, created_at, salon_id')
       .eq('id', id)
       .eq('customer_id', session.user.id)
+      .returns<ReviewRow[]>()
       .single()
 
     if (fetchError) {
@@ -103,10 +106,10 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
 
     const validated = reviewSchema.parse(data)
 
-    // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
+    // Note: .schema() required for INSERT/UPDATE/DELETE
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .update({
         rating: validated.rating,
         title: validated.title,
@@ -115,7 +118,6 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
         cleanliness_rating: validated.cleanlinessRating,
         value_rating: validated.valueRating,
         updated_at: new Date().toISOString(),
-        updated_by_id: session.user.id,
       })
       .eq('id', id)
       .eq('customer_id', session.user.id)
@@ -140,10 +142,13 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
     const supabase = await createClient()
 
     // Verify ownership before deleting
+    type ReviewRow = { customer_id: string }
+
     const { data: review, error: fetchError } = await supabase
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .select('customer_id')
       .eq('id', id)
+      .returns<ReviewRow[]>()
       .single()
 
     if (fetchError) throw fetchError
@@ -159,7 +164,7 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
     // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .update({
         deleted_at: new Date().toISOString(),
         deleted_by_id: session.user.id,

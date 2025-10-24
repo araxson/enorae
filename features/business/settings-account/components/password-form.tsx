@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, CheckCircle, AlertCircle, Eye, EyeOff } from 'lucide-react'
-import { updatePassword } from '../api/mutations'
+import { updatePassword } from '@/features/business/settings-account/api/mutations'
 
 export function PasswordForm() {
   const [currentPassword, setCurrentPassword] = useState('')

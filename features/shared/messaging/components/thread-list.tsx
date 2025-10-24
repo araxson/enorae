@@ -76,11 +76,7 @@ export function ThreadList({
                       <h4 className="scroll-m-20 text-xl font-semibold mb-0">
                         {thread.subject || 'No subject'}
                       </h4>
-                      {unreadCount > 0 && (
-                        <Badge variant="destructive" className="flex h-6 min-w-6 items-center justify-center rounded-full">
-                          {unreadCount}
-                        </Badge>
-                      )}
+                      {unreadCount > 0 && <Badge variant="destructive">{unreadCount}</Badge>}
                     </div>
                     <p className="text-sm font-medium text-muted-foreground">
                       Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
@@ -88,9 +84,11 @@ export function ThreadList({
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant={getPriorityVariant(thread.priority)}>{thread.priority}</Badge>
+                    <Badge variant={getPriorityVariant(thread.priority)}>
+                      {thread.priority.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                    </Badge>
                     <Badge variant={thread.status === 'active' ? 'default' : 'secondary'}>
-                      {thread.status}
+                      {thread.status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                     </Badge>
                   </div>
                 </div>

@@ -26,7 +26,7 @@ export function PrimaryImagesSection({ logoUrl, coverImageUrl }: PrimaryImagesSe
                 defaultValue={logoUrl}
                 placeholder="https://example.com/logo.png"
               />
-              <p className="text-sm text-muted-foreground">Your salon&apos;s logo (square format recommended)</p>
+              <p className="text-muted-foreground">Your salon&apos;s logo (square format recommended)</p>
             </div>
 
             <div>
@@ -38,7 +38,7 @@ export function PrimaryImagesSection({ logoUrl, coverImageUrl }: PrimaryImagesSe
                 defaultValue={coverImageUrl}
                 placeholder="https://example.com/cover.jpg"
               />
-              <p className="text-sm text-muted-foreground">Hero image for your salon page (16:9 recommended)</p>
+              <p className="text-muted-foreground">Hero image for your salon page (16:9 recommended)</p>
             </div>
           </div>
         </div>

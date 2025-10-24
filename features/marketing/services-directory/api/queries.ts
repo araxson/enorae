@@ -14,7 +14,7 @@ export async function getPublicServices(category?: string): Promise<Service[]> {
   const supabase = await createClient()
 
   let query = supabase
-    .from('services_view')
+    .from('services')
     .select('*')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -38,7 +38,7 @@ export async function getFeaturedServices(limit: number = 6): Promise<Service[]>
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select('*')
     .eq('is_active', true)
     .eq('is_featured', true)
@@ -60,7 +60,7 @@ export async function getPublicServiceCategories(): Promise<
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select('category_name, category_slug')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -102,7 +102,7 @@ export async function getPublicCategoryBySlug(
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select('category_name, category_slug')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -132,7 +132,7 @@ export async function searchPublicServices(searchTerm: string): Promise<Service[
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select('*')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -152,7 +152,7 @@ export async function getSalonsOfferingCategory(categorySlug: string): Promise<S
 
   // First, get all service IDs in this category
   const { data: services, error: servicesError } = await supabase
-    .from('services_view')
+    .from('services')
     .select('salon_id')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -169,11 +169,11 @@ export async function getSalonsOfferingCategory(categorySlug: string): Promise<S
 
   // Get full salon details
   const { data: salons, error: salonsError } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('*')
     .in('id', salonIds)
     .eq('is_active', true)
-    .order('rating', { ascending: false, nullsFirst: false })
+    .order('rating_average', { ascending: false, nullsFirst: false })
 
   if (salonsError) throw salonsError
   return (salons ?? []) as Salon[]
@@ -195,7 +195,7 @@ export async function getPopularServices(limit: number = 10): Promise<
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select('name, category_name, category_slug, salon_id, current_price')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -271,7 +271,7 @@ export async function getPublicServiceStats(): Promise<{
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select('current_price, category_name')
     .eq('is_active', true)
     .is('deleted_at', null)

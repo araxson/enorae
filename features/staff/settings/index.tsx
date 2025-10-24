@@ -1,3 +1,4 @@
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { NotificationPreferences } from './components/notification-preferences'
 import { PrivacySettings } from './components/privacy-settings'
@@ -12,7 +13,11 @@ interface SettingsFeatureProps {
 export function SettingsFeature({ preferences }: SettingsFeatureProps) {
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Settings & Preferences</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Settings & Preferences</CardTitle>
+        </CardHeader>
+      </Card>
 
       <Tabs defaultValue="notifications" className="w-full">
         <TabsList className="grid w-full grid-cols-3">

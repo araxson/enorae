@@ -100,10 +100,10 @@ export function StaffPageHeading({
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-semibold">{title}</h1>
-              <Badge variant="secondary" className="hidden sm:inline-flex gap-1">
+              <div className="hidden items-center gap-2 sm:flex">
                 <Sparkles className="h-3.5 w-3.5" />
-                Staff Portal
-              </Badge>
+                <Badge variant="secondary">Staff Portal</Badge>
+              </div>
             </div>
             {description ? <p className="max-w-2xl text-sm text-muted-foreground">{description}</p> : null}
           </div>
@@ -188,7 +188,7 @@ export function StaffPageHeading({
 
             <Avatar className="h-9 w-9">
               <AvatarImage src={avatarUrl ?? undefined} />
-              <AvatarFallback className="text-sm font-medium">
+              <AvatarFallback>
                 {cn(avatarFallback?.slice(0, 2).toUpperCase() || 'ST')}
               </AvatarFallback>
             </Avatar>

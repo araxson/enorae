@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -21,7 +21,7 @@ export function PhoneEmailSection({ initialValues }: PhoneEmailSectionProps) {
     <Card>
       <CardContent>
         <div className="flex flex-col gap-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold">Phone & Email</h3>
+          <CardTitle>Phone & Email</CardTitle>
           <Separator />
 
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2">

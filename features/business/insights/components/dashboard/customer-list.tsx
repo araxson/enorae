@@ -93,8 +93,10 @@ export function CustomerList({
                     </div>
 
                     {customer.cancellation_rate > 20 && (
-                      <Badge variant="destructive" className="text-xs">
-                        High cancellation rate ({formatPercentage(customer.cancellation_rate)})
+                      <Badge variant="destructive">
+                        <span className="text-xs">
+                          High cancellation rate ({formatPercentage(customer.cancellation_rate)})
+                        </span>
                       </Badge>
                     )}
                   </div>

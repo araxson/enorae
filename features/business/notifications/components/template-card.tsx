@@ -25,11 +25,11 @@ export function TemplateCard({ template, onEdit, onDelete, disabled }: TemplateC
             </CardDescription>
           </div>
           <div className="flex gap-2">
-            <Badge variant="outline" className="capitalize">
-              {template.channel}
+            <Badge variant="outline">
+              <span className="capitalize">{template.channel}</span>
             </Badge>
-            <Badge variant="secondary" className="capitalize">
-              {template.event.replace(/_/g, ' ')}
+            <Badge variant="secondary">
+              <span className="capitalize">{template.event.replace(/_/g, ' ')}</span>
             </Badge>
           </div>
         </div>

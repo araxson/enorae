@@ -2,10 +2,9 @@
 
 import { useState } from 'react'
 import { ThumbsUp, Star } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { toast } from 'sonner'
 import { markReviewAsHelpful } from '@/features/customer/reviews/api/helpful-mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -36,6 +35,13 @@ function StarRating({ rating }: { rating: number | null }) {
 function ReviewCard({ review }: { review: SalonReview }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [helpfulCount, setHelpfulCount] = useState(review.helpful_count || 0)
+  const reviewDate =
+    review.created_at &&
+    new Date(review.created_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
 
   const handleMarkHelpful = async () => {
     if (!review.id) return
@@ -55,96 +61,22 @@ function ReviewCard({ review }: { review: SalonReview }) {
 
   return (
     <Card>
-      <CardContent className="space-y-4 p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <StarRating rating={review.rating} />
-              {review.is_verified && (
-                <Badge variant="secondary" className="text-xs">
-                  Verified
-                </Badge>
-              )}
-            </div>
-            {review.title && <p className="text-sm font-medium">{review.title}</p>}
-          </div>
+      <CardHeader className="gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
+          <StarRating rating={review.rating} />
+          {review.is_verified && <Badge variant="secondary">Verified</Badge>}
         </div>
-
+        {reviewDate && <CardDescription>{reviewDate}</CardDescription>}
+      </CardHeader>
+      <CardContent>
         <p className="text-sm text-muted-foreground">{review.comment}</p>
-
-        {(review.service_quality_rating ||
-          review.cleanliness_rating ||
-          review.value_rating) && (
-          <div className="grid gap-4 border-t pt-4 text-sm sm:grid-cols-3">
-            {review.service_quality_rating && (
-              <div className="space-y-1">
-                <span className="text-xs font-semibold uppercase text-muted-foreground">
-                  Service
-                </span>
-                <StarRating rating={review.service_quality_rating} />
-              </div>
-            )}
-            {review.cleanliness_rating && (
-              <div className="space-y-1">
-                <span className="text-xs font-semibold uppercase text-muted-foreground">
-                  Cleanliness
-                </span>
-                <StarRating rating={review.cleanliness_rating} />
-              </div>
-            )}
-            {review.value_rating && (
-              <div className="space-y-1">
-                <span className="text-xs font-semibold uppercase text-muted-foreground">
-                  Value
-                </span>
-                <StarRating rating={review.value_rating} />
-              </div>
-            )}
-          </div>
-        )}
-
-        {review.response && (
-          <div className="flex flex-col gap-2">
-            <Alert>
-              <AlertTitle>Response from salon</AlertTitle>
-              <AlertDescription>{review.response}</AlertDescription>
-            </Alert>
-            {review.response_date && (
-              <span className="text-xs text-muted-foreground">
-                {new Date(review.response_date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </span>
-            )}
-          </div>
-        )}
-
-        <div className="flex flex-col gap-2 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-          <span className="text-xs text-muted-foreground">
-            {review.created_at &&
-              new Date(review.created_at).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-          </span>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleMarkHelpful}
-            disabled={isSubmitting}
-            className="gap-2"
-          >
-            <ThumbsUp className="h-4 w-4" />
-            <span className="text-xs">
-              Helpful {helpfulCount > 0 && `(${helpfulCount})`}
-            </span>
-          </Button>
-        </div>
       </CardContent>
+      <CardFooter className="flex flex-wrap items-center justify-between gap-2">
+        <Button variant="ghost" size="sm" onClick={handleMarkHelpful} disabled={isSubmitting}>
+          <ThumbsUp className="mr-2 h-4 w-4" />
+          Helpful {helpfulCount > 0 && `(${helpfulCount})`}
+        </Button>
+      </CardFooter>
     </Card>
   )
 }
@@ -157,6 +89,9 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
           <CardTitle>No reviews yet</CardTitle>
           <CardDescription>Be the first to leave a review for this salon.</CardDescription>
         </CardHeader>
+        <CardContent className="text-sm text-muted-foreground text-center">
+          Reviews from verified customers will appear here once submitted.
+        </CardContent>
       </Card>
     )
   }
@@ -176,6 +111,9 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
             </div>
           </div>
         </CardHeader>
+        <CardContent className="text-sm text-muted-foreground">
+          Feedback from recent salon visits helps other customers choose with confidence.
+        </CardContent>
       </Card>
 
       <div className="grid gap-6">

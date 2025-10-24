@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 import { Progress } from '@/components/ui/progress'
-import type { TimeOffBalance } from '../api/queries'
+import type { TimeOffBalance } from '@/features/staff/time-off/api/queries'
 
 interface TimeOffBalanceCardProps {
   balance: TimeOffBalance
@@ -30,14 +30,12 @@ export function TimeOffBalanceCard({ balance }: TimeOffBalanceCardProps) {
           <UsageRow
             label={`Used: ${balance.used_days} days`}
             percent={usagePercent}
-            barClassName="bg-primary/10"
           />
 
           {balance.pending_days > 0 && (
             <UsageRow
             label={`Pending approval: ${balance.pending_days} days`}
             percent={pendingPercent}
-            barClassName="bg-accent/10"
           />
           )}
         </div>
@@ -69,11 +67,9 @@ function BalanceStat({
 function UsageRow({
   label,
   percent,
-  barClassName,
 }: {
   label: string
   percent: number
-  barClassName?: string
 }) {
   return (
     <div className="flex flex-col gap-3">
@@ -81,7 +77,7 @@ function UsageRow({
         <span className="text-sm text-foreground">{label}</span>
         <span className="text-sm text-foreground">{percent.toFixed(0)}%</span>
       </div>
-      <Progress value={percent} className={`h-2 ${barClassName ?? ''}`} />
+      <Progress value={percent} className="h-2" />
     </div>
   )
 }

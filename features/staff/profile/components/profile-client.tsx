@@ -16,7 +16,7 @@ import type { Database } from '@/lib/types/database.types'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 
-type StaffProfile = Database['public']['Views']['staff']['Row']
+type StaffProfile = Database['public']['Views']['staff_profiles_view']['Row']
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row'] | null
 
 type ProfileClientProps = {
@@ -50,6 +50,18 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
       tone: 'default',
     },
     {
+      id: 'lead-time',
+      label: 'Booking lead time',
+      value:
+        profile.booking_lead_time_hours === null || profile.booking_lead_time_hours === undefined
+          ? '—'
+          : profile.booking_lead_time_hours === 0
+            ? 'Same day'
+            : `${profile.booking_lead_time_hours} hrs`,
+      helper: 'Minimum notice before new bookings',
+      tone: 'info',
+    },
+    {
       id: 'appointments',
       label: 'Total appointments',
       value: profile.total_appointments?.toString() ?? '0',
@@ -78,28 +90,30 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:h-full">
           <Card>
-            <CardContent className="flex flex-col items-center gap-6 py-6 text-center">
-              <Avatar className="h-24 w-24">
-                <AvatarImage src={metadata?.avatar_url || profile.avatar_url || undefined} />
-                <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
-              </Avatar>
+            <CardContent>
+              <div className="flex flex-col items-center gap-6 py-6 text-center">
+                <Avatar className="h-24 w-24">
+                  <AvatarImage src={metadata?.avatar_url || profile.avatar_url || undefined} />
+                  <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
+                </Avatar>
 
-              <div className="space-y-1">
-                <p className="text-xl font-semibold leading-tight">
-                  {profile.full_name || 'Staff member'}
-                </p>
-                {profile.title && <p className="text-muted-foreground">{profile.title}</p>}
-                {profile.email && (
-                  <p className="text-sm text-muted-foreground">{profile.email}</p>
+                <div className="space-y-1">
+                  <p className="text-xl font-semibold leading-tight">
+                    {profile.full_name || 'Staff member'}
+                  </p>
+                  {profile.title && <p className="text-muted-foreground">{profile.title}</p>}
+                  {profile.email && (
+                    <p className="text-sm text-muted-foreground">{profile.email}</p>
+                  )}
+                </div>
+
+                {profile.salon_name && (
+                  <div className="w-full space-y-1 border-t pt-4">
+                    <p className="text-sm font-medium">Salon</p>
+                    <p className="text-sm text-muted-foreground">{profile.salon_name}</p>
+                  </div>
                 )}
               </div>
-
-              {profile.salon_name && (
-                <div className="w-full space-y-1 border-t pt-4">
-                  <p className="text-sm font-medium">Salon</p>
-                  <p className="text-sm text-muted-foreground">{profile.salon_name}</p>
-                </div>
-              )}
             </CardContent>
           </Card>
         </div>

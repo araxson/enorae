@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import type { Database } from '@/lib/types/database.types'
 
@@ -26,6 +26,11 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
           </CardDescription>
         </div>
       </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">
+          Manage your profile preferences and personal information below.
+        </p>
+      </CardContent>
     </Card>
   )
 }

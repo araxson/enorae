@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
-import { removeServiceFromAppointment } from '../../api/mutations'
+import { removeServiceFromAppointment } from '@/features/business/appointments/api/mutations'
 import type { AppointmentServiceDetails } from './types'
 
 export function useServicesManager(onUpdate: () => void) {

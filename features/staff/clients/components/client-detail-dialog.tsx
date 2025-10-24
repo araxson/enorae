@@ -2,16 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Card, CardContent } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Calendar, DollarSign, Mail, User } from 'lucide-react'
-import type { ClientWithHistory } from '../api/queries'
+import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import type { Database } from '@/lib/types/database.types'
 
 type Appointment = Database['public']['Views']['appointments']['Row']
@@ -94,7 +90,7 @@ export function ClientDetailDialog({
           <Separator />
 
           <div>
-            <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Appointment History</h3>
+            <h3 className="mb-4 text-lg font-semibold">Appointment History</h3>
             {loading ? (
               <p className="text-muted-foreground">Loading...</p>
             ) : appointments.length === 0 ? (
@@ -102,32 +98,31 @@ export function ClientDetailDialog({
             ) : (
               <div className="flex flex-col gap-3">
                 {appointments.map((apt) => (
-                  <div
-                    key={apt.id}
-                    className="p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
-                  >
-                    <div className="flex gap-4 items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex gap-3 items-center mb-2">
-                          <Badge variant={apt.status === 'completed' ? 'default' : 'outline'}>
-                            {apt.status}
-                          </Badge>
-                          {apt.start_time && (
-                            <p className="text-xs text-muted-foreground">
-                              {format(new Date(apt.start_time), 'MMM dd, yyyy • h:mm a')}
-                            </p>
+                  <Card key={apt.id}>
+                    <CardContent>
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="mb-2 flex items-center gap-3">
+                            <Badge variant={apt.status === 'completed' ? 'default' : 'outline'}>
+                              {apt.status}
+                            </Badge>
+                            {apt.start_time && (
+                              <p className="text-xs text-muted-foreground">
+                                {format(new Date(apt.start_time), 'MMM dd, yyyy • h:mm a')}
+                              </p>
+                            )}
+                          </div>
+                          {apt.service_names && <p className="text-sm">{apt.service_names}</p>}
+                          {apt.duration_minutes && (
+                            <p className="text-xs text-muted-foreground">{apt.duration_minutes} minutes</p>
                           )}
                         </div>
-                        {apt.service_names && <p className="text-sm">{apt.service_names}</p>}
-                        {apt.duration_minutes && (
-                          <p className="text-xs text-muted-foreground">{apt.duration_minutes} minutes</p>
+                        {apt.total_price !== undefined && apt.total_price !== null && (
+                          <p className="font-medium">${Number(apt.total_price).toFixed(2)}</p>
                         )}
                       </div>
-                      {apt.total_price !== undefined && apt.total_price !== null && (
-                        <p className="font-medium">${Number(apt.total_price).toFixed(2)}</p>
-                      )}
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             )}

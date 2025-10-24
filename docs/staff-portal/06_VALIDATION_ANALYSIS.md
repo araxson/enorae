@@ -1,131 +1,88 @@
 # Staff Portal - Validation Analysis
 
-**Date**: 2025-10-20  
-**Portal**: Staff  
-**Layer**: Validation  
-**Files Analyzed**: 21  
-**Issues Found**: 2 (Critical: 1, High: 0, Medium: 1, Low: 0)
+**Date**: 2025-10-23
+**Portal**: Staff
+**Layer**: Validation
+**Files Analyzed**: 20
+**Issues Found**: 1 (Critical: 0, High: 1, Medium: 0, Low: 0)
 
 ---
 
 ## Summary
 
-Reviewed all `features/staff/**/schema.ts` modules to confirm Zod coverage aligns with CLAUDE.md Rule 9 (validate every input) and the forms pattern in `docs/stack-patterns/forms-patterns.md`. Only a handful of features expose meaningful schemas (`blockedTimeSchema`, `productUsageSchema`, `messageSchema`). Most others are empty placeholders (`z.object({})`), leaving server actions and UI forms without shared validation. This contradicts the pattern guidance and caused duplicative ad-hoc schemas inside mutation files (e.g., `createTimeOffRequest`). To keep validation centralized and re-usable, the schema modules must export the canonical Zod definitions with descriptive messages.
+- Located `schema.ts` files for each staff feature; several form workflows (blocked times, messages) rely on Zod schemas before invoking server actions.
+- A number of modules, however, still export placeholder `z.object({})` definitions, providing zero validation coverage despite the Rule 2 requirement (“Validate inputs – Use Zod”).
+- No localized error messaging beyond generic strings; where validation exists (e.g., `blockedTimeSchema`), constraints align with business rules (end time after start time, reason length ≤ 500).
 
 ---
 
 ## Issues
 
-### Critical Priority
+### High Priority
 
-#### Issue #1: Time-off schema is empty despite active forms
-**Severity**: Critical  
-**File**: `features/staff/time-off/schema.ts:3-4`  
-**Rule Violation**: CLAUDE.md Rule 9 (Validate inputs with Zod).
+#### Issue #1: Placeholder schemas provide no validation
+**Severity**: High  
+**Files**:  
+- `features/staff/time-off/schema.ts:3`  
+- `features/staff/appointments/schema.ts:3`  
+- `features/staff/clients/schema.ts:3` *(others may be unused but still exported)*
+  
+**Rule Violation**: Rule 2 – Inputs must be validated with Zod before hitting server actions.
 
 **Current Code**:
-```ts
+```typescript
 export const timeOffSchema = z.object({})
 ```
 
 **Problem**:
-The staff time-off flow relies on user input (dates, request type, toggles), but the exported schema does nothing. Mutations therefore fall back to an ad-hoc `requestSchema` defined in `mutations.ts`, fragmenting validation logic and risking drift between client and server.
+- An empty Zod object accepts any payload, so downstream mutations receive unvalidated data (e.g., time-off requests, appointment updates, client actions).
+- This contradicts the standardized form workflow in `docs/stack-patterns/forms-patterns.md`, and it undermines security (RLS cannot prevent malformed payloads).
 
 **Required Fix**:
-```ts
+Define explicit schemas that mirror the form fields and database constraints, e.g.:
+```typescript
 export const timeOffSchema = z.object({
-  startAt: z.string().min(1, 'Start date is required'),
-  endAt: z.string().min(1, 'End date is required'),
-  requestType: z.enum(['vacation', 'sick_leave', 'personal', 'other']),
-  reason: z.string().max(1000).optional().nullable(),
-  isAutoReschedule: z.boolean().optional(),
-  isNotifyCustomers: z.boolean().optional(),
+  start_at: z.coerce.date(),
+  end_at: z.coerce.date().refine((value, ctx) => value >= ctx.parent.start_at, 'End date must be after start date'),
+  request_type: z.enum(['vacation', 'sick_leave', 'personal', 'other']),
+  reason: z.string().trim().min(1).max(500),
 })
-
-export type TimeOffSchema = z.infer<typeof timeOffSchema>
-```
-Use this shared schema inside both the dialog component and the server action (`parse` the `FormData` before building the payload).
-
-**Steps to Fix**:
-1. Move the existing `requestSchema` definition into `schema.ts` as shown above.  
-2. Import and reuse it in `time-off/components/create-request-dialog.tsx` and `api/mutations.ts`.  
-3. Provide user-friendly error messages (per forms pattern).  
-4. Run `npm run typecheck` to ensure the inferred types propagate.
-
-**Acceptance Criteria**:
-- [ ] `timeOffSchema` validates all fields used by the create/update/cancel actions.  
-- [ ] UI forms surface schema error messages.  
-- [ ] No duplicate schema definitions remain in the mutations file.
-
-**Dependencies**: None
-
----
-
-### Medium Priority
-
-#### Issue #2: Multiple feature schemas exported as empty objects
-**Severity**: Medium  
-**Files**:  
-- `features/staff/analytics/schema.ts`  
-- `features/staff/profile/schema.ts`  
-- `features/staff/services/schema.ts`  
-- `features/staff/settings/schema.ts`  
-- `features/staff/dashboard/schema.ts`  
-- `features/staff/location/schema.ts`  
-- `features/staff/support/schema.ts`  
-- `features/staff/staff-common/schema.ts`  
-- `features/staff/appointments/schema.ts` (and others)  
-**Rule Violation**: CLAUDE.md Rule 9 (Form inputs must be validated).
-
-**Current Code**:
-```ts
-export const someSchema = z.object({})
 ```
 
-**Problem**:
-These stubs provide no validation yet the corresponding components accept user input (profile edits, service filters, dashboard quick actions). Keeping empty schemas misleads maintainers and encourages further ad-hoc validation elsewhere.
-
-**Required Fix**:
-- Implement concrete Zod schemas that reflect the data each feature mutates.  
-- If a feature truly has no user input, delete the unused schema file to avoid confusion.
-
 **Steps to Fix**:
-1. Inventory which forms/actions exist per feature and design the appropriate Zod object.  
-2. Replace `z.object({})` with those definitions (including friendly messages).  
-3. Wire the schema into UI forms via `zodResolver` or manual `safeParse`.  
-4. Remove placeholder files when no validation is required.
+1. Inventory forms in each feature (`time-off`, `appointments`, `clients`, etc.).
+2. Model the expected payload with Zod types, reflecting database requirements (enums, length constraints, required vs optional fields).
+3. Update client forms to use the new schemas via `zodResolver`.
+4. Run `npm run typecheck` and relevant UI tests.
 
 **Acceptance Criteria**:
-- [ ] Every remaining schema file encodes real validation rules.  
-- [ ] No empty `z.object({})` exports remain.  
-- [ ] Lint/typecheck passes without unused-schema warnings.
+- [ ] Every exported schema validates the fields submitted by its feature forms.
+- [ ] Invalid submissions are rejected client-side and server-side with meaningful error messages.
 
-**Dependencies**: None
+**Dependencies**: Requires accurate database typings (see Layer 5 Issue #1) to ensure parity between Zod schemas and Supabase columns.
 
 ---
 
 ## Statistics
 
-- Total Issues: 2  
-- Files Affected: 10  
-- Estimated Fix Time: 5 hours  
-- Breaking Changes: 0 (but validation gaps currently allow bad data)
+- Total Issues: 1
+- Files Affected: 3 (placeholders should be replaced)
+- Estimated Fix Time: 2 hours
+- Breaking Changes: Low (validation only)
 
 ---
 
 ## Next Steps
 
-1. Implement full time-off schema and reuse it across client/server.  
-2. Replace placeholder schemas with actual validation (or remove them).  
-3. Proceed to security review once validation gaps are closed.
+1. Replace placeholder Zod schemas with concrete definitions per feature.
+2. Coordinate with the type generation fix (Layer 5) to align validation with actual column types.
 
 ---
 
 ## Related Files
 
 This analysis should be done after:
-- [x] docs/staff-portal/05_TYPES_ANALYSIS.md
+- [x] Layer 5 type safety review
 
 This analysis blocks:
-- [ ] docs/staff-portal/07_SECURITY_ANALYSIS.md
-
+- [ ] Layer 7 security assessment

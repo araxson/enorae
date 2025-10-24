@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Mail, Star, Briefcase } from 'lucide-react'
-import type { StaffProfile } from '../api/queries'
+import type { StaffProfile } from '@/features/customer/staff-profiles/api/queries'
 
 interface StaffProfileDetailProps {
   profile: StaffProfile
@@ -23,7 +23,7 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
             {profile.average_rating && (
               <div className="flex gap-2 items-center">
                 <Star className="h-5 w-5 fill-primary text-primary" />
-                <p className="font-semibold">{profile.average_rating.toFixed(1)}</p>
+                <p>{profile.average_rating.toFixed(1)}</p>
                 <p className="text-sm text-muted-foreground">
                   ({profile.review_count || 0} reviews)
                 </p>
@@ -72,19 +72,19 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
       {/* Services Offered */}
       {profile.services && profile.services.length > 0 && (
         <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold mb-4">Services Offered</h3>
+          <h3 className="scroll-m-20 text-2xl mb-4">Services Offered</h3>
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             {profile.services.map((service) => (
               <Card key={service.id}>
                 <CardHeader className="p-4 pb-2">
                   <div className="flex gap-3 items-start justify-between">
                     <CardTitle>{service.name}</CardTitle>
-                    {service.price && <p className="font-semibold">${service.price}</p>}
+                    {service.price && <p>${service.price}</p>}
                   </div>
                   {service.category_name && (
-                    <Badge variant="secondary" className="w-fit">
-                      {service.category_name}
-                    </Badge>
+                    <div className="flex justify-end">
+                      <Badge variant="secondary">{service.category_name}</Badge>
+                    </div>
                   )}
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
@@ -117,6 +117,11 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
               Schedule a session with {profile.title || 'this staff member'}
             </CardDescription>
           </CardHeader>
+          <CardContent className="px-6">
+            <p className="text-sm text-muted-foreground">
+              Choose a suitable time and confirm your booking in just a few steps.
+            </p>
+          </CardContent>
           <CardFooter className="p-6 pt-0 justify-end">
             <Link href={`/customer/book/${profile.salon_id}?staff=${profile.id}`}>
               <Button>Book Now</Button>

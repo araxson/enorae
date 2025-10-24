@@ -55,12 +55,10 @@ export function BulkAssignSection({
               onCheckedChange={() => onToggleService(service.id!)}
             />
             <Label htmlFor={`service-${service.id}`} className="text-sm cursor-pointer flex-1">
-              {service.name}
-              {assignedServiceIds.has(service.id) && (
-                <Badge variant="outline" className="ml-2 text-xs">
-                  Assigned
-                </Badge>
-              )}
+              <span className="flex items-center gap-2">
+                <span className="truncate">{service.name}</span>
+                {assignedServiceIds.has(service.id) && <Badge variant="outline">Assigned</Badge>}
+              </span>
             </Label>
           </div>
         ))}

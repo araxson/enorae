@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -94,12 +94,12 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
 
   return (
     <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Map & Coordinates</CardTitle>
+        <MapPin className="h-5 w-5 text-muted-foreground" />
+      </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
-          <div className="flex gap-4 items-center justify-between">
-            <h3 className="scroll-m-20 text-2xl font-semibold">Map & Coordinates</h3>
-            <MapPin className="h-5 w-5 text-muted-foreground" />
-          </div>
           <Separator />
 
           <div className="flex flex-col gap-3">

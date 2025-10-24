@@ -1,5 +1,5 @@
-import { Hero } from '../components/sections/hero'
-import { Questions } from '../components/sections/questions'
+import { Hero } from '@/features/marketing/faq/components/sections/hero'
+import { Questions } from '@/features/marketing/faq/components/sections/questions'
 
 export function FAQPage() {
   return (

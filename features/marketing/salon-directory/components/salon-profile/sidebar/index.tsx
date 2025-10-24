@@ -1,4 +1,4 @@
-import type { Salon } from '../types'
+import type { Salon } from '@/features/marketing/salon-directory/components/salon-profile/types'
 import { ContactCard } from './contact-card'
 import { QuickStatsCard } from './quick-stats-card'
 import { SpecialtiesCard } from './specialties-card'

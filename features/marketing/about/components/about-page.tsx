@@ -1,7 +1,7 @@
-import { Hero } from '../components/sections/hero'
-import { Mission } from '../components/sections/mission'
-import { Values } from '../components/sections/values'
-import { Team } from '../components/sections/team'
+import { Hero } from '@/features/marketing/about/components/sections/hero'
+import { Mission } from '@/features/marketing/about/components/sections/mission'
+import { Values } from '@/features/marketing/about/components/sections/values'
+import { Team } from '@/features/marketing/about/components/sections/team'
 
 export function AboutPage() {
   return (

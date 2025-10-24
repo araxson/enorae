@@ -10,7 +10,7 @@ type ProfileMetadata = Database['public']['Views']['profiles_metadata']['Row']
 type ProfilePreferences = Database['public']['Views']['profiles_preferences']['Row']
 
 export type AppointmentWithRelations = Appointment & {
-  salon: { id: string; name: string | null; location_address: string | null; phone: string | null } | null
+  salon: { id: string; name: string | null; formatted_address: string | null; primary_phone: string | null } | null
   staff: { id: string; full_name: string | null; title: string | null } | null
 }
 
@@ -42,7 +42,7 @@ export async function getUserAppointments() {
     .from('appointments')
     .select(`
       *,
-      salon:salon_id(id, name, location_address, phone),
+      salon:salon_id(id, name, formatted_address, primary_phone),
       staff:staff_id(id, full_name, title)
     `)
     .eq('customer_id', session.user.id)

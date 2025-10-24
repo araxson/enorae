@@ -19,9 +19,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { createStaffSchedule, updateStaffSchedule, deleteStaffSchedule } from '../api/mutations'
-import type { StaffScheduleWithStaff } from '../api/queries'
-import type { DayOfWeek } from '../api/staff-schedules/constants'
+import { createStaffSchedule, updateStaffSchedule, deleteStaffSchedule } from '@/features/staff/schedule/api/mutations'
+import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
+import type { DayOfWeek } from '@/features/staff/schedule/api/staff-schedules/constants'
 
 interface ScheduleManagementClientProps {
   schedules: StaffScheduleWithStaff[]

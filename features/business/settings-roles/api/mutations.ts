@@ -93,6 +93,7 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
         permissions: validated.permissions || [],
         is_active: true,
         created_by_id: session.user.id,
+        updated_by_id: session.user.id,
       })
       .select()
       .single()

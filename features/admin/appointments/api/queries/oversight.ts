@@ -7,14 +7,14 @@ import {
   calculatePerformanceMetrics,
   buildCancellationPatterns,
   buildTrend,
-} from '../metrics'
+} from '@/features/admin/appointments/api/metrics'
 import {
   buildNoShowRecords,
   buildFraudAlerts,
   buildDisputeCandidates,
-} from '../alerts'
-import { mergeSalonPerformance } from '../salons'
-import type { AppointmentSnapshot, AppointmentRow, AppointmentOverviewRow } from '../types'
+} from '@/features/admin/appointments/api/alerts'
+import { mergeSalonPerformance } from '@/features/admin/appointments/api/salons'
+import type { AppointmentSnapshot, AppointmentRow, AppointmentOverviewRow } from '@/features/admin/appointments/api/types'
 import type { Database } from '@/lib/types/database.types'
 
 type AdminAnalyticsOverviewRow = Database['public']['Views']['admin_analytics_overview']['Row']

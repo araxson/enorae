@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { SalonPerformance } from '../api/types'
+import type { SalonPerformance } from '@/features/admin/appointments/api/types'
 
 interface SalonPerformanceTableProps {
   salons: SalonPerformance[]

@@ -118,27 +118,21 @@ function ServiceBadge({
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <Badge variant="secondary" className="text-xs">
-        {service.service_name}
-        {service.proficiency_level && (
-          <span className="ml-1 opacity-70">({service.proficiency_level})</span>
-        )}
+      <Badge variant="secondary">
+        <span className="flex items-center gap-1 text-xs">
+          <span>{service.service_name}</span>
+          {service.proficiency_level && (
+            <span className="opacity-70">({service.proficiency_level})</span>
+          )}
+        </span>
       </Badge>
 
-      {(service.performed_count || service.rating_average) && (
+      {service.rating_average && service.rating_average > 0 && (
         <div className="flex gap-3 text-xs text-muted-foreground mt-1">
-          {service.performed_count && service.performed_count > 0 && (
-            <span className="flex items-center gap-1">
-              <TrendingUp className="h-3 w-3" />
-              {service.performed_count} performed
-            </span>
-          )}
-          {service.rating_average && service.rating_average > 0 && (
-            <span className="flex items-center gap-1">
-              <Star className="h-3 w-3 text-accent" fill="currentColor" />
-              {Number(service.rating_average).toFixed(1)} ({service.rating_count || 0} reviews)
-            </span>
-          )}
+          <span className="flex items-center gap-1">
+            <Star className="h-3 w-3 text-accent" fill="currentColor" />
+            {Number(service.rating_average).toFixed(1)} rating
+          </span>
         </div>
       )}
     </div>

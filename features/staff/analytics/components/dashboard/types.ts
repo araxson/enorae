@@ -2,7 +2,7 @@ import type {
   StaffPerformanceMetrics,
   StaffRevenueBreakdown,
   CustomerRelationship,
-} from '../../api/queries'
+} from '@/features/staff/analytics/api/queries'
 
 export interface StaffAnalyticsDashboardProps {
   metrics: StaffPerformanceMetrics

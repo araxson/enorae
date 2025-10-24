@@ -10,7 +10,7 @@ export async function getPublicServices(category?: string): Promise<Service[]> {
   const supabase = await createPublicClient()
 
   let query = supabase
-    .from('services_view')
+    .from('services')
     .select('*')
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -34,7 +34,7 @@ export async function getFeaturedServices(limit: number = 6): Promise<Service[]>
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select('*')
     .eq('is_active', true)
     .eq('is_featured', true)
@@ -54,7 +54,7 @@ export async function searchPublicServices(searchTerm: string): Promise<Service[
   const supabase = await createPublicClient()
 
   const { data, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select('*')
     .eq('is_active', true)
     .is('deleted_at', null)

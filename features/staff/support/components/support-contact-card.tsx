@@ -17,57 +17,67 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
         <CardTitle>Contact options</CardTitle>
         <CardDescription>Select the channel that matches the urgency of your request.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <Card>
-          <CardContent className="flex items-start justify-between gap-4 p-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 text-sm font-semibold">
-                <Phone className="h-4 w-4 text-secondary" />
-                Hotline
+      <CardContent>
+        <div className="space-y-4">
+          <Card>
+            <CardContent>
+              <div className="flex items-start justify-between gap-4 p-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <Phone className="h-4 w-4 text-secondary" />
+                    Hotline
+                  </div>
+                  <p className="text-xs text-muted-foreground">Best for urgent issues that block work.</p>
+                </div>
+                <Badge variant="secondary">15 min avg</Badge>
               </div>
-              <p className="text-xs text-muted-foreground">Best for urgent issues that block work.</p>
-            </div>
-            <Badge variant="secondary">15 min avg</Badge>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent className="flex items-start justify-between gap-4 p-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 text-sm font-semibold">
-                <MessageCircle className="h-4 w-4 text-primary" />
-                Chat
+          <Card>
+            <CardContent>
+              <div className="flex items-start justify-between gap-4 p-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <MessageCircle className="h-4 w-4 text-primary" />
+                    Chat
+                  </div>
+                  <p className="text-xs text-muted-foreground">Great for multi-step troubleshooting.</p>
+                </div>
+                <Badge variant="outline">Live 8a–8p</Badge>
               </div>
-              <p className="text-xs text-muted-foreground">Great for multi-step troubleshooting.</p>
-            </div>
-            <Badge variant="outline">Live 8a–8p</Badge>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Separator />
+          <Separator />
 
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <Button className="w-full" variant="outline" onClick={onOpenContact}>
-              Schedule a callback
-            </Button>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-64 text-sm">
-            Choose a 15-minute window and we will connect you with the next available specialist.
-          </HoverCardContent>
-        </HoverCard>
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Button className="w-full" variant="outline" onClick={onOpenContact}>
+                Schedule a callback
+              </Button>
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <div className="w-64 text-sm">
+                Choose a 15-minute window and we will connect you with the next available specialist.
+              </div>
+            </HoverCardContent>
+          </HoverCard>
 
-        <Card>
-          <CardContent className="space-y-3 p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold">Status alerts</span>
-              <Switch defaultChecked aria-label="Toggle status alerts" />
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Receive mobile and email alerts when ticket status changes or a fix is shipped.
-            </p>
-          </CardContent>
-        </Card>
+          <Card>
+            <CardContent>
+              <div className="space-y-3 p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold">Status alerts</span>
+                  <Switch defaultChecked aria-label="Toggle status alerts" />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Receive mobile and email alerts when ticket status changes or a fix is shipped.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </CardContent>
     </Card>
   )

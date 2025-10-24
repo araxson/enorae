@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/lib/hooks/use-toast'
-import { addServiceToAppointment } from '../api/mutations'
+import { addServiceToAppointment } from '@/features/business/appointments/api/mutations'
 
 interface AddServiceDialogProps {
   appointmentId: string

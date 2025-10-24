@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 
-import { respondToReview, flagReview, toggleFeaturedReview } from '../../api/mutations'
-import type { SalonReviewWithDetails } from '../../api/queries'
+import { respondToReview, flagReview, toggleFeaturedReview } from '@/features/business/reviews/api/mutations'
+import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 
 export type NormalizedReview = SalonReviewWithDetails & { id: string }
 

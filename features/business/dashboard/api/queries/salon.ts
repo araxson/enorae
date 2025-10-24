@@ -2,7 +2,7 @@ import 'server-only'
 
 import { requireAnyRole, requireUserSalonId, requireAuth, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
-import type { SalonView } from '../types'
+import type { SalonView } from '@/features/business/dashboard/api/types'
 
 export async function getUserSalon(): Promise<SalonView> {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)

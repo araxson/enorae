@@ -6,12 +6,12 @@ import { StaffPageShell } from '@/features/staff/staff-common/components/staff-p
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 import { RoleBadge } from './role-badge'
 import { CommissionSummary } from './commission-summary'
-import { StaffMetrics } from '../staff-metrics'
-import { TodaySchedule } from '../today-schedule'
-import { UpcomingAppointments } from '../upcoming-appointments'
+import { StaffMetrics } from '@/features/staff/dashboard/components/staff-metrics'
+import { TodaySchedule } from '@/features/staff/dashboard/components/today-schedule'
+import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
 import { RefreshButton, LastUpdated } from '@/components/shared'
-import type { AppointmentWithDetails } from '@/lib/types/app.types'
-import type { StaffCommissionSummary, StaffMetricsSummary, ClientRetentionMetrics } from '../../api/queries'
+import type { AppointmentWithDetails } from '@/features/business/appointments'
+import type { StaffCommissionSummary, StaffMetricsSummary, ClientRetentionMetrics } from '@/features/staff/dashboard/api/queries'
 
 type Props = {
   roleLevel: string | null | undefined

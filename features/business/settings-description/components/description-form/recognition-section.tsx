@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 
 import { ArrayInput } from './array-input'
@@ -17,7 +17,7 @@ export function RecognitionSection({ awards, certifications, onAwardsChange, onC
     <Card>
       <CardContent>
         <div className="flex flex-col gap-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold">Awards & Certifications</h3>
+          <CardTitle>Awards & Certifications</CardTitle>
           <Separator />
 
           <ArrayInput

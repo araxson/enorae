@@ -17,7 +17,7 @@ export type StaffFormData = {
  * Create a new staff member and invite them to the platform
  */
 export async function createStaffMember(data: StaffFormData) {
-  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
   const supabase = await createClient()
 
@@ -45,6 +45,8 @@ export async function createStaffMember(data: StaffFormData) {
       .insert({
         id: crypto.randomUUID(),
         username: data.email.split('@')[0],
+        created_by_id: session.user.id,
+        updated_by_id: session.user.id,
       })
       .select('id')
       .single()
@@ -63,6 +65,8 @@ export async function createStaffMember(data: StaffFormData) {
       title: data.title,
       bio: data.bio,
       experience_years: data.experience_years,
+      created_by_id: session.user.id,
+      updated_by_id: session.user.id,
     })
 
   if (staffError) throw staffError
@@ -91,7 +95,7 @@ export async function updateStaffMember(staffId: string, data: Partial<StaffForm
 
   // Verify staff belongs to user's salon
   const { data: staff, error: verifyError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id, user_id')
     .eq('id', staffId)
     .maybeSingle<{ salon_id: string | null; user_id: string | null }>()
@@ -143,7 +147,7 @@ export async function deactivateStaffMember(staffId: string) {
 
   // Verify staff belongs to user's salon
   const { data: staff } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('id', staffId)
     .maybeSingle<{ salon_id: string | null }>()
@@ -176,7 +180,7 @@ export async function reactivateStaffMember(staffId: string) {
 
   // Verify staff belongs to user's salon
   const { data: staff } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('id', staffId)
     .maybeSingle<{ salon_id: string | null }>()

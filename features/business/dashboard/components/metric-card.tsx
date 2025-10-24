@@ -1,16 +1,32 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+
+const accentIndicatorClasses = {
+  primary: 'bg-primary',
+  secondary: 'bg-secondary',
+  success: 'bg-success',
+  warning: 'bg-warning',
+  accent: 'bg-accent',
+  info: 'bg-secondary',
+} as const
+
+export type MetricAccent = keyof typeof accentIndicatorClasses
+
+export function getAccentStripeClass(accent: MetricAccent) {
+  return accentIndicatorClasses[accent]
+}
+
 type AppointmentMetricCardProps = {
   title: string
   icon: ReactNode
   value: number
   progress: number
   description: string
-  accent: string
-  progressClass?: string
+  accent?: MetricAccent
 }
 
 export function AppointmentMetricCard({
@@ -19,19 +35,19 @@ export function AppointmentMetricCard({
   value,
   progress,
   description,
-  accent,
-  progressClass,
+  accent = 'primary',
 }: AppointmentMetricCardProps) {
   return (
-    <Card role="article" aria-label={`${title} metric`} className={`overflow-hidden border-l-4 ${accent}`}>
+    <Card role="article" aria-label={`${title} metric`} className="relative overflow-hidden">
+      <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle>{title}</CardTitle>
         {icon}
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-2">
         <div className="text-2xl font-bold">{value}</div>
-        <Progress value={progress} className={`mt-2 h-1 ${progressClass ?? ''}`} aria-label={`${progress}% progress`} />
-        <p className="mt-2 text-xs text-muted-foreground">{description}</p>
+        <Progress value={progress} className="mt-2" aria-label={`${progress}% progress`} />
+        <CardDescription>{description}</CardDescription>
       </CardContent>
     </Card>
   )
@@ -40,7 +56,7 @@ export function AppointmentMetricCard({
 type RevenueMetricCardProps = {
   title: string
   icon: ReactNode
-  accent: string
+  accent?: MetricAccent
   amountLabel: string
   description: string
   highlight?: ReactNode
@@ -49,13 +65,14 @@ type RevenueMetricCardProps = {
 export function RevenueMetricCard({
   title,
   icon,
-  accent,
+  accent = 'primary',
   amountLabel,
   description,
   highlight,
 }: RevenueMetricCardProps) {
   return (
-    <Card role="article" aria-label={`${title} metric`} className={`overflow-hidden border-l-4 ${accent}`}>
+    <Card role="article" aria-label={`${title} metric`} className="relative overflow-hidden">
+      <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle>{title}</CardTitle>
         {icon}
@@ -63,7 +80,7 @@ export function RevenueMetricCard({
       <CardContent className="space-y-2">
         <div className="text-3xl font-bold">{amountLabel}</div>
         {highlight}
-        <p className="text-sm font-medium text-xs text-muted-foreground">{description}</p>
+        <CardDescription>{description}</CardDescription>
       </CardContent>
     </Card>
   )

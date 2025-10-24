@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { RefreshCw, AlertCircle, CheckCircle, Clock, Activity } from 'lucide-react'
-import type { WebhookStats, WebhookDeliveryLog } from '../api/queries/monitoring'
+import type { WebhookStats, WebhookDeliveryLog } from '@/features/business/webhooks/api/queries/monitoring'
 
 interface WebhookMonitoringDashboardProps {
   stats: WebhookStats
@@ -143,8 +143,8 @@ export function WebhookMonitoringDashboard({
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{webhook.url}</span>
-                      <Badge variant="destructive" className="text-xs">
-                        Failed
+                      <Badge variant="destructive">
+                        <span className="text-xs">Failed</span>
                       </Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">
@@ -188,11 +188,8 @@ export function WebhookMonitoringDashboard({
                       <span className={getStatusColor(log.status)}>
                         {getStatusIcon(log.status)}
                       </span>
-                      <Badge
-                        variant={log.status === 'delivered' ? 'default' : 'destructive'}
-                        className="text-xs"
-                      >
-                        {log.status}
+                      <Badge variant={log.status === 'delivered' ? 'default' : 'destructive'}>
+                        <span className="text-xs">{log.status}</span>
                       </Badge>
                       {log.response_code && (
                         <span className="text-sm text-muted-foreground">

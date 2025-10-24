@@ -1,7 +1,7 @@
 import { Network, CheckCircle2, XCircle } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { IpAccessEvent } from '../api/types'
+import type { IpAccessEvent } from '@/features/admin/security-monitoring/api/types'
 
 interface IpAccessPanelProps {
   events: IpAccessEvent[]
@@ -9,46 +9,53 @@ interface IpAccessPanelProps {
 
 export function IpAccessPanel({ events }: IpAccessPanelProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
+    <Card>
+      <CardHeader>
         <div className="flex items-center gap-2">
-          <Network className="h-4 w-4 text-muted-foreground" />
+          <Network className="h-4 w-4" aria-hidden="true" />
           <CardTitle>IP Access Control</CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent>
         {events.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No access attempts recorded.</p>
+          <CardDescription>No access attempts recorded.</CardDescription>
         ) : (
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             {events.slice(0, 8).map((event) => (
               <Card key={event.id}>
-                <CardContent className="p-3">
+                <CardHeader>
                   <div className="flex items-center justify-between gap-2">
-                    <div>
-                      <div className="font-mono text-sm text-foreground">{event.ipAddress ?? 'Unknown IP'}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {event.action} · {event.resourceType}
-                      </div>
-                    </div>
-                    <Badge variant={event.isGranted ? 'outline' : 'destructive'} className="gap-1 text-xs">
+                    <CardTitle>{event.ipAddress ?? 'Unknown IP'}</CardTitle>
+                    <Badge variant={event.isGranted ? 'outline' : 'destructive'}>
                       {event.isGranted ? (
-                        <CheckCircle2 className="h-3 w-3" />
+                        <>
+                          <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
+                          {' '}
+                          Allowed
+                        </>
                       ) : (
-                        <XCircle className="h-3 w-3" />
+                        <>
+                          <XCircle className="h-3 w-3" aria-hidden="true" />
+                          {' '}
+                          Blocked
+                        </>
                       )}
-                      {event.isGranted ? 'Allowed' : 'Blocked'}
                     </Badge>
                   </div>
-                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                    <span>User: {event.userId ?? 'Anonymous'}</span>
-                    <span>At {new Date(event.createdAt).toLocaleString()}</span>
-                  </div>
-                  {event.userAgent && (
-                    <div className="mt-1 truncate text-xs text-muted-foreground">
-                      Agent: {event.userAgent}
+                  <CardDescription>
+                    {event.action} · {event.resourceType}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <CardDescription>User: {event.userId ?? 'Anonymous'}</CardDescription>
+                      <CardDescription>At {new Date(event.createdAt).toLocaleString()}</CardDescription>
                     </div>
-                  )}
+                    {event.userAgent ? (
+                      <CardDescription>Agent: {event.userAgent}</CardDescription>
+                    ) : null}
+                  </div>
                 </CardContent>
               </Card>
             ))}

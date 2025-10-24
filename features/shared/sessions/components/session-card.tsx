@@ -1,13 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import type { SessionWithDevice } from '../api/queries'
-
-interface SessionCardProps {
-  session: SessionWithDevice
-  onRevoke: (sessionId: string) => void
-  isRevoking: boolean
-}
+import type { SessionCardProps } from '@/features/shared/sessions/types'
 
 export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps) {
   const formatDate = (date: string | null) => {

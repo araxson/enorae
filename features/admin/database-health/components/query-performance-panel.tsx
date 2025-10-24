@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { QueryPerformanceSnapshot } from '../api/internal/query-performance'
+import type { QueryPerformanceSnapshot } from '@/features/admin/database-health/api/internal/query-performance'
 
 interface QueryPerformancePanelProps {
   data: QueryPerformanceSnapshot

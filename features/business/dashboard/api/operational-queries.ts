@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
 type Appointment = Database['public']['Views']['appointments']['Row']
-type Staff = Database['public']['Views']['staff']['Row']
+type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 /**
  * Get operational metrics for the salon
@@ -26,7 +26,7 @@ export async function getOperationalMetrics(salonId: string) {
       .eq('salon_id', salonId)
       .gte('start_time', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()),
     supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id, status')
       .eq('salon_id', salonId)
       .eq('status', 'active')

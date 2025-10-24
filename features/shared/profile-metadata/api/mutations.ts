@@ -10,6 +10,7 @@ export type ActionResponse<T = void> =
 import type { Json } from '@/lib/types/database.types'
 
 export interface ProfileMetadataInput {
+  full_name?: string | null
   avatar_url?: string | null
   avatar_thumbnail_url?: string | null
   cover_image_url?: string | null
@@ -30,38 +31,17 @@ export async function updateProfileMetadata(
       return { success: false, error: 'Unauthorized' }
     }
 
-    // Check if metadata exists
-    const { data: existing } = await supabase
+    // Upsert metadata (insert or update)
+    const { error } = await supabase
       .schema('identity')
       .from('profiles_metadata')
-      .select('profile_id')
-      .eq('profile_id', user.id)
-      .single()
+      .upsert({
+        profile_id: user.id,
+        ...input,
+        updated_at: new Date().toISOString(),
+      })
 
-    if (existing) {
-      // Update existing metadata
-      const { error } = await supabase
-        .schema('identity')
-        .from('profiles_metadata')
-        .update({
-          ...input,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('profile_id', user.id)
-
-      if (error) throw error
-    } else {
-      // Insert new metadata
-      const { error } = await supabase
-        .schema('identity')
-        .from('profiles_metadata')
-        .insert({
-          profile_id: user.id,
-          ...input,
-        })
-
-      if (error) throw error
-    }
+    if (error) throw error
 
     revalidatePath('/customer/profile')
     revalidatePath('/staff/profile')

@@ -71,15 +71,17 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
   const handleSave = () => {
     startTransition(async () => {
       try {
-        await upsertNotificationTemplate({
-          id: editingTemplate?.id,
+        const templateData = {
           name: draft.name,
           description: draft.description || undefined,
           event: draft.event,
           channel: draft.channel,
-          subject: draft.subject ? draft.subject : undefined,
+          subject: draft.subject || undefined,
           body: draft.body,
-        })
+          ...(editingTemplate?.id && { id: editingTemplate.id }),
+        }
+
+        await upsertNotificationTemplate(templateData)
 
         toast({
           title: 'Template saved',

@@ -1,6 +1,0 @@
-export { BasePortalLayout } from './base-portal-layout'
-export { PortalHeader } from './portal-header'
-export { PortalSidebarWrapper } from './sidebars/portal-sidebar-wrapper'
-export { PortalSidebar } from './sidebars/portal-sidebar'
-export type { PortalSidebarProps } from './sidebars/portal-sidebar'
-export type { NavItem, NavSecondaryItem, FavoriteItem } from './sidebars/types'

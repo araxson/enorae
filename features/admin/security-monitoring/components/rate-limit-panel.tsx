@@ -1,7 +1,7 @@
 import { Ban, Lock } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { RateLimitRule, RateLimitViolation } from '../api/types'
+import type { RateLimitRule, RateLimitViolation } from '@/features/admin/security-monitoring/api/types'
 
 interface RateLimitPanelProps {
   violations: RateLimitViolation[]
@@ -16,51 +16,54 @@ const formatWindow = (seconds: number) => {
 
 export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
+    <Card>
+      <CardHeader>
         <div className="flex items-center gap-2">
-          <Lock className="h-4 w-4 text-muted-foreground" />
+          <Lock className="h-4 w-4" aria-hidden="true" />
           <CardTitle>Rate Limit Monitoring</CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <span>
-            Active rules: <strong className="text-foreground">{rules.filter((rule) => rule.isActive).length}</strong>
-          </span>
-          <span>
-            Current blocks: <strong className="text-foreground">{violations.length}</strong>
-          </span>
+      <CardContent>
+        <div className="flex flex-wrap items-center gap-4">
+          <CardDescription>
+            Active rules: <strong>{rules.filter((rule) => rule.isActive).length}</strong>
+          </CardDescription>
+          <CardDescription>
+            Current blocks: <strong>{violations.length}</strong>
+          </CardDescription>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <h3 className="mb-2 text-sm font-semibold text-foreground">Active Blocks</h3>
+            <h3>Active Blocks</h3>
             {violations.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No identifiers are currently blocked.</p>
+              <CardDescription>No identifiers are currently blocked.</CardDescription>
             ) : (
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 {violations.slice(0, 6).map((violation) => (
                   <Card key={`${violation.identifier}-${violation.endpoint}`}>
-                    <CardContent className="p-3">
+                    <CardHeader>
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-sm font-medium">{violation.identifier}</span>
-                        <Badge variant="destructive" className="gap-1 text-xs">
-                          <Ban className="h-3 w-3" />
+                        <CardTitle>{violation.identifier}</CardTitle>
+                        <Badge variant="destructive">
+                          <Ban className="h-3 w-3" aria-hidden="true" />
+                          {' '}
                           Blocked
                         </Badge>
                       </div>
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        Endpoint {violation.endpoint}
+                      <CardDescription>Endpoint {violation.endpoint}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-col gap-1">
+                        <CardDescription>
+                          Requests: {violation.requestCount} · Window start {new Date(violation.windowStartAt).toLocaleTimeString()}
+                        </CardDescription>
+                        {violation.blockedUntil ? (
+                          <CardDescription>
+                            Unblocks at {new Date(violation.blockedUntil).toLocaleTimeString()}
+                          </CardDescription>
+                        ) : null}
                       </div>
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        Requests: {violation.requestCount} · Window start {new Date(violation.windowStartAt).toLocaleTimeString()}
-                      </div>
-                      {violation.blockedUntil && (
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          Unblocks at {new Date(violation.blockedUntil).toLocaleTimeString()}
-                        </div>
-                      )}
                     </CardContent>
                   </Card>
                 ))}
@@ -69,23 +72,25 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-semibold text-foreground">Rule Configuration</h3>
+            <h3>Rule Configuration</h3>
             {rules.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No rate limiting rules configured.</p>
+              <CardDescription>No rate limiting rules configured.</CardDescription>
             ) : (
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 {rules.slice(0, 6).map((rule) => (
                   <Card key={rule.id}>
-                    <CardContent className="p-3">
+                    <CardHeader>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{rule.ruleName}</span>
-                        <Badge variant={rule.isActive ? 'outline' : 'secondary'} className="text-xs">
+                        <CardTitle>{rule.ruleName}</CardTitle>
+                        <Badge variant={rule.isActive ? 'outline' : 'secondary'}>
                           {rule.isActive ? 'Active' : 'Inactive'}
                         </Badge>
                       </div>
-                      <div className="mt-1 text-xs text-muted-foreground">
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription>
                         {rule.maxRequests} requests / {formatWindow(rule.windowSeconds)} ({rule.appliesTo})
-                      </div>
+                      </CardDescription>
                     </CardContent>
                   </Card>
                 ))}

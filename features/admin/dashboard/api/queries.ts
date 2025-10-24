@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { logSupabaseError } from '@/lib/supabase/errors'
-import type { AdminSalon } from '@/lib/types/app.types'
+import type { AdminSalon } from '@/features/admin/salons'
 
 export async function getPlatformMetrics() {
   // SECURITY: Require platform admin role
@@ -211,7 +211,6 @@ export async function getAdminOverview() {
     revenueData,
     appointmentsData,
     reviewsData,
-    inventoryData,
     messagesData,
     staffData,
   ] = await Promise.all([
@@ -219,7 +218,6 @@ export async function getAdminOverview() {
     supabase.from('admin_revenue_overview').select('*').order('date', { ascending: false }).limit(10),
     supabase.from('admin_appointments_overview').select('*').order('created_at', { ascending: false }).limit(10),
     supabase.from('admin_reviews_overview').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('admin_inventory_overview').select('*').limit(10),
     supabase.from('admin_messages_overview').select('*').order('created_at', { ascending: false }).limit(10),
     supabase.from('admin_staff_overview').select('*').order('created_at', { ascending: false }).limit(10),
   ])
@@ -229,7 +227,6 @@ export async function getAdminOverview() {
   if (revenueData.error) logSupabaseError('admin_revenue_overview', revenueData.error)
   if (appointmentsData.error) logSupabaseError('admin_appointments_overview', appointmentsData.error)
   if (reviewsData.error) logSupabaseError('admin_reviews_overview', reviewsData.error)
-  if (inventoryData.error) logSupabaseError('admin_inventory_overview', inventoryData.error)
   if (messagesData.error) logSupabaseError('admin_messages_overview', messagesData.error)
   if (staffData.error) logSupabaseError('admin_staff_overview', staffData.error)
 
@@ -238,7 +235,6 @@ export async function getAdminOverview() {
     revenue: revenueData.data || [],
     appointments: appointmentsData.data || [],
     reviews: reviewsData.data || [],
-    inventory: inventoryData.data || [],
     messages: messagesData.data || [],
     staff: staffData.data || [],
   }

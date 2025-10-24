@@ -144,6 +144,8 @@ export async function createBooking(formData: FormData) {
       status: 'pending',
       duration_minutes: durationMinutes,
       confirmation_code: confirmationCode,
+      created_by_id: session.user.id,
+      updated_by_id: session.user.id,
     }
 
     const { data: appointment, error: appointmentError } = await supabase
@@ -165,6 +167,8 @@ export async function createBooking(formData: FormData) {
       duration_minutes: durationMinutes,
       start_time: startTime.toISOString(),
       end_time: endTime.toISOString(),
+      created_by_id: session.user.id,
+      updated_by_id: session.user.id,
     }
 
     const { error: serviceInsertError } = await supabase

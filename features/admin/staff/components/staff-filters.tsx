@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { BackgroundStatus } from '../api/internal/staff-dashboard/metrics'
+import type { BackgroundStatus } from '@/features/admin/staff/api/internal/staff-dashboard/metrics'
 
 declare global {
   interface WindowEventMap {

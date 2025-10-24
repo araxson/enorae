@@ -22,7 +22,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { deleteUserPreference } from '../api/mutations'
+import { deleteUserPreference } from '@/features/shared/preferences/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
 type ProfilePreference = Database['identity']['Tables']['profiles_preferences']['Row']

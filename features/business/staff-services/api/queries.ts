@@ -9,7 +9,7 @@ import {
   type StaffWithServices,
 } from '@/features/business/staff/api/queries'
 
-type StaffRow = Database['public']['Views']['staff']['Row']
+type StaffRow = Database['public']['Views']['staff_profiles_view']['Row']
 type StaffServiceRow = Database['public']['Views']['staff_services']['Row']
 type ServiceRow = Database['public']['Views']['services']['Row']
 

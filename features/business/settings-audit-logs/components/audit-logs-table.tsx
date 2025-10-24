@@ -20,7 +20,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { CheckCircle2, XCircle, Eye, Download } from 'lucide-react'
-import type { AuditLog } from '../api/queries'
+import type { AuditLog } from '@/features/business/settings-audit-logs/api/queries'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -39,6 +39,12 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
       minute: '2-digit'
     })
   }
+
+  const formatActionLabel = (action: string) =>
+    action
+      .split('_')
+      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+      .join(' ')
 
   const exportLogs = () => {
     const csv = [
@@ -105,9 +111,7 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
                       {formatDate(log.created_at)}
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {log.action}
-                      </Badge>
+                      <Badge variant="outline">{formatActionLabel(log.action)}</Badge>
                     </TableCell>
                     <TableCell className="capitalize">{log.entity_type}</TableCell>
                     <TableCell className="font-mono text-sm">
@@ -115,14 +119,18 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
                     </TableCell>
                     <TableCell>
                       {log.is_success ? (
-                        <Badge variant="default" className="gap-1">
-                          <CheckCircle2 className="h-3 w-3" />
-                          Success
+                        <Badge variant="default">
+                          <span className="flex items-center gap-1">
+                            <CheckCircle2 className="h-3 w-3" />
+                            Success
+                          </span>
                         </Badge>
                       ) : (
-                        <Badge variant="destructive" className="gap-1">
-                          <XCircle className="h-3 w-3" />
-                          Failed
+                        <Badge variant="destructive">
+                          <span className="flex items-center gap-1">
+                            <XCircle className="h-3 w-3" />
+                            Failed
+                          </span>
                         </Badge>
                       )}
                     </TableCell>

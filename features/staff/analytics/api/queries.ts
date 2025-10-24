@@ -78,17 +78,17 @@ export async function getStaffPerformanceMetrics(
   const start = startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
   const end = endDate || new Date().toISOString()
 
-  // Get appointment statistics
+  // Get appointment statistics with total_price
   const { data: appointments, error: apptError } = await supabase
     .from('appointments')
-    .select('id, status, customer_id, created_at')
+    .select('id, status, customer_id, created_at, total_price')
     .eq('staff_id', targetStaffId)
     .gte('created_at', start)
     .lte('created_at', end)
 
   if (apptError) throw apptError
 
-  const appointmentRows = (appointments as StaffAppointment[] | null) ?? []
+  const appointmentRows = (appointments as (StaffAppointment & { total_price: number | null })[] | null) ?? []
 
   const totalAppointments = appointmentRows.length
   const completedAppointments = appointmentRows.filter(a => a.status === 'completed').length
@@ -105,18 +105,10 @@ export async function getStaffPerformanceMetrics(
 
   const repeatCustomers = Object.values(customerCounts).filter(count => count > 1).length
 
-  // Get revenue data from appointment services
-  const appointmentIds = appointmentRows.map(a => a.id)
-
-  let totalRevenue = 0
-  if (appointmentIds.length > 0) {
-    const { data: services } = await supabase
-      .from('service_pricing_view')
-      .select('price')
-      .in('service_id', appointmentIds)
-
-    totalRevenue = services?.reduce((sum, s) => sum + (Number(s.price) || 0), 0) || 0
-  }
+  // Calculate revenue from completed appointments
+  const totalRevenue = appointmentRows
+    .filter(a => a.status === 'completed')
+    .reduce((sum, a) => sum + (Number(a.total_price) || 0), 0)
 
   return {
     total_appointments: totalAppointments,
@@ -149,61 +141,56 @@ export async function getStaffRevenueBreakdown(
   const start = startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
   const end = endDate || new Date().toISOString()
 
-  const { data: staffServices, error } = await supabase
-    .from('staff_services')
-    .select(`
-      service_id,
-      services:service_id (
-        name,
-        service_pricing (
-          price
-        )
-      )
-    `)
-    .eq('staff_id', targetStaffId)
-
-  if (error) throw error
-
-  // Get appointments for this staff member
-  const { data: appointments } = await supabase
+  // Get appointments with service information and prices
+  const { data: appointments, error } = await supabase
     .from('appointments')
-    .select('id, created_at')
+    .select('service_id, service_name, total_price')
     .eq('staff_id', targetStaffId)
     .eq('status', 'completed')
     .gte('created_at', start)
     .lte('created_at', end)
 
-  const appointmentIds = appointments?.map(a => a.id) || []
+  if (error) throw error
 
-  if (appointmentIds.length === 0) {
+  if (!appointments || appointments.length === 0) {
     return []
   }
 
-  // Aggregate revenue by service
-  const revenueMap = new Map<string, { name: string; count: number; revenue: number; prices: number[] }>()
-  const staffServiceRows = (staffServices as unknown as StaffServiceWithPricing[] | null) ?? []
+  type AppointmentRevenue = {
+    service_id: string | null
+    service_name: string | null
+    total_price: number | null
+  }
 
-  staffServiceRows.forEach((ss: StaffServiceWithPricing) => {
-    const serviceId = ss.service_id
-    const serviceName = ss.services?.name || 'Unknown Service'
-    const price = Number(ss.services?.service_pricing?.[0]?.price || 0)
+  type RevenueData = {
+    name: string
+    count: number
+    revenue: number
+  }
+
+  // Aggregate revenue by service
+  const revenueMap = new Map<string, RevenueData>()
+  const appointmentData = (appointments as AppointmentRevenue[]) || []
+
+  appointmentData.forEach((apt: AppointmentRevenue) => {
+    const serviceId = apt.service_id || 'unknown'
+    const serviceName = apt.service_name || 'Unknown Service'
+    const price = Number(apt.total_price) || 0
 
     if (!revenueMap.has(serviceId)) {
       revenueMap.set(serviceId, {
         name: serviceName,
         count: 0,
         revenue: 0,
-        prices: []
       })
     }
 
     const current = revenueMap.get(serviceId)!
     current.count += 1
     current.revenue += price
-    current.prices.push(price)
   })
 
-  return Array.from(revenueMap.entries()).map(([serviceId, data]) => ({
+  return Array.from(revenueMap.entries()).map(([serviceId, data]: [string, RevenueData]) => ({
     service_id: serviceId,
     service_name: data.name,
     bookings_count: data.count,

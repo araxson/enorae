@@ -1,7 +1,9 @@
 import { Star, Building2, User } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
+import { Separator } from '@/components/ui/separator'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { Database } from '@/lib/types/database.types'
 
 type AdminReview = Database['public']['Views']['admin_reviews_overview']['Row']
@@ -14,8 +16,12 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
   if (reviews.length === 0) {
     return (
       <Card>
+        <CardHeader>
+          <CardTitle>Reviews</CardTitle>
+          <CardDescription>No review activity found.</CardDescription>
+        </CardHeader>
         <CardContent className="pt-6">
-          <p className="leading-7 text-center text-muted-foreground py-8">No reviews found</p>
+          <p className="text-center text-muted-foreground py-8">No reviews found</p>
         </CardContent>
       </Card>
     )
@@ -58,31 +64,33 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-6">
-              {review.title && <p className="leading-7 font-medium">{review.title}</p>}
-              {review.comment && <p className="leading-7 text-sm text-muted-foreground">{review.comment}</p>}
+              {review.title && <p className="font-medium">{review.title}</p>}
+              {review.comment && <p className="text-sm text-muted-foreground">{review.comment}</p>}
 
-              <div className="grid grid-cols-3 gap-4 pt-2 border-t">
+              <Separator />
+              <div className="grid grid-cols-3 gap-4 pt-2">
                 {review.service_quality_rating && (
                   <div>
                     <p className="text-xs text-muted-foreground">Service Quality</p>
-                    <p className="leading-7 text-sm font-medium">{review.service_quality_rating}/5</p>
+                    <p className="text-sm font-medium">{review.service_quality_rating}/5</p>
                   </div>
                 )}
                 {review.cleanliness_rating && (
                   <div>
                     <p className="text-xs text-muted-foreground">Cleanliness</p>
-                    <p className="leading-7 text-sm font-medium">{review.cleanliness_rating}/5</p>
+                    <p className="text-sm font-medium">{review.cleanliness_rating}/5</p>
                   </div>
                 )}
                 {review.value_rating && (
                   <div>
                     <p className="text-xs text-muted-foreground">Value</p>
-                    <p className="leading-7 text-sm font-medium">{review.value_rating}/5</p>
+                    <p className="text-sm font-medium">{review.value_rating}/5</p>
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t">
+              <Separator />
+              <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <User className="w-3 h-3" />
                   <span>{review.customer_name || 'Anonymous'}</span>
@@ -92,18 +100,18 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                     {review.created_at ? format(new Date(review.created_at), 'MMM dd, yyyy') : 'N/A'}
                   </p>
                   {review.helpful_count && review.helpful_count > 0 && (
-                    <p className="leading-7 text-xs">{review.helpful_count} found helpful</p>
+                    <p className="text-xs">{review.helpful_count} found helpful</p>
                   )}
                 </div>
               </div>
 
               {review.has_response && review.response_date && (
-                <div className="mt-4 p-3 bg-muted rounded-md">
-                  <p className="leading-7 text-sm font-medium mb-1">Salon Response</p>
-                  <p className="text-sm text-muted-foreground text-xs">
+                <Alert className="mt-4">
+                  <AlertTitle>Salon Response</AlertTitle>
+                  <AlertDescription>
                     Responded on {format(new Date(review.response_date), 'MMM dd, yyyy')}
-                  </p>
-                </div>
+                  </AlertDescription>
+                </Alert>
               )}
             </div>
           </CardContent>

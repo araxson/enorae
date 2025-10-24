@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Star, Trophy, Gift, TrendingUp, History } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import type { LoyaltyPoints, LoyaltyTransaction } from '../api/queries'
+import type { LoyaltyPoints, LoyaltyTransaction } from '@/features/customer/loyalty/api/queries'
 
 type Props = {
   points: LoyaltyPoints | null

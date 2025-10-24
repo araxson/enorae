@@ -1,7 +1,7 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type SalonLocation = Database['public']['Views']['salon_locations']['Row']
-export type LocationAddress = Database['public']['Views']['location_addresses']['Row']
+export type SalonLocation = Database['public']['Views']['salon_locations_view']['Row']
+export type LocationAddress = Database['public']['Views']['location_addresses_view']['Row']
 
 export type StaffLocationDetail = SalonLocation & {
   location_name?: string | null

@@ -27,35 +27,34 @@ export async function getCustomerFavoritesSummary(userId: string): Promise<Favor
 
   const { data, error } = await supabase
     .from('customer_favorites')
-    .select(
-      `
-        salon_id,
-        salons:salon_id (
-          id,
-          name,
-          slug
-        )
-      `,
-    )
+    .select('salon_id, salon_name, salon_slug')
     .eq('customer_id', userId)
     .order('created_at', { ascending: false })
     .limit(10)
 
   if (error) throw error
 
-  return (data ?? [])
-    .map((entry) => {
-      const salon = entry.salons
-      if (!salon?.id) return null
+  type FavoriteEntry = {
+    salon_id: string | null
+    salon_name: string | null
+    salon_slug: string | null
+  }
 
-      const slugOrId = salon.slug ?? salon.id
-      const url = `/customer/salons/${slugOrId}`
+  const entries = (data ?? []) as FavoriteEntry[]
+  const shortcuts: FavoriteShortcut[] = []
 
-      return {
-        name: salon.name ?? 'Favorite Salon',
-        url,
-        salonId: salon.id ?? undefined,
-      } satisfies FavoriteShortcut
+  for (const entry of entries) {
+    if (!entry.salon_id) continue
+
+    const slugOrId = entry.salon_slug ?? entry.salon_id
+    const url = `/customer/salons/${slugOrId}`
+
+    shortcuts.push({
+      name: entry.salon_name ?? 'Favorite Salon',
+      url,
+      salonId: entry.salon_id,
     })
-    .filter((shortcut): shortcut is FavoriteShortcut => Boolean(shortcut))
+  }
+
+  return shortcuts
 }

@@ -1,82 +1,143 @@
 'use client'
 
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { formData } from './form.data'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { contactSchema, type ContactSchema } from '@/features/marketing/contact/schema'
 import { submitContactMessage } from '@/features/marketing/home/api/mutations'
 
-export function Form() {
-  const [loading, setLoading] = useState(false)
+export function ContactForm() {
+  const form = useForm<ContactSchema>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      topic: '',
+      message: '',
+    },
+  })
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const form = new FormData(event.currentTarget)
-    const payload = {
-      name: form.get('name')?.toString() ?? '',
-      email: form.get('email')?.toString() ?? '',
-      phone: form.get('phone')?.toString() || undefined,
-      topic: form.get('topic')?.toString() || undefined,
-      message: form.get('message')?.toString() ?? '',
-    }
-
-    setLoading(true)
+  async function onSubmit(values: ContactSchema) {
     try {
-      const result = await submitContactMessage(payload)
+      const result = await submitContactMessage(values)
       if (result.success) {
         toast.success('Message sent! We will get back to you soon.')
-        event.currentTarget.reset()
+        form.reset()
       } else if (result.error) {
         toast.error(result.error)
       }
     } catch (error) {
       console.error('[ContactForm] submission error:', error)
       toast.error('We could not send your message right now. Please try again later.')
-    } finally {
-      setLoading(false)
     }
   }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{formData.title}</CardTitle>
+        <CardTitle>Send us a message</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {formData.fields.map((field) => (
-            <div className="space-y-2" key={field.name}>
-              <Label htmlFor={field.name}>
-                {field.label}
-                {field.required && <span className="ml-1 text-destructive">*</span>}
-              </Label>
-              {field.type === 'textarea' ? (
-                <Textarea
-                  id={field.name}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                  rows={5}
-                />
-              ) : (
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Name <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            </div>
-          ))}
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Sending...' : formData.submitText}
-          </Button>
-        </form>
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Email <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="your@email.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone</FormLabel>
+                  <FormControl>
+                    <Input type="tel" placeholder="(optional)" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="topic"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Topic</FormLabel>
+                  <FormControl>
+                    <Input placeholder="What is this about? (optional)" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Message <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Your message" rows={5} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? 'Sending...' : 'Send Message'}
+            </Button>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   )

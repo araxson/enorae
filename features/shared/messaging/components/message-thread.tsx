@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { sendMessage, markMessagesAsRead } from '../api/mutations'
+import { sendMessage, markMessagesAsRead } from '@/features/shared/messaging/api/mutations'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -75,16 +75,15 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
                 messages.map((message) => {
                   const isOwnMessage = message.from_user_id === currentUserId
                   return (
-                    <div
-                      key={message.id}
-                      className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
-                    >
+                    <div key={message.id} className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
                       <div className={`max-w-xl space-y-1 ${isOwnMessage ? 'text-right' : ''}`}>
-                        <div
-                          className={`rounded-lg border px-4 py-2 text-left ${isOwnMessage ? 'bg-primary text-primary-foreground' : 'bg-card text-foreground'}`}
-                        >
-                          <p className="leading-7 mb-0 whitespace-pre-wrap break-words">{message.content}</p>
-                        </div>
+                        <Card className={isOwnMessage ? 'bg-primary text-primary-foreground' : undefined}>
+                          <CardContent className="space-y-2">
+                            <p className="mb-0 whitespace-pre-wrap break-words leading-7">
+                              {message.content}
+                            </p>
+                          </CardContent>
+                        </Card>
                         <div
                           className={`flex items-center gap-2 text-xs text-muted-foreground ${isOwnMessage ? 'justify-end' : ''}`}
                         >

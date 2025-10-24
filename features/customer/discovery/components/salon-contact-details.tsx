@@ -1,7 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Phone, Mail, Globe, Facebook, Instagram, Twitter, MessageCircle } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
+import { Separator } from '@/components/ui/separator'
 
 type SalonContactDetails = Database['public']['Views']['salon_contact_details']['Row']
 
@@ -20,6 +21,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
     <Card>
       <CardHeader>
         <CardTitle>Contact Information</CardTitle>
+        <CardDescription>Reach the salon using the channels below.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
@@ -85,9 +87,10 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
 
           {/* Social Media */}
           {socialLinks.length > 0 && (
-            <div className="pt-4 border-t">
-              <p className="text-sm text-muted-foreground mb-3 block">Follow us</p>
-              <div className="flex gap-3 items-center">
+            <div>
+              <Separator className="my-4" />
+              <p className="text-sm text-muted-foreground">Follow us</p>
+              <div className="mt-3 flex items-center gap-3">
                 {socialLinks.map((link) => {
                   const Icon = link.icon
                   return (
@@ -111,9 +114,10 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
 
           {/* Operating Hours Display */}
           {contactDetails.hours_display_text && (
-            <div className="pt-4 border-t">
-              <p className="text-sm text-muted-foreground mb-2 block">Hours</p>
-              <div className="text-sm whitespace-pre-line">{contactDetails.hours_display_text}</div>
+            <div>
+              <Separator className="my-4" />
+              <p className="text-sm text-muted-foreground">Hours</p>
+              <div className="mt-2 text-sm whitespace-pre-line">{contactDetails.hours_display_text}</div>
             </div>
           )}
         </div>

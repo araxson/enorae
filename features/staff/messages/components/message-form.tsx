@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Send } from 'lucide-react'
-import { threadMessageSchema, type ThreadMessageFormData } from '../schema'
-import { sendThreadMessage } from '../api/mutations'
+import { threadMessageSchema, type ThreadMessageFormData } from '@/features/staff/messages/schema'
+import { sendThreadMessage } from '@/features/staff/messages/api/mutations'
 
 interface MessageFormProps {
   threadId: string

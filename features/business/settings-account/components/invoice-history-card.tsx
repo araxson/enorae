@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -7,21 +7,16 @@ import type { Invoice } from './billing-subscription-form'
 
 export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-6">
-        <div>
-          <div className="text-2xl font-semibold">Invoice History</div>
-          <div className="text-sm text-muted-foreground">Download your past invoices</div>
-        </div>
-
+    <Card>
+      <CardHeader>
+        <CardTitle>Invoice History</CardTitle>
+        <CardDescription>Download your past invoices</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-6">
         <Separator />
-
         <div className="flex flex-col gap-3">
           {invoices.map((invoice) => (
-            <div
-              key={invoice.id}
-              className="flex gap-4 items-center justify-between py-2"
-            >
+            <div key={invoice.id} className="flex gap-4 items-center justify-between py-2">
               <div className="flex-1">
                 <div className="font-medium">{invoice.id}</div>
                 <div className="text-sm text-muted-foreground">
@@ -34,9 +29,7 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
               </div>
               <div className="flex items-center gap-4">
                 <div className="font-medium">${invoice.amount}</div>
-                <Badge
-                  variant={invoice.status === 'paid' ? 'default' : 'destructive'}
-                >
+                <Badge variant={invoice.status === 'paid' ? 'default' : 'destructive'}>
                   {invoice.status}
                 </Badge>
                 <Button variant="ghost" size="sm" className="gap-2">
@@ -47,7 +40,7 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
             </div>
           ))}
         </div>
-      </div>
+      </CardContent>
     </Card>
   )
 }

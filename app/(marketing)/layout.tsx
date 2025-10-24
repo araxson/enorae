@@ -1,4 +1,4 @@
-import { MarketingHeader, MarketingFooter } from '@/components/marketing'
+import { MarketingHeader, MarketingFooter } from '@/features/marketing/layout-components'
 import { Suspense } from 'react'
 
 export default function MarketingLayout({

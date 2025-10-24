@@ -7,7 +7,7 @@ import { Building2 } from 'lucide-react'
 import { ChainCard } from './chain-card'
 import type { Database } from '@/lib/types/database.types'
 
-type SalonChain = Database['public']['Views']['salon_chains']['Row']
+type SalonChain = Database['public']['Views']['salon_chains_view']['Row']
 
 interface ChainsListProps {
   chains: SalonChain[]

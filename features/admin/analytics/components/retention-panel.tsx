@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { PlatformAnalyticsSnapshot } from '../api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface RetentionPanelProps {
   retention: PlatformAnalyticsSnapshot['retention']
@@ -31,7 +31,7 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-xs text-muted-foreground">Retention rate</p>
-            <p className="text-2xl font-bold text-foreground">{formatPercent(retention.retentionRate)}</p>
+            <p className="text-2xl font-semibold">{formatPercent(retention.retentionRate)}</p>
             <p className="text-xs text-muted-foreground">
               {retention.returningCustomers.toLocaleString('en-US')} returning customers
             </p>
@@ -41,7 +41,7 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
               <AlertTriangle className="h-3 w-3" />
               Churn rate
             </p>
-            <p className="text-2xl font-bold text-foreground">{formatPercent(retention.churnRate)}</p>
+            <p className="text-2xl font-semibold">{formatPercent(retention.churnRate)}</p>
             <p className="text-xs text-muted-foreground">
               Based on cancelled appointments
             </p>

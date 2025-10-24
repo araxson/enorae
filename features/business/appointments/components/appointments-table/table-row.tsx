@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
-import type { AppointmentWithDetails } from '../../api/queries'
+import type { AppointmentWithDetails } from '@/features/business/appointments/api/queries'
 import { STATUS_CONFIG } from './status-config'
 
 export type AppointmentAction = (formData: FormData) => Promise<void>

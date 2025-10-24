@@ -1,6 +1,6 @@
-import { Hero } from '../components/sections/hero'
-import { Form } from '../components/sections/form'
-import { Info } from '../components/sections/info'
+import { Hero } from '@/features/marketing/contact/components/sections/hero'
+import { Form } from '@/features/marketing/contact/components/sections/form'
+import { Info } from '@/features/marketing/contact/components/sections/info'
 
 export function ContactPage() {
   return (

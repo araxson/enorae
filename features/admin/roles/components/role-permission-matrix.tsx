@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { UserRole } from '@/lib/types/app.types'
+import type { UserRole } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
 
 interface RolePermissionMatrixProps {

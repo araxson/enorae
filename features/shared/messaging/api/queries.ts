@@ -1,7 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import type { MessageThread } from '@/lib/types/app.types'
+import type { MessageThread } from '@/features/business/notifications'
 
 export interface MessageThreadWithMetadata extends MessageThread {
   unread_count: number

@@ -1,7 +1,7 @@
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Users, UserCheck } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { AnalyticsOverview } from '../api/queries'
+import type { AnalyticsOverview } from '@/features/business/analytics/api/queries'
 
 type AnalyticsOverviewProps = {
   data: AnalyticsOverview
@@ -72,7 +72,7 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
           <CardContent>
             <div className="flex flex-col gap-2">
               <div className="flex items-baseline gap-2">
-                <h3 className="scroll-m-20 text-2xl font-semibold">{card.value}</h3>
+                <div className="text-2xl">{card.value}</div>
                 {card.trend !== undefined && (
                   <Badge variant={card.trend >= 0 ? 'default' : 'destructive'}>
                     {card.trend >= 0 ? (

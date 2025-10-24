@@ -1,4 +1,4 @@
-import type { PlatformAnalyticsSnapshot, PerformanceBenchmark } from '../../admin-analytics-types'
+import type { PlatformAnalyticsSnapshot, PerformanceBenchmark } from '@/features/admin/analytics/api/internal/admin-analytics-types'
 import { toNumber } from './helpers'
 
 type DailyMetricsRow = {
@@ -11,7 +11,7 @@ type DailyMetricsRow = {
 }
 
 type AdminClient = Awaited<
-  ReturnType<typeof import('../../admin-analytics-shared')['requireAdminClient']>
+  ReturnType<typeof import('@/features/admin/analytics/api/internal/admin-analytics-shared')['requireAdminClient']>
 >
 
 type SalonOverviewRow = {

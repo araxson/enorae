@@ -1,4 +1,3 @@
-// @ts-nocheck
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getUserSalonIds, ROLE_GROUPS } from '@/lib/auth'
@@ -7,6 +6,14 @@ import type { Database } from '@/lib/types/database.types'
 type AppointmentService = Database['public']['Views']['appointment_services']['Row']
 
 export type AppointmentServiceDetails = AppointmentService
+type StaffServiceRow = { staff_id: string | null }
+type StaffSummary = {
+  id: string
+  full_name: string | null
+  title: string | null
+  avatar_url: string | null
+}
+type StaffAvailability = StaffSummary & { is_available: boolean }
 
 /** 
  * Get all services for a specific appointment
@@ -132,7 +139,10 @@ export async function getAvailableStaffForService(
 
   if (staffServicesError) throw staffServicesError
 
-  const staffIds = (staffServices || []).map((ss) => ss.staff_id).filter(Boolean)
+  const staffServicesList = (staffServices ?? []) as StaffServiceRow[]
+  const staffIds = staffServicesList
+    .map((ss) => ss.staff_id)
+    .filter((id): id is string => Boolean(id))
 
   if (staffIds.length === 0) {
     return []
@@ -162,10 +172,16 @@ export async function getAvailableStaffForService(
 
   const { data: conflicts } = await conflictQuery
 
-  const busyStaffIds = new Set((conflicts || []).map((c) => c.staff_id))
+  const conflictList = (conflicts ?? []) as StaffServiceRow[]
+  const busyStaffIds = new Set(conflictList.map((c) => c.staff_id).filter(Boolean))
 
-  return (staff || []).map((s) => ({
-    ...s,
+  const staffList = (staff ?? []) as StaffSummary[]
+
+  return staffList.map<StaffAvailability>((s) => ({
+    id: s.id,
+    full_name: s.full_name,
+    title: s.title,
+    avatar_url: s.avatar_url,
     is_available: !busyStaffIds.has(s.id),
   }))
 }

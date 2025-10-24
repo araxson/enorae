@@ -11,7 +11,7 @@ import {
   ItemActions,
   ItemSeparator,
 } from '@/components/ui/item'
-import type { AppointmentWithDetails } from '@/lib/types/app.types'
+import type { AppointmentWithDetails } from '@/features/business/appointments'
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
 import { format } from 'date-fns'
@@ -51,18 +51,22 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
             <div key={appointment.id}>
               <Item variant="outline" size="default">
                 <ItemMedia>
-                  <div className="flex flex-col items-center justify-center min-w-16 p-2 bg-primary/10 rounded-lg">
-                    <p className="text-xs font-bold">
-                      {appointment.start_time
-                        ? format(new Date(appointment.start_time), 'MMM')
-                        : '---'}
-                    </p>
-                    <div className="text-lg font-bold">
-                      {appointment.start_time
-                        ? format(new Date(appointment.start_time), 'd')
-                        : '--'}
-                    </div>
-                  </div>
+                  <Card>
+                    <CardContent>
+                      <div className="flex w-16 flex-col items-center justify-center gap-1 p-2">
+                        <p className="text-xs font-semibold">
+                          {appointment.start_time
+                            ? format(new Date(appointment.start_time), 'MMM')
+                            : '---'}
+                        </p>
+                        <div className="text-lg font-semibold">
+                          {appointment.start_time
+                            ? format(new Date(appointment.start_time), 'd')
+                            : '--'}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>

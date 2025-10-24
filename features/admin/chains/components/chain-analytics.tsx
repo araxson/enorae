@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import type { ChainAnalytics } from '../api/queries'
+import type { ChainAnalytics } from '@/features/admin/chains/api/queries'
 
 interface ChainAnalyticsTableProps {
   analytics: ChainAnalytics[]
@@ -71,8 +71,8 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {chain.subscriptionTier || 'Free'}
+                      <Badge variant="outline">
+                        {(chain.subscriptionTier || 'Free').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                       </Badge>
                     </TableCell>
                   </TableRow>

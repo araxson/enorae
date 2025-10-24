@@ -30,23 +30,36 @@ export async function getWebhookStats(): Promise<WebhookStats> {
 
   const supabase = await createClient()
 
+  type WebhookQueueRow = {
+    id: string | null
+    status: string | null
+    created_at: string | null
+    completed_at: string | null
+  }
+
   const { data, error } = await supabase
     .from('communication_webhook_queue')
-    .select('status, delivery_time_ms')
-    .eq('salon_id', salonId)
+    .select('id, status, created_at, completed_at')
+    .returns<WebhookQueueRow[]>()
 
   if (error) throw error
 
-  const total = data.length
-  const successful = data.filter(w => w.status === 'delivered').length
-  const failed = data.filter(w => w.status === 'failed').length
-  const pending = data.filter(w => w.status === 'pending').length
+  const webhooks = data || []
+  const total = webhooks.length
+  const successful = webhooks.filter(w => w.status === 'completed').length
+  const failed = webhooks.filter(w => w.status === 'failed').length
+  const pending = webhooks.filter(w => w.status === 'pending').length
 
-  const successfulWithTime = data.filter(
-    w => w.status === 'delivered' && w.delivery_time_ms
+  // Calculate average delivery time from created_at to completed_at
+  const successfulWithTime = webhooks.filter(
+    w => w.status === 'completed' && w.created_at && w.completed_at
   )
   const avgTime = successfulWithTime.length > 0
-    ? successfulWithTime.reduce((sum, w) => sum + (w.delivery_time_ms || 0), 0) / successfulWithTime.length
+    ? successfulWithTime.reduce((sum, w) => {
+        const start = new Date(w.created_at!).getTime()
+        const end = new Date(w.completed_at!).getTime()
+        return sum + (end - start)
+      }, 0) / successfulWithTime.length
     : 0
 
   return {
@@ -65,30 +78,44 @@ export async function getWebhookDeliveryLogs(webhookId: string, limit = 50): Pro
 
   const supabase = await createClient()
 
+  type WebhookQueueRow = {
+    id: string | null
+    status: string | null
+    created_at: string | null
+    completed_at: string | null
+    last_error: string | null
+    attempts: number | null
+  }
+
   // Use communication_webhook_queue table since delivery_logs view doesn't exist yet
   // This table contains delivery attempts with status and timing information
   const { data, error } = await supabase
     .from('communication_webhook_queue')
-    .select('*')
-    .eq('webhook_config_id', webhookId)
-    .eq('salon_id', salonId)
+    .select('id, status, created_at, completed_at, last_error, attempts')
     .order('created_at', { ascending: false })
     .limit(limit)
+    .returns<WebhookQueueRow[]>()
 
   if (error) throw error
 
   // Map queue data to WebhookDeliveryLog format
-  return (data || []).map(item => ({
-    id: item.id,
-    webhook_id: item.webhook_config_id || webhookId,
-    status: item.status || 'unknown',
-    created_at: item.created_at,
-    delivered_at: item.delivered_at || null,
-    delivery_time_ms: item.delivery_time_ms || null,
-    response_code: null, // Not stored in queue table
-    response_body: null, // Not stored in queue table
-    error_message: item.error_message || null,
-  }))
+  return (data || []).map(item => {
+    const createdAt = item.created_at ? new Date(item.created_at).getTime() : 0
+    const completedAt = item.completed_at ? new Date(item.completed_at).getTime() : 0
+    const deliveryTimeMs = completedAt && createdAt ? completedAt - createdAt : null
+
+    return {
+      id: item.id || '',
+      webhook_id: webhookId,
+      status: item.status || 'unknown',
+      created_at: item.created_at,
+      delivered_at: item.completed_at,
+      delivery_time_ms: deliveryTimeMs,
+      response_code: null, // Not stored in queue table
+      response_body: null, // Not stored in queue table
+      error_message: item.last_error,
+    }
+  })
 }
 
 export async function getFailedWebhooks(limit = 50) {

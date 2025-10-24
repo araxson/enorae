@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { updateStaffMetadata } from '../api/mutations'
+import { updateStaffMetadata } from '@/features/staff/profile/api/mutations'
 
 interface SpecialtiesEditorProps {
   initialSpecialties?: string[]
@@ -54,56 +54,54 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-4">
-        <h3 className="scroll-m-20 text-2xl font-semibold">Specialties & Skills</h3>
-
-        <div className="flex gap-3">
-          <Input
-            placeholder="Add specialty..."
-            value={newSpecialty}
-            onChange={(e) => setNewSpecialty(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault()
-                handleAdd()
-              }
-            }}
-            disabled={isSaving}
-          />
-          <Button
-            type="button"
-            onClick={handleAdd}
-            disabled={!newSpecialty.trim() || isSaving}
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-
-        {specialties.length > 0 ? (
-          <div className="flex gap-3 flex-wrap">
-            {specialties.map((specialty) => (
-              <Badge key={specialty} variant="outline">
-                {specialty}
-                <button
-                  type="button"
-                  onClick={() => handleRemove(specialty)}
-                  className="ml-2 hover:text-destructive"
-                  disabled={isSaving}
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
+    <Card>
+      <CardHeader>
+        <CardTitle>Specialties & Skills</CardTitle>
+        <CardDescription>Highlight the services you excel at.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-3">
+            <Input
+              placeholder="Add specialty..."
+              value={newSpecialty}
+              onChange={(e) => setNewSpecialty(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  handleAdd()
+                }
+              }}
+              disabled={isSaving}
+            />
+            <Button type="button" onClick={handleAdd} disabled={!newSpecialty.trim() || isSaving}>
+              <Plus className="h-4 w-4" />
+            </Button>
           </div>
-        ) : (
-          <p className="text-sm text-muted-foreground">No specialties added yet</p>
-        )}
 
-        {error && (
-          <p className="text-sm text-destructive">{error}</p>
-        )}
-      </div>
+          {specialties.length > 0 ? (
+            <div className="flex flex-wrap gap-3">
+              {specialties.map((specialty) => (
+                <Badge key={specialty} variant="outline">
+                  {specialty}
+                  <button
+                    type="button"
+                    onClick={() => handleRemove(specialty)}
+                    className="ml-2 hover:text-destructive"
+                    disabled={isSaving}
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">No specialties added yet</p>
+          )}
+
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+        </div>
+      </CardContent>
     </Card>
   )
 }

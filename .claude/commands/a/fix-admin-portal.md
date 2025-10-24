@@ -1,7 +1,7 @@
 ---
 description: Fix issues found in Admin Portal analysis systematically
 ---
-
+**Key Principle:** The database is the source of truth. All code must match the database, not the other way around.
 # Fix Admin Portal Issues
 
 You are fixing issues from the Admin Portal deep analysis.

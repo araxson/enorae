@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge'
-import type { CouponWithStats } from '../api/queries/coupon-validation'
+import type { CouponWithStats } from '@/features/business/coupons/api/queries/coupon-validation'
 import { format } from 'date-fns'
 
 export function isExpired(validUntil: string | null) {

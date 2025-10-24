@@ -2,7 +2,7 @@ import 'server-only'
 
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
-import type { CustomerFavoriteView } from '@/lib/types/app.types'
+import type { CustomerFavoriteView } from '@/features/customer/favorites'
 
 const FAVORITES_LIMIT = 10
 

@@ -1,5 +1,5 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { getStaffProfile } from '../appointments/api/queries'
+import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import { getStaffServices } from './api/queries'
 import { ServicesClient } from './components/services-client'
 

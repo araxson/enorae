@@ -3,8 +3,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { format } from 'date-fns'
-import { confirmAppointment, cancelAppointment, completeAppointment } from '../api/mutations'
-import type { AppointmentWithDetails } from '../api/queries'
+import { confirmAppointment, cancelAppointment, completeAppointment } from '@/features/business/appointments/api/mutations'
+import type { AppointmentWithDetails } from '@/features/business/appointments/api/queries'
 
 interface AppointmentsTableProps {
   appointments: AppointmentWithDetails[]

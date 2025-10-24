@@ -1,7 +1,7 @@
 import { Users, Globe2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { PlatformAnalyticsSnapshot } from '../api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface AcquisitionPanelProps {
   acquisition: PlatformAnalyticsSnapshot['acquisition']
@@ -23,16 +23,19 @@ export function AcquisitionPanel({ acquisition }: AcquisitionPanelProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs text-muted-foreground">New users in last 7 days</p>
-            <p className="text-2xl font-bold text-foreground">{newUsersLast7Days.toLocaleString('en-US')}</p>
+            <p className="text-2xl font-semibold">{newUsersLast7Days.toLocaleString('en-US')}</p>
           </div>
-          <Badge variant={deltaPositive ? 'secondary' : 'destructive'} className="text-xs">
-            {deltaPositive ? '+' : ''}{deltaLast7Days.toLocaleString('en-US')} vs prior 7d
-          </Badge>
+          <div className="text-xs">
+            <Badge variant={deltaPositive ? 'secondary' : 'destructive'}>
+              {deltaPositive ? '+' : ''}
+              {deltaLast7Days.toLocaleString('en-US')} vs prior 7d
+            </Badge>
+          </div>
         </div>
 
         <div className="grid gap-4">
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Top roles</p>
+            <p className="mb-2 text-xs font-semibold text-muted-foreground">Top roles</p>
             {byRole.length === 0 ? (
               <p className="text-xs text-muted-foreground">No recent user role data.</p>
             ) : (
@@ -50,7 +53,7 @@ export function AcquisitionPanel({ acquisition }: AcquisitionPanelProps) {
           </div>
 
           <div>
-            <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <p className="mb-2 flex items-center gap-2 text-xs font-semibold text-muted-foreground">
               <Globe2 className="h-3 w-3" />
               Top countries
             </p>

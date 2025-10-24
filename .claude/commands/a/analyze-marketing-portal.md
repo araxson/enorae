@@ -1,7 +1,7 @@
 # Marketing Portal Deep Analysis
 
 MARKETING PORTAL DEEP ANALYSIS
-
+**Key Principle:** The database is the source of truth. All code must match the database, not the other way around.
 You are performing a comprehensive audit of the Marketing Portal (public pages) in the Enorae salon booking platform.
 
 ## PHASE 1: GATHER BEST PRACTICES & CONTEXT

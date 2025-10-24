@@ -13,13 +13,22 @@ export async function batchUpdateAppointmentStatus(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Update appointments directly
+  type AppointmentUpdate = Database['scheduling']['Tables']['appointments']['Update']
+  const updateData: AppointmentUpdate = {
+    status: newStatus as Database['public']['Enums']['appointment_status'],
+    updated_at: new Date().toISOString(),
+  }
+
+  // Note: cancellation_reason is not stored in appointments table
+  // If needed in future, could be stored in a related table or notes field
+
   const { data, error } = await supabase
     .schema('scheduling')
-    .rpc('batch_update_appointment_status', {
-      p_appointment_ids: appointmentIds,
-      p_new_status: newStatus as Database['public']['Enums']['appointment_status'],
-      p_reason: reason || undefined,
-    })
+    .from('appointments')
+    .update(updateData)
+    .in('id', appointmentIds)
+    .select('id')
 
   if (error) throw error
 

@@ -61,9 +61,11 @@ export function DashboardFilters() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Badge variant="outline" className="gap-1">
-                <Filter className="h-3.5 w-3.5" />
-                Smart filters
+              <Badge variant="outline">
+                <span className="flex items-center gap-1">
+                  <Filter className="h-3.5 w-3.5" />
+                  Smart filters
+                </span>
               </Badge>
             </div>
             <div className="flex flex-col gap-2 items-end text-xs text-muted-foreground">

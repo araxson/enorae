@@ -42,24 +42,24 @@ export function ReviewCard({ review, onRespond, onFlag, onToggleFeatured }: Revi
         <div className="flex gap-4 items-start justify-between">
           <div className="flex flex-col gap-3">
             <div className="flex gap-3 items-center">
-              <h3 className="scroll-m-20 text-2xl font-semibold text-base">{review.customer_name || 'Anonymous'}</h3>
+              <div className="text-base font-semibold">{review.customer_name || 'Anonymous'}</div>
               {review.is_verified && (
-                <Badge variant="outline" className="text-xs">
-                  <CheckCircle2 className="h-3 w-3 mr-1" />
-                  Verified
-                </Badge>
+                <div className="flex items-center gap-1 text-xs">
+                  <CheckCircle2 className="h-3 w-3" />
+                  <Badge variant="outline">Verified</Badge>
+                </div>
               )}
               {review.is_featured && (
-                <Badge variant="default" className="text-xs">
-                  <TrendingUp className="h-3 w-3 mr-1" />
-                  Featured
-                </Badge>
+                <div className="flex items-center gap-1 text-xs">
+                  <TrendingUp className="h-3 w-3" />
+                  <Badge variant="default">Featured</Badge>
+                </div>
               )}
               {review.is_flagged && (
-                <Badge variant="destructive" className="text-xs">
-                  <Flag className="h-3 w-3 mr-1" />
-                  Flagged
-                </Badge>
+                <div className="flex items-center gap-1 text-xs">
+                  <Flag className="h-3 w-3" />
+                  <Badge variant="destructive">Flagged</Badge>
+                </div>
               )}
             </div>
             <div className="flex gap-4 items-center">

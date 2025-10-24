@@ -9,7 +9,7 @@ const ALLOWED_ROLES: Database['public']['Enums']['role_type'][] = [
   ...ROLE_GROUPS.ALL_STAFF,
 ]
 
-type AppointmentRow = Database['public']['Views']['appointments']['Row']
+type AppointmentRow = Database['scheduling']['Views']['appointments_with_counts']['Row']
 type AppointmentStatus = Database['public']['Enums']['appointment_status']
 
 async function getSalonContext() {
@@ -24,7 +24,8 @@ async function getSalonContext() {
 export async function getSalonAppointments(limit = 50): Promise<AppointmentRow[]> {
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
-    .from('appointments_view')
+    .schema('scheduling')
+    .from('appointments_with_counts')
     .select('*')
     .eq('salon_id', salonId)
     .order('start_time', { ascending: true })
@@ -40,7 +41,8 @@ export async function getSalonAppointmentsByStatus(
 ): Promise<AppointmentRow[]> {
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
-    .from('appointments_view')
+    .schema('scheduling')
+    .from('appointments_with_counts')
     .select('*')
     .eq('salon_id', salonId)
     .eq('status', status)
@@ -56,7 +58,8 @@ export async function getAppointmentDetails(
 ): Promise<AppointmentRow | null> {
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
-    .from('appointments_view')
+    .schema('scheduling')
+    .from('appointments_with_counts')
     .select('*')
     .eq('salon_id', salonId)
     .eq('id', appointmentId)

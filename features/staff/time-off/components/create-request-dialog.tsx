@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
-import { createTimeOffRequest } from '../api/mutations'
+import { createTimeOffRequest } from '@/features/staff/time-off/api/mutations'
 
 interface CreateRequestDialogProps {
   open: boolean

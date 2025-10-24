@@ -5,7 +5,7 @@ import { SalonGrid } from './salon-grid'
 import { SearchFilters } from './search-filters'
 import type { Database } from '@/lib/types/database.types'
 
-type Salon = Database['public']['Views']['salons']['Row']
+type Salon = Database['public']['Views']['salons_view']['Row']
 
 interface SalonDiscoveryClientProps {
   initialSalons: Salon[]
@@ -22,8 +22,8 @@ export function SalonDiscoveryClient({ initialSalons }: SalonDiscoveryClientProp
       filtered = filtered.filter(
         (salon) =>
           salon.name?.toLowerCase().includes(lowerQuery) ||
-          salon.business_type?.toLowerCase().includes(lowerQuery) ||
-          salon.business_name?.toLowerCase().includes(lowerQuery)
+          salon.short_description?.toLowerCase().includes(lowerQuery) ||
+          salon.full_description?.toLowerCase().includes(lowerQuery)
       )
     }
 

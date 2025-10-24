@@ -3,8 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type StaffSchedule = Database['public']['Views']['staff_schedules']['Row']
-type Staff = Database['public']['Views']['staff']['Row']
+type StaffSchedule = Database['public']['Views']['staff_schedules_view']['Row']
+type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 export type StaffScheduleWithStaff = StaffSchedule & {
   staff: Staff | null
@@ -21,10 +21,7 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
 
   const query = supabase
     .from('staff_schedules_view')
-    .select(`
-      *,
-      staff:staff_id(*)
-    `)
+    .select('*')
     .eq('salon_id', salonId)
     .order('work_date', { ascending: true })
     .order('start_time', { ascending: true })
@@ -40,7 +37,36 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
   const { data, error } = await query
 
   if (error) throw error
-  return data as StaffScheduleWithStaff[]
+
+  const schedules = (data || []) as StaffSchedule[]
+  const staffIds = Array.from(
+    new Set(
+      schedules
+        .map((schedule) => schedule.staff_id)
+        .filter((id): id is string => Boolean(id)),
+    ),
+  )
+
+  let staffMap = new Map<string, Staff>()
+  if (staffIds.length > 0) {
+    const { data: staffRows, error: staffError } = await supabase
+      .from('staff_profiles_view')
+      .select('*')
+      .in('id', staffIds)
+
+    if (staffError) throw staffError
+
+    staffMap = new Map(
+      (staffRows || [])
+        .filter((staff): staff is Staff => Boolean(staff?.id))
+        .map((staff) => [staff.id as string, staff as Staff]),
+    )
+  }
+
+  return schedules.map((schedule) => ({
+    ...schedule,
+    staff: schedule.staff_id ? staffMap.get(schedule.staff_id) ?? null : null,
+  }))
 }
 
 /**
@@ -83,10 +109,9 @@ export async function getSalonStaff(salonId: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff_view')
+    .from('staff_profiles_view')
     .select('*')
     .eq('salon_id', salonId)
-    .eq('status', 'active')
     .order('full_name')
 
   if (error) throw error
@@ -134,17 +159,17 @@ export async function getScheduleSalon() {
 
   const supabase = await createClient()
 
-  const { data: salon, error } = await supabase
-    .from('salons_view')
-    .select('id')
-    .eq('owner_id', session.user.id)
-    .single()
+  const { data, error } = await supabase
+    .from('staff_profiles_view')
+    .select('salon_id')
+    .eq('user_id', session.user.id)
+    .maybeSingle<{ salon_id: string | null }>()
 
-  if (error || !salon) {
+  if (error || !data?.salon_id) {
     throw new Error('No salon found for your account')
   }
 
-  return salon as { id: string }
+  return { id: data.salon_id }
 }
 
 /**
@@ -156,10 +181,9 @@ export async function getAvailableStaffForSwap(salonId: string, excludeStaffId: 
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff_view')
+    .from('staff_profiles_view')
     .select('id, full_name, title, user_id')
     .eq('salon_id', salonId)
-    .eq('is_active', true)
     .neq('id', excludeStaffId)
     .order('full_name')
 

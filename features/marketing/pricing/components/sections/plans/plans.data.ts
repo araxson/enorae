@@ -25,7 +25,7 @@ export const plansData = {
         'Up to 3 locations',
         'Advanced analytics',
         'Priority support',
-        'Inventory management',
+        'Staff management',
       ],
       cta: 'Start Free Trial',
       highlighted: true,

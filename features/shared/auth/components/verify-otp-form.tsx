@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { verifyOTP, resendOTP } from '../api/mutations'
+import { verifyOTP, resendOTP } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
 import {
   Card,

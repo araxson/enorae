@@ -9,8 +9,8 @@ import { Plus, Trash2, Edit } from 'lucide-react'
 import { AddServiceDialog } from './add-service-dialog'
 import { EditServiceDialog } from './edit-service-dialog'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
-import { removeServiceFromAppointment } from '../api/mutations'
-import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
+import { removeServiceFromAppointment } from '@/features/business/appointments/api/mutations'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import { useToast } from '@/lib/hooks/use-toast'
 
 interface AppointmentServicesManagerProps {

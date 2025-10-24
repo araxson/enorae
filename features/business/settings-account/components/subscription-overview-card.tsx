@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -31,37 +31,28 @@ const tierFeatures: Record<Subscription['tier'], string[]> = {
   ],
 }
 
-function getTierColor(tier: Subscription['tier']) {
-  switch (tier) {
-    case 'basic':
-      return 'bg-secondary text-secondary-foreground'
-    case 'professional':
-      return 'bg-secondary/10 text-secondary'
-    case 'enterprise':
-      return 'bg-primary/10 text-primary'
-    default:
-      return 'bg-secondary text-secondary-foreground'
-  }
-}
-
 export function SubscriptionOverviewCard({
   subscription,
 }: {
   subscription: Subscription
 }) {
-  return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-8">
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="scroll-m-20 text-2xl font-semibold">Current Subscription</h3>
-            <p className="text-sm text-muted-foreground">Manage your plan and billing</p>
-          </div>
-          <Badge className={getTierColor(subscription.tier)}>
-            {subscription.tier.toUpperCase()}
-          </Badge>
-        </div>
+  const tierVariant =
+    subscription.tier === 'enterprise'
+      ? 'default'
+      : subscription.tier === 'professional'
+        ? 'secondary'
+        : 'outline'
 
+  return (
+    <Card>
+      <CardHeader className="flex items-start justify-between">
+        <div>
+          <CardTitle>Current Subscription</CardTitle>
+          <CardDescription>Manage your plan and billing</CardDescription>
+        </div>
+        <Badge variant={tierVariant}>{subscription.tier.toUpperCase()}</Badge>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-8">
         <Separator />
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -123,7 +114,7 @@ export function SubscriptionOverviewCard({
             Cancel Subscription
           </Button>
         </div>
-      </div>
+      </CardContent>
     </Card>
   )
 }

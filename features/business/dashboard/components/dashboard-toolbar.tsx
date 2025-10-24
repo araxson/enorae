@@ -63,9 +63,11 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
             </p>
           </div>
           {isTenantOwner && totalLocations ? (
-            <Badge variant="secondary" className="gap-1">
-              <LayoutDashboard className="h-3 w-3" />
-              {totalLocations} locations
+            <Badge variant="secondary">
+              <span className="flex items-center gap-1">
+                <LayoutDashboard className="h-3 w-3" />
+                {totalLocations} locations
+              </span>
             </Badge>
           ) : null}
         </div>
@@ -102,18 +104,20 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
           </Select>
         </div>
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <Badge variant="outline">Timeframe {timeframe} days</Badge>
-          <Badge variant="outline">{isTenantOwner ? 'Tenant owner' : 'Team member'}</Badge>
+          <Badge variant="outline">
+            <span className="flex items-center gap-1">Timeframe {timeframe} days</span>
+          </Badge>
+          <Badge variant="outline">
+            <span className="flex items-center gap-1">{isTenantOwner ? 'Tenant owner' : 'Team member'}</span>
+          </Badge>
         </div>
       </div>
 
       <Separator />
 
-      <Alert variant="default" className="bg-muted/30">
-        <div className="flex items-center gap-2">
-          <Target className="h-4 w-4 text-primary" />
-          <AlertTitle>Weekly momentum</AlertTitle>
-        </div>
+      <Alert>
+        <Target className="h-4 w-4 text-primary" />
+        <AlertTitle>Weekly momentum</AlertTitle>
         <AlertDescription>
           Confirmation rate is holding steady. Encourage stylists to respond to pending bookings to keep the momentum.
         </AlertDescription>

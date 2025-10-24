@@ -6,8 +6,11 @@ export async function getProfileSummary(userId: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Fetch user profile directly
   const { data, error } = await supabase
-    .rpc('get_profile_summary', { p_user_id: userId })
+    .from('admin_users_overview')
+    .select('*')
+    .eq('id', userId)
     .single()
 
   if (error) throw error
@@ -19,8 +22,11 @@ export async function getMyProfileSummary() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Fetch current user's profile directly
   const { data, error } = await supabase
-    .rpc('get_my_profile')
+    .from('admin_users_overview')
+    .select('*')
+    .eq('id', user.id)
     .single()
 
   if (error) throw error

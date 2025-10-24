@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDistanceToNow } from 'date-fns'
-import type { RoleAuditEvent } from '../api/queries'
+import type { RoleAuditEvent } from '@/features/admin/roles/api/queries'
 
 interface RoleAuditTimelineProps {
   events: RoleAuditEvent[]

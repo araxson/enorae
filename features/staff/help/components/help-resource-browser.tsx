@@ -7,9 +7,13 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Download } from 'lucide-react'
 
-const resources = [
+const resources: ReadonlyArray<{
+  title: string
+  type: string
+  lastUpdated: string
+  status: string
+}> = [
   { title: 'Intro to appointment workflows', type: 'Article', lastUpdated: '3 days ago', status: 'New' },
-  { title: 'Inventory reconciliation checklist', type: 'Guide', lastUpdated: '1 week ago', status: 'Updated' },
   { title: 'Client retention scripts', type: 'Template', lastUpdated: '2 weeks ago', status: 'Popular' },
   { title: 'Enorae release overview – March', type: 'Video', lastUpdated: '4 weeks ago', status: 'Replay' },
 ] as const
@@ -36,45 +40,50 @@ export function HelpResourceBrowser() {
             <TabsTrigger value="articles">Articles</TabsTrigger>
             <TabsTrigger value="videos">Videos</TabsTrigger>
           </TabsList>
-          <TabsContent value="all" className="space-y-3">
-            <ScrollArea className="max-h-64 rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Updated</TableHead>
-                    <TableHead className="text-right">Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {resources.map((resource) => (
-                    <TableRow key={resource.title}>
-                      <TableCell className="font-medium">{resource.title}</TableCell>
-                      <TableCell>{resource.type}</TableCell>
-                      <TableCell>{resource.lastUpdated}</TableCell>
-                      <TableCell className="text-right">
-                        <Badge variant="secondary">{resource.status}</Badge>
-                      </TableCell>
+          <TabsContent value="all">
+            <div className="space-y-3">
+              <ScrollArea className="max-h-64 rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Updated</TableHead>
+                      <TableHead className="text-right">Status</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
-            <Separator />
-            <p className="text-xs text-muted-foreground">
-              Save any resource using the bookmark icon in the toolbar. Follow categories to be notified when new content drops.
+                  </TableHeader>
+                  <TableBody>
+                    {resources.map((resource) => (
+                      <TableRow key={resource.title}>
+                        <TableCell className="font-medium">{resource.title}</TableCell>
+                        <TableCell>{resource.type}</TableCell>
+                        <TableCell>{resource.lastUpdated}</TableCell>
+                        <TableCell className="text-right">
+                          <Badge variant="secondary">{resource.status}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
+              <Separator />
+              <p className="text-muted-foreground">
+                Save any resource using the bookmark icon in the toolbar. Follow categories to be notified when new content drops.
+              </p>
+            </div>
+          </TabsContent>
+          <TabsContent value="articles">
+            <p className="text-muted-foreground">
+              Quick reads covering workflows, customer scripts, and salon operations.
             </p>
           </TabsContent>
-          <TabsContent value="articles" className="text-sm text-muted-foreground">
-            Quick reads covering workflows, customer scripts, and salon operations.
-          </TabsContent>
-          <TabsContent value="videos" className="text-sm text-muted-foreground">
-            Watch on-demand walkthroughs and feature spotlights curated for staff.
+          <TabsContent value="videos">
+            <p className="text-muted-foreground">
+              Watch on-demand walkthroughs and feature spotlights curated for staff.
+            </p>
           </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
   )
 }
-

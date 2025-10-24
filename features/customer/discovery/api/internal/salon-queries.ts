@@ -2,28 +2,28 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import type { PostgrestError } from '@supabase/supabase-js'
 import type { Salon } from './types'
 import { sanitizeDiscoverySearchInput } from './helpers'
 
-type ServiceRow = Database['public']['Views']['services']['Row']
+type ServiceRow = Database['public']['Views']['services_view']['Row']
 
 export async function getSalons(categoryFilter?: string): Promise<Salon[]> {
   await requireAuth()
   const supabase = await createClient()
 
   let query = supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
 
   // If category filter is provided, find salons offering services in that category
   if (categoryFilter) {
     const { data: servicesData } = await supabase
-      .from('services')
+      .from('services_view')
       .select('salon_id, category_name')
       .eq('category_name', categoryFilter)
-      .eq('is_active', true)
-      .returns<Array<Pick<ServiceRow, 'salon_id' | 'category_name'>>>()
+      .eq('is_active', true) as { data: Array<Pick<ServiceRow, 'salon_id' | 'category_name'>> | null; error: PostgrestError | null }
 
     if (servicesData && servicesData.length > 0) {
       const salonIds = [...new Set(servicesData.map(s => s.salon_id).filter(Boolean) as string[])]
@@ -44,7 +44,7 @@ export async function getSalonBySlug(slug: string): Promise<Salon> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('slug', slug)
     .eq('is_active', true)
@@ -61,7 +61,7 @@ export async function searchSalons(query: string, categoryFilter?: string): Prom
   const sanitizedQuery = sanitizeDiscoverySearchInput(query)
 
   let salonQuery = supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
 
@@ -75,11 +75,10 @@ export async function searchSalons(query: string, categoryFilter?: string): Prom
   // If category filter is provided, find salons offering services in that category
   if (categoryFilter) {
     const { data: servicesData } = await supabase
-      .from('services')
+      .from('services_view')
       .select('salon_id, category_name')
       .eq('category_name', categoryFilter)
-      .eq('is_active', true)
-      .returns<Array<Pick<ServiceRow, 'salon_id' | 'category_name'>>>()
+      .eq('is_active', true) as { data: Array<Pick<ServiceRow, 'salon_id' | 'category_name'>> | null; error: PostgrestError | null }
 
     if (servicesData && servicesData.length > 0) {
       const salonIds = [...new Set(servicesData.map(s => s.salon_id).filter(Boolean) as string[])]

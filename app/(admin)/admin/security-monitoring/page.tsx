@@ -1,10 +1,12 @@
-import { SecurityMonitoring } from '@/features/admin/security-monitoring'
+import { Suspense } from 'react'
+import { RateLimitConsole } from '@/features/admin/rate-limit-tracking'
 
-export const metadata = {
-  title: 'Security Monitoring',
-  description: 'Monitor access attempts, detect anomalies, and manage security configurations',
-}
+export const metadata = { title: 'Rate Limit Monitoring | Admin' }
 
-export default async function SecurityMonitoringPage() {
-  return <SecurityMonitoring />
+export default function RateLimitMonitoringPage() {
+  return (
+    <Suspense fallback={null}>
+      <RateLimitConsole />
+    </Suspense>
+  )
 }

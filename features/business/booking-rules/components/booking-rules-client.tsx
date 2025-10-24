@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Clock, Calendar, Timer } from 'lucide-react'
 import { BookingRuleForm } from './booking-rule-form'
-import type { BookingRuleWithService } from '../api/queries'
+import type { BookingRuleWithService } from '@/features/business/booking-rules/api/queries'
 
 interface BookingRulesClientProps {
   rules: BookingRuleWithService[]
@@ -42,7 +42,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
       <div className="flex flex-col gap-6">
         <div className="flex gap-4 items-center justify-between">
           <div>
-            <p className="leading-7 text-sm text-muted-foreground">
+            <p className="text-muted-foreground">
               {rules.length} {rules.length === 1 ? 'rule' : 'rules'} configured
             </p>
           </div>
@@ -54,13 +54,14 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
 
         {rules.length === 0 ? (
           <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
+            <CardHeader className="items-center text-center">
+              <CardTitle>No Booking Rules</CardTitle>
+              <CardDescription>
+                Configure service durations, buffers, and advance notice requirements.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center justify-center py-4">
               <Timer className="h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="scroll-m-20 text-2xl font-semibold">No Booking Rules</h3>
-              <p className="leading-7 text-muted-foreground text-center mt-2">
-                Create booking rules to configure service durations, buffer times, and advance
-                booking requirements
-              </p>
               <Button onClick={handleCreate} className="mt-4">
                 <Plus className="h-4 w-4 mr-2" />
                 Create First Rule
@@ -71,31 +72,27 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {rules.map((rule) => (
               <Card key={rule.id}>
-                <CardContent className="p-6">
-                  <div className="flex flex-col gap-4">
-                    <div>
-                      <h3 className="scroll-m-20 text-lg font-semibold">{rule.service?.name || 'Unknown Service'}</h3>
-                      {rule.total_duration_minutes && (
-                        <Badge variant="outline" className="mt-2">
-                          Total: {rule.total_duration_minutes} min
-                        </Badge>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                      {rule.duration_minutes !== null && rule.duration_minutes !== undefined && (
-                        <div className="flex gap-3 items-center">
-                          <Clock className="h-4 w-4 text-muted-foreground" />
-                          <p className="text-sm font-medium text-muted-foreground">Duration:</p>
-                          <p className="text-sm font-medium">{rule.duration_minutes} min</p>
+                <CardHeader>
+                  <CardTitle>{rule.service?.name || 'Unknown Service'}</CardTitle>
+                  {rule.total_duration_minutes ? (
+                    <CardDescription>Total {rule.total_duration_minutes} minutes</CardDescription>
+                  ) : null}
+                </CardHeader>
+                <CardContent className="flex flex-col gap-3 pt-0">
+                  <div className="flex flex-col gap-3">
+                    {rule.duration_minutes !== null && rule.duration_minutes !== undefined && (
+                      <div className="flex gap-3 items-center">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <p className="text-muted-foreground">Duration:</p>
+                        <p>{rule.duration_minutes} min</p>
                         </div>
                       )}
 
                       {rule.buffer_minutes !== null && rule.buffer_minutes !== undefined && (
                         <div className="flex gap-3 items-center">
                           <Timer className="h-4 w-4 text-muted-foreground" />
-                          <p className="text-sm font-medium text-muted-foreground">Buffer:</p>
-                          <p className="text-sm font-medium">{rule.buffer_minutes} min</p>
+                          <p className="text-muted-foreground">Buffer:</p>
+                          <p>{rule.buffer_minutes} min</p>
                         </div>
                       )}
 
@@ -103,8 +100,8 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                         rule.min_advance_booking_hours !== undefined && (
                           <div className="flex gap-3 items-center">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
-                            <p className="text-sm font-medium text-muted-foreground">Min Advance:</p>
-                            <p className="text-sm font-medium">
+                            <p className="text-muted-foreground">Min Advance:</p>
+                            <p>
                               {rule.min_advance_booking_hours}h
                             </p>
                           </div>
@@ -114,14 +111,13 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                         rule.max_advance_booking_days !== undefined && (
                           <div className="flex gap-3 items-center">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
-                            <p className="text-sm font-medium text-muted-foreground">Max Advance:</p>
-                            <p className="text-sm font-medium">
+                            <p className="text-muted-foreground">Max Advance:</p>
+                            <p>
                               {rule.max_advance_booking_days} days
                             </p>
                           </div>
                         )}
                     </div>
-                  </div>
                 </CardContent>
                 <CardFooter className="border-t p-4">
                   <Button variant="outline" size="sm" onClick={() => handleEdit(rule)} className="w-full">
@@ -135,9 +131,14 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
 
         {servicesWithoutRules.length > 0 && rules.length > 0 && (
           <Card>
-            <CardContent>
-              <p className="text-sm font-medium text-muted-foreground">
-                {servicesWithoutRules.length} service(s) without rules:{' '}
+            <CardHeader>
+              <CardTitle>Services Without Rules</CardTitle>
+              <CardDescription>
+                {servicesWithoutRules.length} service(s) missing configuration
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <p className="text-muted-foreground">
                 {servicesWithoutRules.map((s) => s.name).join(', ')}
               </p>
             </CardContent>

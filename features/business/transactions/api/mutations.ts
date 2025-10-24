@@ -36,7 +36,7 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
 
     // Get user's salon
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', session.user.id)
       .single<{ salon_id: string | null }>()
@@ -106,7 +106,7 @@ export async function deleteManualTransaction(id: string): Promise<ActionResult>
 
     // Get user's salon
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', session.user.id)
       .single<{ salon_id: string | null }>()

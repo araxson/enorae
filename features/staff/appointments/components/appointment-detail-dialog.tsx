@@ -10,7 +10,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Calendar, Clock, User, DollarSign, Mail } from 'lucide-react'
-import type { StaffAppointment, AppointmentStatus } from '../api/queries'
+import type { StaffAppointment, AppointmentStatus } from '@/features/staff/appointments/api/queries'
 
 type AppointmentDetailDialogProps = {
   appointment: StaffAppointment | null

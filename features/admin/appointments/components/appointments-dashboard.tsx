@@ -5,7 +5,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import type { AppointmentSnapshot } from '../api/types'
+import type { AppointmentSnapshot } from '@/features/admin/appointments/api/types'
 import { MetricsSummary } from './metrics-summary'
 import { TrendTable } from './trend-table'
 import { CancellationPatternsCard } from './cancellation-patterns-card'
@@ -58,17 +58,17 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold mb-1">Platform Appointment Oversight</h2>
-          <p className="text-sm text-muted-foreground">
+        <div className="space-y-1">
+          <h2 className="mb-1">Platform Appointment Oversight</h2>
+          <p className="text-muted-foreground">
             Aggregated metrics across all salons. Last updated {lastUpdatedLabel}.
           </p>
           {error && (
-            <p className="mt-2 text-sm text-destructive">{error}</p>
+            <p className="mt-2 text-destructive">{error}</p>
           )}
         </div>
         <div className="flex items-center gap-3">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          <p className="text-muted-foreground">
             Auto-refresh 30s
           </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>

@@ -1,16 +1,21 @@
 # Staff Portal - Queries Analysis
 
-**Date**: 2025-10-20  
-**Portal**: Staff  
-**Layer**: Queries  
-**Files Analyzed**: 19  
-**Issues Found**: 6 (Critical: 2, High: 3, Medium: 1, Low: 0)
+**Date**: 2025-10-23
+**Portal**: Staff
+**Layer**: Queries
+**Files Analyzed**: 18
+**Issues Found**: 4 (Critical: 1, High: 3, Medium: 0, Low: 0)
 
 ---
 
 ## Summary
 
-Reviewed every `features/staff/**/api/queries.ts` module to validate `import 'server-only'`, auth enforcement, Supabase view usage, and type safety. Cross-checked public view coverage via Supabase MCP (`information_schema.tables` shows all referenced relations are exposed as public views, including `appointments`, `staff`, and `staff_schedules`). Confirmed no `.from()` call targets schema tables directly, satisfying CLAUDE Rule 1, and no `any` types slipped through, aligning with TypeScript strict mode guidance (Context7 TypeScript docs: “Pluck properties with type safety”). However, several analytics and messaging queries return inaccurate or over-broad data, and two core helpers read from incorrect columns, causing immediate runtime failures. These problems violate CLAUDE Rule 8 (auth/data correctness) and Next.js server data best practices that stress accurate server-side fetching (Context7 Next.js App Router: “Server Components for Data Fetching”). Supabase advisors report no RLS gaps on the public views used, though broader project warnings exist (unused indexes), which we noted for context.
+- Confirmed every `features/staff/**/api/queries.ts` file includes the required `import 'server-only'` directive and relies on Supabase server clients, matching the Supabase server pattern from `/supabase/supabase` best practices.
+- Authentication helpers vary (`requireAuth`, `requireAnyRole`, `verifySession`); most functions validate the current user before querying.
+- Several modules still query schema tables (`appointments`, `profiles_metadata`, `messages`, `message_threads`) instead of the mandated public views, violating Rule 7 from `docs/stack-patterns/supabase-patterns.md`.
+- Messaging queries mis-handle staff identity, comparing `staff_id` against the auth user id rather than the staff profile id, which breaks tenant isolation.
+- Attempted to generate up-to-date Supabase types, but `supabase__generate_typescript_types` returned `PGRST002`; current `lib/types/database.types.ts` is a minimal fallback, so code relies on untyped rows. Documented under each issue where schema confirmation is blocked.
+- Supabase advisors report one security warning (leaked password protection disabled) and a large number of unused index notices; no direct action taken in this layer, but linked remediation URL is `https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection`.
 
 ---
 
@@ -18,308 +23,196 @@ Reviewed every `features/staff/**/api/queries.ts` module to validate `import 'se
 
 ### Critical Priority
 
-#### Issue #1: Settings query filters on non-existent `user_id` column
+#### Issue #1: Thread message query leaks cross-thread data
 **Severity**: Critical  
-**File**: `features/staff/settings/api/queries.ts:46-58`  
-**Rule Violation**: CLAUDE.md Rule 10 (Type safety) & Context7 TypeScript “Pluck properties with type safety” – relying on typed schema would have prevented invalid column access.
-
-**Current Code**:
-```typescript
-const { data: profile } = await supabase
-  .from('profiles')
-  .select('id')
-  .eq('user_id', session.user.id)
-  .single<{ id: string }>()
-```
-
-**Problem**:
-The `profiles` public view exposes `id` (already the auth user ID) but no `user_id`. PostgREST returns `column profiles.user_id does not exist`, breaking the Staff Preferences page for every user.
-
-**Required Fix**:
-```typescript
-const { data: profile, error: profileError } = await supabase
-  .from('profiles')
-  .select('id')
-  .eq('id', session.user.id)
-  .maybeSingle<{ id: string }>()
-
-if (profileError) throw profileError
-if (!profile?.id) return DEFAULT_PREFERENCES
-```
-
-**Steps to Fix**:
-1. Replace the `eq('user_id', …)` filter with `eq('id', session.user.id)` and handle `profileError`.
-2. Switch to `.maybeSingle()` to avoid throwing when no row exists.
-3. Re-run `npm run typecheck` to ensure strict typing flags any future schema mismatches.
-
-**Acceptance Criteria**:
-- [ ] `getUserPreferences` succeeds for authenticated staff without triggering PostgREST column errors.  
-- [ ] Defaults apply only when the profile truly doesn’t exist.  
-- [ ] TypeScript passes with no `any` regressions.
-
-**Dependencies**: None
-
----
-
-#### Issue #2: `getScheduleSalon` assumes staff is salon owner
-**Severity**: Critical  
-**File**: `features/staff/schedule/api/queries.ts:131-147`  
-**Rule Violation**: CLAUDE.md Rule 8 (Verify auth & tenant scoping) – current query ignores staff tenancy.
-
-**Current Code**:
-```typescript
-const { data: salon, error } = await supabase
-  .from('salons')
-  .select('id')
-  .eq('owner_id', session.user.id)
-  .single()
-
-if (error || !salon) {
-  throw new Error('No salon found for your account')
-}
-```
-
-**Problem**:
-Staff users are not salon owners. Filtering by `owner_id` always fails, blocking schedule views and swap flows for every staff member.
-
-**Required Fix**:
-```typescript
-const { data: staffProfile, error: staffError } = await supabase
-  .from('staff')
-  .select('salon_id')
-  .eq('user_id', session.user.id)
-  .maybeSingle<{ salon_id: string | null }>()
-
-if (staffError) throw staffError
-if (!staffProfile?.salon_id) throw new Error('No salon assignment found')
-
-return { id: staffProfile.salon_id }
-```
-
-**Steps to Fix**:
-1. Look up the staff member’s salon via the `staff` view scoped by user ID.
-2. Return the salon ID instead of the entire salon row (keeps response minimal).
-3. Update downstream callers (if any) to expect `{ id: string }`.
-4. Validate behaviour with an authenticated staff user in QA.
-
-**Acceptance Criteria**:
-- [ ] Staff schedule pages load without “No salon found” errors.  
-- [ ] Returned salon ID matches the staff profile’s `salon_id`.  
-- [ ] `npm run typecheck` passes.
-
-**Dependencies**: None
-
----
-
-### High Priority
-
-#### Issue #3: Staff performance metrics never accumulate revenue
-**Severity**: High  
-**File**: `features/staff/analytics/api/queries.ts:108-119`  
-**Rule Violation**: CLAUDE.md Rule 8 (data accuracy) & Next.js App Router best practice to keep server data correct (Context7 “Server Components for Data Fetching”).
-
-**Current Code**:
-```typescript
-const appointmentIds = appointmentRows.map(a => a.id)
-if (appointmentIds.length > 0) {
-  const { data: services } = await supabase
-    .from('service_pricing_view')
-    .select('price')
-    .in('service_id', appointmentIds)
-  totalRevenue = services?.reduce((sum, s) => sum + (Number(s.price) || 0), 0) || 0
-}
-```
-
-**Problem**:
-The code compares appointment IDs against `service_pricing_view.service_id`, so the query returns zero rows. `total_revenue` and downstream commissions are always 0, breaking the dashboard.
-
-**Required Fix**:
-```typescript
-const totalRevenue = appointmentRows.reduce(
-  (sum, appt) => sum + Number(appt.total_price ?? 0),
-  0,
-)
-```
-
-**Steps to Fix**:
-1. Remove the extra Supabase fetch; rely on the `appointments` view’s `total_price`.
-2. Ensure `total_price` is selected in the initial appointment query (`select('id, status, customer_id, created_at, total_price')`).
-3. Recalculate `avg_appointment_value` from the updated revenue.
-4. Add a regression test or storybook value check if available.
-
-**Acceptance Criteria**:
-- [ ] `total_revenue` reflects the sum of appointment `total_price`.  
-- [ ] Average appointment value updates accordingly.  
-- [ ] No additional Supabase request is made for pricing.
-
-**Dependencies**: Blocks Issue #5 fix.
-
----
-
-#### Issue #4: Revenue breakdown counts services, not bookings
-**Severity**: High  
-**File**: `features/staff/analytics/api/queries.ts:152-212`  
-**Rule Violation**: CLAUDE.md Rule 8 (data accuracy) & Supabase pattern guidance to query the correct view.
-
-**Current Code**:
-```typescript
-const { data: staffServices } = await supabase
-  .from('staff_services')
-  .select(`service_id, services:service_id ( name, service_pricing ( price ))`)
-// …
-const revenueMap = new Map()
-staffServiceRows.forEach(ss => {
-  const price = Number(ss.services?.service_pricing?.[0]?.price || 0)
-  current.count += 1
-  current.revenue += price
-})
-```
-
-**Problem**:
-The function never examines appointment data, so `bookings_count` and `total_revenue` reflect how many services the stylist offers, not what clients booked during the chosen window.
-
-**Required Fix**:
-```typescript
-const { data: services, error } = await supabase
-  .from('appointment_services')
-  .select(`
-    service_id,
-    service_name,
-    price,
-    appointments!inner(staff_id, status, start_time)
-  `)
-  .eq('appointments.staff_id', targetStaffId)
-  .eq('appointments.status', 'completed')
-  .gte('appointments.start_time', start)
-  .lte('appointments.start_time', end)
-
-// Group by service_id using the returned price values
-```
-
-**Steps to Fix**:
-1. Join through `appointment_services` (public view verified via MCP) with inner `appointments` relation.
-2. Group by `service_id` to count bookings and sum actual `price`.
-3. Return `avg_price` as `revenue / count`.
-4. Verify the query via Supabase console or unit test.
-
-**Acceptance Criteria**:
-- [ ] Revenue breakdown reflects only completed appointments in the date range.  
-- [ ] `bookings_count` equals number of appointment-service rows per service.  
-- [ ] No placeholder pricing values remain.
-
-**Dependencies**: None
-
----
-
-#### Issue #5: Message fetch ignores thread scoping
-**Severity**: High  
-**File**: `features/staff/messages/api/queries.ts:57-63`  
-**Rule Violation**: CLAUDE.md Rule 8 (tenant scoping) – query must scope by thread ID.
+**File**: `features/staff/messages/api/queries.ts:40-63`  
+**Rule Violation**: Rule 7 – Reads must stay within tenant scope; React Server Component pattern (React docs) expects precise data selection.
 
 **Current Code**:
 ```typescript
 const { data, error } = await supabase
   .from('messages')
   .select('*')
-  .or(`from_user_id.eq.${session.user.id},to_user_id.eq.${session.user.id}`)
-  .eq('is_deleted', false)
-```
-
-**Problem**:
-The query returns all of the staff member’s messages across every conversation. The thread view becomes a full inbox dump and risks leaking unrelated context if UI rendering changes.
-
-**Required Fix**:
-```typescript
-const { data, error } = await supabase
-  .from('messages')
-  .select('*')
-  .eq('thread_id', threadId)
   .or(`from_user_id.eq.${session.user.id},to_user_id.eq.${session.user.id}`)
   .eq('is_deleted', false)
   .order('created_at', { ascending: true })
 ```
 
-**Steps to Fix**:
-1. Add `.eq('thread_id', threadId)` before the `.or(...)` clause.
-2. Wrap the `.or()` condition in parentheses if Supabase requires explicit grouping (`or=(...)`).
-3. Confirm the SQL plan in Supabase inspector (optional).
-
-**Acceptance Criteria**:
-- [ ] Only messages belonging to `threadId` are returned.  
-- [ ] Thread view matches expected conversation history.  
-- [ ] Existing tests (if any) updated.
-
-**Dependencies**: None
-
----
-
-### Medium Priority
-
-#### Issue #6: Customer relationship revenue uses placeholder values
-**Severity**: Medium  
-**File**: `features/staff/analytics/api/queries.ts:253-287`  
-**Rule Violation**: CLAUDE.md Rule 8 (data accuracy) & Context7 Next.js guidance on correct server data handling.
-
-**Current Code**:
-```typescript
-customer.revenue += 50 // Placeholder - would need to fetch actual pricing
-```
-
 **Problem**:
-Each completed appointment adds a hard-coded `$50`, misreporting spend totals and favourite services for clients. This undermines staff retention analytics.
+- The query never filters by `threadId`, so it returns *every* message involving the logged-in user, exposing content from unrelated threads.
+- `messages` is the raw schema table, bypassing any view-level tenant filtering that would normally be applied.
 
 **Required Fix**:
 ```typescript
-const price = Number(appt.total_price ?? 0)
-customer.revenue += price
-if (appt.service_names) {
-  customer.services.push(appt.service_names)
-}
+const { data, error } = await supabase
+  .from('messages_view')
+  .select('*')
+  .eq('thread_id', threadId)
+  .in('participant_id', [session.user.id, staffProfileId])
+  .eq('is_deleted', false)
+  .order('created_at', { ascending: true })
 ```
+*(Replace `messages_view`/`participant_id` with the actual public view + column names once schema types are available; ensure both staff profile and customer participation are enforced.)*
 
 **Steps to Fix**:
-1. Include `total_price` and `service_names` in the appointments select clause.
-2. Accumulate `total_price` instead of a placeholder.
-3. Track service usage if favourite services are required (e.g., count occurrences).
-4. Adjust favourite-service logic to use tracked services.
+1. Introduce or use the existing public view that scopes messages by thread and participant.
+2. Add an `eq('thread_id', threadId)` predicate and ensure participant filtering respects both staff and customer sides.
+3. Re-run `supabase__generate_typescript_types` once the API issue is resolved to confirm the view schema.
+4. Re-run `npm run typecheck`.
 
 **Acceptance Criteria**:
-- [ ] Total spend equals the sum of actual appointment totals.  
-- [ ] Favourite service uses real data (no empty arrays).  
-- [ ] Analytics UI reflects updated values.
+- [ ] Query only returns messages for the requested `threadId`.
+- [ ] All reads use the approved public view, not schema tables.
+- [ ] TypeScript definitions align with the actual view columns.
 
-**Dependencies**: Issue #3 (needs `total_price` selection).
+**Dependencies**: Requires accurate public view definition for staff messaging.
 
 ---
 
-### Low Priority
+### High Priority
 
-No low priority issues identified.
+#### Issue #2: `getStaffCommission` reads from partitioned tables directly
+**Severity**: High  
+**File**: `features/staff/dashboard/api/queries.ts:139-164`  
+**Rule Violation**: Rule 7 – Reads must use public views; Supabase best practice discourages querying partition parents (`scheduling.appointments`).
+
+**Current Code**:
+```typescript
+const [todayResult, weekResult, monthResult] = await Promise.all([
+  supabase.from('appointments').select('total_price')...
+  ...
+])
+```
+
+**Problem**:
+- `appointments` is a partitioned schema table in `scheduling`; querying it bypasses view-level RLS and can break when Supabase rotates partitions.
+- The minimal types file offers no guarantees about columns (only `[key: string]: any`), so runtime bugs won’t be surfaced during type checking.
+
+**Required Fix**:
+```typescript
+const source = supabase.from('appointments_view').select('total_price, commission_rate')
+```
+*(Update selected columns to match the actual view; include the commission inputs you need and compute totals client-side.)*
+
+**Steps to Fix**:
+1. Switch every `.from('appointments')` to the approved public view (likely `appointments_view`).
+2. Confirm the view exposes the necessary pricing columns (generate types once the Supabase endpoint is healthy).
+3. Re-run `npm run typecheck`.
+
+**Acceptance Criteria**:
+- [ ] Commission logic only reads from the sanctioned view.
+- [ ] No schema-table queries remain in the staff dashboard API.
+
+**Dependencies**: Await successful regeneration of Supabase types for column validation.
+
+---
+
+#### Issue #3: Staff profile details query bypasses view layer
+**Severity**: High  
+**File**: `features/staff/profile/api/queries.ts:47-57`  
+**Rule Violation**: Rule 7 – Reads from schema tables (`profiles_metadata` in `identity`); Supabase guidance recommends exposing that data via a public view.
+
+**Current Code**:
+```typescript
+supabase
+  .from('profiles_metadata')
+  .select('*')
+  .eq('profile_id', profile.user_id)
+```
+
+**Problem**:
+- `profiles_metadata` lives in the `identity` schema (See `supabase__list_tables` output); querying it directly sidesteps the view layer and risks leaking cross-tenant data.
+- The minimal type file explicitly classifies `profiles_metadata` under `Database['identity']['Tables']`, affirming this is a table access, not a view.
+
+**Required Fix**:
+```typescript
+supabase
+  .from('profiles_metadata_view')
+  .select('full_name, avatar_url, ...')
+  .eq('profile_id', profile.user_id)
+```
+*(Use the actual public view name; if it doesn’t exist, create one in the database and update the generated types.)*
+
+**Steps to Fix**:
+1. Expose the necessary metadata via a public view (or reuse an existing one).
+2. Update the code to reference that view and narrow the selected columns.
+3. Re-run Supabase type generation to regain static coverage.
+4. Run `npm run typecheck`.
+
+**Acceptance Criteria**:
+- [ ] No `.from('profiles_metadata')` or other schema tables remain.
+- [ ] TypeScript uses `Database['public']['Views'][...]` for metadata reads.
+
+**Dependencies**: Depends on availability of a metadata view in the public schema.
+
+---
+
+#### Issue #4: Message thread filtering uses wrong identifier and bypasses views
+**Severity**: High  
+**File**: `features/staff/messages/api/queries.ts:11-78`  
+**Rule Violation**: Rule 7 – Reads must filter by tenant scope, and must use public views. Database schema (`communication.message_threads.staff_id`) points to `organization.staff_profiles.id`, not the auth user id.
+
+**Current Code**:
+```typescript
+.from('message_threads')
+.eq('staff_id', session.user.id)
+```
+
+**Problem**:
+- `session.user.id` is an auth user id (from Supabase Auth), but `staff_id` references the staff profile. As a result, queries return empty sets or require future manual fixes, and they don’t enforce tenant scoping through staff ownership.
+- The code also hits the raw `message_threads` table instead of a curated view, amplifying the RLS risk noted in Supabase patterns.
+
+**Required Fix**:
+```typescript
+const staffProfile = await supabase
+  .from('staff_profiles_view')
+  .select('id')
+  .eq('user_id', session.user.id)
+  .maybeSingle()
+
+const staffId = staffProfile?.id
+// ...
+await supabase
+  .from('message_threads_view')
+  .select('*')
+  .eq('staff_id', staffId)
+```
+
+**Steps to Fix**:
+1. Resolve the staff profile id up front via `staff_profiles_view`.
+2. Query the public `message_threads` view (or create one) and filter by the staff profile id.
+3. Update `getUnreadCount`/`getThreadById` to reuse the resolved staff id.
+4. Re-run `npm run typecheck`.
+
+**Acceptance Criteria**:
+- [ ] Messaging queries filter by the staff profile id and use public views.
+- [ ] Unit or integration tests confirm staff only sees their own threads.
+
+**Dependencies**: Requires consistent staff-profile linkage in the database views.
 
 ---
 
 ## Statistics
 
-- Total Issues: 6  
-- Files Affected: 5  
-- Estimated Fix Time: 10 hours  
-- Breaking Changes: 0 (but analytics behaviour will change significantly once corrected)
+- Total Issues: 4
+- Files Affected: 3
+- Estimated Fix Time: 6 hours
+- Breaking Changes: Potential (switching to views may require DB support)
 
 ---
 
 ## Next Steps
 
-1. Tackle the two critical fixes (`getUserPreferences`, `getScheduleSalon`) to unblock settings and scheduling flows.  
-2. Address high-priority analytics and messaging bugs to restore accurate dashboards.  
-3. Follow with customer relationship revenue adjustments once the performance metrics are corrected.
+1. Address critical bug in `getThreadMessages` to restore message isolation.
+2. Move all remaining queries off schema tables (`appointments`, `profiles_metadata`, `messages`, `message_threads`) onto public views.
+3. Regenerate Supabase types once API access is restored (`supabase__generate_typescript_types`) and re-run `npm run typecheck`.
 
 ---
 
 ## Related Files
 
 This analysis should be done after:
-- [x] docs/staff-portal/01_PAGES_ANALYSIS.md
+- [x] Layer 1 page shell review
 
 This analysis blocks:
-- [ ] docs/staff-portal/03_MUTATIONS_ANALYSIS.md
-
+- [ ] Layer 3 mutations evaluation

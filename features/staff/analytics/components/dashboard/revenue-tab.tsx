@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
-import type { StaffRevenueBreakdown } from '../../api/queries'
+import type { StaffRevenueBreakdown } from '@/features/staff/analytics/api/queries'
 import { formatCurrency } from './utils'
 
 interface RevenueTabProps {

@@ -1,12 +1,24 @@
-
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
+import { PerformanceDiagnostics } from '@/features/admin/database-performance'
+import { StatsFreshnessMonitor } from '@/features/admin/statistics-freshness'
+import { ToastStorageAudit } from '@/features/admin/database-toast'
 import { getDatabaseHealthSnapshot } from './api/queries'
-import { HealthOverview } from './components/health-overview'
-import { QueryPerformancePanel } from './components/query-performance-panel'
 import { DatabaseHealthPanel } from './components/database-health-panel'
-import { SchemaValidationPanel } from './components/schema-validation-panel'
+import { HealthOverview } from './components/health-overview'
 import { OptimizationPanel } from './components/optimization-panel'
+import { QueryPerformancePanel } from './components/query-performance-panel'
+import { SchemaValidationPanel } from './components/schema-validation-panel'
+
+export function DatabaseHealthDashboard() {
+  return (
+    <div className="space-y-8 py-8 md:py-12">
+      <PerformanceDiagnostics />
+      <StatsFreshnessMonitor />
+      <ToastStorageAudit />
+    </div>
+  )
+}
 
 export async function DatabaseHealth() {
   try {
@@ -16,7 +28,7 @@ export async function DatabaseHealth() {
       <section className="py-12 md:py-16 lg:py-20">
         <div className="container mx-auto">
           <div className="flex flex-col gap-6">
-            <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Database Health Monitor</h1>
+            <h1>Database Health Monitor</h1>
 
             <HealthOverview snapshot={snapshot} />
 

@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { assignUserRole } from '../api/mutations'
+import { assignUserRole } from '@/features/business/settings-roles/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
 interface AssignRoleDialogProps {

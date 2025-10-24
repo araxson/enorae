@@ -24,7 +24,7 @@ export async function getTimeOffRequests(): Promise<TimeOffRequestWithStaff[]> {
 
   // Get user's salon with explicit filter
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string | null }>()
@@ -35,7 +35,6 @@ export async function getTimeOffRequests(): Promise<TimeOffRequestWithStaff[]> {
     .from('time_off_requests_view')
     .select('*')
     .eq('salon_id', staffProfile.salon_id)
-    .is('deleted_at', null)
     .order('created_at', { ascending: false })
 
   if (error) throw error
@@ -50,7 +49,7 @@ export async function getPendingTimeOffRequests(): Promise<TimeOffRequestWithSta
 
   // Get user's salon with explicit filter
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string | null }>()
@@ -62,7 +61,6 @@ export async function getPendingTimeOffRequests(): Promise<TimeOffRequestWithSta
     .select('*')
     .eq('salon_id', staffProfile.salon_id)
     .eq('status', 'pending')
-    .is('deleted_at', null)
     .order('created_at', { ascending: false })
 
   if (error) throw error
@@ -82,7 +80,7 @@ export async function getTimeOffBalance(year?: number): Promise<TimeOffBalance> 
   const supabase = await createClient()
 
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .single<{ id: string | null }>()
@@ -139,7 +137,7 @@ export async function getTeamTimeOffCalendar(
   const supabase = await createClient()
 
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string | null }>()

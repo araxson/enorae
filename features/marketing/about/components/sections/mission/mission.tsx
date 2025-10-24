@@ -6,8 +6,8 @@ export function Mission() {
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4 max-w-3xl mx-auto text-center">
-          <h2 className="scroll-m-20 text-3xl font-semibold">{missionData.title}</h2>
-          <p className="leading-7 text-lg">{missionData.description}</p>
+          <h2 className="scroll-m-20">{missionData.title}</h2>
+          <p className="leading-7">{missionData.description}</p>
         </div>
 
         <div className="grid gap-6 grid-cols-1 md:grid-cols-3">

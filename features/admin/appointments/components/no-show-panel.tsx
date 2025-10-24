@@ -1,7 +1,7 @@
 import { CalendarOff } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { AppointmentSnapshot } from '../api/types'
+import type { AppointmentSnapshot } from '@/features/admin/appointments/api/types'
 
 interface NoShowPanelProps {
   noShows: AppointmentSnapshot['noShows']
@@ -34,22 +34,26 @@ export function NoShowPanel({ noShows }: NoShowPanelProps) {
           <div className="space-y-2">
             {noShows.recent.map((item) => (
               <Card key={item.id}>
-                <CardContent className="p-3">
+                <CardHeader className="pb-2">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-sm font-medium">{item.customerName || 'Unknown'}</span>
-                    <Badge variant="outline" className="text-xs">
-                      {item.salonName || 'Unassigned'}
-                    </Badge>
-                  </div>
-                  <div className="mt-1 text-xs text-muted-foreground">
-                    {item.staffName ? `Staff: ${item.staffName} · ` : ''}
-                    {item.startTime ? new Date(item.startTime).toLocaleString() : 'Unknown time'}
-                  </div>
-                  {item.totalPrice && (
-                    <div className="mt-1 text-xs text-muted-foreground">
-                      Estimated value ${item.totalPrice.toFixed(2)}
+                    <CardTitle>{item.customerName || 'Unknown'}</CardTitle>
+                    <div className="text-xs">
+                      <Badge variant="outline">{item.salonName || 'Unassigned'}</Badge>
                     </div>
-                  )}
+                  </div>
+                  <CardDescription>
+                    {item.startTime ? new Date(item.startTime).toLocaleString() : 'Unknown time'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-1 pt-0">
+                  {item.staffName ? (
+                    <p className="text-xs text-muted-foreground">Staff: {item.staffName}</p>
+                  ) : null}
+                  {item.totalPrice ? (
+                    <p className="text-xs text-muted-foreground">
+                      Estimated value ${item.totalPrice.toFixed(2)}
+                    </p>
+                  ) : null}
                 </CardContent>
               </Card>
             ))}

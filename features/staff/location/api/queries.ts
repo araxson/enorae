@@ -1,7 +1,7 @@
 import 'server-only'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import type { StaffLocationDetail } from '../types'
+import type { StaffLocationDetail } from '@/features/staff/location/types'
 
 export async function getMyLocation(): Promise<StaffLocationDetail | null> {
   const session = await verifySession()
@@ -11,7 +11,7 @@ export async function getMyLocation(): Promise<StaffLocationDetail | null> {
 
   // Get user's salon_id
   const { data: staffData, error: staffError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id, location_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string; location_id: string | null }>()
@@ -21,7 +21,7 @@ export async function getMyLocation(): Promise<StaffLocationDetail | null> {
   // If staff has a specific location, get that one
   if (staffData.location_id) {
     const { data, error } = await supabase
-      .from('salon_locations')
+      .from('salon_locations_view')
       .select('*')
       .eq('id', staffData.location_id)
       .single()
@@ -35,7 +35,7 @@ export async function getMyLocation(): Promise<StaffLocationDetail | null> {
 
   // Otherwise get the primary location for the salon
   const { data, error } = await supabase
-    .from('salon_locations')
+    .from('salon_locations_view')
     .select('*')
     .eq('salon_id', staffData.salon_id)
     .eq('is_primary', true)
@@ -56,7 +56,7 @@ export async function getAllSalonLocations(): Promise<StaffLocationDetail[]> {
 
   // Get user's salon_id
   const { data: staffData, error: staffError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string }>()
@@ -64,7 +64,7 @@ export async function getAllSalonLocations(): Promise<StaffLocationDetail[]> {
   if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')
 
   const { data, error } = await supabase
-    .from('salon_locations')
+    .from('salon_locations_view')
     .select('*')
     .eq('salon_id', staffData.salon_id)
     .order('is_primary', { ascending: false })

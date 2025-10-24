@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Star } from 'lucide-react'
-import type { ServicePerformance } from '../../api/queries'
+import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 import { getPerformanceIcon, formatCurrency } from './utils'
 
 export function PerformanceOverviewCard({ services }: { services: ServicePerformance[] }) {

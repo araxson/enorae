@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { AuditLogsFilters, AuditLogFilters } from './audit-logs-filters'
 import { AuditLogsTable } from './audit-logs-table'
-import type { AuditLog } from '../api/queries'
+import type { AuditLog } from '@/features/business/settings-audit-logs/api/queries'
 
 interface AuditLogsClientProps {
   initialLogs: AuditLog[]

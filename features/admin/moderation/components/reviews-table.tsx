@@ -12,11 +12,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { flagReview, unflagReview, deleteReview, featureReview } from '../api/mutations'
-import type { ModerationReview } from '../api/queries'
+import { Label } from '@/components/ui/label'
+import { flagReview, unflagReview, deleteReview, featureReview } from '@/features/admin/moderation/api/mutations'
+import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import { ReviewsTableRow } from './reviews-table-row'
 
 const EMPTY_MESSAGE = 'No reviews found'
@@ -136,62 +138,61 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
 
   return (
     <>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Salon</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Rating</TableHead>
-              <TableHead>Review</TableHead>
-              <TableHead>Sentiment</TableHead>
-              <TableHead>Risk</TableHead>
-              <TableHead>Reputation</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead className="w-12" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {reviews.length === 0 ? (
+      <Card>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={9} className="text-center text-muted-foreground">
-                  {EMPTY_MESSAGE}
-                </TableCell>
+                <TableHead>Salon</TableHead>
+                <TableHead>Customer</TableHead>
+                <TableHead>Rating</TableHead>
+                <TableHead>Review</TableHead>
+                <TableHead>Sentiment</TableHead>
+                <TableHead>Risk</TableHead>
+                <TableHead>Reputation</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead className="w-12" />
               </TableRow>
-            ) : (
-              reviews.map((review) => (
-                <ReviewsTableRow
-                  key={review.id}
-                  review={review}
-                  loadingId={loadingId}
-                  onViewDetail={onViewDetail}
-                  onFlag={(r) => openDialog('flag', r)}
-                  onUnflag={(r) => openDialog('unflag', r)}
-                  onToggleFeature={(r) => openDialog('feature', r)}
-                  onDelete={(r) => openDialog('delete', r)}
-                />
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            </TableHeader>
+            <TableBody>
+              {reviews.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center text-muted-foreground">
+                    {EMPTY_MESSAGE}
+                  </TableCell>
+                </TableRow>
+              ) : (
+                reviews.map((review) => (
+                  <ReviewsTableRow
+                    key={review.id}
+                    review={review}
+                    loadingId={loadingId}
+                    onViewDetail={onViewDetail}
+                    onFlag={(r) => openDialog('flag', r)}
+                    onUnflag={(r) => openDialog('unflag', r)}
+                    onToggleFeature={(r) => openDialog('feature', r)}
+                    onDelete={(r) => openDialog('delete', r)}
+                  />
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       <AlertDialog open={dialog.type !== null} onOpenChange={(open) => (open ? void 0 : closeDialog())}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{dialogContent?.title}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {dialogContent?.description}
-              <br />
-              <strong className="mt-2 block">Review by: {dialogContent?.reviewLabel}</strong>
+            <AlertDialogDescription>{dialogContent?.description}</AlertDialogDescription>
+            <AlertDialogDescription className="mt-2">
+              Review by: {dialogContent?.reviewLabel}
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           {requiresReason && (
             <div className="space-y-2">
-              <label htmlFor="moderation-reason" className="text-sm font-medium">
-                Reason (required)
-              </label>
+              <Label htmlFor="moderation-reason">Reason (required)</Label>
               <Textarea
                 id="moderation-reason"
                 value={reason}

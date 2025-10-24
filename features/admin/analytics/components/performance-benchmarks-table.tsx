@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { PlatformAnalyticsSnapshot } from '../api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface PerformanceBenchmarksTableProps {
   performance: PlatformAnalyticsSnapshot['performance']
@@ -27,15 +27,15 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
         <div className="grid gap-4 text-sm md:grid-cols-3">
           <div>
             <p className="text-xs text-muted-foreground">Avg. utilization</p>
-            <p className="text-xl font-semibold text-foreground">{formatPercent(performance.avgUtilization)}</p>
+            <p className="text-xl font-semibold">{formatPercent(performance.avgUtilization)}</p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground">Revenue per salon (30d)</p>
-            <p className="text-xl font-semibold text-foreground">{formatCurrencyCompact(performance.revenuePerSalon)}</p>
+            <p className="text-xl font-semibold">{formatCurrencyCompact(performance.revenuePerSalon)}</p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground">Appointments per salon</p>
-            <p className="text-xl font-semibold text-foreground">{performance.appointmentsPerSalon.toFixed(1)}</p>
+            <p className="text-xl font-semibold">{performance.appointmentsPerSalon.toFixed(1)}</p>
           </div>
         </div>
 
@@ -57,7 +57,7 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
               <TableBody>
                 {performance.topSalons.map((salon) => (
                   <TableRow key={salon.salonId}>
-                    <TableCell className="font-medium text-foreground">
+                    <TableCell className="font-medium">
                       {salon.salonName || salon.salonId}
                       {salon.ratingAverage ? (
                         <span className="ml-2 text-xs text-muted-foreground">⭐ {salon.ratingAverage.toFixed(1)}</span>

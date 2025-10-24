@@ -2,8 +2,8 @@
 import { useState } from 'react'
 import { Upload, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { uploadPortfolioImage } from '../api/mutations'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { uploadPortfolioImage } from '@/features/staff/profile/api/mutations'
 import Image from 'next/image'
 
 interface PortfolioGalleryProps {
@@ -38,65 +38,67 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-4">
-        <h3 className="scroll-m-20 text-2xl font-semibold">Portfolio Gallery</h3>
-
-        <div>
-          <input
-            type="file"
-            id="portfolio-upload"
-            accept="image/jpeg,image/jpg,image/png,image/webp"
-            onChange={handleFileChange}
-            disabled={isUploading}
-            className="hidden"
-          />
-          <label htmlFor="portfolio-upload">
-            <Button
-              type="button"
-              variant="outline"
+    <Card>
+      <CardHeader>
+        <CardTitle>Portfolio Gallery</CardTitle>
+        <CardDescription>Upload images to showcase your work.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-4">
+          <div>
+            <input
+              type="file"
+              id="portfolio-upload"
+              accept="image/jpeg,image/jpg,image/png,image/webp"
+              onChange={handleFileChange}
               disabled={isUploading}
-              onClick={() => document.getElementById('portfolio-upload')?.click()}
-            >
-              {isUploading ? (
-                <>Uploading...</>
-              ) : (
-                <>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Image
-                </>
-              )}
-            </Button>
-          </label>
-          <p className="text-xs text-muted-foreground ml-2">
-            Max 5MB per image
-          </p>
-        </div>
-
-        {error && (
-          <p className="text-sm text-destructive">{error}</p>
-        )}
-
-        {portfolioImages.length > 0 ? (
-          <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {portfolioImages.map((url, index) => (
-              <div key={index} className="relative aspect-square">
-                <Image
-                  src={url}
-                  alt={`Portfolio image ${index + 1}`}
-                  fill
-                  className="object-cover rounded-lg"
-                />
-              </div>
-            ))}
+              className="hidden"
+            />
+            <label htmlFor="portfolio-upload">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isUploading}
+                onClick={() => document.getElementById('portfolio-upload')?.click()}
+              >
+                {isUploading ? (
+                  <>Uploading...</>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Image
+                  </>
+                )}
+              </Button>
+            </label>
+            <p className="ml-2 text-xs text-muted-foreground">Max 5MB per image</p>
           </div>
-        ) : (
-          <Card className="p-8 text-center border-dashed">
-            <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">No portfolio images yet. Add your best work!</p>
-          </Card>
-        )}
-      </div>
+
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+
+          {portfolioImages.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {portfolioImages.map((url, index) => (
+                <div key={index} className="relative aspect-square">
+                  <Image
+                    src={url}
+                    alt={`Portfolio image ${index + 1}`}
+                    fill
+                    className="rounded-lg object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-8 text-center">
+              <Upload className="h-12 w-12 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
+                No portfolio images yet. Add your best work!
+              </p>
+            </div>
+          )}
+        </div>
+      </CardContent>
     </Card>
   )
 }

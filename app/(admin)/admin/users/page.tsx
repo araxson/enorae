@@ -5,6 +5,6 @@ export const metadata = {
   description: 'Manage platform users',
 }
 
-export default async function UsersPage() {
+export default function UsersPage() {
   return <UserManagement />
 }

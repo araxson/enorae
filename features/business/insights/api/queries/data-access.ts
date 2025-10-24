@@ -1,5 +1,6 @@
-import type { SupabaseClient } from '@supabase/supabase-js'
+import 'server-only'
 import type { Database } from '@/lib/types/database.types'
+import type { ServerSupabaseClient } from '@/lib/supabase/server'
 import type {
   AppointmentServiceRow,
   AppointmentWithProfile,
@@ -9,7 +10,7 @@ import type {
   StaffProfileRow,
 } from './customer-types'
 
-type Client = SupabaseClient<Database>
+type Client = ServerSupabaseClient
 
 export async function fetchAppointments(
   client: Client,

@@ -6,6 +6,7 @@ import { ReactivationOpportunities } from './components/reactivation-opportuniti
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { getCustomerInsights, getCustomerSegmentation, getCustomerCohorts } from '@/features/business/analytics/api/queries'
 import { getAtRiskCustomers, getReactivationOpportunities } from '@/features/business/insights/api/churn-prediction'
+import { CardTitle, CardDescription } from '@/components/ui/card'
 
 export async function CustomerAnalytics() {
   const salon = await getUserSalon()
@@ -31,10 +32,10 @@ export async function CustomerAnalytics() {
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
         <div>
-          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Customer Intelligence</h1>
-          <p className="leading-7 text-muted-foreground">
+          <CardTitle>Customer Intelligence</CardTitle>
+          <CardDescription>
             Deep dive into lifetime value, retention, and churn risk to focus on the right customers.
-          </p>
+          </CardDescription>
         </div>
 
         <CustomerInsightsCard
@@ -60,7 +61,7 @@ export async function CustomerAnalytics() {
         </div>
 
         <div>
-          <h2 className="text-2xl font-semibold mb-3">Cohort Retention</h2>
+          <CardTitle>Cohort Retention</CardTitle>
           <CohortsTable cohorts={cohorts} start={start} end={end} />
         </div>
       </div>

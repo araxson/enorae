@@ -74,6 +74,141 @@ export const passwordSchema = z
   })
 ```
 
+### Common Validation Patterns
+
+```ts
+import { z } from 'zod'
+
+// Phone number validation
+export const phoneSchema = z.string()
+  .regex(/^\+?[1-9]\d{1,14}$/, 'Enter a valid phone number')
+  .or(z.literal(''))  // Optional phone
+
+// URL validation
+export const websiteSchema = z.string()
+  .url('Enter a valid URL')
+  .or(z.literal(''))  // Optional URL
+
+// Date/time validation
+export const appointmentSchema = z.object({
+  scheduledAt: z.string()
+    .datetime('Invalid datetime format')
+    .refine((date) => new Date(date) > new Date(), {
+      message: 'Appointment must be in the future',
+    }),
+  duration: z.coerce.number()
+    .min(15, 'Minimum 15 minutes')
+    .max(480, 'Maximum 8 hours'),
+})
+
+// Business hours validation
+export const operatingHoursSchema = z.object({
+  openTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, 'Use HH:MM format'),
+  closeTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, 'Use HH:MM format'),
+}).refine((data) => data.closeTime > data.openTime, {
+  message: 'Close time must be after open time',
+  path: ['closeTime'],
+})
+
+// Price validation with currency
+export const pricingSchema = z.object({
+  amount: z.coerce.number()
+    .min(0, 'Price cannot be negative')
+    .max(999999, 'Price too high')
+    .multipleOf(0.01, 'Use up to 2 decimal places'),
+  currency: z.enum(['USD', 'EUR', 'GBP'], {
+    errorMap: () => ({ message: 'Select a valid currency' }),
+  }),
+})
+
+// File upload validation (server-side)
+export const avatarUploadSchema = z.object({
+  file: z.instanceof(File)
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      message: 'File must be less than 5MB',
+    })
+    .refine((file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type), {
+      message: 'Only JPEG, PNG, and WebP images are allowed',
+    }),
+})
+
+// Conditional validation
+export const customerSchema = z.object({
+  type: z.enum(['individual', 'business']),
+  name: z.string().min(1, 'Name is required'),
+  businessName: z.string().optional(),
+  taxId: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.type === 'business') {
+    if (!data.businessName) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Business name is required',
+        path: ['businessName'],
+      })
+    }
+    if (!data.taxId) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Tax ID is required for businesses',
+        path: ['taxId'],
+      })
+    }
+  }
+})
+
+// Array validation with min/max
+export const serviceSelectionSchema = z.object({
+  services: z.array(z.string().uuid())
+    .min(1, 'Select at least one service')
+    .max(5, 'Maximum 5 services per booking'),
+})
+
+// Multi-field cross-validation
+export const discountSchema = z.object({
+  type: z.enum(['percentage', 'fixed']),
+  value: z.coerce.number().min(0),
+  maxDiscount: z.coerce.number().min(0).optional(),
+}).superRefine((data, ctx) => {
+  if (data.type === 'percentage') {
+    if (data.value > 100) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Percentage cannot exceed 100%',
+        path: ['value'],
+      })
+    }
+    if (!data.maxDiscount) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Maximum discount amount is required for percentage discounts',
+        path: ['maxDiscount'],
+      })
+    }
+  }
+})
+
+// Transform input (e.g., trim, lowercase)
+export const emailSchema = z.string()
+  .email('Enter a valid email')
+  .transform((val) => val.toLowerCase().trim())
+
+// Optional with default
+export const settingsSchema = z.object({
+  notifications: z.boolean().default(true),
+  theme: z.enum(['light', 'dark', 'system']).default('system'),
+  language: z.string().default('en'),
+})
+
+// Nullable vs optional
+export const noteSchema = z.object({
+  required: z.string(),              // Must exist, can't be null
+  optional: z.string().optional(),   // Can be undefined
+  nullable: z.string().nullable(),   // Can be null
+  both: z.string().nullable().optional(), // Can be null or undefined
+})
+```
+
 ---
 
 ## Form Composition
@@ -208,6 +343,8 @@ export async function updateProfile(prev: ActionState | undefined, formData: For
 }
 ```
 
+> ⚠️ `updateTag` only works inside Server Actions. Route handlers must call `revalidateTag(tag, 'max')` instead (Next.js 15 caching docs).
+
 ### Client Hook with `useActionState`
 
 ```tsx
@@ -231,6 +368,8 @@ export function ProfileFormContainer({ defaults }: { defaults: { name: string; t
   )
 }
 ```
+
+> The async function passed to `useActionState` receives `(previousState, formData)` and must return the next state. Call `redirect('/settings/profile')` inside the action after a successful update to short-circuit rendering, as shown in the React 19 `<form action>` documentation.
 
 ---
 
@@ -346,4 +485,4 @@ rg "supabase\.schema" features --type tsx
 
 ---
 
-**Last Updated:** 2025-10-19
+**Last Updated:** 2025-10-21 (Added comprehensive validation pattern examples)

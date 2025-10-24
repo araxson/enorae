@@ -31,7 +31,7 @@ export async function SalonDirectory({ searchParams }: SalonDirectoryProps) {
         {/* Header */}
         <div>
           <div className="flex flex-col gap-4">
-            <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Discover Salons</h1>
+            <h1 className="scroll-m-20">Discover Salons</h1>
             <p className="leading-7 text-muted-foreground">
               Find and book appointments at the best salons in your area
             </p>
@@ -99,7 +99,6 @@ export async function generateSalonProfileMetadata({ params }: SalonProfilePageP
     title: salon.name || 'Salon Profile',
     description:
       salon.short_description ||
-      salon.description ||
       `View ${salon.name} profile, services, and book appointments.`,
     keywords: [
       salon.name || '',
@@ -107,7 +106,6 @@ export async function generateSalonProfileMetadata({ params }: SalonProfilePageP
       salon.state_province || '',
       'salon',
       'book appointment',
-      ...(salon.specialties || []),
     ].filter(Boolean),
   })
 }

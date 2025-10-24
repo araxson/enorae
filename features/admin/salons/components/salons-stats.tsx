@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Building2, CheckCircle, ShieldAlert, Gauge } from 'lucide-react'
 
 interface SalonsStatsProps {
@@ -48,32 +48,38 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
     <div className="grid gap-4 lg:grid-cols-3">
       {summaryCards.map(({ label, value, icon: Icon, tone }) => (
         <Card key={label}>
-          <CardContent className="p-4">
+          <CardHeader>
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">{label}</p>
-                <h3 className="scroll-m-20 text-2xl font-semibold">{value}</h3>
-              </div>
+              <CardTitle>{label}</CardTitle>
               <Icon className={`h-4 w-4 ${tone}`} />
             </div>
+            <CardDescription>Current platform count.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-semibold">{value.toLocaleString()}</p>
           </CardContent>
         </Card>
       ))}
 
       <Card>
-        <CardContent className="p-4">
+        <CardHeader>
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Average compliance</p>
-              <h3 className="scroll-m-20 text-2xl font-semibold">{stats.averageCompliance}%</h3>
-            </div>
+            <CardTitle>Average compliance</CardTitle>
             <Gauge className="h-4 w-4 text-secondary" />
           </div>
+          <CardDescription>License and policy adherence across salons.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-3xl font-semibold">{stats.averageCompliance}%</p>
         </CardContent>
       </Card>
 
       <Card className="lg:col-span-3">
-        <CardContent className="grid gap-4 p-4 md:grid-cols-2">
+        <CardHeader>
+          <CardTitle>Distribution</CardTitle>
+          <CardDescription>Breakdown by tier and operating model.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-2">
           <Distribution title="By tier" data={stats.byTier} />
           <Distribution title="By type" data={stats.byType} />
         </CardContent>
@@ -85,12 +91,12 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
 function Distribution({ title, data }: { title: string; data: Record<string, number> }) {
   return (
     <div>
-      <p className="text-sm text-muted-foreground mb-2">{title}</p>
+      <p className="text-muted-foreground mb-2">{title}</p>
       <div className="space-y-1">
         {Object.entries(data).map(([key, value]) => (
-          <div key={key} className="flex justify-between text-xs">
+          <div key={key} className="flex justify-between">
             <span className="capitalize">{key}</span>
-            <span className="font-medium">{value}</span>
+            <span>{value}</span>
           </div>
         ))}
       </div>

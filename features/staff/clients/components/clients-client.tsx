@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Users, Calendar, DollarSign } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { ClientWithHistory } from '../api/queries'
+import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import { ClientStats } from './client-stats'
 import { ClientFilters } from './client-filters'
 import { ClientDetailDialog } from './client-detail-dialog'
@@ -89,14 +89,16 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
   if (clients.length === 0) {
     return (
       <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-col gap-4 text-center py-8">
-            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
-              <Users className="w-8 h-8 text-muted-foreground" />
-            </div>
-            <div>
-              <p className="font-medium">No Clients Yet</p>
-              <p className="text-sm text-muted-foreground">Your client list will appear here once you complete appointments</p>
+        <CardContent>
+          <div className="pt-6">
+            <div className="flex flex-col gap-4 text-center py-8">
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
+                <Users className="w-8 h-8 text-muted-foreground" />
+              </div>
+              <div>
+                <p className="font-medium">No Clients Yet</p>
+                <p className="text-sm text-muted-foreground">Your client list will appear here once you complete appointments</p>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -135,7 +137,7 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
           {filteredAndSortedClients.map((client) => (
             <Card
               key={client.customer_id}
-              className="cursor-pointer transition-colors hover:bg-accent/50"
+              className="cursor-pointer transition-colors hover:bg-accent"
               onClick={() => setSelectedClient(client)}
             >
               <CardHeader>

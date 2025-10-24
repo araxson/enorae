@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import type { MessageReportSummary } from '../api/queries'
+import type { MessageReportSummary } from '@/features/admin/messages/api/queries'
 
 interface MessagesReportSummaryProps {
   summary: MessageReportSummary

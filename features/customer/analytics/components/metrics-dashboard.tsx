@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { DollarSign, Calendar, CheckCircle2, XCircle, TrendingUp } from 'lucide-react'
-import type { CustomerMetrics } from '../api/queries'
+import type { CustomerMetrics } from '@/features/customer/analytics/api/queries'
 
 interface MetricsDashboardProps {
   metrics: CustomerMetrics
@@ -15,24 +15,28 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
       value: `$${metrics.totalSpending.toFixed(2)}`,
       icon: DollarSign,
       color: 'text-primary',
+      description: 'Total amount spent',
     },
     {
       title: 'Total Appointments',
       value: metrics.totalAppointments.toString(),
       icon: Calendar,
       color: 'text-secondary',
+      description: 'All appointments booked',
     },
     {
       title: 'Completed',
       value: metrics.completedAppointments.toString(),
       icon: CheckCircle2,
       color: 'text-primary',
+      description: 'Completed visits',
     },
     {
       title: 'Cancelled',
       value: metrics.cancelledAppointments.toString(),
       icon: XCircle,
       color: 'text-destructive',
+      description: 'Cancellations recorded',
     },
   ]
 
@@ -46,11 +50,14 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
             <Card key={stat.title}>
               <CardHeader className="flex items-start justify-between space-y-0">
                 <div className="space-y-1">
-                  <CardTitle>{stat.value}</CardTitle>
-                  <CardDescription>{stat.title}</CardDescription>
+                  <CardTitle>{stat.title}</CardTitle>
+                  <CardDescription>{stat.description}</CardDescription>
                 </div>
                 <Icon className={`h-5 w-5 ${stat.color}`} aria-hidden="true" />
               </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
+              </CardContent>
             </Card>
           )
         })}
@@ -66,7 +73,7 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
           <CardContent className="space-y-3">
             {metrics.favoriteServices.map((service, index) => (
               <div key={index} className="flex items-center justify-between border-b py-2 last:border-0">
-                <p className="text-sm font-medium text-foreground">{service.service}</p>
+                <p className="text-sm text-foreground">{service.service}</p>
                 <p className="text-sm text-muted-foreground">
                   {service.count} {service.count === 1 ? 'booking' : 'bookings'}
                 </p>
@@ -87,7 +94,7 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
             {metrics.recentActivity.map((appointment) => (
               <div key={appointment.id} className="flex items-start justify-between border-b pb-3 last:border-0 last:pb-0">
                 <div>
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm text-foreground">
                     {Array.isArray(appointment.service_names) && appointment.service_names.length > 0
                       ? appointment.service_names.join(', ')
                       : 'Service'}

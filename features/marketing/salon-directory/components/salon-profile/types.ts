@@ -6,12 +6,6 @@ export type Salon = BaseSalon & {
   services_count?: number | null
   staff_count?: number | null
   established_at?: string | null
-  specialties?: string[] | null
-  description?: string | null
-  cover_image_url?: string | null
-  logo_url?: string | null
-  rating?: number | null
-  review_count?: number | null
 }
 
 export type Service = Database['public']['Views']['services']['Row']

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import type { AdminSalon } from '@/lib/types/app.types'
+import type { AdminSalon } from '@/features/admin/salons'
 import { safeFormatDate } from './admin-overview-utils'
 import Link from 'next/link'
 import { ArrowUpRight, Building2 } from 'lucide-react'
@@ -83,7 +83,7 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
                     <TableCell>
                       <div className="flex min-w-0 items-start gap-3">
                         <Avatar>
-                          <AvatarFallback className="text-xs font-semibold uppercase">
+                          <AvatarFallback className="text-xs font-semibold">
                             {getInitials(salon.name)}
                           </AvatarFallback>
                         </Avatar>

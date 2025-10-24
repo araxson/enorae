@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import type { CouponFormState } from '../coupon-form.types'
+import type { CouponFormState } from '@/features/business/coupons/components/coupon-form/coupon-form.types'
 
 interface CouponLimitsSectionProps {
   formData: CouponFormState

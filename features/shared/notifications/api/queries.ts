@@ -36,15 +36,19 @@ export async function getUnreadNotificationsCount(): Promise<number> {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .rpc('get_unread_count', { p_user_id: user.id })
+  // Count unread notifications directly
+  const { count, error } = await supabase
+    .from('communication_notification_queue')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .eq('status', 'pending')
 
   if (error) {
     console.error('Error getting unread count:', error)
     return 0
   }
 
-  return data || 0
+  return count || 0
 }
 
 export async function getNotificationsByChannel(channel: string) {

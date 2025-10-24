@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import type { ProfileDetail } from '../api/types'
-import { updateProfileBasicsAction, type ActionResponse } from '../api/mutations'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
+import { updateProfileBasicsAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
 interface ProfileBasicsFormProps {
   profile: ProfileDetail | null

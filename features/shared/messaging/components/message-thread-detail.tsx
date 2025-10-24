@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { verifySession } from '@/lib/auth'
-import { getThreadById, getMessagesBetweenUsers } from '../api/queries'
+import { getThreadById, getMessagesBetweenUsers } from '@/features/shared/messaging/api/queries'
 import { MessageThread } from './message-thread'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'

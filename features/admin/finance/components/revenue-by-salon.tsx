@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import type { AdminRevenueRow } from '../api/types'
+import type { AdminRevenueRow } from '@/features/admin/finance/api/types'
 
 interface RevenueBySalonProps {
   data: AdminRevenueRow[]

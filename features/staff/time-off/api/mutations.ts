@@ -45,7 +45,7 @@ export async function createTimeOffRequest(formData: FormData) {
     if (authError || !user) return { error: 'Unauthorized' }
 
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', user.id)
       .single<{ salon_id: string | null }>()
@@ -69,7 +69,7 @@ export async function createTimeOffRequest(formData: FormData) {
 
     const { error: insertError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .insert<TimeOffRequestInsert>(insertPayload)
 
     if (insertError) return { error: insertError.message }
@@ -92,7 +92,7 @@ export async function approveTimeOffRequest(formData: FormData) {
 
     // SECURITY: Get user's salon_id
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', user.id)
       .single<{ salon_id: string | null }>()
@@ -102,7 +102,7 @@ export async function approveTimeOffRequest(formData: FormData) {
     // SECURITY: Verify the time-off request belongs to user's salon
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .select('salon_id')
       .eq('id', id)
       .single<{ salon_id: string | null }>()
@@ -122,7 +122,7 @@ export async function approveTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .update<TimeOffRequestUpdate>(approvePayload)
       .eq('id', id)
       .eq('salon_id', staffProfile.salon_id)
@@ -148,7 +148,7 @@ export async function rejectTimeOffRequest(formData: FormData) {
 
     // SECURITY: Get user's salon_id
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', user.id)
       .single<{ salon_id: string | null }>()
@@ -158,7 +158,7 @@ export async function rejectTimeOffRequest(formData: FormData) {
     // SECURITY: Verify the time-off request belongs to user's salon
     const { data: request, error: fetchError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .select('salon_id')
       .eq('id', id)
       .single<{ salon_id: string | null }>()
@@ -179,7 +179,7 @@ export async function rejectTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .update<TimeOffRequestUpdate>(rejectPayload)
       .eq('id', id)
       .eq('salon_id', staffProfile.salon_id)
@@ -212,7 +212,7 @@ export async function updateTimeOffRequest(formData: FormData) {
 
     // Get staff profile
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id, salon_id')
       .eq('user_id', user.id)
       .single<{ id: string; salon_id: string | null }>()
@@ -221,7 +221,7 @@ export async function updateTimeOffRequest(formData: FormData) {
 
     // Verify ownership and status - staff can only edit their own pending requests
     const { data: request, error: fetchError } = await supabase
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .select('staff_id, staff_user_id, status')
       .eq('id', id)
       .single<{ staff_id: string; staff_user_id: string | null; status: string }>()
@@ -254,7 +254,7 @@ export async function updateTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .update<TimeOffRequestUpdate>(updateData)
       .eq('id', id)
       .eq('staff_id', staffProfile.id) // Security check
@@ -282,7 +282,7 @@ export async function cancelTimeOffRequest(formData: FormData) {
 
     // Get staff profile
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id')
       .eq('user_id', user.id)
       .single<{ id: string }>()
@@ -291,7 +291,7 @@ export async function cancelTimeOffRequest(formData: FormData) {
 
     // Verify ownership and status
     const { data: request, error: fetchError } = await supabase
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .select('staff_id, staff_user_id, status')
       .eq('id', id)
       .single<{ staff_id: string; staff_user_id: string | null; status: string }>()
@@ -315,7 +315,7 @@ export async function cancelTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests_view')
+      .from('time_off_requests')
       .update<TimeOffRequestUpdate>(cancelPayload)
       .eq('id', id)
       .eq('staff_id', staffProfile.id) // Security check

@@ -25,6 +25,8 @@ const defaultVipResponse = {
   memberSince: null as string | null,
 }
 
+export type CustomerVipStatus = typeof defaultVipResponse
+
 export async function getVIPStatus() {
   const session = await requireAuth()
   const supabase = await createClient()

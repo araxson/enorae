@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 
-import type { SalonMedia as SalonMediaRow } from '@/lib/types/app.types'
+import type { SalonMedia as SalonMediaRow } from '@/features/business/locations'
 
 import { BrandColorsSection } from './media-form/brand-colors-section'
 import { GallerySection } from './media-form/gallery-section'

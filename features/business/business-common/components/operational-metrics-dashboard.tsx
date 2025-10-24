@@ -41,44 +41,50 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
           {/* Utilization Metrics */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <Card>
-              <CardContent className="p-4 space-y-3">
+              <CardHeader className="pb-2">
                 <div className="flex gap-3 items-center">
                   <Activity className="h-5 w-5 text-muted-foreground" />
-                  <div className="text-sm font-medium">Capacity Utilization</div>
+                  <CardTitle>Capacity Utilization</CardTitle>
                 </div>
+                <CardDescription>Overall capacity usage</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3 pt-0">
                 <div className={`text-3xl font-bold ${getUtilizationColor(metrics.capacityUtilization)}`}>
                   {metrics.capacityUtilization}%
                 </div>
                 <Progress value={metrics.capacityUtilization} className="h-2" />
-                <div className="text-xs text-muted-foreground">Overall capacity usage</div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4 space-y-3">
+              <CardHeader className="pb-2">
                 <div className="flex gap-3 items-center">
                   <Users className="h-5 w-5 text-muted-foreground" />
-                  <div className="text-sm font-medium">Staff Utilization</div>
+                  <CardTitle>Staff Utilization</CardTitle>
                 </div>
+                <CardDescription>Staff productivity</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3 pt-0">
                 <div className={`text-3xl font-bold ${getUtilizationColor(metrics.staffUtilization)}`}>
                   {metrics.staffUtilization}%
                 </div>
                 <Progress value={metrics.staffUtilization} className="h-2" />
-                <div className="text-xs text-muted-foreground">Staff productivity</div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4 space-y-3">
+              <CardHeader className="pb-2">
                 <div className="flex gap-3 items-center">
                   <Target className="h-5 w-5 text-muted-foreground" />
-                  <div className="text-sm font-medium">Booking Fill Rate</div>
+                  <CardTitle>Booking Fill Rate</CardTitle>
                 </div>
+                <CardDescription>Schedule efficiency</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3 pt-0">
                 <div className={`text-3xl font-bold ${getUtilizationColor(metrics.bookingFillRate)}`}>
                   {metrics.bookingFillRate}%
                 </div>
                 <Progress value={metrics.bookingFillRate} className="h-2" />
-                <div className="text-xs text-muted-foreground">Schedule efficiency</div>
               </CardContent>
             </Card>
           </div>
@@ -86,24 +92,28 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
           {/* Performance Indicators */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <Card className="bg-muted/50">
-              <CardContent className="p-4 space-y-2">
+              <CardHeader className="pb-2">
                 <div className="flex gap-3 items-center">
                   <Clock className="h-5 w-5 text-muted-foreground" />
-                  <div className="text-base font-medium">Average Wait Time</div>
+                  <CardTitle>Average Wait Time</CardTitle>
                 </div>
-                <div className="text-2xl font-bold">{metrics.averageWaitTime} min</div>
-                <div className="text-xs text-muted-foreground">Per customer</div>
+                <CardDescription>Per customer</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <p className="text-2xl font-bold">{metrics.averageWaitTime} min</p>
               </CardContent>
             </Card>
 
             <Card className="bg-muted/50">
-              <CardContent className="p-4 space-y-2">
+              <CardHeader className="pb-2">
                 <div className="flex gap-3 items-center">
                   <Calendar className="h-5 w-5 text-muted-foreground" />
-                  <div className="text-base font-medium">Appointments/Day</div>
+                  <CardTitle>Appointments/Day</CardTitle>
                 </div>
-                <div className="text-2xl font-bold">{metrics.appointmentsPerDay}</div>
-                <div className="text-xs text-muted-foreground">Average daily bookings</div>
+                <CardDescription>Average daily bookings</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <p className="text-2xl font-bold">{metrics.appointmentsPerDay}</p>
               </CardContent>
             </Card>
           </div>
@@ -111,19 +121,19 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
           {/* Peak Hours */}
           {metrics.peakHours.length > 0 && (
             <Card>
-              <CardContent className="p-4 space-y-3">
+              <CardHeader className="pb-2">
                 <div className="flex gap-3 items-center">
                   <TrendingUp className="h-5 w-5 text-muted-foreground" />
-                  <div className="text-base font-medium">Peak Hours</div>
+                  <CardTitle>Peak Hours</CardTitle>
                 </div>
-                <div className="flex gap-2">
-                  {metrics.peakHours.map((hour, index) => (
-                    <Badge key={index} variant="secondary">
-                      {hour}
-                    </Badge>
-                  ))}
-                </div>
-                <div className="text-xs text-muted-foreground">Busiest times of day</div>
+                <CardDescription>Busiest times of day</CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-wrap gap-2 pt-0">
+                {metrics.peakHours.map((hour, index) => (
+                  <Badge key={index} variant="secondary">
+                    {hour}
+                  </Badge>
+                ))}
               </CardContent>
             </Card>
           )}

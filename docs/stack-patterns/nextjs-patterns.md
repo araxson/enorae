@@ -356,16 +356,207 @@ export default function Dashboard() {
 
 ## Caching & Revalidation
 
-- **`revalidatePath('/route')`** – Regenerates the entire route subtree on next request.
-- **`revalidateTag('tag', 'max')`** – Stale-while-revalidate for all fetches tagged with `tag`.
-- **`updateTag('tag')`** – Immediately expires tagged cache (read-after-write).
-- **`refresh()`** – Server Action helper to refresh the current client-side router cache.
-- **Segment config:**
-  ```ts
-  export const dynamic = 'force-static' | 'force-dynamic'
-  export const revalidate = 0 | false | number
-  export const fetchCache = 'default-cache' | 'only-no-store'
-  ```
+### Cache Invalidation APIs
+
+- **`updateTag('tag')`** – Immediately expires tagged cache (Server Actions only)
+- **`revalidateTag('tag')`** – Stale-while-revalidate for all fetches tagged with `tag`
+- **`revalidateTag('tag', 'max')`** – Maximum staleness tolerance
+- **`revalidatePath('/route')`** – Regenerates the entire route subtree on next request
+- **`refresh()`** – Server Action helper to refresh the current client-side router cache
+- **`cacheTag('tag')`** – Attach a tag inside `'use cache'` functions for later invalidation
+
+> ⚠️ `updateTag` throws in Route Handlers—use `revalidateTag(tag, 'max')` there. It is only valid inside Server Actions per Next.js 15 docs.
+
+### Tag Naming Conventions
+
+```ts
+// ✅ GOOD - Descriptive, hierarchical tags
+'appointments'                    // All appointments
+`appointments:${businessId}`      // Business-specific appointments
+`appointment:${appointmentId}`    // Single appointment
+'user-profile'                    // All user profiles
+`user-profile:${userId}`          // Specific user profile
+
+// ❌ BAD - Vague or overly generic tags
+'data'                            // Too generic
+'cache'                           // Not descriptive
+'stuff'                           // Meaningless
+```
+
+### updateTag vs revalidateTag
+
+```ts
+// ✅ updateTag - Immediate consistency (read-your-writes)
+'use server'
+export async function createAppointment(data: AppointmentInput) {
+  const { data: appointment } = await supabase
+    .from('appointments')
+    .insert(data)
+    .select()
+    .single()
+
+  // User must see their new appointment immediately
+  updateTag('appointments')
+  updateTag(`appointments:${data.businessId}`)
+  updateTag(`appointment:${appointment.id}`)
+
+  redirect(`/appointments/${appointment.id}`)
+}
+
+// ✅ revalidateTag - Eventual consistency (background refresh)
+export async function incrementViewCount(appointmentId: string) {
+  await supabase
+    .from('appointments')
+    .update({ view_count: sql`view_count + 1` })
+    .eq('id', appointmentId)
+
+  // View count can update in background (not critical)
+  revalidateTag(`appointment:${appointmentId}`)
+  // Note: No redirect needed, just fire-and-forget
+}
+```
+
+### cacheTag + 'use cache'
+
+```ts
+import { cacheTag } from 'next/cache'
+
+export async function getDashboard() {
+  'use cache' // Required to opt in to function-level caching
+  cacheTag('dashboard')
+  return fetchDashboardFromDb()
+}
+```
+
+### Client Router Cache (staleTimes)
+
+```js
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    staleTimes: {
+      dynamic: 30, // seconds
+      static: 180,
+    },
+  },
+}
+
+module.exports = nextConfig
+```
+
+### Complete Cache Strategy Example
+
+```ts
+'use server'
+
+import { createClient } from '@/lib/supabase/server'
+import { updateTag, revalidateTag, revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+import { appointmentSchema } from '../schema'
+
+export async function createAppointment(input: unknown) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const payload = appointmentSchema.parse(input)
+
+  const { data, error } = await supabase
+    .schema('scheduling')
+    .from('appointments')
+    .insert({ ...payload, business_id: user.id })
+    .select()
+    .single()
+
+  if (error) throw error
+
+  // 1. Update specific resource cache (immediate)
+  updateTag(`appointment:${data.id}`)
+
+  // 2. Update collection caches (immediate)
+  updateTag('appointments')
+  updateTag(`appointments:${user.id}`)
+  updateTag(`business:${user.id}:dashboard`)
+
+  // 3. Update related caches (background)
+  revalidateTag(`staff:${data.staff_id}:schedule`)
+  revalidateTag(`customer:${data.customer_id}:bookings`)
+
+  // 4. Optional: Invalidate entire route (use sparingly)
+  // revalidatePath('/business/appointments')
+
+  redirect(`/business/appointments/${data.id}`)
+}
+
+export async function updateAppointmentStatus(id: string, status: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { error } = await supabase
+    .schema('scheduling')
+    .from('appointments')
+    .update({ status })
+    .eq('id', id)
+    .eq('business_id', user.id)
+
+  if (error) throw error
+
+  // Only update necessary tags
+  updateTag(`appointment:${id}`)
+  updateTag(`appointments:${user.id}`)
+
+  // No redirect needed for status updates
+}
+
+export async function deleteAppointment(id: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { error } = await supabase
+    .schema('scheduling')
+    .from('appointments')
+    .delete()
+    .eq('id', id)
+    .eq('business_id', user.id)
+
+  if (error) throw error
+
+  // Clear all appointment caches
+  updateTag(`appointment:${id}`)
+  updateTag('appointments')
+  updateTag(`appointments:${user.id}`)
+
+  // Redirect after delete
+  revalidatePath('/business/appointments')
+  redirect('/business/appointments')
+}
+```
+
+### Segment Configuration
+
+```ts
+// app/dashboard/page.tsx
+export const dynamic = 'force-static'      // Force static generation
+export const revalidate = 3600             // Revalidate every hour
+export const fetchCache = 'default-cache'  // Use default cache behavior
+
+// app/api/live-data/route.ts
+export const dynamic = 'force-dynamic'     // Always run on server
+export const revalidate = 0                // Never cache
+```
+
+### Best Practices
+
+1. **Prefer tags over paths** – More granular control
+2. **Use updateTag for writes** – Immediate consistency
+3. **Use revalidateTag for background** – Eventual consistency
+4. **Namespace tags hierarchically** – `resource`, `resource:id`, `resource:id:detail`
+5. **Document tag usage** – Comment which mutations affect which tags
+6. **Test cache invalidation** – Verify data refreshes correctly
+7. **Monitor cache hit rates** – Ensure caching is working
 
 Choose the narrowest invalidation surface area possible. Tags beat paths; request-level revalidate beats route-level when only a single fetch changes.
 
@@ -442,4 +633,4 @@ export default function ProfileSettings() {
 
 ---
 
-**Last Updated:** 2025-10-19
+**Last Updated:** 2025-10-21 (Enhanced caching patterns with updateTag/revalidateTag examples)

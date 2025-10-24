@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SalonCard } from '@/features/shared/salons'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search } from 'lucide-react'
 import {
   Pagination,
@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/pagination'
 import type { Database } from '@/lib/types/database.types'
 
-type Salon = Database['public']['Views']['salons']['Row']
+type Salon = Database['public']['Views']['salons_view']['Row']
 
 interface SalonGridProps {
   salons: Salon[]
@@ -41,13 +41,16 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
   if (salons.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center space-y-3 text-center">
-          <Search className="h-12 w-12 text-muted-foreground" aria-hidden="true" />
+        <CardHeader className="items-center text-center">
           <CardTitle>No salons found</CardTitle>
           <CardDescription>
             Try adjusting your search filters or check back later for new salons.
           </CardDescription>
         </CardHeader>
+        <CardContent className="flex flex-col items-center gap-3 text-sm text-muted-foreground">
+          <Search className="h-12 w-12" aria-hidden="true" />
+          <span>Tip: update your filters or expand your search area.</span>
+        </CardContent>
       </Card>
     )
   }
@@ -57,19 +60,16 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {currentSalons.map((salon) => {
           // Build proper location string from address data
-          const location = salon.full_address ||
+          const location = salon.formatted_address ||
             (salon.city && salon.state_province ? `${salon.city}, ${salon.state_province}` : null) ||
             'Location not specified'
 
           // Use real ratings from database
-          const rating = salon.rating ? Number(salon.rating) : undefined
-          const reviewCount = salon.review_count || 0
-
-          // Use logo or cover image if available
-          const image = salon.logo_url || salon.cover_image_url || undefined
+          const rating = salon.rating_average ? Number(salon.rating_average) : undefined
+          const reviewCount = salon.rating_count || 0
 
           // Use short description, fallback to full description
-          const description = salon.short_description || salon.description || undefined
+          const description = salon.short_description || salon.full_description || undefined
           const initialFavorited = Boolean(
             (salon as { is_favorited?: boolean }).is_favorited,
           )
@@ -80,15 +80,11 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
               salonId={salon.id || undefined}
               name={salon.name || 'Unnamed Salon'}
               description={description}
-              image={image}
+              image={undefined}
               location={location}
               rating={rating}
               reviewCount={reviewCount}
               isAcceptingBookings={salon.is_accepting_bookings ?? true}
-              amenities={salon.amenities}
-              specialties={salon.specialties}
-              staffCount={salon.staff_count}
-              servicesCount={salon.services_count}
               onBook={() => {
                 router.push(`/salons/${salon.slug}`)
               }}

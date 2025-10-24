@@ -178,6 +178,251 @@ Ensures proper feature organization and file structure.
 
 ---
 
+## Database Schema Sync Commands
+
+### `/database-schema-analyze` - Analyze Database/Code Mismatches
+**File:** `database-schema-analyze.md`
+
+**⚠️ RUN THIS FIRST:** Analyzes TypeScript codebase against actual Supabase database schema.
+
+**What it does:**
+- Reads actual database schema using Supabase MCP
+- Scans entire codebase for mismatches
+- Categorizes issues by severity (Critical/High/Medium/Low)
+- Generates organized reports in `docs/schema-sync/`
+- Creates task lists with `[ ]` checkboxes for each issue
+- Does NOT modify any code or database
+
+**Generates these reports:**
+```
+docs/schema-sync/
+├── 00-ANALYSIS-INDEX.md          # Navigation hub
+├── 01-schema-overview.md          # Actual DB schema (source of truth)
+├── 02-mismatch-summary.md         # Statistics
+├── 03-missing-properties.md       # Category A + tasks
+├── 04-wrong-column-names.md       # Category B + tasks
+├── 05-type-mismatches.md          # Category C + tasks
+├── 06-nonexistent-rpcs.md         # Category D + tasks
+├── 07-nonexistent-tables.md       # Category E + tasks
+├── 08-incorrect-selects.md        # Category F + tasks
+└── 09-fix-priority.md             # Prioritized action plan
+```
+
+**Usage:**
+```bash
+/database-schema-analyze
+```
+
+**Expected outcome:**
+- Comprehensive analysis reports generated
+- All issues categorized and documented
+- Task lists with [ ] checkboxes
+- Ready for `/database-schema-fix`
+
+---
+
+### `/database-schema-fix` - Apply Schema Synchronization Fixes
+**File:** `database-schema-fix.md`
+
+**⚠️ RUN AFTER ANALYZE:** Applies fixes based on analysis reports.
+
+**What it does:**
+- Reads reports from `docs/schema-sync/`
+- Applies fixes in priority order (Critical → High → Medium → Low)
+- Updates task lists with `[x]` as it completes fixes
+- Runs `npm run typecheck` after each batch
+- Generates completion report
+- Database = source of truth (code matches database)
+
+**Fix categories:**
+- **Critical:** Non-existent RPCs, tables/views
+- **High:** Missing properties, wrong column names, incorrect selects
+- **Medium:** Type mismatches, safety issues
+- **Low:** Cleanup, type guards, documentation
+
+**Usage:**
+```bash
+/database-schema-fix
+```
+
+**Expected outcome:**
+- All TypeScript errors resolved
+- Code types match database schema exactly
+- Task lists updated with [x] completed
+- Completion report generated
+- TypeScript errors: XXX → 0 ✅
+
+---
+
+### Database Schema Sync Workflow
+
+**Complete workflow:**
+
+```bash
+# 1. Analyze database vs code
+/database-schema-analyze
+
+# 2. Review analysis reports
+cat docs/schema-sync/00-ANALYSIS-INDEX.md
+cat docs/schema-sync/09-fix-priority.md
+
+# 3. Apply fixes systematically
+/database-schema-fix
+
+# 4. Verify completion
+npm run typecheck
+cat docs/schema-sync/10-FIX-COMPLETION-REPORT.md
+```
+
+**When to use:**
+- TypeScript errors reference missing database properties
+- Database schema has been updated
+- Planning a schema migration
+- Quarterly code health checks
+- Before major releases
+
+---
+
+## Database Fix Commands
+
+A comprehensive suite of commands for systematically fixing database issues identified in the analysis reports.
+
+### `/db-fix` - Fix One Database Issue
+**File:** `db-fix.md`
+
+Fixes one database issue at a time with verification.
+
+**What it does:**
+- Reads progress tracker
+- Finds next unchecked task
+- Applies fix using Supabase MCP
+- Verifies the fix
+- Updates progress tracker
+
+**Usage:**
+```bash
+/db-fix
+```
+
+---
+
+### `/db-fix-batch` - Fix Entire Category
+**File:** `db-fix-batch.md`
+
+Fixes all issues in a single category at once.
+
+**What it does:**
+- Processes entire category
+- Applies multiple migrations
+- Updates all completed tasks
+- Provides summary report
+
+**Usage:**
+```bash
+/db-fix-batch
+```
+
+---
+
+### `/db-fix-rls` - Emergency RLS Security Fix
+**File:** `db-fix-rls.md`
+
+**⚠️ CRITICAL:** Fixes unprotected partition tables immediately.
+
+**What it fixes:**
+- 52 unprotected partition tables
+- Missing RLS policies
+- Tenant isolation vulnerabilities
+- Cross-tenant data exposure risks
+
+**Usage:**
+```bash
+/db-fix-rls  # Run this FIRST for security
+```
+
+---
+
+### `/db-status` - Database Progress Report
+**File:** `db-status.md`
+
+Shows comprehensive database fix progress.
+
+**What it reports:**
+- Overall completion percentage
+- Progress by priority
+- Progress by category
+- Recently completed tasks
+- Next priority tasks
+- Time estimates
+
+**Usage:**
+```bash
+/db-status
+```
+
+---
+
+### `/db-verify` - Verify All Fixes
+**File:** `db-verify.md`
+
+Verifies that completed fixes are working correctly.
+
+**What it checks:**
+- RLS policies active
+- Indexes properly configured
+- Views correctly defined
+- Audit columns present
+- Security compliance
+
+**Usage:**
+```bash
+/db-verify
+```
+
+---
+
+### `/db-rollback` - Rollback Database Changes
+**File:** `db-rollback.md`
+
+Safely rollback problematic database changes.
+
+**What it does:**
+- Lists recent migrations
+- Creates rollback migration
+- Updates progress tracker
+- Verifies rollback success
+
+**Usage:**
+```bash
+/db-rollback
+```
+
+---
+
+### `/db-help` - Database Commands Help
+**File:** `db-help.md`
+
+Shows all available database commands and usage.
+
+**Usage:**
+```bash
+/db-help
+```
+
+---
+
+### Portal Fix Commands
+
+Fix issues in specific portals:
+
+- `/a:fix-customer-portal` - Fix Customer Portal issues
+- `/a:fix-marketing-portal` - Fix Marketing Portal issues
+- `/a:fix-business-portal` - Fix Business Portal issues
+- `/a:fix-admin-portal` - Fix Admin Portal issues
+- `/a:fix-staff-portal` - Fix Staff Portal issues
+
+---
+
 ## Command Design Principles
 
 All commands follow these principles:
@@ -190,6 +435,64 @@ All commands follow these principles:
 6. **Verifiable** - Provides clear before/after metrics
 
 ## Quick Start
+
+### Database Schema Sync (RECOMMENDED FIRST)
+
+**⚠️ START HERE: Align TypeScript code with database schema:**
+
+```bash
+# 1. Analyze database vs code mismatches
+/database-schema-analyze
+
+# 2. Review analysis reports
+cat docs/schema-sync/00-ANALYSIS-INDEX.md
+cat docs/schema-sync/09-fix-priority.md
+
+# 3. Apply fixes systematically
+/database-schema-fix
+
+# 4. Verify completion
+npm run typecheck
+cat docs/schema-sync/10-FIX-COMPLETION-REPORT.md
+```
+
+**Database Schema Sync Workflow:**
+1. Run `/database-schema-analyze` first to generate reports
+2. Review `docs/schema-sync/` for issue details
+3. Run `/database-schema-fix` to apply fixes
+4. Verify with `npm run typecheck`
+5. Check completion report for summary
+
+---
+
+### Database Fixes (PRIORITY)
+
+**⚠️ CRITICAL: Fix security vulnerabilities first:**
+
+```bash
+# 1. Check current database status
+/db-status
+
+# 2. Fix critical RLS security issues (52 unprotected tables)
+/db-fix-rls
+
+# 3. Verify security fixes
+/db-verify
+
+# 4. Continue with remaining fixes
+/db-fix        # One at a time
+# OR
+/db-fix-batch  # Entire categories
+```
+
+**Database Fix Workflow:**
+1. Always start with `/db-fix-rls` for security
+2. Use `/db-fix` for careful, controlled fixes
+3. Use `/db-fix-batch` to clear entire categories
+4. Run `/db-verify` after fixes
+5. Use `/db-rollback` if issues occur
+
+### Code Fixes
 
 **To fix all errors in your project:**
 
@@ -257,6 +560,8 @@ That's great! Your codebase is already following the patterns. ✅
 
 ---
 
-**Last Updated:** 2025-10-20
-**Total Commands:** 8
-**Total Documentation:** ~50KB
+**Last Updated:** 2025-10-22
+**Total Commands:** 22 (8 code + 9 database + 5 portal)
+**Total Documentation:** ~95KB
+
+**New:** Database Schema Sync commands for TypeScript/database alignment

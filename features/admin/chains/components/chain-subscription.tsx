@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { CreditCard, CheckCircle2, XCircle } from 'lucide-react'
-import { updateChainSubscription } from '../api/mutations'
+import { updateChainSubscription } from '@/features/admin/chains/api/mutations'
 import { Textarea } from '@/components/ui/textarea'
 
 interface ChainSubscriptionProps {
@@ -81,9 +81,7 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Current Tier:</span>
-            <Badge variant="outline" className="capitalize">
-              {currentTierInfo?.label || 'Free'}
-            </Badge>
+            <Badge variant="outline">{currentTierInfo?.label || 'Free'}</Badge>
           </div>
           {currentTierInfo?.description && (
             <p className="text-sm text-muted-foreground">{currentTierInfo.description}</p>
@@ -129,8 +127,8 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
           {isLoading ? 'Updating...' : 'Update Subscription'}
         </Button>
 
-        <div className="rounded-lg bg-muted p-4 text-sm">
-          <h4 className="font-medium mb-2">Note:</h4>
+        <div className="rounded-lg bg-muted p-4">
+          <h4 className="mb-2">Note:</h4>
           <p className="text-muted-foreground">
             Subscription changes take effect immediately. Chains will be notified of any tier changes.
           </p>

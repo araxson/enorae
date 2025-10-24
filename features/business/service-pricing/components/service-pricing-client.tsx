@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PricingGrid } from './pricing-grid'
 import { PricingFormDialog } from './pricing-form-dialog'
 import type { ServicePricingWithService } from '../api/queries'
@@ -17,7 +17,7 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
   const [editPricing, setEditPricing] = useState<ServicePricingWithService | null>(null)
 
   const avgPrice = pricing.length > 0
-    ? pricing.reduce((sum, p) => sum + (p.current_price || p.base_price), 0) / pricing.length
+    ? pricing.reduce((sum, p) => sum + (p.current_price ?? p.base_price ?? 0), 0) / pricing.length
     : 0
 
   const handleAddPricing = () => {
@@ -42,7 +42,7 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
       <div className="flex flex-col gap-8">
         <div className="flex gap-4 items-start justify-between">
           <div>
-            <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Service Pricing</h1>
+            <h1 className="text-4xl font-bold">Service Pricing</h1>
             <p className="text-sm text-muted-foreground">
               Manage pricing for your salon services
             </p>
@@ -52,17 +52,21 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
 
         <div className="flex gap-4">
           <Card className="w-full">
-            <CardContent className="p-4">
-              <p className="text-sm font-medium">Total Services</p>
-              <h3 className="scroll-m-20 text-2xl font-semibold">{pricing.length}</h3>
+            <CardHeader className="pb-2">
+              <CardTitle>Total Services</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold">{pricing.length}</div>
             </CardContent>
           </Card>
           <Card className="w-full">
-            <CardContent className="p-4">
-              <p className="text-sm font-medium">Average Price</p>
-              <h3 className="scroll-m-20 text-2xl font-semibold">
+            <CardHeader className="pb-2">
+              <CardTitle>Average Price</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-2xl font-bold">
                 ${avgPrice.toFixed(2)}
-              </h3>
+              </div>
             </CardContent>
           </Card>
         </div>

@@ -5,7 +5,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import type { SecurityMonitoringSnapshot } from '../api/types'
+import type { SecurityMonitoringSnapshot } from '@/features/admin/security-monitoring/api/types'
 import { OverviewCards } from './overview-cards'
 import { SecurityEventsPanel } from './security-events-panel'
 import { SuspiciousActivityPanel } from './suspicious-activity-panel'
@@ -70,7 +70,7 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
     <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold mb-1">Real-Time Security Overview</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold">Real-Time Security Overview</h2>
           <p className="text-sm text-muted-foreground">
             Streaming telemetry from Supabase security logs. Last updated {lastUpdatedLabel}.
           </p>
@@ -82,7 +82,7 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             Auto-refresh 15s
           </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>

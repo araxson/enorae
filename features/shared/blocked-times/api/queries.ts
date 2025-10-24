@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type BlockedTime = Database['public']['Views']['blocked_times']['Row']
+type BlockedTime = Database['public']['Views']['blocked_times_view']['Row']
 
 export type BlockedTimeWithRelations = BlockedTime & {
   staff: { id: string; full_name: string | null } | null

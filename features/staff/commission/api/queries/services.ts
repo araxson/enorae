@@ -13,20 +13,24 @@ function buildServiceMap(entries: AppointmentRow[] | null | undefined) {
   const serviceMap = new Map<string, ServiceRevenue>()
 
   entries?.forEach((entry) => {
-    const serviceName = entry.service_names || 'Unknown Service'
+    const serviceNames = Array.isArray(entry.service_names)
+      ? entry.service_names
+      : ['Unknown Service']
     const revenue = entry.total_price || 0
 
-    const existing = serviceMap.get(serviceName)
-    if (existing) {
-      existing.revenue += revenue
-      existing.count += 1
-    } else {
-      serviceMap.set(serviceName, {
-        service_name: serviceName,
-        revenue,
-        count: 1,
-      })
-    }
+    serviceNames.forEach(serviceName => {
+      const existing = serviceMap.get(serviceName)
+      if (existing) {
+        existing.revenue += revenue
+        existing.count += 1
+      } else {
+        serviceMap.set(serviceName, {
+          service_name: serviceName,
+          revenue,
+          count: 1,
+        })
+      }
+    })
   })
 
   return serviceMap
@@ -40,7 +44,7 @@ export async function getServiceBreakdown(
   const { supabase } = await authorizeStaffAccess(staffId)
 
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
@@ -60,14 +64,20 @@ export async function getCommissionRates(
   const { supabase } = await authorizeStaffAccess(staffId)
 
   const { data: services, error } = await supabase
-    .from('staff_services')
+    .from('staff_services_view')
     .select('service_id, service_name, effective_price')
     .eq('staff_id', staffId)
     .eq('is_available', true)
 
   if (error) throw error
 
-  return (services || []).map((service) => ({
+  type StaffServiceRate = {
+    service_id: string | null
+    service_name: string | null
+    effective_price: number | null
+  }
+
+  return ((services as StaffServiceRate[]) || []).map((service) => ({
     service_id: service.service_id ?? '',
     service_name: service.service_name ?? 'Unknown Service',
     base_price: service.effective_price ?? 0,
@@ -84,7 +94,7 @@ export async function getServiceCommissionBreakdown(
   const { supabase } = await authorizeStaffAccess(staffId)
 
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('status', 'completed')

@@ -21,7 +21,7 @@ OUTPUTS = [
 
 # All schemas to include (comprehensive list)
 SCHEMAS = [
-    # Core application schemas (8 business domains)
+    # Core application schemas (7 business domains)
     "organization",      # Salons, staff, locations, chains, settings
     "catalog",          # Services, categories, pricing, booking rules
     "scheduling",       # Appointments, schedules, blocked times, time off
@@ -29,7 +29,6 @@ SCHEMAS = [
     "analytics",        # Metrics, reports, insights
     "communication",    # Messages, notifications, webhooks
     "engagement",       # Favorites, reviews, loyalty
-    "inventory",        # Products, stock, suppliers, orders
 
     # Additional application schemas
     "admin",            # Admin functionality

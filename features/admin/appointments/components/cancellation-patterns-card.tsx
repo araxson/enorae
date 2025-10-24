@@ -1,7 +1,7 @@
 import { AlertTriangle } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { CancellationPattern } from '../api/types'
+import type { CancellationPattern } from '@/features/admin/appointments/api/types'
 
 interface CancellationPatternsCardProps {
   patterns: CancellationPattern[]
@@ -25,12 +25,12 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
           <div className="space-y-2">
             {patterns.slice(0, 6).map((pattern) => (
               <Card key={pattern.label}>
-                <CardContent className="flex items-start justify-between gap-3 p-3">
-                  <div>
-                    <p className="font-medium text-foreground">{pattern.label}</p>
-                    <p className="text-xs text-muted-foreground">{pattern.description}</p>
-                  </div>
-                  <Badge variant="outline" className="text-xs">
+                <CardHeader className="pb-2">
+                  <CardTitle>{pattern.label}</CardTitle>
+                  <CardDescription>{pattern.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0 text-xs">
+                  <Badge variant="outline">
                     {pattern.count} · {formatPercent(pattern.share)}
                   </Badge>
                 </CardContent>

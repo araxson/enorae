@@ -2,8 +2,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Package, Scissors } from 'lucide-react'
-import type { DailyMetricsDashboardProps } from '../types'
-import { formatCurrency } from '../utils/value-formatters'
+import type { DailyMetricsDashboardProps } from '@/features/business/daily-analytics/types'
+import { formatCurrency } from '@/features/business/daily-analytics/utils/value-formatters'
 
 type Props = Pick<DailyMetricsDashboardProps, 'aggregated'>
 

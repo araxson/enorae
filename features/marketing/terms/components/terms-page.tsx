@@ -1,5 +1,5 @@
-import { Hero } from '../components/sections/hero'
-import { Content } from '../components/sections/content'
+import { Hero } from '@/features/marketing/terms/components/sections/hero'
+import { Content } from '@/features/marketing/terms/components/sections/content'
 
 export function TermsPage() {
   return (

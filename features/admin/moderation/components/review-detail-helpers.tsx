@@ -1,15 +1,15 @@
 import { Star, Flag, MessageSquare } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import type { ModerationReview } from '../api/queries'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import type { ReactNode } from 'react'
 
 export function InfoBlock({ label, value, helper }: { label: string; value: string; helper?: string | null }) {
   return (
     <div className="space-y-1">
       <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="leading-7 font-medium">{value}</p>
+      <p className="font-medium">{value}</p>
       {helper && <p className="text-xs text-muted-foreground">{helper}</p>}
     </div>
   )
@@ -39,26 +39,26 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
 
   if (review.is_flagged) {
     badges.push(
-      <Badge key="flagged" variant="destructive" className="gap-1">
+      <div key="flagged" className="flex items-center gap-1">
         <Flag className="h-3 w-3" />
-        Flagged
-      </Badge>
+        <Badge variant="destructive">Flagged</Badge>
+      </div>
     )
   }
   if (review.is_featured) {
     badges.push(
-      <Badge key="featured" variant="default" className="gap-1">
+      <div key="featured" className="flex items-center gap-1">
         <Star className="h-3 w-3" />
-        Featured
-      </Badge>
+        <Badge variant="default">Featured</Badge>
+      </div>
     )
   }
   if (review.has_response) {
     badges.push(
-      <Badge key="responded" variant="outline" className="gap-1">
+      <div key="responded" className="flex items-center gap-1">
         <MessageSquare className="h-3 w-3" />
-        Responded
-      </Badge>
+        <Badge variant="outline">Responded</Badge>
+      </div>
     )
   }
 
@@ -71,18 +71,21 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
 }
 
 export function Panel({ title, children, tone }: { title: string; children: ReactNode; tone?: 'destructive' | 'info' }) {
+  if (tone) {
+    return (
+      <Alert variant={tone === 'destructive' ? 'destructive' : 'default'}>
+        <AlertTitle>{title}</AlertTitle>
+        <AlertDescription>{children}</AlertDescription>
+      </Alert>
+    )
+  }
+
   return (
-    <div className="space-y-1">
-      <p className="text-sm text-muted-foreground">{title}</p>
-      {tone ? (
-        <Alert variant={tone === 'destructive' ? 'destructive' : 'default'}>
-          <AlertDescription>{children}</AlertDescription>
-        </Alert>
-      ) : (
-        <Card>
-          <CardContent className="text-sm">{children}</CardContent>
-        </Card>
-      )}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="text-sm">{children}</CardContent>
+    </Card>
   )
 }

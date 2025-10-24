@@ -8,7 +8,7 @@ import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, Bell, Mail, MessageSquare, Smartphone } from 'lucide-react'
-import { updateNotificationPreferences } from '../api/mutations'
+import { updateNotificationPreferences } from '@/features/shared/preferences/api/mutations'
 
 interface NotificationPreferences {
   email_appointments?: boolean

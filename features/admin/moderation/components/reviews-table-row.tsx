@@ -21,7 +21,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
-import type { ModerationReview } from '../api/queries'
+import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 
 const DATE_FORMAT = 'MMM d, yyyy'
 
@@ -97,10 +97,10 @@ export function ReviewsTableRow({
             {review.sentimentLabel} ({review.sentimentScore})
           </Badge>
           {review.has_response && (
-            <Badge variant="outline" className="gap-1">
+            <div className="flex items-center gap-1">
               <MessageSquare className="h-3 w-3" />
-              Responded
-            </Badge>
+              <Badge variant="outline">Responded</Badge>
+            </div>
           )}
         </div>
       </TableCell>
@@ -109,15 +109,17 @@ export function ReviewsTableRow({
           <Badge variant={riskVariant(review.fakeLikelihoodLabel)}>
             Risk {review.fakeLikelihoodScore}
           </Badge>
-          <Badge variant={review.qualityLabel === 'low' ? 'destructive' : 'secondary'} className="gap-1">
+          <div className="flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
-            Quality {review.qualityScore}
-          </Badge>
-          {review.is_flagged && (
-            <Badge variant="destructive" className="gap-1">
-              <Flag className="h-3 w-3" />
-              Flagged
+            <Badge variant={review.qualityLabel === 'low' ? 'destructive' : 'secondary'}>
+              Quality {review.qualityScore}
             </Badge>
+          </div>
+          {review.is_flagged && (
+            <div className="flex items-center gap-1">
+              <Flag className="h-3 w-3" />
+              <Badge variant="destructive">Flagged</Badge>
+            </div>
           )}
         </div>
       </TableCell>
@@ -164,7 +166,7 @@ export function ReviewsTableRow({
               {review.is_featured ? 'Unfeature' : 'Feature'}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => onDelete(review)} className="text-destructive">
+            <DropdownMenuItem onClick={() => onDelete(review)}>
               <Trash2 className="mr-2 h-4 w-4" />
               Delete
             </DropdownMenuItem>

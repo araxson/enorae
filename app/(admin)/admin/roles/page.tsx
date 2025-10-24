@@ -1,5 +1,5 @@
 import { AdminRoles } from '@/features/admin/roles'
 
-export default async function AdminRolesPage() {
+export default function AdminRolesPage() {
   return <AdminRoles />
 }

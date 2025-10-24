@@ -18,9 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { updateUserRole } from '../api/mutations'
+import { updateUserRole } from '@/features/business/settings-roles/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
-import type { UserRoleWithDetails } from '../api/queries'
+import type { UserRoleWithDetails } from '@/features/business/settings-roles/api/queries'
 
 interface EditRoleDialogProps {
   open: boolean

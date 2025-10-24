@@ -146,42 +146,40 @@ export function DynamicPricingDashboard({
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {rules.map((rule, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between border-b pb-3 last:border-0 last:pb-0"
-                  >
-                    <div className="flex items-center gap-3">
+                {rules.map((rule, index) => {
+                  const isSurge = rule.adjustment_type === 'surge'
+                  const badgeLabel = isSurge
+                    ? `+${rule.adjustment_percentage}% Surge`
+                    : `-${rule.adjustment_percentage}% Discount`
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between border-b pb-3 last:border-0 last:pb-0"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                          <span className="font-medium">{getDayName(rule.day_of_week)}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Clock className="h-3 w-3" />
+                          <span>
+                            {formatTime(rule.hour_start)} - {formatTime(rule.hour_end)}
+                          </span>
+                        </div>
+                      </div>
                       <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-medium">{getDayName(rule.day_of_week)}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        <span>
-                          {formatTime(rule.hour_start)} - {formatTime(rule.hour_end)}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {rule.adjustment_type === 'surge' ? (
-                        <>
+                        {isSurge ? (
                           <TrendingUp className="h-4 w-4 text-primary" />
-                          <Badge className="bg-primary/10 text-primary">
-                            +{rule.adjustment_percentage}% Surge
-                          </Badge>
-                        </>
-                      ) : (
-                        <>
+                        ) : (
                           <TrendingDown className="h-4 w-4 text-secondary" />
-                          <Badge className="bg-secondary/10 text-secondary">
-                            -{rule.adjustment_percentage}% Discount
-                          </Badge>
-                        </>
-                      )}
+                        )}
+                        <Badge variant={isSurge ? 'default' : 'secondary'}>{badgeLabel}</Badge>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </CardContent>
           </Card>
@@ -235,10 +233,7 @@ export function DynamicPricingDashboard({
                         {formatCurrency(scenario.adjusted_price)}
                       </span>
                       {scenario.adjustment_type !== 'none' && (
-                        <Badge
-                          variant={scenario.adjustment_type === 'surge' ? 'default' : 'secondary'}
-                          className="text-xs"
-                        >
+                        <Badge variant={scenario.adjustment_type === 'surge' ? 'default' : 'secondary'}>
                           {scenario.adjustment_type === 'surge' ? '+' : '-'}
                           {scenario.adjustment_percentage}%
                         </Badge>
@@ -266,17 +261,17 @@ export function DynamicPricingDashboard({
                     key={insight.service_id}
                     className="border-b pb-4 last:border-0 last:pb-0"
                   >
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <h4 className="font-medium">{insight.service_name}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Base price: {formatCurrency(insight.base_price)}
-                        </p>
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <h4 className="font-medium">{insight.service_name}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Base price: {formatCurrency(insight.base_price)}
+                          </p>
+                        </div>
+                        <Badge>
+                          +{formatCurrency(insight.potential_revenue_increase)}/mo
+                        </Badge>
                       </div>
-                      <Badge className="bg-primary/10 text-primary">
-                        +{formatCurrency(insight.potential_revenue_increase)}/mo
-                      </Badge>
-                    </div>
                     <div className="grid grid-cols-2 gap-4 mt-3">
                       <div className="flex items-center gap-2">
                         <TrendingDown className="h-4 w-4 text-secondary" />

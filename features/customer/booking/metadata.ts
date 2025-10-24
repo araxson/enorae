@@ -17,7 +17,7 @@ export async function generateBookingMetadata({
 
   return genMeta({
     title: `Book Appointment - ${name}`,
-    description: salon?.description ?? `Book your appointment at ${name}`,
+    description: salon?.short_description ?? `Book your appointment at ${name}`,
     keywords: ['book appointment', 'salon booking', name],
   })
 }

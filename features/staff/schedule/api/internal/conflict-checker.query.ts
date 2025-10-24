@@ -58,7 +58,7 @@ export async function checkScheduleConflict(
   const dayOfWeek = DAY_MAP[dayIndex]
 
   const { data, error } = await supabase
-    .from('staff_schedules')
+    .from('staff_schedules_view')
     .select('*')
     .eq('staff_id', authorizedStaffId)
     .eq('day_of_week', dayOfWeek)
@@ -97,7 +97,7 @@ export async function getScheduleConflicts(
   const dayOfWeek = DAY_MAP[dayIndex]
 
   const { data: schedules, error: scheduleError } = await supabase
-    .from('staff_schedules')
+    .from('staff_schedules_view')
     .select('*')
     .eq('staff_id', authorizedStaffId)
     .eq('day_of_week', dayOfWeek)
@@ -116,7 +116,7 @@ export async function getScheduleConflicts(
   const targetRangeEnd = new Date(`${workDate}T${endTime}`)
 
   const { data: appointments, error: appointmentError } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('id, start_time, end_time, customer_name')
     .eq('staff_id', authorizedStaffId)
     .gte('start_time', `${workDate}T00:00:00`)

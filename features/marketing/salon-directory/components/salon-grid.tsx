@@ -13,8 +13,8 @@ export function SalonGrid({ salons }: SalonGridProps) {
     return (
       <div className="text-center py-12">
         <div className="flex flex-col gap-4">
-          <h3 className="scroll-m-20 text-2xl font-semibold">No salons found</h3>
-          <p className="text-sm text-muted-foreground">Try adjusting your search filters to find more results</p>
+          <h3 className="scroll-m-20">No salons found</h3>
+          <p className="text-muted-foreground">Try adjusting your search filters to find more results</p>
         </div>
       </div>
     )
@@ -22,7 +22,7 @@ export function SalonGrid({ salons }: SalonGridProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm text-muted-foreground">{salons.length} salon{salons.length !== 1 ? 's' : ''} found</p>
+      <p className="text-muted-foreground">{salons.length} salon{salons.length !== 1 ? 's' : ''} found</p>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {salons.map((salon) => {
           const location = [salon.city, salon.state_province]
@@ -34,11 +34,11 @@ export function SalonGrid({ salons }: SalonGridProps) {
               key={salon.id}
               salonId={salon.id || undefined}
               name={salon.name || 'Unnamed Salon'}
-              description={salon.short_description || salon.description || undefined}
-              image={salon.cover_image_url || salon.logo_url || undefined}
+              description={salon.short_description || undefined}
+              image={undefined}
               location={location}
-              rating={salon.rating || undefined}
-              reviewCount={salon.review_count || undefined}
+              rating={salon.rating_average || undefined}
+              reviewCount={salon.rating_count || undefined}
               hours={undefined}
               onBook={() => {
                 // Public directory - redirect to sign up or detail page
@@ -51,7 +51,7 @@ export function SalonGrid({ salons }: SalonGridProps) {
                 if (navigator.share) {
                   navigator.share({
                     title: salon.name || 'Salon',
-                    text: salon.short_description || salon.description || '',
+                    text: salon.short_description || '',
                     url: `/salons/${salon.slug}`,
                   })
                 } else {

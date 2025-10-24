@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '../api/mutations'
+import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '@/features/shared/notifications/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import type { Json } from '@/lib/types/database.types'
 
@@ -146,9 +146,7 @@ export function NotificationCenter({ notifications }: Props) {
                           <div className="flex items-center gap-3 mb-2">
                             {getChannelIcon(notification.channels)}
                             <h4 className="font-semibold">{notification.title}</h4>
-                            {notification.status === 'pending' && (
-                              <Badge variant="secondary" className="text-xs">New</Badge>
-                            )}
+                            {notification.status === 'pending' && <Badge variant="secondary">New</Badge>}
                           </div>
                           <p className="text-sm text-muted-foreground mb-2">
                             {notification.message}
@@ -157,9 +155,9 @@ export function NotificationCenter({ notifications }: Props) {
                             {formatDistanceToNow(new Date(notification.created_at || ''), { addSuffix: true })}
                           </p>
                           {notification.channels && notification.channels.length > 0 && (
-                            <div className="flex gap-1 mt-2">
+                            <div className="mt-2 flex gap-1 text-xs">
                               {notification.channels.map((channel) => (
-                                <Badge key={channel} variant="outline" className="text-xs">
+                                <Badge key={channel} variant="outline">
                                   {channel}
                                 </Badge>
                               ))}

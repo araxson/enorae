@@ -1,303 +1,137 @@
 # Staff Portal - Mutations Analysis
 
-**Date**: 2025-10-20  
-**Portal**: Staff  
-**Layer**: Mutations  
-**Files Analyzed**: 19  
-**Issues Found**: 6 (Critical: 2, High: 2, Medium: 2, Low: 0)
+**Date**: 2025-10-23
+**Portal**: Staff
+**Layer**: Mutations
+**Files Analyzed**: 18
+**Issues Found**: 2 (Critical: 0, High: 2, Medium: 0, Low: 0)
 
 ---
 
 ## Summary
 
-Audited every `features/staff/**/api/mutations.ts` entry point (and supporting sub-modules) for `'use server'` directives, auth enforcement, schema-writing compliance, and cache revalidation. All files include the server directive and enforce auth via `requireAuth`, `verifySession`, or role checks. However, several mutations violate CLAUDE.md Rule 7 (writes must target schema tables) by inserting/updating public views, and two messaging handlers skip thread scoping, conflicting with the Supabase security guidance we confirmed via Context7 (“Authorize Server Actions”). We also confirmed via `information_schema` that `time_off_requests_view` is only exposed as a public view—writing through it fails at runtime. Type safety gaps (ignoring generated schemas) surface again, echoing the TypeScript best practice citation (“Pluck properties with type safety”) retrieved earlier.
+- All mutation entry points include the required `'use server'` directive and route writes through the Supabase server client, which aligns with the server action pattern in `docs/stack-patterns/supabase-patterns.md`.
+- Most writes correctly target schema tables via `.schema('…')`, while reads inside the same functions generally rely on views for ownership checks.
+- Messaging mutations mirror the query-layer problems: they look up threads by comparing `staff_id` to the auth user id and, in one case, update every unread message for the user regardless of thread.
+- Revalidation is consistently triggered with `revalidatePath`, keeping UI caches fresh after mutations.
 
 ---
 
 ## Issues
 
-### Critical Priority
-
-#### Issue #1: Staff metadata update queries invalid `profiles.user_id`
-**Severity**: Critical  
-**File**: `features/staff/profile/api/mutations.ts:103-123`  
-**Rule Violation**: CLAUDE.md Rule 10 (Type safety) & Context7 TypeScript best practice (using schema types to avoid invalid keys).
-
-**Current Code**:
-```typescript
-const { data: profile } = await supabase
-  .from('profiles')
-  .select('id')
-  .eq('user_id', session.user.id)
-  .single<{ id: string }>()
-```
-
-**Problem**:
-The `public.profiles` view exposes `id` (already the auth UUID) but no `user_id`. Supabase throws `column profiles.user_id does not exist`, so every metadata update fails.
-
-**Required Fix**:
-```typescript
-const { data: profile, error: profileError } = await supabase
-  .from('profiles')
-  .select('id')
-  .eq('id', session.user.id)
-  .maybeSingle<{ id: string }>()
-
-if (profileError) throw profileError
-if (!profile?.id) {
-  return { success: false, error: 'Profile not found' }
-}
-```
-
-**Steps to Fix**:
-1. Filter by `eq('id', session.user.id)` and capture `profileError`.
-2. Swap `single()` with `maybeSingle()` to avoid thrown errors on missing rows.
-3. Re-run `npm run typecheck` to ensure generated types protect against similar mistakes.
-
-**Acceptance Criteria**:
-- [ ] Staff metadata updates succeed for authenticated users without PostgREST errors.  
-- [ ] No reliance on non-existent `user_id` columns.  
-- [ ] TypeScript build remains clean.
-
-**Dependencies**: None
-
----
-
-#### Issue #2: Time-off mutations write through read-only view
-**Severity**: Critical  
-**File**: `features/staff/time-off/api/mutations.ts:55-127`  
-**Rule Violation**: CLAUDE.md Rule 7 (Writes go to schema tables) & Supabase pattern (“Writes to schema tables”).
-
-**Current Code**:
-```typescript
-const { error: insertError } = await supabase
-  .schema('scheduling')
-  .from('time_off_requests_view')
-  .insert<TimeOffRequestInsert>(insertPayload)
-```
-
-**Problem**:
-`time_off_requests_view` lives in `public` and is not meant for writes. Inserts/updates through the view fail, so creating, approving, or rejecting requests never persists state.
-
-**Required Fix**:
-```typescript
-const { error: insertError } = await supabase
-  .schema('scheduling')
-  .from('time_off_requests')
-  .insert(insertPayload)
-```
-
-Apply the same change to every `.update()` call.
-
-**Steps to Fix**:
-1. Replace every `.from('time_off_requests_view')` with the underlying table `time_off_requests`.
-2. Ensure filter columns (`staff_id`, `salon_id`, etc.) still match table schema.
-3. Retest actions (create/approve/reject/update/cancel) end-to-end.
-
-**Acceptance Criteria**:
-- [ ] All time-off mutations persist changes in `scheduling.time_off_requests`.  
-- [ ] No PostgREST errors about read-only relations.  
-- [ ] Revalidate paths fire only after successful writes.
-
-**Dependencies**: Blocks Issue #3 fix.
-
----
-
 ### High Priority
 
-#### Issue #3: Time-off creation trusts user-supplied `staffId`
+#### Issue #1: Thread ownership check compares staff profile to auth user id
 **Severity**: High  
-**File**: `features/staff/time-off/api/mutations.ts:42-78`  
-**Rule Violation**: CLAUDE.md Rule 8 (Verify auth and tenant scoping).
+**File**: `features/staff/messages/api/mutations.ts:28-44`  
+**Rule Violation**: Rule 7 – Tenant scoping must respect staff profile IDs.
 
 **Current Code**:
 ```typescript
-const insertPayload: TimeOffRequestInsert = {
-  salon_id: staffProfile.salon_id,
-  staff_id: data.staffId,
-  // …
+const { data: thread, error: threadError } = await supabase
+  .from('message_threads')
+  .select('staff_id, customer_id')
+  .eq('id', threadId)
+  .single()
+
+if (thread.staff_id !== session.user.id) {
+  throw new Error('Unauthorized to send message in this thread')
 }
 ```
 
 **Problem**:
-The form controls `staffId`, letting a malicious actor submit requests on behalf of another stylist. RLS may block it, but relying on RLS undermines defense-in-depth.
+- `communication.message_threads.staff_id` references `organization.staff_profiles.id`, but the code compares it to `session.user.id` (auth user id). This causes legitimate staff users to hit the unauthorized branch.
+- The lookup also uses the raw table; the staff portal is expected to read from a public view for consistency with RLS.
 
 **Required Fix**:
 ```typescript
-const { data: staffProfile } = await supabase
-  .from('staff')
-  .select('id, salon_id')
-  .eq('user_id', user.id)
-  .single<{ id: string; salon_id: string | null }>()
+const staffProfile = await supabase
+  .from('staff_profiles_view')
+  .select('id')
+  .eq('user_id', session.user.id)
+  .maybeSingle()
 
-const insertPayload = {
-  salon_id: staffProfile.salon_id,
-  staff_id: staffProfile.id,
-  // …
+if (!staffProfile?.id || staffProfile.id !== thread.staff_id) {
+  throw new Error('Unauthorized to send message in this thread')
 }
 ```
 
 **Steps to Fix**:
-1. Retrieve the authenticated staff member’s `id` and override any incoming `staffId`.
-2. Validate that the salon matches before insertion.
-3. Update other mutations (`updateTimeOffRequest`, `cancelTimeOffRequest`) to reuse the server-derived staff ID where comparisons occur.
+1. Resolve the staff profile id via `staff_profiles_view` before comparing ownership.
+2. Swap `.from('message_threads')` for the public view equivalent to stay on the read path mandated by the Supabase pattern.
+3. Re-run `npm run typecheck`.
 
 **Acceptance Criteria**:
-- [ ] Requests always record the authenticated staff member’s ID.  
-- [ ] Attempts to spoof another staff ID are ignored or rejected.  
-- [ ] All existing behaviour remains functional.
+- [ ] Staff with matching profiles can send thread messages without hitting the unauthorized error.
+- [ ] Thread lookups use public views and staff profile IDs.
 
-**Dependencies**: Requires Issue #2 resolution.
+**Dependencies**: Same staff-profile linkage fix noted in the Queries layer.
 
 ---
 
-#### Issue #4: Messaging mutations ignore thread scoping metadata
+#### Issue #2: `markThreadAsRead` updates all unread messages for a user
 **Severity**: High  
-**File**: `features/staff/messages/api/mutations.ts:34-138`  
-**Rule Violation**: CLAUDE.md Rule 8 (Tenant scoping) & Context7 Next.js “Authorize Server Actions”.
+**File**: `features/staff/messages/api/mutations.ts:57-84`  
+**Rule Violation**: Rule 7 – Mutations must be scoped to the targeted resource.
 
 **Current Code**:
 ```typescript
-// sendThreadMessage
-.insert({
-  from_user_id: session.user.id,
-  to_user_id: thread.customer_id,
-  content: validated.content,
-  context_type: 'general',
-})
-
-// markThreadAsRead
-.update({ is_read: true })
-.eq('to_user_id', session.user.id)
-.eq('is_read', false)
+const { error } = await supabase
+  .schema('communication')
+  .from('messages')
+  .update({ is_read: true, read_at: new Date().toISOString() })
+  .eq('to_user_id', session.user.id)
+  .eq('is_read', false)
 ```
 
 **Problem**:
-- New thread replies omit `context_id` and use `context_type: 'general'`, so they are not tied to the thread in downstream queries.  
-- Mark-as-read updates every unread message addressed to the staff member across all threads, not just the target thread.
+- No `thread_id` predicate is applied, so every unread message sent to the staff member across *all* threads is marked as read.
+- As with the query issue, the thread ownership check compares `thread.staff_id` to `session.user.id`, which is inconsistent with the database schema and can block legitimate updates.
 
 **Required Fix**:
 ```typescript
-// sendThreadMessage
-.insert({
-  from_user_id: session.user.id,
-  to_user_id: thread.customer_id,
-  content: validated.content,
-  context_type: 'thread',
-  context_id: threadId,
-  is_read: false,
-  is_edited: false,
-  is_deleted: false,
-})
-
-// markThreadAsRead
-.update({ is_read: true, read_at: new Date().toISOString() })
-.eq('to_user_id', session.user.id)
-.eq('context_type', 'thread')
-.eq('context_id', threadId)
-.eq('is_read', false)
+const { error } = await supabase
+  .schema('communication')
+  .from('messages')
+  .update({ is_read: true, read_at: new Date().toISOString() })
+  .eq('thread_id', threadId)
+  .eq('to_user_id', staffProfile.id)
+  .eq('is_deleted', false)
 ```
 
 **Steps to Fix**:
-1. Include `context_type: 'thread'` and `context_id: threadId` when inserting thread replies.
-2. Tighten the `markThreadAsRead` filter to the same thread ID.
-3. Add regression test (or manual QA) to ensure only the intended thread updates.
+1. Resolve the staff profile id as in Issue #1.
+2. Add `thread_id` (and any other relevant scoping columns) to the update filter.
+3. Keep the existing revalidation calls so the UI reflects the updated read state.
 
 **Acceptance Criteria**:
-- [ ] Thread replies immediately appear within the correct conversation.  
-- [ ] Mark-as-read affects only messages inside `threadId`.  
-- [ ] No cross-thread state leakage occurs.
+- [ ] Only messages in the specified thread are marked read.
+- [ ] Ownership checks rely on staff profile IDs, not auth user ids.
 
-**Dependencies**: None
-
----
-
-### Medium Priority
-
-#### Issue #5: Time-off mutations revalidate business routes
-**Severity**: Medium  
-**File**: `features/staff/time-off/api/mutations.ts:70-134`  
-**Rule Violation**: CLAUDE.md Rule 5 (UI consistency) – staff actions should refresh staff portal pages.
-
-**Current Code**:
-```typescript
-revalidatePath('/business/time-off')
-```
-
-**Problem**:
-Staff actions (create/approve/reject) invalidate the business portal route, leaving `/staff/time-off` stale until manual refresh.
-
-**Required Fix**:
-```typescript
-revalidatePath('/staff/time-off')
-revalidatePath('/business/time-off') // optional if business portal also reflects changes
-```
-
-**Steps to Fix**:
-1. Update each mutation to revalidate staff-facing paths.  
-2. Keep business revalidation only if business views consume the same data.
-
-**Acceptance Criteria**:
-- [ ] Staff time-off page reflects changes immediately after mutation.  
-- [ ] Optional: business portal still updates if required.
-
-**Dependencies**: Requires Issues #2–#3 so revalidation fires after successful writes.
-
----
-
-#### Issue #6: Schedule creation revalidates wrong route
-**Severity**: Medium  
-**File**: `features/staff/schedule/api/staff-schedules/create.ts:57-58`  
-**Rule Violation**: CLAUDE.md Rule 5 (UI consistency).
-
-**Current Code**:
-```typescript
-revalidatePath('/business/staff/schedules')
-```
-
-**Problem**:
-Staff-created schedules don’t refresh `/staff/schedule`, leading to stale calendars.
-
-**Required Fix**:
-```typescript
-revalidatePath('/staff/schedule')
-revalidatePath('/business/staff/schedules') // only if business portal relies on it
-```
-
-**Steps to Fix**:
-1. Adjust revalidation paths in `create`, `update`, and `delete` actions within the schedule module.  
-2. Verify UI updates without manual refresh.
-
-**Acceptance Criteria**:
-- [ ] Staff schedule view shows new entries immediately.  
-- [ ] No regression for business portal if it uses the same action.
-
-**Dependencies**: None
+**Dependencies**: Depends on the staff profile lookup fix from Issue #1.
 
 ---
 
 ## Statistics
 
-- Total Issues: 6  
-- Files Affected: 4  
-- Estimated Fix Time: 12 hours  
-- Breaking Changes: 0 (but fixes unblock non-functional flows)
+- Total Issues: 2
+- Files Affected: 1
+- Estimated Fix Time: 3 hours
+- Breaking Changes: Low (logic fixes only)
 
 ---
 
 ## Next Steps
 
-1. Redirect time-off writes to `scheduling.time_off_requests` and lock down the staff ID handling.  
-2. Patch messaging thread logic to include proper context scoping.  
-3. Align revalidation paths with staff portal routes, then proceed to validation layer analysis.
+1. Implement the staff profile lookup and scope message mutations accordingly.
+2. After fixes, re-run `npm run typecheck` and any messaging integration tests.
 
 ---
 
 ## Related Files
 
 This analysis should be done after:
-- [x] docs/staff-portal/02_QUERIES_ANALYSIS.md
+- [x] Layer 2 queries analysis
 
 This analysis blocks:
-- [ ] docs/staff-portal/04_COMPONENTS_ANALYSIS.md
-
+- [ ] Layer 4 components evaluation

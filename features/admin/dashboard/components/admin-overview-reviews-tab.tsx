@@ -41,22 +41,18 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
           <div className="space-y-3">
             {rows.map((review) => (
               <Card key={review.id}>
-                <CardContent className="p-3">
+                <CardHeader className="pb-2">
                   <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-semibold leading-tight">
-                        {review.salon_name || 'Unknown salon'}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        By {review.customer_name || 'Anonymous'}
-                      </p>
-                    </div>
+                    <CardTitle>{review.salon_name || 'Unknown salon'}</CardTitle>
                     <Badge variant="outline" className="gap-1 text-xs">
                       <Star className="h-3 w-3 text-accent" fill="currentColor" />
                       {review.rating || 0}/5
                     </Badge>
                   </div>
-                  <Separator className="my-3" />
+                  <CardDescription>By {review.customer_name || 'Anonymous'}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 pt-0">
+                  <Separator />
                   <p className="line-clamp-3 text-sm text-muted-foreground">
                     {review.comment || 'No comment provided.'}
                   </p>

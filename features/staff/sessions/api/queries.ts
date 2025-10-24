@@ -1,7 +1,7 @@
 import 'server-only'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import type { Session } from '../types'
+import type { Session } from '@/features/staff/sessions/types'
 
 export async function getMySessions(): Promise<Session[]> {
   const session = await verifySession()

@@ -1,9 +1,11 @@
 import { BusinessNotificationManagement } from '@/features/business/notifications/management'
+import { generateMetadata as genMeta } from '@/lib/metadata'
 
-export const metadata = {
+export const metadata = genMeta({
   title: 'Notifications',
-  description: 'View and manage your notifications',
-}
+  description: 'Manage notification preferences and message history',
+  noIndex: true,
+})
 
 export default async function NotificationsPage() {
   return <BusinessNotificationManagement />

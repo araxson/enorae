@@ -1,0 +1,6 @@
+1. Fix Issue #1: Async Page Shells Without Awaited Work (app/(customer)/customer/appointments/page.tsx:8)
+2. Fix Issue #1: Async Page Shells Without Awaited Work (app/(customer)/customer/messages/page.tsx:8)
+3. Fix Issue #1: Async Page Shells Without Awaited Work (app/(customer)/customer/transactions/page.tsx:8)
+4. Fix Issue #1: Async Page Shells Without Awaited Work (app/(customer)/customer/chains/page.tsx:8)
+5. Fix Issue #1: Async Page Shells Without Awaited Work (app/(customer)/customer/reviews/page.tsx:5)
+6. Run typecheck and verify

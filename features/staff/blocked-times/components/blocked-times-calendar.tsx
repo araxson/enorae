@@ -5,7 +5,7 @@ import { format, startOfWeek, addDays, isSameDay, parseISO } from 'date-fns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, Clock, Ban } from 'lucide-react'
-import type { BlockedTime } from '../types'
+import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
 interface BlockedTimesCalendarProps {
   blockedTimes: BlockedTime[]
@@ -58,8 +58,8 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
 
             return (
               <Card key={day.toISOString()} className={isToday ? 'border-primary' : ''}>
-                <CardContent className="p-3">
-                  <div className="flex flex-col gap-3">
+                <CardContent>
+                  <div className="flex flex-col gap-3 p-3">
                     <div>
                       <p className="text-sm font-semibold text-foreground">
                         {format(day, 'EEE')}

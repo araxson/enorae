@@ -29,8 +29,8 @@ export function SpecialtiesTags({ specialties, limit, className }: SpecialtiesTa
       {displaySpecialties.map((specialty) => {
         const Icon = SPECIALTY_ICONS[specialty]
         return (
-          <Badge key={specialty} variant="default" className="gap-1">
-            {Icon && <Icon className="h-3 w-3" />}
+          <Badge key={specialty} variant="default">
+            {Icon && <Icon className="mr-1 h-3 w-3" />}
             {specialty}
           </Badge>
         )

@@ -6,12 +6,12 @@ import type {
   StaffDashboardData,
   StaffPerformanceBenchmark,
   StaffWithMetrics,
-} from '../api/queries'
+} from '@/features/admin/staff/api/queries'
 import { StaffStats } from './staff-stats'
 import { StaffFilters, type RiskFilter } from './staff-filters'
 import { StaffTable } from './staff-table'
 import { StaffRiskBadge } from './staff-risk-badge'
-import type { BackgroundStatus } from '../api/internal/staff-dashboard/metrics'
+import type { BackgroundStatus } from '@/features/admin/staff/api/internal/staff-dashboard/metrics'
 
 function InsightList({ title, description, items }: { title: string; description: string; items: StaffWithMetrics[] }) {
   return (
@@ -121,8 +121,8 @@ export function StaffClient({ staff, stats, highRiskStaff, verificationQueue, to
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-6">
         <div>
-          <p className="leading-7 text-base font-semibold">Staff Oversight</p>
-          <p className="text-sm text-muted-foreground text-sm">
+          <p className="text-base font-semibold">Staff Oversight</p>
+          <p className="text-sm text-muted-foreground">
             Monitor staff verification status, performance, and compliance issues across the platform.
           </p>
         </div>

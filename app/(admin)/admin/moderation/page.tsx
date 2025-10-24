@@ -1,5 +1,5 @@
 import { AdminModeration } from '@/features/admin/moderation'
 
-export default async function AdminModerationPage() {
+export default function AdminModerationPage() {
   return <AdminModeration />
 }

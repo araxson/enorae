@@ -3,7 +3,7 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type StaffProfile = Database['public']['Views']['staff']['Row']
+type StaffProfile = Database['public']['Views']['staff_profiles_view']['Row']
 type StaffProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row']
 type PublicProfile = Database['public']['Views']['profiles']['Row']
 
@@ -18,7 +18,7 @@ export async function getMyStaffProfile(): Promise<StaffProfile | null> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff_view')
+    .from('staff_profiles_view')
     .select('*')
     .eq('user_id', session.user.id)
     .single()
@@ -46,12 +46,12 @@ export async function getMyStaffProfileDetails(): Promise<StaffProfileDetails> {
 
   const [metadataResult, profileResult] = await Promise.all([
     supabase
-      .from('profiles_metadata_view')
+      .from('profiles_metadata')
       .select('*')
       .eq('profile_id', profile.user_id)
       .maybeSingle<StaffProfileMetadata>(),
     supabase
-      .from('profiles_view')
+      .from('profiles')
       .select('username')
       .eq('id', profile.user_id)
       .maybeSingle<Pick<PublicProfile, 'username'>>(),

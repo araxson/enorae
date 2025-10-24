@@ -17,7 +17,7 @@ export async function CouponManagement() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Coupon & Promotion Management</h1>
+        <h1 className="text-4xl font-bold">Coupon & Promotion Management</h1>
         <p className="leading-7 text-muted-foreground">
           Create and manage discount coupons to attract and retain customers
         </p>
@@ -29,8 +29,8 @@ export async function CouponManagement() {
 
       <BulkCouponGenerator salonId={salon.id} />
 
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Active Coupons</h2>
+      <div className="flex flex-col gap-4">
+        <h2 className="text-2xl font-bold">Active Coupons</h2>
         <CouponsList
           coupons={analytics.coupons}
           salonId={salon.id}

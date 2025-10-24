@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/lib/hooks/use-toast'
-import { toggleServiceAvailability, updateServiceProficiency } from '../api/mutations'
+import { toggleServiceAvailability, updateServiceProficiency } from '@/features/staff/services/api/mutations'
 
 type StaffService = {
   id: string
@@ -45,6 +45,11 @@ function getProficiencyColor(level?: string | null) {
       return 'outline'
   }
 }
+
+const formatLabel = (value?: string | null) =>
+  (value ?? '')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase())
 
 export function ServiceCard({ service }: ServiceCardProps) {
   const [isUpdating, setIsUpdating] = useState(false)
@@ -95,18 +100,14 @@ export function ServiceCard({ service }: ServiceCardProps) {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <CardTitle>{service.service_name}</CardTitle>
-              {service.is_available === false && (
-                <Badge variant="outline" className="text-xs">
-                  Unavailable
-                </Badge>
-              )}
+              {service.is_available === false && <Badge variant="outline">Unavailable</Badge>}
             </div>
             {service.category_name && <p className="text-sm text-muted-foreground">{service.category_name}</p>}
           </div>
           <div className="flex items-center gap-2">
             {service.proficiency_level && (
-              <Badge variant={getProficiencyColor(service.proficiency_level)} className="capitalize">
-                {service.proficiency_level}
+              <Badge variant={getProficiencyColor(service.proficiency_level)}>
+                {formatLabel(service.proficiency_level)}
               </Badge>
             )}
             <DropdownMenu>
@@ -141,33 +142,35 @@ export function ServiceCard({ service }: ServiceCardProps) {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3">
-        {service.effective_duration && (
-          <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <p className="text-sm">{service.effective_duration} minutes</p>
-          </div>
-        )}
-        {service.effective_price && (
-          <div className="flex items-center gap-2">
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-            <p className="text-sm">${service.effective_price}</p>
-          </div>
-        )}
-        {service.performed_count != null && service.performed_count > 0 && (
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">Performed {service.performed_count} times</p>
-          </div>
-        )}
-        {service.rating_average && service.rating_count && service.rating_count > 0 && (
-          <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 fill-accent text-accent" />
-            <p className="text-sm">
-              {service.rating_average.toFixed(1)} ({service.rating_count} reviews)
-            </p>
-          </div>
-        )}
+      <CardContent>
+        <div className="space-y-3">
+          {service.effective_duration && (
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm">{service.effective_duration} minutes</p>
+            </div>
+          )}
+          {service.effective_price && (
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm">${service.effective_price}</p>
+            </div>
+          )}
+          {service.performed_count != null && service.performed_count > 0 && (
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">Performed {service.performed_count} times</p>
+            </div>
+          )}
+          {service.rating_average && service.rating_count && service.rating_count > 0 && (
+            <div className="flex items-center gap-2">
+              <Star className="h-4 w-4 fill-accent text-accent" />
+              <p className="text-sm">
+                {service.rating_average.toFixed(1)} ({service.rating_count} reviews)
+              </p>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   )

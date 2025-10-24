@@ -1,37 +1,14 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { FileQuestion, Store, ArrowLeft } from 'lucide-react'
+import { NotFoundPage } from '@/components/shared/not-found-page'
 
 export default function CustomerNotFound() {
   return (
-    <section className="py-16 md:py-24 lg:py-32">
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-4 text-center sm:px-6 lg:px-8">
-        <div className="rounded-full bg-destructive/10 p-6">
-          <FileQuestion className="h-16 w-16 text-destructive" />
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Page Not Found</h1>
-          <p className="mx-auto max-w-md text-xl text-muted-foreground">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved.
-          </p>
-        </div>
-
-        <div className="flex gap-4">
-          <Button asChild variant="outline">
-            <Link href="/customer">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Dashboard
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href="/customer/salons">
-              <Store className="mr-2 h-4 w-4" />
-              Browse Salons
-            </Link>
-          </Button>
-        </div>
-      </div>
-    </section>
+    <NotFoundPage
+      title="Page Not Found"
+      description="The page you're looking for doesn't exist or has been moved."
+      backHref="/customer"
+      backLabel="Back to Dashboard"
+      homeHref="/customer/salons"
+      homeLabel="Browse Salons"
+    />
   )
 }

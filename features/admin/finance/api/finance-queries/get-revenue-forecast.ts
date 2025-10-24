@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { RevenueForecast } from '../types'
+import type { RevenueForecast } from '@/features/admin/finance/api/types'
 import { requireAdminClient } from './client'
 
 export async function getRevenueForecast(days = 30): Promise<RevenueForecast[]> {

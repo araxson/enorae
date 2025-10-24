@@ -5,6 +5,9 @@ import type { AppointmentDetailContentProps } from './types'
 
 export function AppointmentHeader({ appointment }: Pick<AppointmentDetailContentProps, 'appointment'>) {
   if (!appointment) return null
+  const statusLabel = (appointment.status ?? 'pending')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase())
 
   return (
     <>
@@ -12,9 +15,7 @@ export function AppointmentHeader({ appointment }: Pick<AppointmentDetailContent
         <span className="text-sm text-muted-foreground">
           {appointment.confirmation_code || 'No code'}
         </span>
-        <Badge variant={getStatusVariant(appointment.status)} className="capitalize">
-          {appointment.status ?? 'pending'}
-        </Badge>
+        <Badge variant={getStatusVariant(appointment.status)}>{statusLabel}</Badge>
       </div>
       <Separator />
     </>

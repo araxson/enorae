@@ -3,11 +3,11 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import { Monitor, Smartphone, Tablet, X, AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { revokeSession } from '../api/mutations'
-import type { StaffSessionDetail } from '../types'
+import { revokeSession } from '@/features/staff/sessions/api/mutations'
+import type { StaffSessionDetail } from '@/features/staff/sessions/types'
 
 interface SessionListProps {
   sessions: StaffSessionDetail[]
@@ -47,8 +47,13 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
 
   if (activeSessions.length === 0) {
     return (
-      <Card className="p-8 text-center">
-        <p className="text-muted-foreground">No active sessions found</p>
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col items-center text-center">
+            <CardTitle>No active sessions</CardTitle>
+            <CardDescription>Sign in on a device to see sessions here.</CardDescription>
+          </div>
+        </CardHeader>
       </Card>
     )
   }
@@ -65,57 +70,37 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
         const formattedCreatedAt = parsedCreatedAt ? format(parsedCreatedAt, 'PPp') : null
 
         return (
-          <Card key={session.id} className="p-4">
-            <div className="flex gap-4 items-start justify-between">
-              <div className="flex flex-col gap-3 flex-1">
-                <div className="flex gap-3 items-center">
+          <Card key={session.id}>
+            <CardHeader>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex items-center gap-2">
                   {getDeviceIcon(session.device_type)}
-                  <h3 className="scroll-m-20 text-2xl font-semibold">{session.device_name || 'Unknown Device'}</h3>
-                  {isCurrent && (
-                    <Badge variant="default">Current</Badge>
-                  )}
+                  <CardTitle>{session.device_name || 'Unknown Device'}</CardTitle>
+                  {isCurrent ? <Badge variant="default">Current</Badge> : null}
                 </div>
-
-                <p className="text-sm text-muted-foreground">
-                  {session.browser_name} {session.browser_version && `v${session.browser_version}`}
-                </p>
-
-                {session.ip_address && (
-                  <p className="text-xs text-muted-foreground">
-                    IP: {session.ip_address}
-                  </p>
-                )}
-
-                {session.location && (
-                  <p className="text-xs text-muted-foreground">
-                    Location: {session.location}
-                  </p>
-                )}
-
-                {formattedLastActive && (
-                  <p className="text-xs text-muted-foreground">
-                    Last active: {formattedLastActive}
-                  </p>
-                )}
-
-                {formattedCreatedAt && (
-                  <p className="text-xs text-muted-foreground">
-                    Created: {formattedCreatedAt}
-                  </p>
-                )}
+                {!isCurrent ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => session.id && handleRevoke(session.id)}
+                    disabled={revokingId === session.id}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                ) : null}
               </div>
-
-              {!isCurrent && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => session.id && handleRevoke(session.id)}
-                  disabled={revokingId === session.id}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <CardDescription>
+                  {session.browser_name} {session.browser_version ? `v${session.browser_version}` : ''}
+                </CardDescription>
+                {session.ip_address ? <p>IP: {session.ip_address}</p> : null}
+                {session.location ? <p>Location: {session.location}</p> : null}
+                {formattedLastActive ? <p>Last active: {formattedLastActive}</p> : null}
+                {formattedCreatedAt ? <p>Created: {formattedCreatedAt}</p> : null}
+              </div>
+            </CardContent>
           </Card>
         )
       })}

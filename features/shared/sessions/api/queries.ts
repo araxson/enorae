@@ -1,16 +1,10 @@
 import 'server-only'
-import type { Database } from '@/lib/types/database.types'
 
 import { requireSessionContext } from './session-context'
+import type { Session, SessionWithMetadata, SessionWithDevice } from '@/features/shared/sessions/types'
 
-// FIXED: Use identity.sessions view (application sessions, not auth.sessions)
-type Session = Database['public']['Views']['sessions']['Row']
-
-export type SessionWithMetadata = Session & {
-  is_current: boolean
-}
-
-export type SessionWithDevice = SessionWithMetadata
+// Re-export types for components
+export type { SessionWithDevice } from '@/features/shared/sessions/types'
 
 /**
  * Get all active sessions for the current user
@@ -29,11 +23,7 @@ export async function getUserSessions(): Promise<SessionWithMetadata[]> {
     .order('updated_at', { ascending: false })
 
   if (error) throw error
-  const sessions = data || []
-  return sessions.map((session: Session) => ({
-    ...session,
-    is_current: false, // Note: is_current field not available in view
-  }))
+  return (data || []) as SessionWithMetadata[]
 }
 
 /**

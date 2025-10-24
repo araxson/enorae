@@ -1,4 +1,4 @@
-import type { CustomerMetrics, InsightsSummary } from '../../api/queries'
+import type { CustomerMetrics, InsightsSummary } from '@/features/business/insights/api/queries'
 
 export interface CustomerInsightsDashboardProps {
   summary: InsightsSummary

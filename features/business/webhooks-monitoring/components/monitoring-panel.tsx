@@ -14,10 +14,10 @@ function normalizeFailedWebhooks(
   failedWebhooks: FailedWebhookRow[],
 ) {
   return failedWebhooks.map((webhook) => ({
-    id: webhook.id,
+    id: webhook.id ?? '',
     url: webhook.url ?? 'Unknown destination',
-    event_type: webhook.event_type ?? 'unknown',
-    error_message: webhook.error_message,
+    event_type: 'webhook', // event_type field doesn't exist in view, use generic type
+    error_message: webhook.last_error ?? null, // The field is 'last_error', not 'error_message'
     created_at: webhook.created_at ?? new Date().toISOString(),
   }))
 }
@@ -31,7 +31,7 @@ export function MonitoringPanel({
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Webhook Monitoring</h1>
+        <h1 className="text-4xl font-bold">Webhook Monitoring</h1>
         <p className="leading-7 text-muted-foreground">
           Monitor webhook deliveries and track performance metrics
         </p>

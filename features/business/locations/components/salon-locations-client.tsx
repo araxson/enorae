@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { LocationList } from './location-list'
 import { LocationForm } from './location-form'
-import type { SalonLocation } from '@/lib/types/app.types'
+import type { SalonLocation } from '@/features/business/locations'
 
 type SalonLocationsClientProps = {
   initialLocations: SalonLocation[]

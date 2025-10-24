@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import type { Database } from '@/lib/types/database.types'
-import { retryWebhook, deleteWebhook } from '../api/mutations'
+import { retryWebhook, deleteWebhook } from '@/features/business/webhooks/api/mutations'
 import { WebhookStatusSection } from './webhook-status-section'
 import { WebhookPayloadSection } from './webhook-payload-section'
 import { WebhookErrorSection } from './webhook-error-section'

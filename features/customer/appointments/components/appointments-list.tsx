@@ -10,11 +10,13 @@ import type { Database } from '@/lib/types/database.types'
 
 type Appointment = Database['public']['Views']['appointments']['Row']
 
+type AppointmentStatus = NonNullable<Appointment['status']>
+
 interface AppointmentsListProps {
   appointments: Appointment[]
 }
 
-const statusVariant = (status: Appointment['status']) => {
+const statusVariant = (status: AppointmentStatus | 'pending') => {
   switch (status) {
     case 'completed':
     case 'confirmed':
@@ -25,6 +27,9 @@ const statusVariant = (status: Appointment['status']) => {
       return 'secondary' as const
   }
 }
+
+const formatStatus = (status: AppointmentStatus | 'pending') =>
+  status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
 
 export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
@@ -70,9 +75,11 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
               </p>
             </div>
 
-            <Badge variant={statusVariant(appointment.status)} className="w-fit capitalize">
-              {appointment.status}
-            </Badge>
+            <div>
+              <Badge variant={statusVariant(appointment.status ?? 'pending')}>
+                {formatStatus(appointment.status ?? 'pending')}
+              </Badge>
+            </div>
           </CardContent>
           <CardFooter className="p-6 pt-0">
             <Button asChild variant="outline" className="w-full">

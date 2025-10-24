@@ -24,32 +24,33 @@ export function SupportFaqCard({ items }: SupportFaqCardProps) {
         <CardTitle>FAQ & best practices</CardTitle>
         <CardDescription>Answers curated from our support specialists.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <Accordion type="single" collapsible className="w-full">
-          {items.map((faq, index) => (
-            <AccordionItem key={`faq-${index}`} value={`faq-${index}`}>
-              <AccordionTrigger>{faq.question}</AccordionTrigger>
-              <AccordionContent className="text-sm text-muted-foreground">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+      <CardContent>
+        <div className="space-y-4">
+          <Accordion type="single" collapsible className="w-full">
+            {items.map((faq, index) => (
+              <AccordionItem key={`faq-${index}`} value={`faq-${index}`}>
+                <AccordionTrigger>{faq.question}</AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
 
-        <Separator />
+          <Separator />
 
-        <div className="space-y-2 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-3 w-20" />
-            <span>Latest incident updates posted hourly.</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-3 w-16" />
-            <span>Join the staff Slack channel for live tips.</span>
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-3 w-20" />
+              <span>Latest incident updates posted hourly.</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-3 w-16" />
+              <span>Join the staff Slack channel for live tips.</span>
+            </div>
           </div>
         </div>
       </CardContent>
     </Card>
   )
 }
-

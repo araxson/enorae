@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { resetPassword } from '../api/mutations'
+import { resetPassword } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table'
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, AlertTriangle, AlertCircle } from 'lucide-react'
-import type { SecurityEvent } from '../api/queries'
+import type { SecurityEvent } from '@/features/admin/security/api/queries'
 import { DataTableEmpty } from '@/components/shared/data-table-empty'
 
 interface SecurityEventsTableProps {
@@ -31,26 +31,27 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
 
   const getSeverityBadge = (severity: string) => {
     const level = severity.toLowerCase()
+    const formatted = level.replace(/\b\w/g, (char) => char.toUpperCase())
     if (level === 'critical') {
       return (
-        <Badge variant="destructive" className="gap-1">
+        <div className="flex items-center gap-1">
           <AlertCircle className="h-3 w-3" />
-          Critical
-        </Badge>
+          <Badge variant="destructive">{formatted}</Badge>
+        </div>
       )
     }
     if (level === 'high') {
       return (
-        <Badge variant="destructive" className="gap-1">
+        <div className="flex items-center gap-1">
           <AlertTriangle className="h-3 w-3" />
-          High
-        </Badge>
+          <Badge variant="destructive">{formatted}</Badge>
+        </div>
       )
     }
     if (level === 'medium') {
-      return <Badge variant="secondary">Medium</Badge>
+      return <Badge variant="secondary">{formatted}</Badge>
     }
-    return <Badge variant="outline">Low</Badge>
+    return <Badge variant="outline">{formatted}</Badge>
   }
 
   return (

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getSalonChainById } from '../api/queries'
+import { getSalonChainById } from '@/features/business/chains/api/queries'
 import { ChainDetailView } from './chain-detail-view'
 import { ChainSettingsButton } from './chain-settings-button'
 

@@ -4,12 +4,11 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type FavoriteRow = Database['public']['Views']['customer_favorites']['Row']
-
-type SalonView = Database['public']['Views']['salons']['Row']
+type FavoriteRow = Database['public']['Views']['customer_favorites_view']['Row']
+type SalonView = Database['public']['Views']['salons_view']['Row']
 
 export type FavoriteWithSalon = FavoriteRow & {
-  salon: Pick<SalonView, 'id' | 'name' | 'slug' | 'rating' | 'review_count' | 'full_address' | 'logo_url' | 'is_accepting_bookings'> | null
+  salon: Pick<SalonView, 'id' | 'name' | 'slug' | 'rating_average' | 'rating_count' | 'formatted_address' | 'is_accepting_bookings'> | null
 }
 
 export async function getUserFavorites() {
@@ -18,43 +17,25 @@ export async function getUserFavorites() {
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('customer_favorites')
-    .select('*')
+    .from('customer_favorites_view')
+    .select(`
+      *,
+      salon:salon_id (
+        id,
+        name,
+        slug,
+        rating_average,
+        rating_count,
+        formatted_address,
+        is_accepting_bookings
+      )
+    `)
     .eq('customer_id', session.user.id)
     .order('created_at', { ascending: false })
 
   if (error) throw error
 
-  const favorites: FavoriteRow[] = data ?? []
-
-  const salonIds = Array.from(
-    new Set(favorites.map((favorite) => favorite.salon_id).filter((id): id is string => Boolean(id)))
-  )
-
-  let salonMap = new Map<string, FavoriteWithSalon['salon']>()
-
-  if (salonIds.length > 0) {
-    const { data: salonRows, error: salonError } = await supabase
-      .from('salons')
-      .select('id, name, slug, rating, review_count, full_address, logo_url, is_accepting_bookings')
-      .in('id', salonIds)
-
-    if (salonError) throw salonError
-
-    const typedSalons = (salonRows || []) as FavoriteWithSalon['salon'][]
-    salonMap = new Map(
-      typedSalons
-        .filter((salon): salon is FavoriteWithSalon['salon'] => Boolean(salon?.id))
-        .map((salon) => [salon!.id!, salon])
-    )
-  }
-
-  const enrichedFavorites = favorites.map((favorite) => ({
-    ...favorite,
-    salon: favorite.salon_id ? salonMap.get(favorite.salon_id) ?? null : null,
-  })) as FavoriteWithSalon[]
-
-  return enrichedFavorites
+  return (data || []) as FavoriteWithSalon[]
 }
 
 export async function checkIsFavorite(salonId: string) {
@@ -64,7 +45,7 @@ export async function checkIsFavorite(salonId: string) {
   const supabase = await createClient()
   // OPTIMIZED: Use head: true to check existence without fetching data
   const { count, error } = await supabase
-    .from('customer_favorites')
+    .from('customer_favorites_view')
     .select('id', { count: 'exact', head: true })
     .eq('customer_id', session.user.id)
     .eq('salon_id', salonId)

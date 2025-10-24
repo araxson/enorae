@@ -5,6 +5,6 @@ export const metadata = {
   description: 'Your conversations with salons',
 }
 
-export default async function MessagesPage() {
+export default function MessagesPage() {
   return <Messaging />
 }

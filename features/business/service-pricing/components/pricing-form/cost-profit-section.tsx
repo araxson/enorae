@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import type { PricingFormState } from './use-pricing-form'
@@ -14,9 +14,12 @@ type CostProfitSectionProps = {
 export function CostProfitSection({ state, profitMargin, onChange }: CostProfitSectionProps) {
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Cost & Profitability</CardTitle>
+        <CardDescription>Track service costs and resulting margins.</CardDescription>
+      </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
-          <Label className="font-semibold">Cost & Profitability</Label>
 
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">

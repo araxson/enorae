@@ -1,15 +1,15 @@
 # Supabase Patterns
 
-**Standalone reference for Supabase integration (Supabase JS 2.58.0 + `@supabase/ssr`). No external dependencies.**
+**Standalone reference for Supabase integration (Supabase JS 2.47.15 + `@supabase/ssr` 0.6.1). No external dependencies.**
 
 ---
 
 ## Stack Context
 
-- **Supabase JS:** 2.58.0
-- **SSR Helper:** `@supabase/ssr` (server, browser, middleware clients)
+- **Supabase JS:** 2.47.15
+- **SSR Helper:** `@supabase/ssr` 0.6.1 (server, browser, middleware clients)
 - **Auth:** Supabase Auth (GoTrue) with cookie-based sessions
-- **Schemas:** `organization`, `catalog`, `scheduling`, `inventory`, `identity`, `communication`, `analytics`, `engagement`
+- **Schemas:** `organization`, `catalog`, `scheduling`, `identity`, `communication`, `analytics`, `engagement`
 
 ---
 
@@ -121,6 +121,8 @@ if (!user) throw new Error('Unauthorized')
 ```
 
 Use `getUser()` in queries/mutations and `NextResponse.redirect` in route handlers or middleware when `user` is `null`.
+
+> Supabase warns that `getSession()` reads from storage and can be spoofed. Always prefer `getUser()` or `getClaims()` for authenticated server logic (Supabase JS docs).
 
 ### Server Actions (login/signup)
 
@@ -404,4 +406,4 @@ rg "storage" features --type tsx | xargs -I{} sh -c "grep -H \"'use client'\" {}
 
 ---
 
-**Last Updated:** 2025-10-19
+**Last Updated:** 2025-10-21 (Updated to Supabase 2.47.15 + @supabase/ssr 0.6.1)

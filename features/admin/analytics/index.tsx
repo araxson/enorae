@@ -2,6 +2,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { getPlatformAnalyticsSnapshot } from './api/queries'
 import { PlatformAnalyticsDashboard } from './components/analytics-dashboard'
 
+// Export types
+export type * from './types'
+
 export async function AdminAnalytics() {
   try {
     const snapshot = await getPlatformAnalyticsSnapshot({ windowDays: 120 })

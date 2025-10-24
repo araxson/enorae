@@ -28,7 +28,7 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
     .from('staff')
     .select('*')
     .eq('id', staffId)
-    .eq('is_active', true)
+    .eq('status', 'active')
     .is('deleted_at', null)
     .maybeSingle()
 
@@ -39,18 +39,22 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
 
   if (!staff) return null
 
-  // Get services offered by this staff member
-  const { data: services, error: servicesError } = await supabase
-    .from('services')
-    .select('*')
-    .contains('staff_ids', [staffId])
-    .eq('is_active', true)
+  // Get services offered by this staff member via staff_services junction table
+  const { data: staffServices, error: servicesError } = await supabase
+    .from('staff_services')
+    .select('service:service_id(*)')
+    .eq('staff_id', staffId)
 
   if (servicesError) throw servicesError
 
+  // Extract services from the nested structure
+  const services = (staffServices || [])
+    .map((ss: { service: Service | null }) => ss.service)
+    .filter((s): s is Service => s !== null && s.is_active === true)
+
   return {
     ...(staff as Staff),
-    services: (services as Service[]) || [],
+    services,
   } as StaffProfile
 }
 
@@ -67,7 +71,7 @@ export async function getSalonStaff(salonId: string): Promise<Staff[]> {
     .from('staff')
     .select('*')
     .eq('salon_id', salonId)
-    .eq('is_active', true)
+    .eq('status', 'active')
     .is('deleted_at', null)
     .order('created_at', { ascending: true })
 

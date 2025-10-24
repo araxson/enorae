@@ -5,6 +5,7 @@ import { DynamicPricingDashboard } from './components/dynamic-pricing-dashboard'
 import { BulkPricingAdjuster } from './components/bulk-pricing-adjuster'
 import { buildPricingAnalytics } from './api/analytics'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { CardTitle, CardDescription } from '@/components/ui/card'
 
 type PricingRuleRecord = {
   id: string | null
@@ -69,10 +70,10 @@ export async function DynamicPricing() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Dynamic Pricing</h1>
-        <p className="leading-7 text-muted-foreground">
+        <CardTitle>Dynamic Pricing</CardTitle>
+        <CardDescription>
           Configure time-based and demand-based pricing rules to optimize revenue
-        </p>
+        </CardDescription>
       </div>
 
       <DynamicPricingDashboard
@@ -87,7 +88,7 @@ export async function DynamicPricing() {
       <PricingRulesForm salonId={salon.id} services={serviceList} />
 
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Active Pricing Rules</h2>
+        <CardTitle>Active Pricing Rules</CardTitle>
       <PricingRulesList rules={normalizedRules} />
       </div>
     </div>

@@ -49,7 +49,7 @@ export async function messageClient(
 
     // Get staff profile
     const { data: staff } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id, salon_id')
       .eq('user_id', session.user.id)
       .single<{ id: string; salon_id: string }>()
@@ -160,7 +160,7 @@ export async function addClientNote(
 
     // Get staff profile
     const { data: staff } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id, salon_id')
       .eq('user_id', session.user.id)
       .single<{ id: string; salon_id: string }>()
@@ -261,7 +261,7 @@ export async function updateClientPreferences(
 
     // Get staff profile
     const { data: staff } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id, salon_id')
       .eq('user_id', session.user.id)
       .single<{ id: string; salon_id: string }>()
@@ -294,7 +294,7 @@ export async function updateClientPreferences(
         .schema('communication')
         .from('message_threads')
         .update({
-          metadata: updatedMetadata,
+          metadata: JSON.parse(JSON.stringify(updatedMetadata)),
           updated_at: new Date().toISOString(),
         })
         .eq('id', existingThread.id)
@@ -312,7 +312,9 @@ export async function updateClientPreferences(
           subject: 'Client Preferences',
           status: 'open',
           priority: 'normal',
-          metadata: updatedMetadata,
+          metadata: JSON.parse(JSON.stringify(updatedMetadata)),
+          created_by_id: session.user.id,
+          updated_by_id: session.user.id,
         })
 
       if (threadError) throw threadError

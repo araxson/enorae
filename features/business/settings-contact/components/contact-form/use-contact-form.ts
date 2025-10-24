@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { updateSalonContactDetails, type ContactDetailsInput } from '../../api/mutations'
+import { updateSalonContactDetails, type ContactDetailsInput } from '@/features/business/settings-contact/api/mutations'
 
 import type { Database } from '@/lib/types/database.types'
 

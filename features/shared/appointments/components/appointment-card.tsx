@@ -62,7 +62,7 @@ export function AppointmentCard({
   return (
     <Card className={cn('w-full', className)}>
       <CardHeader>
-        <div className="flex gap-3 items-center items-center">
+        <div className="flex items-center gap-3">
           <div className="flex-1">
             <CardTitle>{title}</CardTitle>
           </div>
@@ -72,15 +72,15 @@ export function AppointmentCard({
 
       <CardContent>
         <div className="flex flex-col gap-3">
-          <div className="flex gap-3 items-center">
+          <div className="flex items-center gap-3">
             <User className="h-4 w-4 text-muted-foreground" />
             <p className="text-sm font-medium text-muted-foreground">{staffName}</p>
           </div>
-          <div className="flex gap-3 items-center">
+          <div className="flex items-center gap-3">
             <Calendar className="h-4 w-4 text-muted-foreground" />
             <p className="text-sm font-medium text-muted-foreground">{date}</p>
           </div>
-          <div className="flex gap-3 items-center">
+          <div className="flex items-center gap-3">
             <Clock className="h-4 w-4 text-muted-foreground" />
             <p className="text-sm font-medium text-muted-foreground">{time}</p>
           </div>
@@ -89,7 +89,7 @@ export function AppointmentCard({
 
       {(onReschedule || onViewDetails || onCancel) && (
         <CardFooter>
-          <div className="flex gap-3 items-center w-full">
+          <div className="flex items-center gap-3 w-full">
             {onViewDetails && (
               <Button variant="outline" size="sm" onClick={onViewDetails}>
                 View Details

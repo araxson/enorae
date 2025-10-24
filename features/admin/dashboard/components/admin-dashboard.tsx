@@ -3,7 +3,7 @@ import {
   getRecentSalons,
   getUserStats,
   getAdminOverview,
-} from '../api/queries'
+} from '@/features/admin/dashboard/api/queries'
 import { PlatformMetrics } from './platform-metrics'
 import { RecentSalons } from './recent-salons'
 import { UserRoleStats } from './user-role-stats'
@@ -82,7 +82,6 @@ export async function AdminDashboardPage() {
         revenue={adminOverview.revenue ?? []}
         appointments={adminOverview.appointments ?? []}
         reviews={adminOverview.reviews ?? []}
-        inventory={adminOverview.inventory ?? []}
         messages={adminOverview.messages ?? []}
         staff={adminOverview.staff ?? []}
       />

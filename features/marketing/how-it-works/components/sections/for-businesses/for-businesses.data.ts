@@ -10,7 +10,7 @@ export const forBusinessesData = {
     {
       step: 2,
       title: 'Manage Bookings',
-      description: 'Accept appointments, manage schedules, and track inventory effortlessly.',
+      description: 'Accept appointments, manage schedules, and track staff availability effortlessly.',
     },
     {
       step: 3,

@@ -1,11 +1,11 @@
 'use client'
 import { useState } from 'react'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { updateUserPreferences } from '../api/mutations'
-import type { PrivacySettings } from '../types'
+import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
+import type { PrivacySettings } from '@/features/staff/settings/types'
 
 interface PrivacySettingsProps {
   initialSettings: PrivacySettings
@@ -31,15 +31,14 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
   }
 
   return (
-    <Card className="p-6">
-      <div className="flex flex-col gap-6">
-        <div>
-          <h3 className="scroll-m-20 text-2xl font-semibold">Privacy Settings</h3>
-          <p className="text-sm text-muted-foreground">Control who can see your information</p>
-        </div>
-
+    <Card>
+      <CardHeader>
+        <CardTitle>Privacy Settings</CardTitle>
+        <CardDescription>Control who can see your information.</CardDescription>
+      </CardHeader>
+      <CardContent>
         <div className="flex flex-col gap-4">
-          <div className="flex gap-4 items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
               <Label htmlFor="profile_visible">Profile Visible to Clients</Label>
               <p className="text-sm text-muted-foreground">Allow clients to view your profile</p>
@@ -51,7 +50,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
             />
           </div>
 
-          <div className="flex gap-4 items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
               <Label htmlFor="show_ratings">Show Ratings</Label>
               <p className="text-sm text-muted-foreground">Display your ratings publicly</p>
@@ -63,7 +62,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
             />
           </div>
 
-          <div className="flex gap-4 items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
               <Label htmlFor="show_appointments">Show Completed Appointments</Label>
               <p className="text-sm text-muted-foreground">Display appointment count</p>
@@ -75,7 +74,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
             />
           </div>
 
-          <div className="flex gap-4 items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
               <Label htmlFor="allow_search">Allow Profile Search</Label>
               <p className="text-sm text-muted-foreground">Let clients find you in search</p>
@@ -87,13 +86,14 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
             />
           </div>
         </div>
-
-        <div className="flex gap-4 justify-end">
+      </CardContent>
+      <CardFooter>
+        <div className="flex w-full justify-end">
           <Button onClick={handleSave} disabled={isSaving}>
             {isSaving ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
-      </div>
+      </CardFooter>
     </Card>
   )
 }

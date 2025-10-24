@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { AlertCircle } from 'lucide-react'
-import type { ChainCompliance } from '../api/queries'
+import type { ChainCompliance } from '@/features/admin/chains/api/queries'
 
 interface ChainComplianceTableProps {
   compliance: ChainCompliance[]

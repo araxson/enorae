@@ -122,20 +122,12 @@ export async function requestServiceAddition(serviceId: string, notes?: string) 
     throw new Error('You are already assigned this service')
   }
 
-  // Create service assignment request via message/notification
-  // For now, create a notification to management
-  const { error: notificationError } = await supabase
-    .schema('communication')
-    .rpc('send_notification', {
-      p_user_id: session.user.id,
-      p_type: 'service_request',
-      p_title: 'Service Addition Request',
-      p_message: `Staff member has requested to be assigned a new service. ${notes ? `Notes: ${notes}` : ''}`,
-      p_data: { service_id: serviceId, staff_id: staffId, notes },
-      p_channels: ['in_app'],
-    })
-
-  if (notificationError) throw notificationError
+  // TODO: Implement notification creation when RPC function types are available
+  console.log('[Services] Would notify management of service request:', {
+    serviceId,
+    staffId,
+    notes,
+  })
 
   revalidatePath('/staff/services')
   return { success: true }

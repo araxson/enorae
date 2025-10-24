@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { AdminSalon, SalonDashboardStats, SalonInsights } from '../api/queries'
+import type { AdminSalon, SalonDashboardStats, SalonInsights } from '@/features/admin/salons/api/queries'
 import { SalonsStats } from './salons-stats'
 import { SalonsFilters } from './salons-filters'
 import { SalonsTable } from './salons-table'

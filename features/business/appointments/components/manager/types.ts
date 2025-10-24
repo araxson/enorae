@@ -1,4 +1,4 @@
-import type { AppointmentServiceDetails } from '../../api/queries/appointment-services'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 
 export interface AppointmentServicesManagerProps {
   appointmentId: string

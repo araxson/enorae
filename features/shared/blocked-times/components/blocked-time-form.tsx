@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { createBlockedTime } from '../api/mutations'
+import { createBlockedTime } from '@/features/shared/blocked-times/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -17,8 +17,9 @@ import {
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertCircle, Repeat } from 'lucide-react'
+import { Separator } from '@/components/ui/separator'
 
 interface BlockedTimeFormProps {
   salonId: string
@@ -36,7 +37,7 @@ export function BlockedTimeForm({
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [blockType, setBlockType] = useState('manual')
+  const [blockType, setBlockType] = useState('other')
   const [isRecurring, setIsRecurring] = useState(false)
   const [recurrencePattern, setRecurrencePattern] = useState('weekly')
 
@@ -47,10 +48,12 @@ export function BlockedTimeForm({
 
     const formData = new FormData(event.currentTarget)
 
+    const blockTypeValue = (formData.get('block_type') as string) || 'other'
+
     const result = await createBlockedTime({
       salon_id: salonId,
       staff_id: staffId,
-      block_type: (formData.get('block_type') as string) || 'manual',
+      block_type: blockTypeValue as 'personal' | 'break' | 'lunch' | 'holiday' | 'vacation' | 'sick_leave' | 'training' | 'maintenance' | 'other',
       start_time: new Date(formData.get('start_time') as string).toISOString(),
       end_time: new Date(formData.get('end_time') as string).toISOString(),
       reason: (formData.get('reason') as string) || undefined,
@@ -77,7 +80,7 @@ export function BlockedTimeForm({
   return (
     <Card>
       <CardHeader>
-        <h3 className="scroll-m-20 text-2xl font-semibold">Block time slot</h3>
+        <CardTitle>Block time slot</CardTitle>
       </CardHeader>
       <form onSubmit={handleSubmit} className="space-y-6">
         <CardContent className="space-y-4">
@@ -95,10 +98,15 @@ export function BlockedTimeForm({
                 <SelectValue placeholder="Select block type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="manual">Manual</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
                 <SelectItem value="maintenance">Maintenance</SelectItem>
                 <SelectItem value="holiday">Holiday</SelectItem>
-                <SelectItem value="personal">Personal leave</SelectItem>
+                <SelectItem value="vacation">Vacation</SelectItem>
+                <SelectItem value="personal">Personal</SelectItem>
+                <SelectItem value="break">Break</SelectItem>
+                <SelectItem value="lunch">Lunch</SelectItem>
+                <SelectItem value="sick_leave">Sick leave</SelectItem>
+                <SelectItem value="training">Training</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -123,7 +131,8 @@ export function BlockedTimeForm({
             />
           </div>
 
-          <div className="space-y-4 border-t pt-4">
+          <Separator />
+          <div className="space-y-4 pt-4">
             <div className="flex items-center gap-3">
               <Checkbox
                 id="is_recurring"
@@ -153,7 +162,7 @@ export function BlockedTimeForm({
                     <SelectItem value="weekends">Weekends only</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-sm text-muted-foreground text-xs">
+                <p className="text-sm text-muted-foreground">
                   {recurrencePattern === 'daily' && 'Repeats every day at the same time.'}
                   {recurrencePattern === 'weekly' && 'Repeats every week on the same day.'}
                   {recurrencePattern === 'biweekly' && 'Repeats every two weeks on the same day.'}

@@ -1,20 +1,20 @@
 import 'server-only'
 
-import { requireAdminClient } from '../../admin-analytics-shared'
-import type { PlatformAnalyticsSnapshot } from '../../admin-analytics-types'
+import { requireAdminClient } from '@/features/admin/analytics/api/internal/admin-analytics-shared'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/internal/admin-analytics-types'
 import type { Database } from '@/lib/types/database.types'
 import {
   DAY_MS,
   DEFAULT_WINDOW_DAYS,
   PERFORMANCE_WINDOW_DAYS,
   REFRESH_LIMIT,
-} from '../platform-analytics/constants'
-import { parseDate } from '../platform-analytics/helpers'
-import { buildGrowthMetrics } from '../platform-analytics/growth'
-import { buildRetentionMetrics } from '../platform-analytics/retention'
-import { buildAcquisitionMetrics } from '../platform-analytics/acquisition'
-import { buildFeatureUsageItems } from '../platform-analytics/feature-usage'
-import { buildPerformanceBenchmark } from '../platform-analytics/performance'
+} from '@/features/admin/analytics/api/internal/platform-analytics/constants'
+import { parseDate } from '@/features/admin/analytics/api/internal/platform-analytics/helpers'
+import { buildGrowthMetrics } from '@/features/admin/analytics/api/internal/platform-analytics/growth'
+import { buildRetentionMetrics } from '@/features/admin/analytics/api/internal/platform-analytics/retention'
+import { buildAcquisitionMetrics } from '@/features/admin/analytics/api/internal/platform-analytics/acquisition'
+import { buildFeatureUsageItems } from '@/features/admin/analytics/api/internal/platform-analytics/feature-usage'
+import { buildPerformanceBenchmark } from '@/features/admin/analytics/api/internal/platform-analytics/performance'
 
 type AnalyticsRow = {
   date: string | null

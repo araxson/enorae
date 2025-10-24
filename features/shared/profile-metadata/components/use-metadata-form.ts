@@ -7,7 +7,7 @@ import {
   uploadAvatar,
   uploadCoverImage,
   type ProfileMetadataInput,
-} from '../api/mutations'
+} from '@/features/shared/profile-metadata/api/mutations'
 import { SOCIAL_PROFILE_FIELDS, type SocialProfileKey } from './constants'
 import type { Database } from '@/lib/types/database.types'
 

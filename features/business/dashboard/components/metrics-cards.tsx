@@ -2,11 +2,13 @@
 
 import { useMemo, type ReactNode } from 'react'
 import { Calendar, CheckCircle, Clock, Users, Scissors, DollarSign, TrendingUp, ArrowUpRight } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { BusinessDashboardMetrics } from '../types'
-import { AppointmentMetricCard, RevenueMetricCard } from './metric-card'
+import { AppointmentMetricCard, RevenueMetricCard, getAccentStripeClass, type MetricAccent } from './metric-card'
 
 type MetricsCardsProps = {
   metrics: BusinessDashboardMetrics
@@ -35,14 +37,14 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
     metrics.totalRevenue !== undefined && {
       title: 'Total Revenue',
       icon: <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />,
-      accent: 'border-l-primary',
+      accent: 'primary' as const,
       amountLabel: formatCurrency(metrics.totalRevenue),
       description: 'All-time earnings',
     },
     metrics.last30DaysRevenue !== undefined && {
       title: 'Last 30 Days',
       icon: <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />,
-      accent: 'border-l-success',
+      accent: 'success' as const,
       amountLabel: formatCurrency(metrics.last30DaysRevenue),
       description: 'Active revenue stream',
       highlight: (
@@ -61,7 +63,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       value: metrics.totalAppointments,
       progress: 100,
       description: 'All bookings',
-      accent: 'border-l-primary',
+      accent: 'primary' as const,
     },
     {
       title: 'Confirmed',
@@ -69,7 +71,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       value: metrics.confirmedAppointments,
       progress: confirmationRate,
       description: `${confirmationRate}% of total`,
-      accent: 'border-l-success',
+      accent: 'success' as const,
     },
     {
       title: 'Pending',
@@ -77,8 +79,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       value: metrics.pendingAppointments,
       progress: pendingRate,
       description: 'Awaiting confirmation',
-      accent: 'border-l-warning',
-      progressClass: '[&>div]:bg-accent',
+      accent: 'warning' as const,
     },
   ]
 
@@ -124,7 +125,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
                 title="Staff Members"
                 icon={<Users className="h-4 w-4 text-secondary" aria-hidden="true" />}
                 value={metrics.totalStaff}
-                accent="border-l-info"
+                accent="accent"
                 description="Active team members"
               />
             </TooltipTrigger>
@@ -136,7 +137,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
                 title="Services Offered"
                 icon={<Scissors className="h-4 w-4 text-secondary-foreground" aria-hidden="true" />}
                 value={metrics.totalServices}
-                accent="border-l-secondary"
+                accent="secondary"
                 description="Available services"
               />
             </TooltipTrigger>
@@ -153,20 +154,21 @@ type AppointmentResourceProps = {
   icon: ReactNode
   value: number
   description: string
-  accent: string
+  accent: MetricAccent
 }
 
 function AppointmentResource({ title, icon, value, description, accent }: AppointmentResourceProps) {
   return (
-    <div className={`overflow-hidden rounded-xl border-l-4 ${accent}`}>
-      <div className="flex items-center justify-between space-y-0 border px-4 py-3">
-        <p className="text-sm font-medium">{title}</p>
+    <Card className="relative overflow-hidden">
+      <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
+      <CardHeader className="flex items-center justify-between space-y-0 pb-0">
+        <CardTitle>{title}</CardTitle>
         {icon}
-      </div>
-      <div className="border border-t-0 px-4 py-3">
+      </CardHeader>
+      <CardContent className="space-y-2">
         <div className="text-2xl font-bold">{value}</div>
-        <p className="mt-2 text-xs text-muted-foreground">{description}</p>
-      </div>
-    </div>
+        <CardDescription>{description}</CardDescription>
+      </CardContent>
+    </Card>
   )
 }

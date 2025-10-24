@@ -352,6 +352,13 @@ mcp__shadcn__list_components()
 mcp__shadcn__get_component_docs({ component: 'name' })
 ```
 
+### Customer Portal Examples
+
+- **Metric summaries** (`features/customer/dashboard/components/customer-metrics.tsx`) pair each `CardHeader` label with `CardContent` values and avoid custom accent classes.
+- **Salon hero banners** (`features/customer/salon-detail/components/salon-header.tsx`) keep media in a `CardContent` block and move text/action controls into a dedicated `CardHeader`.
+- **Profile metadata chips** (`features/customer/profile/components/profile-metadata-editor.tsx`) wrap each chip list in its own nested card with a proper header instead of raw divs.
+- **Alerts in dialogs** (`features/customer/appointments/components/cancel-appointment-dialog.tsx`) always render `AlertTitle` before the description, even for error states.
+
 ### Available Components (53 total)
 
 **Layout & Content**

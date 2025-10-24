@@ -15,7 +15,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import type { AppointmentWithDetails } from '@/lib/types/app.types'
+import type { AppointmentWithDetails } from '@/features/business/appointments'
 
 type AppointmentHistoryProps = {
   appointments: AppointmentWithDetails[]
@@ -58,23 +58,26 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
                   })
                 : 'Date not available'
 
+              const serviceLabel =
+                Array.isArray(appointment.service_names) && appointment.service_names.length > 0
+                  ? appointment.service_names.join(', ')
+                  : appointment.service_name ?? 'Service'
+              const salonLabel = appointment.salon_name
+                ? `at ${appointment.salon_name}`
+                : 'Salon not specified'
+
               return (
                 <Card key={appointment.id}>
-                  <CardContent className="pt-6">
+                  <CardHeader>
+                    <CardTitle>{serviceLabel}</CardTitle>
+                    <CardDescription>{salonLabel}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
                     <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
-                      <div>
-                        <span className="text-xs font-medium text-foreground">
-                          {Array.isArray(appointment.service_names) && appointment.service_names.length > 0
-                            ? appointment.service_names.join(', ')
-                            : appointment.service_name ?? 'Service'}
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          {appointment.salon_name
-                            ? `at ${appointment.salon_name}`
-                            : 'Salon not specified'}
-                        </span>
-                      </div>
                       <span className="text-sm text-muted-foreground">{appointmentDate}</span>
+                      <span className="text-sm text-muted-foreground capitalize">
+                        {appointment.status ?? 'pending'}
+                      </span>
                     </div>
                   </CardContent>
                 </Card>

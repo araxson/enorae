@@ -36,12 +36,6 @@ const primaryActions = [
 
 const secondaryActions = [
   {
-    href: '/business/inventory',
-    label: 'Inventory',
-    icon: Package,
-    description: 'Track stock levels',
-  },
-  {
     href: '/business/analytics',
     label: 'View Analytics',
     icon: Sparkles,

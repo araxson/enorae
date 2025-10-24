@@ -10,9 +10,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import type { StaffWithMetrics } from '../api/queries'
+import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 import { StaffRiskBadge } from './staff-risk-badge'
 
 function formatDate(value: string | null) {
@@ -37,6 +37,11 @@ function renderBackgroundBadge(status: StaffWithMetrics['background']['status'])
   }
 }
 
+const formatLabel = (value?: string | null) =>
+  value
+    ? value.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
+    : '—'
+
 type StaffTableProps = {
   staff: StaffWithMetrics[]
 }
@@ -56,6 +61,10 @@ export function StaffTable({ staff }: StaffTableProps) {
   return (
     <>
       <Card className="hidden md:block">
+        <CardHeader>
+          <CardTitle>Staff Directory</CardTitle>
+          <CardDescription>Staff profiles with verification and performance metrics.</CardDescription>
+        </CardHeader>
         <CardContent className="overflow-x-auto p-0">
           <Table>
             <TableHeader>
@@ -88,9 +97,7 @@ export function StaffTable({ staff }: StaffTableProps) {
 
                 <TableCell>
                   <div className="space-y-1">
-                    <Badge variant="outline" className="capitalize">
-                      {member.staffRole?.replace(/_/g, ' ') || '—'}
-                    </Badge>
+                    <Badge variant="outline">{formatLabel(member.staffRole)}</Badge>
                     {member.title && (
                       <span className="block text-xs text-muted-foreground">{member.title}</span>
                     )}
@@ -174,21 +181,22 @@ export function StaffTable({ staff }: StaffTableProps) {
       <div className="space-y-4 md:hidden">
         {staff.map((member) => (
           <Card key={member.id}>
-            <CardContent className="space-y-3">
+            <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold">{member.fullName || member.title || 'Unnamed staff'}</p>
-                  <p className="text-xs text-muted-foreground">Experience: {member.experienceYears} yrs</p>
-                  {member.metrics.lastAppointmentAt && (
-                    <p className="text-xs text-muted-foreground">
-                      Last appointment: {formatDate(member.metrics.lastAppointmentAt)}
-                    </p>
-                  )}
+                <div className="space-y-1">
+                  <CardTitle>{member.fullName || member.title || 'Unnamed staff'}</CardTitle>
+                  <CardDescription>Experience {member.experienceYears} yrs</CardDescription>
+                  {member.metrics.lastAppointmentAt ? (
+                    <CardDescription>
+                      Last appointment {formatDate(member.metrics.lastAppointmentAt)}
+                    </CardDescription>
+                  ) : null}
                 </div>
                 <StaffRiskBadge staff={member} />
               </div>
-
-              <div className="grid grid-cols-2 gap-3 text-sm">
+            </CardHeader>
+            <CardContent className="space-y-3 pt-0 text-sm">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <span className="block font-medium">Role</span>
                   <span className="text-muted-foreground capitalize">

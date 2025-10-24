@@ -39,6 +39,7 @@ export async function createThread(input: z.infer<typeof createThreadSchema>) {
 
     // Verify salon exists
     const { data: salon, error: salonError } = await supabase
+      .schema('organization')
       .from('salons')
       .select('id')
       .eq('id', validated.salon_id)
@@ -181,6 +182,7 @@ export async function deleteMessage(messageId: string) {
 
     // Verify ownership before deleting
     const { data: message, error: fetchError } = await supabase
+      .schema('communication')
       .from('messages')
       .select('from_user_id')
       .eq('id', messageId)
@@ -239,7 +241,6 @@ export async function archiveThread(threadId: string) {
       .update({
         status: 'archived',
         updated_at: new Date().toISOString(),
-        updated_by_id: session.user.id,
       })
       .eq('id', threadId)
       .or(`customer_id.eq.${session.user.id},salon_id.in.(select id from organization.salons where owner_id = ${session.user.id})`)

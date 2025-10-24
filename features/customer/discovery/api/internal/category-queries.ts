@@ -2,8 +2,9 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import type { PostgrestError } from '@supabase/supabase-js'
 
-type ServiceRow = Database['public']['Views']['services']['Row']
+type ServiceCategoryRow = Database['public']['Views']['service_categories_view']['Row']
 
 /**
  * Get all unique service categories
@@ -13,17 +14,17 @@ export async function getServiceCategories(): Promise<string[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services')
-    .select('category_name')
-    .eq('is_active', true)
-    .not('category_name', 'is', null)
-    .returns<Array<Pick<ServiceRow, 'category_name'>>>()
+    .from('service_categories_view')
+    .select('name')
+    .order('name', { ascending: true }) as { data: Array<Pick<ServiceCategoryRow, 'name'>> | null; error: PostgrestError | null }
 
   if (error) throw error
 
   // Get unique category names
-  const uniqueCategories = [...new Set(data.map(s => s.category_name).filter(Boolean) as string[])]
-  return uniqueCategories.sort()
+  const uniqueCategories = [
+    ...new Set((data || []).map((category) => category.name).filter(Boolean) as string[]),
+  ]
+  return uniqueCategories
 }
 
 /**
@@ -34,27 +35,22 @@ export async function getPopularCategories(limit: number = 10): Promise<{ catego
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services')
-    .select('category_name')
-    .eq('is_active', true)
-    .not('category_name', 'is', null)
-    .returns<Array<Pick<ServiceRow, 'category_name'>>>()
+    .from('service_categories_view')
+    .select('name, active_services_count')
+    .order('active_services_count', { ascending: false, nullsLast: true })
+    .limit(limit) as {
+      data: Array<Pick<ServiceCategoryRow, 'name' | 'active_services_count'>> | null
+      error: PostgrestError | null
+    }
 
   if (error) throw error
 
-  // Count occurrences of each category
-  const categoryCounts: Record<string, number> = {}
-  data.forEach((service) => {
-    if (service.category_name) {
-      categoryCounts[service.category_name] = (categoryCounts[service.category_name] || 0) + 1
-    }
-  })
-
-  // Convert to array and sort by count
-  const sortedCategories = Object.entries(categoryCounts)
-    .map(([category, count]) => ({ category, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, limit)
-
-  return sortedCategories
+  return (data || [])
+    .filter((category): category is { name: string; active_services_count: number | null } =>
+      Boolean(category?.name)
+    )
+    .map((category) => ({
+      category: category.name,
+      count: category.active_services_count ?? 0,
+    }))
 }

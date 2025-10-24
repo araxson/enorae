@@ -7,6 +7,6 @@ export const metadata = genMeta({
   noIndex: true,
 })
 
-export default async function AdminProfilePage() {
+export default function AdminProfilePage() {
   return <AdminProfile />
 }

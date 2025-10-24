@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   HoverCard,
@@ -8,7 +8,7 @@ import {
 import { Calendar } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
-type Staff = Database['public']['Views']['staff']['Row']
+type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 interface StaffGridProps {
   staff: Staff[]
@@ -18,9 +18,10 @@ export function StaffGrid({ staff }: StaffGridProps) {
   if (staff.length === 0) {
     return (
       <Card>
-        <CardContent className="py-10 text-center text-muted-foreground">
-          No staff members available
-        </CardContent>
+        <CardHeader className="items-center text-center">
+          <CardTitle>Our team</CardTitle>
+          <CardDescription>No staff members available</CardDescription>
+        </CardHeader>
       </Card>
     )
   }
@@ -36,7 +37,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
             <HoverCard key={member.id || ''}>
               <HoverCardTrigger asChild>
                 <Card className="transition-colors hover:bg-muted/50">
-                  <CardContent className="flex items-center gap-3 p-3">
+                  <CardHeader className="flex flex-row items-center gap-3">
                     <Avatar>
                       {member.avatar_url && (
                         <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />
@@ -45,13 +46,15 @@ export function StaffGrid({ staff }: StaffGridProps) {
                         {member.title?.slice(0, 2).toUpperCase() || 'ST'}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">{member.title || 'Staff member'}</p>
+                    <div className="min-w-0 space-y-1">
+                      <CardTitle>{member.title || 'Staff member'}</CardTitle>
                       {member.bio && (
-                        <p className="text-sm text-muted-foreground line-clamp-1 text-xs">{member.bio}</p>
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {member.bio}
+                        </p>
                       )}
                     </div>
-                  </CardContent>
+                  </CardHeader>
                 </Card>
               </HoverCardTrigger>
               <HoverCardContent className="w-80 space-y-3">
@@ -65,7 +68,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="space-y-1">
-                    <h4 className="text-xl font-semibold">{member.title || 'Staff member'}</h4>
+                    <h4 className="text-xl">{member.title || 'Staff member'}</h4>
                     {member.bio && <p className="text-sm text-muted-foreground">{member.bio}</p>}
                   </div>
                 </div>

@@ -38,7 +38,7 @@ export async function getPayoutSchedule(
     if (error) throw error
 
     const totalRevenue =
-      data?.reduce((sum, appointment) => sum + (appointment.total_price ?? 0), 0) ?? 0
+      (data as { total_price: number | null }[])?.reduce((sum, appointment) => sum + (appointment.total_price ?? 0), 0) ?? 0
     const commissionAmount = calculateDefaultCommission(
       totalRevenue,
       DEFAULT_COMMISSION_RATE,
@@ -78,7 +78,7 @@ export async function exportCommissionReport(
 
   const { data: appointments, error } = await supabase
     .from('appointments')
-    .select('*')
+    .select('start_time, service_names, customer_name, total_price')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
     .gte('start_time', dateFrom)
@@ -87,11 +87,18 @@ export async function exportCommissionReport(
 
   if (error) throw error
 
+  type AppointmentExport = {
+    start_time: string | null
+    service_names: string[] | null
+    customer_name: string | null
+    total_price: number | null
+  }
+
   const header =
     'Date,Time,Service,Customer,Revenue,Commission Rate,Commission Amount\n'
 
   const rows =
-    appointments?.map((appointment) => {
+    (appointments as AppointmentExport[])?.map((appointment) => {
       const startTime = appointment.start_time
       const date = startTime
         ? new Date(startTime).toLocaleDateString()
@@ -99,7 +106,9 @@ export async function exportCommissionReport(
       const time = startTime
         ? new Date(startTime).toLocaleTimeString()
         : 'N/A'
-      const service = appointment.service_names ?? 'N/A'
+      const service = Array.isArray(appointment.service_names)
+        ? appointment.service_names.join(', ')
+        : 'N/A'
       const customer = appointment.customer_name ?? 'N/A'
       const revenue = appointment.total_price ?? 0
       const commission = calculateDefaultCommission(

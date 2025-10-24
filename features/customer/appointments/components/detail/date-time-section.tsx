@@ -8,7 +8,7 @@ export function DateTimeSection({ appointment }: Pick<AppointmentDetailContentPr
   return (
     <div className="flex flex-col gap-6">
       <div className="space-y-2">
-        <span className="text-base font-semibold text-foreground">Date &amp; time</span>
+        <span className="text-base text-foreground">Date &amp; time</span>
         <p className="text-sm text-foreground">
           {appointment.start_time &&
             new Date(appointment.start_time).toLocaleDateString('en-US', {
@@ -43,7 +43,7 @@ export function DateTimeSection({ appointment }: Pick<AppointmentDetailContentPr
         <>
           <Separator />
           <div className="space-y-1">
-            <span className="text-base font-semibold text-foreground">Staff member</span>
+            <span className="text-base text-foreground">Staff member</span>
             <p className="text-sm text-foreground">{appointment.staff_name}</p>
           </div>
         </>

@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import type { UserRole } from '@/lib/types/app.types'
+import type { UserRole } from '@/lib/types'
 
 type DialogProps = {
   open: boolean

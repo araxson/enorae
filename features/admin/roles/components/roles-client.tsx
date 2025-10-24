@@ -7,8 +7,8 @@ import { RolesStats } from './roles-stats'
 import { RolesFilters } from './roles-filters'
 import { RolesTable } from './roles-table'
 import { AssignRoleForm } from './assign-role-form'
-import type { UserRole } from '@/lib/types/app.types'
-import type { RoleAuditEvent } from '../api/queries'
+import type { UserRole } from '@/lib/types'
+import type { RoleAuditEvent } from '@/features/admin/roles/api/queries'
 import { BulkAssignDialog } from './bulk-assign-dialog'
 import { RolePermissionMatrix } from './role-permission-matrix'
 import { RoleAuditTimeline } from './role-audit-timeline'
@@ -52,7 +52,7 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
     <div className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div>
-          <p className="leading-7 text-base font-semibold">Role Management</p>
+          <p className="text-base font-semibold">Role Management</p>
           <p className="text-sm text-muted-foreground mt-1">
             Assign roles, manage permissions, and monitor historical changes.
           </p>

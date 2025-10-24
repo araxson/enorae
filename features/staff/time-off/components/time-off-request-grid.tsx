@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/empty'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
-import type { TimeOffRequestWithStaff } from '../api/queries'
+import type { TimeOffRequestWithStaff } from '@/features/staff/time-off/api/queries'
 import { RequestCard } from './request-card'
 
 interface TimeOffRequestGridProps {

@@ -32,7 +32,7 @@ export async function messageClient(
 
     // Get staff profile
     const { data: staff } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('id, salon_id')
       .eq('user_id', session.user.id)
       .single<{ id: string; salon_id: string }>()

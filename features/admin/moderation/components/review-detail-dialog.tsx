@@ -13,8 +13,8 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { respondToReview } from '../api/mutations'
-import type { ModerationReview } from '../api/queries'
+import { respondToReview } from '@/features/admin/moderation/api/mutations'
+import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import { DetailCard, InfoBlock, Panel, StatusBadges } from './review-detail-helpers'
 import { ReviewResponseForm } from './review-response-form'
 

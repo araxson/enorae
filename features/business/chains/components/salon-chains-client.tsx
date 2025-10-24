@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ChainsList } from './chains-list'
 import { CreateChainDialog } from './create-chain-dialog'
-import type { SalonChainWithCounts } from '../api/queries'
+import type { SalonChainWithCounts } from '@/features/business/chains/api/queries'
 
 type SalonChainsClientProps = {
   initialChains: SalonChainWithCounts[]

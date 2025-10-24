@@ -18,8 +18,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { revokeSession, revokeAllOtherSessions } from '../api/mutations'
-import type { SessionWithDevice } from '../api/queries'
+import { revokeSession, revokeAllOtherSessions } from '@/features/customer/sessions/api/mutations'
+import type { SessionWithDevice } from '@/features/customer/sessions/api/queries'
 
 interface SessionListProps {
   sessions: SessionWithDevice[]
@@ -77,13 +77,11 @@ export function SessionList({ sessions }: SessionListProps) {
   if (sessions.length === 0) {
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-2xl font-semibold text-foreground">Active Sessions</div>
-        <Alert className="border-secondary/40 bg-secondary/10 text-secondary-foreground">
-          <Info className="h-4 w-4 text-secondary" />
+        <div className="text-2xl text-foreground">Active Sessions</div>
+        <Alert>
+          <Info className="h-4 w-4" />
           <AlertTitle>Notice</AlertTitle>
-          <AlertDescription>
-            <div>No active sessions found.</div>
-          </AlertDescription>
+          <AlertDescription>No active sessions found.</AlertDescription>
         </Alert>
       </div>
     )
@@ -93,7 +91,7 @@ export function SessionList({ sessions }: SessionListProps) {
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-1">
-          <div className="text-2xl font-semibold text-foreground">Active Sessions</div>
+          <div className="text-2xl text-foreground">Active Sessions</div>
           <div className="text-muted-foreground">
             You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
           </div>
@@ -142,8 +140,8 @@ export function SessionList({ sessions }: SessionListProps) {
       )}
 
       {success && (
-        <Alert className="border-primary/40 bg-primary/10 text-primary-foreground">
-          <CheckCircle2 className="h-4 w-4 text-primary" />
+        <Alert>
+          <CheckCircle2 className="h-4 w-4" />
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>{success}</AlertDescription>
         </Alert>
@@ -161,15 +159,10 @@ export function SessionList({ sessions }: SessionListProps) {
       </div>
 
       <Alert>
-        <AlertTitle>Notice</AlertTitle>
+        <AlertTitle>Security tip</AlertTitle>
         <AlertDescription>
-          <div className="flex flex-col gap-2">
-            <div className="font-medium text-foreground">Security Tip</div>
-            <div className="text-muted-foreground">
-              If you see a session you don&apos;t recognize, revoke it immediately and change your password.
-              Your current session is marked with a badge and cannot be revoked from this page.
-            </div>
-          </div>
+          If you see a session you don&apos;t recognize, revoke it immediately and change your password.
+          Your current session is marked with a badge and cannot be revoked from this page.
         </AlertDescription>
       </Alert>
     </div>

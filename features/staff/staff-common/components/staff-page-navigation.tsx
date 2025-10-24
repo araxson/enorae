@@ -72,7 +72,7 @@ export function StaffPageNavigation({
         {tabs && tabs.length > 0 ? (
           <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
             <ScrollArea className="w-full">
-              <TabsList className="inline-flex w-full min-w-max justify-start bg-muted/20">
+              <TabsList>
                 {tabs.map((tab) => {
                   const Icon = tab.icon
                   return (

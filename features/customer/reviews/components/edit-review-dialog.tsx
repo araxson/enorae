@@ -15,12 +15,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Pencil, Star } from 'lucide-react'
-import { updateReview } from '../api/mutations'
-import type { Database } from '@/lib/types/database.types'
-
-type Review = Database['public']['Views']['salon_reviews_view']['Row']
+import { updateReview } from '@/features/customer/reviews/api/mutations'
+import type { Review } from '@/features/customer/reviews/types'
 
 interface EditReviewDialogProps {
   review: Review
@@ -81,6 +79,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
         {!canEdit ? (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Edit window expired</AlertTitle>
             <AlertDescription>
               Reviews can only be edited within 7 days of creation. This review was posted{' '}
               {Math.floor(daysSince)} days ago.
@@ -117,7 +116,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
               <Input
                 id="title"
                 name="title"
-                defaultValue={review.title || ''}
+                defaultValue=""
                 placeholder="Summarize your experience"
                 maxLength={200}
               />
@@ -138,50 +137,11 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
               <p className="text-xs text-muted-foreground">Minimum 10 characters, maximum 2000</p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="space-y-2">
-                <Label htmlFor="serviceQualityRating">Service quality</Label>
-                <Input
-                  id="serviceQualityRating"
-                  name="serviceQualityRating"
-                  type="number"
-                  min="1"
-                  max="5"
-                  defaultValue={review.service_quality_rating || ''}
-                  placeholder="1-5"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="cleanlinessRating">Cleanliness</Label>
-                <Input
-                  id="cleanlinessRating"
-                  name="cleanlinessRating"
-                  type="number"
-                  min="1"
-                  max="5"
-                  defaultValue={review.cleanliness_rating || ''}
-                  placeholder="1-5"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="valueRating">Value</Label>
-                <Input
-                  id="valueRating"
-                  name="valueRating"
-                  type="number"
-                  min="1"
-                  max="5"
-                  defaultValue={review.value_rating || ''}
-                  placeholder="1-5"
-                />
-              </div>
-            </div>
 
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Update failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

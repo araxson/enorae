@@ -25,7 +25,7 @@ export async function flagReview(
     const supabase = await createClient()
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .update({
         is_flagged: true,
         flagged_reason: reason,
@@ -65,7 +65,7 @@ export async function toggleFeaturedReview(
     const supabase = await createClient()
     const { error } = await supabase
       .schema('engagement')
-      .from('salon_reviews_view')
+      .from('salon_reviews')
       .update({
         is_featured: featured,
       })

@@ -5,10 +5,10 @@
  * actual backend query results from features/business/analytics and features/business/dashboard
  */
 
-import type { RankingItem } from './ranking-list'
-import type { AnalyticsOverview, ServicePerformance, StaffPerformance } from '../types'
+import type { RankingItem } from '@/features/business/business-common/components/ranking-list'
+import type { AnalyticsOverview, ServicePerformance, StaffPerformance } from '@/features/business/business-common/types'
 
-export { isServicePerformance, isStaffPerformance } from '../types'
+export { isServicePerformance, isStaffPerformance } from '@/features/business/business-common/types'
 
 /**
  * Convert service performance data to ranking items

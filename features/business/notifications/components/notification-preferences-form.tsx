@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { updateNotificationPreferences } from '../api/mutations'
+import { updateNotificationPreferences } from '@/features/business/notifications/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
 type ChannelPreferences = Record<string, boolean>

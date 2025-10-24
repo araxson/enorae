@@ -31,7 +31,7 @@ export async function toggleFavorite(
 
     // Check if already favorited
     const { data: existing, error: queryError } = await supabase
-      .from('customer_favorites')
+      .from('customer_favorites_view')
       .select('id, notes')
       .eq('customer_id', session.user.id)
       .eq('salon_id', validatedSalonId)
@@ -116,7 +116,7 @@ export async function addToFavorites(salonId: string): Promise<ActionResponse> {
 
     // Check if already favorited
     const { data: existing } = await supabase
-      .from('customer_favorites')
+      .from('customer_favorites_view')
       .select('id')
       .eq('customer_id', session.user.id)
       .eq('salon_id', salonId)
@@ -163,10 +163,12 @@ export async function removeFromFavorites(favoriteId: string): Promise<ActionRes
     const supabase = await createClient()
 
     // Verify ownership
+    type Favorite = { customer_id: string; salon_id: string | null }
     const { data: favorite, error: fetchError } = await supabase
-      .from('customer_favorites')
+      .from('customer_favorites_view')
       .select('customer_id, salon_id')
       .eq('id', favoriteId)
+      .returns<Favorite[]>()
       .single()
 
     if (fetchError) throw fetchError

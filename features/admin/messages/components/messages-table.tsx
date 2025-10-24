@@ -1,8 +1,8 @@
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { formatDistanceToNow } from 'date-fns'
-import type { MessageThreadWithInsights } from '../api/queries'
+import type { MessageThreadWithInsights } from '@/features/admin/messages/api/queries'
 
 interface MessagesTableProps {
   threads: MessageThreadWithInsights[]
@@ -49,6 +49,10 @@ const statusVariant = (status: string | null | undefined) => {
 export function MessagesTable({ threads }: MessagesTableProps) {
   return (
     <Card>
+      <CardHeader>
+        <CardTitle>Message Threads</CardTitle>
+        <CardDescription>Conversation activity and SLA indicators.</CardDescription>
+      </CardHeader>
       <CardContent className="p-0">
         <div className="overflow-x-auto">
           <Table>

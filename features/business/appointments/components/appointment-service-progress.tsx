@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -112,23 +112,20 @@ export function AppointmentServiceProgress({
             <Progress value={completionRate} className="h-2" />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-3 rounded-lg border">
-              <p className="text-2xl font-bold">{stats.completed}</p>
-              <p className="text-sm text-muted-foreground">Completed</p>
-            </div>
-            <div className="text-center p-3 rounded-lg border">
-              <p className="text-2xl font-bold">{stats.inProgress}</p>
-              <p className="text-sm text-muted-foreground">In Progress</p>
-            </div>
-            <div className="text-center p-3 rounded-lg border">
-              <p className="text-2xl font-bold">{stats.pending}</p>
-              <p className="text-sm text-muted-foreground">Pending</p>
-            </div>
-            <div className="text-center p-3 rounded-lg border">
-              <p className="text-2xl font-bold">{stats.cancelled}</p>
-              <p className="text-sm text-muted-foreground">Cancelled</p>
-            </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {[
+              { label: 'Completed', value: stats.completed },
+              { label: 'In Progress', value: stats.inProgress },
+              { label: 'Pending', value: stats.pending },
+              { label: 'Cancelled', value: stats.cancelled },
+            ].map((item) => (
+              <Card key={item.label}>
+                <CardHeader className="items-center">
+                  <CardTitle>{item.value}</CardTitle>
+                  <CardDescription>{item.label}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
           </div>
         </CardContent>
       </Card>
@@ -144,54 +141,51 @@ export function AppointmentServiceProgress({
               const nextStatus = getNextStatus(service.status)
 
               return (
-                <div
-                  key={service.id}
-                  className="flex items-center justify-between p-4 rounded-lg border"
-                >
-                  <div className="flex items-center gap-4 flex-1">
-                    {getStatusIcon(service.status)}
-                    <div className="flex-1">
-                      <p className="font-medium">{service.service_name}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge variant="outline" className="text-xs">
-                          {getStatusLabel(service.status)}
-                        </Badge>
-                        {service.staff_name && (
-                          <span className="text-sm text-muted-foreground">
-                            {service.staff_name}
-                          </span>
-                        )}
+                <Card key={service.id}>
+                  <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <div className="flex flex-1 items-center gap-4">
+                      {getStatusIcon(service.status)}
+                      <div className="flex-1">
+                        <p className="font-medium">{service.service_name}</p>
+                        <div className="mt-1 flex items-center gap-2">
+                          <Badge variant="outline">{getStatusLabel(service.status)}</Badge>
+                          {service.staff_name && (
+                            <span className="text-sm text-muted-foreground">
+                              {service.staff_name}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-2">
-                    {!isCancelled && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleStatusUpdate(service.id || '', nextStatus)}
-                        disabled={updatingId === service.id}
-                      >
-                        {updatingId === service.id
-                          ? 'Updating...'
-                          : service.status === 'completed'
-                          ? 'Reset'
-                          : 'Mark ' + getStatusLabel(nextStatus)}
-                      </Button>
-                    )}
-                    {service.status !== 'cancelled' && service.status !== 'completed' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleStatusUpdate(service.id || '', 'cancelled')}
-                        disabled={updatingId === service.id}
-                      >
-                        Cancel
-                      </Button>
-                    )}
-                  </div>
-                </div>
+                    <div className="flex items-center gap-2">
+                      {!isCancelled && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleStatusUpdate(service.id || '', nextStatus)}
+                          disabled={updatingId === service.id}
+                        >
+                          {updatingId === service.id
+                            ? 'Updating...'
+                            : service.status === 'completed'
+                            ? 'Reset'
+                            : 'Mark ' + getStatusLabel(nextStatus)}
+                        </Button>
+                      )}
+                      {service.status !== 'cancelled' && service.status !== 'completed' && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleStatusUpdate(service.id || '', 'cancelled')}
+                          disabled={updatingId === service.id}
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
               )
             })}
 

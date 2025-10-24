@@ -86,6 +86,7 @@ export async function sendNotification(input: {
 
   await ensureRecipientAuthorized(supabase, userId)
 
+  // Send notification using RPC function
   const { data: notificationId, error } = await supabase
     .schema('communication')
     .rpc('send_notification', {
@@ -93,7 +94,7 @@ export async function sendNotification(input: {
       p_title: title,
       p_message: message,
       p_type: type,
-      p_channels: channels,
+      p_channels: channels || ['in_app'],
       p_data: payloadData,
     })
 
@@ -102,7 +103,7 @@ export async function sendNotification(input: {
   revalidateNotifications()
   return {
     success: true,
-    notificationId: notificationId as Database['communication']['Functions']['send_notification']['Returns'],
+    notificationId,
   }
 }
 
@@ -122,7 +123,8 @@ export async function markNotificationsRead(notificationIds?: string[]) {
   if (authError) throw authError
   if (!user) throw new Error('Unauthorized')
 
-  const { data: count, error } = await supabase
+  // Mark notifications as read using RPC function
+  const { data: markedCount, error } = await supabase
     .schema('communication')
     .rpc('mark_notifications_read', {
       p_user_id: user.id,
@@ -134,8 +136,7 @@ export async function markNotificationsRead(notificationIds?: string[]) {
   revalidateNotifications()
   return {
     success: true,
-    markedCount:
-      (count as Database['communication']['Functions']['mark_notifications_read']['Returns']) ?? 0,
+    markedCount: markedCount ?? 0,
   }
 }
 

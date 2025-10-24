@@ -1,5 +1,5 @@
-import { Hero } from '../components/sections/hero'
-import { Content } from '../components/sections/content'
+import { Hero } from '@/features/marketing/privacy/components/sections/hero'
+import { Content } from '@/features/marketing/privacy/components/sections/content'
 
 export function PrivacyPage() {
   return (

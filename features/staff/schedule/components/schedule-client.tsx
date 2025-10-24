@@ -7,7 +7,7 @@ import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-comm
 import { ScheduleManagementClient } from './schedule-management-client'
 import { BlockedTimeForm } from '@/features/shared/blocked-times/components/blocked-time-form'
 import { BlockedTimesList } from '@/features/shared/blocked-times/components/blocked-times-list'
-import type { StaffScheduleWithStaff } from '../api/queries'
+import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
 import type { getBlockedTimesByStaff } from '@/features/shared/blocked-times/api/queries'
 
 type BlockedTime = Awaited<ReturnType<typeof getBlockedTimesByStaff>>

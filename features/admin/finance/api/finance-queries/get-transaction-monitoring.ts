@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { TransactionMetrics } from '../types'
+import type { TransactionMetrics } from '@/features/admin/finance/api/types'
 import { requireAdminClient } from './client'
 
 export async function getTransactionMonitoring(limit = 100): Promise<TransactionMetrics> {

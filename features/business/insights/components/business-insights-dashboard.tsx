@@ -1,6 +1,6 @@
 'use client'
 
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
@@ -14,7 +14,7 @@ import {
   Lightbulb,
   TrendingUpIcon
 } from 'lucide-react'
-import type { TrendInsight, BusinessRecommendation, AnomalyAlert } from '../api/business-insights'
+import type { TrendInsight, BusinessRecommendation, AnomalyAlert } from '@/features/business/insights/api/business-insights'
 
 interface BusinessInsightsDashboardProps {
   trends: TrendInsight[]
@@ -39,7 +39,7 @@ export function BusinessInsightsDashboard({
       {/* Alerts Section */}
       {alerts.length > 0 && (
         <div>
-          <div className="text-2xl font-semibold mb-4">Active Alerts</div>
+          <div className="text-2xl font-bold mb-4">Active Alerts</div>
           <div className="flex flex-col gap-6">
             {alerts.map((alert) => (
               <Alert
@@ -69,15 +69,15 @@ export function BusinessInsightsDashboard({
 
       {/* Trend Insights */}
       <div>
-        <div className="text-2xl font-semibold mb-4">Trend Analysis</div>
+        <div className="text-2xl font-bold mb-4">Trend Analysis</div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {trends.map((trend, idx) => (
-            <Card key={idx} className="p-6">
-              <div className="flex flex-col gap-6">
+            <Card key={idx}>
+              <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <div className="text-xl font-semibold">{trend.metric}</div>
-                    <div className="text-sm text-muted-foreground">{trend.message}</div>
+                    <CardTitle>{trend.metric}</CardTitle>
+                    <CardDescription>{trend.message}</CardDescription>
                   </div>
                   {trend.trend === 'up' ? (
                     <TrendingUp className={`h-6 w-6 ${trend.status === 'positive' ? 'text-primary' : 'text-destructive'}`} />
@@ -87,23 +87,23 @@ export function BusinessInsightsDashboard({
                     <Minus className="h-6 w-6 text-muted-foreground" />
                   )}
                 </div>
-                <div className="flex items-baseline gap-2">
-                  <span className={`text-2xl font-bold ${
-                    trend.status === 'positive' ? 'text-primary' :
-                    trend.status === 'negative' ? 'text-destructive' :
-                    'text-muted-foreground'
-                  }`}>
-                    {trend.changePercent.toFixed(1)}%
-                  </span>
-                  <Badge variant={
-                    trend.status === 'positive' ? 'default' :
-                    trend.status === 'negative' ? 'destructive' :
-                    'secondary'
-                  }>
-                    {trend.status}
-                  </Badge>
-                </div>
-              </div>
+              </CardHeader>
+              <CardContent className="flex items-baseline gap-2 pt-0">
+                <span className={`text-2xl font-bold ${
+                  trend.status === 'positive' ? 'text-primary' :
+                  trend.status === 'negative' ? 'text-destructive' :
+                  'text-muted-foreground'
+                }`}>
+                  {trend.changePercent.toFixed(1)}%
+                </span>
+                <Badge variant={
+                  trend.status === 'positive' ? 'default' :
+                  trend.status === 'negative' ? 'destructive' :
+                  'secondary'
+                }>
+                  {trend.status}
+                </Badge>
+              </CardContent>
             </Card>
           ))}
         </div>
@@ -112,39 +112,38 @@ export function BusinessInsightsDashboard({
       {/* AI Recommendations */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <div className="text-2xl font-semibold">AI-Powered Recommendations</div>
-          <Badge variant="outline" className="gap-1">
-            <Lightbulb className="h-3 w-3" />
-            {recommendations.length} insights
+          <div className="text-2xl font-bold">AI-Powered Recommendations</div>
+          <Badge variant="outline">
+            <span className="flex items-center gap-1">
+              <Lightbulb className="h-3 w-3" />
+              {recommendations.length} insights
+            </span>
           </Badge>
         </div>
         <div className="flex flex-col gap-8">
           {recommendations.map((rec) => (
-            <Card key={rec.id} className="p-6">
-              <div className="flex flex-col gap-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="mb-2 flex items-center gap-4">
-                      <div className="text-xl font-semibold">{rec.title}</div>
-                      <Badge variant={
-                        rec.priority === 'high' ? 'destructive' :
-                        rec.priority === 'medium' ? 'default' :
-                        'secondary'
-                      }>
-                        {rec.priority} priority
-                      </Badge>
-                      <Badge variant="outline">{rec.category}</Badge>
-                    </div>
-                    <div className="text-sm mb-3">{rec.description}</div>
-                    <div className="bg-muted/50 p-3 rounded-md mb-3">
-                      <div className="flex items-center gap-4">
-                        <Target className="h-4 w-4 text-primary" />
-                        <div className="text-sm font-medium text-muted-foreground">Impact: {rec.impact}</div>
-                      </div>
-                    </div>
+            <Card key={rec.id}>
+              <CardHeader>
+                <div className="flex flex-wrap items-center gap-4">
+                  <CardTitle>{rec.title}</CardTitle>
+                  <Badge variant={
+                    rec.priority === 'high' ? 'destructive' :
+                    rec.priority === 'medium' ? 'default' :
+                    'secondary'
+                  }>
+                    {rec.priority} priority
+                  </Badge>
+                  <Badge variant="outline">{rec.category}</Badge>
+                </div>
+                <CardDescription>{rec.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6 pt-0">
+                <div className="bg-muted/50 p-3 rounded-md">
+                  <div className="flex items-center gap-4">
+                    <Target className="h-4 w-4 text-primary" />
+                    <div className="text-sm font-medium text-muted-foreground">Impact: {rec.impact}</div>
                   </div>
                 </div>
-
                 <div>
                   <div className="text-sm font-medium text-muted-foreground mb-2">Action Items:</div>
                   <ul className="space-y-1.5">
@@ -156,17 +155,17 @@ export function BusinessInsightsDashboard({
                     ))}
                   </ul>
                 </div>
-              </div>
+              </CardContent>
             </Card>
           ))}
 
           {recommendations.length === 0 && (
-            <Card className="p-8">
-              <div className="flex flex-col items-center gap-4 text-center">
+            <Card>
+              <CardHeader className="items-center text-center">
                 <CheckCircle2 className="h-12 w-12 text-primary" />
-                <div className="text-xl font-semibold">All Systems Optimal</div>
-                <div className="text-sm text-muted-foreground">Your business metrics are performing well. Keep up the great work!</div>
-              </div>
+                <CardTitle>All Systems Optimal</CardTitle>
+                <CardDescription>Your business metrics are performing well. Keep up the great work!</CardDescription>
+              </CardHeader>
             </Card>
           )}
         </div>
@@ -175,20 +174,20 @@ export function BusinessInsightsDashboard({
       {/* Growth Opportunities */}
       {opportunities.length > 0 && (
         <div>
-          <div className="text-2xl font-semibold mb-4">Growth Opportunities</div>
+          <div className="text-2xl font-bold mb-4">Growth Opportunities</div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {opportunities.map((opp, idx) => (
-              <Card key={idx} className="p-6">
-                <div className="flex flex-col gap-4">
+              <Card key={idx}>
+                <CardHeader>
                   <div className="flex items-center gap-4">
                     <TrendingUpIcon className="h-5 w-5 text-primary" />
-                    <div className="text-xl font-semibold">{opp.title}</div>
+                    <CardTitle>{opp.title}</CardTitle>
                   </div>
-                  <div className="text-sm">{opp.description}</div>
-                  <div className="bg-primary/10 p-2 rounded-md">
-                    <div className="text-sm font-medium text-primary">{opp.potential}</div>
-                  </div>
-                </div>
+                  <CardDescription>{opp.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="bg-primary/10 rounded-md p-2 text-sm font-medium text-primary pt-0">
+                  {opp.potential}
+                </CardContent>
               </Card>
             ))}
           </div>

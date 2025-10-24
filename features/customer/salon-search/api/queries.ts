@@ -11,7 +11,7 @@ export interface SalonSearchResult {
     city?: string
     state?: string
     zip_code?: string
-  }
+  } | null
   rating_average: number
   is_verified: boolean
   is_featured: boolean
@@ -59,7 +59,7 @@ export async function searchSalons(filters: SearchFilters): Promise<SalonSearchR
       state: state || null,
       is_verified_filter: isVerified ?? null,
       limit_count: limit,
-    })
+    } as any) // Type assertion needed due to RPC type generation issue
 
   if (error) throw error
 
@@ -81,11 +81,22 @@ export async function searchSalonsWithFuzzyMatch(
   await requireAuth()
   const supabase = await createClient()
 
+  type SalonRow = {
+    id: string
+    name: string
+    slug: string
+    address: { street?: string; city?: string; state?: string; zip_code?: string } | null
+    rating_average: number
+    is_verified: boolean
+    is_featured: boolean
+  }
+
   // First, get all salons from public view
   const { data: salons, error } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('id, name, slug, address, rating_average, is_verified, is_featured')
     .limit(100)
+    .returns<SalonRow[]>()
 
   if (error) throw error
 
@@ -96,7 +107,7 @@ export async function searchSalonsWithFuzzyMatch(
         .rpc('text_similarity', {
           text1: searchTerm.toLowerCase(),
           text2: salon.name.toLowerCase(),
-        })
+        } as any) // Type assertion needed due to RPC type generation issue
 
       return {
         ...salon,
@@ -126,7 +137,7 @@ export async function getSalonSearchSuggestions(
 
   // Get salons that match the search term for autocomplete from public view
   const { data, error } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('name, slug')
     .ilike('name', `%${searchTerm}%`)
     .limit(limit)
@@ -140,10 +151,15 @@ export async function getPopularCities(): Promise<{ city: string; count: number 
   await requireAuth()
   const supabase = await createClient()
 
+  type SalonRow = {
+    address: { city?: string } | null
+  }
+
   // Get all salons to extract cities from public view
   const { data: salons, error } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('address')
+    .returns<SalonRow[]>()
 
   if (error) throw error
 
@@ -168,9 +184,14 @@ export async function getAvailableStates(): Promise<string[]> {
   await requireAuth()
   const supabase = await createClient()
 
+  type SalonRow = {
+    address: { state?: string } | null
+  }
+
   const { data: salons, error } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('address')
+    .returns<SalonRow[]>()
 
   if (error) throw error
 
@@ -192,7 +213,7 @@ export async function getFeaturedSalons(limit = 6): Promise<SalonSearchResult[]>
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('id, name, slug, address, rating_average, is_verified, is_featured')
     .eq('is_featured', true)
     .order('rating_average', { ascending: false })
@@ -210,20 +231,25 @@ export async function getNearbyServices(
   await requireAuth()
   const supabase = await createClient()
 
+  type SalonRow = {
+    address: { city?: string } | null
+  }
+
   // Get the salon's city from public view
   const { data: salon } = await supabase
-    .from('salons_view')
+    .from('salons')
     .select('address')
     .eq('id', salonId)
+    .returns<SalonRow[]>()
     .single()
 
   if (!salon?.address?.city) {
     return []
   }
 
-  // Find other salons in the same city using services_view
+  // Find other salons in the same city using services
   const { data: services, error } = await supabase
-    .from('services_view')
+    .from('services')
     .select(`
       id,
       name,
@@ -235,12 +261,13 @@ export async function getNearbyServices(
     `)
     .neq('salon_id', salonId)
     .limit(limit * 3) // Get more to filter by city
+    .returns<ServiceWithSalon[]>()
 
   if (error) throw error
 
   // Filter by same city
-  const nearbyServices = ((services || []) as unknown as ServiceWithSalon[])
-    .filter((service: ServiceWithSalon) => service.salons?.address?.city === salon.address.city)
+  const nearbyServices = (services || [])
+    .filter((service: ServiceWithSalon) => service.salons?.address?.city === salon.address?.city)
     .slice(0, limit)
     .map((service: ServiceWithSalon) => ({
       id: service.id,

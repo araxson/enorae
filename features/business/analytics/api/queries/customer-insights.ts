@@ -3,7 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
-import type { Appointment, DailyMetric } from '../analytics.types'
+import type { Appointment, DailyMetric } from '@/features/business/analytics/api/analytics.types'
 
 export type CustomerInsights = {
   totalCustomers: number

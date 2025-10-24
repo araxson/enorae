@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/shared/empty-state'
 import { Receipt } from 'lucide-react'
 import { TransactionCard } from './transaction-card'
-import type { CustomerTransactionWithDetails } from '../api/queries'
+import type { CustomerTransactionWithDetails } from '@/features/customer/transactions/api/queries'
 
 interface TransactionsListProps {
   transactions: CustomerTransactionWithDetails[]

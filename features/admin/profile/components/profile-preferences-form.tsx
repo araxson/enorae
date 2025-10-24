@@ -6,8 +6,8 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import type { ProfileDetail } from '../api/types'
-import { updateProfilePreferencesAction, type ActionResponse } from '../api/mutations'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
+import { updateProfilePreferencesAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
 interface ProfilePreferencesFormProps {
   profile: ProfileDetail | null
@@ -114,13 +114,11 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
 
           <div className="flex flex-col gap-3">
             <Card>
-              <CardContent className="flex items-center justify-between gap-4 p-4">
-                <div>
-                  <p className="text-sm font-medium">Marketing emails</p>
-                  <p className="text-xs text-muted-foreground">
-                    Send product updates and promotional campaigns.
-                  </p>
-                </div>
+              <CardHeader className="pb-2">
+                <CardTitle>Marketing emails</CardTitle>
+                <CardDescription>Send product updates and promotional campaigns.</CardDescription>
+              </CardHeader>
+              <CardContent className="flex items-center justify-between gap-4 pt-0">
                 <Switch
                   checked={marketingEmails}
                   onCheckedChange={setMarketingEmails}
@@ -131,13 +129,11 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
             </Card>
 
             <Card>
-              <CardContent className="flex items-center justify-between gap-4 p-4">
-                <div>
-                  <p className="text-sm font-medium">SMS alerts</p>
-                  <p className="text-xs text-muted-foreground">
-                    Enable SMS notifications where available.
-                  </p>
-                </div>
+              <CardHeader className="pb-2">
+                <CardTitle>SMS alerts</CardTitle>
+                <CardDescription>Enable SMS notifications where available.</CardDescription>
+              </CardHeader>
+              <CardContent className="flex items-center justify-between gap-4 pt-0">
                 <Switch
                   checked={smsAlerts}
                   onCheckedChange={setSmsAlerts}

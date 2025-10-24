@@ -1,14 +1,14 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users, UserCheck, UserX, Shield } from 'lucide-react'
-import { getUsersOverview, getUsersWithDetails } from '../api/queries'
-import type { AdminUser } from '../api/queries'
+import { getUsersOverview, getUsersWithDetails } from '@/features/admin/users/api/queries'
+import type { AdminUser } from '@/features/admin/users/api/queries'
 import {
   suspendUser,
   reactivateUser,
   terminateAllUserSessions,
   deleteUserPermanently,
-} from '../api/mutations'
+} from '@/features/admin/users/api/mutations'
 import { UsersTable } from './users-table'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
@@ -37,75 +37,80 @@ export async function AdminUsersClient() {
     <section className="py-16 md:py-24 lg:py-32">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="leading-7 text-sm text-muted-foreground">Total Users</p>
-                  <p className="text-2xl font-bold">{overview.totalUsers}</p>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <CardTitle>Total Users</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
                 </div>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </div>
-            </CardContent>
-          </Card>
+                <CardDescription>All accounts created within the platform.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-semibold">{overview.totalUsers}</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <CardTitle>Active Users</CardTitle>
+                  <UserCheck className="h-4 w-4 text-primary" />
+                </div>
+                <CardDescription>Users with an active login status.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-semibold">{overview.activeUsers}</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <CardTitle>Suspended</CardTitle>
+                  <UserX className="h-4 w-4 text-destructive" />
+                </div>
+                <CardDescription>Accounts currently disabled by admins.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-semibold">{overview.suspendedUsers}</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <CardTitle>With Roles</CardTitle>
+                  <Shield className="h-4 w-4 text-secondary" />
+                </div>
+                <CardDescription>Users assigned to one or more roles.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-semibold">{overview.usersWithRoles}</p>
+              </CardContent>
+            </Card>
+          </div>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="leading-7 text-sm text-muted-foreground">Active Users</p>
-                  <p className="text-2xl font-bold">{overview.activeUsers}</p>
-                </div>
-                <UserCheck className="h-4 w-4 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="leading-7 text-sm text-muted-foreground">Suspended</p>
-                  <p className="text-2xl font-bold">{overview.suspendedUsers}</p>
-                </div>
-                <UserX className="h-4 w-4 text-destructive" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="leading-7 text-sm text-muted-foreground">With Roles</p>
-                  <p className="text-2xl font-bold">{overview.usersWithRoles}</p>
-                </div>
-                <Shield className="h-4 w-4 text-secondary" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card>
-          <CardContent className="p-6">
-            <p className="leading-7 text-sm font-medium mb-4">Role Distribution</p>
-            <div className="flex flex-wrap gap-4">
+            <CardHeader>
+              <CardTitle>Role Distribution</CardTitle>
+              <CardDescription>User counts by platform role.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-4">
               {overview.roleBreakdown.map((role) => (
                 <Badge key={role.role} variant="outline">
                   {role.role.replace('_', ' ')}: {role.count}
                 </Badge>
               ))}
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <div>
-          <UsersTable
-            users={normalizedUsers}
-            onSuspend={suspendUser}
-            onReactivate={reactivateUser}
-            onTerminateSessions={terminateAllUserSessions}
+          <div>
+            <UsersTable
+              users={normalizedUsers}
+              onSuspend={suspendUser}
+              onReactivate={reactivateUser}
+              onTerminateSessions={terminateAllUserSessions}
             onDelete={isSuperAdmin ? deleteUserPermanently : undefined}
           />
         </div>

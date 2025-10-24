@@ -2,7 +2,7 @@
  * Dialog configuration helper for reviews moderation actions
  */
 
-import type { ModerationReview } from '../api/queries'
+import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 
 export type DialogType = 'flag' | 'unflag' | 'feature' | 'delete'
 

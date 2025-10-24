@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { updateChainSettings } from '../api/mutations'
+import { updateChainSettings } from '@/features/business/chains/api/mutations'
 
 type BulkSettingsDialogProps = {
   open: boolean

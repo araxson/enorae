@@ -1,10 +1,9 @@
 'use client'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Calendar, DollarSign, MessageSquare, Package, Star, Users } from 'lucide-react'
+import { Calendar, DollarSign, MessageSquare, Star, Users } from 'lucide-react'
 import type {
   AppointmentsOverview,
-  InventoryOverview,
   MessagesOverview,
   RevenueOverview,
   ReviewsOverview,
@@ -13,7 +12,6 @@ import type {
 import { AdminOverviewRevenueTab } from './admin-overview-revenue-tab'
 import { AdminOverviewAppointmentsTab } from './admin-overview-appointments-tab'
 import { AdminOverviewReviewsTab } from './admin-overview-reviews-tab'
-import { AdminOverviewInventoryTab } from './admin-overview-inventory-tab'
 import { AdminOverviewMessagesTab } from './admin-overview-messages-tab'
 import { AdminOverviewStaffTab } from './admin-overview-staff-tab'
 
@@ -21,7 +19,6 @@ export interface AdminOverviewTabsProps {
   revenue: RevenueOverview[]
   appointments: AppointmentsOverview[]
   reviews: ReviewsOverview[]
-  inventory: InventoryOverview[]
   messages: MessagesOverview[]
   staff: StaffOverview[]
 }
@@ -30,7 +27,6 @@ export function AdminOverviewTabs({
   revenue,
   appointments,
   reviews,
-  inventory,
   messages,
   staff,
 }: AdminOverviewTabsProps) {
@@ -62,12 +58,6 @@ export function AdminOverviewTabs({
               Reviews
             </span>
           </TabsTrigger>
-          <TabsTrigger value="inventory">
-            <span className="flex items-center gap-1.5">
-              <Package className="h-4 w-4" />
-              Inventory
-            </span>
-          </TabsTrigger>
           <TabsTrigger value="messages">
             <span className="flex items-center gap-1.5">
               <MessageSquare className="h-4 w-4" />
@@ -93,10 +83,6 @@ export function AdminOverviewTabs({
 
       <TabsContent value="reviews">
         <AdminOverviewReviewsTab reviews={reviews} />
-      </TabsContent>
-
-      <TabsContent value="inventory">
-        <AdminOverviewInventoryTab inventory={inventory} />
       </TabsContent>
 
       <TabsContent value="messages">

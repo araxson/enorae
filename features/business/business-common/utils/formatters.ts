@@ -6,4 +6,4 @@ export {
   formatDuration,
   calculateGrowthRate,
   formatAnalyticsDate,
-} from '../components/value-formatters'
+} from '@/features/business/business-common/components/value-formatters'

@@ -23,8 +23,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { deleteSalonChain } from '../api/mutations'
-import type { SalonChainWithCounts } from '../api/queries'
+import { deleteSalonChain } from '@/features/business/chains/api/mutations'
+import type { SalonChainWithCounts } from '@/features/business/chains/api/queries'
 
 type ChainsListProps = {
   chains: SalonChainWithCounts[]
@@ -61,9 +61,12 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
   if (chains.length === 0) {
     return (
       <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
+        <CardHeader className="items-center text-center">
+          <CardTitle>No salon chains found</CardTitle>
+          <CardDescription>Chains appear here once created.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center py-6">
           <Building2 className="h-12 w-12 text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">No salon chains found</p>
         </CardContent>
       </Card>
     )

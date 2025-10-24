@@ -28,15 +28,19 @@ export function StaffSummaryGrid({ summaries }: StaffSummaryGridProps) {
             key={summary.id}
             className={cn('border-l-4', toneClasses[tone])}
           >
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <div className="text-sm font-medium text-muted-foreground">
-                {summary.label}
+            <CardHeader>
+              <div className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <div className="text-sm font-medium text-muted-foreground">
+                  {summary.label}
+                </div>
+                {Icon ? <Icon className="h-4 w-4" /> : null}
               </div>
-              {Icon ? <Icon className="h-4 w-4" /> : null}
             </CardHeader>
-            <CardContent className="space-y-2">
-              <p className="text-2xl font-semibold">{summary.value}</p>
-              {summary.helper ? <p className="text-xs text-muted-foreground">{summary.helper}</p> : null}
+            <CardContent>
+              <div className="space-y-2">
+                <p className="text-2xl font-semibold">{summary.value}</p>
+                {summary.helper ? <p className="text-xs text-muted-foreground">{summary.helper}</p> : null}
+              </div>
             </CardContent>
           </Card>
         )

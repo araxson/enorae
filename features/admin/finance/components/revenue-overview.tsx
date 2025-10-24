@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card'
 import { StatCard } from '@/components/shared/stat-card'
 import { DollarSign, TrendingUp, Calendar, Users } from 'lucide-react'
-import type { RevenueMetrics } from '../api/types'
+import type { RevenueMetrics } from '@/features/admin/finance/api/types'
 
 interface RevenueOverviewProps {
   metrics: RevenueMetrics

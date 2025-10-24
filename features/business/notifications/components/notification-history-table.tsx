@@ -10,7 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDistanceToNow, format } from 'date-fns'
 
-import type { NotificationEntry } from '../types'
+import type { NotificationEntry } from '@/features/business/notifications/types'
 
 type NotificationHistoryTableProps = {
   history: NotificationEntry[]
@@ -81,8 +81,8 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
                 <TableCell>
                   <div className="flex flex-wrap gap-1">
                     {(entry.channels || []).map((channel: string) => (
-                      <Badge key={channel} variant="outline" className="capitalize">
-                        {channel}
+                      <Badge key={channel} variant="outline">
+                        <span className="capitalize">{channel}</span>
                       </Badge>
                     ))}
                   </div>

@@ -1,4 +1,4 @@
-import type { AdminSalon } from '@/lib/types/app.types'
+import type { AdminSalon } from '@/features/admin/salons'
 import type { Database } from '@/lib/types/database.types'
 
 export type AdminRevenueOverviewRow =
@@ -9,8 +9,6 @@ export type AdminAppointmentsOverviewRow =
   Database['public']['Views']['admin_appointments_overview']['Row']
 export type AdminReviewsOverviewRow =
   Database['public']['Views']['admin_reviews_overview']['Row']
-export type AdminInventoryOverviewRow =
-  Database['public']['Views']['admin_inventory_overview']['Row']
 export type AdminMessagesOverviewRow =
   Database['public']['Views']['admin_messages_overview']['Row']
 export type AdminStaffOverviewRow =
@@ -43,7 +41,6 @@ export interface AdminOverview {
   revenue: AdminRevenueOverviewRow[]
   appointments: AdminAppointmentsOverviewRow[]
   reviews: AdminReviewsOverviewRow[]
-  inventory: AdminInventoryOverviewRow[]
   messages: AdminMessagesOverviewRow[]
   staff: AdminStaffOverviewRow[]
 }

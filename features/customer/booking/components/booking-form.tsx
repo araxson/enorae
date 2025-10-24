@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
-import { createBooking } from '../api/mutations'
+import { createBooking } from '@/features/customer/booking/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -21,11 +21,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Progress } from '@/components/ui/progress'
 import { AlertCircle, CheckCircle2, Loader2, XCircle } from 'lucide-react'
 import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
-import type { BookingFormProps, Service, Staff } from '../types'
+import type { BookingFormProps, Service, Staff } from '@/features/customer/booking/types'
 
 export function BookingForm({ salonId, salonName, services, staff }: BookingFormProps) {
   const [error, setError] = useState<string | null>(null)
@@ -165,6 +165,7 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Booking failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}

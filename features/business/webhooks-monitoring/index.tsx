@@ -6,6 +6,7 @@ import { getWebhookMonitoringData } from './api/queries'
 export const webhookMonitoringMetadata = genMeta({
   title: 'Webhook Monitoring',
   description: 'Monitor webhook deliveries and track performance metrics',
+  noIndex: true,
 })
 
 export async function WebhookMonitoring() {

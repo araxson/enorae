@@ -48,26 +48,8 @@ export async function markReviewAsHelpful(reviewId: string): Promise<ActionResul
       throw voteError
     }
 
-    // Increment the helpful_count
-    const { data: review, error: fetchError } = await supabase
-      .from('salon_reviews_view')
-      .select('helpful_count')
-      .eq('id', reviewId)
-      .single<{ helpful_count: number | null }>()
-
-    if (fetchError) throw fetchError
-
-    const currentCount = review?.helpful_count || 0
-
-    const { error: updateError } = await supabase
-      .schema('engagement')
-      .from('salon_reviews_view')
-      .update({
-        helpful_count: currentCount + 1,
-      })
-      .eq('id', reviewId)
-
-    if (updateError) throw updateError
+    // Note: helpful_count is calculated dynamically from review_helpful_votes table
+    // The salon_reviews_with_counts view aggregates this automatically
 
     revalidatePath('/customer/salons/[slug]', 'page')
 
@@ -95,28 +77,8 @@ export async function unmarkReviewAsHelpful(reviewId: string): Promise<ActionRes
 
     if (deleteError) throw deleteError
 
-    // Decrement the helpful_count
-    const { data: review, error: fetchError } = await supabase
-      .from('salon_reviews_view')
-      .select('helpful_count')
-      .eq('id', reviewId)
-      .single<{ helpful_count: number | null }>()
-
-    if (fetchError) throw fetchError
-
-    const currentCount = review?.helpful_count || 0
-
-    if (currentCount > 0) {
-      const { error: updateError } = await supabase
-        .schema('engagement')
-        .from('salon_reviews_view')
-        .update({
-          helpful_count: currentCount - 1,
-        })
-        .eq('id', reviewId)
-
-      if (updateError) throw updateError
-    }
+    // Note: helpful_count is calculated dynamically from review_helpful_votes table
+    // The salon_reviews_with_counts view aggregates this automatically
 
     revalidatePath('/customer/salons/[slug]', 'page')
 

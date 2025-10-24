@@ -1,7 +1,7 @@
 'use client'
 import { format } from 'date-fns'
-import { Card } from '@/components/ui/card'
-import type { Message } from '../types'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import type { Message } from '@/features/staff/messages/types'
 import { cn } from '@/lib/utils'
 
 interface MessageListProps {
@@ -12,8 +12,13 @@ interface MessageListProps {
 export function MessageList({ messages, currentUserId }: MessageListProps) {
   if (messages.length === 0) {
     return (
-      <Card className="p-8 text-center">
-        <p className="text-muted-foreground">No messages in this thread</p>
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col items-center text-center">
+            <CardTitle>No messages</CardTitle>
+            <CardDescription>Start chatting to see messages here.</CardDescription>
+          </div>
+        </CardHeader>
       </Card>
     )
   }
@@ -27,19 +32,31 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
           <Card
             key={message.id}
             className={cn(
-              'w-full max-w-xl p-4',
-              isFromMe ? 'ml-auto bg-primary/10' : 'mr-auto'
+              'w-full max-w-xl',
+              isFromMe ? 'ml-auto' : 'mr-auto'
             )}
           >
-            <div className="flex flex-col gap-3">
-              <p className="whitespace-pre-wrap">{message.content}</p>
-              {message.created_at && (
-                <p className="text-xs text-muted-foreground">
-                  {format(new Date(message.created_at), 'PPp')}
-                  {message.is_edited && ' (edited)'}
-                </p>
-              )}
-            </div>
+            <CardHeader>
+              <div className="pb-2">
+                <CardTitle>{isFromMe ? 'You' : 'Staff member'}</CardTitle>
+                {message.created_at ? (
+                  <CardDescription>
+                    {format(new Date(message.created_at), 'PPp')}
+                    {message.is_edited ? ' (edited)' : ''}
+                  </CardDescription>
+                ) : null}
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div
+                className={cn(
+                  'rounded-md border border-border/50 bg-background px-4 py-3',
+                  isFromMe ? 'bg-muted' : ''
+                )}
+              >
+                <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
+              </div>
+            </CardContent>
           </Card>
         )
       })}

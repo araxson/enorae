@@ -5,7 +5,7 @@ import type { Database } from '@/lib/types/database.types'
 
 type StaffService = Database['public']['Views']['staff_services']['Row']
 type Service = Database['public']['Views']['services']['Row']
-type Staff = Database['public']['Views']['staff']['Row']
+type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 type Salon = Database['public']['Views']['salons']['Row']
 
 export type StaffWithServices = {
@@ -31,10 +31,9 @@ export async function getStaffWithServices(salonId: string): Promise<StaffWithSe
 
   // Get all staff for salon
   const { data: staff, error: staffError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('salon_id', salonId)
-    .is('deleted_at', null)
     .order('full_name')
 
   if (staffError) throw staffError
@@ -117,7 +116,7 @@ export async function getStaffServices(staffId: string): Promise<StaffService[]>
   if (!salon) throw new Error('Salon not found')
 
   const { data: staff } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('id', staffId)
     .single()

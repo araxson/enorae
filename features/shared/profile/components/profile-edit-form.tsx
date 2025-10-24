@@ -10,14 +10,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, Upload, User } from 'lucide-react'
-import { updateProfile, uploadAvatar } from '../api/mutations'
+import { uploadAvatar } from '@/features/shared/profile/api/mutations'
+import { updateProfileMetadata } from '@/features/shared/profile-metadata/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
-type Profile = Database['public']['Views']['profiles']['Row'] & {
-  // TODO: These fields should be added to the profiles view
-  date_of_birth?: string | null
-  bio?: string | null
-}
+type Profile = Database['public']['Views']['profiles']['Row']
 
 interface ProfileEditFormProps {
   profile: Profile
@@ -67,7 +64,11 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
     setError(null)
 
     const formData = new FormData(e.currentTarget)
-    const result = await updateProfile(formData)
+
+    // Update profile metadata with only the fields that exist in the database
+    const result = await updateProfileMetadata({
+      full_name: formData.get('full_name') as string || null,
+    })
 
     if (result.success) {
       router.refresh()
@@ -129,45 +130,6 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
                 defaultValue={profile.full_name || ''}
                 placeholder="Enter your full name"
               />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone number</Label>
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                defaultValue={profile.phone || ''}
-                placeholder="+1234567890"
-              />
-              <p className="text-xs text-muted-foreground">
-                Enter phone number with country code (e.g., +1234567890)
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="date_of_birth">Date of birth</Label>
-              <Input
-                id="date_of_birth"
-                name="date_of_birth"
-                type="date"
-                defaultValue={profile.date_of_birth || ''}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                id="bio"
-                name="bio"
-                defaultValue={profile.bio || ''}
-                placeholder="Tell us about yourself..."
-                rows={4}
-                maxLength={500}
-              />
-              <p className="text-xs text-muted-foreground">
-                Maximum 500 characters
-              </p>
             </div>
           </div>
 

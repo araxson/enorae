@@ -23,11 +23,11 @@ export async function respondToReview(
 
     // Verify the review belongs to the active salon
     const { data: review } = await supabase
-      .from('reviews')
+      .from('salon_reviews')
       .select('salon_id')
       .eq('id', reviewId)
       .eq('salon_id', salonId)
-      .single<{ salon_id: string }>()
+      .single()
 
     if (!review) {
       return { success: false, error: 'Review not found or access denied' }
@@ -35,7 +35,7 @@ export async function respondToReview(
 
     const { error } = await supabase
       .schema('engagement')
-      .from('reviews')
+      .from('salon_reviews')
       .update({
         response,
         response_date: new Date().toISOString(),
@@ -72,11 +72,11 @@ export async function flagReview(
 
     // Verify the review belongs to the active salon
     const { data: review } = await supabase
-      .from('reviews')
+      .from('salon_reviews')
       .select('salon_id')
       .eq('id', reviewId)
       .eq('salon_id', salonId)
-      .single<{ salon_id: string }>()
+      .single()
 
     if (!review) {
       return { success: false, error: 'Review not found or access denied' }
@@ -84,7 +84,7 @@ export async function flagReview(
 
     const { error } = await supabase
       .schema('engagement')
-      .from('reviews')
+      .from('salon_reviews')
       .update({
         is_flagged: true,
         flagged_reason: reason,
@@ -120,11 +120,11 @@ export async function toggleFeaturedReview(
 
     // Verify the review belongs to the active salon
     const { data: review } = await supabase
-      .from('reviews')
+      .from('salon_reviews')
       .select('salon_id')
       .eq('id', reviewId)
       .eq('salon_id', salonId)
-      .single<{ salon_id: string }>()
+      .single()
 
     if (!review) {
       return { success: false, error: 'Review not found or access denied' }
@@ -132,7 +132,7 @@ export async function toggleFeaturedReview(
 
     const { error } = await supabase
       .schema('engagement')
-      .from('reviews')
+      .from('salon_reviews')
       .update({
         is_featured: featured,
       })
@@ -167,7 +167,7 @@ export async function updateReviewResponse(
 
     // Verify the review belongs to the active salon and has a response
     const { data: review } = await supabase
-      .from('reviews')
+      .from('salon_reviews')
       .select('salon_id, response')
       .eq('id', reviewId)
       .eq('salon_id', salonId)
@@ -183,7 +183,7 @@ export async function updateReviewResponse(
 
     const { error } = await supabase
       .schema('engagement')
-      .from('reviews')
+      .from('salon_reviews')
       .update({
         response,
         response_date: new Date().toISOString(),
@@ -219,7 +219,7 @@ export async function deleteReviewResponse(
 
     // Verify the review belongs to the active salon and has a response
     const { data: review } = await supabase
-      .from('reviews')
+      .from('salon_reviews')
       .select('salon_id, response')
       .eq('id', reviewId)
       .eq('salon_id', salonId)
@@ -235,7 +235,7 @@ export async function deleteReviewResponse(
 
     const { error } = await supabase
       .schema('engagement')
-      .from('reviews')
+      .from('salon_reviews')
       .update({
         response: null,
         response_date: null,

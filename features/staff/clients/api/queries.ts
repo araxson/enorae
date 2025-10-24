@@ -20,7 +20,7 @@ export async function getStaffClients(staffId: string): Promise<ClientWithHistor
 
   // Security: Verify staff ownership
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
@@ -30,7 +30,7 @@ export async function getStaffClients(staffId: string): Promise<ClientWithHistor
 
   // Get all appointments for this staff member
   const { data: appointments, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .order('start_time', { ascending: false })
@@ -75,7 +75,7 @@ export async function getClientAppointmentHistory(staffId: string, customerId: s
 
   // Security check
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
@@ -84,7 +84,7 @@ export async function getClientAppointmentHistory(staffId: string, customerId: s
   if (!staffProfile) throw new Error('Unauthorized')
 
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('customer_id', customerId)
@@ -117,7 +117,7 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
 
   // Security check
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
@@ -127,7 +127,7 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
 
   // Get all appointments for this client with this staff member
   const { data: appointments } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('customer_id', customerId)
@@ -144,9 +144,11 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
   // Calculate favorite services
   const serviceMap = new Map<string, number>()
   completed.forEach(a => {
-    if (a.service_names) {
-      const count = serviceMap.get(a.service_names) || 0
-      serviceMap.set(a.service_names, count + 1)
+    if (a.service_names && Array.isArray(a.service_names)) {
+      a.service_names.forEach(serviceName => {
+        const count = serviceMap.get(serviceName) || 0
+        serviceMap.set(serviceName, count + 1)
+      })
     }
   })
 
@@ -158,11 +160,12 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
   // Calculate return rate (appointments > 1 means they returned)
   const returnRate = appointments.length > 1 ? ((appointments.length - 1) / appointments.length) * 100 : 0
 
-  // Get profile info
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('username')
-    .eq('id', customerId)
+  // Get profile info from profiles_metadata which has full_name
+  const { data: metadata } = await supabase
+    .schema('identity')
+    .from('profiles_metadata')
+    .select('full_name')
+    .eq('profile_id', customerId)
     .single()
 
   // Get staff notes about client (would need a client_notes table, using placeholder)
@@ -176,16 +179,16 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
 
   return {
     customer_id: customerId,
-    customer_name: profile?.username || typedAppointments[0].customer_name || null,
-    customer_email: typedAppointments[0].customer_email || null,
+    customer_name: metadata?.full_name || typedAppointments[0]?.customer_name || null,
+    customer_email: typedAppointments[0]?.customer_email || null,
     customer_phone: null,
     total_appointments: appointments.length,
     completed_appointments: completed.length,
     cancelled_appointments: cancelled.length,
     total_spent: totalSpent,
     avg_appointment_value: completed.length > 0 ? totalSpent / completed.length : 0,
-    first_appointment_date: typedAppointments[0].start_time || null,
-    last_appointment_date: typedAppointments[typedAppointments.length - 1].start_time || null,
+    first_appointment_date: typedAppointments[0]?.start_time || null,
+    last_appointment_date: typedAppointments[typedAppointments.length - 1]?.start_time || null,
     favorite_services: favoriteServices,
     return_rate: returnRate,
     notes: null, // Would come from client_notes table
@@ -206,7 +209,7 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
 
   // Security check
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
@@ -215,7 +218,7 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
   if (!staffProfile) throw new Error('Unauthorized')
 
   const { data: appointments } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('customer_id', customerId)
@@ -227,26 +230,30 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
 
   appointments.forEach(apt => {
     const appointment = apt as Appointment
-    const serviceName = appointment.service_names || 'Unknown Service'
+    const serviceNames = Array.isArray(appointment.service_names)
+      ? appointment.service_names
+      : ['Unknown Service']
     const price = appointment.total_price || 0
 
-    const existing = serviceMap.get(serviceName)
-    if (existing) {
-      existing.times_booked += 1
-      existing.total_spent += price
-      existing.avg_price = existing.total_spent / existing.times_booked
-      if (appointment.start_time && (!existing.last_booked || appointment.start_time > existing.last_booked)) {
-        existing.last_booked = appointment.start_time
+    serviceNames.forEach(serviceName => {
+      const existing = serviceMap.get(serviceName)
+      if (existing) {
+        existing.times_booked += 1
+        existing.total_spent += price
+        existing.avg_price = existing.total_spent / existing.times_booked
+        if (appointment.start_time && (!existing.last_booked || appointment.start_time > existing.last_booked)) {
+          existing.last_booked = appointment.start_time
+        }
+      } else {
+        serviceMap.set(serviceName, {
+          service_name: serviceName,
+          times_booked: 1,
+          total_spent: price,
+          avg_price: price,
+          last_booked: appointment.start_time || null,
+        })
       }
-    } else {
-      serviceMap.set(serviceName, {
-        service_name: serviceName,
-        times_booked: 1,
-        total_spent: price,
-        avg_price: price,
-        last_booked: appointment.start_time || null,
-      })
-    }
+    })
   })
 
   return Array.from(serviceMap.values()).sort((a, b) => b.times_booked - a.times_booked)
@@ -266,7 +273,7 @@ export async function getClientRetentionMetrics(staffId: string): Promise<Client
 
   // Security check
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
@@ -275,11 +282,18 @@ export async function getClientRetentionMetrics(staffId: string): Promise<Client
   if (!staffProfile) throw new Error('Unauthorized')
 
   const { data: appointments } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('customer_id, status')
     .eq('staff_id', staffId)
 
-  if (!appointments || appointments.length === 0) {
+  type AppointmentCustomer = {
+    customer_id: string | null
+    status: string | null
+  }
+
+  const typedAppointments = (appointments as AppointmentCustomer[]) || []
+
+  if (typedAppointments.length === 0) {
     return {
       total_clients: 0,
       returning_clients: 0,
@@ -291,7 +305,7 @@ export async function getClientRetentionMetrics(staffId: string): Promise<Client
 
   // Count appointments per client
   const clientCounts = new Map<string, number>()
-  appointments.forEach(apt => {
+  typedAppointments.forEach(apt => {
     if (apt.customer_id) {
       const count = clientCounts.get(apt.customer_id) || 0
       clientCounts.set(apt.customer_id, count + 1)
@@ -301,7 +315,7 @@ export async function getClientRetentionMetrics(staffId: string): Promise<Client
   const totalClients = clientCounts.size
   const returningClients = Array.from(clientCounts.values()).filter(count => count > 1).length
   const loyalClients = Array.from(clientCounts.values()).filter(count => count >= 5).length
-  const totalAppointments = appointments.length
+  const totalAppointments = typedAppointments.length
   const avgAppointmentsPerClient = totalClients > 0 ? totalAppointments / totalClients : 0
   const retentionRate = totalClients > 0 ? (returningClients / totalClients) * 100 : 0
 

@@ -1,4 +1,4 @@
-import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/sidebars/types'
+import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/types'
 
 export const BUSINESS_MENUS = {
   default: [
@@ -36,23 +36,6 @@ export const BUSINESS_MENUS = {
         { title: 'Categories', url: '/business/services/categories' },
         { title: 'Pricing', url: '/business/services/pricing' },
         { title: 'Booking Rules', url: '/business/services/booking-rules' },
-        { title: 'Product Usage', url: '/business/services/product-usage' },
-      ],
-    },
-    {
-      title: 'Inventory',
-      url: '/business/inventory',
-      icon: 'package',
-      items: [
-        { title: 'Overview', url: '/business/inventory' },
-        { title: 'Stock Levels', url: '/business/inventory/stock-levels' },
-        { title: 'Categories', url: '/business/inventory/categories' },
-        { title: 'Purchase Orders', url: '/business/inventory/purchase-orders' },
-        { title: 'Suppliers', url: '/business/inventory/suppliers' },
-        { title: 'Stock Locations', url: '/business/inventory/locations' },
-        { title: 'Movements', url: '/business/inventory/movements' },
-        { title: 'Alerts', url: '/business/inventory/alerts' },
-        { title: 'Usage Reports', url: '/business/inventory/usage' },
       ],
     },
     { title: 'Operating Hours', url: '/business/operating-hours', icon: 'clock' },

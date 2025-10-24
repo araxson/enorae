@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import type { ChainRevenueData } from '../api/types'
+import type { ChainRevenueData } from '@/features/admin/finance/api/types'
 
 interface RevenueByChainProps {
   data: ChainRevenueData[]

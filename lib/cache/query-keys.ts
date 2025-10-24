@@ -49,18 +49,6 @@ export const queryKeys = {
     pricing: (id: string) => [...queryKeys.services.detail(id), 'pricing'] as const,
   },
 
-  // Inventory
-  inventory: {
-    all: ['inventory'] as const,
-    products: () => [...queryKeys.inventory.all, 'products'] as const,
-    product: (id: string) => [...queryKeys.inventory.products(), id] as const,
-    stockLevels: () => [...queryKeys.inventory.all, 'stock-levels'] as const,
-    stockLevel: (productId: string, locationId: string) =>
-      [...queryKeys.inventory.stockLevels(), productId, locationId] as const,
-    lowStock: () => [...queryKeys.inventory.all, 'low-stock'] as const,
-    movements: () => [...queryKeys.inventory.all, 'movements'] as const,
-  },
-
   // Analytics
   analytics: {
     all: ['analytics'] as const,

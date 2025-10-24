@@ -3,8 +3,8 @@ import type { UseFormReturn } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
-import { createBooking } from '../../api/mutations'
-import type { BookingFormValues, Service } from '../../types'
+import { createBooking } from '@/features/customer/booking/api/mutations'
+import type { BookingFormValues, Service } from '@/features/customer/booking/types'
 
 export type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'unavailable' | 'error'
 
@@ -121,7 +121,7 @@ export function useBookingForm({ services, form, salonId }: UseBookingFormParams
       }
 
       const result = await createBooking(formData)
-      if (!result.success) {
+      if (result?.error) {
         setError(result.error)
         toast.error(result.error)
         return

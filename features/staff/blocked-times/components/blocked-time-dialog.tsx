@@ -1,7 +1,7 @@
 'use client'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { BlockedTimeForm } from './blocked-time-form'
-import type { BlockedTime } from '../types'
+import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
 interface BlockedTimeDialogProps {
   open: boolean

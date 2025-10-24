@@ -27,75 +27,64 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
       </div>
 
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
-        <div className="rounded-xl border-l-4 border-l-warning">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card>
+          <CardHeader>
+            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>Today</CardTitle>
-              <Clock className="h-4 w-4 text-accent" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{metrics.todayAppointments}</div>
-              <p className="text-xs text-muted-foreground mt-1">Scheduled for today</p>
-              {metrics.todayAppointments > 0 && (
-                <div className="mt-2">
-                  <Progress value={weekProgress} className="h-1.5 [&>div]:bg-accent" />
-                  <p className="text-xs text-muted-foreground mt-1">{Math.round(weekProgress)}% of weekly</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+              <Clock className="h-4 w-4" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-semibold">{metrics.todayAppointments}</div>
+            <p className="mt-1 text-xs text-muted-foreground">Scheduled for today</p>
+            {metrics.todayAppointments > 0 && (
+              <div className="mt-2 space-y-1">
+                <Progress value={weekProgress} />
+                <p className="text-xs text-muted-foreground">{Math.round(weekProgress)}% of weekly</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-        <div className="rounded-xl border-l-4 border-l-info">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card>
+          <CardHeader>
+            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>This Week</CardTitle>
-              <Calendar className="h-4 w-4 text-secondary" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{metrics.weekAppointments}</div>
-              <p className="text-xs text-muted-foreground mt-1">Total appointments</p>
-              {metrics.weekAppointments > 0 && (
-                <div className="mt-2">
-                  <div className="flex gap-1">
-                    {Array.from({ length: 7 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className={`h-6 flex-1 rounded ${
-                          i < Math.ceil(metrics.weekAppointments / 7)
-                            ? 'bg-secondary'
-                            : 'bg-secondary/10'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+              <Calendar className="h-4 w-4" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-semibold">{metrics.weekAppointments}</div>
+            <p className="mt-1 text-xs text-muted-foreground">Total appointments</p>
+            {metrics.weekAppointments > 0 && (
+              <div className="mt-2 space-y-1">
+                <Progress
+                  value={Math.min((metrics.weekAppointments / 21) * 100, 100)}
+                />
+                <p className="text-xs text-muted-foreground">Weekly capacity assumes 21 slots</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-        <div className="rounded-xl border-l-4 border-l-success">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card>
+          <CardHeader>
+            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>This Month</CardTitle>
-              <CheckCircle className="h-4 w-4 text-primary" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{metrics.monthCompleted}</div>
-              <p className="text-xs text-muted-foreground mt-1">Completed</p>
-              {metrics.monthCompleted > 0 && (
-                <div className="mt-2">
-                  <Progress
-                    value={Math.min((metrics.monthCompleted / 50) * 100, 100)}
-                    className="h-1.5 [&>div]:bg-primary"
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">Goal: 50 appointments</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+              <CheckCircle className="h-4 w-4" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-semibold">{metrics.monthCompleted}</div>
+            <p className="mt-1 text-xs text-muted-foreground">Completed</p>
+            {metrics.monthCompleted > 0 && (
+              <div className="mt-2 space-y-1">
+                <Progress value={Math.min((metrics.monthCompleted / 50) * 100, 100)} />
+                <p className="text-xs text-muted-foreground">Goal: 50 appointments</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

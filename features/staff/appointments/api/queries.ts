@@ -9,14 +9,14 @@ export type AppointmentStatus = 'pending' | 'confirmed' | 'in_progress' | 'compl
 
 export type StaffAppointment = Appointment
 
-type Staff = Database['public']['Views']['staff']['Row']
+type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 export async function getStaffProfile(): Promise<Staff> {
   const session = await requireAuth()
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('user_id', session.user.id)
     .single()
@@ -34,13 +34,13 @@ export async function getStaffAppointments(staffId: string, filter?: {
   const supabase = await createClient()
 
   let query = supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
 
   // Security: Double-check the staff member can only see their own appointments
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
@@ -94,7 +94,7 @@ export async function getPastAppointments(staffId: string, limit: number = 20): 
 
   // Security check
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
@@ -107,7 +107,7 @@ export async function getPastAppointments(staffId: string, limit: number = 20): 
   const now = new Date().toISOString()
 
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('staff_id', staffId)
     .lt('start_time', now)
@@ -124,7 +124,7 @@ export async function getAppointmentById(appointmentId: string): Promise<StaffAp
 
   // Get appointment and verify staff ownership
   const { data: appointment, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('id', appointmentId)
     .single()
@@ -134,7 +134,7 @@ export async function getAppointmentById(appointmentId: string): Promise<StaffAp
   // Security: Verify this staff member owns this appointment
   const appt = appointment as { staff_id: string | null }
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('id', appt.staff_id!)
