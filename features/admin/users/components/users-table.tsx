@@ -14,7 +14,7 @@ import {
 import { UserActionsMenu } from './user-actions-menu'
 import { formatDistanceToNow } from 'date-fns'
 import { User, Shield } from 'lucide-react'
-import { DataTableEmpty } from '@/components/shared/data-table-empty'
+import { DataTableEmpty } from '@/components/shared'
 import { STATUS_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
 
 type UserWithDetails = {

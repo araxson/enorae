@@ -1,7 +1,7 @@
 import 'server-only'
 
-import { requireAdminClient } from '@/features/admin/analytics/api/internal/admin-analytics-shared'
-import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/internal/admin-analytics-types'
+import { requireAdminClient } from '@/features/admin/analytics/api/admin-analytics-shared'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 import type { Database } from '@/lib/types/database.types'
 import {
   DAY_MS,

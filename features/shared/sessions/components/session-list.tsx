@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { SessionCard } from './session-card'
-import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { ConfirmDialog } from '@/components/shared'
 import { revokeSession, revokeAllOtherSessions } from '@/features/shared/sessions/api/mutations'
 import type { SessionWithDevice } from '@/features/shared/sessions/api/queries'
 

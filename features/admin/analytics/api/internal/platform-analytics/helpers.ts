@@ -1,4 +1,4 @@
-import type { GrowthDelta, AcquisitionBreakdownItem } from '@/features/admin/analytics/api/internal/admin-analytics-types'
+import type { GrowthDelta, AcquisitionBreakdownItem } from '@/features/admin/analytics/api/admin-analytics-types'
 
 export const toNumber = (value: number | null | undefined): number =>
   typeof value === 'number' && Number.isFinite(value) ? value : 0

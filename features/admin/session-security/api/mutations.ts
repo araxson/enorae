@@ -3,9 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { requireAnyRole } from '@/lib/auth/role-guard'
-import { ROLE_GROUPS } from '@/lib/auth/constants'
 
 const quarantineSessionSchema = z.object({
   sessionId: z.string().uuid(),

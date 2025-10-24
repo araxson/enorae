@@ -12,7 +12,7 @@ import {
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, AlertTriangle, AlertCircle } from 'lucide-react'
 import type { SecurityEvent } from '@/features/admin/security/api/queries'
-import { DataTableEmpty } from '@/components/shared/data-table-empty'
+import { DataTableEmpty } from '@/components/shared'
 
 interface SecurityEventsTableProps {
   events: SecurityEvent[]

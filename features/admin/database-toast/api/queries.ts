@@ -1,8 +1,7 @@
 import 'server-only'
 
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { requireAnyRole } from '@/lib/auth/role-guard'
-import { ROLE_GROUPS } from '@/lib/auth/constants'
 
 export interface ToastUsageRecord {
   id: string
