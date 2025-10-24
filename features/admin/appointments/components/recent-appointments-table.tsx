@@ -72,7 +72,9 @@ export function RecentAppointmentsTable({ appointments }: RecentAppointmentsTabl
                   <TableCell>
                     <div className="text-xs">
                       <Badge variant={STATUS_VARIANTS[appointment.status ?? 'pending'] ?? 'secondary'}>
-                        {(appointment.status || 'pending').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                        {(appointment.status || 'pending')
+                          .replace(/_/g, ' ')
+                          .replace(/\b\w/g, (char: string) => char.toUpperCase())}
                       </Badge>
                     </div>
                   </TableCell>

@@ -15,9 +15,13 @@ import {
 } from '@/features/admin/appointments/api/alerts'
 import { mergeSalonPerformance } from '@/features/admin/appointments/api/salons'
 import type { AppointmentSnapshot, AppointmentRow, AppointmentOverviewRow } from '@/features/admin/appointments/api/types'
-import type { Database } from '@/lib/types/database.types'
-
-type AdminAnalyticsOverviewRow = Database['public']['Views']['admin_analytics_overview']['Row']
+type AdminAnalyticsOverviewRow = {
+  date: string | null
+  platform_appointments: number | null
+  platform_cancelled_appointments: number | null
+  platform_no_shows: number | null
+  platform_completed_appointments: number | null
+}
 
 interface SnapshotOptions {
   windowInDays?: number

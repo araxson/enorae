@@ -106,14 +106,14 @@ export const buildCancellationPatterns = (
     .sort((a, b) => b.count - a.count)
 }
 
-export const buildTrend = (
-  analyticsRows: Array<{
-    date: string | null
-    platform_appointments: number | null
-    platform_cancelled_appointments: number | null
-    platform_no_shows: number | null
-    platform_completed_appointments: number | null
-  }>,
+export const buildTrend = <T extends {
+  date: string | null
+  platform_appointments: number | null
+  platform_cancelled_appointments: number | null
+  platform_no_shows: number | null
+  platform_completed_appointments: number | null
+}>(
+  analyticsRows: T[],
 ): AppointmentTrendPoint[] =>
   analyticsRows
     .filter((row) => row.date)

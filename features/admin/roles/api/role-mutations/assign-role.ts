@@ -3,7 +3,8 @@
 import { revalidatePath } from 'next/cache'
 
 import { logRoleAudit } from './audit'
-import { applyRoleAssignment, parsePermissions } from './assignments'
+import { applyRoleAssignment } from './assignments'
+import { parsePermissions } from './assignment-helpers'
 import { requireAdminContext } from './context'
 import type { AssignmentPayload } from './assignments'
 import { assignmentSchema, ROLES_NEEDING_SALON } from './validation'

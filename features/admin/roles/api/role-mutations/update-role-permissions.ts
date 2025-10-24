@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 
 import { logRoleAudit } from './audit'
 import { requireAdminContext } from './context'
-import { parsePermissions } from './assignments'
+import { parsePermissions } from './assignment-helpers'
 import { UUID_REGEX } from './validation'
 import type { RoleActionResponse } from './types'
 

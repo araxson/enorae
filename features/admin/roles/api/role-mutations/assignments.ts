@@ -76,17 +76,3 @@ export async function applyRoleAssignment(
   return inserted.id as string
 }
 
-export function parsePermissions(raw: FormDataEntryValue | null) {
-  if (!raw || typeof raw !== 'string') return undefined
-
-  try {
-    const parsed = JSON.parse(raw)
-    if (Array.isArray(parsed) && parsed.every((item) => typeof item === 'string')) {
-      return parsed as string[]
-    }
-  } catch {
-    return undefined
-  }
-
-  return undefined
-}
