@@ -1,4 +1,4 @@
-import type { StaffWithServices } from '../api/queries'
+import type { StaffWithServices } from '@/features/business/staff/api/queries'
 
 export type StaffFormValues = {
   email: string

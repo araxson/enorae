@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { upsertStaffSchedule } from '../api/mutations'
+import { upsertStaffSchedule } from '@/features/business/staff-schedules/api/mutations'
 import { useScheduleFormState } from './form/use-schedule-form-state'
 import { ScheduleFormFields } from './form/schedule-form-fields'
 import type { SchedulePayload } from './form/schedule-options'

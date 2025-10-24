@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Label } from '@/components/ui/label'
 import { MapPin, Globe, CheckCircle } from 'lucide-react'
-import { bulkUpdateAddresses, geocodeAllAddresses } from '../api/bulk-address.mutations'
+import { bulkUpdateAddresses, geocodeAllAddresses } from '@/features/business/locations/api/bulk-address.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
 type Props = {

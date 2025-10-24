@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import type { BusinessDashboardMetrics } from '../types'
+import type { BusinessDashboardMetrics } from '@/features/business/dashboard/types'
 import { AppointmentMetricCard, RevenueMetricCard, getAccentStripeClass, type MetricAccent } from './metric-card'
 
 type MetricsCardsProps = {

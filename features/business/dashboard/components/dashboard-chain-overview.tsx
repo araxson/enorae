@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import type { BusinessMultiLocationMetrics } from '../types'
+import type { BusinessMultiLocationMetrics } from '@/features/business/dashboard/types'
 import { getAccentStripeClass, type MetricAccent } from './metric-card'
 
 type DashboardChainOverviewProps = {

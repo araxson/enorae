@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, DollarSign, Zap } from 'lucide-react'
-import type { PricingRule } from '../types'
+import type { PricingRule } from '@/features/business/pricing/types'
 import { formatCurrency } from './pricing-utils'
 
 interface PricingSummaryCardsProps {

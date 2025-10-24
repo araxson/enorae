@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react'
 
-import { upsertServicePricing } from '../../api/mutations'
-import type { ServicePricingWithService } from '../../api/queries'
+import { upsertServicePricing } from '@/features/business/service-pricing/api/mutations'
+import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
 
 const DEFAULT_FORM_STATE = {
   serviceId: '',

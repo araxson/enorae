@@ -1,6 +1,6 @@
 'use server'
 
-import { verifySession } from '../session'
+import { verifySession } from '@/lib/auth/session'
 import { ROLE_GROUPS, type RoleType } from './roles'
 
 export async function hasRole(role: RoleType): Promise<boolean> {

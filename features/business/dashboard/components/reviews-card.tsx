@@ -14,7 +14,7 @@ import { Separator } from '@/components/ui/separator'
 import { Star, MessageSquare, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 
-import type { BusinessReviewStats } from '../types'
+import type { BusinessReviewStats } from '@/features/business/dashboard/types'
 
 type ReviewsCardProps = {
   stats: BusinessReviewStats

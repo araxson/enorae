@@ -1,5 +1,5 @@
 import { PricingCard } from './pricing-card'
-import type { ServicePricingWithService } from '../api/queries'
+import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
 
 interface PricingGridProps {
   pricing: ServicePricingWithService[]

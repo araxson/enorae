@@ -8,14 +8,14 @@ import {
   getRecentAppointments,
   getUserSalon,
   getMultiLocationMetrics,
-} from '../api/queries'
+} from '@/features/business/dashboard/api/queries'
 import { getReviewStats } from '@/features/business/reviews/api/queries'
-import type { AppointmentWithDetails } from '../api/queries'
+import type { AppointmentWithDetails } from '@/features/business/dashboard/api/queries'
 import type {
   BusinessDashboardMetrics,
   BusinessMultiLocationMetrics,
   BusinessReviewStats,
-} from '../types'
+} from '@/features/business/dashboard/types'
 import { Button } from '@/components/ui/button'
 import {
   Empty,

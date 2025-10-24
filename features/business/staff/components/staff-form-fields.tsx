@@ -2,7 +2,7 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import type { StaffWithServices } from '../api/queries'
+import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import type { StaffFormState } from './staff-form-types'
 
 type StaffFormFieldsProps = {

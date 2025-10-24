@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { deleteSalonLocation } from '../api/mutations'
+import { deleteSalonLocation } from '@/features/business/locations/api/mutations'
 import type { SalonLocation } from '@/features/business/locations'
 
 type LocationListProps = {

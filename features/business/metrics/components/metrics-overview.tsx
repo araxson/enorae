@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import type { SalonMetricsData } from '../api/queries'
+import type { SalonMetricsData } from '@/features/business/metrics/api/queries'
 import { format } from 'date-fns'
 
 type MetricsOverviewProps = {

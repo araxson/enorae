@@ -1,6 +1,6 @@
 'use server'
 
-import { verifySession } from '../session'
+import { verifySession } from '@/lib/auth/session'
 import { DEFAULT_ROUTES, ROLE_HIERARCHY } from './roles'
 
 export async function canAccessRoute(route: string): Promise<boolean> {

@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AdditionalInfoSection, CoordinatesSection, LocationDetailsSection, MapIntegrationSection, StreetAddressSection } from './address-form/sections'
 import { AddressValidation } from './address-validation'
 import type { LocationAddress } from './address-form/types'
-import { updateLocationAddress, type AddressInput } from '../api/address.mutations'
+import { updateLocationAddress, type AddressInput } from '@/features/business/locations/api/address.mutations'
 
 type Props = {
   locationId: string

@@ -1,4 +1,4 @@
-import type { NotificationTemplate } from '../api/queries'
+import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 
 export const eventOptions: NotificationTemplate['event'][] = [
   'appointment_confirmation',

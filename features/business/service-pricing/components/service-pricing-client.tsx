@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PricingGrid } from './pricing-grid'
 import { PricingFormDialog } from './pricing-form-dialog'
-import type { ServicePricingWithService } from '../api/queries'
+import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
 
 interface ServicePricingClientProps {
   pricing: ServicePricingWithService[]

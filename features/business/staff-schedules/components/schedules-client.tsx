@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ScheduleForm } from './schedule-form'
 import { SchedulesGrid } from './schedules-grid'
-import type { StaffScheduleWithDetails } from '../api/queries'
+import type { StaffScheduleWithDetails } from '@/features/business/staff-schedules/api/queries'
 
 type SchedulesClientProps = {
   initialSchedules: StaffScheduleWithDetails[]

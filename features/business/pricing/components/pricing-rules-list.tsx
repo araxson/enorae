@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Trash2 } from 'lucide-react'
-import { togglePricingRuleStatus, deletePricingRule } from '../api/pricing-rules.mutations'
+import { togglePricingRuleStatus, deletePricingRule } from '@/features/business/pricing/api/pricing-rules.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 
 interface PricingRule {

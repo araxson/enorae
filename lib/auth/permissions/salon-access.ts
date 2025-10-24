@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { env } from '@/lib/env'
 
-import { verifySession } from '../session'
+import { verifySession } from '@/lib/auth/session'
 import { ROLE_GROUPS } from './roles'
 
 export type SalonContext = {

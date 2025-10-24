@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { PenLine, Trash2 } from 'lucide-react'
-import type { NotificationTemplate } from '../api/queries'
+import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 
 interface TemplateCardProps {
   template: NotificationTemplate

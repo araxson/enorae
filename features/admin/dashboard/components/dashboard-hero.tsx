@@ -34,7 +34,7 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 
-type PlatformMetrics = Awaited<ReturnType<typeof import('../api/queries').getPlatformMetrics>>
+type PlatformMetrics = Awaited<ReturnType<typeof import('@/features/admin/dashboard/api/queries').getPlatformMetrics>>
 
 export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
   const generatedAt = new Date().toISOString()

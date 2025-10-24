@@ -6,8 +6,8 @@ import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { CheckCircle2, Circle, Clock, XCircle } from 'lucide-react'
-import { updateServiceStatus } from '../api/mutations'
-import type { AppointmentServiceDetails } from '../api/queries/appointment-services'
+import { updateServiceStatus } from '@/features/business/appointments/api/mutations'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import { useToast } from '@/lib/hooks/use-toast'
 
 interface AppointmentServiceProgressProps {

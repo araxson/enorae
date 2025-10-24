@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown, Clock, Calendar } from 'lucide-react'
-import type { PricingRule } from '../types'
+import type { PricingRule } from '@/features/business/pricing/types'
 import { formatTime, getDayName } from './pricing-utils'
 
 interface PricingRulesTabProps {

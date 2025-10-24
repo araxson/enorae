@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { StaffPerformanceSummary } from './staff-performance-summary'
 import { StaffServicesManager } from './staff-services-manager'
 import { StaffFormDialog } from './staff-form-dialog'
-import type { StaffWithServices } from '../api/queries'
+import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import type { Database } from '@/lib/types/database.types'
 
 type Service = Database['public']['Views']['services']['Row']

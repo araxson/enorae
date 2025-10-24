@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown } from 'lucide-react'
-import type { PricingInsight } from '../types'
+import type { PricingInsight } from '@/features/business/pricing/types'
 import { formatCurrency } from './pricing-utils'
 
 interface RevenueInsightsTabProps {

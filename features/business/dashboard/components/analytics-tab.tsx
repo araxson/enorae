@@ -3,9 +3,9 @@ import {
   getAppointmentConversionData,
   getStaffPerformanceData,
   getServicePopularityData,
-} from '../api/analytics-queries'
-import { getCustomerInsights } from '../api/customer-queries'
-import { getOperationalMetrics } from '../api/operational-queries'
+} from '@/features/business/dashboard/api/analytics-queries'
+import { getCustomerInsights } from '@/features/business/dashboard/api/customer-queries'
+import { getOperationalMetrics } from '@/features/business/dashboard/api/operational-queries'
 import {
   RevenueTrendChart,
   AppointmentConversionChart,

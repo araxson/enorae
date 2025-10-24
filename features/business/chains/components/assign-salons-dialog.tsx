@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { assignSalonToChain } from '../api/mutations'
+import { assignSalonToChain } from '@/features/business/chains/api/mutations'
 
 type AssignSalonsDialogProps = {
   open: boolean

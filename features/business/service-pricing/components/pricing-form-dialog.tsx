@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { ServicePricingWithService } from '../api/queries'
+import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
 import {
   CostProfitSection,
   DynamicPricingPreview,

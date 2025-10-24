@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import type { PricingScenario } from '../types'
+import type { PricingScenario } from '@/features/business/pricing/types'
 import { formatCurrency, formatTime, getDayName } from './pricing-utils'
 
 interface PriceScenariosTabProps {

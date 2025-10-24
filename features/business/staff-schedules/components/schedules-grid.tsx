@@ -14,8 +14,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { toast } from 'sonner'
-import { deleteStaffSchedule, toggleScheduleActive } from '../api/mutations'
-import type { StaffScheduleWithDetails } from '../api/queries'
+import { deleteStaffSchedule, toggleScheduleActive } from '@/features/business/staff-schedules/api/mutations'
+import type { StaffScheduleWithDetails } from '@/features/business/staff-schedules/api/queries'
 
 type SchedulesGridProps = {
   schedules: StaffScheduleWithDetails[]

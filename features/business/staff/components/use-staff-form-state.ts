@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import type { StaffWithServices } from '../api/queries'
+import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import type { StaffFormState } from './staff-form-types'
 
 const EMPTY_FORM = {

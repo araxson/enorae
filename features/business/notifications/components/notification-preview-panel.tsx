@@ -6,8 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
-import { sendTestNotification } from '../api/mutations'
-import type { NotificationTemplate } from '../api/queries'
+import { sendTestNotification } from '@/features/business/notifications/api/mutations'
+import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 import { useToast } from '@/lib/hooks/use-toast'
 
 type NotificationPreviewPanelProps = {

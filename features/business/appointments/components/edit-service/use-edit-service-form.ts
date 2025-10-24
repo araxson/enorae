@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
-import { updateAppointmentService } from '../../api/mutations'
-import type { AppointmentServiceDetails } from '../../api/queries/appointment-services'
+import { updateAppointmentService } from '@/features/business/appointments/api/mutations'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import type { StaffOption, ServiceFormData } from './types'
 
 export function useEditServiceForm(

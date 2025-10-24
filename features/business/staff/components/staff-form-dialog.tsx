@@ -13,8 +13,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
-import { createStaffMember, updateStaffMember } from '../api/mutations'
-import type { StaffWithServices } from '../api/queries'
+import { createStaffMember, updateStaffMember } from '@/features/business/staff/api/mutations'
+import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import { useStaffFormState } from './use-staff-form-state'
 import { StaffFormFields } from './staff-form-fields'
 

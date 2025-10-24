@@ -34,9 +34,9 @@ export type UserRole = Database['public']['Views']['user_roles']['Row']
 // ENVIRONMENT & VALIDATION TYPES
 // ============================================================================
 
-export type { Env } from '../env'
-export type { LoginInput, SignupInput } from '../validations/auth'
-export type { BookingInput } from '../validations/booking'
+export type { Env } from '@/lib/env'
+export type { LoginInput, SignupInput } from '@/lib/validations/auth'
+export type { BookingInput } from '@/lib/validations/booking'
 
 // ============================================================================
 // GENERIC UI & COMPONENT TYPES (Used everywhere)

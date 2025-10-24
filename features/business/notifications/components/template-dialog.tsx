@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import type { NotificationTemplate } from '../api/queries'
+import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 import { eventOptions, channelOptions } from './template-constants'
 import { Label } from '@/components/ui/label'
 

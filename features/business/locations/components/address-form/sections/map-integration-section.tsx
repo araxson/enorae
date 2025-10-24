@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { MapPin, Search, Check } from 'lucide-react'
-import type { LocationAddress } from '../types'
+import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
 
 type Props = {
   address: LocationAddress | null

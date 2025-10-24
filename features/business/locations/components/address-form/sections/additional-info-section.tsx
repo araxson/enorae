@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import type { LocationAddress } from '../types'
+import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
 
 type Props = {
   address: LocationAddress | null

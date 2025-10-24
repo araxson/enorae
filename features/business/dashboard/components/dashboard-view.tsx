@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import type { BusinessDashboardState } from '../types'
+import type { BusinessDashboardState } from '@/features/business/dashboard/types'
 import { DashboardToolbar } from './dashboard-toolbar'
 import { DashboardFilters } from './dashboard-filters'
 import { DashboardChainOverview } from './dashboard-chain-overview'

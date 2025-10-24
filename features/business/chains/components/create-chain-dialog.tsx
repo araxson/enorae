@@ -14,8 +14,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { createSalonChain, updateSalonChain } from '../api/mutations'
-import type { SalonChainWithCounts } from '../api/queries'
+import { createSalonChain, updateSalonChain } from '@/features/business/chains/api/mutations'
+import type { SalonChainWithCounts } from '@/features/business/chains/api/queries'
 
 type CreateChainDialogProps = {
   open: boolean

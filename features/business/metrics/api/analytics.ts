@@ -1,4 +1,4 @@
-import type { DailyMetricWithTimestamp } from '../api/queries'
+import type { DailyMetricWithTimestamp } from '@/features/business/metrics/api/queries'
 
 type PeriodStats = {
   totalRevenue: number
