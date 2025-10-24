@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/components/shared/empty-state'
+import { EmptyState } from '@/components/shared'
 import { Users } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 

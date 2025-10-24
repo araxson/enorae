@@ -6,7 +6,7 @@ import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ServicesGrid } from './services-grid'
 import { ServiceFormDialog } from './service-form-dialog'
-import { SearchInput } from '@/components/shared/search-input'
+import { SearchInput } from '@/components/shared'
 import {
   Select,
   SelectContent,

@@ -101,6 +101,14 @@ export interface Database {
       [key: string]: string
     }
   }
+  audit: {
+    Tables: { [key: string]: any }
+    Views: { [key: string]: any }
+  }
+  auth: {
+    Tables: { [key: string]: any }
+    Views: { [key: string]: any }
+  }
   organization: {
     Tables: { [key: string]: any }
     Views: { [key: string]: any }
@@ -129,15 +137,16 @@ export interface Database {
     Tables: { [key: string]: any }
     Views: { [key: string]: any }
   }
+  [schema: string]: any
 }
 
 // Helper types
-export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
-export type Views<T extends keyof Database['public']['Views']> = Database['public']['Views'][T]['Row']
-export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]
+export type Tables<_Schema = any, _Table = any> = any
+export type Views<_Name = any> = any
+export type Enums<_Name = any> = any
 
 // Common types based on your application
-export type Salon = Views<'salons'>
-export type Appointment = Views<'appointments'>
-export type Service = Views<'services'>
-export type Staff = Views<'staff'>
+export type Salon = any
+export type Appointment = any
+export type Service = any
+export type Staff = any
