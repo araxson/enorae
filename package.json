@@ -9,7 +9,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "lint:shadcn": "tsx scripts/check-shadcn-slots.ts",
-    "db:types": "python3 scripts/generate-types.py",
+    "db:types": "python3 scripts/generate_supabase_types.py",
     "test": "tsx --test \"tests/**/*.test.ts\"",
     "validate:migration": "tsx scripts/validate-migration.ts",
     "validate:migrations:all": "tsx scripts/validate-migration.ts supabase/migrations/*.sql"

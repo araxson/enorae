@@ -1,5 +1,11 @@
-export { BasePortalLayout } from './components/base-portal-layout'
+// Portal-specific sidebars
+export { BusinessSidebar } from './components/sidebars/business-sidebar'
+export { CustomerSidebar } from './components/sidebars/customer-sidebar'
+export { StaffSidebar } from './components/sidebars/staff-sidebar'
+export { AdminSidebar } from './components/sidebars/admin-sidebar'
+
+// Shared components
 export { PortalHeader } from './components/portal-header'
-export { PortalSidebarWrapper } from './components/sidebars/portal-sidebar-wrapper'
-export { PortalSidebar } from './components/sidebars/portal-sidebar'
-export type { PortalSidebarProps, NavItem, NavSecondaryItem, FavoriteItem } from './types'
+
+// Types
+export type { NavItem, NavSecondaryItem, FavoriteItem } from './types'

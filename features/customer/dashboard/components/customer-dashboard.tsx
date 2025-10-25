@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { EmptyState, RefreshButton, LastUpdated } from '@/components/shared'
+import { EmptyState, RefreshButton, LastUpdated } from '@/features/shared/ui-components'
 import { Separator } from '@/components/ui/separator'
 import { VIPStatusCard } from './vip-status-card'
 

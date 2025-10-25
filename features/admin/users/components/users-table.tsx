@@ -15,7 +15,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { UserActionsMenu } from './user-actions-menu'
 import { formatDistanceToNow } from 'date-fns'
 import { User, Shield } from 'lucide-react'
-import { DataTableEmpty } from '@/components/shared'
+import { DataTableEmpty } from '@/features/shared/ui-components'
 import { STATUS_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
 
 type UserWithDetails = {

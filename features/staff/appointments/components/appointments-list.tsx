@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import { Calendar, Clock, CheckCircle, XCircle, Play } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ActionButton } from '@/components/shared'
+import { ActionButton } from '@/features/shared/ui-components'
 import {
   markAppointmentCompleted,
   markAppointmentNoShow,

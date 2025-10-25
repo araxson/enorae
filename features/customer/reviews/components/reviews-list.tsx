@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/shared'
+import { EmptyState } from '@/features/shared/ui-components'
 import { Star } from 'lucide-react'
 import { EditReviewDialog } from './edit-review-dialog'
 import { DeleteReviewDialog } from './delete-review-dialog'

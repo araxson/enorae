@@ -8,8 +8,8 @@ import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ConfirmDialog } from '@/components/shared'
-import { EmptyState } from '@/components/shared'
+import { ConfirmDialog } from '@/features/shared/ui-components'
+import { EmptyState } from '@/features/shared/ui-components'
 import { Calendar, Repeat } from 'lucide-react'
 
 interface BlockedTime {

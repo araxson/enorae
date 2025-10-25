@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { DataTableEmpty } from '@/components/shared'
+import { DataTableEmpty } from '@/features/shared/ui-components'
 import { Calendar } from 'lucide-react'
 import type { AppointmentWithDetails } from '@/features/business/appointments/api/queries'
 import { confirmAppointment, cancelAppointment, completeAppointment } from '@/features/business/appointments/api/mutations'

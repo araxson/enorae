@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorBoundary } from '@/components/shared'
+import { ErrorBoundary } from '@/features/shared/ui-components'
 
 export default function Error({
   error,

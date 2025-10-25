@@ -19,7 +19,7 @@ import type { Database } from '@/lib/types/database.types'
 import { format } from 'date-fns'
 import { WebhookDetailDialog } from './webhook-detail-dialog'
 import { retryAllFailedWebhooks, clearCompletedWebhooks } from '@/features/business/webhooks/api/mutations'
-import { ConfirmDialog } from '@/components/shared'
+import { ConfirmDialog } from '@/features/shared/ui-components'
 
 type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
 

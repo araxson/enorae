@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { WebhookMonitoring, webhookMonitoringMetadata } from '@/features/business/webhooks-monitoring'
-import { PageLoading } from '@/components/shared'
+import { PageLoading } from '@/features/shared/ui-components'
 
 export const metadata = webhookMonitoringMetadata
 

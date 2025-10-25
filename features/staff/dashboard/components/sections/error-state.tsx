@@ -1,5 +1,5 @@
 import { AlertCircle, UserX } from 'lucide-react'
-import { EmptyState } from '@/components/shared'
+import { EmptyState } from '@/features/shared/ui-components'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 

@@ -9,7 +9,7 @@ import { CommissionSummary } from './commission-summary'
 import { StaffMetrics } from '@/features/staff/dashboard/components/staff-metrics'
 import { TodaySchedule } from '@/features/staff/dashboard/components/today-schedule'
 import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
-import { RefreshButton, LastUpdated } from '@/components/shared'
+import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
 import type { AppointmentWithDetails } from '@/features/business/appointments'
 import type { StaffCommissionSummary, StaffMetricsSummary, ClientRetentionMetrics } from '@/features/staff/dashboard/api/queries'
 

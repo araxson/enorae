@@ -9,7 +9,7 @@ import { PlatformMetrics } from './components/platform-metrics'
 import { RecentSalons } from './components/recent-salons'
 import { UserRoleStats } from './components/user-role-stats'
 import { AdminOverviewTabs } from './components/admin-overview-tabs'
-import { RefreshButton, LastUpdated } from '@/components/shared'
+import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
 import {
   Card,
   CardContent,

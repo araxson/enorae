@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/components/shared'
+import { PageLoading } from '@/features/shared/ui-components'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { getSalons } from './api/queries'
 import { SalonDiscoveryClient } from './components/salon-discovery-client'

@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/components/shared'
+import { PageLoading } from '@/features/shared/ui-components'
 import { getUserSessions } from './api/queries'
 import { SessionList } from './components/session-list'
 

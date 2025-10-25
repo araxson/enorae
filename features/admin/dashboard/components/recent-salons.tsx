@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/components/shared'
+import { EmptyState } from '@/features/shared/ui-components'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Table,

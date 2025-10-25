@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/components/shared'
+import { PageLoading } from '@/features/shared/ui-components'
 import { Notifications } from './components/notifications'
 
 export function NotificationsFeature() {

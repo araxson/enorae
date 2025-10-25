@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/shared'
+import { EmptyState } from '@/features/shared/ui-components'
 import { Building2 } from 'lucide-react'
 import { ChainCard } from './chain-card'
 import type { Database } from '@/lib/types/database.types'

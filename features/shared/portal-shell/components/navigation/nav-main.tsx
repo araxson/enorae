@@ -11,14 +11,13 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
-import { Badge } from '@/components/ui/badge'
 import { getNavIcon, type IconName } from './icon-map'
 
 interface NavItem {
@@ -60,42 +59,20 @@ export function NavMain({
                 {hasSubItems ? (
                   <>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton
-                        tooltip={item.title}
-                        isActive={item.isActive}
-                        className="w-full"
-                        type="button"
-                      >
-                        <div className="flex w-full items-center gap-2">
-                          <Icon className="size-4" />
-                          <span className="flex-1 truncate text-left">{item.title}</span>
-                          {item.badge && item.badge > 0 && (
-                            <div className="ml-auto">
-                              <Badge variant="default">
-                                {item.badge > 99 ? '99+' : item.badge}
-                              </Badge>
-                            </div>
-                          )}
-                        </div>
-                        <SidebarMenuAction
-                          asChild
-                          className="data-[state=open]:rotate-90 transition-transform"
-                        >
-                          <span className="flex items-center">
-                            <ChevronRight className="size-4" />
-                            <span className="sr-only">Toggle {item.title}</span>
-                          </span>
-                        </SidebarMenuAction>
+                      <SidebarMenuButton tooltip={item.title} isActive={item.isActive}>
+                        <Icon className="size-4" />
+                        <span>{item.title}</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
+                    {item.badge && item.badge > 0 && (
+                      <SidebarMenuBadge>{item.badge > 99 ? '99+' : item.badge}</SidebarMenuBadge>
+                    )}
                     <CollapsibleContent>
                       <SidebarMenuSub>
                         {item.items?.map((subItem) => (
                           <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton
-                              asChild
-                              isActive={subItem.isActive}
-                            >
+                            <SidebarMenuSubButton asChild isActive={subItem.isActive}>
                               <Link href={subItem.url}>
                                 <span>{subItem.title}</span>
                               </Link>
@@ -106,23 +83,17 @@ export function NavMain({
                     </CollapsibleContent>
                   </>
                 ) : (
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={item.title}
-                    isActive={item.isActive}
-                  >
-                    <Link href={item.url}>
-                      <Icon className="size-4" />
-                      <span className="flex-1">{item.title}</span>
-                      {item.badge && item.badge > 0 && (
-                        <div className="ml-auto">
-                          <Badge variant="default">
-                            {item.badge > 99 ? '99+' : item.badge}
-                          </Badge>
-                        </div>
-                      )}
-                    </Link>
-                  </SidebarMenuButton>
+                  <>
+                    <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive}>
+                      <Link href={item.url}>
+                        <Icon className="size-4" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                    {item.badge && item.badge > 0 && (
+                      <SidebarMenuBadge>{item.badge > 99 ? '99+' : item.badge}</SidebarMenuBadge>
+                    )}
+                  </>
                 )}
               </SidebarMenuItem>
             </Collapsible>

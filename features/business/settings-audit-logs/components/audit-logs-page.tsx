@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/components/shared'
+import { PageLoading } from '@/features/shared/ui-components'
 import { AuditLogsContent } from './audit-logs-content'
 
 export function AuditLogsPage() {

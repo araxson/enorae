@@ -6,8 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { EmptyState } from '@/components/shared'
-import { SearchInput } from '@/components/shared'
+import { EmptyState } from '@/features/shared/ui-components'
+import { SearchInput } from '@/features/shared/ui-components'
 import type { StaffMemberWithServices } from './types'
 
 type StaffServicesListProps = {

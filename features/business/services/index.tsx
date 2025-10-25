@@ -1,6 +1,6 @@
 import { getServices, getUserSalon } from './api/queries'
 import { ServicesManagementClient } from './components/services-management-client'
-import { EmptyState } from '@/components/shared'
+import { EmptyState } from '@/features/shared/ui-components'
 import { AlertCircle, Scissors } from 'lucide-react'
 
 // Export types

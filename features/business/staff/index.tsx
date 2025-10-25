@@ -1,6 +1,6 @@
 import { getUserSalon, getStaffWithServices, getAvailableServices } from './api/queries'
 import { StaffManagementClient } from './components/staff-management-client'
-import { EmptyState } from '@/components/shared'
+import { EmptyState } from '@/features/shared/ui-components'
 import { AlertCircle, Users } from 'lucide-react'
 
 export async function StaffManagement() {

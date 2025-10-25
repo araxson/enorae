@@ -1,6 +1,6 @@
 import { getAppointments, getUserSalon } from './api/queries'
 import { AppointmentsTableClient } from './components/appointments-table-client'
-import { EmptyState } from '@/components/shared'
+import { EmptyState } from '@/features/shared/ui-components'
 import { AlertCircle, Calendar } from 'lucide-react'
 
 // Export types

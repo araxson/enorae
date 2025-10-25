@@ -14,7 +14,7 @@ import {
 import { Building2, Users } from 'lucide-react'
 import type { AdminSalon } from '@/features/admin/salons/api/queries'
 import { COMPLIANCE_BADGE_VARIANT, LICENSE_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
-import { DataTableEmpty } from '@/components/shared'
+import { DataTableEmpty } from '@/features/shared/ui-components'
 
 interface SalonsTableProps {
   salons: AdminSalon[]

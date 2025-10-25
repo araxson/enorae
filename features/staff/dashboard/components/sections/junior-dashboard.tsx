@@ -8,7 +8,7 @@ import { StaffMetrics } from '@/features/staff/dashboard/components/staff-metric
 import { TodaySchedule } from '@/features/staff/dashboard/components/today-schedule'
 import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
 import { RoleBadge } from './role-badge'
-import { RefreshButton, LastUpdated } from '@/components/shared'
+import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
 import type { AppointmentWithDetails } from '@/features/business/appointments'
 import type { StaffMetricsSummary } from '@/features/staff/dashboard/api/queries'
 

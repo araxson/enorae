@@ -1,4 +1,4 @@
-import { NotFoundPage } from '@/components/shared'
+import { NotFoundPage } from '@/features/shared/ui-components'
 
 export default function AdminNotFound() {
   return (

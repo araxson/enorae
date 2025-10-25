@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ConfirmDialog } from '@/components/shared'
+import { ConfirmDialog } from '@/features/shared/ui-components'
 import { RefreshCw, Trash2 } from 'lucide-react'
 
 type WebhookActionProps = {

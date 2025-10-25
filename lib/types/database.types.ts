@@ -1,21 +1,3 @@
-/**
- * Supabase Database Types
- *
- * Auto-generated from Supabase database schema
- *
- * Project ID: nwmcpfioxerzodvbjigw
- * Generated: 2025-10-20 14:52:44
- * Schemas: 27 schemas
- *
- * CRITICAL:
- * - Always query from public views (not schema tables)
- * - Use Database['public']['Views'] for types
- * - Never use Database['public']['Tables'] for queries
- *
- * @see docs/03-database/best-practices.md
- * @see claude.md
- */
-
 export type Json =
   | string
   | number
@@ -127,7 +109,7 @@ export type Database = {
       }
     }
     Views: {
-      audit_fix_progress: {
+      audit_fix_progress_view: {
         Row: {
           completed_fixes: number | null
           completion_percentage: number | null
@@ -138,29 +120,21 @@ export type Database = {
         }
         Relationships: []
       }
-      constraint_violations: {
+      foreign_key_analysis_mv: {
         Row: {
-          table_name: string | null
-          violation_count: number | null
-          violation_type: string | null
-        }
-        Relationships: []
-      }
-      foreign_key_analysis: {
-        Row: {
-          column_name: unknown | null
-          constraint_name: unknown | null
-          foreign_column_name: unknown | null
-          foreign_table_name: unknown | null
-          foreign_table_schema: unknown | null
+          column_name: unknown
+          constraint_name: unknown
+          foreign_column_name: unknown
+          foreign_table_name: unknown
+          foreign_table_schema: unknown
           has_index: boolean | null
-          index_name: unknown | null
-          table_name: unknown | null
-          table_schema: unknown | null
+          index_name: unknown
+          table_name: unknown
+          table_schema: unknown
         }
         Relationships: []
       }
-      improvements_summary: {
+      improvements_summary_view: {
         Row: {
           description: string | null
           expected_benefit: string | null
@@ -168,45 +142,45 @@ export type Database = {
         }
         Relationships: []
       }
-      index_usage_monitor: {
+      index_usage_monitor_view: {
         Row: {
           idx_scan: number | null
           idx_tup_fetch: number | null
           idx_tup_read: number | null
-          index_name: unknown | null
+          index_name: unknown
           is_never_scanned: boolean | null
-          schemaname: unknown | null
+          schemaname: unknown
           size_bytes: number | null
           size_pretty: string | null
-          table_name: unknown | null
+          table_name: unknown
         }
         Relationships: []
       }
-      index_usage_recommendations: {
+      index_usage_recommendations_view: {
         Row: {
           idx_scan: number | null
           index_size: string | null
-          indexname: unknown | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          indexname: unknown
+          schemaname: unknown
+          tablename: unknown
           usage_category: string | null
         }
         Relationships: []
       }
-      multi_column_index_stats: {
+      multi_column_index_stats_view: {
         Row: {
           index_size: string | null
-          indexname: unknown | null
-          schemaname: unknown | null
+          indexname: unknown
+          schemaname: unknown
           table_size: string | null
-          tablename: unknown | null
+          tablename: unknown
           times_used: number | null
           tuples_fetched: number | null
           tuples_read: number | null
         }
         Relationships: []
       }
-      query_routing_stats: {
+      query_routing_stats_view: {
         Row: {
           active_rules: number | null
           avg_priority: number | null
@@ -215,41 +189,27 @@ export type Database = {
         }
         Relationships: []
       }
-      rls_policy_summary: {
+      rls_policy_summary_view: {
         Row: {
           policies: unknown[] | null
           policy_count: number | null
-          schemaname: unknown | null
+          schemaname: unknown
           status: string | null
-          tablename: unknown | null
+          tablename: unknown
         }
         Relationships: []
       }
-      schema_sizes: {
+      schema_sizes_view: {
         Row: {
           data_size: string | null
           index_size: string | null
-          schemaname: unknown | null
+          schemaname: unknown
           table_count: number | null
           total_size: string | null
         }
         Relationships: []
       }
-      table_bloat: {
-        Row: {
-          dead_tuple_pct: number | null
-          dead_tuples: number | null
-          health_status: string | null
-          last_autovacuum: string | null
-          last_vacuum: string | null
-          live_tuples: number | null
-          schemaname: unknown | null
-          tablename: unknown | null
-          total_size: string | null
-        }
-        Relationships: []
-      }
-      table_bloat_monitor: {
+      table_bloat_monitor_view: {
         Row: {
           dead_tuple_percent: number | null
           dead_tuples: number | null
@@ -258,41 +218,55 @@ export type Database = {
           last_autovacuum: string | null
           last_vacuum: string | null
           live_tuples: number | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          schemaname: unknown
+          tablename: unknown
           total_size: string | null
         }
         Relationships: []
       }
-      unused_indexes: {
+      table_bloat_view: {
+        Row: {
+          dead_tuple_pct: number | null
+          dead_tuples: number | null
+          health_status: string | null
+          last_autovacuum: string | null
+          last_vacuum: string | null
+          live_tuples: number | null
+          schemaname: unknown
+          tablename: unknown
+          total_size: string | null
+        }
+        Relationships: []
+      }
+      unused_indexes_view: {
         Row: {
           idx_scan: number | null
-          indexrelname: unknown | null
+          indexrelname: unknown
           pct_of_table: number | null
-          schemaname: unknown | null
+          schemaname: unknown
           size: string | null
           table_size: string | null
-          tablename: unknown | null
+          tablename: unknown
           usage_category: string | null
         }
         Relationships: []
       }
-      vacuum_recommendations: {
+      vacuum_recommendations_view: {
         Row: {
           last_autovacuum: string | null
           n_dead_tup: number | null
           n_live_tup: number | null
           priority: string | null
-          schemaname: unknown | null
+          schemaname: unknown
           table_size: string | null
-          tablename: unknown | null
+          tablename: unknown
         }
         Relationships: []
       }
     }
     Functions: {
       check_missing_fk_indexes: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           column_name: string
           constraint_name: string
@@ -301,10 +275,7 @@ export type Database = {
           table_schema: string
         }[]
       }
-      refresh_foreign_key_analysis: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      refresh_foreign_key_analysis: { Args: never; Returns: undefined }
       vacuum_table: {
         Args: { p_full?: boolean; p_schema: string; p_table: string }
         Returns: undefined
@@ -319,6 +290,914 @@ export type Database = {
   }
   analytics: {
     Tables: {
+      analytics_events: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_analytics_events_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_summary_mv"
+            referencedColumns: ["salon_id"]
+          },
+        ]
+      }
+      analytics_events_default: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w43: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w44: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w45: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w46: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w47: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w48: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w49: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w50: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w51: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2025_w52: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2026_w01: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2026_w02: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events_p2026_w03: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by_id: string | null
+          event_category: string | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          properties: Json | null
+          referrer: string | null
+          salon_id: string | null
+          session_id: string | null
+          updated_by_id: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          event_category?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          properties?: Json | null
+          referrer?: string | null
+          salon_id?: string | null
+          session_id?: string | null
+          updated_by_id?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       daily_metrics: {
         Row: {
           active_staff_count: number | null
@@ -326,6 +1205,7 @@ export type Database = {
           cancelled_appointments: number | null
           completed_appointments: number | null
           created_at: string
+          created_by_id: string | null
           forecast_accuracy: number | null
           id: string
           last_real_time_update: string | null
@@ -343,6 +1223,7 @@ export type Database = {
           total_revenue: number | null
           trend_indicators: Json | null
           updated_at: string
+          updated_by_id: string | null
           utilization_rate: number | null
         }
         Insert: {
@@ -351,6 +1232,7 @@ export type Database = {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           forecast_accuracy?: number | null
           id?: string
           last_real_time_update?: string | null
@@ -368,6 +1250,7 @@ export type Database = {
           total_revenue?: number | null
           trend_indicators?: Json | null
           updated_at?: string
+          updated_by_id?: string | null
           utilization_rate?: number | null
         }
         Update: {
@@ -376,6 +1259,7 @@ export type Database = {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           forecast_accuracy?: number | null
           id?: string
           last_real_time_update?: string | null
@@ -393,6 +1277,7 @@ export type Database = {
           total_revenue?: number | null
           trend_indicators?: Json | null
           updated_at?: string
+          updated_by_id?: string | null
           utilization_rate?: number | null
         }
         Relationships: [
@@ -400,7 +1285,7 @@ export type Database = {
             foreignKeyName: "fk_daily_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "salon_metrics_daily_mv"
+            referencedRelation: "salon_metrics_summary_mv"
             referencedColumns: ["salon_id"]
           },
         ]
@@ -410,6 +1295,7 @@ export type Database = {
           cancelled_appointments: number | null
           completed_appointments: number | null
           created_at: string
+          created_by_id: string | null
           id: string
           metric_at: string
           no_show_appointments: number | null
@@ -419,11 +1305,13 @@ export type Database = {
           total_appointments: number | null
           total_revenue: number | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at: string
           no_show_appointments?: number | null
@@ -433,11 +1321,13 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at?: string
           no_show_appointments?: number | null
@@ -447,6 +1337,7 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -455,6 +1346,7 @@ export type Database = {
           cancelled_appointments: number | null
           completed_appointments: number | null
           created_at: string
+          created_by_id: string | null
           id: string
           metric_at: string
           no_show_appointments: number | null
@@ -464,11 +1356,13 @@ export type Database = {
           total_appointments: number | null
           total_revenue: number | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at: string
           no_show_appointments?: number | null
@@ -478,11 +1372,13 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at?: string
           no_show_appointments?: number | null
@@ -492,6 +1388,7 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -500,6 +1397,7 @@ export type Database = {
           cancelled_appointments: number | null
           completed_appointments: number | null
           created_at: string
+          created_by_id: string | null
           id: string
           metric_at: string
           no_show_appointments: number | null
@@ -509,11 +1407,13 @@ export type Database = {
           total_appointments: number | null
           total_revenue: number | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at: string
           no_show_appointments?: number | null
@@ -523,11 +1423,13 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at?: string
           no_show_appointments?: number | null
@@ -537,6 +1439,7 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -545,6 +1448,7 @@ export type Database = {
           cancelled_appointments: number | null
           completed_appointments: number | null
           created_at: string
+          created_by_id: string | null
           id: string
           metric_at: string
           no_show_appointments: number | null
@@ -554,11 +1458,13 @@ export type Database = {
           total_appointments: number | null
           total_revenue: number | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at: string
           no_show_appointments?: number | null
@@ -568,11 +1474,13 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at?: string
           no_show_appointments?: number | null
@@ -582,6 +1490,160 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      daily_metrics_p2026_01: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string
+          created_by_id: string | null
+          id: string
+          metric_at: string
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          created_by_id?: string | null
+          id?: string
+          metric_at: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          created_by_id?: string | null
+          id?: string
+          metric_at?: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id?: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      daily_metrics_p2026_02: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string
+          created_by_id: string | null
+          id: string
+          metric_at: string
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          created_by_id?: string | null
+          id?: string
+          metric_at: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          created_by_id?: string | null
+          id?: string
+          metric_at?: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id?: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      daily_metrics_p2026_03: {
+        Row: {
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          created_at: string
+          created_by_id: string | null
+          id: string
+          metric_at: string
+          no_show_appointments: number | null
+          product_revenue: number | null
+          salon_id: string
+          service_revenue: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          created_by_id?: string | null
+          id?: string
+          metric_at: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          cancelled_appointments?: number | null
+          completed_appointments?: number | null
+          created_at?: string
+          created_by_id?: string | null
+          id?: string
+          metric_at?: string
+          no_show_appointments?: number | null
+          product_revenue?: number | null
+          salon_id?: string
+          service_revenue?: number | null
+          total_appointments?: number | null
+          total_revenue?: number | null
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -590,6 +1652,7 @@ export type Database = {
           cancelled_appointments: number | null
           completed_appointments: number | null
           created_at: string
+          created_by_id: string | null
           id: string
           metric_at: string
           no_show_appointments: number | null
@@ -599,11 +1662,13 @@ export type Database = {
           total_appointments: number | null
           total_revenue: number | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at: string
           no_show_appointments?: number | null
@@ -613,11 +1678,13 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           cancelled_appointments?: number | null
           completed_appointments?: number | null
           created_at?: string
+          created_by_id?: string | null
           id?: string
           metric_at?: string
           no_show_appointments?: number | null
@@ -627,89 +1694,107 @@ export type Database = {
           total_appointments?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
       manual_transactions: {
         Row: {
+          amount: number | null
           appointment_id: string | null
           created_at: string
           created_by_id: string
+          currency_code: string
           customer_id: string | null
           id: string
+          metadata: Json | null
+          notes: string | null
           payment_method: string | null
+          reference_number: string | null
           salon_id: string
           staff_id: string | null
           transaction_at: string
           transaction_type: string
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
+          amount?: number | null
           appointment_id?: string | null
           created_at?: string
           created_by_id: string
+          currency_code?: string
           customer_id?: string | null
           id?: string
+          metadata?: Json | null
+          notes?: string | null
           payment_method?: string | null
+          reference_number?: string | null
           salon_id: string
           staff_id?: string | null
           transaction_at: string
           transaction_type: string
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
+          amount?: number | null
           appointment_id?: string | null
           created_at?: string
           created_by_id?: string
+          currency_code?: string
           customer_id?: string | null
           id?: string
+          metadata?: Json | null
+          notes?: string | null
           payment_method?: string | null
+          reference_number?: string | null
           salon_id?: string
           staff_id?: string | null
           transaction_at?: string
           transaction_type?: string
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "fk_manual_transactions_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "salon_metrics_daily_mv"
+            referencedRelation: "salon_metrics_summary_mv"
             referencedColumns: ["salon_id"]
-          },
-          {
-            foreignKeyName: "fk_manual_transactions_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_performance_mv"
-            referencedColumns: ["staff_id"]
           },
         ]
       }
       mv_refresh_log: {
         Row: {
+          created_by_id: string | null
           error_message: string | null
           last_refresh: string | null
-          refresh_duration: unknown | null
+          refresh_duration: unknown
           row_count: number | null
-          status: string | null
+          status: string
+          updated_by_id: string | null
           view_name: string
         }
         Insert: {
+          created_by_id?: string | null
           error_message?: string | null
           last_refresh?: string | null
-          refresh_duration?: unknown | null
+          refresh_duration?: unknown
           row_count?: number | null
-          status?: string | null
+          status: string
+          updated_by_id?: string | null
           view_name: string
         }
         Update: {
+          created_by_id?: string | null
           error_message?: string | null
           last_refresh?: string | null
-          refresh_duration?: unknown | null
+          refresh_duration?: unknown
           row_count?: number | null
-          status?: string | null
+          status?: string
+          updated_by_id?: string | null
           view_name?: string
         }
         Relationships: []
@@ -719,6 +1804,7 @@ export type Database = {
           anomaly_score: number | null
           busiest_day_of_week: number | null
           created_at: string
+          created_by_id: string | null
           forecast_accuracy: number | null
           id: string
           last_real_time_update: string | null
@@ -730,11 +1816,13 @@ export type Database = {
           streaming_metrics: Json | null
           trend_indicators: Json | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           anomaly_score?: number | null
           busiest_day_of_week?: number | null
           created_at?: string
+          created_by_id?: string | null
           forecast_accuracy?: number | null
           id?: string
           last_real_time_update?: string | null
@@ -746,11 +1834,13 @@ export type Database = {
           streaming_metrics?: Json | null
           trend_indicators?: Json | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           anomaly_score?: number | null
           busiest_day_of_week?: number | null
           created_at?: string
+          created_by_id?: string | null
           forecast_accuracy?: number | null
           id?: string
           last_real_time_update?: string | null
@@ -762,35 +1852,84 @@ export type Database = {
           streaming_metrics?: Json | null
           trend_indicators?: Json | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "fk_operational_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "salon_metrics_daily_mv"
+            referencedRelation: "salon_metrics_summary_mv"
             referencedColumns: ["salon_id"]
           },
         ]
       }
     }
     Views: {
-      customer_activity_mv: {
+      admin_analytics_overview_mv: {
         Row: {
-          avg_rating_given: number | null
+          active_salons: number | null
+          appointments_last_30_days: number | null
+          appointments_previous_30_days: number | null
+          avg_service_price: number | null
+          avg_transaction_value: number | null
           cancelled_appointments: number | null
           completed_appointments: number | null
-          customer_id: string | null
-          first_appointment_date: string | null
-          last_appointment_date: string | null
-          reviews_written: number | null
-          salons_visited: number | null
+          confirmed_appointments: number | null
+          inactive_salons: number | null
+          last_refreshed: string | null
+          max_transaction_value: number | null
+          no_show_appointments: number | null
+          pending_appointments: number | null
+          revenue_last_30_days: number | null
+          revenue_previous_30_days: number | null
+          salons_accepting_bookings: number | null
+          salons_last_30_days: number | null
+          salons_previous_30_days: number | null
+          total_admins: number | null
           total_appointments: number | null
-          unique_services_used: number | null
+          total_customers: number | null
+          total_revenue: number | null
+          total_salon_owners: number | null
+          total_salons: number | null
+          total_staff: number | null
+          total_users: number | null
+          users_last_30_days: number | null
+          users_previous_30_days: number | null
         }
         Relationships: []
       }
-      daily_metrics_current: {
+      customer_lifetime_value_mv: {
+        Row: {
+          average_transaction_value: number | null
+          cancellation_rate_percent: number | null
+          cancelled_appointments: number | null
+          churn_risk: string | null
+          completed_appointments: number | null
+          customer_id: string | null
+          customer_lifetime_days: number | null
+          customer_segment: string | null
+          days_since_last_visit: number | null
+          first_visit_date: string | null
+          last_refreshed_at: string | null
+          last_visit_date: string | null
+          no_show_appointments: number | null
+          salon_id: string | null
+          total_appointments: number | null
+          total_lifetime_value: number | null
+          visits_per_month: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_appointments_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salon_metrics_summary_mv"
+            referencedColumns: ["salon_id"]
+          },
+        ]
+      }
+      daily_metrics_current_view: {
         Row: {
           cancelled_appointments: number | null
           completed_appointments: number | null
@@ -807,7 +1946,7 @@ export type Database = {
         }
         Relationships: []
       }
-      metrics_table_summary: {
+      metrics_table_summary_view: {
         Row: {
           column_count: number | null
           purpose: string | null
@@ -816,7 +1955,7 @@ export type Database = {
         }
         Relationships: []
       }
-      mv_refresh_health: {
+      mv_refresh_health_view: {
         Row: {
           avg_duration_seconds: number | null
           failure_count: number | null
@@ -828,68 +1967,96 @@ export type Database = {
         }
         Relationships: []
       }
-      salon_metrics_daily_mv: {
+      partition_automation_status_view: {
         Row: {
-          avg_appointment_duration_minutes: number | null
-          cancelled_appointments: number | null
-          completed_appointments: number | null
-          metric_date: string | null
-          no_show_appointments: number | null
-          salon_id: string | null
-          salon_name: string | null
-          staff_utilized: number | null
-          total_appointments: number | null
-          total_service_minutes: number | null
-          unique_customers: number | null
+          active: boolean | null
+          command: string | null
+          job_pid: number | null
+          jobid: number | null
+          jobname: string | null
+          last_run_duration: unknown
+          last_run_end: string | null
+          last_run_start: string | null
+          last_run_status: string | null
+          return_message: string | null
+          runid: number | null
+          schedule: string | null
         }
         Relationships: []
       }
-      service_popularity_mv: {
+      partition_health_summary_view: {
         Row: {
-          avg_duration_minutes: number | null
-          category_id: string | null
-          completed_bookings: number | null
-          metric_month: string | null
-          salon_id: string | null
-          service_id: string | null
-          service_name: string | null
-          staff_providers: number | null
-          times_booked: number | null
-          unique_customers: number | null
+          active_partitions: number | null
+          critical_missing: number | null
+          earliest_partition: string | null
+          future_partitions: number | null
+          latest_partition: string | null
+          missing_partitions: number | null
+          partition_type: string | null
+          table_name: string | null
+          total_expected_partitions: number | null
+          total_size: string | null
+          total_size_bytes: number | null
+          warning_missing: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_services_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salon_metrics_daily_mv"
-            referencedColumns: ["salon_id"]
-          },
-        ]
+        Relationships: []
       }
-      staff_performance_mv: {
+      partition_health_view: {
         Row: {
-          avg_appointment_duration: number | null
-          avg_rating: number | null
-          completed_appointments: number | null
-          metric_month: string | null
-          salon_id: string | null
-          staff_id: string | null
-          total_appointments: number | null
-          total_reviews: number | null
-          total_service_minutes: number | null
-          unique_clients: number | null
-          user_id: string | null
+          partition_name: unknown
+          partition_size: string | null
+          partition_size_bytes: number | null
+          partition_type: string | null
+          period_end: string | null
+          period_start: string | null
+          requires_attention: boolean | null
+          requires_immediate_action: boolean | null
+          status: string | null
+          table_name: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_staff_profiles_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salon_metrics_daily_mv"
-            referencedColumns: ["salon_id"]
-          },
-        ]
+        Relationships: []
+      }
+      salon_metrics_summary_mv: {
+        Row: {
+          active_customers_30d: number | null
+          active_customers_7d: number | null
+          active_services: number | null
+          active_staff: number | null
+          appointments_last_30d: number | null
+          appointments_last_7d: number | null
+          avg_rating: number | null
+          avg_revenue_per_transaction: number | null
+          cancellation_rate: number | null
+          cancelled_appointments: number | null
+          completed_appointments: number | null
+          completion_rate: number | null
+          confirmed_appointments: number | null
+          last_refreshed: string | null
+          max_transaction_value: number | null
+          negative_reviews: number | null
+          no_show_appointments: number | null
+          no_show_rate: number | null
+          pending_appointments: number | null
+          positive_reviews: number | null
+          revenue_last_30d: number | null
+          revenue_last_7d: number | null
+          salon_created_at: string | null
+          salon_id: string | null
+          salon_is_accepting_bookings: boolean | null
+          salon_is_active: boolean | null
+          salon_name: string | null
+          salon_slug: string | null
+          services_booked: number | null
+          total_appointments: number | null
+          total_revenue: number | null
+          total_reviews: number | null
+          total_services: number | null
+          total_staff: number | null
+          total_transactions: number | null
+          unique_customers: number | null
+          verified_reviews: number | null
+        }
+        Relationships: []
       }
     }
     Functions: {
@@ -979,29 +2146,102 @@ export type Database = {
           services_performed: number
         }[]
       }
-      create_monthly_partition: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
+      create_future_partitions: {
+        Args: { weeks_ahead?: number }
+        Returns: {
+          created: boolean
+          end_date: string
+          partition_name: string
+          partition_type: string
+          start_date: string
+          table_name: string
+        }[]
       }
-      database_optimization_complete: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+      create_monthly_partition: { Args: never; Returns: undefined }
+      database_optimization_complete: { Args: never; Returns: string }
+      get_current_user_id: { Args: never; Returns: string }
+      get_failed_mv_refreshes: {
+        Args: { limit_count?: number }
+        Returns: {
+          error_message: string
+          hours_since_failure: number
+          last_refresh_time: string
+          refresh_duration: unknown
+          view_name: string
+        }[]
       }
-      get_current_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+      get_mv_health_summary: {
+        Args: never
+        Returns: {
+          avg_refresh_duration_seconds: number
+          failed_mvs: number
+          health_status: string
+          healthy_mvs: number
+          oldest_refresh_hours: number
+          stale_mvs: number
+          total_mvs: number
+        }[]
+      }
+      get_mv_refresh_performance: {
+        Args: never
+        Returns: {
+          avg_duration_seconds: number
+          failed_refreshes: number
+          last_refresh_time: string
+          last_row_count: number
+          max_duration_seconds: number
+          min_duration_seconds: number
+          success_rate: number
+          successful_refreshes: number
+          total_refreshes: number
+          view_name: string
+        }[]
+      }
+      get_slow_mv_refreshes: {
+        Args: { threshold_seconds?: number }
+        Returns: {
+          last_refresh_time: string
+          performance_concern: string
+          refresh_duration_seconds: number
+          row_count: number
+          view_name: string
+        }[]
+      }
+      get_stale_mvs: {
+        Args: { threshold_hours?: number }
+        Returns: {
+          hours_since_refresh: number
+          last_refresh_time: string
+          last_row_count: number
+          last_status: string
+          staleness_severity: string
+          view_name: string
+        }[]
+      }
+      get_untracked_mvs: {
+        Args: never
+        Returns: {
+          recommendation: string
+          schema_name: string
+          size_pretty: string
+          view_name: string
+        }[]
       }
       maintain_partitions: {
         Args: { retention_months?: number }
         Returns: undefined
       }
-      refresh_daily_metrics: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      refresh_customer_lifetime_value_mv: { Args: never; Returns: undefined }
+      refresh_daily_metrics: { Args: never; Returns: undefined }
       refresh_materialized_views: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
+        Args: never
+        Returns: {
+          duration_ms: number
+          error_message: string
+          refresh_status: string
+          rows_affected: number
+          view_name: string
+        }[]
       }
       refresh_mv: {
         Args: { p_schema?: string; p_view_name: string }
@@ -1011,14 +2251,8 @@ export type Database = {
         Args: { p_service_id: string }
         Returns: undefined
       }
-      update_salon_stats: {
-        Args: { p_salon_id: string }
-        Returns: undefined
-      }
-      user_owns_salon: {
-        Args: { salon_uuid: string }
-        Returns: boolean
-      }
+      update_salon_stats: { Args: { p_salon_id: string }; Returns: undefined }
+      user_owns_salon: { Args: { salon_uuid: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
@@ -1080,6 +2314,48 @@ export type Database = {
         }
         Relationships: []
       }
+      archive_audit_log: {
+        Row: {
+          cutoff_date: string | null
+          id: number
+          metadata: Json | null
+          newest_record_date: string | null
+          oldest_record_date: string | null
+          operation_type: string
+          performed_at: string
+          performed_by: string | null
+          record_count: number
+          schema_name: string
+          table_name: string
+        }
+        Insert: {
+          cutoff_date?: string | null
+          id?: number
+          metadata?: Json | null
+          newest_record_date?: string | null
+          oldest_record_date?: string | null
+          operation_type: string
+          performed_at?: string
+          performed_by?: string | null
+          record_count: number
+          schema_name: string
+          table_name: string
+        }
+        Update: {
+          cutoff_date?: string | null
+          id?: number
+          metadata?: Json | null
+          newest_record_date?: string | null
+          oldest_record_date?: string | null
+          operation_type?: string
+          performed_at?: string
+          performed_by?: string | null
+          record_count?: number
+          schema_name?: string
+          table_name?: string
+        }
+        Relationships: []
+      }
       event_batches: {
         Row: {
           id: string
@@ -1119,7 +2395,7 @@ export type Database = {
           geolocation: Json
           id: string
           ingestion_timestamp: string | null
-          ip_address: unknown | null
+          ip_address: unknown
           metadata: Json
           new_values: Json | null
           old_values: Json | null
@@ -1156,7 +2432,7 @@ export type Database = {
           geolocation?: Json
           id?: string
           ingestion_timestamp?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           metadata?: Json
           new_values?: Json | null
           old_values?: Json | null
@@ -1193,7 +2469,7 @@ export type Database = {
           geolocation?: Json
           id?: string
           ingestion_timestamp?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           metadata?: Json
           new_values?: Json | null
           old_values?: Json | null
@@ -1222,41 +2498,51 @@ export type Database = {
       }
     }
     Views: {
-      archive_tables_summary: {
+      archive_tables_summary_view: {
         Row: {
           column_count: number | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          schemaname: unknown
+          tablename: unknown
           total_size: string | null
-        }
-        Relationships: []
-      }
-      statistics: {
-        Row: {
-          cold_count: number | null
-          cold_newest: string | null
-          cold_size: string | null
-          hot_count: number | null
-          hot_oldest: string | null
-          hot_size: string | null
-          table_name: string | null
         }
         Relationships: []
       }
     }
     Functions: {
-      auto_archive_old_data: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
+      archive_soft_deleted_salons: {
+        Args: { p_cutoff_date?: string }
+        Returns: {
+          archived_count: number
+          newest_deletion: string
+          oldest_deletion: string
+        }[]
       }
+      auto_archive_old_data: { Args: never; Returns: undefined }
+      count_archivable_records:
+        | {
+            Args: never
+            Returns: {
+              archivable_percentage: number
+              archivable_records: number
+              total_records: number
+            }[]
+          }
+        | {
+            Args: { p_cutoff_date?: string; p_schema: string; p_table: string }
+            Returns: {
+              archivable_count: number
+              newest_deletion: string
+              oldest_deletion: string
+              schema_name: string
+              table_name: string
+              total_soft_deleted: number
+            }[]
+          }
       create_archive_table: {
         Args: { source_schema: string; source_table: string }
         Returns: undefined
       }
-      is_valid_event_metadata: {
-        Args: { metadata: Json }
-        Returns: boolean
-      }
+      is_valid_event_metadata: { Args: { metadata: Json }; Returns: boolean }
       move_old_appointments: {
         Args: { p_older_than_months?: number }
         Returns: {
@@ -1297,7 +2583,7 @@ export type Database = {
           event_type: string
           id: string
           impersonator_id: string | null
-          ip_address: unknown | null
+          ip_address: unknown
           is_success: boolean
           metadata: Json | null
           new_values: Json | null
@@ -1321,7 +2607,7 @@ export type Database = {
           event_type: string
           id?: string
           impersonator_id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_success?: boolean
           metadata?: Json | null
           new_values?: Json | null
@@ -1345,7 +2631,7 @@ export type Database = {
           event_type?: string
           id?: string
           impersonator_id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_success?: boolean
           metadata?: Json | null
           new_values?: Json | null
@@ -1459,7 +2745,7 @@ export type Database = {
           action: string
           changes: Json | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           performed_at: string
           record_id: string
           table_name: string
@@ -1472,7 +2758,7 @@ export type Database = {
           action: string
           changes?: Json | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           performed_at?: string
           record_id: string
           table_name: string
@@ -1485,7 +2771,7 @@ export type Database = {
           action?: string
           changes?: Json | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           performed_at?: string
           record_id?: string
           table_name?: string
@@ -1502,7 +2788,7 @@ export type Database = {
     }
     Functions: {
       analyze_partitions: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           partition_name: string
           row_count: number
@@ -1518,16 +2804,10 @@ export type Database = {
         }
         Returns: number
       }
-      can_view_audit_logs: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      capture_user_info: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      can_view_audit_logs: { Args: never; Returns: boolean }
+      capture_user_info: { Args: never; Returns: Json }
       comprehensive_rls_audit: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           has_sensitive_columns: boolean
           policy_count: number
@@ -1550,22 +2830,10 @@ export type Database = {
         Args: { partition_name: string }
         Returns: undefined
       }
-      database_health_check: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      database_health_summary: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      enable_tracking: {
-        Args: { target_table: unknown }
-        Returns: undefined
-      }
-      generate_security_report: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      database_health_check: { Args: never; Returns: Json }
+      database_health_summary: { Args: never; Returns: string }
+      enable_tracking: { Args: { target_table: unknown }; Returns: undefined }
+      generate_security_report: { Args: never; Returns: Json }
       get_record_history: {
         Args: { p_limit?: number; p_record_id: string; p_table_name: string }
         Returns: {
@@ -1612,16 +2880,10 @@ export type Database = {
         }
         Returns: string
       }
-      maintain_partitions: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      primary_key_columns: {
-        Args: { entity_oid: unknown }
-        Returns: string[]
-      }
+      maintain_partitions: { Args: never; Returns: undefined }
+      primary_key_columns: { Args: { entity_oid: unknown }; Returns: string[] }
       security_health_check: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           check_category: string
           check_name: string
@@ -1643,846 +2905,65 @@ export type Database = {
       [_ in never]: never
     }
   }
-  auth: {
+  billing: {
     Tables: {
-      audit_log_entries: {
+      payment_methods: {
         Row: {
-          created_at: string | null
+          created_at: string
+          description: string | null
           id: string
-          instance_id: string | null
-          ip_address: string
-          payload: Json | null
+          is_active: boolean
+          name: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
+          description?: string | null
           id: string
-          instance_id?: string | null
-          ip_address?: string
-          payload?: Json | null
+          is_active?: boolean
+          name: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
+          description?: string | null
           id?: string
-          instance_id?: string | null
-          ip_address?: string
-          payload?: Json | null
+          is_active?: boolean
+          name?: string
         }
         Relationships: []
       }
-      flow_state: {
+      plans: {
         Row: {
-          auth_code: string
-          auth_code_issued_at: string | null
-          authentication_method: string
-          code_challenge: string
-          code_challenge_method: Database["auth"]["Enums"]["code_challenge_method"]
-          created_at: string | null
-          id: string
-          provider_access_token: string | null
-          provider_refresh_token: string | null
-          provider_type: string
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          auth_code: string
-          auth_code_issued_at?: string | null
-          authentication_method: string
-          code_challenge: string
-          code_challenge_method: Database["auth"]["Enums"]["code_challenge_method"]
-          created_at?: string | null
-          id: string
-          provider_access_token?: string | null
-          provider_refresh_token?: string | null
-          provider_type: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          auth_code?: string
-          auth_code_issued_at?: string | null
-          authentication_method?: string
-          code_challenge?: string
-          code_challenge_method?: Database["auth"]["Enums"]["code_challenge_method"]
-          created_at?: string | null
-          id?: string
-          provider_access_token?: string | null
-          provider_refresh_token?: string | null
-          provider_type?: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      identities: {
-        Row: {
-          created_at: string | null
-          email: string | null
-          id: string
-          identity_data: Json
-          last_sign_in_at: string | null
-          provider: string
-          provider_id: string
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          email?: string | null
-          id?: string
-          identity_data: Json
-          last_sign_in_at?: string | null
-          provider: string
-          provider_id: string
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          email?: string | null
-          id?: string
-          identity_data?: Json
-          last_sign_in_at?: string | null
-          provider?: string
-          provider_id?: string
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "identities_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      instances: {
-        Row: {
-          created_at: string | null
-          id: string
-          raw_base_config: string | null
-          updated_at: string | null
-          uuid: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id: string
-          raw_base_config?: string | null
-          updated_at?: string | null
-          uuid?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          raw_base_config?: string | null
-          updated_at?: string | null
-          uuid?: string | null
-        }
-        Relationships: []
-      }
-      mfa_amr_claims: {
-        Row: {
-          authentication_method: string
           created_at: string
+          description: string | null
+          features: Json | null
           id: string
-          session_id: string
+          is_active: boolean
+          name: string
+          price_monthly: number | null
+          price_yearly: number | null
           updated_at: string
         }
         Insert: {
-          authentication_method: string
-          created_at: string
-          id: string
-          session_id: string
-          updated_at: string
-        }
-        Update: {
-          authentication_method?: string
           created_at?: string
-          id?: string
-          session_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "mfa_amr_claims_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "sessions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      mfa_challenges: {
-        Row: {
-          created_at: string
-          factor_id: string
+          description?: string | null
+          features?: Json | null
           id: string
-          ip_address: unknown
-          otp_code: string | null
-          verified_at: string | null
-          web_authn_session_data: Json | null
-        }
-        Insert: {
-          created_at: string
-          factor_id: string
-          id: string
-          ip_address: unknown
-          otp_code?: string | null
-          verified_at?: string | null
-          web_authn_session_data?: Json | null
-        }
-        Update: {
-          created_at?: string
-          factor_id?: string
-          id?: string
-          ip_address?: unknown
-          otp_code?: string | null
-          verified_at?: string | null
-          web_authn_session_data?: Json | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "mfa_challenges_auth_factor_id_fkey"
-            columns: ["factor_id"]
-            isOneToOne: false
-            referencedRelation: "mfa_factors"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      mfa_factors: {
-        Row: {
-          created_at: string
-          factor_type: Database["auth"]["Enums"]["factor_type"]
-          friendly_name: string | null
-          id: string
-          last_challenged_at: string | null
-          phone: string | null
-          secret: string | null
-          status: Database["auth"]["Enums"]["factor_status"]
-          updated_at: string
-          user_id: string
-          web_authn_aaguid: string | null
-          web_authn_credential: Json | null
-        }
-        Insert: {
-          created_at: string
-          factor_type: Database["auth"]["Enums"]["factor_type"]
-          friendly_name?: string | null
-          id: string
-          last_challenged_at?: string | null
-          phone?: string | null
-          secret?: string | null
-          status: Database["auth"]["Enums"]["factor_status"]
-          updated_at: string
-          user_id: string
-          web_authn_aaguid?: string | null
-          web_authn_credential?: Json | null
-        }
-        Update: {
-          created_at?: string
-          factor_type?: Database["auth"]["Enums"]["factor_type"]
-          friendly_name?: string | null
-          id?: string
-          last_challenged_at?: string | null
-          phone?: string | null
-          secret?: string | null
-          status?: Database["auth"]["Enums"]["factor_status"]
-          updated_at?: string
-          user_id?: string
-          web_authn_aaguid?: string | null
-          web_authn_credential?: Json | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "mfa_factors_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      oauth_authorizations: {
-        Row: {
-          approved_at: string | null
-          authorization_code: string | null
-          authorization_id: string
-          client_id: string
-          code_challenge: string | null
-          code_challenge_method:
-            | Database["auth"]["Enums"]["code_challenge_method"]
-            | null
-          created_at: string
-          expires_at: string
-          id: string
-          redirect_uri: string
-          resource: string | null
-          response_type: Database["auth"]["Enums"]["oauth_response_type"]
-          scope: string
-          state: string | null
-          status: Database["auth"]["Enums"]["oauth_authorization_status"]
-          user_id: string | null
-        }
-        Insert: {
-          approved_at?: string | null
-          authorization_code?: string | null
-          authorization_id: string
-          client_id: string
-          code_challenge?: string | null
-          code_challenge_method?:
-            | Database["auth"]["Enums"]["code_challenge_method"]
-            | null
-          created_at?: string
-          expires_at?: string
-          id: string
-          redirect_uri: string
-          resource?: string | null
-          response_type?: Database["auth"]["Enums"]["oauth_response_type"]
-          scope: string
-          state?: string | null
-          status?: Database["auth"]["Enums"]["oauth_authorization_status"]
-          user_id?: string | null
-        }
-        Update: {
-          approved_at?: string | null
-          authorization_code?: string | null
-          authorization_id?: string
-          client_id?: string
-          code_challenge?: string | null
-          code_challenge_method?:
-            | Database["auth"]["Enums"]["code_challenge_method"]
-            | null
-          created_at?: string
-          expires_at?: string
-          id?: string
-          redirect_uri?: string
-          resource?: string | null
-          response_type?: Database["auth"]["Enums"]["oauth_response_type"]
-          scope?: string
-          state?: string | null
-          status?: Database["auth"]["Enums"]["oauth_authorization_status"]
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "oauth_authorizations_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "oauth_clients"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "oauth_authorizations_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      oauth_clients: {
-        Row: {
-          client_name: string | null
-          client_secret_hash: string | null
-          client_type: Database["auth"]["Enums"]["oauth_client_type"]
-          client_uri: string | null
-          created_at: string
-          deleted_at: string | null
-          grant_types: string
-          id: string
-          logo_uri: string | null
-          redirect_uris: string
-          registration_type: Database["auth"]["Enums"]["oauth_registration_type"]
-          updated_at: string
-        }
-        Insert: {
-          client_name?: string | null
-          client_secret_hash?: string | null
-          client_type?: Database["auth"]["Enums"]["oauth_client_type"]
-          client_uri?: string | null
-          created_at?: string
-          deleted_at?: string | null
-          grant_types: string
-          id: string
-          logo_uri?: string | null
-          redirect_uris: string
-          registration_type: Database["auth"]["Enums"]["oauth_registration_type"]
+          is_active?: boolean
+          name: string
+          price_monthly?: number | null
+          price_yearly?: number | null
           updated_at?: string
         }
         Update: {
-          client_name?: string | null
-          client_secret_hash?: string | null
-          client_type?: Database["auth"]["Enums"]["oauth_client_type"]
-          client_uri?: string | null
           created_at?: string
-          deleted_at?: string | null
-          grant_types?: string
+          description?: string | null
+          features?: Json | null
           id?: string
-          logo_uri?: string | null
-          redirect_uris?: string
-          registration_type?: Database["auth"]["Enums"]["oauth_registration_type"]
+          is_active?: boolean
+          name?: string
+          price_monthly?: number | null
+          price_yearly?: number | null
           updated_at?: string
-        }
-        Relationships: []
-      }
-      oauth_consents: {
-        Row: {
-          client_id: string
-          granted_at: string
-          id: string
-          revoked_at: string | null
-          scopes: string
-          user_id: string
-        }
-        Insert: {
-          client_id: string
-          granted_at?: string
-          id: string
-          revoked_at?: string | null
-          scopes: string
-          user_id: string
-        }
-        Update: {
-          client_id?: string
-          granted_at?: string
-          id?: string
-          revoked_at?: string | null
-          scopes?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "oauth_consents_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "oauth_clients"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "oauth_consents_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      one_time_tokens: {
-        Row: {
-          created_at: string
-          id: string
-          relates_to: string
-          token_hash: string
-          token_type: Database["auth"]["Enums"]["one_time_token_type"]
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id: string
-          relates_to: string
-          token_hash: string
-          token_type: Database["auth"]["Enums"]["one_time_token_type"]
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          relates_to?: string
-          token_hash?: string
-          token_type?: Database["auth"]["Enums"]["one_time_token_type"]
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "one_time_tokens_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      refresh_tokens: {
-        Row: {
-          created_at: string | null
-          id: number
-          instance_id: string | null
-          parent: string | null
-          revoked: boolean | null
-          session_id: string | null
-          token: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: number
-          instance_id?: string | null
-          parent?: string | null
-          revoked?: boolean | null
-          session_id?: string | null
-          token?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: number
-          instance_id?: string | null
-          parent?: string | null
-          revoked?: boolean | null
-          session_id?: string | null
-          token?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "refresh_tokens_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "sessions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      saml_providers: {
-        Row: {
-          attribute_mapping: Json | null
-          created_at: string | null
-          entity_id: string
-          id: string
-          metadata_url: string | null
-          metadata_xml: string
-          name_id_format: string | null
-          sso_provider_id: string
-          updated_at: string | null
-        }
-        Insert: {
-          attribute_mapping?: Json | null
-          created_at?: string | null
-          entity_id: string
-          id: string
-          metadata_url?: string | null
-          metadata_xml: string
-          name_id_format?: string | null
-          sso_provider_id: string
-          updated_at?: string | null
-        }
-        Update: {
-          attribute_mapping?: Json | null
-          created_at?: string | null
-          entity_id?: string
-          id?: string
-          metadata_url?: string | null
-          metadata_xml?: string
-          name_id_format?: string | null
-          sso_provider_id?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "saml_providers_sso_provider_id_fkey"
-            columns: ["sso_provider_id"]
-            isOneToOne: false
-            referencedRelation: "sso_providers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      saml_relay_states: {
-        Row: {
-          created_at: string | null
-          flow_state_id: string | null
-          for_email: string | null
-          id: string
-          redirect_to: string | null
-          request_id: string
-          sso_provider_id: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          flow_state_id?: string | null
-          for_email?: string | null
-          id: string
-          redirect_to?: string | null
-          request_id: string
-          sso_provider_id: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          flow_state_id?: string | null
-          for_email?: string | null
-          id?: string
-          redirect_to?: string | null
-          request_id?: string
-          sso_provider_id?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "saml_relay_states_flow_state_id_fkey"
-            columns: ["flow_state_id"]
-            isOneToOne: false
-            referencedRelation: "flow_state"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "saml_relay_states_sso_provider_id_fkey"
-            columns: ["sso_provider_id"]
-            isOneToOne: false
-            referencedRelation: "sso_providers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      schema_migrations: {
-        Row: {
-          version: string
-        }
-        Insert: {
-          version: string
-        }
-        Update: {
-          version?: string
-        }
-        Relationships: []
-      }
-      sessions: {
-        Row: {
-          aal: Database["auth"]["Enums"]["aal_level"] | null
-          created_at: string | null
-          factor_id: string | null
-          id: string
-          ip: unknown | null
-          not_after: string | null
-          oauth_client_id: string | null
-          refreshed_at: string | null
-          tag: string | null
-          updated_at: string | null
-          user_agent: string | null
-          user_id: string
-        }
-        Insert: {
-          aal?: Database["auth"]["Enums"]["aal_level"] | null
-          created_at?: string | null
-          factor_id?: string | null
-          id: string
-          ip?: unknown | null
-          not_after?: string | null
-          oauth_client_id?: string | null
-          refreshed_at?: string | null
-          tag?: string | null
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id: string
-        }
-        Update: {
-          aal?: Database["auth"]["Enums"]["aal_level"] | null
-          created_at?: string | null
-          factor_id?: string | null
-          id?: string
-          ip?: unknown | null
-          not_after?: string | null
-          oauth_client_id?: string | null
-          refreshed_at?: string | null
-          tag?: string | null
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "sessions_oauth_client_id_fkey"
-            columns: ["oauth_client_id"]
-            isOneToOne: false
-            referencedRelation: "oauth_clients"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "sessions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      sso_domains: {
-        Row: {
-          created_at: string | null
-          domain: string
-          id: string
-          sso_provider_id: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          domain: string
-          id: string
-          sso_provider_id: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          domain?: string
-          id?: string
-          sso_provider_id?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "sso_domains_sso_provider_id_fkey"
-            columns: ["sso_provider_id"]
-            isOneToOne: false
-            referencedRelation: "sso_providers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      sso_providers: {
-        Row: {
-          created_at: string | null
-          disabled: boolean | null
-          id: string
-          resource_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          disabled?: boolean | null
-          id: string
-          resource_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          disabled?: boolean | null
-          id?: string
-          resource_id?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      users: {
-        Row: {
-          aud: string | null
-          banned_until: string | null
-          confirmation_sent_at: string | null
-          confirmation_token: string | null
-          confirmed_at: string | null
-          created_at: string | null
-          deleted_at: string | null
-          email: string | null
-          email_change: string | null
-          email_change_confirm_status: number | null
-          email_change_sent_at: string | null
-          email_change_token_current: string | null
-          email_change_token_new: string | null
-          email_confirmed_at: string | null
-          encrypted_password: string | null
-          id: string
-          instance_id: string | null
-          invited_at: string | null
-          is_anonymous: boolean
-          is_sso_user: boolean
-          is_super_admin: boolean | null
-          last_sign_in_at: string | null
-          phone: string | null
-          phone_change: string | null
-          phone_change_sent_at: string | null
-          phone_change_token: string | null
-          phone_confirmed_at: string | null
-          raw_app_meta_data: Json | null
-          raw_user_meta_data: Json | null
-          reauthentication_sent_at: string | null
-          reauthentication_token: string | null
-          recovery_sent_at: string | null
-          recovery_token: string | null
-          role: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          aud?: string | null
-          banned_until?: string | null
-          confirmation_sent_at?: string | null
-          confirmation_token?: string | null
-          confirmed_at?: string | null
-          created_at?: string | null
-          deleted_at?: string | null
-          email?: string | null
-          email_change?: string | null
-          email_change_confirm_status?: number | null
-          email_change_sent_at?: string | null
-          email_change_token_current?: string | null
-          email_change_token_new?: string | null
-          email_confirmed_at?: string | null
-          encrypted_password?: string | null
-          id: string
-          instance_id?: string | null
-          invited_at?: string | null
-          is_anonymous?: boolean
-          is_sso_user?: boolean
-          is_super_admin?: boolean | null
-          last_sign_in_at?: string | null
-          phone?: string | null
-          phone_change?: string | null
-          phone_change_sent_at?: string | null
-          phone_change_token?: string | null
-          phone_confirmed_at?: string | null
-          raw_app_meta_data?: Json | null
-          raw_user_meta_data?: Json | null
-          reauthentication_sent_at?: string | null
-          reauthentication_token?: string | null
-          recovery_sent_at?: string | null
-          recovery_token?: string | null
-          role?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          aud?: string | null
-          banned_until?: string | null
-          confirmation_sent_at?: string | null
-          confirmation_token?: string | null
-          confirmed_at?: string | null
-          created_at?: string | null
-          deleted_at?: string | null
-          email?: string | null
-          email_change?: string | null
-          email_change_confirm_status?: number | null
-          email_change_sent_at?: string | null
-          email_change_token_current?: string | null
-          email_change_token_new?: string | null
-          email_confirmed_at?: string | null
-          encrypted_password?: string | null
-          id?: string
-          instance_id?: string | null
-          invited_at?: string | null
-          is_anonymous?: boolean
-          is_sso_user?: boolean
-          is_super_admin?: boolean | null
-          last_sign_in_at?: string | null
-          phone?: string | null
-          phone_change?: string | null
-          phone_change_sent_at?: string | null
-          phone_change_token?: string | null
-          phone_confirmed_at?: string | null
-          raw_app_meta_data?: Json | null
-          raw_user_meta_data?: Json | null
-          reauthentication_sent_at?: string | null
-          reauthentication_token?: string | null
-          recovery_sent_at?: string | null
-          recovery_token?: string | null
-          role?: string | null
-          updated_at?: string | null
         }
         Relationships: []
       }
@@ -2491,39 +2972,88 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      email: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+  cache: {
+    Tables: {
+      query_results: {
+        Row: {
+          cache_key: string
+          created_at: string | null
+          expires_at: string
+          hit_count: number | null
+          last_hit_at: string | null
+          result: Json
+          size_bytes: number | null
+          tags: string[] | null
+        }
+        Insert: {
+          cache_key: string
+          created_at?: string | null
+          expires_at: string
+          hit_count?: number | null
+          last_hit_at?: string | null
+          result: Json
+          size_bytes?: number | null
+          tags?: string[] | null
+        }
+        Update: {
+          cache_key?: string
+          created_at?: string | null
+          expires_at?: string
+          hit_count?: number | null
+          last_hit_at?: string | null
+          result?: Json
+          size_bytes?: number | null
+          tags?: string[] | null
+        }
+        Relationships: []
       }
-      jwt: {
-        Args: Record<PropertyKey, never>
+    }
+    Views: {
+      statistics_view: {
+        Row: {
+          avg_hits_per_entry: number | null
+          expired_entries: number | null
+          never_hit_entries: number | null
+          total_entries: number | null
+          total_hits: number | null
+          total_size: string | null
+          total_size_bytes: number | null
+        }
+        Relationships: []
+      }
+    }
+    Functions: {
+      clean_expired_cache: { Args: never; Returns: number }
+      get_cached_result: {
+        Args: { p_key: string; p_query?: string; p_ttl?: unknown }
         Returns: Json
       }
-      role: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+      invalidate_cache: { Args: { p_key: string }; Returns: undefined }
+      invalidate_cache_by_tags: {
+        Args: { p_tags: string[] }
+        Returns: undefined
       }
-      uid: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+      set_cached_result: {
+        Args: {
+          p_key: string
+          p_result: Json
+          p_tags?: string[]
+          p_ttl?: unknown
+        }
+        Returns: undefined
       }
     }
     Enums: {
-      aal_level: "aal1" | "aal2" | "aal3"
-      code_challenge_method: "s256" | "plain"
-      factor_status: "unverified" | "verified"
-      factor_type: "totp" | "webauthn" | "phone"
-      oauth_authorization_status: "pending" | "approved" | "denied" | "expired"
-      oauth_client_type: "public" | "confidential"
-      oauth_registration_type: "dynamic" | "manual"
-      oauth_response_type: "code"
-      one_time_token_type:
-        | "confirmation_token"
-        | "reauthentication_token"
-        | "recovery_token"
-        | "email_change_token_new"
-        | "email_change_token_current"
-        | "phone_change_token"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2716,7 +3246,7 @@ export type Database = {
       }
       services: {
         Row: {
-          category_id: string | null
+          category_id: string
           created_at: string
           created_by_id: string
           deleted_at: string | null
@@ -2734,7 +3264,7 @@ export type Database = {
           updated_by_id: string
         }
         Insert: {
-          category_id?: string | null
+          category_id: string
           created_at?: string
           created_by_id: string
           deleted_at?: string | null
@@ -2752,7 +3282,7 @@ export type Database = {
           updated_by_id: string
         }
         Update: {
-          category_id?: string | null
+          category_id?: string
           created_at?: string
           created_by_id?: string
           deleted_at?: string | null
@@ -2849,80 +3379,7 @@ export type Database = {
       }
     }
     Views: {
-      staff_services_with_metrics: {
-        Row: {
-          avg_rating: number | null
-          created_at: string | null
-          created_by_id: string | null
-          deleted_at: string | null
-          deleted_by_id: string | null
-          duration_override: number | null
-          id: string | null
-          is_available: boolean | null
-          notes: string | null
-          performed_count: number | null
-          price_override: number | null
-          proficiency_level:
-            | Database["public"]["Enums"]["proficiency_level"]
-            | null
-          rating_average: number | null
-          service_id: string | null
-          staff_id: string | null
-          updated_at: string | null
-          updated_by_id: string | null
-        }
-        Insert: {
-          avg_rating?: never
-          created_at?: string | null
-          created_by_id?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          duration_override?: number | null
-          id?: string | null
-          is_available?: boolean | null
-          notes?: string | null
-          performed_count?: never
-          price_override?: number | null
-          proficiency_level?:
-            | Database["public"]["Enums"]["proficiency_level"]
-            | null
-          rating_average?: number | null
-          service_id?: string | null
-          staff_id?: string | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Update: {
-          avg_rating?: never
-          created_at?: string | null
-          created_by_id?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          duration_override?: number | null
-          id?: string | null
-          is_available?: boolean | null
-          notes?: string | null
-          performed_count?: never
-          price_override?: number | null
-          proficiency_level?:
-            | Database["public"]["Enums"]["proficiency_level"]
-            | null
-          rating_average?: number | null
-          service_id?: string | null
-          staff_id?: string | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_staff_services_service_id"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       apply_dynamic_pricing: {
@@ -2956,23 +3413,32 @@ export type Database = {
         }
         Returns: number
       }
-      check_is_package: {
-        Args: { p_service_id: string }
-        Returns: boolean
-      }
-      get_service_with_details: {
-        Args: Record<PropertyKey, never> | { p_service_id: string }
-        Returns: {
-          base_price: number
-          category_id: string
-          description: string
-          duration_minutes: number
-          id: string
-          is_active: boolean
-          name: string
-          salon_id: string
-        }[]
-      }
+      check_is_package: { Args: { p_service_id: string }; Returns: boolean }
+      get_service_with_details:
+        | {
+            Args: { p_service_id: string }
+            Returns: {
+              base_price: number
+              category_id: string
+              description: string
+              duration_minutes: number
+              id: string
+              is_active: boolean
+              name: string
+              salon_id: string
+            }[]
+          }
+        | {
+            Args: never
+            Returns: {
+              category_name: string
+              description: string
+              duration_minutes: number
+              price: number
+              service_id: string
+              service_name: string
+            }[]
+          }
       search_services_fulltext: {
         Args: { p_salon_id?: string; search_query: string }
         Returns: {
@@ -3031,6 +3497,7 @@ export type Database = {
         Row: {
           appointment_id: string | null
           created_at: string
+          created_by_id: string | null
           customer_id: string
           id: string
           last_message_at: string | null
@@ -3044,10 +3511,12 @@ export type Database = {
           unread_count_customer: number
           unread_count_staff: number
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           appointment_id?: string | null
           created_at?: string
+          created_by_id?: string | null
           customer_id: string
           id?: string
           last_message_at?: string | null
@@ -3061,10 +3530,12 @@ export type Database = {
           unread_count_customer?: number
           unread_count_staff?: number
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           appointment_id?: string | null
           created_at?: string
+          created_by_id?: string | null
           customer_id?: string
           id?: string
           last_message_at?: string | null
@@ -3078,6 +3549,7 @@ export type Database = {
           unread_count_customer?: number
           unread_count_staff?: number
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -3087,6 +3559,7 @@ export type Database = {
           context_id: string | null
           context_type: string | null
           created_at: string
+          created_by_id: string | null
           deleted_at: string | null
           deleted_by_id: string | null
           edited_at: string | null
@@ -3099,12 +3572,14 @@ export type Database = {
           read_at: string | null
           to_user_id: string
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           content: string
           context_id?: string | null
           context_type?: string | null
           created_at?: string
+          created_by_id?: string | null
           deleted_at?: string | null
           deleted_by_id?: string | null
           edited_at?: string | null
@@ -3117,12 +3592,14 @@ export type Database = {
           read_at?: string | null
           to_user_id: string
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           content?: string
           context_id?: string | null
           context_type?: string | null
           created_at?: string
+          created_by_id?: string | null
           deleted_at?: string | null
           deleted_by_id?: string | null
           edited_at?: string | null
@@ -3135,58 +3612,687 @@ export type Database = {
           read_at?: string | null
           to_user_id?: string
           updated_at?: string
+          updated_by_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_messages_context_id"
-            columns: ["context_id"]
-            isOneToOne: false
-            referencedRelation: "message_threads"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
+      }
+      messages_default: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2025_10: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2025_11: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2025_12: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2026_01: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2026_02: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2026_03: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2026_04: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2026_05: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
+      }
+      messages_p2026_06: {
+        Row: {
+          content: string
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          created_by_id: string | null
+          deleted_at: string | null
+          deleted_by_id: string | null
+          edited_at: string | null
+          from_user_id: string
+          id: string
+          is_deleted: boolean
+          is_edited: boolean
+          is_read: boolean
+          metadata: Json | null
+          read_at: string | null
+          to_user_id: string
+          updated_at: string
+          updated_by_id: string | null
+        }
+        Insert: {
+          content: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Update: {
+          content?: string
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          edited_at?: string | null
+          from_user_id?: string
+          id?: string
+          is_deleted?: boolean
+          is_edited?: boolean
+          is_read?: boolean
+          metadata?: Json | null
+          read_at?: string | null
+          to_user_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+        }
+        Relationships: []
       }
       webhook_queue: {
         Row: {
           attempts: number | null
           completed_at: string | null
           created_at: string
+          created_by_id: string | null
           headers: Json | null
           id: string
           last_error: string | null
           max_attempts: number | null
           next_retry_at: string | null
           payload: Json
-          status: string | null
+          status: string
           updated_at: string
+          updated_by_id: string | null
           url: string
         }
         Insert: {
           attempts?: number | null
           completed_at?: string | null
           created_at?: string
+          created_by_id?: string | null
           headers?: Json | null
           id?: string
           last_error?: string | null
           max_attempts?: number | null
           next_retry_at?: string | null
           payload: Json
-          status?: string | null
+          status?: string
           updated_at?: string
+          updated_by_id?: string | null
           url: string
         }
         Update: {
           attempts?: number | null
           completed_at?: string | null
           created_at?: string
+          created_by_id?: string | null
           headers?: Json | null
           id?: string
           last_error?: string | null
           max_attempts?: number | null
           next_retry_at?: string | null
           payload?: Json
-          status?: string | null
+          status?: string
           updated_at?: string
+          updated_by_id?: string | null
           url?: string
         }
         Relationships: []
@@ -3230,10 +4336,7 @@ export type Database = {
         }
         Returns: string
       }
-      get_unread_count: {
-        Args: { p_user_id: string }
-        Returns: number
-      }
+      get_unread_count: { Args: { p_user_id: string }; Returns: number }
       get_unread_counts: {
         Args: { p_user_id: string }
         Returns: {
@@ -3246,10 +4349,7 @@ export type Database = {
         Args: { p_notification_ids?: string[]; p_user_id: string }
         Returns: number
       }
-      process_webhook_queue: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      process_webhook_queue: { Args: never; Returns: undefined }
       send_notification: {
         Args: {
           p_channels?: string[]
@@ -3277,80 +4377,55 @@ export type Database = {
       [_ in never]: never
     }
   }
-  cron: {
+  compliance: {
     Tables: {
-      job: {
+      consents: {
         Row: {
-          active: boolean
-          command: string
-          database: string
-          jobid: number
-          jobname: string | null
-          nodename: string
-          nodeport: number
-          schedule: string
-          username: string
+          data_subject_id: string
+          granted_at: string | null
+          id: string
+          lawful_basis: string
+          version: string
         }
         Insert: {
-          active?: boolean
-          command: string
-          database?: string
-          jobid?: number
-          jobname?: string | null
-          nodename?: string
-          nodeport?: number
-          schedule: string
-          username?: string
+          data_subject_id: string
+          granted_at?: string | null
+          id?: string
+          lawful_basis: string
+          version: string
         }
         Update: {
-          active?: boolean
-          command?: string
-          database?: string
-          jobid?: number
-          jobname?: string | null
-          nodename?: string
-          nodeport?: number
-          schedule?: string
-          username?: string
+          data_subject_id?: string
+          granted_at?: string | null
+          id?: string
+          lawful_basis?: string
+          version?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "consents_data_subject_id_fkey"
+            columns: ["data_subject_id"]
+            isOneToOne: false
+            referencedRelation: "data_subjects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      job_run_details: {
+      data_subjects: {
         Row: {
-          command: string | null
-          database: string | null
-          end_time: string | null
-          job_pid: number | null
-          jobid: number | null
-          return_message: string | null
-          runid: number
-          start_time: string | null
-          status: string | null
-          username: string | null
+          created_at: string | null
+          id: string
+          user_id: string | null
         }
         Insert: {
-          command?: string | null
-          database?: string | null
-          end_time?: string | null
-          job_pid?: number | null
-          jobid?: number | null
-          return_message?: string | null
-          runid?: number
-          start_time?: string | null
-          status?: string | null
-          username?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
         }
         Update: {
-          command?: string | null
-          database?: string | null
-          end_time?: string | null
-          job_pid?: number | null
-          jobid?: number | null
-          return_message?: string | null
-          runid?: number
-          start_time?: string | null
-          status?: string | null
-          username?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -3359,38 +4434,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      alter_job: {
-        Args: {
-          active?: boolean
-          command?: string
-          database?: string
-          job_id: number
-          schedule?: string
-          username?: string
-        }
-        Returns: undefined
-      }
-      schedule: {
-        Args:
-          | { command: string; job_name: string; schedule: string }
-          | { command: string; schedule: string }
-        Returns: number
-      }
-      schedule_in_database: {
-        Args: {
-          active?: boolean
-          command: string
-          database: string
-          job_name: string
-          schedule: string
-          username?: string
-        }
-        Returns: number
-      }
-      unschedule: {
-        Args: { job_id: number } | { job_name: string }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
@@ -3404,53 +4448,68 @@ export type Database = {
       customer_favorites: {
         Row: {
           created_at: string
+          created_by_id: string | null
           customer_id: string
           id: string
           notes: string | null
-          salon_id: string | null
+          salon_id: string
           service_id: string | null
           staff_id: string | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           customer_id: string
           id?: string
           notes?: string | null
-          salon_id?: string | null
+          salon_id: string
           service_id?: string | null
           staff_id?: string | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           customer_id?: string
           id?: string
           notes?: string | null
-          salon_id?: string | null
+          salon_id?: string
           service_id?: string | null
           staff_id?: string | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
       review_helpful_votes: {
         Row: {
           created_at: string
+          created_by_id: string | null
           id: string
           review_id: string
+          updated_at: string
+          updated_by_id: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           id?: string
           review_id: string
+          updated_at?: string
+          updated_by_id?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           id?: string
           review_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
           user_id?: string
         }
         Relationships: [
@@ -3465,7 +4524,7 @@ export type Database = {
             foreignKeyName: "fk_review_helpful_votes_review_id"
             columns: ["review_id"]
             isOneToOne: false
-            referencedRelation: "salon_reviews_with_counts"
+            referencedRelation: "salon_reviews_with_counts_view"
             referencedColumns: ["id"]
           },
         ]
@@ -3476,6 +4535,7 @@ export type Database = {
           cleanliness_rating: number | null
           comment: string | null
           created_at: string
+          created_by_id: string | null
           customer_id: string
           deleted_at: string | null
           deleted_by_id: string | null
@@ -3492,6 +4552,7 @@ export type Database = {
           service_quality_rating: number | null
           title: string | null
           updated_at: string
+          updated_by_id: string | null
           value_rating: number | null
         }
         Insert: {
@@ -3499,6 +4560,7 @@ export type Database = {
           cleanliness_rating?: number | null
           comment?: string | null
           created_at?: string
+          created_by_id?: string | null
           customer_id: string
           deleted_at?: string | null
           deleted_by_id?: string | null
@@ -3515,6 +4577,7 @@ export type Database = {
           service_quality_rating?: number | null
           title?: string | null
           updated_at?: string
+          updated_by_id?: string | null
           value_rating?: number | null
         }
         Update: {
@@ -3522,6 +4585,7 @@ export type Database = {
           cleanliness_rating?: number | null
           comment?: string | null
           created_at?: string
+          created_by_id?: string | null
           customer_id?: string
           deleted_at?: string | null
           deleted_by_id?: string | null
@@ -3538,13 +4602,14 @@ export type Database = {
           service_quality_rating?: number | null
           title?: string | null
           updated_at?: string
+          updated_by_id?: string | null
           value_rating?: number | null
         }
         Relationships: []
       }
     }
     Views: {
-      salon_reviews_with_counts: {
+      salon_reviews_with_counts_view: {
         Row: {
           appointment_id: string | null
           cleanliness_rating: number | null
@@ -3637,2650 +4702,756 @@ export type Database = {
       [_ in never]: never
     }
   }
-  extensions: {
-    Tables: {
-      spatial_ref_sys: {
-        Row: {
-          auth_name: string | null
-          auth_srid: number | null
-          proj4text: string | null
-          srid: number
-          srtext: string | null
-        }
-        Insert: {
-          auth_name?: string | null
-          auth_srid?: number | null
-          proj4text?: string | null
-          srid: number
-          srtext?: string | null
-        }
-        Update: {
-          auth_name?: string | null
-          auth_srid?: number | null
-          proj4text?: string | null
-          srid?: number
-          srtext?: string | null
-        }
-        Relationships: []
-      }
-    }
-    Views: {
-      geography_columns: {
-        Row: {
-          coord_dimension: number | null
-          f_geography_column: unknown | null
-          f_table_catalog: unknown | null
-          f_table_name: unknown | null
-          f_table_schema: unknown | null
-          srid: number | null
-          type: string | null
-        }
-        Relationships: []
-      }
-      geometry_columns: {
-        Row: {
-          coord_dimension: number | null
-          f_geometry_column: unknown | null
-          f_table_catalog: string | null
-          f_table_name: unknown | null
-          f_table_schema: unknown | null
-          srid: number | null
-          type: string | null
-        }
-        Insert: {
-          coord_dimension?: number | null
-          f_geometry_column?: unknown | null
-          f_table_catalog?: string | null
-          f_table_name?: unknown | null
-          f_table_schema?: unknown | null
-          srid?: number | null
-          type?: string | null
-        }
-        Update: {
-          coord_dimension?: number | null
-          f_geometry_column?: unknown | null
-          f_table_catalog?: string | null
-          f_table_name?: unknown | null
-          f_table_schema?: unknown | null
-          srid?: number | null
-          type?: string | null
-        }
-        Relationships: []
-      }
-      hypopg_hidden_indexes: {
-        Row: {
-          am_name: unknown | null
-          index_name: unknown | null
-          indexrelid: unknown | null
-          is_hypo: boolean | null
-          schema_name: unknown | null
-          table_name: unknown | null
-        }
-        Relationships: []
-      }
-      hypopg_list_indexes: {
-        Row: {
-          am_name: unknown | null
-          index_name: string | null
-          indexrelid: unknown | null
-          schema_name: unknown | null
-          table_name: unknown | null
-        }
-        Relationships: []
-      }
-      pg_stat_statements: {
-        Row: {
-          calls: number | null
-          dbid: unknown | null
-          jit_deform_count: number | null
-          jit_deform_time: number | null
-          jit_emission_count: number | null
-          jit_emission_time: number | null
-          jit_functions: number | null
-          jit_generation_time: number | null
-          jit_inlining_count: number | null
-          jit_inlining_time: number | null
-          jit_optimization_count: number | null
-          jit_optimization_time: number | null
-          local_blk_read_time: number | null
-          local_blk_write_time: number | null
-          local_blks_dirtied: number | null
-          local_blks_hit: number | null
-          local_blks_read: number | null
-          local_blks_written: number | null
-          max_exec_time: number | null
-          max_plan_time: number | null
-          mean_exec_time: number | null
-          mean_plan_time: number | null
-          min_exec_time: number | null
-          min_plan_time: number | null
-          minmax_stats_since: string | null
-          plans: number | null
-          query: string | null
-          queryid: number | null
-          rows: number | null
-          shared_blk_read_time: number | null
-          shared_blk_write_time: number | null
-          shared_blks_dirtied: number | null
-          shared_blks_hit: number | null
-          shared_blks_read: number | null
-          shared_blks_written: number | null
-          stats_since: string | null
-          stddev_exec_time: number | null
-          stddev_plan_time: number | null
-          temp_blk_read_time: number | null
-          temp_blk_write_time: number | null
-          temp_blks_read: number | null
-          temp_blks_written: number | null
-          toplevel: boolean | null
-          total_exec_time: number | null
-          total_plan_time: number | null
-          userid: unknown | null
-          wal_bytes: number | null
-          wal_fpi: number | null
-          wal_records: number | null
-        }
-        Relationships: []
-      }
-      pg_stat_statements_info: {
-        Row: {
-          dealloc: number | null
-          stats_reset: string | null
-        }
-        Relationships: []
-      }
-    }
-    Functions: {
-      _postgis_deprecate: {
-        Args: { newname: string; oldname: string; version: string }
-        Returns: undefined
-      }
-      _postgis_index_extent: {
-        Args: { col: string; tbl: unknown }
-        Returns: unknown
-      }
-      _postgis_pgsql_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      _postgis_scripts_pgsql_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      _postgis_selectivity: {
-        Args: { att_name: string; geom: unknown; mode?: string; tbl: unknown }
-        Returns: number
-      }
-      _st_3dintersects: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_bestsrid: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      _st_contains: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_containsproperly: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_coveredby: {
-        Args:
-          | { geog1: unknown; geog2: unknown }
-          | { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_covers: {
-        Args:
-          | { geog1: unknown; geog2: unknown }
-          | { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_crosses: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_dwithin: {
-        Args: {
-          geog1: unknown
-          geog2: unknown
-          tolerance: number
-          use_spheroid?: boolean
-        }
-        Returns: boolean
-      }
-      _st_equals: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_intersects: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_linecrossingdirection: {
-        Args: { line1: unknown; line2: unknown }
-        Returns: number
-      }
-      _st_longestline: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      _st_maxdistance: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      _st_orderingequals: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_overlaps: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_pointoutside: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      _st_sortablehash: {
-        Args: { geom: unknown }
-        Returns: number
-      }
-      _st_touches: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      _st_voronoi: {
-        Args: {
-          clip?: unknown
-          g1: unknown
-          return_polygons?: boolean
-          tolerance?: number
-        }
-        Returns: unknown
-      }
-      _st_within: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      addauth: {
-        Args: { "": string }
-        Returns: boolean
-      }
-      addgeometrycolumn: {
-        Args:
-          | {
-              catalog_name: string
-              column_name: string
-              new_dim: number
-              new_srid_in: number
-              new_type: string
-              schema_name: string
-              table_name: string
-              use_typmod?: boolean
-            }
-          | {
-              column_name: string
-              new_dim: number
-              new_srid: number
-              new_type: string
-              schema_name: string
-              table_name: string
-              use_typmod?: boolean
-            }
-          | {
-              column_name: string
-              new_dim: number
-              new_srid: number
-              new_type: string
-              table_name: string
-              use_typmod?: boolean
-            }
-        Returns: string
-      }
-      akeys: {
-        Args: { "": unknown }
-        Returns: string[]
-      }
-      armor: {
-        Args: { "": string }
-        Returns: string
-      }
-      avals: {
-        Args: { "": unknown }
-        Returns: string[]
-      }
-      box: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: unknown
-      }
-      box2d: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: unknown
-      }
-      box2d_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      box2d_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      box2df_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      box2df_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      box3d: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: unknown
-      }
-      box3d_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      box3d_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      box3dtobox: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      bytea: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: string
-      }
-      bytea_to_text: {
-        Args: { data: string }
-        Returns: string
-      }
-      citext: {
-        Args: { "": boolean } | { "": string } | { "": unknown }
-        Returns: string
-      }
-      citext_hash: {
-        Args: { "": string }
-        Returns: number
-      }
-      citextin: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      citextout: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      citextrecv: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      citextsend: {
-        Args: { "": string }
-        Returns: string
-      }
-      daitch_mokotoff: {
-        Args: { "": string }
-        Returns: string[]
-      }
-      dearmor: {
-        Args: { "": string }
-        Returns: string
-      }
-      disablelongtransactions: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      dmetaphone: {
-        Args: { "": string }
-        Returns: string
-      }
-      dmetaphone_alt: {
-        Args: { "": string }
-        Returns: string
-      }
-      dropgeometrycolumn: {
-        Args:
-          | {
-              catalog_name: string
-              column_name: string
-              schema_name: string
-              table_name: string
-            }
-          | { column_name: string; schema_name: string; table_name: string }
-          | { column_name: string; table_name: string }
-        Returns: string
-      }
-      dropgeometrytable: {
-        Args:
-          | { catalog_name: string; schema_name: string; table_name: string }
-          | { schema_name: string; table_name: string }
-          | { table_name: string }
-        Returns: string
-      }
-      each: {
-        Args: { hs: unknown }
-        Returns: Record<string, unknown>[]
-      }
-      enablelongtransactions: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      equals: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      gbt_bit_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_bool_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_bool_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_bpchar_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_bytea_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_cash_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_cash_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_date_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_date_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_enum_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_enum_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_float4_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_float4_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_float8_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_float8_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_inet_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_int2_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_int2_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_int4_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_int4_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_int8_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_int8_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_intv_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_intv_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_intv_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_macad_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_macad_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_macad8_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_macad8_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_numeric_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_oid_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_oid_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_text_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_time_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_time_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_timetz_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_ts_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_ts_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_tstz_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_uuid_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_uuid_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_var_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbt_var_fetch: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey_var_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey_var_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey16_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey16_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey2_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey2_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey32_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey32_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey4_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey4_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey8_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gbtreekey8_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gen_random_bytes: {
-        Args: { "": number }
-        Returns: string
-      }
-      gen_random_uuid: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      gen_salt: {
-        Args: { "": string }
-        Returns: string
-      }
-      geography: {
-        Args: { "": string } | { "": unknown }
-        Returns: unknown
-      }
-      geography_analyze: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      geography_gist_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geography_gist_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geography_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geography_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      geography_spgist_compress_nd: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geography_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
-      geography_typmod_out: {
-        Args: { "": number }
-        Returns: unknown
-      }
-      geometry: {
-        Args:
-          | { "": string }
-          | { "": string }
-          | { "": unknown }
-          | { "": unknown }
-          | { "": unknown }
-          | { "": unknown }
-          | { "": unknown }
-          | { "": unknown }
-        Returns: unknown
-      }
-      geometry_above: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_analyze: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      geometry_below: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_cmp: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      geometry_contained_3d: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_contains: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_contains_3d: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_distance_box: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      geometry_distance_centroid: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      geometry_eq: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_ge: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_gist_compress_2d: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_gist_compress_nd: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_gist_decompress_2d: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_gist_decompress_nd: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_gist_sortsupport_2d: {
-        Args: { "": unknown }
-        Returns: undefined
-      }
-      geometry_gt: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_hash: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      geometry_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_le: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_left: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_lt: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_overabove: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_overbelow: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_overlaps: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_overlaps_3d: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_overleft: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_overright: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_recv: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_right: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_same: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_same_3d: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometry_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      geometry_sortsupport: {
-        Args: { "": unknown }
-        Returns: undefined
-      }
-      geometry_spgist_compress_2d: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_spgist_compress_3d: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_spgist_compress_nd: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      geometry_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
-      geometry_typmod_out: {
-        Args: { "": number }
-        Returns: unknown
-      }
-      geometry_within: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      geometrytype: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: string
-      }
-      geomfromewkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      geomfromewkt: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      get_proj4_from_srid: {
-        Args: { "": number }
-        Returns: string
-      }
-      gettransactionid: {
-        Args: Record<PropertyKey, never>
-        Returns: unknown
-      }
-      ghstore_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ghstore_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ghstore_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ghstore_options: {
-        Args: { "": unknown }
-        Returns: undefined
-      }
-      ghstore_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gidx_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gidx_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_options: {
-        Args: { "": unknown }
-        Returns: undefined
-      }
-      gtrgm_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hstore: {
-        Args: { "": string[] } | { "": Record<string, unknown> }
-        Returns: unknown
-      }
-      hstore_hash: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      hstore_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hstore_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hstore_recv: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hstore_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      hstore_subscript_handler: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hstore_to_array: {
-        Args: { "": unknown }
-        Returns: string[]
-      }
-      hstore_to_json: {
-        Args: { "": unknown }
-        Returns: Json
-      }
-      hstore_to_json_loose: {
-        Args: { "": unknown }
-        Returns: Json
-      }
-      hstore_to_jsonb: {
-        Args: { "": unknown }
-        Returns: Json
-      }
-      hstore_to_jsonb_loose: {
-        Args: { "": unknown }
-        Returns: Json
-      }
-      hstore_to_matrix: {
-        Args: { "": unknown }
-        Returns: string[]
-      }
-      hstore_version_diag: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      http: {
-        Args: {
-          request: Database["extensions"]["CompositeTypes"]["http_request"]
-        }
-        Returns: Database["extensions"]["CompositeTypes"]["http_response"]
-      }
-      http_delete: {
-        Args:
-          | { content: string; content_type: string; uri: string }
-          | { uri: string }
-        Returns: Database["extensions"]["CompositeTypes"]["http_response"]
-      }
-      http_get: {
-        Args: { data: Json; uri: string } | { uri: string }
-        Returns: Database["extensions"]["CompositeTypes"]["http_response"]
-      }
-      http_head: {
-        Args: { uri: string }
-        Returns: Database["extensions"]["CompositeTypes"]["http_response"]
-      }
-      http_header: {
-        Args: { field: string; value: string }
-        Returns: Database["extensions"]["CompositeTypes"]["http_header"]
-      }
-      http_list_curlopt: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          curlopt: string
-          value: string
-        }[]
-      }
-      http_patch: {
-        Args: { content: string; content_type: string; uri: string }
-        Returns: Database["extensions"]["CompositeTypes"]["http_response"]
-      }
-      http_post: {
-        Args:
-          | { content: string; content_type: string; uri: string }
-          | { data: Json; uri: string }
-        Returns: Database["extensions"]["CompositeTypes"]["http_response"]
-      }
-      http_put: {
-        Args: { content: string; content_type: string; uri: string }
-        Returns: Database["extensions"]["CompositeTypes"]["http_response"]
-      }
-      http_reset_curlopt: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      http_set_curlopt: {
-        Args: { curlopt: string; value: string }
-        Returns: boolean
-      }
-      hypopg: {
-        Args: Record<PropertyKey, never>
-        Returns: Record<string, unknown>[]
-      }
-      hypopg_create_index: {
-        Args: { sql_order: string }
-        Returns: Record<string, unknown>[]
-      }
-      hypopg_drop_index: {
-        Args: { indexid: unknown }
-        Returns: boolean
-      }
-      hypopg_get_indexdef: {
-        Args: { indexid: unknown }
-        Returns: string
-      }
-      hypopg_hidden_indexes: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          indexid: unknown
-        }[]
-      }
-      hypopg_hide_index: {
-        Args: { indexid: unknown }
-        Returns: boolean
-      }
-      hypopg_relation_size: {
-        Args: { indexid: unknown }
-        Returns: number
-      }
-      hypopg_reset: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      hypopg_reset_index: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      hypopg_unhide_all_indexes: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      hypopg_unhide_index: {
-        Args: { indexid: unknown }
-        Returns: boolean
-      }
-      index_advisor: {
-        Args: { query: string }
-        Returns: {
-          errors: string[]
-          index_statements: string[]
-          startup_cost_after: Json
-          startup_cost_before: Json
-          total_cost_after: Json
-          total_cost_before: Json
-        }[]
-      }
-      json: {
-        Args: { "": unknown }
-        Returns: Json
-      }
-      json_matches_schema: {
-        Args: { instance: Json; schema: Json }
-        Returns: boolean
-      }
-      jsonb: {
-        Args: { "": unknown }
-        Returns: Json
-      }
-      jsonb_matches_schema: {
-        Args: { instance: Json; schema: Json }
-        Returns: boolean
-      }
-      jsonschema_is_valid: {
-        Args: { schema: Json }
-        Returns: boolean
-      }
-      jsonschema_validation_errors: {
-        Args: { instance: Json; schema: Json }
-        Returns: string[]
-      }
-      longtransactionsenabled: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      path: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      pg_stat_statements: {
-        Args: { showtext: boolean }
-        Returns: Record<string, unknown>[]
-      }
-      pg_stat_statements_info: {
-        Args: Record<PropertyKey, never>
-        Returns: Record<string, unknown>
-      }
-      pg_stat_statements_reset: {
-        Args: {
-          dbid?: unknown
-          minmax_only?: boolean
-          queryid?: number
-          userid?: unknown
-        }
-        Returns: string
-      }
-      pgis_asflatgeobuf_finalfn: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      pgis_asgeobuf_finalfn: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      pgis_asmvt_finalfn: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      pgis_asmvt_serialfn: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      pgis_geometry_clusterintersecting_finalfn: {
-        Args: { "": unknown }
-        Returns: unknown[]
-      }
-      pgis_geometry_clusterwithin_finalfn: {
-        Args: { "": unknown }
-        Returns: unknown[]
-      }
-      pgis_geometry_collect_finalfn: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      pgis_geometry_makeline_finalfn: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      pgis_geometry_polygonize_finalfn: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      pgis_geometry_union_parallel_finalfn: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      pgis_geometry_union_parallel_serialfn: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      pgp_armor_headers: {
-        Args: { "": string }
-        Returns: Record<string, unknown>[]
-      }
-      pgp_key_id: {
-        Args: { "": string }
-        Returns: string
-      }
-      point: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      polygon: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      populate_geometry_columns: {
-        Args:
-          | { tbl_oid: unknown; use_typmod?: boolean }
-          | { use_typmod?: boolean }
-        Returns: string
-      }
-      postgis_addbbox: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      postgis_constraint_dims: {
-        Args: { geomcolumn: string; geomschema: string; geomtable: string }
-        Returns: number
-      }
-      postgis_constraint_srid: {
-        Args: { geomcolumn: string; geomschema: string; geomtable: string }
-        Returns: number
-      }
-      postgis_constraint_type: {
-        Args: { geomcolumn: string; geomschema: string; geomtable: string }
-        Returns: string
-      }
-      postgis_dropbbox: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      postgis_extensions_upgrade: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_full_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_geos_noop: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      postgis_geos_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_getbbox: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      postgis_hasbbox: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      postgis_index_supportfn: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      postgis_lib_build_date: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_lib_revision: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_lib_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_libjson_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_liblwgeom_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_libprotobuf_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_libxml_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_noop: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      postgis_proj_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_scripts_build_date: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_scripts_installed: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_scripts_released: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_svn_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_type_name: {
-        Args: {
-          coord_dimension: number
-          geomname: string
-          use_new_name?: boolean
-        }
-        Returns: string
-      }
-      postgis_typmod_dims: {
-        Args: { "": number }
-        Returns: number
-      }
-      postgis_typmod_srid: {
-        Args: { "": number }
-        Returns: number
-      }
-      postgis_typmod_type: {
-        Args: { "": number }
-        Returns: string
-      }
-      postgis_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      postgis_wagyu_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      set_limit: {
-        Args: { "": number }
-        Returns: number
-      }
-      show_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      show_trgm: {
-        Args: { "": string }
-        Returns: string[]
-      }
-      skeys: {
-        Args: { "": unknown }
-        Returns: string[]
-      }
-      soundex: {
-        Args: { "": string }
-        Returns: string
-      }
-      spheroid_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      spheroid_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_3dclosestpoint: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_3ddistance: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      st_3dintersects: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_3dlength: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_3dlongestline: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_3dmakebox: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_3dmaxdistance: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      st_3dperimeter: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_3dshortestline: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_addpoint: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_angle: {
-        Args:
-          | { line1: unknown; line2: unknown }
-          | { pt1: unknown; pt2: unknown; pt3: unknown; pt4?: unknown }
-        Returns: number
-      }
-      st_area: {
-        Args:
-          | { "": string }
-          | { "": unknown }
-          | { geog: unknown; use_spheroid?: boolean }
-        Returns: number
-      }
-      st_area2d: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_asbinary: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: string
-      }
-      st_asencodedpolyline: {
-        Args: { geom: unknown; nprecision?: number }
-        Returns: string
-      }
-      st_asewkb: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      st_asewkt: {
-        Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: string
-      }
-      st_asgeojson: {
-        Args:
-          | { "": string }
-          | { geog: unknown; maxdecimaldigits?: number; options?: number }
-          | { geom: unknown; maxdecimaldigits?: number; options?: number }
-          | {
-              geom_column?: string
-              maxdecimaldigits?: number
-              pretty_bool?: boolean
-              r: Record<string, unknown>
-            }
-        Returns: string
-      }
-      st_asgml: {
-        Args:
-          | { "": string }
-          | {
-              geog: unknown
-              id?: string
-              maxdecimaldigits?: number
-              nprefix?: string
-              options?: number
-            }
-          | {
-              geog: unknown
-              id?: string
-              maxdecimaldigits?: number
-              nprefix?: string
-              options?: number
-              version: number
-            }
-          | {
-              geom: unknown
-              id?: string
-              maxdecimaldigits?: number
-              nprefix?: string
-              options?: number
-              version: number
-            }
-          | { geom: unknown; maxdecimaldigits?: number; options?: number }
-        Returns: string
-      }
-      st_ashexewkb: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      st_askml: {
-        Args:
-          | { "": string }
-          | { geog: unknown; maxdecimaldigits?: number; nprefix?: string }
-          | { geom: unknown; maxdecimaldigits?: number; nprefix?: string }
-        Returns: string
-      }
-      st_aslatlontext: {
-        Args: { geom: unknown; tmpl?: string }
-        Returns: string
-      }
-      st_asmarc21: {
-        Args: { format?: string; geom: unknown }
-        Returns: string
-      }
-      st_asmvtgeom: {
-        Args: {
-          bounds: unknown
-          buffer?: number
-          clip_geom?: boolean
-          extent?: number
-          geom: unknown
-        }
-        Returns: unknown
-      }
-      st_assvg: {
-        Args:
-          | { "": string }
-          | { geog: unknown; maxdecimaldigits?: number; rel?: number }
-          | { geom: unknown; maxdecimaldigits?: number; rel?: number }
-        Returns: string
-      }
-      st_astext: {
-        Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: string
-      }
-      st_astwkb: {
-        Args:
-          | {
-              geom: unknown[]
-              ids: number[]
-              prec?: number
-              prec_m?: number
-              prec_z?: number
-              with_boxes?: boolean
-              with_sizes?: boolean
-            }
-          | {
-              geom: unknown
-              prec?: number
-              prec_m?: number
-              prec_z?: number
-              with_boxes?: boolean
-              with_sizes?: boolean
-            }
-        Returns: string
-      }
-      st_asx3d: {
-        Args: { geom: unknown; maxdecimaldigits?: number; options?: number }
-        Returns: string
-      }
-      st_azimuth: {
-        Args:
-          | { geog1: unknown; geog2: unknown }
-          | { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      st_boundary: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_boundingdiagonal: {
-        Args: { fits?: boolean; geom: unknown }
-        Returns: unknown
-      }
-      st_buffer: {
-        Args:
-          | { geom: unknown; options?: string; radius: number }
-          | { geom: unknown; quadsegs: number; radius: number }
-        Returns: unknown
-      }
-      st_buildarea: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_centroid: {
-        Args: { "": string } | { "": unknown }
-        Returns: unknown
-      }
-      st_cleangeometry: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_clipbybox2d: {
-        Args: { box: unknown; geom: unknown }
-        Returns: unknown
-      }
-      st_closestpoint: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_clusterintersecting: {
-        Args: { "": unknown[] }
-        Returns: unknown[]
-      }
-      st_collect: {
-        Args: { "": unknown[] } | { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_collectionextract: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_collectionhomogenize: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_concavehull: {
-        Args: {
-          param_allow_holes?: boolean
-          param_geom: unknown
-          param_pctconvex: number
-        }
-        Returns: unknown
-      }
-      st_contains: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_containsproperly: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_convexhull: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_coorddim: {
-        Args: { geometry: unknown }
-        Returns: number
-      }
-      st_coveredby: {
-        Args:
-          | { geog1: unknown; geog2: unknown }
-          | { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_covers: {
-        Args:
-          | { geog1: unknown; geog2: unknown }
-          | { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_crosses: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_curvetoline: {
-        Args: { flags?: number; geom: unknown; tol?: number; toltype?: number }
-        Returns: unknown
-      }
-      st_delaunaytriangles: {
-        Args: { flags?: number; g1: unknown; tolerance?: number }
-        Returns: unknown
-      }
-      st_difference: {
-        Args: { geom1: unknown; geom2: unknown; gridsize?: number }
-        Returns: unknown
-      }
-      st_dimension: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_disjoint: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_distance: {
-        Args:
-          | { geog1: unknown; geog2: unknown; use_spheroid?: boolean }
-          | { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      st_distancesphere: {
-        Args:
-          | { geom1: unknown; geom2: unknown }
-          | { geom1: unknown; geom2: unknown; radius: number }
-        Returns: number
-      }
-      st_distancespheroid: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      st_dump: {
-        Args: { "": unknown }
-        Returns: Database["extensions"]["CompositeTypes"]["geometry_dump"][]
-      }
-      st_dumppoints: {
-        Args: { "": unknown }
-        Returns: Database["extensions"]["CompositeTypes"]["geometry_dump"][]
-      }
-      st_dumprings: {
-        Args: { "": unknown }
-        Returns: Database["extensions"]["CompositeTypes"]["geometry_dump"][]
-      }
-      st_dumpsegments: {
-        Args: { "": unknown }
-        Returns: Database["extensions"]["CompositeTypes"]["geometry_dump"][]
-      }
-      st_dwithin: {
-        Args: {
-          geog1: unknown
-          geog2: unknown
-          tolerance: number
-          use_spheroid?: boolean
-        }
-        Returns: boolean
-      }
-      st_endpoint: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_envelope: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_equals: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_expand: {
-        Args:
-          | { box: unknown; dx: number; dy: number }
-          | { box: unknown; dx: number; dy: number; dz?: number }
-          | { dm?: number; dx: number; dy: number; dz?: number; geom: unknown }
-        Returns: unknown
-      }
-      st_exteriorring: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_flipcoordinates: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_force2d: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_force3d: {
-        Args: { geom: unknown; zvalue?: number }
-        Returns: unknown
-      }
-      st_force3dm: {
-        Args: { geom: unknown; mvalue?: number }
-        Returns: unknown
-      }
-      st_force3dz: {
-        Args: { geom: unknown; zvalue?: number }
-        Returns: unknown
-      }
-      st_force4d: {
-        Args: { geom: unknown; mvalue?: number; zvalue?: number }
-        Returns: unknown
-      }
-      st_forcecollection: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_forcecurve: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_forcepolygonccw: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_forcepolygoncw: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_forcerhr: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_forcesfs: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_generatepoints: {
-        Args:
-          | { area: unknown; npoints: number }
-          | { area: unknown; npoints: number; seed: number }
-        Returns: unknown
-      }
-      st_geogfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geogfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geographyfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geohash: {
-        Args:
-          | { geog: unknown; maxchars?: number }
-          | { geom: unknown; maxchars?: number }
-        Returns: string
-      }
-      st_geomcollfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geomcollfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geometricmedian: {
-        Args: {
-          fail_if_not_converged?: boolean
-          g: unknown
-          max_iter?: number
-          tolerance?: number
-        }
-        Returns: unknown
-      }
-      st_geometryfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geometrytype: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      st_geomfromewkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geomfromewkt: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geomfromgeojson: {
-        Args: { "": Json } | { "": Json } | { "": string }
-        Returns: unknown
-      }
-      st_geomfromgml: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geomfromkml: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geomfrommarc21: {
-        Args: { marc21xml: string }
-        Returns: unknown
-      }
-      st_geomfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geomfromtwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_geomfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_gmltosql: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_hasarc: {
-        Args: { geometry: unknown }
-        Returns: boolean
-      }
-      st_hausdorffdistance: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      st_hexagon: {
-        Args: { cell_i: number; cell_j: number; origin?: unknown; size: number }
-        Returns: unknown
-      }
-      st_hexagongrid: {
-        Args: { bounds: unknown; size: number }
-        Returns: Record<string, unknown>[]
-      }
-      st_interpolatepoint: {
-        Args: { line: unknown; point: unknown }
-        Returns: number
-      }
-      st_intersection: {
-        Args: { geom1: unknown; geom2: unknown; gridsize?: number }
-        Returns: unknown
-      }
-      st_intersects: {
-        Args:
-          | { geog1: unknown; geog2: unknown }
-          | { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_isclosed: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_iscollection: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_isempty: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_ispolygonccw: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_ispolygoncw: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_isring: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_issimple: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_isvalid: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_isvaliddetail: {
-        Args: { flags?: number; geom: unknown }
-        Returns: Database["extensions"]["CompositeTypes"]["valid_detail"]
-      }
-      st_isvalidreason: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      st_isvalidtrajectory: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      st_length: {
-        Args:
-          | { "": string }
-          | { "": unknown }
-          | { geog: unknown; use_spheroid?: boolean }
-        Returns: number
-      }
-      st_length2d: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_letters: {
-        Args: { font?: Json; letters: string }
-        Returns: unknown
-      }
-      st_linecrossingdirection: {
-        Args: { line1: unknown; line2: unknown }
-        Returns: number
-      }
-      st_linefromencodedpolyline: {
-        Args: { nprecision?: number; txtin: string }
-        Returns: unknown
-      }
-      st_linefrommultipoint: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_linefromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_linefromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_linelocatepoint: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      st_linemerge: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_linestringfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_linetocurve: {
-        Args: { geometry: unknown }
-        Returns: unknown
-      }
-      st_locatealong: {
-        Args: { geometry: unknown; leftrightoffset?: number; measure: number }
-        Returns: unknown
-      }
-      st_locatebetween: {
-        Args: {
-          frommeasure: number
-          geometry: unknown
-          leftrightoffset?: number
-          tomeasure: number
-        }
-        Returns: unknown
-      }
-      st_locatebetweenelevations: {
-        Args: { fromelevation: number; geometry: unknown; toelevation: number }
-        Returns: unknown
-      }
-      st_longestline: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_m: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_makebox2d: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_makeline: {
-        Args: { "": unknown[] } | { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_makepolygon: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_makevalid: {
-        Args: { "": unknown } | { geom: unknown; params: string }
-        Returns: unknown
-      }
-      st_maxdistance: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: number
-      }
-      st_maximuminscribedcircle: {
-        Args: { "": unknown }
-        Returns: Record<string, unknown>
-      }
-      st_memsize: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_minimumboundingcircle: {
-        Args: { inputgeom: unknown; segs_per_quarter?: number }
-        Returns: unknown
-      }
-      st_minimumboundingradius: {
-        Args: { "": unknown }
-        Returns: Record<string, unknown>
-      }
-      st_minimumclearance: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_minimumclearanceline: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_mlinefromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_mlinefromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_mpointfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_mpointfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_mpolyfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_mpolyfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_multi: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_multilinefromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_multilinestringfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_multipointfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_multipointfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_multipolyfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_multipolygonfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_ndims: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_node: {
-        Args: { g: unknown }
-        Returns: unknown
-      }
-      st_normalize: {
-        Args: { geom: unknown }
-        Returns: unknown
-      }
-      st_npoints: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_nrings: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_numgeometries: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_numinteriorring: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_numinteriorrings: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_numpatches: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_numpoints: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_offsetcurve: {
-        Args: { distance: number; line: unknown; params?: string }
-        Returns: unknown
-      }
-      st_orderingequals: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_orientedenvelope: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_overlaps: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_perimeter: {
-        Args: { "": unknown } | { geog: unknown; use_spheroid?: boolean }
-        Returns: number
-      }
-      st_perimeter2d: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_pointfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_pointfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_pointm: {
-        Args: {
-          mcoordinate: number
-          srid?: number
-          xcoordinate: number
-          ycoordinate: number
-        }
-        Returns: unknown
-      }
-      st_pointonsurface: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_points: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_pointz: {
-        Args: {
-          srid?: number
-          xcoordinate: number
-          ycoordinate: number
-          zcoordinate: number
-        }
-        Returns: unknown
-      }
-      st_pointzm: {
-        Args: {
-          mcoordinate: number
-          srid?: number
-          xcoordinate: number
-          ycoordinate: number
-          zcoordinate: number
-        }
-        Returns: unknown
-      }
-      st_polyfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_polyfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_polygonfromtext: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_polygonfromwkb: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_polygonize: {
-        Args: { "": unknown[] }
-        Returns: unknown
-      }
-      st_project: {
-        Args: { azimuth: number; distance: number; geog: unknown }
-        Returns: unknown
-      }
-      st_quantizecoordinates: {
-        Args: {
-          g: unknown
-          prec_m?: number
-          prec_x: number
-          prec_y?: number
-          prec_z?: number
-        }
-        Returns: unknown
-      }
-      st_reduceprecision: {
-        Args: { geom: unknown; gridsize: number }
-        Returns: unknown
-      }
-      st_relate: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: string
-      }
-      st_removerepeatedpoints: {
-        Args: { geom: unknown; tolerance?: number }
-        Returns: unknown
-      }
-      st_reverse: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_segmentize: {
-        Args: { geog: unknown; max_segment_length: number }
-        Returns: unknown
-      }
-      st_setsrid: {
-        Args: { geog: unknown; srid: number } | { geom: unknown; srid: number }
-        Returns: unknown
-      }
-      st_sharedpaths: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_shiftlongitude: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_shortestline: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_simplifypolygonhull: {
-        Args: { geom: unknown; is_outer?: boolean; vertex_fraction: number }
-        Returns: unknown
-      }
-      st_split: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_square: {
-        Args: { cell_i: number; cell_j: number; origin?: unknown; size: number }
-        Returns: unknown
-      }
-      st_squaregrid: {
-        Args: { bounds: unknown; size: number }
-        Returns: Record<string, unknown>[]
-      }
-      st_srid: {
-        Args: { geog: unknown } | { geom: unknown }
-        Returns: number
-      }
-      st_startpoint: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      st_subdivide: {
-        Args: { geom: unknown; gridsize?: number; maxvertices?: number }
-        Returns: unknown[]
-      }
-      st_summary: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: string
-      }
-      st_swapordinates: {
-        Args: { geom: unknown; ords: unknown }
-        Returns: unknown
-      }
-      st_symdifference: {
-        Args: { geom1: unknown; geom2: unknown; gridsize?: number }
-        Returns: unknown
-      }
-      st_symmetricdifference: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: unknown
-      }
-      st_tileenvelope: {
-        Args: {
-          bounds?: unknown
-          margin?: number
-          x: number
-          y: number
-          zoom: number
-        }
-        Returns: unknown
-      }
-      st_touches: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_transform: {
-        Args:
-          | { from_proj: string; geom: unknown; to_proj: string }
-          | { from_proj: string; geom: unknown; to_srid: number }
-          | { geom: unknown; to_proj: string }
-        Returns: unknown
-      }
-      st_triangulatepolygon: {
-        Args: { g1: unknown }
-        Returns: unknown
-      }
-      st_union: {
-        Args:
-          | { "": unknown[] }
-          | { geom1: unknown; geom2: unknown }
-          | { geom1: unknown; geom2: unknown; gridsize: number }
-        Returns: unknown
-      }
-      st_voronoilines: {
-        Args: { extend_to?: unknown; g1: unknown; tolerance?: number }
-        Returns: unknown
-      }
-      st_voronoipolygons: {
-        Args: { extend_to?: unknown; g1: unknown; tolerance?: number }
-        Returns: unknown
-      }
-      st_within: {
-        Args: { geom1: unknown; geom2: unknown }
-        Returns: boolean
-      }
-      st_wkbtosql: {
-        Args: { wkb: string }
-        Returns: unknown
-      }
-      st_wkttosql: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      st_wrapx: {
-        Args: { geom: unknown; move: number; wrap: number }
-        Returns: unknown
-      }
-      st_x: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_xmax: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_xmin: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_y: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_ymax: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_ymin: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_z: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_zmax: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_zmflag: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      st_zmin: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      svals: {
-        Args: { "": unknown }
-        Returns: string[]
-      }
-      text: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      text_soundex: {
-        Args: { "": string }
-        Returns: string
-      }
-      text_to_bytea: {
-        Args: { data: string }
-        Returns: string
-      }
-      unaccent: {
-        Args: { "": string }
-        Returns: string
-      }
-      unaccent_init: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      unlockrows: {
-        Args: { "": string }
-        Returns: number
-      }
-      updategeometrysrid: {
-        Args: {
-          catalogn_name: string
-          column_name: string
-          new_srid_in: number
-          schema_name: string
-          table_name: string
-        }
-        Returns: string
-      }
-      urlencode: {
-        Args: { data: Json } | { string: string } | { string: string }
-        Returns: string
-      }
-      uuid_generate_v1: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      uuid_generate_v1mc: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      uuid_generate_v3: {
-        Args: { name: string; namespace: string }
-        Returns: string
-      }
-      uuid_generate_v4: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      uuid_generate_v5: {
-        Args: { name: string; namespace: string }
-        Returns: string
-      }
-      uuid_nil: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      uuid_ns_dns: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      uuid_ns_oid: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      uuid_ns_url: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      uuid_ns_x500: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      geometry_dump: {
-        path: number[] | null
-        geom: unknown | null
-      }
-      http_header: {
-        field: string | null
-        value: string | null
-      }
-      http_request: {
-        method: unknown | null
-        uri: string | null
-        headers:
-          | Database["extensions"]["CompositeTypes"]["http_header"][]
-          | null
-        content_type: string | null
-        content: string | null
-      }
-      http_response: {
-        status: number | null
-        content_type: string | null
-        headers:
-          | Database["extensions"]["CompositeTypes"]["http_header"][]
-          | null
-        content: string | null
-      }
-      valid_detail: {
-        valid: boolean | null
-        reason: string | null
-        location: unknown | null
-      }
-    }
-  }
-  graphql: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      _internal_resolve: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-      comment_directive: {
-        Args: { comment_: string }
-        Returns: Json
-      }
-      exception: {
-        Args: { message: string }
-        Returns: string
-      }
-      get_schema_version: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      resolve: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   identity: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_updated_by_id_fkey"
+            columns: ["updated_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_audit_logs_created_by_id"
+            columns: ["created_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_audit_logs_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_logs_default: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2025_10: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2025_11: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2025_12: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2026_01: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2026_02: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2026_03: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2026_04: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2026_05: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs_p2026_06: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          created_by_id: string | null
+          error_message: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string | null
+          resource_type: string
+          salon_id: string | null
+          session_id: string | null
+          severity: string
+          status: string
+          updated_by_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          created_by_id?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          salon_id?: string | null
+          session_id?: string | null
+          severity?: string
+          status?: string
+          updated_by_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -6320,42 +5491,48 @@ export type Database = {
           avatar_url: string | null
           cover_image_url: string | null
           created_at: string
+          created_by_id: string | null
           full_name: string | null
           id: string
           interests: string[] | null
           profile_id: string
-          search_vector: unknown | null
+          search_vector: unknown
           social_profiles: Json | null
           tags: string[] | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           avatar_thumbnail_url?: string | null
           avatar_url?: string | null
           cover_image_url?: string | null
           created_at?: string
+          created_by_id?: string | null
           full_name?: string | null
           id?: string
           interests?: string[] | null
           profile_id: string
-          search_vector?: unknown | null
+          search_vector?: unknown
           social_profiles?: Json | null
           tags?: string[] | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           avatar_thumbnail_url?: string | null
           avatar_url?: string | null
           cover_image_url?: string | null
           created_at?: string
+          created_by_id?: string | null
           full_name?: string | null
           id?: string
           interests?: string[] | null
           profile_id?: string
-          search_vector?: unknown | null
+          search_vector?: unknown
           social_profiles?: Json | null
           tags?: string[] | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
           {
@@ -6365,12 +5542,27 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_profiles_metadata_profiles_created_by_id"
+            columns: ["created_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_profiles_metadata_profiles_updated_by_id"
+            columns: ["updated_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       profiles_preferences: {
         Row: {
           country_code: string | null
           created_at: string
+          created_by_id: string | null
           currency_code: string | null
           id: string
           locale: string | null
@@ -6378,10 +5570,12 @@ export type Database = {
           profile_id: string
           timezone: string | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           country_code?: string | null
           created_at?: string
+          created_by_id?: string | null
           currency_code?: string | null
           id?: string
           locale?: string | null
@@ -6389,10 +5583,12 @@ export type Database = {
           profile_id: string
           timezone?: string | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           country_code?: string | null
           created_at?: string
+          created_by_id?: string | null
           currency_code?: string | null
           id?: string
           locale?: string | null
@@ -6400,12 +5596,27 @@ export type Database = {
           profile_id?: string
           timezone?: string | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "fk_profiles_preferences_profile_id"
             columns: ["profile_id"]
             isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_profiles_preferences_profiles_created_by_id"
+            columns: ["created_by_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_profiles_preferences_profiles_updated_by_id"
+            columns: ["updated_by_id"]
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -6511,7 +5722,7 @@ export type Database = {
       }
     }
     Views: {
-      audit_logs: {
+      audit_logs_view: {
         Row: {
           action: string | null
           created_at: string | null
@@ -6522,7 +5733,7 @@ export type Database = {
           error_message: string | null
           id: string | null
           impersonator_id: string | null
-          ip_address: unknown | null
+          ip_address: unknown
           is_success: boolean | null
           new_values: Json | null
           old_values: Json | null
@@ -6541,7 +5752,7 @@ export type Database = {
           error_message?: string | null
           id?: string | null
           impersonator_id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_success?: boolean | null
           new_values?: Json | null
           old_values?: Json | null
@@ -6560,7 +5771,7 @@ export type Database = {
           error_message?: string | null
           id?: string | null
           impersonator_id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_success?: boolean | null
           new_values?: Json | null
           old_values?: Json | null
@@ -6571,12 +5782,12 @@ export type Database = {
         }
         Relationships: []
       }
-      security_audit_log: {
+      security_audit_log_view: {
         Row: {
           created_at: string | null
           event_type: string | null
           id: string | null
-          ip_address: unknown | null
+          ip_address: unknown
           metadata: Json | null
           request_id: string | null
           salon_id: string | null
@@ -6589,7 +5800,7 @@ export type Database = {
           created_at?: string | null
           event_type?: string | null
           id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           metadata?: Json | null
           request_id?: never
           salon_id?: string | null
@@ -6602,7 +5813,7 @@ export type Database = {
           created_at?: string | null
           event_type?: string | null
           id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           metadata?: Json | null
           request_id?: never
           salon_id?: string | null
@@ -6615,10 +5826,7 @@ export type Database = {
       }
     }
     Functions: {
-      anonymize_user: {
-        Args: { p_user_id: string }
-        Returns: undefined
-      }
+      anonymize_user: { Args: { p_user_id: string }; Returns: undefined }
       check_rate_limit: {
         Args: {
           p_key: string
@@ -6626,6 +5834,20 @@ export type Database = {
           p_window_seconds?: number
         }
         Returns: boolean
+      }
+      create_audit_log: {
+        Args: {
+          p_action: string
+          p_metadata?: Json
+          p_new_values?: Json
+          p_old_values?: Json
+          p_resource_id?: string
+          p_resource_type: string
+          p_salon_id?: string
+          p_severity?: string
+          p_user_id: string
+        }
+        Returns: string
       }
       decrypt_mfa_secret: {
         Args: {
@@ -6636,24 +5858,15 @@ export type Database = {
         }
         Returns: string
       }
-      decrypt_mfa_secret_vault: {
-        Args: { encrypted: string }
-        Returns: string
-      }
-      detect_access_anomaly: {
-        Args: { p_user_id: string }
-        Returns: boolean
-      }
+      decrypt_mfa_secret_vault: { Args: { encrypted: string }; Returns: string }
+      detect_access_anomaly: { Args: { p_user_id: string }; Returns: boolean }
       encrypt_mfa_secret: {
         Args: { p_factor_id: string; p_secret: string }
         Returns: Json
       }
-      encrypt_mfa_secret_vault: {
-        Args: { plaintext: string }
-        Returns: string
-      }
+      encrypt_mfa_secret_vault: { Args: { plaintext: string }; Returns: string }
       get_my_profile: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           avatar_url: string
           created_at: string
@@ -6667,14 +5880,8 @@ export type Database = {
           username: string
         }[]
       }
-      get_profile_summary: {
-        Args: { p_user_id?: string }
-        Returns: Json
-      }
-      get_user_salon_ids: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
+      get_profile_summary: { Args: { p_user_id?: string }; Returns: Json }
+      get_user_salon_ids: { Args: never; Returns: string[] }
       manage_my_mfa: {
         Args: { action: string; factor_name?: string; factor_type?: string }
         Returns: Json
@@ -6691,816 +5898,122 @@ export type Database = {
       [_ in never]: never
     }
   }
-  inventory: {
+  integration: {
     Tables: {
-      product_categories: {
+      place_registry: {
         Row: {
-          created_at: string
-          created_by_id: string
-          description: string | null
-          display_order: number | null
-          id: string
-          is_active: boolean
-          name: string
-          parent_id: string | null
-          salon_id: string
-          updated_at: string
-          updated_by_id: string
+          created_at: string | null
+          formatted_address: string | null
+          location_lat: number | null
+          location_lng: number | null
+          metadata: Json | null
+          place_id: string
+          place_name: string | null
+          place_types: string[] | null
+          updated_at: string | null
+          viewport: Json | null
         }
         Insert: {
-          created_at?: string
-          created_by_id: string
-          description?: string | null
-          display_order?: number | null
-          id?: string
-          is_active?: boolean
-          name: string
-          parent_id?: string | null
-          salon_id: string
-          updated_at?: string
-          updated_by_id: string
+          created_at?: string | null
+          formatted_address?: string | null
+          location_lat?: number | null
+          location_lng?: number | null
+          metadata?: Json | null
+          place_id: string
+          place_name?: string | null
+          place_types?: string[] | null
+          updated_at?: string | null
+          viewport?: Json | null
         }
         Update: {
-          created_at?: string
-          created_by_id?: string
-          description?: string | null
-          display_order?: number | null
-          id?: string
-          is_active?: boolean
-          name?: string
-          parent_id?: string | null
-          salon_id?: string
-          updated_at?: string
-          updated_by_id?: string
+          created_at?: string | null
+          formatted_address?: string | null
+          location_lat?: number | null
+          location_lng?: number | null
+          metadata?: Json | null
+          place_id?: string
+          place_name?: string | null
+          place_types?: string[] | null
+          updated_at?: string | null
+          viewport?: Json | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_product_categories_parent_id"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "product_categories"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      product_usage: {
+      stripe_subscriptions: {
         Row: {
-          appointment_id: string
-          cost_at_time: number | null
-          created_at: string
-          id: string
-          location_id: string
-          notes: string | null
-          performed_by_id: string | null
-          product_id: string
-          quantity_used: number
-          updated_at: string
+          cancel_at: string | null
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          metadata: Json | null
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string
+          updated_at: string | null
         }
         Insert: {
-          appointment_id: string
-          cost_at_time?: number | null
-          created_at?: string
-          id?: string
-          location_id: string
-          notes?: string | null
-          performed_by_id?: string | null
-          product_id: string
-          quantity_used: number
-          updated_at?: string
+          cancel_at?: string | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          metadata?: Json | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id: string
+          updated_at?: string | null
         }
         Update: {
-          appointment_id?: string
-          cost_at_time?: number | null
-          created_at?: string
-          id?: string
-          location_id?: string
-          notes?: string | null
-          performed_by_id?: string | null
-          product_id?: string
-          quantity_used?: number
-          updated_at?: string
+          cancel_at?: string | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          metadata?: Json | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string
+          updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_product_usage_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_product_usage_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      products: {
+      vault_keys: {
         Row: {
-          archive_reason: string | null
-          archived_at: string | null
-          archived_by: string | null
-          category_id: string | null
-          cost_price: number | null
-          created_at: string
-          created_by_id: string
-          deleted_at: string | null
-          deleted_by_id: string | null
-          description: string | null
-          id: string
+          algorithm: string | null
+          created_at: string | null
+          expires_at: string | null
           is_active: boolean | null
-          is_tracked: boolean | null
-          name: string
-          reorder_point: number | null
-          reorder_quantity: number | null
-          retail_price: number | null
-          salon_id: string
-          sku: string | null
-          supplier_id: string | null
-          unit_of_measure: string | null
-          updated_at: string
-          updated_by_id: string
+          key_id: string
+          key_name: string
+          key_type: string
+          rotated_at: string | null
         }
         Insert: {
-          archive_reason?: string | null
-          archived_at?: string | null
-          archived_by?: string | null
-          category_id?: string | null
-          cost_price?: number | null
-          created_at?: string
-          created_by_id: string
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          description?: string | null
-          id?: string
+          algorithm?: string | null
+          created_at?: string | null
+          expires_at?: string | null
           is_active?: boolean | null
-          is_tracked?: boolean | null
-          name: string
-          reorder_point?: number | null
-          reorder_quantity?: number | null
-          retail_price?: number | null
-          salon_id: string
-          sku?: string | null
-          supplier_id?: string | null
-          unit_of_measure?: string | null
-          updated_at?: string
-          updated_by_id: string
+          key_id?: string
+          key_name: string
+          key_type: string
+          rotated_at?: string | null
         }
         Update: {
-          archive_reason?: string | null
-          archived_at?: string | null
-          archived_by?: string | null
-          category_id?: string | null
-          cost_price?: number | null
-          created_at?: string
-          created_by_id?: string
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          description?: string | null
-          id?: string
+          algorithm?: string | null
+          created_at?: string | null
+          expires_at?: string | null
           is_active?: boolean | null
-          is_tracked?: boolean | null
-          name?: string
-          reorder_point?: number | null
-          reorder_quantity?: number | null
-          retail_price?: number | null
-          salon_id?: string
-          sku?: string | null
-          supplier_id?: string | null
-          unit_of_measure?: string | null
-          updated_at?: string
-          updated_by_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_products_category_id"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "product_categories"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_products_supplier_id"
-            columns: ["supplier_id"]
-            isOneToOne: false
-            referencedRelation: "suppliers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      purchase_order_items: {
-        Row: {
-          created_at: string
-          id: string
-          product_id: string
-          purchase_order_id: string
-          quantity_ordered: number
-          quantity_received: number | null
-          total_price: number | null
-          unit_price: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          product_id: string
-          purchase_order_id: string
-          quantity_ordered: number
-          quantity_received?: number | null
-          total_price?: number | null
-          unit_price: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          product_id?: string
-          purchase_order_id?: string
-          quantity_ordered?: number
-          quantity_received?: number | null
-          total_price?: number | null
-          unit_price?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_purchase_order_items_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_purchase_order_items_purchase_order_id"
-            columns: ["purchase_order_id"]
-            isOneToOne: false
-            referencedRelation: "purchase_orders"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      purchase_orders: {
-        Row: {
-          actual_delivery_at: string | null
-          created_at: string
-          created_by_id: string
-          expected_delivery_at: string | null
-          id: string
-          notes: string | null
-          order_number: string
-          ordered_at: string
-          salon_id: string
-          shipping_cost: number | null
-          status: string
-          subtotal: number | null
-          supplier_id: string | null
-          tax_amount: number | null
-          total_amount: number | null
-          updated_at: string
-          updated_by_id: string
-        }
-        Insert: {
-          actual_delivery_at?: string | null
-          created_at?: string
-          created_by_id: string
-          expected_delivery_at?: string | null
-          id?: string
-          notes?: string | null
-          order_number: string
-          ordered_at?: string
-          salon_id: string
-          shipping_cost?: number | null
-          status?: string
-          subtotal?: number | null
-          supplier_id?: string | null
-          tax_amount?: number | null
-          total_amount?: number | null
-          updated_at?: string
-          updated_by_id: string
-        }
-        Update: {
-          actual_delivery_at?: string | null
-          created_at?: string
-          created_by_id?: string
-          expected_delivery_at?: string | null
-          id?: string
-          notes?: string | null
-          order_number?: string
-          ordered_at?: string
-          salon_id?: string
-          shipping_cost?: number | null
-          status?: string
-          subtotal?: number | null
-          supplier_id?: string | null
-          tax_amount?: number | null
-          total_amount?: number | null
-          updated_at?: string
-          updated_by_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_purchase_orders_supplier_id"
-            columns: ["supplier_id"]
-            isOneToOne: false
-            referencedRelation: "suppliers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      service_product_usage: {
-        Row: {
-          created_at: string
-          id: string
-          is_optional: boolean
-          product_id: string
-          quantity_per_service: number
-          service_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_optional?: boolean
-          product_id: string
-          quantity_per_service?: number
-          service_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_optional?: boolean
-          product_id?: string
-          quantity_per_service?: number
-          service_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_service_product_usage_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      stock_alerts: {
-        Row: {
-          alert_level: string
-          alert_type: string
-          created_at: string
-          current_quantity: number | null
-          id: string
-          is_resolved: boolean
-          location_id: string | null
-          message: string | null
-          product_id: string
-          resolved_at: string | null
-          resolved_by_id: string | null
-          threshold_quantity: number | null
-          updated_at: string
-        }
-        Insert: {
-          alert_level: string
-          alert_type: string
-          created_at?: string
-          current_quantity?: number | null
-          id?: string
-          is_resolved?: boolean
-          location_id?: string | null
-          message?: string | null
-          product_id: string
-          resolved_at?: string | null
-          resolved_by_id?: string | null
-          threshold_quantity?: number | null
-          updated_at?: string
-        }
-        Update: {
-          alert_level?: string
-          alert_type?: string
-          created_at?: string
-          current_quantity?: number | null
-          id?: string
-          is_resolved?: boolean
-          location_id?: string | null
-          message?: string | null
-          product_id?: string
-          resolved_at?: string | null
-          resolved_by_id?: string | null
-          threshold_quantity?: number | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_stock_alerts_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_alerts_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      stock_levels: {
-        Row: {
-          available_quantity: number | null
-          created_at: string
-          id: string
-          last_counted_at: string | null
-          location_id: string
-          product_id: string
-          quantity: number
-          reserved_quantity: number | null
-          updated_at: string
-        }
-        Insert: {
-          available_quantity?: number | null
-          created_at?: string
-          id?: string
-          last_counted_at?: string | null
-          location_id: string
-          product_id: string
-          quantity?: number
-          reserved_quantity?: number | null
-          updated_at?: string
-        }
-        Update: {
-          available_quantity?: number | null
-          created_at?: string
-          id?: string
-          last_counted_at?: string | null
-          location_id?: string
-          product_id?: string
-          quantity?: number
-          reserved_quantity?: number | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_stock_levels_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_levels_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      stock_locations: {
-        Row: {
-          created_at: string
-          created_by_id: string
-          description: string | null
-          id: string
-          is_active: boolean
-          is_default: boolean
-          location_id: string | null
-          name: string
-          salon_id: string
-          updated_at: string
-          updated_by_id: string
-        }
-        Insert: {
-          created_at?: string
-          created_by_id: string
-          description?: string | null
-          id?: string
-          is_active?: boolean
-          is_default?: boolean
-          location_id?: string | null
-          name: string
-          salon_id: string
-          updated_at?: string
-          updated_by_id: string
-        }
-        Update: {
-          created_at?: string
-          created_by_id?: string
-          description?: string | null
-          id?: string
-          is_active?: boolean
-          is_default?: boolean
-          location_id?: string | null
-          name?: string
-          salon_id?: string
-          updated_at?: string
-          updated_by_id?: string
-        }
-        Relationships: []
-      }
-      stock_movement_adjustments: {
-        Row: {
-          adjusted_by: string
-          adjustment_reason: string
-          created_at: string
-          id: string
-          movement_id: string
-        }
-        Insert: {
-          adjusted_by: string
-          adjustment_reason: string
-          created_at?: string
-          id?: string
-          movement_id: string
-        }
-        Update: {
-          adjusted_by?: string
-          adjustment_reason?: string
-          created_at?: string
-          id?: string
-          movement_id?: string
-        }
-        Relationships: []
-      }
-      stock_movement_appointments: {
-        Row: {
-          appointment_id: string
-          created_at: string
-          id: string
-          movement_id: string
-        }
-        Insert: {
-          appointment_id: string
-          created_at?: string
-          id?: string
-          movement_id: string
-        }
-        Update: {
-          appointment_id?: string
-          created_at?: string
-          id?: string
-          movement_id?: string
-        }
-        Relationships: []
-      }
-      stock_movement_purchase_orders: {
-        Row: {
-          created_at: string
-          id: string
-          movement_id: string
-          purchase_order_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          movement_id: string
-          purchase_order_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          movement_id?: string
-          purchase_order_id?: string
-        }
-        Relationships: []
-      }
-      stock_movement_references: {
-        Row: {
-          created_at: string
-          id: string
-          movement_id: string
-          reference_id: string
-          reference_schema: string
-          reference_table: string
-          registry_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          movement_id: string
-          reference_id: string
-          reference_schema: string
-          reference_table: string
-          registry_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          movement_id?: string
-          reference_id?: string
-          reference_schema?: string
-          reference_table?: string
-          registry_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_stock_movement_refs_movement"
-            columns: ["movement_id"]
-            isOneToOne: false
-            referencedRelation: "stock_movements"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movement_refs_registry_id"
-            columns: ["registry_id"]
-            isOneToOne: false
-            referencedRelation: "stock_reference_registry"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      stock_movements: {
-        Row: {
-          cost_price: number | null
-          created_at: string
-          from_location_id: string | null
-          id: string
-          location_id: string
-          movement_type: string
-          notes: string | null
-          performed_by_id: string | null
-          product_id: string
-          quantity: number
-          to_location_id: string | null
-          updated_at: string
-        }
-        Insert: {
-          cost_price?: number | null
-          created_at?: string
-          from_location_id?: string | null
-          id?: string
-          location_id: string
-          movement_type?: string
-          notes?: string | null
-          performed_by_id?: string | null
-          product_id: string
-          quantity: number
-          to_location_id?: string | null
-          updated_at?: string
-        }
-        Update: {
-          cost_price?: number | null
-          created_at?: string
-          from_location_id?: string | null
-          id?: string
-          location_id?: string
-          movement_type?: string
-          notes?: string | null
-          performed_by_id?: string | null
-          product_id?: string
-          quantity?: number
-          to_location_id?: string | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_stock_movements_from_location_id"
-            columns: ["from_location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_to_location_id"
-            columns: ["to_location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      stock_reference_registry: {
-        Row: {
-          id: string
-          reference_id: string
-          reference_schema: string
-          reference_table: string
-        }
-        Insert: {
-          id?: string
-          reference_id: string
-          reference_schema: string
-          reference_table: string
-        }
-        Update: {
-          id?: string
-          reference_id?: string
-          reference_schema?: string
-          reference_table?: string
-        }
-        Relationships: []
-      }
-      suppliers: {
-        Row: {
-          address: string | null
-          contact_name: string | null
-          created_at: string
-          created_by_id: string
-          email: string | null
-          id: string
-          is_active: boolean
-          name: string
-          notes: string | null
-          payment_terms: string | null
-          phone: string | null
-          salon_id: string
-          updated_at: string
-          updated_by_id: string
-          website: string | null
-        }
-        Insert: {
-          address?: string | null
-          contact_name?: string | null
-          created_at?: string
-          created_by_id: string
-          email?: string | null
-          id?: string
-          is_active?: boolean
-          name: string
-          notes?: string | null
-          payment_terms?: string | null
-          phone?: string | null
-          salon_id: string
-          updated_at?: string
-          updated_by_id: string
-          website?: string | null
-        }
-        Update: {
-          address?: string | null
-          contact_name?: string | null
-          created_at?: string
-          created_by_id?: string
-          email?: string | null
-          id?: string
-          is_active?: boolean
-          name?: string
-          notes?: string | null
-          payment_terms?: string | null
-          phone?: string | null
-          salon_id?: string
-          updated_at?: string
-          updated_by_id?: string
-          website?: string | null
+          key_id?: string
+          key_name?: string
+          key_type?: string
+          rotated_at?: string | null
         }
         Relationships: []
       }
     }
     Views: {
-      stock_movement_references_view: {
-        Row: {
-          created_at: string | null
-          movement_id: string | null
-          reference_id: string | null
-          reference_type: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      bulk_update_stock_levels: {
-        Args: { p_updates: Json[] }
-        Returns: {
-          error_message: string
-          location_id: string
-          new_quantity: number
-          old_quantity: number
-          product_id: string
-          success: boolean
-        }[]
-      }
-      can_archive_product: {
-        Args: { product_id: string }
-        Returns: boolean
-      }
-      check_availability: {
-        Args:
-          | Record<PropertyKey, never>
-          | { p_location_id: string; p_product_id: string; p_quantity: number }
-        Returns: boolean
-      }
-      migrate_stock_movement_references: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
@@ -7509,153 +6022,1062 @@ export type Database = {
       [_ in never]: never
     }
   }
-  net: {
+  monitoring: {
     Tables: {
-      _http_response: {
+      cache_hit_stats: {
         Row: {
-          content: string | null
-          content_type: string | null
-          created: string
-          error_msg: string | null
-          headers: Json | null
-          id: number | null
-          status_code: number | null
-          timed_out: boolean | null
+          cache_hit_ratio: number | null
+          created_at: string | null
+          heap_blocks_hit: number
+          heap_blocks_read: number
+          id: string
+          index_blocks_hit: number | null
+          index_blocks_read: number | null
+          schema_name: string
+          table_name: string
         }
         Insert: {
-          content?: string | null
-          content_type?: string | null
-          created?: string
-          error_msg?: string | null
-          headers?: Json | null
-          id?: number | null
-          status_code?: number | null
-          timed_out?: boolean | null
+          cache_hit_ratio?: number | null
+          created_at?: string | null
+          heap_blocks_hit: number
+          heap_blocks_read: number
+          id?: string
+          index_blocks_hit?: number | null
+          index_blocks_read?: number | null
+          schema_name: string
+          table_name: string
         }
         Update: {
-          content?: string | null
-          content_type?: string | null
-          created?: string
-          error_msg?: string | null
-          headers?: Json | null
-          id?: number | null
-          status_code?: number | null
-          timed_out?: boolean | null
+          cache_hit_ratio?: number | null
+          created_at?: string | null
+          heap_blocks_hit?: number
+          heap_blocks_read?: number
+          id?: string
+          index_blocks_hit?: number | null
+          index_blocks_read?: number | null
+          schema_name?: string
+          table_name?: string
         }
         Relationships: []
       }
-      http_request_queue: {
+      connection_stats: {
         Row: {
-          body: string | null
-          headers: Json | null
-          id: number
-          method: string
-          timeout_milliseconds: number
-          url: string
+          active_connections: number
+          created_at: string | null
+          id: string
+          idle_connections: number
+          max_connections: number
+          total_connections: number
+          utilization_percentage: number
         }
         Insert: {
-          body?: string | null
-          headers?: Json | null
-          id?: number
-          method: string
-          timeout_milliseconds: number
-          url: string
+          active_connections: number
+          created_at?: string | null
+          id?: string
+          idle_connections: number
+          max_connections: number
+          total_connections: number
+          utilization_percentage: number
         }
         Update: {
-          body?: string | null
-          headers?: Json | null
-          id?: number
-          method?: string
-          timeout_milliseconds?: number
-          url?: string
+          active_connections?: number
+          created_at?: string | null
+          id?: string
+          idle_connections?: number
+          max_connections?: number
+          total_connections?: number
+          utilization_percentage?: number
+        }
+        Relationships: []
+      }
+      error_log: {
+        Row: {
+          application_name: string | null
+          client_addr: unknown
+          created_at: string | null
+          error_code: string | null
+          error_detail: string | null
+          error_hint: string | null
+          error_message: string
+          id: string
+          query_text: string | null
+          severity: string | null
+          user_id: string | null
+        }
+        Insert: {
+          application_name?: string | null
+          client_addr?: unknown
+          created_at?: string | null
+          error_code?: string | null
+          error_detail?: string | null
+          error_hint?: string | null
+          error_message: string
+          id?: string
+          query_text?: string | null
+          severity?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          application_name?: string | null
+          client_addr?: unknown
+          created_at?: string | null
+          error_code?: string | null
+          error_detail?: string | null
+          error_hint?: string | null
+          error_message?: string
+          id?: string
+          query_text?: string | null
+          severity?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      maintenance_log: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          operation_type: string
+          rows_affected: number | null
+          schema_name: string
+          started_at: string
+          status: string | null
+          table_name: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          operation_type: string
+          rows_affected?: number | null
+          schema_name: string
+          started_at: string
+          status?: string | null
+          table_name: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          operation_type?: string
+          rows_affected?: number | null
+          schema_name?: string
+          started_at?: string
+          status?: string | null
+          table_name?: string
+        }
+        Relationships: []
+      }
+      migration_history: {
+        Row: {
+          applied_at: string | null
+          applied_by: string | null
+          error_message: string | null
+          execution_time_ms: number | null
+          id: string
+          migration_name: string
+          status: string | null
+        }
+        Insert: {
+          applied_at?: string | null
+          applied_by?: string | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          migration_name: string
+          status?: string | null
+        }
+        Update: {
+          applied_at?: string | null
+          applied_by?: string | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          migration_name?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      query_stats: {
+        Row: {
+          application_name: string | null
+          client_addr: unknown
+          created_at: string | null
+          execution_time_ms: number
+          id: string
+          query_hash: string
+          query_text: string | null
+          rows_affected: number | null
+          rows_returned: number | null
+          user_id: string | null
+        }
+        Insert: {
+          application_name?: string | null
+          client_addr?: unknown
+          created_at?: string | null
+          execution_time_ms: number
+          id?: string
+          query_hash: string
+          query_text?: string | null
+          rows_affected?: number | null
+          rows_returned?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          application_name?: string | null
+          client_addr?: unknown
+          created_at?: string | null
+          execution_time_ms?: number
+          id?: string
+          query_hash?: string
+          query_text?: string | null
+          rows_affected?: number | null
+          rows_returned?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      slow_query_log: {
+        Row: {
+          application_name: string | null
+          created_at: string | null
+          execution_time_ms: number
+          explain_plan: string | null
+          id: string
+          query_text: string
+          user_id: string | null
+        }
+        Insert: {
+          application_name?: string | null
+          created_at?: string | null
+          execution_time_ms: number
+          explain_plan?: string | null
+          id?: string
+          query_text: string
+          user_id?: string | null
+        }
+        Update: {
+          application_name?: string | null
+          created_at?: string | null
+          execution_time_ms?: number
+          explain_plan?: string | null
+          id?: string
+          query_text?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      table_size_history: {
+        Row: {
+          created_at: string | null
+          dead_row_count: number | null
+          id: string
+          indexes_size_bytes: number
+          last_analyze: string | null
+          last_vacuum: string | null
+          row_count: number | null
+          schema_name: string
+          table_name: string
+          table_size_bytes: number
+          total_size_bytes: number
+        }
+        Insert: {
+          created_at?: string | null
+          dead_row_count?: number | null
+          id?: string
+          indexes_size_bytes: number
+          last_analyze?: string | null
+          last_vacuum?: string | null
+          row_count?: number | null
+          schema_name: string
+          table_name: string
+          table_size_bytes: number
+          total_size_bytes: number
+        }
+        Update: {
+          created_at?: string | null
+          dead_row_count?: number | null
+          id?: string
+          indexes_size_bytes?: number
+          last_analyze?: string | null
+          last_vacuum?: string | null
+          row_count?: number | null
+          schema_name?: string
+          table_name?: string
+          table_size_bytes?: number
+          total_size_bytes?: number
         }
         Relationships: []
       }
     }
     Views: {
-      [_ in never]: never
+      cache_performance_summary_view: {
+        Row: {
+          avg_cache_hit_ratio: number | null
+          measurements: number | null
+          min_cache_hit_ratio: number | null
+          schema_name: string | null
+          table_name: string | null
+        }
+        Relationships: []
+      }
+      growth_forecast_view: {
+        Row: {
+          calculated_at: string | null
+          current_size: string | null
+          current_size_bytes: number | null
+          daily_growth: string | null
+          daily_growth_bytes: number | null
+          daily_row_growth: number | null
+          forecast_30d: string | null
+          forecast_7d: string | null
+          forecast_90d: string | null
+          growth_category: string | null
+          recommendation: string | null
+          schemaname: unknown
+          tablename: unknown
+        }
+        Relationships: []
+      }
+      health_dashboard_view: {
+        Row: {
+          avg_query_time_ms: number | null
+          critical_security_issues: number | null
+          critical_slow_queries: number | null
+          health_score: number | null
+          high_bloat_tables: number | null
+          high_security_issues: number | null
+          high_slow_queries: number | null
+          last_check_at: string | null
+          medium_bloat_tables: number | null
+          medium_security_issues: number | null
+          overall_status: string | null
+          protected_tables: number | null
+          rls_coverage_percentage: number | null
+          tables_without_policies: number | null
+          tables_without_rls: number | null
+          total_bloat_mb: number | null
+          total_database_size_mb: number | null
+          total_security_issues: number | null
+          total_tables: number | null
+          unused_large_indexes: number | null
+          unused_small_indexes: number | null
+          wasted_index_space_mb: number | null
+          worst_query_time_ms: number | null
+        }
+        Relationships: []
+      }
+      inactive_sessions_not_cleaned: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          is_active: boolean | null
+          issue: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          issue?: never
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          issue?: never
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_sessions_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles_missing_metadata"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      index_usage_stats: {
+        Row: {
+          avg_tuples_per_scan: number | null
+          idx_scan: number | null
+          idx_tup_fetch: number | null
+          idx_tup_read: number | null
+          index_size: string | null
+          index_size_bytes: number | null
+          indexname: unknown
+          recommendation: string | null
+          schemaname: unknown
+          tablename: unknown
+          usage_category: string | null
+        }
+        Relationships: []
+      }
+      invalid_operating_hours: {
+        Row: {
+          close_time: string | null
+          created_at: string | null
+          day_of_week: Database["public"]["Enums"]["day_of_week"] | null
+          id: string | null
+          issue: string | null
+          open_time: string | null
+          salon_id: string | null
+        }
+        Insert: {
+          close_time?: string | null
+          created_at?: string | null
+          day_of_week?: Database["public"]["Enums"]["day_of_week"] | null
+          id?: string | null
+          issue?: never
+          open_time?: string | null
+          salon_id?: string | null
+        }
+        Update: {
+          close_time?: string | null
+          created_at?: string | null
+          day_of_week?: Database["public"]["Enums"]["day_of_week"] | null
+          id?: string | null
+          issue?: never
+          open_time?: string | null
+          salon_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_operating_hours_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "orphaned_salons_missing_chain"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_operating_hours_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_1"]
+          },
+          {
+            foreignKeyName: "fk_operating_hours_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_2"]
+          },
+          {
+            foreignKeyName: "fk_operating_hours_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_contact_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_operating_hours_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_location"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orphaned_contacts_missing_salon: {
+        Row: {
+          created_at: string | null
+          issue: string | null
+          salon_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_contact_details_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "orphaned_salons_missing_chain"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_contact_details_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_1"]
+          },
+          {
+            foreignKeyName: "fk_salon_contact_details_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_2"]
+          },
+          {
+            foreignKeyName: "fk_salon_contact_details_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons_missing_contact_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_contact_details_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons_missing_location"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orphaned_locations_missing_salon: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          salon_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_locations_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "orphaned_salons_missing_chain"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_locations_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_1"]
+          },
+          {
+            foreignKeyName: "fk_salon_locations_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_2"]
+          },
+          {
+            foreignKeyName: "fk_salon_locations_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_contact_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_locations_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_location"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orphaned_review_votes_missing_review: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          review_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_review_helpful_votes_review_id"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews_invalid_rating"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orphaned_salons_missing_chain: {
+        Row: {
+          chain_id: string | null
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          name: string | null
+        }
+        Relationships: []
+      }
+      orphaned_service_pricing_missing_service: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          service_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_service_pricing_service_id"
+            columns: ["service_id"]
+            isOneToOne: true
+            referencedRelation: "orphaned_services_missing_category"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_service_pricing_service_id"
+            columns: ["service_id"]
+            isOneToOne: true
+            referencedRelation: "services_invalid_pricing"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_service_pricing_service_id"
+            columns: ["service_id"]
+            isOneToOne: true
+            referencedRelation: "services_negative_profit"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orphaned_services_missing_category: {
+        Row: {
+          category_id: string | null
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          name: string | null
+        }
+        Relationships: []
+      }
+      orphaned_sessions_missing_profile: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_sessions_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles_missing_metadata"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orphaned_settings_missing_salon: {
+        Row: {
+          created_at: string | null
+          issue: string | null
+          salon_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_settings_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "orphaned_salons_missing_chain"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_settings_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_1"]
+          },
+          {
+            foreignKeyName: "fk_salon_settings_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_2"]
+          },
+          {
+            foreignKeyName: "fk_salon_settings_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons_missing_contact_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_settings_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons_missing_location"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orphaned_staff_missing_salon: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          salon_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "orphaned_salons_missing_chain"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_1"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_2"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_contact_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_location"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orphaned_staff_services_missing_service: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          service_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_services_service_id"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "orphaned_services_missing_category"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_services_service_id"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services_invalid_pricing"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_services_service_id"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services_negative_profit"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      performance_status_view: {
+        Row: {
+          bloat_summary: Json | null
+          bloated_tables: Json | null
+          index_optimization_summary: Json | null
+          last_check_at: string | null
+          performance_status: string | null
+          query_performance_summary: Json | null
+          top_slow_queries: Json | null
+          unused_indexes: Json | null
+        }
+        Relationships: []
+      }
+      potential_duplicate_salons: {
+        Row: {
+          created_at_1: string | null
+          created_at_2: string | null
+          issue: string | null
+          name: string | null
+          salon_id_1: string | null
+          salon_id_2: string | null
+        }
+        Relationships: []
+      }
+      profiles_missing_metadata: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          username: string | null
+        }
+        Relationships: []
+      }
+      reviews_invalid_rating: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          rating: number | null
+          salon_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          issue?: never
+          rating?: number | null
+          salon_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          issue?: never
+          rating?: number | null
+          salon_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_reviews_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "orphaned_salons_missing_chain"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_reviews_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_1"]
+          },
+          {
+            foreignKeyName: "fk_salon_reviews_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_2"]
+          },
+          {
+            foreignKeyName: "fk_salon_reviews_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_contact_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_salon_reviews_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_location"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salons_missing_contact_info: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          name: string | null
+        }
+        Relationships: []
+      }
+      salons_missing_location: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          name: string | null
+        }
+        Relationships: []
+      }
+      security_status_view: {
+        Row: {
+          checked_at: string | null
+          estimated_rows: number | null
+          has_policies: boolean | null
+          policies: Json | null
+          policy_count: number | null
+          rls_enabled: boolean | null
+          rls_severity: string | null
+          rls_status: string | null
+          schema_name: string | null
+          security_issues: Json | null
+          table_name: string | null
+          table_size: string | null
+        }
+        Relationships: []
+      }
+      services_invalid_pricing: {
+        Row: {
+          base_price: number | null
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          name: string | null
+        }
+        Relationships: []
+      }
+      services_negative_profit: {
+        Row: {
+          base_price: number | null
+          cost: number | null
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          name: string | null
+          profit_margin: number | null
+        }
+        Relationships: []
+      }
+      staff_missing_user: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          issue: string | null
+          salon_id: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "orphaned_salons_missing_chain"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_1"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "potential_duplicate_salons"
+            referencedColumns: ["salon_id_2"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_contact_info"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_staff_profiles_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons_missing_location"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      table_growth_24h_view: {
+        Row: {
+          measurements: number | null
+          row_growth: number | null
+          schema_name: string | null
+          size_growth_bytes: number | null
+          table_name: string | null
+        }
+        Relationships: []
+      }
+      top_slow_queries_view: {
+        Row: {
+          avg_execution_ms: number | null
+          execution_count: number | null
+          last_executed: string | null
+          max_execution_ms: number | null
+          query_hash: string | null
+          query_text: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      _await_response: {
-        Args: { request_id: number }
-        Returns: boolean
+      check_bloat_levels: {
+        Args: never
+        Returns: {
+          bloat_mb: number
+          bloat_percentage: number
+          object_name: string
+          object_type: string
+          recommendation: string
+          schema_name: string
+          severity: string
+          size_mb: number
+          status: string
+        }[]
       }
-      _encode_url_with_params_array: {
-        Args: { params_array: string[]; url: string }
-        Returns: string
+      check_index_usage: {
+        Args: never
+        Returns: {
+          index_name: string
+          index_scans: number
+          index_size_mb: number
+          recommendation: string
+          rows_fetched: number
+          rows_read: number
+          schema_name: string
+          severity: string
+          status: string
+          table_name: string
+          usage_ratio: number
+        }[]
       }
-      _http_collect_response: {
-        Args: { async?: boolean; request_id: number }
-        Returns: Database["net"]["CompositeTypes"]["http_response_result"]
+      check_rls_coverage: {
+        Args: never
+        Returns: {
+          has_policies: boolean
+          policy_count: number
+          rls_enabled: boolean
+          schema_name: string
+          severity: string
+          status: string
+          table_name: string
+        }[]
       }
-      _urlencode_string: {
-        Args: { string: string }
-        Returns: string
+      check_security_advisors: {
+        Args: never
+        Returns: {
+          auto_fixable: boolean
+          check_name: string
+          description: string
+          issue_type: string
+          object_name: string
+          object_schema: string
+          recommendation: string
+          severity: string
+        }[]
       }
-      check_worker_is_up: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      http_collect_response: {
-        Args: { async?: boolean; request_id: number }
-        Returns: Database["net"]["CompositeTypes"]["http_response_result"]
-      }
-      http_delete: {
-        Args: {
-          body?: Json
-          headers?: Json
-          params?: Json
-          timeout_milliseconds?: number
-          url: string
-        }
-        Returns: number
-      }
-      http_get: {
-        Args: {
-          headers?: Json
-          params?: Json
-          timeout_milliseconds?: number
-          url: string
-        }
-        Returns: number
-      }
-      http_post: {
-        Args: {
-          body?: Json
-          headers?: Json
-          params?: Json
-          timeout_milliseconds?: number
-          url: string
-        }
-        Returns: number
-      }
-      wait_until_running: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      wake: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      worker_restart: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
+      check_slow_queries: {
+        Args: never
+        Returns: {
+          calls: number
+          max_time_ms: number
+          mean_time_ms: number
+          min_time_ms: number
+          query_id: string
+          query_text: string
+          recommendation: string
+          rows_returned: number
+          severity: string
+          status: string
+          stddev_time_ms: number
+          total_time_ms: number
+        }[]
       }
     }
     Enums: {
-      request_status: "PENDING" | "SUCCESS" | "ERROR"
+      [_ in never]: never
     }
     CompositeTypes: {
-      http_response: {
-        status_code: number | null
-        headers: Json | null
-        body: string | null
-      }
-      http_response_result: {
-        status: Database["net"]["Enums"]["request_status"] | null
-        message: string | null
-        response: Database["net"]["CompositeTypes"]["http_response"] | null
-      }
+      [_ in never]: never
     }
   }
   organization: {
@@ -7663,24 +7085,33 @@ export type Database = {
       amenities: {
         Row: {
           created_at: string
+          created_by_id: string | null
           description: string | null
           icon: string | null
           id: string
           name: string
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           description?: string | null
           icon?: string | null
           id?: string
           name: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           description?: string | null
           icon?: string | null
           id?: string
           name?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -7688,23 +7119,32 @@ export type Database = {
         Row: {
           code: string
           created_at: string
+          created_by_id: string | null
           id: string
           name: string
           native_name: string | null
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           code: string
           created_at?: string
+          created_by_id?: string | null
           id?: string
           name: string
           native_name?: string | null
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           code?: string
           created_at?: string
+          created_by_id?: string | null
           id?: string
           name?: string
           native_name?: string | null
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -7842,13 +7282,6 @@ export type Database = {
             foreignKeyName: "fk_operating_hours_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
-          {
-            foreignKeyName: "fk_operating_hours_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -7857,24 +7290,33 @@ export type Database = {
       payment_methods: {
         Row: {
           created_at: string
+          created_by_id: string | null
           icon: string | null
           id: string
           name: string
           processor: string | null
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           icon?: string | null
           id?: string
           name: string
           processor?: string | null
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           icon?: string | null
           id?: string
           name?: string
           processor?: string | null
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -7882,17 +7324,26 @@ export type Database = {
         Row: {
           amenity_id: string
           created_at: string
+          created_by_id: string | null
           salon_id: string
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           amenity_id: string
           created_at?: string
+          created_by_id?: string | null
           salon_id: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           amenity_id?: string
           created_at?: string
+          created_by_id?: string | null
           salon_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
           {
@@ -7901,13 +7352,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "amenities"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_amenities_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
           },
           {
             foreignKeyName: "fk_salon_amenities_salon_id"
@@ -8077,13 +7521,6 @@ export type Database = {
             foreignKeyName: "fk_salon_contact_details_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
-          {
-            foreignKeyName: "fk_salon_contact_details_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -8137,13 +7574,6 @@ export type Database = {
             foreignKeyName: "fk_salon_descriptions_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
-          {
-            foreignKeyName: "fk_salon_descriptions_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -8152,18 +7582,27 @@ export type Database = {
       salon_languages: {
         Row: {
           created_at: string
+          created_by_id: string | null
           language_id: string
           salon_id: string
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           language_id: string
           salon_id: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           language_id?: string
           salon_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
           {
@@ -8172,13 +7611,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "languages"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_languages_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
           },
           {
             foreignKeyName: "fk_salon_languages_salon_id"
@@ -8237,13 +7669,6 @@ export type Database = {
             foreignKeyName: "fk_salon_locations_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
-          {
-            foreignKeyName: "fk_salon_locations_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -8254,40 +7679,39 @@ export type Database = {
           brand_colors: Json | null
           cover_image_url: string | null
           created_at: string
+          created_by_id: string | null
           gallery_urls: string[] | null
           logo_url: string | null
           salon_id: string
           social_links: Json | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           brand_colors?: Json | null
           cover_image_url?: string | null
           created_at?: string
+          created_by_id?: string | null
           gallery_urls?: string[] | null
           logo_url?: string | null
           salon_id: string
           social_links?: Json | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           brand_colors?: Json | null
           cover_image_url?: string | null
           created_at?: string
+          created_by_id?: string | null
           gallery_urls?: string[] | null
           logo_url?: string | null
           salon_id?: string
           social_links?: Json | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_salon_media_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
           {
             foreignKeyName: "fk_salon_media_salon_id"
             columns: ["salon_id"]
@@ -8300,36 +7724,35 @@ export type Database = {
       salon_metrics: {
         Row: {
           created_at: string
+          created_by_id: string | null
           rating_average: number | null
           salon_id: string
           total_bookings: number | null
           total_revenue: number | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           rating_average?: number | null
           salon_id: string
           total_bookings?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           rating_average?: number | null
           salon_id?: string
           total_bookings?: number | null
           total_revenue?: number | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_salon_metrics_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
           {
             foreignKeyName: "fk_salon_metrics_salon_id"
             columns: ["salon_id"]
@@ -8342,21 +7765,30 @@ export type Database = {
       salon_payment_methods: {
         Row: {
           created_at: string
+          created_by_id: string | null
           is_preferred: boolean | null
           payment_method_id: string
           salon_id: string
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           is_preferred?: boolean | null
           payment_method_id: string
           salon_id: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           is_preferred?: boolean | null
           payment_method_id?: string
           salon_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
           {
@@ -8365,13 +7797,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "payment_methods"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_payment_methods_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
           },
           {
             foreignKeyName: "fk_salon_payment_methods_salon_id"
@@ -8387,6 +7812,7 @@ export type Database = {
           booking_lead_time_hours: number | null
           cancellation_hours: number | null
           created_at: string
+          created_by_id: string | null
           features: string[] | null
           is_accepting_bookings: boolean
           max_bookings_per_day: number | null
@@ -8396,11 +7822,13 @@ export type Database = {
           subscription_expires_at: string | null
           subscription_tier: string | null
           updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           booking_lead_time_hours?: number | null
           cancellation_hours?: number | null
           created_at?: string
+          created_by_id?: string | null
           features?: string[] | null
           is_accepting_bookings?: boolean
           max_bookings_per_day?: number | null
@@ -8410,11 +7838,13 @@ export type Database = {
           subscription_expires_at?: string | null
           subscription_tier?: string | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           booking_lead_time_hours?: number | null
           cancellation_hours?: number | null
           created_at?: string
+          created_by_id?: string | null
           features?: string[] | null
           is_accepting_bookings?: boolean
           max_bookings_per_day?: number | null
@@ -8424,15 +7854,9 @@ export type Database = {
           subscription_expires_at?: string | null
           subscription_tier?: string | null
           updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_salon_settings_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
           {
             foreignKeyName: "fk_salon_settings_salon_id"
             columns: ["salon_id"]
@@ -8445,27 +7869,29 @@ export type Database = {
       salon_specialties: {
         Row: {
           created_at: string
+          created_by_id: string | null
           salon_id: string
           specialty_id: string
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           salon_id: string
           specialty_id: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           salon_id?: string
           specialty_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_salon_specialties_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
           {
             foreignKeyName: "fk_salon_specialties_salon_id"
             columns: ["salon_id"]
@@ -8545,23 +7971,32 @@ export type Database = {
         Row: {
           category: string | null
           created_at: string
+          created_by_id: string | null
           description: string | null
           id: string
           name: string
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           category?: string | null
           created_at?: string
+          created_by_id?: string | null
           description?: string | null
           id?: string
           name: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           category?: string | null
           created_at?: string
+          created_by_id?: string | null
           description?: string | null
           id?: string
           name?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
@@ -8613,13 +8048,6 @@ export type Database = {
             foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
-          {
-            foreignKeyName: "fk_staff_profiles_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -8627,18 +8055,30 @@ export type Database = {
       }
     }
     Views: {
-      salon_metrics_computed: {
+      salon_metrics_summary_mv: {
         Row: {
-          calculated_at: string | null
+          avg_rating: number | null
+          created_at: string | null
           employee_count: number | null
+          last_refreshed_at: string | null
           rating_average: number | null
-          rating_count: number | null
+          review_count: number | null
           salon_id: string | null
           total_bookings: number | null
+          total_revenue: number | null
+          updated_at: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_metrics_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      salon_metrics_with_counts: {
+      salon_metrics_with_counts_view: {
         Row: {
           avg_rating: number | null
           created_at: string | null
@@ -8677,13 +8117,6 @@ export type Database = {
             foreignKeyName: "fk_salon_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
-            referencedRelation: "salon_metrics_computed"
-            referencedColumns: ["salon_id"]
-          },
-          {
-            foreignKeyName: "fk_salon_metrics_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -8691,10 +8124,7 @@ export type Database = {
       }
     }
     Functions: {
-      get_or_create_amenity: {
-        Args: { amenity_name: string }
-        Returns: string
-      }
+      get_or_create_amenity: { Args: { amenity_name: string }; Returns: string }
       get_or_create_payment_method: {
         Args: { method_name: string }
         Returns: string
@@ -8703,6 +8133,7 @@ export type Database = {
         Args: { specialty_name: string }
         Returns: string
       }
+      refresh_salon_metrics_summary_mv: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
@@ -8711,387 +8142,90 @@ export type Database = {
       [_ in never]: never
     }
   }
-  pgbouncer: {
+  patterns: {
     Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      get_auth: {
-        Args: { p_usename: string }
-        Returns: {
-          password: string
-          username: string
-        }[]
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-  private: {
-    Tables: {
-      api_keys: {
-        Row: {
-          api_key_encrypted: string
-          api_secret_encrypted: string | null
-          created_at: string
-          id: string
-          is_active: boolean | null
-          last_used_at: string | null
-          salon_id: string
-          service_name: string
-          updated_at: string | null
-          webhook_secret_encrypted: string | null
-        }
-        Insert: {
-          api_key_encrypted: string
-          api_secret_encrypted?: string | null
-          created_at?: string
-          id?: string
-          is_active?: boolean | null
-          last_used_at?: string | null
-          salon_id: string
-          service_name: string
-          updated_at?: string | null
-          webhook_secret_encrypted?: string | null
-        }
-        Update: {
-          api_key_encrypted?: string
-          api_secret_encrypted?: string | null
-          created_at?: string
-          id?: string
-          is_active?: boolean | null
-          last_used_at?: string | null
-          salon_id?: string
-          service_name?: string
-          updated_at?: string | null
-          webhook_secret_encrypted?: string | null
-        }
-        Relationships: []
-      }
-      encryption_keys: {
-        Row: {
-          algorithm: string | null
-          created_at: string
-          id: string
-          is_active: boolean | null
-          key_name: string
-          key_value: string
-          rotation_date: string | null
-        }
-        Insert: {
-          algorithm?: string | null
-          created_at?: string
-          id?: string
-          is_active?: boolean | null
-          key_name: string
-          key_value: string
-          rotation_date?: string | null
-        }
-        Update: {
-          algorithm?: string | null
-          created_at?: string
-          id?: string
-          is_active?: boolean | null
-          key_name?: string
-          key_value?: string
-          rotation_date?: string | null
-        }
-        Relationships: []
-      }
-      financial_transactions: {
-        Row: {
-          amount: number
-          created_at: string
-          customer_id: string
-          id: string
-          metadata: Json | null
-          payment_method: string | null
-          salon_id: string
-          stripe_payment_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          amount: number
-          created_at?: string
-          customer_id: string
-          id?: string
-          metadata?: Json | null
-          payment_method?: string | null
-          salon_id: string
-          stripe_payment_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          amount?: number
-          created_at?: string
-          customer_id?: string
-          id?: string
-          metadata?: Json | null
-          payment_method?: string | null
-          salon_id?: string
-          stripe_payment_id?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      idempotency_keys: {
+      auditable_entity: {
         Row: {
           created_at: string
+          created_by_id: string | null
           deleted_at: string | null
-          expires_at: string | null
-          idempotency_key: string
-          operation_type: string
-          result: Json
-          updated_at: string | null
+          deleted_by_id: string | null
+          id: string
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
           created_at?: string
+          created_by_id?: string | null
           deleted_at?: string | null
-          expires_at?: string | null
-          idempotency_key: string
-          operation_type: string
-          result: Json
-          updated_at?: string | null
+          deleted_by_id?: string | null
+          id?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
           created_at?: string
+          created_by_id?: string | null
           deleted_at?: string | null
-          expires_at?: string | null
-          idempotency_key?: string
-          operation_type?: string
-          result?: Json
-          updated_at?: string | null
+          deleted_by_id?: string | null
+          id?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Relationships: []
       }
-      subscriptions: {
+      soft_deletable: {
         Row: {
-          cancel_at_period_end: boolean | null
-          created_at: string
-          current_period_end_at: string
-          current_period_start_at: string
-          customer_id: string
           deleted_at: string | null
+          deleted_by_id: string | null
           id: string
-          metadata: Json | null
-          plan_id: string
-          salon_id: string
-          status: Database["private"]["Enums"]["subscription_status_enum"]
-          stripe_subscription_id: string | null
-          subscription_type: string | null
-          trial_end_at: string | null
+        }
+        Insert: {
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          id?: string
+        }
+        Update: {
+          deleted_at?: string | null
+          deleted_by_id?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      timestamped: {
+        Row: {
+          created_at: string
+          id: string
           updated_at: string
         }
         Insert: {
-          cancel_at_period_end?: boolean | null
           created_at?: string
-          current_period_end_at: string
-          current_period_start_at: string
-          customer_id: string
-          deleted_at?: string | null
           id?: string
-          metadata?: Json | null
-          plan_id: string
-          salon_id: string
-          status?: Database["private"]["Enums"]["subscription_status_enum"]
-          stripe_subscription_id?: string | null
-          subscription_type?: string | null
-          trial_end_at?: string | null
           updated_at?: string
         }
         Update: {
-          cancel_at_period_end?: boolean | null
           created_at?: string
-          current_period_end_at?: string
-          current_period_start_at?: string
-          customer_id?: string
-          deleted_at?: string | null
           id?: string
-          metadata?: Json | null
-          plan_id?: string
-          salon_id?: string
-          status?: Database["private"]["Enums"]["subscription_status_enum"]
-          stripe_subscription_id?: string | null
-          subscription_type?: string | null
-          trial_end_at?: string | null
           updated_at?: string
-        }
-        Relationships: []
-      }
-      user_sensitive_data: {
-        Row: {
-          background_check_date: string | null
-          background_check_status: string | null
-          bank_account_encrypted: string | null
-          created_at: string
-          credit_score: number | null
-          ssn_encrypted: string | null
-          tax_id_encrypted: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          background_check_date?: string | null
-          background_check_status?: string | null
-          bank_account_encrypted?: string | null
-          created_at?: string
-          credit_score?: number | null
-          ssn_encrypted?: string | null
-          tax_id_encrypted?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          background_check_date?: string | null
-          background_check_status?: string | null
-          bank_account_encrypted?: string | null
-          created_at?: string
-          credit_score?: number | null
-          ssn_encrypted?: string | null
-          tax_id_encrypted?: string | null
-          updated_at?: string | null
-          user_id?: string
         }
         Relationships: []
       }
     }
     Views: {
-      [_ in never]: never
+      available_patterns_view: {
+        Row: {
+          description: string | null
+          full_table_name: string | null
+          pattern_name: unknown
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      can_access_salon_metrics: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
-      current_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      decrypt_pii: {
-        Args: { encrypted_data: string }
-        Returns: string
-      }
-      encrypt_pii: {
-        Args: { plain_text: string }
-        Returns: string
-      }
-      get_accessible_salons: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      get_api_config: {
-        Args: { p_salon_id: string; p_service: string }
-        Returns: Json
-      }
-      get_encryption_key: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_my_financial_transactions: {
-        Args: { p_limit?: number; p_offset?: number }
-        Returns: {
-          amount: number
-          created_at: string
-          id: string
-          salon_name: string
-          status: string
-          transaction_type: string
-        }[]
-      }
-      get_user_accessible_salons: {
-        Args: { p_user_id: string }
-        Returns: string[]
-      }
-      get_user_role: {
-        Args: { p_user_id?: string }
-        Returns: string
-      }
-      get_user_role_for_salon: {
-        Args: { p_salon_id: string }
-        Returns: Database["public"]["Enums"]["role_type"]
-      }
-      get_user_salons: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      get_user_sensitive_data: {
-        Args: { p_user_id: string }
-        Returns: Json
-      }
-      has_mfa_verification: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_customer: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_salon_manager: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
-      is_salon_owner: {
-        Args: { check_salon_id: string }
-        Returns: boolean
-      }
-      is_salon_staff: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
-      is_staff_member: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_super_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      require_mfa: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      user_can_access_location: {
-        Args: { p_location_id: string }
-        Returns: boolean
-      }
-      user_can_manage_service: {
-        Args: { p_service_id: string }
-        Returns: boolean
-      }
-      user_has_salon_access: {
-        Args: { check_salon_id: string }
-        Returns: boolean
-      }
-      user_is_staff_at_salon: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
-      user_owns_salon: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
-      subscription_status_enum:
-        | "active"
-        | "trialing"
-        | "past_due"
-        | "canceled"
-        | "unpaid"
-        | "paused"
-        | "incomplete"
-        | "incomplete_expired"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -9141,9 +8275,55 @@ export type Database = {
         }
         Relationships: []
       }
+      partition_maintenance_docs: {
+        Row: {
+          content: string
+          created_at: string | null
+          doc_type: string
+          id: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          doc_type: string
+          id?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          doc_type?: string
+          id?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      admin_analytics_overview: {
+      admin_analytics_overview_mv: {
+        Row: {
+          active_salons: number | null
+          avg_utilization_rate: number | null
+          date: string | null
+          last_refreshed_at: string | null
+          platform_active_staff: number | null
+          platform_appointments: number | null
+          platform_cancelled_appointments: number | null
+          platform_completed_appointments: number | null
+          platform_new_customers: number | null
+          platform_no_shows: number | null
+          platform_product_revenue: number | null
+          platform_returning_customers: number | null
+          platform_revenue: number | null
+          platform_service_revenue: number | null
+        }
+        Relationships: []
+      }
+      admin_analytics_overview_view: {
         Row: {
           active_salons: number | null
           avg_utilization_rate: number | null
@@ -9161,110 +8341,7 @@ export type Database = {
         }
         Relationships: []
       }
-      admin_appointments_overview: {
-        Row: {
-          cancelled_at: string | null
-          completed_at: string | null
-          confirmation_code: string | null
-          created_at: string | null
-          customer_email: string | null
-          customer_id: string | null
-          customer_name: string | null
-          duration_minutes: number | null
-          end_time: string | null
-          id: string | null
-          salon_id: string | null
-          salon_name: string | null
-          service_id: string | null
-          service_name: string | null
-          staff_id: string | null
-          staff_name: string | null
-          start_time: string | null
-          status: string | null
-          total_price: number | null
-          updated_at: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_appointment_services_service_id"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "admin_staff_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      admin_inventory_overview: {
-        Row: {
-          active_alerts_count: number | null
-          category_name: string | null
-          cost_price: number | null
-          id: string | null
-          is_active: boolean | null
-          is_tracked: boolean | null
-          product_id: string | null
-          product_name: string | null
-          reorder_point: number | null
-          retail_price: number | null
-          salon_id: string | null
-          salon_name: string | null
-          sku: string | null
-          supplier_name: string | null
-          total_available: number | null
-          total_quantity: number | null
-        }
-        Relationships: []
-      }
-      admin_messages_overview: {
+      admin_messages_overview_view: {
         Row: {
           appointment_id: string | null
           created_at: string | null
@@ -9287,112 +8364,43 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_message_threads_appointment_id"
-            columns: ["appointment_id"]
+            foreignKeyName: "fk_message_threads_customer_id"
+            columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "admin_staff_overview"
+            referencedRelation: "admin_staff_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
+            referencedRelation: "staff_profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      admin_revenue_overview: {
-        Row: {
-          cancelled_appointments: number | null
-          chain_id: string | null
-          chain_name: string | null
-          completed_appointments: number | null
-          date: string | null
-          no_show_appointments: number | null
-          product_revenue: number | null
-          salon_id: string | null
-          salon_name: string | null
-          service_revenue: number | null
-          total_appointments: number | null
-          total_bookings: number | null
-          total_revenue: number | null
-          utilization_rate: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salons_chain_id"
-            columns: ["chain_id"]
-            isOneToOne: false
-            referencedRelation: "salon_chains_view"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      admin_reviews_overview: {
+      admin_reviews_overview_view: {
         Row: {
           cleanliness_rating: number | null
           comment: string | null
@@ -9419,59 +8427,26 @@ export type Database = {
             foreignKeyName: "fk_salon_reviews_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_salon_reviews_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_salon_reviews_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_reviews_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      admin_salons_overview: {
-        Row: {
-          chain_id: string | null
-          created_at: string | null
-          id: string | null
-          is_accepting_bookings: boolean | null
-          is_active: boolean | null
-          location_count: number | null
-          name: string | null
-          rating_average: number | null
-          rating_count: number | null
-          staff_count: number | null
-          total_appointments: number | null
-          total_bookings: number | null
-          total_revenue: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_salons_chain_id"
-            columns: ["chain_id"]
-            isOneToOne: false
-            referencedRelation: "salon_chains_view"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      admin_staff_overview: {
+      admin_staff_overview_view: {
         Row: {
           bio: string | null
           created_at: string | null
@@ -9493,19 +8468,12 @@ export type Database = {
             foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_profiles_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      admin_users_overview: {
+      admin_users_overview_view: {
         Row: {
           avatar_url: string | null
           country_code: string | null
@@ -9526,191 +8494,7 @@ export type Database = {
         }
         Relationships: []
       }
-      appointment_services: {
-        Row: {
-          appointment_id: string | null
-          category_name: string | null
-          confirmation_code: string | null
-          created_at: string | null
-          currency_code: string | null
-          current_price: number | null
-          customer_id: string | null
-          duration_minutes: number | null
-          end_time: string | null
-          id: string | null
-          sale_price: number | null
-          salon_id: string | null
-          salon_name: string | null
-          salon_slug: string | null
-          service_description: string | null
-          service_id: string | null
-          service_name: string | null
-          service_price: number | null
-          service_slug: string | null
-          staff_id: string | null
-          staff_name: string | null
-          staff_title: string | null
-          start_time: string | null
-          status: string | null
-          updated_at: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_appointment_services_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointment_services_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointment_services_service_id"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointment_services_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "admin_staff_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointment_services_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointment_services_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      appointments: {
-        Row: {
-          cancelled_at: string | null
-          completed_at: string | null
-          confirmation_code: string | null
-          created_at: string | null
-          customer_email: string | null
-          customer_id: string | null
-          customer_name: string | null
-          duration_minutes: number | null
-          end_time: string | null
-          id: string | null
-          salon_id: string | null
-          salon_name: string | null
-          service_id: string | null
-          service_name: string | null
-          service_names: string[] | null
-          staff_id: string | null
-          staff_name: string | null
-          start_time: string | null
-          status: string | null
-          total_price: number | null
-          updated_at: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_appointment_services_service_id"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "admin_staff_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      blocked_times: {
+      blocked_times_view: {
         Row: {
           block_type: Database["scheduling"]["Enums"]["block_type_enum"] | null
           created_at: string | null
@@ -9739,19 +8523,12 @@ export type Database = {
             foreignKeyName: "fk_blocked_times_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_blocked_times_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      communication_message_threads: {
+      communication_message_threads_view: {
         Row: {
           appointment_id: string | null
           created_at: string | null
@@ -9805,220 +8582,57 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_message_threads_appointment_id"
-            columns: ["appointment_id"]
+            foreignKeyName: "fk_message_threads_customer_id"
+            columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_last_message_by_id"
             columns: ["last_message_by_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_last_message_by_id"
             columns: ["last_message_by_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "admin_staff_overview"
+            referencedRelation: "admin_staff_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_message_threads_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
+            referencedRelation: "staff_profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      communication_messages: {
-        Row: {
-          content: string | null
-          context_id: string | null
-          context_type: string | null
-          created_at: string | null
-          deleted_at: string | null
-          deleted_by_id: string | null
-          edited_at: string | null
-          from_user_id: string | null
-          id: string | null
-          is_deleted: boolean | null
-          is_edited: boolean | null
-          is_read: boolean | null
-          metadata: Json | null
-          read_at: string | null
-          to_user_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          content?: string | null
-          context_id?: string | null
-          context_type?: string | null
-          created_at?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          edited_at?: string | null
-          from_user_id?: string | null
-          id?: string | null
-          is_deleted?: boolean | null
-          is_edited?: boolean | null
-          is_read?: boolean | null
-          metadata?: Json | null
-          read_at?: string | null
-          to_user_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          content?: string | null
-          context_id?: string | null
-          context_type?: string | null
-          created_at?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          edited_at?: string | null
-          from_user_id?: string | null
-          id?: string | null
-          is_deleted?: boolean | null
-          is_edited?: boolean | null
-          is_read?: boolean | null
-          metadata?: Json | null
-          read_at?: string | null
-          to_user_id?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_messages_context_id"
-            columns: ["context_id"]
-            isOneToOne: false
-            referencedRelation: "admin_messages_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_context_id"
-            columns: ["context_id"]
-            isOneToOne: false
-            referencedRelation: "communication_message_threads"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_context_id"
-            columns: ["context_id"]
-            isOneToOne: false
-            referencedRelation: "message_threads"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_deleted_by_id"
-            columns: ["deleted_by_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_deleted_by_id"
-            columns: ["deleted_by_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_from_user_id"
-            columns: ["from_user_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_from_user_id"
-            columns: ["from_user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_to_user_id"
-            columns: ["to_user_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_to_user_id"
-            columns: ["to_user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      communication_notification_queue: {
-        Row: {
-          channels: string[] | null
-          created_at: string | null
-          id: string | null
-          notification_type: string | null
-          payload: Json | null
-          scheduled_for: string | null
-          sent_at: string | null
-          status: string | null
-          user_id: string | null
-        }
-        Relationships: []
-      }
-      communication_webhook_queue: {
+      communication_webhook_queue_view: {
         Row: {
           attempts: number | null
           completed_at: string | null
@@ -10063,7 +8677,7 @@ export type Database = {
         }
         Relationships: []
       }
-      customer_favorites: {
+      customer_favorites_view: {
         Row: {
           business_name: string | null
           category_name: string | null
@@ -10092,61 +8706,47 @@ export type Database = {
             foreignKeyName: "fk_customer_favorites_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_customer_favorites_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_customer_favorites_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_customer_favorites_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_customer_favorites_service_id"
             columns: ["service_id"]
             isOneToOne: false
-            referencedRelation: "services"
+            referencedRelation: "services_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_customer_favorites_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "admin_staff_overview"
+            referencedRelation: "admin_staff_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_customer_favorites_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_customer_favorites_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
+            referencedRelation: "staff_profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      daily_metrics: {
+      daily_metrics_view: {
         Row: {
           active_staff_count: number | null
           anomaly_score: number | null
@@ -10227,30 +8827,23 @@ export type Database = {
             foreignKeyName: "fk_daily_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_daily_metrics_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      hot_update_stats: {
+      hot_update_stats_view: {
         Row: {
           hot_update_percentage: number | null
           hot_updates: number | null
-          schemaname: unknown | null
+          schemaname: unknown
           status: string | null
-          tablename: unknown | null
+          tablename: unknown
           total_updates: number | null
         }
         Relationships: []
       }
-      location_addresses: {
+      location_addresses_view: {
         Row: {
           accessibility_notes: string | null
           city: string | null
@@ -10319,12 +8912,12 @@ export type Database = {
             foreignKeyName: "fk_location_addresses_location_id"
             columns: ["location_id"]
             isOneToOne: true
-            referencedRelation: "salon_locations"
+            referencedRelation: "salon_locations_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      low_priority_optimizations_summary: {
+      low_priority_optimizations_summary_view: {
         Row: {
           optimization: string | null
           recommendation: string | null
@@ -10332,14 +8925,19 @@ export type Database = {
         }
         Relationships: []
       }
-      manual_transactions: {
+      manual_transactions_view: {
         Row: {
+          amount: number | null
           appointment_id: string | null
           created_at: string | null
           created_by_id: string | null
+          currency_code: string | null
           customer_id: string | null
           id: string | null
+          metadata: Json | null
+          notes: string | null
           payment_method: string | null
+          reference_number: string | null
           salon_id: string | null
           staff_id: string | null
           transaction_at: string | null
@@ -10347,12 +8945,17 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          amount?: number | null
           appointment_id?: string | null
           created_at?: string | null
           created_by_id?: string | null
+          currency_code?: string | null
           customer_id?: string | null
           id?: string | null
+          metadata?: Json | null
+          notes?: string | null
           payment_method?: string | null
+          reference_number?: string | null
           salon_id?: string | null
           staff_id?: string | null
           transaction_at?: string | null
@@ -10360,12 +8963,17 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          amount?: number | null
           appointment_id?: string | null
           created_at?: string | null
           created_by_id?: string | null
+          currency_code?: string | null
           customer_id?: string | null
           id?: string | null
+          metadata?: Json | null
+          notes?: string | null
           payment_method?: string | null
+          reference_number?: string | null
           salon_id?: string | null
           staff_id?: string | null
           transaction_at?: string | null
@@ -10374,266 +8982,57 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_manual_transactions_appointment_id"
-            columns: ["appointment_id"]
+            foreignKeyName: "fk_manual_transactions_customer_id"
+            columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_manual_transactions_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_manual_transactions_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_manual_transactions_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_manual_transactions_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_manual_transactions_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_manual_transactions_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "admin_staff_overview"
+            referencedRelation: "admin_staff_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_manual_transactions_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_manual_transactions_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
+            referencedRelation: "staff_profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      message_threads: {
+      materialized_view_refresh_schedule_view: {
         Row: {
-          appointment_id: string | null
-          created_at: string | null
-          customer_email: string | null
-          customer_id: string | null
-          customer_name: string | null
-          customer_phone: string | null
-          id: string | null
-          last_message_at: string | null
-          last_message_by_id: string | null
-          metadata: Json | null
-          priority: Database["public"]["Enums"]["thread_priority"] | null
-          salon_id: string | null
-          salon_name: string | null
-          salon_slug: string | null
-          staff_email: string | null
-          staff_id: string | null
-          staff_name: string | null
-          staff_title: string | null
-          status: Database["public"]["Enums"]["thread_status"] | null
-          subject: string | null
-          unread_count_customer: number | null
-          unread_count_staff: number | null
-          updated_at: string | null
+          active: boolean | null
+          command: string | null
+          jobid: number | null
+          jobname: string | null
+          last_run_duration: unknown
+          last_run_end: string | null
+          last_run_start: string | null
+          last_run_status: string | null
+          schedule: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_message_threads_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_customer_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_last_message_by_id"
-            columns: ["last_message_by_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_last_message_by_id"
-            columns: ["last_message_by_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "admin_staff_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_message_threads_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      messages: {
-        Row: {
-          content: string | null
-          context_id: string | null
-          context_type: string | null
-          created_at: string | null
-          deleted_at: string | null
-          deleted_by_id: string | null
-          edited_at: string | null
-          from_user_email: string | null
-          from_user_id: string | null
-          from_user_name: string | null
-          id: string | null
-          is_deleted: boolean | null
-          is_edited: boolean | null
-          is_read: boolean | null
-          metadata: Json | null
-          read_at: string | null
-          to_user_email: string | null
-          to_user_id: string | null
-          to_user_name: string | null
-          updated_at: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_messages_context_id"
-            columns: ["context_id"]
-            isOneToOne: false
-            referencedRelation: "admin_messages_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_context_id"
-            columns: ["context_id"]
-            isOneToOne: false
-            referencedRelation: "communication_message_threads"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_context_id"
-            columns: ["context_id"]
-            isOneToOne: false
-            referencedRelation: "message_threads"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_deleted_by_id"
-            columns: ["deleted_by_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_deleted_by_id"
-            columns: ["deleted_by_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_from_user_id"
-            columns: ["from_user_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_from_user_id"
-            columns: ["from_user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_to_user_id"
-            columns: ["to_user_id"]
-            isOneToOne: false
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_messages_to_user_id"
-            columns: ["to_user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      most_called_queries: {
+      most_called_queries_view: {
         Row: {
           avg_rows_per_call: number | null
           avg_time_ms: number | null
@@ -10645,7 +9044,7 @@ export type Database = {
         }
         Relationships: []
       }
-      operating_hours: {
+      operating_hours_view: {
         Row: {
           break_end: string | null
           break_start: string | null
@@ -10669,19 +9068,12 @@ export type Database = {
             foreignKeyName: "fk_operating_hours_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_operating_hours_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      operational_metrics: {
+      operational_metrics_view: {
         Row: {
           anomaly_score: number | null
           busiest_day_of_week: number | null
@@ -10735,263 +9127,179 @@ export type Database = {
             foreignKeyName: "fk_operational_metrics_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_operational_metrics_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      product_categories: {
+      partition_details: {
         Row: {
-          created_at: string | null
-          created_by_id: string | null
-          description: string | null
-          display_order: number | null
-          id: string | null
-          is_active: boolean | null
-          name: string | null
-          parent_id: string | null
-          salon_id: string | null
-          updated_at: string | null
-          updated_by_id: string | null
+          dead_tuples: number | null
+          end_date: string | null
+          indexes_size: string | null
+          last_analyze: string | null
+          last_autovacuum: string | null
+          last_vacuum: string | null
+          parent_schema: unknown
+          parent_table: unknown
+          partition_age_status: string | null
+          partition_bounds: string | null
+          partition_name: unknown
+          row_count: number | null
+          size_bytes: number | null
+          size_pretty: string | null
+          start_date: string | null
+          table_size: string | null
         }
-        Insert: {
-          created_at?: string | null
-          created_by_id?: string | null
-          description?: string | null
-          display_order?: number | null
-          id?: string | null
-          is_active?: boolean | null
-          name?: string | null
-          parent_id?: string | null
-          salon_id?: string | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by_id?: string | null
-          description?: string | null
-          display_order?: number | null
-          id?: string | null
-          is_active?: boolean | null
-          name?: string | null
-          parent_id?: string | null
-          salon_id?: string | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_product_categories_parent_id"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "product_categories"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_product_categories_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_product_categories_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      product_usage: {
+      partition_documentation: {
         Row: {
-          appointment_id: string | null
-          cost_at_time: number | null
-          created_at: string | null
-          id: string | null
-          location_id: string | null
-          notes: string | null
-          performed_by_id: string | null
-          product_id: string | null
-          quantity_used: number | null
+          content: string | null
+          doc_type: string | null
+          title: string | null
           updated_at: string | null
         }
         Insert: {
-          appointment_id?: string | null
-          cost_at_time?: number | null
-          created_at?: string | null
-          id?: string | null
-          location_id?: string | null
-          notes?: string | null
-          performed_by_id?: string | null
-          product_id?: string | null
-          quantity_used?: number | null
+          content?: string | null
+          doc_type?: string | null
+          title?: string | null
           updated_at?: string | null
         }
         Update: {
-          appointment_id?: string | null
-          cost_at_time?: number | null
+          content?: string | null
+          doc_type?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      partition_health_status: {
+        Row: {
+          coverage_status: string | null
+          days_until_gap: string | null
+          earliest_partition: string | null
+          has_default_partition: boolean | null
+          latest_partition: string | null
+          partition_count: number | null
+          partition_strategy: string | null
+          recommended_schedule: string | null
+          schema_name: unknown
+          table_name: unknown
+          total_rows: number | null
+          total_size: string | null
+        }
+        Relationships: []
+      }
+      profiles_metadata_view: {
+        Row: {
+          avatar_thumbnail_url: string | null
+          avatar_url: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          id: string | null
+          interests: string[] | null
+          profile_id: string | null
+          search_vector: unknown
+          social_profiles: Json | null
+          tags: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_thumbnail_url?: string | null
+          avatar_url?: string | null
+          cover_image_url?: string | null
           created_at?: string | null
           id?: string | null
-          location_id?: string | null
-          notes?: string | null
-          performed_by_id?: string | null
-          product_id?: string | null
-          quantity_used?: number | null
+          interests?: string[] | null
+          profile_id?: string | null
+          search_vector?: unknown
+          social_profiles?: Json | null
+          tags?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_thumbnail_url?: string | null
+          avatar_url?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          id?: string | null
+          interests?: string[] | null
+          profile_id?: string | null
+          search_vector?: unknown
+          social_profiles?: Json | null
+          tags?: string[] | null
           updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_product_usage_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "admin_appointments_overview"
+            foreignKeyName: "fk_profiles_metadata_profile_id"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_product_usage_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_product_usage_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_product_usage_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_product_usage_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "fk_product_usage_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
+            foreignKeyName: "fk_profiles_metadata_profile_id"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      products: {
+      profiles_preferences_view: {
         Row: {
-          category_id: string | null
-          cost_price: number | null
+          country_code: string | null
           created_at: string | null
-          created_by_id: string | null
-          deleted_at: string | null
-          deleted_by_id: string | null
-          description: string | null
+          currency_code: string | null
           id: string | null
-          is_active: boolean | null
-          is_tracked: boolean | null
-          name: string | null
-          reorder_point: number | null
-          reorder_quantity: number | null
-          retail_price: number | null
-          salon_id: string | null
-          sku: string | null
-          supplier_id: string | null
-          unit_of_measure: string | null
+          locale: string | null
+          preferences: Json | null
+          profile_id: string | null
+          timezone: string | null
           updated_at: string | null
-          updated_by_id: string | null
         }
         Insert: {
-          category_id?: string | null
-          cost_price?: number | null
+          country_code?: string | null
           created_at?: string | null
-          created_by_id?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          description?: string | null
+          currency_code?: string | null
           id?: string | null
-          is_active?: boolean | null
-          is_tracked?: boolean | null
-          name?: string | null
-          reorder_point?: number | null
-          reorder_quantity?: number | null
-          retail_price?: number | null
-          salon_id?: string | null
-          sku?: string | null
-          supplier_id?: string | null
-          unit_of_measure?: string | null
+          locale?: string | null
+          preferences?: Json | null
+          profile_id?: string | null
+          timezone?: string | null
           updated_at?: string | null
-          updated_by_id?: string | null
         }
         Update: {
-          category_id?: string | null
-          cost_price?: number | null
+          country_code?: string | null
           created_at?: string | null
-          created_by_id?: string | null
-          deleted_at?: string | null
-          deleted_by_id?: string | null
-          description?: string | null
+          currency_code?: string | null
           id?: string | null
-          is_active?: boolean | null
-          is_tracked?: boolean | null
-          name?: string | null
-          reorder_point?: number | null
-          reorder_quantity?: number | null
-          retail_price?: number | null
-          salon_id?: string | null
-          sku?: string | null
-          supplier_id?: string | null
-          unit_of_measure?: string | null
+          locale?: string | null
+          preferences?: Json | null
+          profile_id?: string | null
+          timezone?: string | null
           updated_at?: string | null
-          updated_by_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_products_category_id"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "product_categories"
+            foreignKeyName: "fk_profiles_preferences_profile_id"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_products_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_products_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_products_supplier_id"
-            columns: ["supplier_id"]
-            isOneToOne: false
-            referencedRelation: "suppliers"
+            foreignKeyName: "fk_profiles_preferences_profile_id"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      profiles: {
+      profiles_view: {
         Row: {
           avatar_thumbnail_url: string | null
           avatar_url: string | null
@@ -11020,277 +9328,22 @@ export type Database = {
         }
         Relationships: []
       }
-      profiles_metadata: {
-        Row: {
-          avatar_thumbnail_url: string | null
-          avatar_url: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          id: string | null
-          interests: string[] | null
-          profile_id: string | null
-          search_vector: unknown | null
-          social_profiles: Json | null
-          tags: string[] | null
-          updated_at: string | null
-        }
-        Insert: {
-          avatar_thumbnail_url?: string | null
-          avatar_url?: string | null
-          cover_image_url?: string | null
-          created_at?: string | null
-          id?: string | null
-          interests?: string[] | null
-          profile_id?: string | null
-          search_vector?: unknown | null
-          social_profiles?: Json | null
-          tags?: string[] | null
-          updated_at?: string | null
-        }
-        Update: {
-          avatar_thumbnail_url?: string | null
-          avatar_url?: string | null
-          cover_image_url?: string | null
-          created_at?: string | null
-          id?: string | null
-          interests?: string[] | null
-          profile_id?: string | null
-          search_vector?: unknown | null
-          social_profiles?: Json | null
-          tags?: string[] | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_profiles_metadata_profile_id"
-            columns: ["profile_id"]
-            isOneToOne: true
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_profiles_metadata_profile_id"
-            columns: ["profile_id"]
-            isOneToOne: true
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      profiles_preferences: {
-        Row: {
-          country_code: string | null
-          created_at: string | null
-          currency_code: string | null
-          id: string | null
-          locale: string | null
-          preferences: Json | null
-          profile_id: string | null
-          timezone: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          country_code?: string | null
-          created_at?: string | null
-          currency_code?: string | null
-          id?: string | null
-          locale?: string | null
-          preferences?: Json | null
-          profile_id?: string | null
-          timezone?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          country_code?: string | null
-          created_at?: string | null
-          currency_code?: string | null
-          id?: string | null
-          locale?: string | null
-          preferences?: Json | null
-          profile_id?: string | null
-          timezone?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_profiles_preferences_profile_id"
-            columns: ["profile_id"]
-            isOneToOne: true
-            referencedRelation: "admin_users_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_profiles_preferences_profile_id"
-            columns: ["profile_id"]
-            isOneToOne: true
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      public_tables_without_rls: {
+      public_tables_without_rls_view: {
         Row: {
           rls_status: string | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          schemaname: unknown
+          tablename: unknown
         }
         Relationships: []
       }
-      purchase_order_items: {
-        Row: {
-          created_at: string | null
-          id: string | null
-          product_id: string | null
-          purchase_order_id: string | null
-          quantity_ordered: number | null
-          quantity_received: number | null
-          total_price: number | null
-          unit_price: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string | null
-          product_id?: string | null
-          purchase_order_id?: string | null
-          quantity_ordered?: number | null
-          quantity_received?: number | null
-          total_price?: number | null
-          unit_price?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string | null
-          product_id?: string | null
-          purchase_order_id?: string | null
-          quantity_ordered?: number | null
-          quantity_received?: number | null
-          total_price?: number | null
-          unit_price?: number | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_purchase_order_items_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_purchase_order_items_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "fk_purchase_order_items_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_purchase_order_items_purchase_order_id"
-            columns: ["purchase_order_id"]
-            isOneToOne: false
-            referencedRelation: "purchase_orders"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      purchase_orders: {
-        Row: {
-          actual_delivery_at: string | null
-          created_at: string | null
-          created_by_id: string | null
-          expected_delivery_at: string | null
-          id: string | null
-          notes: string | null
-          order_number: string | null
-          ordered_at: string | null
-          salon_id: string | null
-          shipping_cost: number | null
-          status: string | null
-          subtotal: number | null
-          supplier_id: string | null
-          tax_amount: number | null
-          total_amount: number | null
-          updated_at: string | null
-          updated_by_id: string | null
-        }
-        Insert: {
-          actual_delivery_at?: string | null
-          created_at?: string | null
-          created_by_id?: string | null
-          expected_delivery_at?: string | null
-          id?: string | null
-          notes?: string | null
-          order_number?: string | null
-          ordered_at?: string | null
-          salon_id?: string | null
-          shipping_cost?: number | null
-          status?: string | null
-          subtotal?: number | null
-          supplier_id?: string | null
-          tax_amount?: number | null
-          total_amount?: number | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Update: {
-          actual_delivery_at?: string | null
-          created_at?: string | null
-          created_by_id?: string | null
-          expected_delivery_at?: string | null
-          id?: string | null
-          notes?: string | null
-          order_number?: string | null
-          ordered_at?: string | null
-          salon_id?: string | null
-          shipping_cost?: number | null
-          status?: string | null
-          subtotal?: number | null
-          supplier_id?: string | null
-          tax_amount?: number | null
-          total_amount?: number | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_purchase_orders_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_purchase_orders_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_purchase_orders_supplier_id"
-            columns: ["supplier_id"]
-            isOneToOne: false
-            referencedRelation: "suppliers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      query_performance_summary: {
+      query_performance_summary_view: {
         Row: {
           avg_tuples_per_scan: number | null
-          index_name: unknown | null
+          index_name: unknown
           index_scans: number | null
           index_size: string | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          schemaname: unknown
+          tablename: unknown
           tuples_fetched: number | null
           tuples_read: number | null
         }
@@ -11316,7 +9369,7 @@ export type Database = {
         }
         Relationships: []
       }
-      salon_contact_details: {
+      salon_contact_details_view: {
         Row: {
           booking_email: string | null
           booking_url: string | null
@@ -11382,19 +9435,12 @@ export type Database = {
             foreignKeyName: "fk_salon_contact_details_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_contact_details_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      salon_descriptions: {
+      salon_descriptions_view: {
         Row: {
           cancellation_policy: string | null
           created_at: string | null
@@ -11442,19 +9488,12 @@ export type Database = {
             foreignKeyName: "fk_salon_descriptions_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_descriptions_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      salon_locations: {
+      salon_locations_view: {
         Row: {
           created_at: string | null
           created_by_id: string | null
@@ -11502,19 +9541,12 @@ export type Database = {
             foreignKeyName: "fk_salon_locations_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_locations_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      salon_media: {
+      salon_media_legacy: {
         Row: {
           brand_colors: Json | null
           cover_image_url: string | null
@@ -11550,14 +9582,7 @@ export type Database = {
             foreignKeyName: "fk_salon_media_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_media_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
@@ -11582,42 +9607,7 @@ export type Database = {
             foreignKeyName: "fk_salon_media_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_media_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      salon_metrics: {
-        Row: {
-          average_duration: number | null
-          calculated_at: string | null
-          cancelled_appointments: number | null
-          completed_appointments: number | null
-          no_show_appointments: number | null
-          revenue_total: number | null
-          salon_id: string | null
-          utilization_rate: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
@@ -11644,33 +9634,26 @@ export type Database = {
             foreignKeyName: "fk_salon_reviews_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_salon_reviews_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_salon_reviews_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_reviews_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      salon_settings: {
+      salon_settings_view: {
         Row: {
           booking_lead_time_hours: number | null
           cancellation_hours: number | null
@@ -11718,19 +9701,12 @@ export type Database = {
             foreignKeyName: "fk_salon_settings_salon_id"
             columns: ["salon_id"]
             isOneToOne: true
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_salon_settings_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: true
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      salons: {
+      salons_view: {
         Row: {
           address: Json | null
           city: string | null
@@ -11760,12 +9736,12 @@ export type Database = {
         }
         Relationships: []
       }
-      security_access_monitoring: {
+      security_access_monitoring_view: {
         Row: {
           action: string | null
           created_at: string | null
           id: string | null
-          ip_address: unknown | null
+          ip_address: unknown
           is_granted: boolean | null
           resource_id: string | null
           resource_type: string | null
@@ -11776,7 +9752,7 @@ export type Database = {
           action?: string | null
           created_at?: string | null
           id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_granted?: boolean | null
           resource_id?: string | null
           resource_type?: string | null
@@ -11787,7 +9763,7 @@ export type Database = {
           action?: string | null
           created_at?: string | null
           id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_granted?: boolean | null
           resource_id?: string | null
           resource_type?: string | null
@@ -11799,19 +9775,19 @@ export type Database = {
             foreignKeyName: "access_monitoring_user_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "access_monitoring_user_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      security_incident_logs: {
+      security_incident_logs_view: {
         Row: {
           action: string | null
           created_at: string | null
@@ -11822,7 +9798,7 @@ export type Database = {
           event_type: string | null
           id: string | null
           impersonator_id: string | null
-          ip_address: unknown | null
+          ip_address: unknown
           is_success: boolean | null
           metadata: Json | null
           new_values: Json | null
@@ -11843,7 +9819,7 @@ export type Database = {
           event_type?: string | null
           id?: string | null
           impersonator_id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_success?: boolean | null
           metadata?: Json | null
           new_values?: Json | null
@@ -11864,7 +9840,7 @@ export type Database = {
           event_type?: string | null
           id?: string | null
           impersonator_id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_success?: boolean | null
           metadata?: Json | null
           new_values?: Json | null
@@ -11880,19 +9856,12 @@ export type Database = {
             foreignKeyName: "audit_logs_salon_id_fkey"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "audit_logs_salon_id_fkey"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      security_rate_limit_rules: {
+      security_rate_limit_rules_view: {
         Row: {
           applies_to: string | null
           block_duration_seconds: number | null
@@ -11952,7 +9921,7 @@ export type Database = {
         }
         Relationships: []
       }
-      security_rate_limit_tracking: {
+      security_rate_limit_tracking_view: {
         Row: {
           blocked_until: string | null
           created_at: string | null
@@ -11997,11 +9966,11 @@ export type Database = {
         }
         Relationships: []
       }
-      security_session_security: {
+      security_session_security_view: {
         Row: {
           created_at: string | null
           id: string | null
-          ip_address: unknown | null
+          ip_address: unknown
           is_blocked: boolean | null
           last_activity_at: string | null
           session_id: string | null
@@ -12012,7 +9981,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_blocked?: boolean | null
           last_activity_at?: string | null
           session_id?: string | null
@@ -12023,7 +9992,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           id?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_blocked?: boolean | null
           last_activity_at?: string | null
           session_id?: string | null
@@ -12036,21 +10005,21 @@ export type Database = {
             foreignKeyName: "session_security_session_id_fkey"
             columns: ["session_id"]
             isOneToOne: false
-            referencedRelation: "sessions"
+            referencedRelation: "sessions_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "session_security_user_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "session_security_user_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
         ]
@@ -12078,21 +10047,14 @@ export type Database = {
             foreignKeyName: "fk_service_booking_rules_service_id"
             columns: ["service_id"]
             isOneToOne: true
-            referencedRelation: "services"
+            referencedRelation: "services_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_services_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_services_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
@@ -12129,50 +10091,7 @@ export type Database = {
             foreignKeyName: "fk_service_categories_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_service_categories_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      service_performance: {
-        Row: {
-          avg_rating: number | null
-          cancellation_rate: number | null
-          popularity_score: number | null
-          salon_id: string | null
-          salon_name: string | null
-          service_id: string | null
-          service_name: string | null
-          total_bookings: number | null
-          total_revenue: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_appointment_services_service_id"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointments_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
@@ -12205,85 +10124,19 @@ export type Database = {
             foreignKeyName: "fk_service_pricing_service_id"
             columns: ["service_id"]
             isOneToOne: true
-            referencedRelation: "services"
+            referencedRelation: "services_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_services_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_services_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      service_product_usage: {
-        Row: {
-          created_at: string | null
-          id: string | null
-          is_optional: boolean | null
-          product_id: string | null
-          quantity_per_service: number | null
-          service_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string | null
-          is_optional?: boolean | null
-          product_id?: string | null
-          quantity_per_service?: number | null
-          service_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string | null
-          is_optional?: boolean | null
-          product_id?: string | null
-          quantity_per_service?: number | null
-          service_id?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_service_product_usage_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_service_product_usage_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "fk_service_product_usage_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_service_product_usage_service_id"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      services: {
+      services_view: {
         Row: {
           buffer_minutes: number | null
           category_id: string | null
@@ -12324,19 +10177,12 @@ export type Database = {
             foreignKeyName: "fk_services_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_services_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      sessions: {
+      sessions_view: {
         Row: {
           created_at: string | null
           created_by_id: string | null
@@ -12384,19 +10230,19 @@ export type Database = {
             foreignKeyName: "fk_sessions_user_id"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "admin_users_overview"
+            referencedRelation: "admin_users_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_sessions_user_id"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      slow_queries: {
+      slow_queries_view: {
         Row: {
           avg_time_ms: number | null
           cache_hit_ratio: number | null
@@ -12411,47 +10257,7 @@ export type Database = {
         }
         Relationships: []
       }
-      staff: {
-        Row: {
-          avatar_thumbnail_url: string | null
-          avatar_url: string | null
-          bio: string | null
-          business_name: string | null
-          created_at: string | null
-          deleted_at: string | null
-          deleted_by_id: string | null
-          email: string | null
-          experience_years: number | null
-          full_name: string | null
-          id: string | null
-          salon_id: string | null
-          salon_name: string | null
-          salon_slug: string | null
-          services_count: number | null
-          status: string | null
-          title: string | null
-          total_appointments: number | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_staff_profiles_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_profiles_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      staff_profiles: {
+      staff_profiles_view: {
         Row: {
           bio: string | null
           created_at: string | null
@@ -12499,19 +10305,12 @@ export type Database = {
             foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_profiles_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      staff_schedules: {
+      staff_schedules_view: {
         Row: {
           break_end: string | null
           break_start: string | null
@@ -12562,40 +10361,26 @@ export type Database = {
             foreignKeyName: "fk_staff_schedules_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_schedules_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_staff_schedules_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "admin_staff_overview"
+            referencedRelation: "admin_staff_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_staff_schedules_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_schedules_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
+            referencedRelation: "staff_profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      staff_services: {
+      staff_services_view: {
         Row: {
           base_price: number | null
           created_at: string | null
@@ -12619,362 +10404,45 @@ export type Database = {
             foreignKeyName: "fk_staff_profiles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_profiles_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_staff_services_service_id"
             columns: ["service_id"]
             isOneToOne: false
-            referencedRelation: "services"
+            referencedRelation: "services_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_staff_services_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "admin_staff_overview"
+            referencedRelation: "admin_staff_overview_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_staff_services_staff_id"
             columns: ["staff_id"]
             isOneToOne: false
-            referencedRelation: "staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_staff_services_staff_id"
-            columns: ["staff_id"]
-            isOneToOne: false
-            referencedRelation: "staff_profiles"
+            referencedRelation: "staff_profiles_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      statistics_freshness: {
+      statistics_freshness_view: {
         Row: {
           freshness: string | null
           last_analyze: string | null
           last_autoanalyze: string | null
           live_rows: number | null
           rows_modified_since_analyze: number | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          schemaname: unknown
+          tablename: unknown
         }
         Relationships: []
       }
-      stock_alerts: {
-        Row: {
-          alert_level: string | null
-          alert_type: string | null
-          created_at: string | null
-          current_quantity: number | null
-          id: string | null
-          is_resolved: boolean | null
-          location_id: string | null
-          message: string | null
-          product_id: string | null
-          resolved_at: string | null
-          resolved_by_id: string | null
-          threshold_quantity: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          alert_level?: string | null
-          alert_type?: string | null
-          created_at?: string | null
-          current_quantity?: number | null
-          id?: string | null
-          is_resolved?: boolean | null
-          location_id?: string | null
-          message?: string | null
-          product_id?: string | null
-          resolved_at?: string | null
-          resolved_by_id?: string | null
-          threshold_quantity?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          alert_level?: string | null
-          alert_type?: string | null
-          created_at?: string | null
-          current_quantity?: number | null
-          id?: string | null
-          is_resolved?: boolean | null
-          location_id?: string | null
-          message?: string | null
-          product_id?: string | null
-          resolved_at?: string | null
-          resolved_by_id?: string | null
-          threshold_quantity?: number | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_stock_alerts_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_alerts_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_alerts_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "fk_stock_alerts_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      stock_levels: {
-        Row: {
-          available_quantity: number | null
-          created_at: string | null
-          id: string | null
-          last_counted_at: string | null
-          location_id: string | null
-          product_id: string | null
-          quantity: number | null
-          reserved_quantity: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          available_quantity?: number | null
-          created_at?: string | null
-          id?: string | null
-          last_counted_at?: string | null
-          location_id?: string | null
-          product_id?: string | null
-          quantity?: number | null
-          reserved_quantity?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          available_quantity?: number | null
-          created_at?: string | null
-          id?: string | null
-          last_counted_at?: string | null
-          location_id?: string | null
-          product_id?: string | null
-          quantity?: number | null
-          reserved_quantity?: number | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_stock_levels_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_levels_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_levels_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "fk_stock_levels_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      stock_locations: {
-        Row: {
-          created_at: string | null
-          created_by_id: string | null
-          description: string | null
-          id: string | null
-          is_active: boolean | null
-          is_default: boolean | null
-          location_id: string | null
-          name: string | null
-          salon_id: string | null
-          updated_at: string | null
-          updated_by_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by_id?: string | null
-          description?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          is_default?: boolean | null
-          location_id?: string | null
-          name?: string | null
-          salon_id?: string | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by_id?: string | null
-          description?: string | null
-          id?: string | null
-          is_active?: boolean | null
-          is_default?: boolean | null
-          location_id?: string | null
-          name?: string | null
-          salon_id?: string | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_stock_locations_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "salon_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_locations_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_locations_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      stock_movements: {
-        Row: {
-          cost_price: number | null
-          created_at: string | null
-          from_location_id: string | null
-          id: string | null
-          location_id: string | null
-          movement_type: string | null
-          notes: string | null
-          performed_by_id: string | null
-          product_id: string | null
-          quantity: number | null
-          reference_id: string | null
-          reference_type: string | null
-          to_location_id: string | null
-          updated_at: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_stock_movements_from_location_id"
-            columns: ["from_location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_location_id"
-            columns: ["location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "admin_inventory_overview"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_product_id"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_stock_movements_to_location_id"
-            columns: ["to_location_id"]
-            isOneToOne: false
-            referencedRelation: "stock_locations"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      suppliers: {
-        Row: {
-          address: string | null
-          contact_email: string | null
-          contact_name: string | null
-          contact_phone: string | null
-          created_at: string | null
-          id: string | null
-          is_active: boolean | null
-          name: string | null
-          notes: string | null
-          payment_terms: string | null
-          product_count: number | null
-          salon_id: string | null
-          salon_name: string | null
-          updated_at: string | null
-          website: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_suppliers_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_suppliers_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      table_bloat_estimate: {
+      table_bloat_estimate_view: {
         Row: {
           dead_tuple_percent: number | null
           dead_tuples: number | null
@@ -12984,27 +10452,27 @@ export type Database = {
           last_autovacuum: string | null
           last_vacuum: string | null
           live_tuples: number | null
-          schemaname: unknown | null
+          schemaname: unknown
           table_size: string | null
-          tablename: unknown | null
+          tablename: unknown
           total_size: string | null
         }
         Relationships: []
       }
-      table_cache_hit_ratio: {
+      table_cache_hit_ratio_view: {
         Row: {
           cache_hit_ratio: number | null
           cache_hits: number | null
           disk_reads: number | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          schemaname: unknown
+          tablename: unknown
         }
         Relationships: []
       }
-      tables_without_primary_keys: {
+      tables_without_primary_keys_view: {
         Row: {
-          schema_name: unknown | null
-          table_name: unknown | null
+          schema_name: unknown
+          table_name: unknown
         }
         Relationships: []
       }
@@ -13038,40 +10506,33 @@ export type Database = {
             foreignKeyName: "fk_time_off_requests_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_time_off_requests_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
-      toast_usage_summary: {
+      toast_usage_summary_view: {
         Row: {
           main_size: string | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          schemaname: unknown
+          tablename: unknown
           toast_and_index_size: string | null
           toast_index_percentage: number | null
           total_size: string | null
         }
         Relationships: []
       }
-      unused_indexes: {
+      unused_indexes_view: {
         Row: {
-          index_name: unknown | null
+          index_name: unknown
           index_size: string | null
           scans: number | null
-          schemaname: unknown | null
-          tablename: unknown | null
+          schemaname: unknown
+          tablename: unknown
         }
         Relationships: []
       }
-      user_roles: {
+      user_roles_view: {
         Row: {
           created_at: string | null
           id: string | null
@@ -13107,53 +10568,16 @@ export type Database = {
             foreignKeyName: "fk_user_roles_salon_id"
             columns: ["salon_id"]
             isOneToOne: false
-            referencedRelation: "admin_salons_overview"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_user_roles_salon_id"
-            columns: ["salon_id"]
-            isOneToOne: false
-            referencedRelation: "salons"
+            referencedRelation: "salons_view"
             referencedColumns: ["id"]
           },
         ]
       }
     }
     Functions: {
-      add_fulltext_search_to_table: {
-        Args: { column_name: string; table_name: string }
-        Returns: undefined
-      }
-      analyze_fk_selectivity: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          column_name: string
-          recommendation: string
-          selectivity: number
-          table_name: string
-        }[]
-      }
-      analyze_index_types: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          index_name: string
-          index_size: string
-          index_type: string
-          scans: number
-          schema_name: string
-          table_name: string
-          tuples_fetched: number
-          tuples_read: number
-        }[]
-      }
       audit_http_request: {
         Args: { body?: Json; headers?: Json; method: string; url: string }
         Returns: number
-      }
-      auth_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
       }
       build_notification_payload: {
         Args: {
@@ -13166,10 +10590,6 @@ export type Database = {
         }
         Returns: Json
       }
-      cached_auth_uid: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
       calculate_business_hours: {
         Args: { end_time: string; salon_uuid?: string; start_time: string }
         Returns: number
@@ -13178,10 +10598,7 @@ export type Database = {
         Args: { end_time: string; start_time: string }
         Returns: number
       }
-      can_access_admin_views: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      can_access_admin_views: { Args: never; Returns: boolean }
       can_access_service_data: {
         Args: { p_service_id: string }
         Returns: boolean
@@ -13198,10 +10615,7 @@ export type Database = {
         Args: { p_salon_id: string }
         Returns: boolean
       }
-      can_manage_salon: {
-        Args: { salon_uuid: string }
-        Returns: boolean
-      }
+      can_manage_salon: { Args: { salon_uuid: string }; Returns: boolean }
       can_manage_special_dates: {
         Args: { p_salon_id: string }
         Returns: boolean
@@ -13222,10 +10636,7 @@ export type Database = {
         Args: { p_request_id: string }
         Returns: boolean
       }
-      can_user_manage_salon: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
+      can_user_manage_salon: { Args: { p_salon_id: string }; Returns: boolean }
       can_view_appointment: {
         Args: { appointment_id: string }
         Returns: boolean
@@ -13233,14 +10644,6 @@ export type Database = {
       can_view_time_off_request: {
         Args: { p_salon_id: string; p_staff_id: string }
         Returns: boolean
-      }
-      check_naming_consistency: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          category: string
-          consistency_score: number
-          details: string
-        }[]
       }
       check_salon_access: {
         Args: { target_salon_id: string }
@@ -13252,14 +10655,7 @@ export type Database = {
           reason: string
         }[]
       }
-      clean_phone_number: {
-        Args: { phone: string }
-        Returns: string
-      }
-      create_aggregate_index: {
-        Args: { agg_type?: string; column_name: string; table_name: string }
-        Returns: undefined
-      }
+      clean_phone_number: { Args: { phone: string }; Returns: string }
       create_aggregate_materialized_view: {
         Args: {
           agg_column: string
@@ -13270,83 +10666,26 @@ export type Database = {
         }
         Returns: undefined
       }
-      create_analytics_indexes: {
-        Args: { table_name: string }
-        Returns: undefined
-      }
-      create_common_sort_indexes: {
-        Args: { table_name: string }
-        Returns: undefined
-      }
-      create_compound_orderby_index: {
-        Args: { columns_with_order: Json; table_name: string }
-        Returns: undefined
-      }
-      create_fk_composite_indexes: {
-        Args: { filter_column: string; fk_column: string; table_name: string }
-        Returns: undefined
-      }
-      create_fk_covering_index: {
-        Args: {
-          fk_column: string
-          included_columns: string[]
-          table_name: string
-        }
-        Returns: undefined
-      }
-      create_foreign_key_indexes: {
-        Args: Record<PropertyKey, never>
+      create_future_partitions: {
+        Args: never
         Returns: {
-          column_name: string
-          created_index: string
+          end_date: string
+          partition_name: string
+          schema_name: string
+          start_date: string
+          status: string
           table_name: string
         }[]
       }
-      create_groupby_composite_index: {
-        Args: { columns: string[]; table_name: string }
-        Returns: undefined
-      }
-      create_orderby_index: {
-        Args: {
-          column_name: string
-          include_columns?: string[]
-          sort_order?: string
-          table_name: string
-        }
-        Returns: undefined
-      }
-      create_reverse_sort_indexes: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      create_search_config: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      current_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      current_user_salon_ids: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      generate_random_code: {
-        Args: { length?: number }
-        Returns: string
-      }
-      generate_search_vector: {
-        Args: { input_text: string }
-        Returns: unknown
-      }
+      current_user_id: { Args: never; Returns: string }
+      current_user_salon_ids: { Args: never; Returns: string[] }
+      generate_random_code: { Args: { length?: number }; Returns: string }
+      generate_search_vector: { Args: { input_text: string }; Returns: unknown }
       generate_service_search_text: {
         Args: { service_id: string }
         Returns: string
       }
-      generate_slug: {
-        Args: { input_text: string }
-        Returns: string
-      }
+      generate_slug: { Args: { input_text: string }; Returns: string }
       generate_unique_slug: {
         Args: {
           base_text: string
@@ -13359,6 +10698,12 @@ export type Database = {
       get_appointment_summary: {
         Args: { p_date_from?: string; p_date_to?: string; p_salon_id?: string }
         Returns: Database["public"]["CompositeTypes"]["appointment_summary"][]
+        SetofOptions: {
+          from: "*"
+          to: "appointment_summary"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       get_appointments_page: {
         Args: {
@@ -13377,20 +10722,9 @@ export type Database = {
           status: string
         }[]
       }
-      get_complete_optimization_summary: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_complete_project_summary: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_my_data_summary: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      get_my_data_summary: { Args: never; Returns: Json }
       get_normalization_status: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           entity_type: string
           record_count: number
@@ -13414,37 +10748,25 @@ export type Database = {
           type: string
         }[]
       }
-      get_optimization_executive_summary: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
       get_parallel_settings: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           current_value: string
           recommendation: string
           setting_name: string
         }[]
       }
-      get_phase_6_summary: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_phase_7_executive_summary: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_salon_metrics: {
-        Args:
-          | { p_date_from: string; p_date_to: string; p_salon_id: string }
-          | { p_salon_id: string }
-        Returns: {
-          metric_date: string
-          new_customers: number
-          total_appointments: number
-          total_revenue: number
-        }[]
-      }
+      get_salon_metrics:
+        | {
+            Args: { p_date_from: string; p_date_to: string; p_salon_id: string }
+            Returns: {
+              metric_date: string
+              new_customers: number
+              total_appointments: number
+              total_revenue: number
+            }[]
+          }
+        | { Args: { p_salon_id: string }; Returns: Json }
       get_services_page: {
         Args: {
           p_after_id?: string
@@ -13477,7 +10799,7 @@ export type Database = {
         }[]
       }
       get_table_fill_factors: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           fill_factor: number
           recommendation: string
@@ -13495,48 +10817,26 @@ export type Database = {
         }[]
       }
       get_ultrathink_insights: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
-          current_value: number
-          entity_name: string
-          insight_category: string
-          metric_name: string
-          priority_level: string
+          category: string
+          item_name: string
+          metric_type: string
+          metric_value: number
+          priority: string
           recommendation: string
         }[]
       }
-      get_user_accessible_salons: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      get_user_role: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_user_salon_id: {
-        Args: { user_uuid?: string }
-        Returns: string
-      }
-      get_user_salon_ids: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      get_user_salons: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      get_user_staff_ids: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      has_role: {
-        Args: { required_role: string } | { role_name: string; user_id: string }
-        Returns: boolean
-      }
-      has_salon_access: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
+      get_user_accessible_salons: { Args: never; Returns: string[] }
+      get_user_role: { Args: never; Returns: string }
+      get_user_salon_id: { Args: { user_uuid?: string }; Returns: string }
+      get_user_salon_ids: { Args: never; Returns: string[] }
+      get_user_salons: { Args: never; Returns: string[] }
+      get_user_staff_ids: { Args: never; Returns: string[] }
+      has_role:
+        | { Args: { required_role: string }; Returns: boolean }
+        | { Args: { role_name: string; user_id: string }; Returns: boolean }
+      has_salon_access: { Args: { p_salon_id: string }; Returns: boolean }
       increment_counter: {
         Args: {
           column_name: string
@@ -13546,134 +10846,55 @@ export type Database = {
         }
         Returns: undefined
       }
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_authenticated_user: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_business_hours: {
-        Args: { check_time: string }
-        Returns: boolean
-      }
-      is_future_timestamp: {
-        Args: { ts: string }
-        Returns: boolean
-      }
-      is_jsonb_array: {
-        Args: { data: Json }
-        Returns: boolean
-      }
-      is_jsonb_object: {
-        Args: { data: Json }
-        Returns: boolean
-      }
-      is_non_negative: {
-        Args: { value: number }
-        Returns: boolean
-      }
-      is_owner: {
-        Args: { check_user_id: string }
-        Returns: boolean
-      }
-      is_past_timestamp: {
-        Args: { ts: string }
-        Returns: boolean
-      }
-      is_platform_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_positive: {
-        Args: { value: number }
-        Returns: boolean
-      }
-      is_positive_amount: {
-        Args: { amount: number }
-        Returns: boolean
-      }
-      is_read_only_query: {
-        Args: { p_query: string }
-        Returns: boolean
-      }
-      is_salon_owner: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
-      is_salon_staff: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
-      is_staff_member: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
-      is_super_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_valid_email: {
-        Args: { email: string }
-        Returns: boolean
-      }
-      is_valid_jsonb_array: {
-        Args: { data: Json }
-        Returns: boolean
-      }
-      is_valid_jsonb_object: {
-        Args: { data: Json }
-        Returns: boolean
-      }
+      is_admin: { Args: never; Returns: boolean }
+      is_authenticated_user: { Args: never; Returns: boolean }
+      is_business_hours: { Args: { check_time: string }; Returns: boolean }
+      is_future_timestamp: { Args: { ts: string }; Returns: boolean }
+      is_jsonb_array: { Args: { data: Json }; Returns: boolean }
+      is_jsonb_object: { Args: { data: Json }; Returns: boolean }
+      is_non_negative: { Args: { value: number }; Returns: boolean }
+      is_owner: { Args: { check_user_id: string }; Returns: boolean }
+      is_past_timestamp: { Args: { ts: string }; Returns: boolean }
+      is_platform_admin: { Args: never; Returns: boolean }
+      is_positive: { Args: { value: number }; Returns: boolean }
+      is_positive_amount: { Args: { amount: number }; Returns: boolean }
+      is_read_only_query: { Args: { p_query: string }; Returns: boolean }
+      is_salon_owner: { Args: { p_salon_id: string }; Returns: boolean }
+      is_salon_staff: { Args: { p_salon_id: string }; Returns: boolean }
+      is_staff_member: { Args: { p_salon_id: string }; Returns: boolean }
+      is_super_admin: { Args: never; Returns: boolean }
+      is_valid_email: { Args: { email: string }; Returns: boolean }
+      is_valid_jsonb_array: { Args: { data: Json }; Returns: boolean }
+      is_valid_jsonb_object: { Args: { data: Json }; Returns: boolean }
       is_valid_operating_hours: {
         Args: { close_time: string; open_time: string }
         Returns: boolean
       }
-      is_valid_percentage: {
-        Args: { as_decimal?: boolean; value: number } | { value: number }
-        Returns: boolean
-      }
-      is_valid_phone: {
-        Args: { phone: string }
-        Returns: boolean
-      }
+      is_valid_percentage:
+        | { Args: { value: number }; Returns: boolean }
+        | { Args: { as_decimal?: boolean; value: number }; Returns: boolean }
+      is_valid_phone: { Args: { phone: string }; Returns: boolean }
       is_valid_rating: {
         Args: { max_rating?: number; min_rating?: number; rating: number }
         Returns: boolean
       }
-      is_valid_sku: {
-        Args: { sku: string }
-        Returns: boolean
-      }
-      is_valid_slug: {
-        Args: { slug: string }
-        Returns: boolean
-      }
-      is_valid_time_range: {
-        Args:
-          | { end_time: string; start_time: string }
-          | { end_time: string; start_time: string }
-        Returns: boolean
-      }
+      is_valid_sku: { Args: { sku: string }; Returns: boolean }
+      is_valid_slug: { Args: { slug: string }; Returns: boolean }
+      is_valid_time_range:
+        | { Args: { end_time: string; start_time: string }; Returns: boolean }
+        | { Args: { end_time: string; start_time: string }; Returns: boolean }
       is_valid_timestamp_range: {
         Args: { end_ts: string; start_ts: string }
         Returns: boolean
       }
-      is_valid_url: {
-        Args: { url: string }
-        Returns: boolean
-      }
-      is_valid_uuid: {
-        Args: { val: string }
-        Returns: boolean
-      }
+      is_valid_url: { Args: { url: string }; Returns: boolean }
+      is_valid_uuid: { Args: { val: string }; Returns: boolean }
       jsonb_has_required_keys: {
         Args: { data: Json; required_keys: string[] }
         Returns: boolean
       }
       list_index_documentation: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           comment: string
           index_name: string
@@ -13686,26 +10907,13 @@ export type Database = {
         Args: { p_event_type: string; p_metadata?: Json; p_severity?: string }
         Returns: undefined
       }
-      optimize_cascade_operations: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      optimize_cascade_operations: { Args: never; Returns: undefined }
       optimize_distinct_column: {
         Args: { column_name: string; table_name: string }
         Returns: undefined
       }
-      optimize_for_analytics: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      optimize_for_oltp: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      optimize_for_reporting: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      optimize_for_analytics: { Args: never; Returns: undefined }
+      optimize_for_oltp: { Args: never; Returns: undefined }
       optimize_pagination_index: {
         Args: {
           filter_column?: string
@@ -13722,22 +10930,19 @@ export type Database = {
         }
         Returns: undefined
       }
-      perform_index_review: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
+      perform_index_review: { Args: never; Returns: undefined }
+      prepare_search_query: { Args: { query_text: string }; Returns: unknown }
+      refresh_admin_analytics_overview_mv: { Args: never; Returns: undefined }
+      refresh_all_analytics_materialized_views: {
+        Args: never
+        Returns: {
+          refresh_duration: unknown
+          refresh_status: string
+          view_name: string
+        }[]
       }
-      prepare_search_query: {
-        Args: { query_text: string }
-        Returns: unknown
-      }
-      refresh_materialized_views: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      refresh_performance_analytics: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      refresh_materialized_views: { Args: never; Returns: undefined }
+      refresh_performance_analytics: { Args: never; Returns: string }
       refresh_schema_statistics: {
         Args: { target_schema: string }
         Returns: {
@@ -13746,21 +10951,15 @@ export type Database = {
         }[]
       }
       refresh_statistics: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           schema_name: string
           status: string
           table_name: string
         }[]
       }
-      refresh_user_role_claim: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      require_mfa: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      refresh_user_role_claim: { Args: never; Returns: Json }
+      require_mfa: { Args: never; Returns: boolean }
       retry_on_error: {
         Args: { p_function_call: string; p_max_retries?: number }
         Returns: Json
@@ -13795,14 +10994,10 @@ export type Database = {
           slug: string
         }[]
       }
-      session_has_mfa: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      soft_delete_user: {
-        Args: Record<PropertyKey, never> | { p_user_id: string }
-        Returns: undefined
-      }
+      session_has_mfa: { Args: never; Returns: boolean }
+      soft_delete_user:
+        | { Args: never; Returns: undefined }
+        | { Args: { p_user_id: string }; Returns: boolean }
       subscribe_to_channels: {
         Args: { p_user_id: string }
         Returns: {
@@ -13811,7 +11006,7 @@ export type Database = {
         }[]
       }
       suggest_join_indexes: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           priority: string
           suggestion: string
@@ -13833,16 +11028,13 @@ export type Database = {
         Args: { p_metric_name: string; p_metric_value: number }
         Returns: undefined
       }
-      user_accessible_salon_ids: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      user_can_access_salon: {
-        Args:
-          | { p_salon_id: string }
-          | { target_salon_id: string; user_uuid?: string }
-        Returns: boolean
-      }
+      user_accessible_salon_ids: { Args: never; Returns: string[] }
+      user_can_access_salon:
+        | {
+            Args: { target_salon_id: string; user_uuid?: string }
+            Returns: boolean
+          }
+        | { Args: { p_salon_id: string }; Returns: boolean }
       user_can_access_service: {
         Args: { p_service_id: string }
         Returns: boolean
@@ -13859,20 +11051,14 @@ export type Database = {
         Args: { check_role: Database["public"]["Enums"]["role_type"] }
         Returns: boolean
       }
-      user_has_salon_access: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
-      validate_email: {
-        Args: { email: string }
-        Returns: boolean
-      }
+      user_has_salon_access: { Args: { p_salon_id: string }; Returns: boolean }
+      validate_email: { Args: { email: string }; Returns: boolean }
       validate_no_sql_injection: {
         Args: { input_text: string }
         Returns: boolean
       }
       validate_normalized_data_consistency: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           issue_count: number
           issue_type: string
@@ -13880,16 +11066,13 @@ export type Database = {
           table_name: string
         }[]
       }
-      validate_phone_number: {
-        Args: { phone: string }
-        Returns: boolean
-      }
+      validate_phone_number: { Args: { phone: string }; Returns: boolean }
       validate_positive_number: {
         Args: { max_value?: number; value: number }
         Returns: boolean
       }
       validate_rls_configuration: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           policy_count: number
           rls_enabled: boolean
@@ -13898,10 +11081,7 @@ export type Database = {
           table_name: string
         }[]
       }
-      validate_uuid: {
-        Args: { id: string }
-        Returns: boolean
-      }
+      validate_uuid: { Args: { id: string }; Returns: boolean }
     }
     Enums: {
       appointment_status:
@@ -14169,458 +11349,6 @@ export type Database = {
       }
     }
   }
-  realtime: {
-    Tables: {
-      messages: {
-        Row: {
-          event: string | null
-          extension: string
-          id: string
-          inserted_at: string
-          payload: Json | null
-          private: boolean | null
-          topic: string
-          updated_at: string
-        }
-        Insert: {
-          event?: string | null
-          extension: string
-          id?: string
-          inserted_at?: string
-          payload?: Json | null
-          private?: boolean | null
-          topic: string
-          updated_at?: string
-        }
-        Update: {
-          event?: string | null
-          extension?: string
-          id?: string
-          inserted_at?: string
-          payload?: Json | null
-          private?: boolean | null
-          topic?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      schema_migrations: {
-        Row: {
-          inserted_at: string | null
-          version: number
-        }
-        Insert: {
-          inserted_at?: string | null
-          version: number
-        }
-        Update: {
-          inserted_at?: string | null
-          version?: number
-        }
-        Relationships: []
-      }
-      subscription: {
-        Row: {
-          claims: Json
-          claims_role: unknown
-          created_at: string
-          entity: unknown
-          filters: Database["realtime"]["CompositeTypes"]["user_defined_filter"][]
-          id: number
-          subscription_id: string
-        }
-        Insert: {
-          claims: Json
-          claims_role?: unknown
-          created_at?: string
-          entity: unknown
-          filters?: Database["realtime"]["CompositeTypes"]["user_defined_filter"][]
-          id?: never
-          subscription_id: string
-        }
-        Update: {
-          claims?: Json
-          claims_role?: unknown
-          created_at?: string
-          entity?: unknown
-          filters?: Database["realtime"]["CompositeTypes"]["user_defined_filter"][]
-          id?: never
-          subscription_id?: string
-        }
-        Relationships: []
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      apply_rls: {
-        Args: { max_record_bytes?: number; wal: Json }
-        Returns: Database["realtime"]["CompositeTypes"]["wal_rls"][]
-      }
-      broadcast_changes: {
-        Args: {
-          event_name: string
-          level?: string
-          new: Record<string, unknown>
-          old: Record<string, unknown>
-          operation: string
-          table_name: string
-          table_schema: string
-          topic_name: string
-        }
-        Returns: undefined
-      }
-      build_prepared_statement_sql: {
-        Args: {
-          columns: Database["realtime"]["CompositeTypes"]["wal_column"][]
-          entity: unknown
-          prepared_statement_name: string
-        }
-        Returns: string
-      }
-      cast: {
-        Args: { type_: unknown; val: string }
-        Returns: Json
-      }
-      check_equality_op: {
-        Args: {
-          op: Database["realtime"]["Enums"]["equality_op"]
-          type_: unknown
-          val_1: string
-          val_2: string
-        }
-        Returns: boolean
-      }
-      is_visible_through_filters: {
-        Args: {
-          columns: Database["realtime"]["CompositeTypes"]["wal_column"][]
-          filters: Database["realtime"]["CompositeTypes"]["user_defined_filter"][]
-        }
-        Returns: boolean
-      }
-      list_changes: {
-        Args: {
-          max_changes: number
-          max_record_bytes: number
-          publication: unknown
-          slot_name: unknown
-        }
-        Returns: Database["realtime"]["CompositeTypes"]["wal_rls"][]
-      }
-      quote_wal2json: {
-        Args: { entity: unknown }
-        Returns: string
-      }
-      send: {
-        Args: { event: string; payload: Json; private?: boolean; topic: string }
-        Returns: undefined
-      }
-      to_regrole: {
-        Args: { role_name: string }
-        Returns: unknown
-      }
-      topic: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-    }
-    Enums: {
-      action: "INSERT" | "UPDATE" | "DELETE" | "TRUNCATE" | "ERROR"
-      equality_op: "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "in"
-    }
-    CompositeTypes: {
-      user_defined_filter: {
-        column_name: string | null
-        op: Database["realtime"]["Enums"]["equality_op"] | null
-        value: string | null
-      }
-      wal_column: {
-        name: string | null
-        type_name: string | null
-        type_oid: unknown | null
-        value: Json | null
-        is_pkey: boolean | null
-        is_selectable: boolean | null
-      }
-      wal_rls: {
-        wal: Json | null
-        is_rls_enabled: boolean | null
-        subscription_ids: string[] | null
-        errors: string[] | null
-      }
-    }
-  }
-  realtime_system: {
-    Tables: {
-      active_subscriptions: {
-        Row: {
-          channel_id: string
-          connection_id: string
-          filters: Json | null
-          id: string
-          last_activity: string | null
-          message_count: number | null
-          salon_id: string | null
-          subscribed_at: string | null
-          user_id: string
-        }
-        Insert: {
-          channel_id: string
-          connection_id: string
-          filters?: Json | null
-          id?: string
-          last_activity?: string | null
-          message_count?: number | null
-          salon_id?: string | null
-          subscribed_at?: string | null
-          user_id: string
-        }
-        Update: {
-          channel_id?: string
-          connection_id?: string
-          filters?: Json | null
-          id?: string
-          last_activity?: string | null
-          message_count?: number | null
-          salon_id?: string | null
-          subscribed_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "active_subscriptions_channel_id_fkey"
-            columns: ["channel_id"]
-            isOneToOne: false
-            referencedRelation: "subscription_channels"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "active_subscriptions_connection_id_fkey"
-            columns: ["connection_id"]
-            isOneToOne: false
-            referencedRelation: "user_connections"
-            referencedColumns: ["connection_id"]
-          },
-        ]
-      }
-      event_queue: {
-        Row: {
-          channel_name: string
-          created_at: string
-          delivered: boolean | null
-          delivery_attempts: number | null
-          event_type: string
-          expires_at: string | null
-          id: string
-          max_delivery_attempts: number | null
-          payload: Json
-          priority: number | null
-          scheduled_for: string | null
-          target_salons: string[] | null
-          target_users: string[] | null
-          updated_at: string | null
-        }
-        Insert: {
-          channel_name: string
-          created_at?: string
-          delivered?: boolean | null
-          delivery_attempts?: number | null
-          event_type: string
-          expires_at?: string | null
-          id?: string
-          max_delivery_attempts?: number | null
-          payload: Json
-          priority?: number | null
-          scheduled_for?: string | null
-          target_salons?: string[] | null
-          target_users?: string[] | null
-          updated_at?: string | null
-        }
-        Update: {
-          channel_name?: string
-          created_at?: string
-          delivered?: boolean | null
-          delivery_attempts?: number | null
-          event_type?: string
-          expires_at?: string | null
-          id?: string
-          max_delivery_attempts?: number | null
-          payload?: Json
-          priority?: number | null
-          scheduled_for?: string | null
-          target_salons?: string[] | null
-          target_users?: string[] | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      subscription_channels: {
-        Row: {
-          access_level: string | null
-          channel_name: string
-          channel_type: string
-          created_at: string
-          current_subscribers: number | null
-          description: string | null
-          enabled: boolean | null
-          id: string
-          max_subscribers: number | null
-          rate_limit_per_minute: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          access_level?: string | null
-          channel_name: string
-          channel_type: string
-          created_at?: string
-          current_subscribers?: number | null
-          description?: string | null
-          enabled?: boolean | null
-          id?: string
-          max_subscribers?: number | null
-          rate_limit_per_minute?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          access_level?: string | null
-          channel_name?: string
-          channel_type?: string
-          created_at?: string
-          current_subscribers?: number | null
-          description?: string | null
-          enabled?: boolean | null
-          id?: string
-          max_subscribers?: number | null
-          rate_limit_per_minute?: number | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      user_connections: {
-        Row: {
-          connection_id: string
-          connection_type: string
-          created_at: string
-          id: string
-          ip_address: unknown | null
-          last_seen: string | null
-          metadata: Json | null
-          salon_id: string | null
-          subscriptions: Json | null
-          updated_at: string | null
-          user_agent: string | null
-          user_id: string
-        }
-        Insert: {
-          connection_id: string
-          connection_type?: string
-          created_at?: string
-          id?: string
-          ip_address?: unknown | null
-          last_seen?: string | null
-          metadata?: Json | null
-          salon_id?: string | null
-          subscriptions?: Json | null
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id: string
-        }
-        Update: {
-          connection_id?: string
-          connection_type?: string
-          created_at?: string
-          id?: string
-          ip_address?: unknown | null
-          last_seen?: string | null
-          metadata?: Json | null
-          salon_id?: string | null
-          subscriptions?: Json | null
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      broadcast_event: {
-        Args: {
-          p_channel_name: string
-          p_event_type: string
-          p_payload: Json
-          p_priority?: number
-          p_scheduled_for?: string
-          p_target_salons?: string[]
-          p_target_users?: string[]
-        }
-        Returns: Json
-      }
-      create_notification: {
-        Args: {
-          p_action_data?: Json
-          p_action_url?: string
-          p_delivery_method?: string[]
-          p_message: string
-          p_notification_type: string
-          p_priority?: string
-          p_salon_id?: string
-          p_title: string
-          p_user_id: string
-        }
-        Returns: Json
-      }
-      disconnect_connection: {
-        Args: { p_connection_id: string }
-        Returns: Json
-      }
-      get_connection_stats: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      mark_notification_read: {
-        Args: { p_notification_id: string; p_user_id: string }
-        Returns: Json
-      }
-      process_event_delivery: {
-        Args: { p_event_id: string }
-        Returns: number
-      }
-      register_connection: {
-        Args: {
-          p_connection_id: string
-          p_connection_type?: string
-          p_ip_address?: unknown
-          p_metadata?: Json
-          p_salon_id?: string
-          p_user_agent?: string
-          p_user_id: string
-        }
-        Returns: Json
-      }
-      subscribe_to_channel: {
-        Args: {
-          p_channel_name: string
-          p_connection_id: string
-          p_filters?: Json
-        }
-        Returns: Json
-      }
-      unsubscribe_from_channel: {
-        Args: { p_channel_name: string; p_connection_id: string }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   scheduling: {
     Tables: {
       appointment_services: {
@@ -14666,24 +11394,489 @@ export type Database = {
           updated_at?: string
           updated_by_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_appointment_services_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_appointment_services_appointment_id"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments_with_counts"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       appointments: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_default: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2025_10: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2025_11: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2025_12: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2026_01: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2026_02: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2026_03: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2026_04: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2026_05: {
+        Row: {
+          confirmation_code: string | null
+          created_at: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes: number | null
+          end_time: string
+          id: string
+          salon_id: string
+          staff_id: string | null
+          start_time: string
+          status: Database["public"]["Enums"]["appointment_status"]
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id: string
+          customer_id: string
+          duration_minutes?: number | null
+          end_time: string
+          id?: string
+          salon_id: string
+          staff_id?: string | null
+          start_time: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          confirmation_code?: string | null
+          created_at?: string
+          created_by_id?: string
+          customer_id?: string
+          duration_minutes?: number | null
+          end_time?: string
+          id?: string
+          salon_id?: string
+          staff_id?: string | null
+          start_time?: string
+          status?: Database["public"]["Enums"]["appointment_status"]
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Relationships: []
+      }
+      appointments_p2026_06: {
         Row: {
           confirmation_code: string | null
           created_at: string
@@ -14916,69 +12109,7 @@ export type Database = {
       }
     }
     Views: {
-      appointment_summary: {
-        Row: {
-          appointment_count: number | null
-          appointment_date: string | null
-          cancelled_count: number | null
-          completed_count: number | null
-          salon_id: string | null
-          staff_id: string | null
-          unique_customers: number | null
-        }
-        Relationships: []
-      }
-      appointments_with_counts: {
-        Row: {
-          confirmation_code: string | null
-          created_at: string | null
-          created_by_id: string | null
-          customer_id: string | null
-          duration_minutes: number | null
-          end_time: string | null
-          id: string | null
-          salon_id: string | null
-          service_count: number | null
-          staff_id: string | null
-          start_time: string | null
-          status: Database["public"]["Enums"]["appointment_status"] | null
-          updated_at: string | null
-          updated_by_id: string | null
-        }
-        Insert: {
-          confirmation_code?: string | null
-          created_at?: string | null
-          created_by_id?: string | null
-          customer_id?: string | null
-          duration_minutes?: number | null
-          end_time?: string | null
-          id?: string | null
-          salon_id?: string | null
-          service_count?: never
-          staff_id?: string | null
-          start_time?: string | null
-          status?: Database["public"]["Enums"]["appointment_status"] | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Update: {
-          confirmation_code?: string | null
-          created_at?: string | null
-          created_by_id?: string | null
-          customer_id?: string | null
-          duration_minutes?: number | null
-          end_time?: string | null
-          id?: string | null
-          salon_id?: string | null
-          service_count?: never
-          staff_id?: string | null
-          start_time?: string | null
-          status?: Database["public"]["Enums"]["appointment_status"] | null
-          updated_at?: string | null
-          updated_by_id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       batch_update_appointment_status: {
@@ -15093,10 +12224,9 @@ export type Database = {
           total_duration: number
         }[]
       }
-      validate_and_create_appointment: {
-        Args:
-          | Record<PropertyKey, never>
-          | {
+      validate_and_create_appointment:
+        | {
+            Args: {
               p_customer_id: string
               p_end_time: string
               p_salon_id: string
@@ -15104,20 +12234,21 @@ export type Database = {
               p_staff_id: string
               p_start_time: string
             }
-        Returns: string
-      }
-      validate_appointment_overlap: {
-        Args:
-          | Record<PropertyKey, never>
-          | {
+            Returns: string
+          }
+        | { Args: never; Returns: string }
+      validate_appointment_overlap:
+        | {
+            Args: {
               p_end_time: string
               p_exclude_appointment_id?: string
               p_salon_id: string
               p_staff_id: string
               p_start_time: string
             }
-        Returns: boolean
-      }
+            Returns: boolean
+          }
+        | { Args: never; Returns: boolean }
     }
     Enums: {
       block_type_enum:
@@ -15142,7 +12273,7 @@ export type Database = {
           action: string
           created_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           is_granted: boolean
           resource_id: string | null
           resource_schema: string | null
@@ -15156,7 +12287,7 @@ export type Database = {
           action: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_granted: boolean
           resource_id?: string | null
           resource_schema?: string | null
@@ -15170,7 +12301,7 @@ export type Database = {
           action?: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_granted?: boolean
           resource_id?: string | null
           resource_schema?: string | null
@@ -15357,7 +12488,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           is_blocked: boolean | null
           last_activity_at: string | null
           session_id: string | null
@@ -15368,7 +12499,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_blocked?: boolean | null
           last_activity_at?: string | null
           session_id?: string | null
@@ -15379,7 +12510,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_blocked?: boolean | null
           last_activity_at?: string | null
           session_id?: string | null
@@ -15394,12 +12525,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_auth_setting: {
-        Args: { p_setting_name: string }
-        Returns: Json
-      }
+      get_auth_setting: { Args: { p_setting_name: string }; Returns: Json }
       get_security_metrics: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           metric_name: string
           metric_value: number
@@ -15431,10 +12559,7 @@ export type Database = {
           user_id: string
         }[]
       }
-      user_has_salon_access: {
-        Args: { p_salon_id: string }
-        Returns: boolean
-      }
+      user_has_salon_access: { Args: { p_salon_id: string }; Returns: boolean }
       validate_and_sanitize_input: {
         Args: { p_input: string; p_input_type?: string }
         Returns: string
@@ -15443,516 +12568,6 @@ export type Database = {
         Args: { password: string }
         Returns: boolean
       }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-  storage: {
-    Tables: {
-      buckets: {
-        Row: {
-          allowed_mime_types: string[] | null
-          avif_autodetection: boolean | null
-          created_at: string | null
-          file_size_limit: number | null
-          id: string
-          name: string
-          owner: string | null
-          owner_id: string | null
-          public: boolean | null
-          type: Database["storage"]["Enums"]["buckettype"]
-          updated_at: string | null
-        }
-        Insert: {
-          allowed_mime_types?: string[] | null
-          avif_autodetection?: boolean | null
-          created_at?: string | null
-          file_size_limit?: number | null
-          id: string
-          name: string
-          owner?: string | null
-          owner_id?: string | null
-          public?: boolean | null
-          type?: Database["storage"]["Enums"]["buckettype"]
-          updated_at?: string | null
-        }
-        Update: {
-          allowed_mime_types?: string[] | null
-          avif_autodetection?: boolean | null
-          created_at?: string | null
-          file_size_limit?: number | null
-          id?: string
-          name?: string
-          owner?: string | null
-          owner_id?: string | null
-          public?: boolean | null
-          type?: Database["storage"]["Enums"]["buckettype"]
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      buckets_analytics: {
-        Row: {
-          created_at: string
-          format: string
-          id: string
-          type: Database["storage"]["Enums"]["buckettype"]
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          format?: string
-          id: string
-          type?: Database["storage"]["Enums"]["buckettype"]
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          format?: string
-          id?: string
-          type?: Database["storage"]["Enums"]["buckettype"]
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      migrations: {
-        Row: {
-          executed_at: string | null
-          hash: string
-          id: number
-          name: string
-        }
-        Insert: {
-          executed_at?: string | null
-          hash: string
-          id: number
-          name: string
-        }
-        Update: {
-          executed_at?: string | null
-          hash?: string
-          id?: number
-          name?: string
-        }
-        Relationships: []
-      }
-      objects: {
-        Row: {
-          bucket_id: string | null
-          created_at: string | null
-          id: string
-          last_accessed_at: string | null
-          level: number | null
-          metadata: Json | null
-          name: string | null
-          owner: string | null
-          owner_id: string | null
-          path_tokens: string[] | null
-          updated_at: string | null
-          user_metadata: Json | null
-          version: string | null
-        }
-        Insert: {
-          bucket_id?: string | null
-          created_at?: string | null
-          id?: string
-          last_accessed_at?: string | null
-          level?: number | null
-          metadata?: Json | null
-          name?: string | null
-          owner?: string | null
-          owner_id?: string | null
-          path_tokens?: string[] | null
-          updated_at?: string | null
-          user_metadata?: Json | null
-          version?: string | null
-        }
-        Update: {
-          bucket_id?: string | null
-          created_at?: string | null
-          id?: string
-          last_accessed_at?: string | null
-          level?: number | null
-          metadata?: Json | null
-          name?: string | null
-          owner?: string | null
-          owner_id?: string | null
-          path_tokens?: string[] | null
-          updated_at?: string | null
-          user_metadata?: Json | null
-          version?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "objects_bucketId_fkey"
-            columns: ["bucket_id"]
-            isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      prefixes: {
-        Row: {
-          bucket_id: string
-          created_at: string | null
-          level: number
-          name: string
-          updated_at: string | null
-        }
-        Insert: {
-          bucket_id: string
-          created_at?: string | null
-          level?: number
-          name: string
-          updated_at?: string | null
-        }
-        Update: {
-          bucket_id?: string
-          created_at?: string | null
-          level?: number
-          name?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "prefixes_bucketId_fkey"
-            columns: ["bucket_id"]
-            isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      s3_multipart_uploads: {
-        Row: {
-          bucket_id: string
-          created_at: string
-          id: string
-          in_progress_size: number
-          key: string
-          owner_id: string | null
-          upload_signature: string
-          user_metadata: Json | null
-          version: string
-        }
-        Insert: {
-          bucket_id: string
-          created_at?: string
-          id: string
-          in_progress_size?: number
-          key: string
-          owner_id?: string | null
-          upload_signature: string
-          user_metadata?: Json | null
-          version: string
-        }
-        Update: {
-          bucket_id?: string
-          created_at?: string
-          id?: string
-          in_progress_size?: number
-          key?: string
-          owner_id?: string | null
-          upload_signature?: string
-          user_metadata?: Json | null
-          version?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey"
-            columns: ["bucket_id"]
-            isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      s3_multipart_uploads_parts: {
-        Row: {
-          bucket_id: string
-          created_at: string
-          etag: string
-          id: string
-          key: string
-          owner_id: string | null
-          part_number: number
-          size: number
-          upload_id: string
-          version: string
-        }
-        Insert: {
-          bucket_id: string
-          created_at?: string
-          etag: string
-          id?: string
-          key: string
-          owner_id?: string | null
-          part_number: number
-          size?: number
-          upload_id: string
-          version: string
-        }
-        Update: {
-          bucket_id?: string
-          created_at?: string
-          etag?: string
-          id?: string
-          key?: string
-          owner_id?: string | null
-          part_number?: number
-          size?: number
-          upload_id?: string
-          version?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey"
-            columns: ["bucket_id"]
-            isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey"
-            columns: ["upload_id"]
-            isOneToOne: false
-            referencedRelation: "s3_multipart_uploads"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      add_prefixes: {
-        Args: { _bucket_id: string; _name: string }
-        Returns: undefined
-      }
-      can_insert_object: {
-        Args: { bucketid: string; metadata: Json; name: string; owner: string }
-        Returns: undefined
-      }
-      delete_leaf_prefixes: {
-        Args: { bucket_ids: string[]; names: string[] }
-        Returns: undefined
-      }
-      delete_prefix: {
-        Args: { _bucket_id: string; _name: string }
-        Returns: boolean
-      }
-      extension: {
-        Args: { name: string }
-        Returns: string
-      }
-      filename: {
-        Args: { name: string }
-        Returns: string
-      }
-      foldername: {
-        Args: { name: string }
-        Returns: string[]
-      }
-      get_level: {
-        Args: { name: string }
-        Returns: number
-      }
-      get_prefix: {
-        Args: { name: string }
-        Returns: string
-      }
-      get_prefixes: {
-        Args: { name: string }
-        Returns: string[]
-      }
-      get_size_by_bucket: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          bucket_id: string
-          size: number
-        }[]
-      }
-      list_multipart_uploads_with_delimiter: {
-        Args: {
-          bucket_id: string
-          delimiter_param: string
-          max_keys?: number
-          next_key_token?: string
-          next_upload_token?: string
-          prefix_param: string
-        }
-        Returns: {
-          created_at: string
-          id: string
-          key: string
-        }[]
-      }
-      list_objects_with_delimiter: {
-        Args: {
-          bucket_id: string
-          delimiter_param: string
-          max_keys?: number
-          next_token?: string
-          prefix_param: string
-          start_after?: string
-        }
-        Returns: {
-          id: string
-          metadata: Json
-          name: string
-          updated_at: string
-        }[]
-      }
-      lock_top_prefixes: {
-        Args: { bucket_ids: string[]; names: string[] }
-        Returns: undefined
-      }
-      operation: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      search: {
-        Args: {
-          bucketname: string
-          levels?: number
-          limits?: number
-          offsets?: number
-          prefix: string
-          search?: string
-          sortcolumn?: string
-          sortorder?: string
-        }
-        Returns: {
-          created_at: string
-          id: string
-          last_accessed_at: string
-          metadata: Json
-          name: string
-          updated_at: string
-        }[]
-      }
-      search_legacy_v1: {
-        Args: {
-          bucketname: string
-          levels?: number
-          limits?: number
-          offsets?: number
-          prefix: string
-          search?: string
-          sortcolumn?: string
-          sortorder?: string
-        }
-        Returns: {
-          created_at: string
-          id: string
-          last_accessed_at: string
-          metadata: Json
-          name: string
-          updated_at: string
-        }[]
-      }
-      search_v1_optimised: {
-        Args: {
-          bucketname: string
-          levels?: number
-          limits?: number
-          offsets?: number
-          prefix: string
-          search?: string
-          sortcolumn?: string
-          sortorder?: string
-        }
-        Returns: {
-          created_at: string
-          id: string
-          last_accessed_at: string
-          metadata: Json
-          name: string
-          updated_at: string
-        }[]
-      }
-      search_v2: {
-        Args: {
-          bucket_name: string
-          levels?: number
-          limits?: number
-          prefix: string
-          sort_column?: string
-          sort_column_after?: string
-          sort_order?: string
-          start_after?: string
-        }
-        Returns: {
-          created_at: string
-          id: string
-          key: string
-          last_accessed_at: string
-          metadata: Json
-          name: string
-          updated_at: string
-        }[]
-      }
-    }
-    Enums: {
-      buckettype: "STANDARD" | "ANALYTICS"
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-  supabase_migrations: {
-    Tables: {
-      schema_migrations: {
-        Row: {
-          created_by: string | null
-          idempotency_key: string | null
-          name: string | null
-          statements: string[] | null
-          version: string
-        }
-        Insert: {
-          created_by?: string | null
-          idempotency_key?: string | null
-          name?: string | null
-          statements?: string[] | null
-          version: string
-        }
-        Update: {
-          created_by?: string | null
-          idempotency_key?: string | null
-          name?: string | null
-          statements?: string[] | null
-          version?: string
-        }
-        Relationships: []
-      }
-      seed_files: {
-        Row: {
-          hash: string
-          path: string
-        }
-        Insert: {
-          hash: string
-          path: string
-        }
-        Update: {
-          hash?: string
-          path?: string
-        }
-        Relationships: []
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
@@ -15993,42 +12608,197 @@ export type Database = {
         }
         Relationships: []
       }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      capture_zero_scan_indexes: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
+      index_usage_baseline: {
+        Row: {
+          id: number
+          idx_scan: number | null
+          idx_tup_fetch: number | null
+          idx_tup_read: number | null
+          index_size_bytes: number | null
+          indexname: string
+          schemaname: string
+          snapshot_date: string | null
+          tablename: string
+        }
+        Insert: {
+          id?: number
+          idx_scan?: number | null
+          idx_tup_fetch?: number | null
+          idx_tup_read?: number | null
+          index_size_bytes?: number | null
+          indexname: string
+          schemaname: string
+          snapshot_date?: string | null
+          tablename: string
+        }
+        Update: {
+          id?: number
+          idx_scan?: number | null
+          idx_tup_fetch?: number | null
+          idx_tup_read?: number | null
+          index_size_bytes?: number | null
+          indexname?: string
+          schemaname?: string
+          snapshot_date?: string | null
+          tablename?: string
+        }
+        Relationships: []
       }
-      current_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+      mv_refresh_performance: {
+        Row: {
+          dead_tuples_after: number | null
+          dead_tuples_before: number | null
+          error_message: string | null
+          id: number
+          refresh_completed_at: string | null
+          refresh_duration_seconds: number | null
+          refresh_started_at: string | null
+          rows_after: number | null
+          rows_before: number | null
+          schema_name: string
+          size_after_bytes: number | null
+          size_before_bytes: number | null
+          success: boolean | null
+          view_name: string
+        }
+        Insert: {
+          dead_tuples_after?: number | null
+          dead_tuples_before?: number | null
+          error_message?: string | null
+          id?: number
+          refresh_completed_at?: string | null
+          refresh_duration_seconds?: number | null
+          refresh_started_at?: string | null
+          rows_after?: number | null
+          rows_before?: number | null
+          schema_name: string
+          size_after_bytes?: number | null
+          size_before_bytes?: number | null
+          success?: boolean | null
+          view_name: string
+        }
+        Update: {
+          dead_tuples_after?: number | null
+          dead_tuples_before?: number | null
+          error_message?: string | null
+          id?: number
+          refresh_completed_at?: string | null
+          refresh_duration_seconds?: number | null
+          refresh_started_at?: string | null
+          rows_after?: number | null
+          rows_before?: number | null
+          schema_name?: string
+          size_after_bytes?: number | null
+          size_before_bytes?: number | null
+          success?: boolean | null
+          view_name?: string
+        }
+        Relationships: []
       }
-      generate_indexing_optimization_report: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          details: string
-          metric: string
-          section: string
-          value: string
-        }[]
-      }
-      generate_refactoring_report: {
-        Args: Record<PropertyKey, never>
-        Returns: {
+      performance_baseline: {
+        Row: {
+          id: number
+          measured_at: string | null
           metric_name: string
           metric_value: string
-          notes: string
-          priority: string
-          report_section: string
-        }[]
+        }
+        Insert: {
+          id?: number
+          measured_at?: string | null
+          metric_name: string
+          metric_value: string
+        }
+        Update: {
+          id?: number
+          measured_at?: string | null
+          metric_name?: string
+          metric_value?: string
+        }
+        Relationships: []
       }
-      is_authenticated: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
+    }
+    Views: {
+      index_health_monitor: {
+        Row: {
+          idx_scan: number | null
+          idx_tup_fetch: number | null
+          idx_tup_read: number | null
+          index_size: string | null
+          index_size_bytes: number | null
+          indexname: unknown
+          recommendation: string | null
+          schemaname: unknown
+          tablename: unknown
+          usage_category: string | null
+        }
+        Relationships: []
       }
+      index_usage_monitoring: {
+        Row: {
+          idx_scan: number | null
+          idx_tup_fetch: number | null
+          idx_tup_read: number | null
+          index_size: string | null
+          index_size_bytes: number | null
+          indexname: unknown
+          schemaname: unknown
+          tablename: unknown
+        }
+        Relationships: []
+      }
+      materialized_view_health: {
+        Row: {
+          dead_percentage: number | null
+          dead_rows: number | null
+          ispopulated: boolean | null
+          last_analyze: string | null
+          last_autoanalyze: string | null
+          last_autovacuum: string | null
+          last_vacuum: string | null
+          live_rows: number | null
+          matviewname: unknown
+          schemaname: unknown
+          view_size: string | null
+          view_size_bytes: number | null
+        }
+        Relationships: []
+      }
+      mv_performance_summary: {
+        Row: {
+          avg_duration_seconds: number | null
+          avg_rows: number | null
+          avg_size_mb: number | null
+          failed_refreshes: number | null
+          last_refresh_at: string | null
+          max_duration_seconds: number | null
+          min_duration_seconds: number | null
+          schema_name: string | null
+          total_refreshes: number | null
+          view_name: string | null
+        }
+        Relationships: []
+      }
+      mv_refresh_schedule_status: {
+        Row: {
+          active: boolean | null
+          command: string | null
+          jobid: number | null
+          jobname: string | null
+          last_run_duration_seconds: number | null
+          last_run_end: string | null
+          last_run_id: number | null
+          last_run_jobid: number | null
+          last_run_message: string | null
+          last_run_start: string | null
+          last_run_status: string | null
+          schedule: string | null
+        }
+        Relationships: []
+      }
+    }
+    Functions: {
+      current_user_id: { Args: never; Returns: string }
+      is_authenticated: { Args: never; Returns: boolean }
       log_error: {
         Args: {
           p_context?: Json
@@ -16049,132 +12819,6 @@ export type Database = {
       validate_uuid: {
         Args: { p_field_name?: string; p_value: string }
         Returns: string
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-  vault: {
-    Tables: {
-      secrets: {
-        Row: {
-          created_at: string
-          description: string
-          id: string
-          key_id: string | null
-          name: string | null
-          nonce: string | null
-          secret: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string
-          id?: string
-          key_id?: string | null
-          name?: string | null
-          nonce?: string | null
-          secret: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string
-          id?: string
-          key_id?: string | null
-          name?: string | null
-          nonce?: string | null
-          secret?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-    }
-    Views: {
-      decrypted_secrets: {
-        Row: {
-          created_at: string | null
-          decrypted_secret: string | null
-          description: string | null
-          id: string | null
-          key_id: string | null
-          name: string | null
-          nonce: string | null
-          secret: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          decrypted_secret?: never
-          description?: string | null
-          id?: string | null
-          key_id?: string | null
-          name?: string | null
-          nonce?: string | null
-          secret?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          decrypted_secret?: never
-          description?: string | null
-          id?: string | null
-          key_id?: string | null
-          name?: string | null
-          nonce?: string | null
-          secret?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-    }
-    Functions: {
-      _crypto_aead_det_decrypt: {
-        Args: {
-          additional: string
-          context?: string
-          key_id: number
-          message: string
-          nonce?: string
-        }
-        Returns: string
-      }
-      _crypto_aead_det_encrypt: {
-        Args: {
-          additional: string
-          context?: string
-          key_id: number
-          message: string
-          nonce?: string
-        }
-        Returns: string
-      }
-      _crypto_aead_det_noncegen: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      create_secret: {
-        Args: {
-          new_description?: string
-          new_key_id?: string
-          new_name?: string
-          new_secret: string
-        }
-        Returns: string
-      }
-      update_secret: {
-        Args: {
-          new_description?: string
-          new_key_id?: string
-          new_name?: string
-          new_secret?: string
-          secret_id: string
-        }
-        Returns: undefined
       }
     }
     Enums: {
@@ -16316,25 +12960,11 @@ export const Constants = {
   audit: {
     Enums: {},
   },
-  auth: {
-    Enums: {
-      aal_level: ["aal1", "aal2", "aal3"],
-      code_challenge_method: ["s256", "plain"],
-      factor_status: ["unverified", "verified"],
-      factor_type: ["totp", "webauthn", "phone"],
-      oauth_authorization_status: ["pending", "approved", "denied", "expired"],
-      oauth_client_type: ["public", "confidential"],
-      oauth_registration_type: ["dynamic", "manual"],
-      oauth_response_type: ["code"],
-      one_time_token_type: [
-        "confirmation_token",
-        "reauthentication_token",
-        "recovery_token",
-        "email_change_token_new",
-        "email_change_token_current",
-        "phone_change_token",
-      ],
-    },
+  billing: {
+    Enums: {},
+  },
+  cache: {
+    Enums: {},
   },
   catalog: {
     Enums: {},
@@ -16353,51 +12983,26 @@ export const Constants = {
       ],
     },
   },
-  cron: {
+  compliance: {
     Enums: {},
   },
   engagement: {
     Enums: {},
   },
-  extensions: {
-    Enums: {},
-  },
-  graphql: {
-    Enums: {},
-  },
-  graphql_public: {
-    Enums: {},
-  },
   identity: {
     Enums: {},
   },
-  inventory: {
+  integration: {
     Enums: {},
   },
-  net: {
-    Enums: {
-      request_status: ["PENDING", "SUCCESS", "ERROR"],
-    },
+  monitoring: {
+    Enums: {},
   },
   organization: {
     Enums: {},
   },
-  pgbouncer: {
+  patterns: {
     Enums: {},
-  },
-  private: {
-    Enums: {
-      subscription_status_enum: [
-        "active",
-        "trialing",
-        "past_due",
-        "canceled",
-        "unpaid",
-        "paused",
-        "incomplete",
-        "incomplete_expired",
-      ],
-    },
   },
   public: {
     Enums: {
@@ -16682,15 +13287,6 @@ export const Constants = {
       ],
     },
   },
-  realtime: {
-    Enums: {
-      action: ["INSERT", "UPDATE", "DELETE", "TRUNCATE", "ERROR"],
-      equality_op: ["eq", "neq", "lt", "lte", "gt", "gte", "in"],
-    },
-  },
-  realtime_system: {
-    Enums: {},
-  },
   scheduling: {
     Enums: {
       block_type_enum: [
@@ -16709,18 +13305,7 @@ export const Constants = {
   security: {
     Enums: {},
   },
-  storage: {
-    Enums: {
-      buckettype: ["STANDARD", "ANALYTICS"],
-    },
-  },
-  supabase_migrations: {
-    Enums: {},
-  },
   utility: {
-    Enums: {},
-  },
-  vault: {
     Enums: {},
   },
 } as const

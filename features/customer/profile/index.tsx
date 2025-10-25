@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/components/shared'
+import { PageLoading } from '@/features/shared/ui-components'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { MetadataForm } from '@/features/shared/profile-metadata'

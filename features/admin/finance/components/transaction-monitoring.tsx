@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { StatCard } from '@/components/shared'
+import { StatCard } from '@/features/shared/ui-components'
 import { Activity, CreditCard, Users, Building2 } from 'lucide-react'
 import type { TransactionMetrics, ManualTransactionRow } from '@/features/admin/finance/api/types'
 

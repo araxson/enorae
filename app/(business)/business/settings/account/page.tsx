@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { AccountSettings } from '@/features/business/settings-account'
 import { generateMetadata as genMeta } from '@/lib/metadata'
-import { PageLoading } from '@/components/shared'
+import { PageLoading } from '@/features/shared/ui-components'
 
 export const metadata = genMeta({ title: 'Account Settings', description: 'Manage your account information and security settings', noIndex: true })
 

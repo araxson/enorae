@@ -12,7 +12,7 @@ import {
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, AlertTriangle, AlertCircle } from 'lucide-react'
 import type { SecurityEvent } from '@/features/admin/security/api/queries'
-import { DataTableEmpty } from '@/components/shared/empty-states/data-table-empty'
+import { DataTableEmpty } from '@/features/shared/ui-components'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
