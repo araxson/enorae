@@ -10,9 +10,9 @@ import {
   computeReviewerReputation,
 } from './analytics'
 
-type MessageThread = Database['public']['Views']['admin_messages_overview']['Row']
-type ReviewRow = Database['public']['Views']['admin_reviews_overview']['Row']
-type CustomerRow = Database['public']['Views']['admin_users_overview']['Row']
+type MessageThread = Database['public']['Views']['admin_messages_overview_view']['Row']
+type ReviewRow = Database['public']['Views']['admin_reviews_overview_view']['Row']
+type CustomerRow = Database['public']['Views']['admin_users_overview_view']['Row']
 type ServiceRoleClient = ReturnType<typeof createServiceRoleClient>
 
 type CustomerEmailRow = Pick<CustomerRow, 'id' | 'email'>
@@ -64,7 +64,7 @@ export async function getReviewsForModeration(
   const supabase = createServiceRoleClient()
 
   let query = supabase
-    .from('admin_reviews_overview')
+    .from('admin_reviews_overview_view')
     .select('*')
     .order('created_at', { ascending: false })
 
@@ -170,7 +170,7 @@ export async function getMessageThreadsForMonitoring(): Promise<MessageThread[]>
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_messages_overview')
+    .from('admin_messages_overview_view')
     .select('*')
     .order('last_message_at', { ascending: false })
     .limit(200)
@@ -186,7 +186,7 @@ async function fetchReviewerStats(
   if (!reviewerIds.length) return new Map<string, ReviewerAggregate>()
 
   const { data, error } = await supabase
-    .from('admin_reviews_overview')
+    .from('admin_reviews_overview_view')
     .select('customer_id, is_flagged')
     .in('customer_id', reviewerIds)
     .limit(REVIEWER_SAMPLE_LIMIT)
@@ -211,7 +211,7 @@ async function fetchCustomerEmails(
   if (!customerIds.length) return new Map<string, string | null>()
 
   const { data, error } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('id, email')
     .in('id', customerIds)
     .returns<CustomerEmailRow[]>()

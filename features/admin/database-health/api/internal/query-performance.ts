@@ -3,9 +3,9 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type MostCalledQuery = Database['public']['Views']['most_called_queries']['Row']
-type SlowQuery = Database['public']['Views']['slow_queries']['Row']
-type QueryPerformance = Database['public']['Views']['query_performance_summary']['Row']
+type MostCalledQuery = Database['public']['Views']['most_called_queries_view']['Row']
+type SlowQuery = Database['public']['Views']['slow_queries_view']['Row']
+type QueryPerformance = Database['public']['Views']['query_performance_summary_view']['Row']
 
 export interface QueryPerformanceSnapshot {
   mostCalledQueries: MostCalledQuery[]
@@ -27,17 +27,17 @@ export async function getQueryPerformance(
 
   const [mostCalledRes, slowQueriesRes, perfRes] = await Promise.all([
     supabase
-      .from('most_called_queries')
+      .from('most_called_queries_view')
       .select('*')
       .order('calls', { ascending: false })
       .limit(limit),
     supabase
-      .from('slow_queries')
+      .from('slow_queries_view')
       .select('*')
       .order('avg_time_ms', { ascending: false })
       .limit(limit),
     supabase
-      .from('query_performance_summary')
+      .from('query_performance_summary_view')
       .select('*')
       .order('index_scans', { ascending: false })
       .limit(limit),

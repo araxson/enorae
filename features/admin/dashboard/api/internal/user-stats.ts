@@ -12,7 +12,7 @@ export async function getUserStats(): Promise<DashboardUserStats> {
 
   // Get user role distribution
   const { data: roleDistribution, error } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('roles')
 
   if (error) {
@@ -36,7 +36,7 @@ export async function getUserStats(): Promise<DashboardUserStats> {
 
   // Get additional stats from admin_users_overview
   const { count: totalUsers, error: countError } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('id', { count: 'exact', head: true })
 
   if (countError) {

@@ -2,10 +2,11 @@
 
 import { revalidatePath } from 'next/cache'
 
-import type { Database } from '@/lib/types/database.types'
-
 import { assignServiceSchema } from './constants'
 import { getAuthorizedContext, parseUuid } from './helpers'
+import type { Database } from '@/lib/types/database.types'
+
+type ServiceView = Database['public']['Views']['services_view']['Row']
 
 export async function assignServiceToStaff(formData: FormData) {
   try {
@@ -31,13 +32,15 @@ export async function assignServiceToStaff(formData: FormData) {
 
     const { supabase, session, salon } = context
 
-    const { data: service } = await supabase
-      .from('services')
-      .select('*')
+    const { data: service, error: serviceError } = await supabase
+      .from('services_view')
+      .select('id, salon_id')
       .eq('id', serviceId)
+      .returns<Pick<ServiceView, 'id' | 'salon_id'>[]>()
       .single()
 
-    if (!service || (service as Database['public']['Views']['services']['Row']).salon_id !== salon.id) {
+    if (serviceError) return { error: serviceError.message }
+    if (!service || service.salon_id !== salon.id) {
       return { error: 'Service not found' }
     }
 

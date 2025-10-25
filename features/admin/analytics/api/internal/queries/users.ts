@@ -2,7 +2,7 @@ import 'server-only';
 import { requireAdminClient } from '@/features/admin/analytics/api/admin-analytics-shared'
 import type { AdminUserRow } from '@/features/admin/analytics/api/admin-analytics-types'
 
-const USERS_TABLE = 'admin_users_overview'
+const USERS_TABLE = 'admin_users_overview_view'
 
 export async function getAllUsers(): Promise<AdminUserRow[]> {
   const supabase = await requireAdminClient()

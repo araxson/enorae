@@ -2,7 +2,7 @@ import 'server-only';
 import { requireAdminClient } from '@/features/admin/analytics/api/admin-analytics-shared'
 import type { AdminStaffRow } from '@/features/admin/analytics/api/admin-analytics-types'
 
-const STAFF_TABLE = 'admin_staff_overview'
+const STAFF_TABLE = 'admin_staff_overview_view'
 
 export async function getAllStaff(): Promise<AdminStaffRow[]> {
   const supabase = await requireAdminClient()

@@ -70,3 +70,4 @@ After all fixes:
 ---
 
 **Start immediately. Read pattern file. Analyze deeply. Fix everything.**
+Never create bulk fixes and use supabase mcp

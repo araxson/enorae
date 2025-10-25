@@ -27,7 +27,7 @@ export async function getChainCompliance(): Promise<ChainCompliance[]> {
     if (!chain['id']) continue
 
     const { data: salonSummaries, error: salonsError } = await supabase
-      .from('admin_salons_overview')
+      .from('admin_salons_overview_view')
       .select('id, chain_id, is_accepting_bookings')
       .eq('chain_id', chain['id'])
       .returns<AdminSalonOverviewRow[]>()

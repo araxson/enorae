@@ -4,7 +4,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type AdminUserRole = Database['public']['Views']['user_roles']['Row']
+type AdminUserRole = Database['public']['Views']['user_roles_view']['Row']
 
 type RoleStat = { total: number; active: number; inactive: number }
 
@@ -28,7 +28,7 @@ export async function getAllRoleAssignments(): Promise<AdminUserRole[]> {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('*')
     .order('created_at', { ascending: false })
 
@@ -46,7 +46,7 @@ export async function getUserRoleAssignments(userId: string): Promise<AdminUserR
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
@@ -65,7 +65,7 @@ export async function getSalonRoleAssignments(salonId: string): Promise<AdminUse
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
@@ -84,7 +84,7 @@ export async function getRoleStats() {
   const supabase = createServiceRoleClient()
 
   const { data } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('role, is_active')
 
   const stats = (data || []).reduce<Record<string, RoleStat>>((acc, { role, is_active }) => {
@@ -111,25 +111,25 @@ export async function getRoleAuditTimeline(limit = 100): Promise<RoleAuditEvent[
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .schema('audit')
-    .from('audit_logs')
-    .select('id, created_at, action, user_id, entity_id, metadata, event_type, event_category, impersonator_id')
-    .or('action.ilike.role%,event_type.ilike.%role%')
+    .schema('identity')
+    .from('audit_logs_view')
+    .select('id, created_at, action, user_id, entity_id, impersonator_id')
+    .ilike('action', 'role%')
     .order('created_at', { ascending: false })
     .limit(limit)
-    .returns<Database['audit']['Tables']['audit_logs']['Row'][]>()
+    .returns<Database['identity']['Views']['audit_logs_view']['Row'][]>()
 
   if (error) throw error
 
   const rows = data ?? []
 
   return rows.map((row) => ({
-    id: row.id,
-    createdAt: row.created_at,
-    action: row.action,
+    id: row.id ?? '',
+    createdAt: row.created_at ?? new Date().toISOString(),
+    action: row.action ?? 'unknown',
     userId: row.user_id,
     actorId: row.impersonator_id,
     entityId: row.entity_id,
-    metadata: (row.metadata as Record<string, unknown> | null) ?? null,
+    metadata: (row.new_values as Record<string, unknown> | null) ?? null,
   }))
 }

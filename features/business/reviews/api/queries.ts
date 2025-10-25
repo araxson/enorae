@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type SalonReviewView = Database['engagement']['Views']['salon_reviews_with_counts']['Row']
+type SalonReviewView = Database['engagement']['Views']['salon_reviews_with_counts_view']['Row']
 
 export type SalonReviewWithDetails = SalonReviewView & {
   customer_name?: string | null
@@ -20,7 +20,7 @@ export async function getSalonReviews(): Promise<SalonReviewWithDetails[]> {
 
   const { data, error } = await supabase
     .schema('engagement')
-    .from('salon_reviews_with_counts')
+    .from('salon_reviews_with_counts_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })

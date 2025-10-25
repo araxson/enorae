@@ -5,9 +5,9 @@ import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
 type DailyMetricsRow = Database['analytics']['Tables']['daily_metrics']['Row']
-type AdminSalonRow = Database['public']['Views']['admin_salons_overview']['Row']
-type AdminAppointmentRow = Database['public']['Views']['admin_appointments_overview']['Row']
-type ProfileRow = Database['public']['Views']['profiles']['Row']
+type AdminSalonRow = Database['public']['Views']['admin_salons_overview_view']['Row']
+type AdminAppointmentRow = Database['public']['Views']['admin_appointments_overview_view']['Row']
+type ProfileRow = Database['public']['Views']['profiles_view']['Row']
 type ReviewRow = Database['public']['Views']['salon_reviews_view']['Row']
 
 /**
@@ -22,7 +22,7 @@ export async function getPlatformMetrics() {
   const [usersResult, salonsResult, appointmentsResult, reviewsResult] = await Promise.all([
     supabase.from('profiles').select('id', { count: 'exact', head: true }),
     supabase.from('salons').select('id', { count: 'exact', head: true }),
-    supabase.from('appointments').select('id', { count: 'exact', head: true }),
+    supabase.from('appointments_view').select('id', { count: 'exact', head: true }),
     supabase.from('salon_reviews_view').select('id', { count: 'exact', head: true }),
   ])
 
@@ -131,7 +131,7 @@ export async function getSalonPerformanceMetrics() {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('admin_salons_overview')
+    .from('admin_salons_overview_view')
     .select('id, name, rating_average, rating_count, total_bookings, total_revenue, subscription_tier')
     .order('rating_average', { ascending: false })
     .limit(50)
@@ -150,7 +150,7 @@ export async function getAppointmentMetrics(startDate: string, endDate: string) 
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('admin_appointments_overview')
+    .from('admin_appointments_overview_view')
     .select('id, status, salon_id, created_at')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
@@ -236,7 +236,7 @@ export async function getActiveUserMetrics(daysBack: number = 30) {
   cutoffDate.setDate(cutoffDate.getDate() - daysBack)
 
   const { data: activeUsers, error } = await supabase
-    .from('admin_appointments_overview')
+    .from('admin_appointments_overview_view')
     .select('customer_id')
     .gte('created_at', cutoffDate.toISOString())
     .returns<AdminAppointmentRow[]>()

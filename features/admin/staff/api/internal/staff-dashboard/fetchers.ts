@@ -56,7 +56,7 @@ export async function fetchRecentAppointments(
   since.setDate(since.getDate() - APPOINTMENT_LOOKBACK_DAYS)
 
   const { data, error } = await supabase
-    .from('admin_appointments_overview')
+    .from('admin_appointments_overview_view')
     .select('id, staff_id, status, start_time, duration_minutes, salon_id')
     .in('staff_id', staffIds)
     .gte('start_time', since.toISOString())

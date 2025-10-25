@@ -3,7 +3,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type AuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
+type AuditLogRow = Database['identity']['Views']['audit_logs_view']['Row']
 
 export interface AuditLog {
   id: string
@@ -44,27 +44,27 @@ const normalizeIp = (value: AuditLogRow['ip_address']): string | null => {
 }
 
 const toAuditLog = (row: AuditLogRow): AuditLog => ({
-  id: row.id,
-  event_type: row.event_type ?? row.action,
+  id: row.id ?? '',
+  event_type: row.action ?? 'unknown',
   user_id: row.user_id,
   resource_type: row.entity_type,
   resource_id: row.entity_id,
-  event_data: (row.metadata as Record<string, unknown> | null) ?? null,
+  event_data: row.new_values as Record<string, unknown> | null,
   ip_address: normalizeIp(row.ip_address),
   user_agent: row.user_agent,
-  created_at: row.created_at,
+  created_at: row.created_at ?? new Date().toISOString(),
   user_email: null,
   user_name: null,
 })
 
 const toSecurityEvent = (row: AuditLogRow): SecurityEvent => ({
-  id: row.id,
-  event_type: row.event_type ?? row.action,
-  severity: row.severity ?? NORMALIZED_SEVERITY_FALLBACK,
+  id: row.id ?? '',
+  event_type: row.action ?? 'unknown',
+  severity: row.is_success === false ? 'warning' : NORMALIZED_SEVERITY_FALLBACK,
   user_id: row.user_id,
   ip_address: normalizeIp(row.ip_address),
-  event_details: (row.metadata as Record<string, unknown> | null) ?? null,
-  created_at: row.created_at,
+  event_details: row.new_values as Record<string, unknown> | null,
+  created_at: row.created_at ?? new Date().toISOString(),
   user_email: null,
 })
 
@@ -84,7 +84,7 @@ export async function getAuditLogs(filters?: {
 
   const supabase = createServiceRoleClient()
 
-  let query = supabase.schema('audit').from('audit_logs').select('*')
+  let query = supabase.from('audit_logs_view').select('*')
 
   if (filters?.eventType) {
     query = query.eq('event_type', filters.eventType)
@@ -128,7 +128,7 @@ export async function getSecurityEvents(filters?: {
 
   const supabase = createServiceRoleClient()
 
-  let query = supabase.schema('audit').from('audit_logs').select('*')
+  let query = supabase.from('audit_logs_view').select('*')
 
   if (filters?.severity) {
     query = query.eq('severity', filters.severity)

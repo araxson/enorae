@@ -3,8 +3,8 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type TableWithoutRLS = Database['public']['Views']['public_tables_without_rls']['Row']
-type TableWithoutPK = Database['public']['Views']['tables_without_primary_keys']['Row']
+type TableWithoutRLS = Database['public']['Views']['public_tables_without_rls_view']['Row']
+type TableWithoutPK = Database['public']['Views']['tables_without_primary_keys_view']['Row']
 
 export interface SchemaValidationSnapshot {
   tablesWithoutRLS: TableWithoutRLS[]
@@ -22,11 +22,11 @@ export async function getSchemaValidation(): Promise<SchemaValidationSnapshot> {
 
   const [rlsRes, pkRes] = await Promise.all([
     supabase
-      .from('public_tables_without_rls')
+      .from('public_tables_without_rls_view')
       .select('*')
       .order('schemaname', { ascending: true }),
     supabase
-      .from('tables_without_primary_keys')
+      .from('tables_without_primary_keys_view')
       .select('*')
       .order('schema_name', { ascending: true }),
   ])

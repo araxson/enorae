@@ -85,7 +85,9 @@ export function Panel({ title, children, tone }: { title: string; children: Reac
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="text-sm">{children}</CardContent>
+      <CardContent>
+        <div className="text-sm">{children}</div>
+      </CardContent>
     </Card>
   )
 }

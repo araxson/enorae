@@ -17,7 +17,7 @@ export async function flagReview(formData: FormData) {
     })
 
     if (!result.success) {
-      return { error: result.error.errors[0].message }
+      return { error: result.error.errors[0]?.message ?? 'Validation failed' }
     }
 
     const supabase = await resolveAdminClient()

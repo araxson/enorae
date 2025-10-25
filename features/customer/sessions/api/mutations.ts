@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import { revokeSessionSchema } from './schema'
+import type { Database } from '@/lib/types/database.types'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -27,11 +28,13 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
 
     // Check if trying to revoke current session
     const { data: targetSession, error: targetError } = await supabase
-      .from('sessions')
+      .from('sessions_view')
       .select('id, is_current, is_active')
       .eq('id', validated.sessionId)
       .eq('user_id', user.id)
-      .maybeSingle<{ id: string; is_current: boolean | null; is_active: boolean | null }>()
+      .maybeSingle<
+        Pick<Database['public']['Views']['sessions_view']['Row'], 'id' | 'is_current' | 'is_active'>
+      >()
 
     if (targetError) throw targetError
 
@@ -84,12 +87,12 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
 
     // Resolve the current session from the secure view to avoid token comparison
     const { data: currentSession, error: currentError } = await supabase
-      .from('sessions')
+      .from('sessions_view')
       .select('id')
       .eq('user_id', user.id)
       .eq('is_active', true)
       .eq('is_current', true)
-      .maybeSingle<{ id: string }>()
+      .maybeSingle<Pick<Database['public']['Views']['sessions_view']['Row'], 'id'>>()
 
     if (currentError) throw currentError
 

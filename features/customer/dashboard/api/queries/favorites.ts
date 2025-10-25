@@ -11,7 +11,7 @@ export async function getFavorites(): Promise<CustomerFavoriteView[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('customer_favorites')
+    .from('customer_favorites_view')
     .select('*')
     .eq('customer_id', session.user.id)
     .order('created_at', { ascending: false })

@@ -16,7 +16,7 @@ import type { Database } from '@/lib/types/database.types'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 
-type StaffProfile = Database['public']['Views']['staff_profiles_view']['Row']
+type StaffProfile = Database['public']['Views']['staff_enriched_view']['Row']
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row'] | null
 
 type ProfileClientProps = {
@@ -26,48 +26,45 @@ type ProfileClientProps = {
 }
 
 export function ProfileClient({ profile, metadata, username }: ProfileClientProps) {
-  const initials = profile['full_name']
-    ? profile['full_name']
+  const initials = profile.name
+    ? profile.name
         .split(' ')
-        .map((part) => part[0])
+        .map((part: string) => part[0])
         .join('')
         .toUpperCase()
-    : profile['email']?.[0]?.toUpperCase() || '?'
+    : profile.email?.[0]?.toUpperCase() || '?'
 
   const summaries: StaffSummary[] = [
     {
       id: 'experience',
       label: 'Experience',
-      value: profile['experience_years'] ? `${profile['experience_years']} yrs` : '—',
+      value: profile.experience_years ? `${profile.experience_years} yrs` : '—',
       helper: 'Professional experience',
       tone: 'info',
     },
-    {
-      id: 'services',
-      label: 'Services offered',
-      value: profile['services_count']?.toString() ?? '0',
-      helper: 'Active services in catalog',
-      tone: 'default',
-    },
-    {
-      id: 'lead-time',
-      label: 'Booking lead time',
-      value:
-        profile['booking_lead_time_hours'] === null || profile['booking_lead_time_hours'] === undefined
-          ? '—'
-          : profile['booking_lead_time_hours'] === 0
-            ? 'Same day'
-            : `${profile['booking_lead_time_hours']} hrs`,
-      helper: 'Minimum notice before new bookings',
-      tone: 'info',
-    },
-    {
-      id: 'appointments',
-      label: 'Total appointments',
-      value: profile['total_appointments']?.toString() ?? '0',
-      helper: 'Completed to date',
-      tone: 'success',
-    },
+    // Note: These properties are not in staff_enriched_view
+    // To enable, fetch separately or add to view
+    // {
+    //   id: 'services',
+    //   label: 'Services offered',
+    //   value: '—',
+    //   helper: 'Active services in catalog',
+    //   tone: 'default',
+    // },
+    // {
+    //   id: 'lead-time',
+    //   label: 'Booking lead time',
+    //   value: '—',
+    //   helper: 'Minimum notice before new bookings',
+    //   tone: 'info',
+    // },
+    // {
+    //   id: 'appointments',
+    //   label: 'Total appointments',
+    //   value: '—',
+    //   helper: 'Completed to date',
+    //   tone: 'success',
+    // },
   ]
 
   const quickActions: StaffQuickAction[] = [
@@ -93,24 +90,24 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
             <CardContent>
               <div className="flex flex-col items-center gap-6 py-6 text-center">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={metadata?.['avatar_url'] || profile['avatar_url'] || undefined} />
+                  <AvatarImage src={metadata?.avatar_url || profile.avatar || undefined} />
                   <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
                 </Avatar>
 
                 <div className="space-y-1">
                   <p className="text-xl font-semibold leading-tight">
-                    {profile['full_name'] || 'Staff member'}
+                    {profile.name || 'Staff member'}
                   </p>
-                  {profile['title'] && <p className="text-muted-foreground">{profile['title']}</p>}
-                  {profile['email'] && (
-                    <p className="text-sm text-muted-foreground">{profile['email']}</p>
+                  {profile.title && <p className="text-muted-foreground">{profile.title}</p>}
+                  {profile.email && (
+                    <p className="text-sm text-muted-foreground">{profile.email}</p>
                   )}
                 </div>
 
-                {profile['salon_name'] && (
+                {profile.salon_name && (
                   <div className="w-full space-y-1 border-t pt-4">
                     <p className="text-sm font-medium">Salon</p>
-                    <p className="text-sm text-muted-foreground">{profile['salon_name']}</p>
+                    <p className="text-sm text-muted-foreground">{profile.salon_name}</p>
                   </div>
                 )}
               </div>
@@ -156,22 +153,6 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
                         </p>
                       </div>
                     )}
-                    {profile['services_count'] !== null && profile['services_count'] !== undefined && (
-                      <div>
-                        <p className="text-sm font-medium">Services offered</p>
-                        <p className="text-sm text-muted-foreground">
-                          {profile['services_count']} services
-                        </p>
-                      </div>
-                    )}
-                    {profile['total_appointments'] !== null && profile['total_appointments'] !== undefined && (
-                      <div>
-                        <p className="text-sm font-medium">Total appointments</p>
-                        <p className="text-sm text-muted-foreground">
-                          {profile['total_appointments']} completed
-                        </p>
-                      </div>
-                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -212,8 +193,8 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
 
             <TabsContent value="edit" className="space-y-6">
               <ProfilePhotoUpload
-                currentPhotoUrl={metadata?.['avatar_url'] || profile['avatar_url']}
-                userName={profile['full_name'] || undefined}
+                currentPhotoUrl={metadata?.['avatar_url'] || profile['avatar']}
+                userName={profile['name'] || undefined}
               />
               <UsernameForm currentUsername={username} />
               <StaffInfoForm profile={profile} />

@@ -8,7 +8,7 @@ import { EmptyState } from '@/features/shared/ui-components'
 import { CalendarX } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
 
 type AppointmentStatus = NonNullable<Appointment['status']>
 

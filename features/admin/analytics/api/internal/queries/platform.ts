@@ -61,7 +61,7 @@ export async function getPlatformAnalyticsSnapshot(
 
   const [analyticsRes, dailyMetricsRes, usersRes] = await Promise.all([
     supabase
-      .from('admin_analytics_overview')
+      .from('admin_analytics_overview_view')
       .select('*')
       .gte('date', windowStart.toISOString())
       .order('date', { ascending: false }),
@@ -74,7 +74,7 @@ export async function getPlatformAnalyticsSnapshot(
       .order('metric_at', { ascending: false })
       .limit(REFRESH_LIMIT),
     supabase
-      .from('admin_users_overview')
+      .from('admin_users_overview_view')
       .select('id,created_at,primary_role,country_code')
       .gte('created_at', windowStart.toISOString())
       .order('created_at', { ascending: false })

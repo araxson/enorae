@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { ZodError } from 'zod'
 import { reviewSchema } from '@/lib/validations/customer/reviews'
+import type { Database } from '@/lib/types/database.types'
 
 type ActionResult = {
   success?: boolean
@@ -65,16 +66,17 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
     const session = await requireAuth()
     const supabase = await createClient()
 
-    // Verify ownership and check edit window
-    type ReviewRow = { customer_id: string; created_at: string; salon_id: string }
-
     const { data: review, error: fetchError } = await supabase
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .select('customer_id, created_at, salon_id')
       .eq('id', id)
       .eq('customer_id', session.user.id)
-      .returns<ReviewRow[]>()
-      .single()
+      .maybeSingle<
+        Pick<
+          Database['public']['Views']['salon_reviews_view']['Row'],
+          'customer_id' | 'created_at' | 'salon_id'
+        >
+      >()
 
     if (fetchError) {
       if (fetchError.code === 'PGRST116') {
@@ -142,14 +144,12 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
     const supabase = await createClient()
 
     // Verify ownership before deleting
-    type ReviewRow = { customer_id: string }
-
     const { data: review, error: fetchError } = await supabase
-      .from('salon_reviews')
+      .from('salon_reviews_view')
       .select('customer_id')
       .eq('id', id)
-      .returns<ReviewRow[]>()
-      .single()
+      .eq('customer_id', session.user.id)
+      .maybeSingle<Pick<Database['public']['Views']['salon_reviews_view']['Row'], 'customer_id'>>()
 
     if (fetchError) throw fetchError
 

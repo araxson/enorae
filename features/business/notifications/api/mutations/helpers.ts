@@ -6,6 +6,9 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserSalonIds, requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
+type StaffProfileRow = Database['public']['Views']['staff_profiles_view']['Row']
+type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
+
 export type NotificationChannel =
   Database['public']['Enums']['notification_channel']
 export type NotificationType =
@@ -64,11 +67,12 @@ export async function ensureRecipientAuthorized(
   }
 
   const { data: staffMemberships, error: staffError } = await supabase
-    .from('staff')
-    .select('id')
+    .from('staff_profiles_view')
+    .select('id, salon_id')
     .eq('user_id', userId)
     .in('salon_id', accessibleSalonIds)
     .limit(1)
+    .returns<Pick<StaffProfileRow, 'id' | 'salon_id'>[]>()
 
   if (staffError) throw staffError
 
@@ -77,11 +81,12 @@ export async function ensureRecipientAuthorized(
   }
 
   const { data: customerMemberships, error: customerError } = await supabase
-    .from('appointments')
-    .select('id')
+    .from('appointments_view')
+    .select('id, salon_id')
     .eq('customer_id', userId)
     .in('salon_id', accessibleSalonIds)
     .limit(1)
+    .returns<Pick<AppointmentRow, 'id' | 'salon_id'>[]>()
 
   if (customerError) throw customerError
 

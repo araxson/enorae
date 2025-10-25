@@ -1,30 +1,21 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 export async function redeemLoyaltyPoints(points: number, rewardId?: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAuth()
 
-  // TODO: loyalty_transactions table not yet in database schema
-  throw new Error('Loyalty points feature not yet implemented')
+  throw new Error('Loyalty program is not available yet')
 }
 
 export async function generateReferralCode() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAuth()
 
-  // TODO: referrals table not yet in database schema
-  throw new Error('Referral codes feature not yet implemented')
+  throw new Error('Loyalty program is not available yet')
 }
 
 export async function trackReferralUse(referralCode: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAuth()
 
-  // TODO: referrals table not yet in database schema
-  throw new Error('Referral tracking feature not yet implemented')
+  throw new Error('Loyalty program is not available yet')
 }

@@ -140,7 +140,7 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
             ))}
           </div>
 
-          <DetailCard key="reputation" {...metricCards[2]} />
+          {metricCards[2] && <DetailCard key="reputation" {...metricCards[2]} />}
 
           <StatusBadges review={review} />
 

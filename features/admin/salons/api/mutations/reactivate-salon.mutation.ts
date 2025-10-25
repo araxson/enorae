@@ -21,7 +21,7 @@ export async function reactivateSalon(formData: FormData) {
 
     // Get salon info
     const { data: salon } = await supabase
-      .from('salons')
+      .from('salons_view')
       .select('name')
       .eq('id', salonId)
       .single()

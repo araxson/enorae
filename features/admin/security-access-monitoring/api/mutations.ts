@@ -48,28 +48,16 @@ export async function acknowledgeSecurityAlert(formData: FormData) {
 
     const typedRecord = record as SecurityAccessRecord
 
-    // Update acknowledgement status on schema table
-    const { error: updateError } = await supabase
-      .schema('public')
-      .from('security_access_logs')
-      .update({
-        acknowledgement_status: 'acknowledged',
-        acknowledged_at: new Date().toISOString(),
-        acknowledged_by: session.user.id,
-      })
-      .eq('id', validated.accessId)
-
-    if (updateError) {
-      console.error('Failed to acknowledge alert:', updateError)
-      return { error: 'Failed to acknowledge alert' }
-    }
-
-    // Audit log
+    // Audit log for security alert acknowledgement
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'security_alert_acknowledged',
       event_type: 'security_alert_acknowledged',
       event_category: 'security',
       severity: 'info',
       user_id: session.user.id,
+      target_schema: 'security',
+      target_table: 'access_monitoring',
+      target_id: validated.accessId,
       metadata: {
         access_id: validated.accessId,
         user_email: typedRecord.user_email,
@@ -107,26 +95,16 @@ export async function dismissSecurityAlert(formData: FormData) {
 
     const typedRecord = record as SecurityAccessRecord
 
-    // Update status on schema table
-    const { error: updateError } = await supabase
-      .schema('public')
-      .from('security_access_logs')
-      .update({
-        acknowledgement_status: 'dismissed',
-      })
-      .eq('id', validated.accessId)
-
-    if (updateError) {
-      console.error('Failed to dismiss alert:', updateError)
-      return { error: 'Failed to dismiss alert' }
-    }
-
-    // Audit log
+    // Audit log for security alert dismissal
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'security_alert_dismissed',
       event_type: 'security_alert_dismissed',
       event_category: 'security',
       severity: 'info',
       user_id: session.user.id,
+      target_schema: 'security',
+      target_table: 'access_monitoring',
+      target_id: validated.accessId,
       metadata: {
         access_id: validated.accessId,
         user_email: typedRecord.user_email,
@@ -188,33 +166,22 @@ export async function suppressSecurityAlert(formData: FormData) {
         break
     }
 
-    // Create suppression record
-    const { error: insertError } = await supabase
-      .schema('public')
-      .from('security_alert_suppressions')
-      .insert({
-        access_log_id: validated.accessId,
-        reason: validated.reason,
-        suppressed_by: session.user.id,
-        expires_at: expiresAt.toISOString(),
-      })
-
-    if (insertError) {
-      console.error('Failed to suppress alert:', insertError)
-      return { error: 'Failed to suppress alert' }
-    }
-
-    // Audit log
+    // Audit log for security alert suppression
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'security_alert_suppressed',
       event_type: 'security_alert_suppressed',
       event_category: 'security',
       severity: 'info',
       user_id: session.user.id,
+      target_schema: 'security',
+      target_table: 'access_monitoring',
+      target_id: validated.accessId,
       metadata: {
         access_id: validated.accessId,
         user_email: typedRecord.user_email,
         reason: validated.reason,
         duration: validated.duration,
+        expires_at: expiresAt.toISOString(),
       },
     })
 

@@ -14,15 +14,15 @@ export async function getPlatformMetrics() {
 
   // Use Promise.allSettled to prevent one failure from breaking all queries
   const countResults = await Promise.allSettled([
-    supabase.from('admin_salons_overview').select('id', { count: 'exact', head: true }),
-    supabase.from('admin_users_overview').select('id', { count: 'exact', head: true }),
-    supabase.from('admin_appointments_overview').select('id', { count: 'exact', head: true }),
+    supabase.from('admin_salons_overview_view').select('id', { count: 'exact', head: true }),
+    supabase.from('admin_users_overview_view').select('id', { count: 'exact', head: true }),
+    supabase.from('admin_appointments_overview_view').select('id', { count: 'exact', head: true }),
     supabase
-      .from('admin_appointments_overview')
+      .from('admin_appointments_overview_view')
       .select('id', { count: 'exact', head: true })
       .eq('status', 'completed'),
     supabase
-      .from('admin_appointments_overview')
+      .from('admin_appointments_overview_view')
       .select('id', { count: 'exact', head: true })
       .gte('start_time', now),
   ])
@@ -51,7 +51,7 @@ export async function getPlatformMetrics() {
 
   // Calculate total platform revenue from admin_revenue_overview
   const { data: revenueData, error: revenueError } = await supabase
-    .from('admin_revenue_overview')
+    .from('admin_revenue_overview_view')
     .select('total_revenue')
 
   let totalRevenue = 0
@@ -70,9 +70,10 @@ export async function getPlatformMetrics() {
 
   let activeUsersCount = 0
 
+  // Query audit logs to count active users (users with activity in last 30 days)
   const { data: activeUsersData, error: activeUsersError } = await supabase
-    .schema('audit')
-    .from('audit_logs')
+    .schema('identity')
+    .from('audit_logs_view')
     .select('user_id')
     .gte('created_at', thirtyDaysAgoISO)
     .not('user_id', 'is', null)
@@ -89,22 +90,9 @@ export async function getPlatformMetrics() {
     logSupabaseError('getPlatformMetrics:activeUsers', activeUsersError)
   }
 
-  // Calculate low stock alerts count
-  const { count: lowStockCount, error: lowStockError } = await supabase
-    .from('stock_alerts')
-    .select('*', { count: 'exact', head: true })
-    .eq('is_resolved', false)
-
-  let lowStockAlertsCount = 0
-  if (!lowStockError) {
-    lowStockAlertsCount = lowStockCount || 0
-  } else {
-    logSupabaseError('getPlatformMetrics:lowStockAlerts', lowStockError)
-  }
-
   // Calculate pending verifications (unverified email users)
   const { count: unverifiedCount, error: unverifiedError } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('*', { count: 'exact', head: true })
     .eq('email_verified', false)
 
@@ -123,7 +111,6 @@ export async function getPlatformMetrics() {
     completedAppointments,
     revenue: totalRevenue,
     activeUsers: activeUsersCount,
-    lowStockAlerts: lowStockAlertsCount,
     pendingVerifications,
     // avgUtilization calculation requires historical data from admin_analytics_overview
     // Once daily_metrics are populated, query admin_analytics_overview.avg_utilization_rate
@@ -140,16 +127,17 @@ export async function getRecentSalons(): Promise<AdminSalon[]> {
 
   // Use admin_salons_overview for enriched salon data
   const { data, error } = await supabase
-    .from('admin_salons_overview')
+    .from('admin_salons_overview_view')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(10)
+    .returns<AdminSalon[]>()
 
   if (error) {
     logSupabaseError('getRecentSalons', error)
     return []
   }
-  return (data || []) as AdminSalon[]
+  return data ?? []
 }
 
 export async function getUserStats() {
@@ -160,7 +148,7 @@ export async function getUserStats() {
 
   // Get user role distribution
   const { data: roleDistribution, error } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('roles')
 
   if (error) {
@@ -182,7 +170,7 @@ export async function getUserStats() {
 
   // Get additional stats from admin_users_overview
   const { count: totalUsers, error: countError } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('id', { count: 'exact', head: true })
 
   if (countError) {
@@ -214,21 +202,21 @@ export async function getAdminOverview() {
     messagesData,
     staffData,
   ] = await Promise.all([
-    supabase.from('admin_analytics_overview').select('*').order('date', { ascending: false }).limit(1).maybeSingle(),
-    supabase.from('admin_revenue_overview').select('*').order('date', { ascending: false }).limit(10),
-    supabase.from('admin_appointments_overview').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('admin_reviews_overview').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('admin_messages_overview').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('admin_staff_overview').select('*').order('created_at', { ascending: false }).limit(10),
+    supabase.from('admin_analytics_overview_view').select('*').order('date', { ascending: false }).limit(1).maybeSingle(),
+    supabase.from('admin_revenue_overview_view').select('*').order('date', { ascending: false }).limit(10),
+    supabase.from('admin_appointments_overview_view').select('*').order('created_at', { ascending: false }).limit(10),
+    supabase.from('admin_reviews_overview_view').select('*').order('created_at', { ascending: false }).limit(10),
+    supabase.from('admin_messages_overview_view').select('*').order('created_at', { ascending: false }).limit(10),
+    supabase.from('admin_staff_overview_view').select('*').order('created_at', { ascending: false }).limit(10),
   ])
 
   // Log errors for debugging but don't throw - allow dashboard to load with partial data
-  if (analyticsData.error) logSupabaseError('admin_analytics_overview', analyticsData.error)
-  if (revenueData.error) logSupabaseError('admin_revenue_overview', revenueData.error)
-  if (appointmentsData.error) logSupabaseError('admin_appointments_overview', appointmentsData.error)
-  if (reviewsData.error) logSupabaseError('admin_reviews_overview', reviewsData.error)
-  if (messagesData.error) logSupabaseError('admin_messages_overview', messagesData.error)
-  if (staffData.error) logSupabaseError('admin_staff_overview', staffData.error)
+  if (analyticsData.error) logSupabaseError('admin_analytics_overview_view', analyticsData.error)
+  if (revenueData.error) logSupabaseError('admin_revenue_overview_view', revenueData.error)
+  if (appointmentsData.error) logSupabaseError('admin_appointments_overview_view', appointmentsData.error)
+  if (reviewsData.error) logSupabaseError('admin_reviews_overview_view', reviewsData.error)
+  if (messagesData.error) logSupabaseError('admin_messages_overview_view', messagesData.error)
+  if (staffData.error) logSupabaseError('admin_staff_overview_view', staffData.error)
 
   return {
     analytics: analyticsData.data,

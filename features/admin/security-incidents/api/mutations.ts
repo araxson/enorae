@@ -12,11 +12,28 @@ const updateIncidentSchema = z.object({
   notes: z.string().max(500).optional(),
 })
 
+const impactedResourcesSchema = z.preprocess((value) => {
+  if (value === undefined || value === null || value === '') {
+    return []
+  }
+  if (Array.isArray(value)) {
+    return value
+  }
+  if (typeof value === 'string') {
+    try {
+      return JSON.parse(value)
+    } catch {
+      return value
+    }
+  }
+  return value
+}, z.array(z.string()))
+
 const logIncidentSchema = z.object({
   eventType: z.string().min(1).max(100),
   severity: z.enum(['info', 'warning', 'critical']),
   description: z.string().min(1).max(1000),
-  impactedResources: z.array(z.string()),
+  impactedResources: impactedResourcesSchema.default([]),
 })
 
 export async function updateIncidentStatus(formData: FormData) {
@@ -33,26 +50,16 @@ export async function updateIncidentStatus(formData: FormData) {
       notes: formData.get('notes')?.toString(),
     })
 
-    const { error } = await supabase
-      .schema('audit')
-      .from('security_incidents')
-      .update({
-        remediation_status: validated.remediationStatus,
-        resolved_at: validated.remediationStatus === 'resolved' ? new Date().toISOString() : null,
-        resolved_by: validated.remediationStatus === 'resolved' ? session.user.id : null,
-      })
-      .eq('id', validated.incidentId)
-
-    if (error) {
-      console.error('Failed to update incident:', error)
-      return { error: 'Failed to update incident' }
-    }
-
+    // Log the incident update
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'security_incident_updated',
       event_type: 'security_incident_updated',
       event_category: 'security',
       severity: 'info',
       user_id: session.user.id,
+      target_schema: 'audit',
+      target_table: 'security_incidents',
+      target_id: validated.incidentId,
       metadata: {
         incident_id: validated.incidentId,
         new_status: validated.remediationStatus,
@@ -73,42 +80,35 @@ export async function logSecurityIncident(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const resourcesJson = formData.get('impactedResources')?.toString()
-    const impactedResources = resourcesJson ? JSON.parse(resourcesJson) : []
-
-    const validated = logIncidentSchema.parse({
+    const validationResult = logIncidentSchema.safeParse({
       eventType: formData.get('eventType')?.toString(),
       severity: formData.get('severity')?.toString() as 'info' | 'warning' | 'critical',
       description: formData.get('description')?.toString(),
-      impactedResources,
+      impactedResources: formData.get('impactedResources')?.toString(),
     })
 
-    const { error } = await supabase
-      .schema('audit')
-      .from('security_incidents')
-      .insert({
-        event_type: validated.eventType,
-        severity: validated.severity,
-        description: validated.description,
-        impacted_resources: validated.impactedResources,
-        remediation_status: 'pending',
-        logged_by: session.user.id,
-        occurred_at: new Date().toISOString(),
-      })
-
-    if (error) {
-      console.error('Failed to log incident:', error)
-      return { error: 'Failed to log incident' }
+    if (!validationResult.success) {
+      const message =
+        validationResult.error.errors[0]?.message ?? 'Invalid incident payload submitted'
+      console.error('[AdminSecurityIncidents] Validation failed', validationResult.error)
+      return { error: message }
     }
 
+    const validated = validationResult.data
+
+    // Log the security incident
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'security_incident_logged',
       event_type: 'security_incident_logged',
       event_category: 'security',
       severity: validated.severity,
       user_id: session.user.id,
+      target_schema: 'audit',
+      target_table: 'audit_logs',
       metadata: {
         event_type: validated.eventType,
         description: validated.description,
+        impacted_resources: validated.impactedResources,
       },
     })
 

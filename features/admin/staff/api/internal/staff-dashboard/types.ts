@@ -2,13 +2,13 @@ import type { Database } from '@/lib/types/database.types'
 import type { BackgroundStatus, ComplianceOutcome } from './metrics'
 import { deriveRiskLabel } from './metrics'
 
-export type AdminStaffRow = Database['public']['Views']['admin_staff_overview']['Row'] & {
+export type AdminStaffRow = Database['public']['Views']['admin_staff_overview_view']['Row'] & {
   active_services_count?: number | null
   schedule_count?: number | null
   completed_appointments?: number | null
 }
 
-export type AppointmentRow = Database['public']['Views']['admin_appointments_overview']['Row']
+export type AppointmentRow = Database['public']['Views']['admin_appointments_overview_view']['Row']
 export type ReviewRow = Database['engagement']['Tables']['salon_reviews']['Row']
 
 export type BackgroundRow = {

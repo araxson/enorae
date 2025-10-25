@@ -159,9 +159,11 @@ export async function CustomerDashboardPage() {
                     return (
                       <Card key={appointment['id']}>
                         <CardHeader>
-                          <CardTitle>{appointment['service_names']?.[0] ?? 'Service'}</CardTitle>
+                          <CardTitle>{appointment['service_names'] || 'Service'}</CardTitle>
                           <CardDescription>
-                            {appointment['salon_name'] ? `at ${appointment['salon_name']}` : 'Salon not specified'}
+                            {appointment['salon_name']
+                              ? `at ${appointment['salon_name']}`
+                              : 'Salon not specified'}
                           </CardDescription>
                         </CardHeader>
                         <CardContent>

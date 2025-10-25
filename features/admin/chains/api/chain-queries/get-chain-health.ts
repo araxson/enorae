@@ -32,7 +32,7 @@ export async function getChainHealthMetrics(chainId: string) {
   }
 
   const { data: salonSummaries, error: salonsError } = await supabase
-    .from('admin_salons_overview')
+    .from('admin_salons_overview_view')
     .select(
       'id, chain_id, rating_average, rating_count, is_accepting_bookings, total_revenue, total_bookings',
     )
@@ -53,7 +53,7 @@ export async function getChainHealthMetrics(chainId: string) {
 
   if (salonIds.length > 0) {
     const { data: revenueRows, error: revenueError } = await supabase
-      .from('admin_revenue_overview')
+      .from('admin_revenue_overview_view')
       .select('salon_id, total_revenue, total_appointments, date')
       .in('salon_id', salonIds)
       .gte('date', startDateIso)

@@ -121,40 +121,45 @@ export async function getSecurityMonitoringSnapshot(
   const [accessRes, sessionsRes, eventsRes, failedLoginsRes, rateTrackingRes, rateRulesRes, incidentsRes] =
     await Promise.all([
       supabase
-        .from('security_access_monitoring' as never)
+        .from('security_access_monitoring_view')
         .select('*')
         .gte('created_at', startIso)
         .order('created_at', { ascending: false })
         .limit(settings.accessAttemptsLimit),
       supabase
-        .from('security_session_security' as never)
+        .from('security_session_security_view')
         .select('*')
         .order('suspicious_score', { ascending: false })
         .limit(settings.sessionsLimit),
       supabase
-        .from('audit_logs' as never)
+        .schema('identity')
+        .from('audit_logs_view')
         .select('*')
         .gte('created_at', startIso)
         .order('created_at', { ascending: false })
         .limit(settings.eventsLimit),
       supabase
-        .from('audit_logs' as never)
+        .schema('identity')
+        .from('audit_logs_view')
         .select('*')
         .gte('created_at', startIso)
-        .or('event_type.eq.failed_login,event_type.eq.login_failed,action.eq.login_failed')
+        .ilike('action', '%login%')
         .order('created_at', { ascending: false })
         .limit(settings.failedLoginsLimit),
       supabase
-        .from('security_rate_limit_tracking' as never)
+        .schema('public')
+        .from('security_rate_limit_tracking_view')
         .select('*')
         .order('window_start_at', { ascending: false })
         .limit(settings.rateLimitLimit),
       supabase
-        .from('security_rate_limit_rules' as never)
+        .schema('public')
+        .from('security_rate_limit_rules_view')
         .select('*')
-        .order('priority', { ascending: true }),
+        .limit(settings.rateLimitLimit),
       supabase
-        .from('security_incident_logs' as never)
+        .schema('audit')
+        .from('audit_logs')
         .select('*')
         .gte('created_at', startIso)
         .order('created_at', { ascending: false })

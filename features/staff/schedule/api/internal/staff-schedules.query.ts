@@ -54,8 +54,11 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
 
     staffMap = new Map(
       (staffRows || [])
-        .filter((staff): staff is Staff => Boolean(staff?.['id']))
-        .map((staff) => [staff['id'] as string, staff as Staff]),
+        .map((staff) => {
+          const staffTyped = staff as Staff
+          return [staffTyped['id'] as string, staffTyped] as const
+        })
+        .filter(([id]): id is [string, Staff] => Boolean(id)),
     )
   }
 

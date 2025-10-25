@@ -1,7 +1,4 @@
 # Fix All Errors
-
-**Comprehensive error detection and autonomous fixing across the entire codebase.**
-
 ## Quick Reference
 
 **Common Commands:**
@@ -21,12 +18,6 @@ rg "not assignable to type|does not exist on type" /tmp/ts-errors.txt
 # Fix specific file
 npm run typecheck 2>&1 | grep "path/to/file.ts"
 ```
-
-**Emergency Quick Fix:**
-If you just need to get typecheck passing ASAP:
-1. Run `/fix` command
-2. Let Claude autonomously fix everything
-3. Review changes after completion
 
 ## What This Does
 

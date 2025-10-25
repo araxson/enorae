@@ -4,8 +4,8 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type ReviewRow = Database['public']['Views']['admin_reviews_overview']['Row']
-type MessageThread = Database['public']['Views']['admin_messages_overview']['Row']
+type ReviewRow = Database['public']['Views']['admin_reviews_overview_view']['Row']
+type MessageThread = Database['public']['Views']['admin_messages_overview_view']['Row']
 
 const POSITIVE_WORDS = [
   'great',
@@ -214,7 +214,7 @@ export async function getReviewsForModeration(
   const supabase = createServiceRoleClient()
 
   let query = supabase
-    .from('admin_reviews_overview')
+    .from('admin_reviews_overview_view')
     .select('*')
     .order('created_at', { ascending: false })
 
@@ -250,7 +250,7 @@ export async function getReviewsForModeration(
   let reviewerProfilesData: { id: string | null; email: string | null }[] = []
   if (reviewerIds.length) {
     const { data: profilesData, error: profilesError } = await supabase
-      .from('admin_users_overview')
+      .from('admin_users_overview_view')
       .select('id, email')
       .in('id', reviewerIds)
 
@@ -262,12 +262,16 @@ export async function getReviewsForModeration(
   if (reviewIds.length) {
     const { data: detailsData, error: detailsError } = await supabase
       .schema('engagement')
-      .from('salon_reviews')
-      .select('id, flagged_reason')
+      .from('salon_reviews_with_counts_view')
+      .select('id, is_flagged')
       .in('id', reviewIds)
 
     if (detailsError) throw detailsError
-    reviewDetailsData = detailsData ?? []
+    // Map is_flagged to flagged_reason (flagged_reason doesn't exist in schema)
+    reviewDetailsData = (detailsData ?? []).map(row => ({
+      id: row.id,
+      flagged_reason: row.is_flagged ? 'Flagged' : null
+    }))
   }
 
   const customerEmailMap = new Map(
@@ -344,7 +348,7 @@ export async function getMessageThreadsForMonitoring(): Promise<MessageThread[]>
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_messages_overview')
+    .from('admin_messages_overview_view')
     .select('*')
     .order('last_message_at', { ascending: false })
     .limit(200)
@@ -372,32 +376,32 @@ export async function getModerationStats(): Promise<ModerationStats> {
   const supabase = createServiceRoleClient()
 
   const [totalResult, flaggedResult, pendingResult, highRiskResult, sampleResult] = await Promise.all([
-    // We need raw engagement.salon_reviews data for admin-only moderation metrics that are not exposed via views.
+    // Use the RLS-compliant salon_reviews_with_counts_view to drive moderation metrics.
     supabase
       .schema('engagement')
-      .from('salon_reviews')
-      .select('*', { count: 'exact', head: true })
+      .from('salon_reviews_with_counts_view')
+      .select('id', { count: 'exact', head: true })
       .is('deleted_at', null),
     supabase
       .schema('engagement')
-      .from('salon_reviews')
-      .select('*', { count: 'exact', head: true })
+      .from('salon_reviews_with_counts_view')
+      .select('id', { count: 'exact', head: true })
       .eq('is_flagged', true)
       .is('deleted_at', null),
     supabase
       .schema('engagement')
-      .from('salon_reviews')
-      .select('*', { count: 'exact', head: true })
+      .from('salon_reviews_with_counts_view')
+      .select('id', { count: 'exact', head: true })
       .is('response', null)
       .is('deleted_at', null),
     supabase
       .schema('engagement')
-      .from('salon_reviews')
-      .select('*', { count: 'exact', head: true })
+      .from('salon_reviews_with_counts_view')
+      .select('id', { count: 'exact', head: true })
       .or('is_flagged.eq.true,is_verified.eq.false')
       .is('deleted_at', null),
     supabase
-      .from('admin_reviews_overview')
+      .from('admin_reviews_overview_view')
       .select('comment, helpful_count, has_response, is_flagged')
       .order('created_at', { ascending: false })
       .limit(150),
@@ -439,9 +443,9 @@ async function fetchReviewerStats(
   if (!reviewerIds.length) return new Map<string, ReviewerAggregate>()
 
   const { data, error } = await supabase
-    // Admin reviewer reputation analysis requires per-review rows, so we access the underlying table with platform admin credentials.
+    // Use the counts view to analyze reviewer reputation without bypassing RLS.
     .schema('engagement')
-    .from('salon_reviews')
+    .from('salon_reviews_with_counts_view')
     .select('customer_id, is_flagged')
     .in('customer_id', reviewerIds)
     .limit(REVIEWER_SAMPLE_LIMIT)

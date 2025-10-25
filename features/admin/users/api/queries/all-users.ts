@@ -12,7 +12,7 @@ export async function getAllUsers(filters?: UserFilters): Promise<AdminUser[]> {
   const supabase = createServiceRoleClient()
 
   let query = supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('*')
     .order('created_at', { ascending: false })
 
@@ -32,18 +32,7 @@ export async function getAllUsers(filters?: UserFilters): Promise<AdminUser[]> {
 
   if (error) {
     console.error('admin_users_overview error in getAllUsers:', error)
-    const { data: fallbackData, error: fallbackError } = await supabase
-      .from('profiles')
-      .select('*')
-      .is('deleted_at', null)
-      .order('created_at', { ascending: false })
-
-    if (fallbackError) {
-      console.error('profiles fallback error:', fallbackError)
-      return []
-    }
-
-    return (fallbackData || []) as unknown as AdminUser[]
+    return []
   }
 
   return data || []
@@ -55,7 +44,7 @@ export async function searchUsers(searchTerm: string): Promise<AdminUser[]> {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('*')
     .or(`full_name.ilike.%${searchTerm}%,username.ilike.%${searchTerm}%`)
     .is('deleted_at', null)
@@ -78,7 +67,7 @@ export async function getUsersByRole(
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('*')
     .contains('roles', [role])
     .is('deleted_at', null)
@@ -98,7 +87,7 @@ export async function getUsersWithDetails(): Promise<AdminUser[]> {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('*')
     .is('deleted_at', null)
     .order('created_at', { ascending: false })

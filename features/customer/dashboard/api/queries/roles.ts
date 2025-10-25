@@ -12,7 +12,7 @@ export async function checkGuestRole(): Promise<RoleResponse> {
   const supabase = await createClient()
 
   const { data: roleData, error: roleError } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('role')
     .eq('user_id', session.user.id)
     .single<{ role: string }>()

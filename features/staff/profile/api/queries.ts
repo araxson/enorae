@@ -3,9 +3,9 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type StaffProfile = Database['public']['Views']['staff_profiles_view']['Row']
+type StaffProfile = Database['public']['Views']['staff_enriched_view']['Row']
 type StaffProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row']
-type PublicProfile = Database['public']['Views']['profiles']['Row']
+type PublicProfile = Database['public']['Views']['profiles_view']['Row']
 
 export interface StaffProfileDetails {
   profile: StaffProfile | null
@@ -18,7 +18,7 @@ export async function getMyStaffProfile(): Promise<StaffProfile | null> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff_profiles_view')
+    .from('staff_enriched_view')
     .select('*')
     .eq('user_id', session.user['id'])
     .single()

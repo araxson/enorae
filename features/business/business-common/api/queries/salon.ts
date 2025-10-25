@@ -3,7 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId as authRequireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type Salon = Database['public']['Views']['salons']['Row']
+type Salon = Database['public']['Views']['salons_view']['Row']
+type StaffProfile = Database['public']['Views']['staff_profiles_view']['Row']
 
 /**
  * Get user's salon (using centralized auth helper)
@@ -22,13 +23,14 @@ export async function getUserSalon(): Promise<Salon> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('id', salonId)
+    .returns<Salon>()
     .single()
 
   if (error) throw error
-  return data as Salon
+  return data
 }
 
 /**
@@ -41,25 +43,27 @@ export async function getUserSalonId(userId: string): Promise<string | null> {
 
   // First check if user owns a salon
   const { data: ownedSalon, error: ownedSalonError } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id')
     .eq('owner_id', userId)
+    .returns<Pick<Salon, 'id'>[]>()
     .maybeSingle()
 
   if (ownedSalonError) throw ownedSalonError
 
-  const salon = ownedSalon as { id: string } | null
-
-  if (salon?.id) {
-    return salon.id
+  if (ownedSalon?.id) {
+    return ownedSalon.id
   }
 
   // If not an owner, check if they're staff
-  const { data: staffProfile } = await supabase
-    .from('staff')
+  const { data: staffProfile, error: staffProfileError } = await supabase
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', userId)
-    .maybeSingle<{ salon_id: string | null }>()
+    .returns<Pick<StaffProfile, 'salon_id'>[]>()
+    .maybeSingle()
+
+  if (staffProfileError) throw staffProfileError
 
   return staffProfile?.salon_id || null
 }
@@ -74,25 +78,25 @@ export async function getUserSalonIds(userId: string): Promise<string[]> {
 
   // Get owned salons
   const { data: ownedSalons, error: ownedSalonsError } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id')
     .eq('owner_id', userId)
+    .returns<Pick<Salon, 'id'>[]>()
 
   if (ownedSalonsError) throw ownedSalonsError
 
-  const salons = (ownedSalons || []) as Array<{ id: string }>
-  salonIds.push(...salons.map(s => s.id))
+  salonIds.push(...(ownedSalons ?? []).map(s => s.id))
 
   // Get salons where user is staff
   const { data: staffProfiles, error: staffProfilesError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', userId)
+    .returns<Pick<StaffProfile, 'salon_id'>[]>()
 
   if (staffProfilesError) throw staffProfilesError
 
-  const profiles = (staffProfiles || []) as Array<{ salon_id: string | null }>
-  const staffSalonIds = profiles
+  const staffSalonIds = (staffProfiles ?? [])
     .map(sp => sp.salon_id)
     .filter((id): id is string => id !== null)
   salonIds.push(...staffSalonIds)

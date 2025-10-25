@@ -15,7 +15,7 @@ export async function getChainSalons(chainId: string): Promise<ChainSalon[]> {
   const supabase = createServiceRoleClient()
 
   const { data: salonSummaries, error } = await supabase
-    .from('admin_salons_overview')
+    .from('admin_salons_overview_view')
     .select('id, name, chain_id, rating_average, rating_count, is_accepting_bookings, created_at')
     .eq('chain_id', chainId)
     .order('created_at', { ascending: false })
@@ -31,7 +31,7 @@ export async function getChainSalons(chainId: string): Promise<ChainSalon[]> {
   }
 
   const { data: locations, error: locationsError } = await supabase
-    .from('salon_locations')
+    .from('salon_locations_view')
     .select('id, salon_id, is_primary')
     .in('salon_id', salonIds)
     .eq('is_primary', true)
@@ -47,7 +47,7 @@ export async function getChainSalons(chainId: string): Promise<ChainSalon[]> {
 
   if (locationIds.length > 0) {
     const { data: addresses, error: addressesError } = await supabase
-      .from('location_addresses')
+      .from('location_addresses_view')
       .select('location_id, city, state_province')
       .in('location_id', locationIds)
       .returns<LocationAddressRow[]>()

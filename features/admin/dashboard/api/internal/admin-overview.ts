@@ -31,21 +31,21 @@ export async function getAdminOverview(): Promise<AdminOverview> {
     messagesData,
     staffData,
   ] = await Promise.all([
-    supabase.from('admin_analytics_overview').select('*').order('date', { ascending: false }).limit(1).maybeSingle(),
-    supabase.from('admin_revenue_overview').select('*').order('date', { ascending: false }).limit(10),
-    supabase.from('admin_appointments_overview').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('admin_reviews_overview').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('admin_messages_overview').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('admin_staff_overview').select('*').order('created_at', { ascending: false }).limit(10),
+    supabase.from('admin_analytics_overview_view').select('*').order('date', { ascending: false }).limit(1).maybeSingle(),
+    supabase.from('admin_revenue_overview_view').select('*').order('date', { ascending: false }).limit(10),
+    supabase.from('admin_appointments_overview_view').select('*').order('created_at', { ascending: false }).limit(10),
+    supabase.from('admin_reviews_overview_view').select('*').order('created_at', { ascending: false }).limit(10),
+    supabase.from('admin_messages_overview_view').select('*').order('created_at', { ascending: false }).limit(10),
+    supabase.from('admin_staff_overview_view').select('*').order('created_at', { ascending: false }).limit(10),
   ])
 
   // Log errors for debugging but don't throw - allow dashboard to load with partial data
-  if (analyticsData.error) logSupabaseError('admin_analytics_overview', analyticsData.error)
-  if (revenueData.error) logSupabaseError('admin_revenue_overview', revenueData.error)
-  if (appointmentsData.error) logSupabaseError('admin_appointments_overview', appointmentsData.error)
-  if (reviewsData.error) logSupabaseError('admin_reviews_overview', reviewsData.error)
-  if (messagesData.error) logSupabaseError('admin_messages_overview', messagesData.error)
-  if (staffData.error) logSupabaseError('admin_staff_overview', staffData.error)
+  if (analyticsData.error) logSupabaseError('admin_analytics_overview_view', analyticsData.error)
+  if (revenueData.error) logSupabaseError('admin_revenue_overview_view', revenueData.error)
+  if (appointmentsData.error) logSupabaseError('admin_appointments_overview_view', appointmentsData.error)
+  if (reviewsData.error) logSupabaseError('admin_reviews_overview_view', reviewsData.error)
+  if (messagesData.error) logSupabaseError('admin_messages_overview_view', messagesData.error)
+  if (staffData.error) logSupabaseError('admin_staff_overview_view', staffData.error)
 
   return {
     analytics: (analyticsData.data as AdminAnalyticsOverviewRow | null) ?? null,

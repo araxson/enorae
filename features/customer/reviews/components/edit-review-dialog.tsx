@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Toggle } from '@/components/ui/toggle'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Pencil, Star } from 'lucide-react'
@@ -93,20 +94,20 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
               <Label htmlFor="rating">Overall rating *</Label>
               <div className="flex items-center gap-2">
                 {[1, 2, 3, 4, 5].map((value) => (
-                  <button
+                  <Toggle
                     key={value}
+                    pressed={value <= rating}
+                    onPressedChange={(pressed) =>
+                      setRating(pressed ? value : Math.max(1, value - 1))
+                    }
+                    aria-label={`Rate ${value} star${value === 1 ? '' : 's'}`}
+                    className="h-10 w-10"
                     type="button"
-                    onClick={() => setRating(value)}
-                    className="transition-colors hover:scale-110"
                   >
-                    <Star
-                      className={`h-8 w-8 ${
-                        value <= rating ? 'fill-accent text-accent' : 'text-muted-foreground/30'
-                      }`}
-                    />
-                  </button>
+                    <Star className="h-5 w-5" aria-hidden="true" />
+                  </Toggle>
                 ))}
-                <span className="ml-2 text-sm text-muted-foreground">{rating} out of 5</span>
+                <span>{rating} out of 5</span>
               </div>
               <input type="hidden" name="rating" value={rating} />
             </div>
@@ -134,7 +135,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
                 minLength={10}
                 maxLength={2000}
               />
-              <p className="text-xs text-muted-foreground">Minimum 10 characters, maximum 2000</p>
+              <span>Minimum 10 characters, maximum 2000</span>
             </div>
 
 

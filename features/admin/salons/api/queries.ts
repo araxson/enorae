@@ -4,8 +4,8 @@ import { differenceInCalendarDays } from 'date-fns'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-type AdminSalonRow = Database['public']['Views']['admin_salons_overview']['Row']
-type SalonSettingsRow = Database['organization']['Tables']['salon_settings']['Row']
+type AdminSalonRow = Database['public']['Views']['admin_salons_overview_view']['Row']
+type SalonSettingsRow = Database['public']['Views']['salon_settings_view']['Row']
 type SalonBaseRow = {
   id: string
   is_verified?: boolean | null
@@ -165,7 +165,7 @@ export async function getAllSalons(): Promise<SalonsResponse> {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_salons_overview')
+    .from('admin_salons_overview_view')
     .select('*')
     .order('created_at', { ascending: false })
 
@@ -177,14 +177,13 @@ export async function getAllSalons(): Promise<SalonsResponse> {
   const [settingsResult, baseResult] = await Promise.all([
     salonIds.length
       ? supabase
-          .schema('organization')
-          .from('salon_settings')
+          .from('salon_settings_view')
           .select('salon_id, subscription_expires_at, subscription_tier, is_accepting_bookings, max_staff')
           .in('salon_id', salonIds)
       : { data: [], error: null },
     salonIds.length
       ? supabase
-          .from('salons')
+          .from('salons_view')
           .select('id, is_verified, slug, business_name, business_type')
           .in('id', salonIds)
       : { data: [], error: null },

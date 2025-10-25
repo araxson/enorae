@@ -2,7 +2,7 @@ import 'server-only';
 import { requireAdminClient } from '@/features/admin/analytics/api/admin-analytics-shared'
 import type { AdminReviewRow } from '@/features/admin/analytics/api/admin-analytics-types'
 
-const REVIEWS_TABLE = 'admin_reviews_overview'
+const REVIEWS_TABLE = 'admin_reviews_overview_view'
 
 export async function getAllReviews(limit = 100): Promise<AdminReviewRow[]> {
   const supabase = await requireAdminClient()

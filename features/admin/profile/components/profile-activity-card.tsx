@@ -101,10 +101,16 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
                   {event.entityId ?? 'No entity id'}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-wrap items-center justify-between gap-3 pt-0 text-xs text-muted-foreground">
-                <span>{formatDate(event.createdAt)}</span>
-                {event.ipAddress ? <span>IP {event.ipAddress}</span> : null}
-                {event.userAgent ? <span className="truncate md:max-w-md">{event.userAgent}</span> : null}
+              <CardContent className="flex flex-wrap items-center justify-between gap-3 pt-0">
+                <span className="text-xs text-muted-foreground">{formatDate(event.createdAt)}</span>
+                {event.ipAddress ? (
+                  <span className="text-xs text-muted-foreground">IP {event.ipAddress}</span>
+                ) : null}
+                {event.userAgent ? (
+                  <span className="truncate text-xs text-muted-foreground md:max-w-md">
+                    {event.userAgent}
+                  </span>
+                ) : null}
               </CardContent>
             </Card>
           ))}

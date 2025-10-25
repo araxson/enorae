@@ -28,6 +28,7 @@ export async function updateAppointmentStatus(
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
+    // Query the actual table for updates (views are read-only)
     const { data: existingAppointment, error: fetchError } = await supabase
       .schema('scheduling')
       .from('appointments')

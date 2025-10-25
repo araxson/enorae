@@ -13,7 +13,7 @@ export async function getFinancialExportData(
   const summary = await getPlatformRevenueAnalytics(startDate, endDate)
 
   const { data: revenueData, error: revenueError } = await supabase
-    .from('admin_revenue_overview')
+    .from('admin_revenue_overview_view')
     .select('*')
     .gte('date', startDate)
     .lte('date', endDate)
@@ -40,18 +40,13 @@ export async function getFinancialExportData(
     [] as { date: string; revenue: number; appointments: number }[],
   )
 
-  const { data: transactions, error: txError } = await supabase
-    .from('manual_transactions')
-    .select('*')
-    .gte('created_at', startDate)
-    .lte('created_at', endDate)
-    .order('created_at', { ascending: true })
-
-  if (txError) throw txError
+  // Manual transactions feature not implemented - return empty array
+  // TODO: Implement manual_transactions table and query
+  const transactions: never[] = []
 
   return {
     summary,
     revenueByDate,
-    transactions: transactions || [],
+    transactions,
   }
 }

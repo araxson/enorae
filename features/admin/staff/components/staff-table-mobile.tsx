@@ -27,8 +27,8 @@ export function StaffTableMobile({ staff }: StaffTableMobileProps) {
               <StaffRiskBadge staff={member} />
             </div>
           </CardHeader>
-          <CardContent className="space-y-3 pt-0 text-sm">
-            <div className="grid grid-cols-2 gap-3">
+          <CardContent className="space-y-3 pt-0">
+            <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
                 <span className="block font-medium">Role</span>
                 <span className="capitalize text-muted-foreground">

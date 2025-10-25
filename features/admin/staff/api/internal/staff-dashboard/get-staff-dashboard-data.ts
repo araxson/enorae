@@ -26,7 +26,7 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
   const supabase = createServiceRoleClient()
 
   const { data: staffData, error: staffError } = await supabase
-    .from('admin_staff_overview')
+    .from('admin_staff_overview_view')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(500)

@@ -4,7 +4,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
 
-type AuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
+type AuditLogRow = Database['identity']['Views']['audit_logs_view']['Row']
 
 /**
  * Get security events with filtering
@@ -22,17 +22,14 @@ export async function getSecurityEvents(filters: {
   const supabase = createServiceRoleClient()
 
   let query = supabase
-    .schema('audit')
-    .from('audit_logs')
+    .schema('identity')
+    .from('audit_logs_view')
     .select('*')
     .order('created_at', { ascending: false })
 
-  if (filters.severity) {
-    query = query.eq('severity', filters.severity)
-  }
-
+  // Note: severity and event_type filtering is done on action field instead
   if (filters.event_type) {
-    query = query.eq('event_type', filters.event_type)
+    query = query.ilike('action', `%${filters.event_type}%`)
   }
 
   if (filters.user_id) {
@@ -68,10 +65,10 @@ export async function getCriticalSecurityEvents(limit: number = 50) {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .schema('audit')
-    .from('audit_logs')
+    .schema('identity')
+    .from('audit_logs_view')
     .select('*')
-    .in('severity', ['error', 'critical'])
+    .eq('is_success', false)
     .order('created_at', { ascending: false })
     .limit(limit)
 
@@ -91,8 +88,7 @@ export async function getFailedAuthAttempts(hoursBack: number = 24) {
   cutoffDate.setHours(cutoffDate.getHours() - hoursBack)
 
   const { data, error } = await supabase
-    .schema('audit')
-    .from('audit_logs')
+    .from('audit_logs_view')
     .select('*')
     .eq('event_category', 'security')
     .eq('is_success', false)
@@ -135,10 +131,9 @@ export async function getAdminActivitySummary(daysBack: number = 7) {
   cutoffDate.setDate(cutoffDate.getDate() - daysBack)
 
   const { data, error } = await supabase
-    .schema('audit')
-    .from('audit_logs')
+    .schema('identity')
+    .from('audit_logs_view')
     .select('*')
-    .in('event_category', ['identity', 'security', 'business'])
     .in('action', [
       'suspend_user',
       'ban_user',
@@ -195,8 +190,8 @@ export async function getSystemHealthMetrics() {
   oneHourAgo.setHours(oneHourAgo.getHours() - 1)
 
   const { data: recentLogs } = await supabase
-    .schema('audit')
-    .from('audit_logs')
+    .schema('identity')
+    .from('audit_logs_view')
     .select('is_success')
     .gte('created_at', oneHourAgo.toISOString())
 
@@ -231,7 +226,7 @@ export async function getDataIntegrityAlerts() {
 
   // Check for orphaned appointments (no customer)
   const { count: orphanedAppointments } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('id', { count: 'exact', head: true })
     .is('customer_id', null)
 

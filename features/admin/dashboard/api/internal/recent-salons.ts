@@ -12,14 +12,15 @@ export async function getRecentSalons(): Promise<AdminSalon[]> {
 
   // Use admin_salons_overview for enriched salon data
   const { data, error } = await supabase
-    .from('admin_salons_overview')
+    .from('admin_salons_overview_view')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(10)
+    .returns<AdminSalon[]>()
 
   if (error) {
     logSupabaseError('getRecentSalons', error)
     return []
   }
-  return (data || []) as AdminSalon[]
+  return data ?? []
 }

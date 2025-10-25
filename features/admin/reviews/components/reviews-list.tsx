@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { Database } from '@/lib/types/database.types'
 
-type AdminReview = Database['public']['Views']['admin_reviews_overview']['Row']
+type AdminReview = Database['public']['Views']['admin_reviews_overview_view']['Row']
 
 interface ReviewsListProps {
   reviews: AdminReview[]

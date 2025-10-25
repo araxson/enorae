@@ -16,7 +16,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
   if (favorites.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center space-y-2 text-center">
+        <CardHeader className="items-center space-y-2">
           <CardTitle>No favorite salons yet</CardTitle>
           <CardDescription>
             Start exploring salons and save your favorites for quick access.
@@ -40,11 +40,10 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
 
         return (
           <Card key={favorite['id']}>
-            <div className="aspect-video w-full bg-muted" />
             <CardHeader className="space-y-1">
               <CardTitle>{salon['name'] || 'Unnamed salon'}</CardTitle>
               {salon['formatted_address'] ? (
-                <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4" aria-hidden="true" />
                   <CardDescription>{salon['formatted_address']}</CardDescription>
                 </div>

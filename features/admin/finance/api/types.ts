@@ -1,7 +1,17 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type AdminRevenueRow = Database['public']['Views']['admin_revenue_overview']['Row']
-export type ManualTransactionRow = Database['public']['Views']['manual_transactions']['Row']
+export type AdminRevenueRow = Database['public']['Views']['admin_revenue_overview_view']['Row']
+
+// Manual transactions feature not implemented - placeholder type
+export interface ManualTransactionRow {
+  id: string
+  salon_id: string | null
+  customer_id: string | null
+  amount: number
+  payment_method: string | null
+  transaction_type: string | null
+  created_at: string | null
+}
 
 export interface RevenueMetrics {
   totalRevenue: number

@@ -52,29 +52,25 @@ export function RevenueBySalon({ data }: RevenueBySalonProps) {
               </TableRow>
             ) : (
               data.map((row, index) => (
-                <TableRow key={`${row['salon_id']}-${index}`}>
-                  <TableCell className="font-medium">{row['salon_name'] || 'Unknown'}</TableCell>
+                <TableRow key={`revenue-${index}`}>
+                  <TableCell className="font-medium">Aggregated Data</TableCell>
                   <TableCell>
-                    {row['chain_name'] ? (
-                      <Badge variant="outline">{row['chain_name']}</Badge>
-                    ) : (
-                      <span className="text-muted-foreground">Independent</span>
-                    )}
+                    <span className="text-muted-foreground">-</span>
                   </TableCell>
                   <TableCell className="text-right font-medium">
-                    {formatCurrency(Number(row['total_revenue']))}
+                    {formatCurrency(row.total_revenue)}
                   </TableCell>
                   <TableCell className="text-right">
-                    {formatCurrency(Number(row['service_revenue']))}
+                    {formatCurrency(row.service_revenue)}
                   </TableCell>
                   <TableCell className="text-right">
-                    {formatCurrency(Number(row['product_revenue']))}
+                    {formatCurrency(row.product_revenue)}
                   </TableCell>
                   <TableCell className="text-right">
-                    {formatNumber(row['completed_appointments'])}
+                    {formatNumber(row.completed_appointments)}
                   </TableCell>
                   <TableCell className="text-right">
-                    {formatPercentage(Number(row['utilization_rate']))}
+                    <span className="text-muted-foreground">-</span>
                   </TableCell>
                 </TableRow>
               ))

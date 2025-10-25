@@ -6,8 +6,8 @@ export async function AdminProfile() {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const initialProfiles = await searchProfiles('', 25)
-  const initialProfile =
-    initialProfiles.length > 0 ? await getProfileDetail(initialProfiles[0].id) : null
+  const firstProfile = initialProfiles[0]
+  const initialProfile = firstProfile ? await getProfileDetail(firstProfile.id) : null
 
   return (
     <section className="py-16 md:py-24 lg:py-32">

@@ -65,26 +65,28 @@ export async function createBooking(formData: FormData) {
 
     // SECURITY: Verify salon exists and is active
     const { data: salon, error: salonError } = await supabase
-      .from('salons')
+      .from('salons_view')
       .select('id, is_active')
       .eq('id', salonId)
-      .single()
+      .limit(1)
+      .maybeSingle()
 
     if (salonError || !salon) {
       return { error: 'Salon not found' }
     }
 
-    const typedSalon = salon as { id: string; is_active: boolean | null }
-    if (typedSalon.is_active === false) {
+    const typedSalon = salon as { id: string | null; is_active: boolean | null } | null
+    if (typedSalon?.is_active === false) {
       return { error: 'This salon is not currently accepting bookings' }
     }
 
     // Fetch service details to get duration and pricing
     const { data: service, error: serviceError } = await supabase
-      .from('services')
+      .from('services_view')
       .select('duration_minutes, price')
       .eq('id', validation.data.serviceId)
-      .single()
+      .limit(1)
+      .maybeSingle()
 
     if (serviceError || !service) {
       return { error: 'Service not found' }
@@ -117,8 +119,8 @@ export async function createBooking(formData: FormData) {
     // Check if staff member is available at this time
     // SECURITY: Proper overlap detection - existing.start < new.end AND existing.end > new.start
     const { data: conflictingAppointments, error: conflictError } = await supabase
-      .from('appointments')
-      .select('id, start_time, end_time')
+      .from('appointments_view')
+      .select('id')
       .eq('staff_id', validation.data.staffId)
       .eq('status', 'confirmed')
       .lt('start_time', endTime.toISOString())

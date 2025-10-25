@@ -1,5 +1,6 @@
-import { getUserSalonId } from '@/lib/auth'
+import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { getAuditLogs, getAuditLogStats } from '@/features/business/settings-audit-logs/api/queries'
+import { getUserSalonId } from '@/lib/auth'
 import { AuditLogsStats } from './audit-logs-stats'
 import { AuditLogsClient } from './audit-logs-client'
 
@@ -14,12 +15,12 @@ export async function AuditLogsContent() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-4xl font-bold">Security Audit Logs</h1>
-        <p className="leading-7 text-muted-foreground">
+      <CardHeader className="px-0">
+        <CardTitle>Security Audit Logs</CardTitle>
+        <CardDescription>
           Track all system activities and security events
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
       <AuditLogsStats stats={stats} />
       <AuditLogsClient initialLogs={logs} />

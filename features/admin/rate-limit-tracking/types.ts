@@ -1,14 +1,17 @@
 export interface RateLimitRecord {
-  id: string
   identifier: string
   endpoint: string
-  limit_threshold: number
-  current_count: number
-  window_start: string
-  window_end: string
+  identifierType: string | null
+  requestCount: number
+  maxRequests: number | null
+  usagePercent: number | null
+  windowStartAt: string | null
+  windowEndAt: string | null
   status: 'active' | 'blocked' | 'warning'
-  last_attempt: string
-  next_reset: string
+  blockedUntil: string | null
+  lastBlockedAt: string | null
+  lastRequestAt: string | null
+  userAgent: string | null
 }
 
 export interface RateLimitSnapshot {
@@ -19,11 +22,11 @@ export interface RateLimitSnapshot {
 }
 
 export interface RateLimitRule {
-  id: string
-  endpoint: string
-  limit_threshold: number
-  window_seconds: number
-  active: boolean
-  created_at: string
-  updated_at: string
+  id: string | null
+  endpoint: string | null
+  maxRequests: number | null
+  windowSeconds: number | null
+  isActive: boolean | null
+  createdAt: string | null
+  updatedAt: string | null
 }

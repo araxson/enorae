@@ -1,11 +1,10 @@
 import { Suspense } from 'react'
+import { PageLoading } from '@/features/shared/ui-components'
 import { RateLimitConsole } from '@/features/admin/rate-limit-tracking'
-
 export const metadata = { title: 'Rate Limit Monitoring | Admin' }
-
 export default function RateLimitMonitoringPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageLoading />}>
       <RateLimitConsole />
     </Suspense>
   )

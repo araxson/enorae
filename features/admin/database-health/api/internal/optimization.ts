@@ -3,9 +3,9 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type Optimization = Database['public']['Views']['low_priority_optimizations_summary']['Row']
-type StatsFreshness = Database['public']['Views']['statistics_freshness']['Row']
-type UnusedIndex = Database['public']['Views']['unused_indexes']['Row']
+type Optimization = Database['public']['Views']['low_priority_optimizations_summary_view']['Row']
+type StatsFreshness = Database['public']['Views']['statistics_freshness_view']['Row']
+type UnusedIndex = Database['public']['Views']['unused_indexes_view']['Row']
 
 export interface OptimizationSnapshot {
   recommendations: Optimization[]
@@ -27,14 +27,14 @@ export async function getOptimizationRecommendations(
   const supabase = createServiceRoleClient()
 
   const [optimizationsRes, statsRes, indexesRes] = await Promise.all([
-    supabase.from('low_priority_optimizations_summary').select('*').limit(limit),
+    supabase.from('low_priority_optimizations_summary_view').select('*').limit(limit),
     supabase
-      .from('statistics_freshness')
+      .from('statistics_freshness_view')
       .select('*')
       .order('last_analyze', { ascending: true })
       .limit(limit),
     supabase
-      .from('unused_indexes')
+      .from('unused_indexes_view')
       .select('*')
       .order('idx_scan', { ascending: true })
       .limit(limit),

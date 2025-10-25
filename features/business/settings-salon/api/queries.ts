@@ -2,10 +2,10 @@ import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import type { Database } from '@/lib/types/database.types'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
+import type { Database } from '@/lib/types/database.types'
 
-type SalonTable = Database['organization']['Tables']['salons']['Row']
+type SalonView = Database['public']['Views']['salons_view']['Row']
 
 export async function getSalonBusinessInfo() {
   // SECURITY: Require business user role
@@ -17,13 +17,13 @@ export async function getSalonBusinessInfo() {
 
   const supabase = await createClient()
 
-  // Query from organization.salons table (not the public view) to get business_name and business_type
+  // Query from public salons_view to respect RLS and view contract
   const { data, error } = await supabase
-    .schema('organization')
-    .from('salons')
+    .from('salons_view')
     .select('id, name, business_name, business_type, established_at')
     .eq('id', salon.id)
-    .single<Pick<SalonTable, 'id' | 'name' | 'business_name' | 'business_type' | 'established_at'>>()
+    .returns<Pick<SalonView, 'id' | 'name' | 'business_name' | 'business_type' | 'established_at'>[]>()
+    .single()
 
   if (error) throw error
   return data

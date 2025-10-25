@@ -75,7 +75,10 @@ export function ProfileManagementClient({
         }
 
         if (!selectedId || !results.some((item) => item.id === selectedId)) {
-          await loadProfile(results[0].id)
+          const firstResult = results[0]
+          if (firstResult) {
+            await loadProfile(firstResult.id)
+          }
         }
       })
     },
@@ -120,14 +123,20 @@ export function ProfileManagementClient({
         return
       }
 
-      await loadProfile(results[0].id)
+      const firstResult = results[0]
+      if (firstResult) {
+        await loadProfile(firstResult.id)
+      }
     },
     [loadProfile, runSearch, searchTerm],
   )
 
   useEffect(() => {
     if (!initialProfile && initialProfiles.length > 0) {
-      loadProfile(initialProfiles[0].id)
+      const firstProfile = initialProfiles[0]
+      if (firstProfile) {
+        loadProfile(firstProfile.id)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

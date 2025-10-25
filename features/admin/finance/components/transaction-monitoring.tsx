@@ -67,7 +67,7 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
                 <TableHead>Payment Method</TableHead>
                 <TableHead>Salon ID</TableHead>
                 <TableHead>Customer ID</TableHead>
-                <TableHead>Staff ID</TableHead>
+                <TableHead>Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -79,28 +79,28 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
                 </TableRow>
               ) : (
                 metrics.recentTransactions.map((transaction) => (
-                  <TableRow key={transaction['id']}>
+                  <TableRow key={transaction.id}>
                     <TableCell className="text-sm">
-                      {formatDate(transaction['created_at'])}
+                      {formatDate(transaction.created_at)}
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline">
-                        {transaction['transaction_type'] || 'Unknown'}
+                        {transaction.transaction_type || 'Unknown'}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={getPaymentMethodBadgeVariant(transaction['payment_method'])}>
-                        {transaction['payment_method'] || 'Unknown'}
+                      <Badge variant={getPaymentMethodBadgeVariant(transaction.payment_method)}>
+                        {transaction.payment_method || 'Unknown'}
                       </Badge>
                     </TableCell>
                     <TableCell className="font-mono text-xs">
-                      {transaction['salon_id']?.slice(0, 8) || 'N/A'}
+                      {transaction.salon_id?.slice(0, 8) || 'N/A'}
                     </TableCell>
                     <TableCell className="font-mono text-xs">
-                      {transaction['customer_id']?.slice(0, 8) || 'N/A'}
+                      {transaction.customer_id?.slice(0, 8) || 'N/A'}
                     </TableCell>
-                    <TableCell className="font-mono text-xs">
-                      {transaction['staff_id']?.slice(0, 8) || 'N/A'}
+                    <TableCell className="text-right">
+                      ${transaction.amount.toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))

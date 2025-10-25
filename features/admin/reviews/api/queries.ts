@@ -3,7 +3,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type AdminReview = Database['public']['Views']['admin_reviews_overview']['Row']
+type AdminReview = Database['public']['Views']['admin_reviews_overview_view']['Row']
 
 /**
  * Get all reviews overview
@@ -14,7 +14,7 @@ export async function getAllReviews(limit = 100): Promise<AdminReview[]> {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_reviews_overview')
+    .from('admin_reviews_overview_view')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(limit)

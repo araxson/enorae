@@ -1,21 +1,15 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 export async function generateReferralCode(): Promise<{ success: boolean; code?: string }> {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAuth()
 
-  // TODO: referrals table not yet in database schema
-  throw new Error('Referral codes feature not yet implemented')
+  throw new Error('Referral program is not available yet')
 }
 
 export async function shareReferralCode(platform: 'email' | 'sms' | 'copy', code: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAuth()
 
-  // TODO: referral_shares table not yet in database schema
-  throw new Error('Referral sharing feature not yet implemented')
+  throw new Error('Referral program is not available yet')
 }

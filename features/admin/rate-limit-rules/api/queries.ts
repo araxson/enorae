@@ -4,15 +4,17 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
 export interface RateLimitRule {
-  id: string
-  endpoint: string
-  limit_threshold: number
-  window_seconds: number
-  active: boolean
-  description: string
-  created_at: string
-  updated_at: string
-  recent_violations: number
+  id: string | null
+  endpoint: string | null
+  max_requests: number | null
+  window_seconds: number | null
+  is_active: boolean | null
+  description: string | null
+  rule_name: string | null
+  applies_to: string | null
+  created_at: string | null
+  updated_at: string | null
+  recent_violations?: number
 }
 
 export interface RateLimitRulesSnapshot {
@@ -56,7 +58,7 @@ export async function getRateLimitRules(
   const { count: activeCount } = await supabase
     .from('security_rate_limit_rules_view')
     .select('*', { count: 'exact', head: true })
-    .eq('active', true)
+    .eq('is_active', true)
 
   // Count violations today
   const today = new Date()

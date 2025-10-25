@@ -4,7 +4,10 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import type { NotificationEntry } from './types'
 
-type MessageRow = Database['public']['Views']['messages']['Row']
+type NotificationsPageRow =
+  Database['public']['Functions']['get_notifications_page']['Returns'][number]
+type NotificationQueueRow =
+  Database['public']['Views']['communication_notification_queue_view']['Row']
 
 /**
  * Get recent notifications for business users
@@ -19,18 +22,19 @@ export async function getRecentNotifications(limit: number = 20) {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  // Get system messages that serve as notifications
+  // Fetch notifications via notification queue view
+  // RPC 'get_notifications_page' does not exist - use direct query
   const { data, error } = await supabase
-    .from('messages')
+    .from('communication_notification_queue_view')
     .select('*')
-    .eq('to_user_id', user.id)
-    .eq('context_type', 'system')
+    .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(limit)
+    .returns<NotificationsPageRow[]>()
 
   if (error) throw error
 
-  return (data ?? []) as MessageRow[]
+  return data ?? []
 }
 
 export async function getNotificationHistory(limit: number = 50): Promise<NotificationEntry[]> {
@@ -42,44 +46,63 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  // Note: communication_notification_queue table doesn't exist yet
-  // Using messages table with system context as a workaround for notification history
+  // Read notification queue via hardened view to preserve RLS
   const { data, error } = await supabase
-    .from('messages')
-    .select('id, created_at, content, context_type')
-    .eq('to_user_id', user.id)
-    .eq('context_type', 'system')
+    .from('communication_notification_queue_view')
+    .select('id, created_at, notification_type, payload, sent_at, status, user_id')
+    .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(limit)
+    .returns<NotificationQueueRow[]>()
 
   if (error) {
     console.error('[getNotificationHistory] Error:', error)
     return []
   }
 
-  // Map messages to NotificationEntry format
-  const messages = (data ?? []) as Array<
-    Pick<MessageRow, 'id' | 'created_at' | 'content' | 'context_type'>
-  >
-
-  const validMessages = messages.filter(
-    (msg): msg is {
-      id: string
-      created_at: string | null
-      content: string | null
-      context_type: string | null
-    } => typeof msg.id === 'string',
+  const queueEntries = (data ?? []).filter(
+    (entry): entry is NotificationQueueRow & { id: string } => typeof entry.id === 'string',
   )
 
-  return validMessages.map<NotificationEntry>((msg) => ({
-    id: msg.id,
-    user_id: user.id,
-    channels: ['in_app'],
-    status: 'delivered',
-    created_at: msg.created_at,
-    scheduled_for: null,
-    sent_at: msg.created_at,
-    notification_type: 'system_alert',
-    payload: { content: msg.content },
-  }))
+  return queueEntries.map<NotificationEntry>((entry) => {
+    const payloadValue = (entry.payload ?? null) as Record<string, unknown> | null
+    const title =
+      payloadValue && typeof payloadValue['title'] === 'string' ? (payloadValue['title'] as string) : null
+    const message =
+      payloadValue && typeof payloadValue['message'] === 'string'
+        ? (payloadValue['message'] as string)
+        : null
+    const errorMessage =
+      payloadValue && typeof payloadValue['error'] === 'string'
+        ? (payloadValue['error'] as string)
+        : null
+    const channels =
+      payloadValue && Array.isArray(payloadValue['channels'])
+        ? (payloadValue['channels'] as string[])
+        : ['in_app']
+    const dataPayload =
+      payloadValue && typeof payloadValue === 'object' && !Array.isArray(payloadValue)
+        ? (payloadValue as Record<string, unknown>)
+        : null
+
+    return {
+      id: entry.id,
+      user_id: entry.user_id ?? user.id,
+      channels,
+      status: entry.status,
+      created_at: entry.created_at,
+      scheduled_for: null,
+      sent_at: entry.sent_at,
+      notification_type: entry.notification_type,
+      payload: {
+        title,
+        message,
+        data: dataPayload,
+      },
+      title,
+      message,
+      error: errorMessage,
+      data: dataPayload,
+    }
+  })
 }

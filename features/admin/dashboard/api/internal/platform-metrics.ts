@@ -15,15 +15,15 @@ export async function getPlatformMetrics(): Promise<PlatformMetrics> {
 
   // Use Promise.allSettled to prevent one failure from breaking all queries
   const countResults = await Promise.allSettled([
-    supabase.from('admin_salons_overview').select('id', { count: 'exact', head: true }),
-    supabase.from('admin_users_overview').select('id', { count: 'exact', head: true }),
-    supabase.from('admin_appointments_overview').select('id', { count: 'exact', head: true }),
+    supabase.from('admin_salons_overview_view').select('id', { count: 'exact', head: true }),
+    supabase.from('admin_users_overview_view').select('id', { count: 'exact', head: true }),
+    supabase.from('admin_appointments_overview_view').select('id', { count: 'exact', head: true }),
     supabase
-      .from('admin_appointments_overview')
+      .from('admin_appointments_overview_view')
       .select('id', { count: 'exact', head: true })
       .eq('status', 'completed'),
     supabase
-      .from('admin_appointments_overview')
+      .from('admin_appointments_overview_view')
       .select('id', { count: 'exact', head: true })
       .gte('start_time', now),
   ])
@@ -43,22 +43,19 @@ export async function getPlatformMetrics(): Promise<PlatformMetrics> {
   const [
     { data: revenueData, error: revenueError },
     { data: activeUsersData, error: activeUsersError },
-    { count: lowStockCount, error: lowStockError },
     { count: unverifiedCount, error: unverifiedError },
   ] = await Promise.all([
     // Total platform revenue from admin_revenue_overview
-    supabase.from('admin_revenue_overview').select('total_revenue'),
+    supabase.from('admin_revenue_overview_view').select('total_revenue'),
     // Active users (users with activity in last 30 days)
     supabase
-      .from('security_incident_logs')
+      .from('security_incident_logs_view')
       .select('user_id')
       .gte('created_at', thirtyDaysAgoISO)
       .not('user_id', 'is', null)
       .limit(10000), // Safety limit to prevent OOM
-    // Low stock alerts count
-    supabase.from('stock_alerts').select('*', { count: 'exact', head: true }).eq('is_resolved', false),
     // Pending verifications (unverified email users)
-    supabase.from('admin_users_overview').select('*', { count: 'exact', head: true }).eq('email_verified', false),
+    supabase.from('admin_users_overview_view').select('*', { count: 'exact', head: true }).eq('email_verified', false),
   ])
 
   // Process revenue data
@@ -85,14 +82,6 @@ export async function getPlatformMetrics(): Promise<PlatformMetrics> {
     logSupabaseError('getPlatformMetrics:activeUsers', activeUsersError)
   }
 
-  // Process low stock alerts
-  let lowStockAlertsCount = 0
-  if (!lowStockError) {
-    lowStockAlertsCount = lowStockCount || 0
-  } else {
-    logSupabaseError('getPlatformMetrics:lowStockAlerts', lowStockError)
-  }
-
   // Process pending verifications
   let pendingVerifications = 0
   if (!unverifiedError) {
@@ -109,7 +98,6 @@ export async function getPlatformMetrics(): Promise<PlatformMetrics> {
     completedAppointments,
     revenue: totalRevenue,
     activeUsers: activeUsersCount,
-    lowStockAlerts: lowStockAlertsCount,
     pendingVerifications,
     // avgUtilization calculation requires historical data from admin_analytics_overview
     // Once daily_metrics are populated, query admin_analytics_overview.avg_utilization_rate

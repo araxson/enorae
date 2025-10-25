@@ -9,12 +9,12 @@ export async function getUserStats() {
   const supabase = createServiceRoleClient()
 
   const { count: totalUsers } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('*', { count: 'exact', head: true })
     .is('deleted_at', null)
 
   const { data: roleDistribution } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('primary_role')
     .is('deleted_at', null)
 
@@ -32,7 +32,7 @@ export async function getUserStats() {
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
   const { count: activeUsers } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('*', { count: 'exact', head: true })
     .gte('last_active', thirtyDaysAgo.toISOString())
     .is('deleted_at', null)
@@ -50,12 +50,12 @@ export async function getUsersOverview() {
   const supabase = createServiceRoleClient()
 
   const { count: totalUsers } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('*', { count: 'exact', head: true })
     .is('deleted_at', null)
 
   const { count: suspendedUsers } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('*', { count: 'exact', head: true })
     .eq('is_active', false)
     .is('deleted_at', null)
@@ -64,18 +64,18 @@ export async function getUsersOverview() {
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
   const { count: activeUsers } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('*', { count: 'exact', head: true })
     .gte('last_active', thirtyDaysAgo.toISOString())
     .is('deleted_at', null)
 
   const { count: usersWithRoles } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('user_id', { count: 'exact', head: true })
     .eq('is_active', true)
 
   const { data: roles } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('role')
     .eq('is_active', true)
 

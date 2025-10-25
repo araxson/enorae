@@ -25,7 +25,7 @@ export async function searchProfiles(term: string, limit = 20): Promise<ProfileS
   const sanitized = term.trim() ? sanitizeSearchTerm(term.trim()) : ''
 
   let query = supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('id, full_name, email, username, primary_role, roles, status')
     .is('deleted_at', null)
     .order('updated_at', { ascending: false })
@@ -71,30 +71,27 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
     rolesResponse,
     activityResponse,
   ] = await Promise.all([
-    supabase.from('admin_users_overview').select('*').eq('id', profileId).maybeSingle(),
+    supabase.from('admin_users_overview_view').select('*').eq('id', profileId).maybeSingle(),
     supabase
-      .schema('identity')
-      .from('profiles_metadata')
+      .from('profiles_metadata_view')
       .select('*')
       .eq('profile_id', profileId)
       .maybeSingle(),
     supabase
-      .schema('identity')
-      .from('profiles_preferences')
+      .from('profiles_preferences_view')
       .select('*')
       .eq('profile_id', profileId)
       .maybeSingle(),
     supabase
-      .schema('identity')
-      .from('user_roles')
+      .from('user_roles_view')
       .select('id, role, salon_id, is_active, permissions, created_at')
       .eq('user_id', profileId)
       .order('created_at', { ascending: false }),
     supabase
-      .schema('audit')
-      .from('audit_logs')
+      .schema('identity')
+      .from('audit_logs_view')
       .select(
-        'id, created_at, event_type, action, entity_type, entity_id, is_success, severity, ip_address, user_agent',
+        'id, created_at, action, entity_type, entity_id, ip_address, user_agent',
       )
       .eq('user_id', profileId)
       .order('created_at', { ascending: false })
@@ -121,7 +118,7 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
   const summary = mapSummary(profileRow, lastActiveAt)
 
   const metadata: ProfileMetadataDetail = {
-    fullName: metadataRow?.['full_name'] ?? summary.fullName,
+    fullName: summary.fullName,
     avatarUrl: metadataRow?.avatar_url ?? summary.avatarUrl,
     avatarThumbnailUrl: metadataRow?.avatar_thumbnail_url ?? null,
     coverImageUrl: metadataRow?.cover_image_url ?? null,
@@ -134,16 +131,16 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
     countryCode: preferencesRow?.country_code ?? summary.countryCode,
     locale: preferencesRow?.locale ?? summary.locale,
     timezone: preferencesRow?.timezone ?? summary.timezone,
-    updatedAt: preferencesRow?.['updated_at'] ?? null,
+    updatedAt: preferencesRow?.['updated_at'] as string | null,
     preferences:
       (preferencesRow?.preferences as Record<string, unknown> | null | undefined) ?? {},
   }
 
   const roles = rolesRows.map<ProfileRoleSummary>((role) => ({
-    id: role['id'],
-    role: role.role,
+    id: role['id'] ?? '',
+    role: role.role ?? 'guest',
     salonId: role['salon_id'],
-    isActive: role['is_active'],
+    isActive: role['is_active'] ?? false,
     permissions: role.permissions ?? [],
     createdAt: role['created_at'],
   }))
@@ -151,12 +148,12 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
   const activity = activityRows.map<ProfileActivityEntry>((log, index) => ({
     id: log['id'] ?? `audit-${index}`,
     createdAt: log['created_at'],
-    eventType: log.event_type ?? log.action,
+    eventType: log.action,
     action: log.action,
     entityType: log.entity_type,
     entityId: log.entity_id,
-    isSuccess: log.is_success,
-    severity: log.severity,
+    isSuccess: log.is_success ?? null,
+    severity: null,
     ipAddress: Array.isArray(log.ip_address)
       ? (log.ip_address.find((value) => typeof value === 'string') as string | null) ?? null
       : (log.ip_address as string | null),

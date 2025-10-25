@@ -25,6 +25,10 @@ export const computeFirstResponse = (thread: AdminMessageRow, messages: MessageR
   }
 
   const firstCustomerMessage = customerMessages[0]
+  if (!firstCustomerMessage) {
+    return { minutes: null, firstCustomerMessageAt: null }
+  }
+
   const firstCustomerTimestamp = toTimestamp(firstCustomerMessage['created_at'])
   if (firstCustomerTimestamp === null) {
     return { minutes: null, firstCustomerMessageAt: null }

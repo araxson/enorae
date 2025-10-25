@@ -5,24 +5,27 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import type { Database } from '@/lib/types/database.types'
 
 const createRuleSchema = z.object({
+  ruleName: z.string().min(1).max(255),
   endpoint: z.string().min(1).max(255),
-  limitThreshold: z.number().int().min(1),
+  maxRequests: z.number().int().min(1),
   windowSeconds: z.number().int().min(1),
+  appliesTo: z.string().min(1),
   description: z.string().max(500),
 })
 
 const updateRuleSchema = z.object({
   ruleId: z.string().uuid(),
-  limitThreshold: z.number().int().min(1).optional(),
+  maxRequests: z.number().int().min(1).optional(),
   windowSeconds: z.number().int().min(1).optional(),
   description: z.string().max(500).optional(),
 })
 
 const toggleRuleSchema = z.object({
   ruleId: z.string().uuid(),
-  active: z.boolean(),
+  isActive: z.boolean(),
 })
 
 const deleteRuleSchema = z.object({
@@ -35,23 +38,28 @@ export async function createRateLimitRule(formData: FormData) {
     const supabase = createServiceRoleClient()
 
     const validated = createRuleSchema.parse({
+      ruleName: formData.get('ruleName')?.toString(),
       endpoint: formData.get('endpoint')?.toString(),
-      limitThreshold: Number(formData.get('limitThreshold')),
+      maxRequests: Number(formData.get('maxRequests')),
       windowSeconds: Number(formData.get('windowSeconds')),
+      appliesTo: formData.get('appliesTo')?.toString() || 'all',
       description: formData.get('description')?.toString() || '',
     })
 
-    const { data: newRule, error: insertError } = await supabase
-      .schema('public')
+    const { data: newRule, error: insertError} = await supabase
+      .schema('security')
       .from('rate_limit_rules')
       .insert({
+        rule_name: validated.ruleName,
         endpoint: validated.endpoint,
-        limit_threshold: validated.limitThreshold,
+        max_requests: validated.maxRequests,
         window_seconds: validated.windowSeconds,
+        applies_to: validated.appliesTo,
         description: validated.description,
-        active: true,
+        is_active: true,
       })
-      .select()
+      .select('id')
+      .returns<Pick<Database['security']['Tables']['rate_limit_rules']['Row'], 'id'>[]>()
       .single()
 
     if (insertError) {
@@ -60,19 +68,24 @@ export async function createRateLimitRule(formData: FormData) {
     }
 
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'rate_limit_rule_created',
       event_type: 'rate_limit_rule_created',
       event_category: 'security',
+      target_schema: 'security',
+      target_table: 'rate_limit_rules',
       severity: 'info',
       user_id: session.user.id,
+      is_success: true,
       metadata: {
+        rule_name: validated.ruleName,
         endpoint: validated.endpoint,
-        limit_threshold: validated.limitThreshold,
+        max_requests: validated.maxRequests,
         window_seconds: validated.windowSeconds,
       },
     })
 
     revalidatePath('/admin/security')
-    return { success: true, ruleId: newRule ? (newRule as { id?: string }).id : undefined }
+    return { success: true, ruleId: newRule?.id }
   } catch (error) {
     console.error('Error creating rate limit rule:', error)
     return { error: error instanceof Error ? error.message : 'Unknown error' }
@@ -86,8 +99,8 @@ export async function updateRateLimitRule(formData: FormData) {
 
     const validated = updateRuleSchema.parse({
       ruleId: formData.get('ruleId')?.toString(),
-      limitThreshold: formData.get('limitThreshold')
-        ? Number(formData.get('limitThreshold'))
+      maxRequests: formData.get('maxRequests')
+        ? Number(formData.get('maxRequests'))
         : undefined,
       windowSeconds: formData.get('windowSeconds')
         ? Number(formData.get('windowSeconds'))
@@ -96,12 +109,12 @@ export async function updateRateLimitRule(formData: FormData) {
     })
 
     const updatePayload: Record<string, number | string> = {}
-    if (validated.limitThreshold) updatePayload.limit_threshold = validated.limitThreshold
-    if (validated.windowSeconds) updatePayload.window_seconds = validated.windowSeconds
-    if (validated.description) updatePayload.description = validated.description
+    if (validated.maxRequests) updatePayload['max_requests'] = validated.maxRequests
+    if (validated.windowSeconds) updatePayload['window_seconds'] = validated.windowSeconds
+    if (validated.description) updatePayload['description'] = validated.description
 
     const { error: updateError } = await supabase
-      .schema('public')
+      .schema('security')
       .from('rate_limit_rules')
       .update(updatePayload)
       .eq('id', validated.ruleId)
@@ -112,10 +125,14 @@ export async function updateRateLimitRule(formData: FormData) {
     }
 
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'rate_limit_rule_updated',
       event_type: 'rate_limit_rule_updated',
       event_category: 'security',
+      target_schema: 'security',
+      target_table: 'rate_limit_rules',
       severity: 'info',
       user_id: session.user.id,
+      is_success: true,
       metadata: {
         rule_id: validated.ruleId,
         updated_fields: Object.keys(updatePayload),
@@ -137,13 +154,13 @@ export async function toggleRateLimitRule(formData: FormData) {
 
     const validated = toggleRuleSchema.parse({
       ruleId: formData.get('ruleId')?.toString(),
-      active: formData.get('active') === 'true',
+      isActive: formData.get('isActive') === 'true',
     })
 
     const { error: updateError } = await supabase
-      .schema('public')
+      .schema('security')
       .from('rate_limit_rules')
-      .update({ active: validated.active })
+      .update({ is_active: validated.isActive })
       .eq('id', validated.ruleId)
 
     if (updateError) {
@@ -152,13 +169,17 @@ export async function toggleRateLimitRule(formData: FormData) {
     }
 
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'rate_limit_rule_toggled',
       event_type: 'rate_limit_rule_toggled',
       event_category: 'security',
+      target_schema: 'security',
+      target_table: 'rate_limit_rules',
       severity: 'info',
       user_id: session.user.id,
+      is_success: true,
       metadata: {
         rule_id: validated.ruleId,
-        active: validated.active,
+        is_active: validated.isActive,
       },
     })
 
@@ -180,7 +201,7 @@ export async function deleteRateLimitRule(formData: FormData) {
     })
 
     const { error: deleteError } = await supabase
-      .schema('public')
+      .schema('security')
       .from('rate_limit_rules')
       .delete()
       .eq('id', validated.ruleId)
@@ -191,10 +212,14 @@ export async function deleteRateLimitRule(formData: FormData) {
     }
 
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'rate_limit_rule_deleted',
       event_type: 'rate_limit_rule_deleted',
       event_category: 'security',
+      target_schema: 'security',
+      target_table: 'rate_limit_rules',
       severity: 'warning',
       user_id: session.user.id,
+      is_success: true,
       metadata: {
         rule_id: validated.ruleId,
       },

@@ -9,21 +9,11 @@ import { hideReview as hideReviewAction } from './mutations/hide-review.mutation
 import { approveReview as approveReviewAction } from './mutations/approve-review.mutation'
 import { banReviewAuthor as banReviewAuthorAction } from './mutations/ban-review-author.mutation'
 
-type ServerAction<T extends (...args: never[]) => Promise<unknown>> = (
-  ...args: Parameters<T>
-) => ReturnType<T>
-
-function createServerActionProxy<T extends (...args: never[]) => Promise<unknown>>(
-  action: T
-): ServerAction<T> {
-  return (...args) => action(...args)
-}
-
-export const flagReview = createServerActionProxy(flagReviewAction)
-export const unflagReview = createServerActionProxy(unflagReviewAction)
-export const respondToReview = createServerActionProxy(respondToReviewAction)
-export const deleteReview = createServerActionProxy(deleteReviewAction)
-export const featureReview = createServerActionProxy(featureReviewAction)
-export const hideReview = createServerActionProxy(hideReviewAction)
-export const approveReview = createServerActionProxy(approveReviewAction)
-export const banReviewAuthor = createServerActionProxy(banReviewAuthorAction)
+export const flagReview = flagReviewAction
+export const unflagReview = unflagReviewAction
+export const respondToReview = respondToReviewAction
+export const deleteReview = deleteReviewAction
+export const featureReview = featureReviewAction
+export const hideReview = hideReviewAction
+export const approveReview = approveReviewAction
+export const banReviewAuthor = banReviewAuthorAction

@@ -4,6 +4,7 @@ import { ChangeEvent } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { Loader2, Search } from 'lucide-react'
 import type { ProfileSearchResult } from '@/features/admin/profile/api/types'
@@ -62,11 +63,12 @@ export function ProfileSearchPanel({
                 const isActive = selectedId === profile.id
                 return (
                   <li key={profile.id}>
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
                       onClick={() => onSelect(profile.id)}
                       className={cn(
-                        'w-full px-4 py-3 text-left transition hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                        'w-full justify-start px-4 py-3 text-left transition hover:bg-muted/60',
                         isActive && 'bg-muted/80',
                       )}
                     >
@@ -95,7 +97,7 @@ export function ProfileSearchPanel({
                           )}
                         </div>
                       </div>
-                    </button>
+                    </Button>
                   </li>
                 )
               })}

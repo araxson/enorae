@@ -34,7 +34,7 @@ export async function getChainAnalytics(chainId?: string): Promise<ChainAnalytic
 
   for (const chain of validChains) {
     const { data: salons, error: salonsError } = await supabase
-      .from('admin_salons_overview')
+      .from('admin_salons_overview_view')
       .select('id, chain_id, name, rating_average, rating_count, total_revenue, total_bookings')
       .eq('chain_id', chain['id'])
       .returns<AdminSalonOverviewRow[]>()

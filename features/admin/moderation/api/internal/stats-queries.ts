@@ -24,22 +24,22 @@ export async function getModerationStats(): Promise<ModerationStats> {
 
   const [totalResult, flaggedResult, pendingResult, highRiskResult, sampleResult] = await Promise.all([
     supabase
-      .from('admin_reviews_overview')
+      .from('admin_reviews_overview_view')
       .select('id', { count: 'exact', head: true }),
     supabase
-      .from('admin_reviews_overview')
+      .from('admin_reviews_overview_view')
       .select('id', { count: 'exact', head: true })
       .eq('is_flagged', true),
     supabase
-      .from('admin_reviews_overview')
+      .from('admin_reviews_overview_view')
       .select('id', { count: 'exact', head: true })
       .or('has_response.eq.false,has_response.is.null'),
     supabase
-      .from('admin_reviews_overview')
+      .from('admin_reviews_overview_view')
       .select('id', { count: 'exact', head: true })
       .or('is_flagged.eq.true,is_verified.eq.false'),
     supabase
-      .from('admin_reviews_overview')
+      .from('admin_reviews_overview_view')
       .select('comment, helpful_count, has_response, is_flagged')
       .order('created_at', { ascending: false })
       .limit(150),

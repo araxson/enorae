@@ -27,7 +27,6 @@ interface PlatformMetricsProps {
     activeAppointments: number
     revenue: number
     activeUsers: number
-    lowStockAlerts: number
     pendingVerifications: number
   }
 }

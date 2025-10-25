@@ -11,7 +11,7 @@ export async function getRevenueBySalon(
   const supabase = await requireAdminClient()
 
   let query = supabase
-    .from('admin_revenue_overview')
+    .from('admin_revenue_overview_view')
     .select('*')
     .order('total_revenue', { ascending: false })
     .limit(limit)

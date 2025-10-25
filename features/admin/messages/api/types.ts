@@ -1,8 +1,24 @@
 import type { Database, Json } from '@/lib/types/database.types'
 
-export type AdminMessageRow = Database['public']['Views']['admin_messages_overview']['Row']
-export type MessageThreadRow = Database['public']['Views']['message_threads']['Row']
-export type MessageRow = Database['public']['Views']['messages']['Row']
+export type AdminMessageRow = Database['public']['Views']['admin_messages_overview_view']['Row']
+
+// Message threads and messages tables not implemented - placeholder types
+// TODO: Create message_threads and messages tables in communication schema
+export interface MessageThreadRow {
+  id: string
+  metadata: Json | null
+  created_at: string
+}
+
+export interface MessageRow {
+  id: string
+  context_id: string | null
+  context_type: string | null
+  content: string | null
+  created_at: string | null
+  from_user_id: string | null
+  metadata: Json | null
+}
 
 export type ThreadStatus = Database['public']['Enums']['thread_status']
 export type ThreadPriority = Database['public']['Enums']['thread_priority']

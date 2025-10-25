@@ -1,7 +1,7 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type AdminSalonRow = Database['public']['Views']['admin_salons_overview']['Row']
-export type SalonSettingsRow = Database['public']['Views']['salon_settings']['Row']
+export type AdminSalonRow = Database['public']['Views']['admin_salons_overview_view']['Row']
+export type SalonSettingsRow = Database['organization']['Tables']['salon_settings']['Row']
 export type SalonBaseRow = { id: string; is_verified?: boolean | null }
 
 export type LicenseStatus = 'valid' | 'expiring' | 'expired' | 'unknown'

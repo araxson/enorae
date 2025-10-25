@@ -1,6 +1,6 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type Session = Database['public']['Views']['sessions']['Row']
+export type Session = Database['identity']['Tables']['sessions']['Row']
 
 export type StaffSessionDetail = Session & {
   device_type?: string | null

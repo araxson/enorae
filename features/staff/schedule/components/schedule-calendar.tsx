@@ -77,7 +77,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="font-medium">
-                              {schedule.staff?.['full_name'] || 'Unknown Staff'}
+                              {schedule.staff?.['title'] || 'Unknown Staff'}
                             </span>
                             <Badge variant={schedule['is_active'] ? 'default' : 'secondary'}>
                               {schedule['is_active'] ? 'Active' : 'Inactive'}

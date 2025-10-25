@@ -43,7 +43,7 @@ export async function StaffSchedule() {
       staffId={staffProfile['id']}
       salonId={staffProfile['salon_id']}
       blockedTimes={blockedTimes}
-      staffName={staffProfile['full_name']}
+      staffName={staffProfile['title'] || 'Staff Member'}
     />
   )
 }

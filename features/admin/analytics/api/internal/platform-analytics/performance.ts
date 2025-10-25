@@ -89,7 +89,7 @@ export async function buildPerformanceBenchmark(
   let topSalons: PerformanceBenchmark[] = []
   if (topSalonIds.length) {
     const { data: salonDetails, error: salonError } = await supabase
-      .from('admin_salons_overview')
+      .from('admin_salons_overview_view')
       .select('id,name,business_name,subscription_tier,rating_average')
       .in('id', topSalonIds)
 

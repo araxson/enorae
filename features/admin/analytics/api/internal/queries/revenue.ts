@@ -2,7 +2,7 @@ import 'server-only';
 import { requireAdminClient } from '@/features/admin/analytics/api/admin-analytics-shared'
 import type { AdminRevenueRow } from '@/features/admin/analytics/api/admin-analytics-types'
 
-const REVENUE_TABLE = 'admin_revenue_overview'
+const REVENUE_TABLE = 'admin_revenue_overview_view'
 const DEFAULT_LIMIT = 30
 
 export async function getRevenueOverview(limit: number = DEFAULT_LIMIT): Promise<AdminRevenueRow[]> {

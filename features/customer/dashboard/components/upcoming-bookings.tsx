@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { EmptyState } from '@/features/shared/ui-components'
-import type { AppointmentWithDetails } from '@/features/business/appointments'
+import type { DashboardAppointment } from '@/features/customer/dashboard/api/queries/appointments'
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
 import { format } from 'date-fns'
@@ -13,7 +13,7 @@ import { Calendar, MapPin, Clock, ChevronRight, Store } from 'lucide-react'
 import Link from 'next/link'
 
 interface UpcomingBookingsProps {
-  appointments: AppointmentWithDetails[]
+  appointments: DashboardAppointment[]
 }
 
 export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {

@@ -109,7 +109,7 @@ export async function reactivateUser(formData: FormData) {
     if (profileError) return { error: profileError.message }
 
     // Reactivate roles
-    await supabase
+    const { error: rolesError } = await supabase
       .schema('identity')
       .from('user_roles')
       .update({
@@ -117,6 +117,11 @@ export async function reactivateUser(formData: FormData) {
         updated_by_id: session.user.id,
       })
       .eq('user_id', userId)
+
+    if (rolesError) {
+      console.error('[AdminUsers] Failed to reactivate roles', rolesError)
+      return { error: rolesError.message }
+    }
 
     // Audit logging
     await supabase.schema('audit').from('audit_logs').insert({
@@ -179,7 +184,7 @@ export async function banUser(formData: FormData) {
     if (profileError) return { error: profileError.message }
 
     // Deactivate all roles
-    await supabase
+    const { error: deactivateRolesError } = await supabase
       .schema('identity')
       .from('user_roles')
       .update({
@@ -188,8 +193,13 @@ export async function banUser(formData: FormData) {
       })
       .eq('user_id', userId)
 
+    if (deactivateRolesError) {
+      console.error('[AdminUsers] Failed to deactivate roles during ban', deactivateRolesError)
+      return { error: deactivateRolesError.message }
+    }
+
     // Terminate all sessions
-    await supabase
+    const { error: terminateSessionsError } = await supabase
       .schema('identity')
       .from('sessions')
       .update({
@@ -198,6 +208,11 @@ export async function banUser(formData: FormData) {
         deleted_by_id: session.user.id,
       })
       .eq('user_id', userId)
+
+    if (terminateSessionsError) {
+      console.error('[AdminUsers] Failed to terminate sessions during ban', terminateSessionsError)
+      return { error: terminateSessionsError.message }
+    }
 
     // Critical audit log
     await supabase.schema('audit').from('audit_logs').insert({
@@ -253,7 +268,7 @@ export async function batchUpdateUserStatus(formData: FormData) {
 
     if (action === 'suspend') {
       // Suspend multiple users
-      await supabase
+      const { error: bulkSuspendProfilesError } = await supabase
         .schema('identity')
         .from('profiles')
         .update({
@@ -262,7 +277,12 @@ export async function batchUpdateUserStatus(formData: FormData) {
         })
         .in('id', userIds)
 
-      await supabase
+      if (bulkSuspendProfilesError) {
+        console.error('[AdminUsers] Failed to suspend profiles', bulkSuspendProfilesError)
+        return { error: bulkSuspendProfilesError.message }
+      }
+
+      const { error: bulkSuspendRolesError } = await supabase
         .schema('identity')
         .from('user_roles')
         .update({
@@ -271,7 +291,12 @@ export async function batchUpdateUserStatus(formData: FormData) {
         })
         .in('user_id', userIds)
 
-      await supabase
+      if (bulkSuspendRolesError) {
+        console.error('[AdminUsers] Failed to deactivate roles in batch suspend', bulkSuspendRolesError)
+        return { error: bulkSuspendRolesError.message }
+      }
+
+      const { error: bulkSuspendSessionsError } = await supabase
         .schema('identity')
         .from('sessions')
         .update({
@@ -280,9 +305,14 @@ export async function batchUpdateUserStatus(formData: FormData) {
           deleted_by_id: session.user.id,
         })
         .in('user_id', userIds)
+
+      if (bulkSuspendSessionsError) {
+        console.error('[AdminUsers] Failed to terminate sessions in batch suspend', bulkSuspendSessionsError)
+        return { error: bulkSuspendSessionsError.message }
+      }
     } else if (action === 'reactivate') {
       // Reactivate multiple users
-      await supabase
+      const { error: bulkReactivateProfilesError } = await supabase
         .schema('identity')
         .from('profiles')
         .update({
@@ -291,7 +321,12 @@ export async function batchUpdateUserStatus(formData: FormData) {
         })
         .in('id', userIds)
 
-      await supabase
+      if (bulkReactivateProfilesError) {
+        console.error('[AdminUsers] Failed to reactivate profiles', bulkReactivateProfilesError)
+        return { error: bulkReactivateProfilesError.message }
+      }
+
+      const { error: bulkReactivateRolesError } = await supabase
         .schema('identity')
         .from('user_roles')
         .update({
@@ -299,6 +334,11 @@ export async function batchUpdateUserStatus(formData: FormData) {
           updated_by_id: session.user.id,
         })
         .in('user_id', userIds)
+
+      if (bulkReactivateRolesError) {
+        console.error('[AdminUsers] Failed to reactivate roles in batch operation', bulkReactivateRolesError)
+        return { error: bulkReactivateRolesError.message }
+      }
     }
 
     // Batch audit log

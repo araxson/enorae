@@ -3,8 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
 
-// FIXED: Use identity.sessions view (application sessions, not auth.sessions)
-type Session = Database['public']['Views']['sessions']['Row']
+// FIXED: Use public sessions_view (application sessions metadata)
+type Session = Database['public']['Views']['sessions_view']['Row']
 
 export type SessionWithMetadata = Session & {
   is_current: boolean
@@ -24,7 +24,7 @@ export async function getUserSessions(): Promise<SessionWithMetadata[]> {
 
   // ✅ FIXED: Query identity.sessions via public view (application sessions)
   const { data, error } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('*')
     .eq('user_id', session.user.id)
     .eq('is_active', true)
@@ -51,7 +51,7 @@ export async function getSessionCount(): Promise<number> {
 
   // ✅ FIXED: Query identity.sessions via public view
   const { count, error } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', session.user.id)
     .eq('is_active', true)

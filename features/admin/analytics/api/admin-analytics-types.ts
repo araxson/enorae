@@ -1,13 +1,13 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type AdminAnalyticsRow = Database['public']['Views']['admin_analytics_overview']['Row']
-export type AdminAppointmentRow = Database['public']['Views']['admin_appointments_overview']['Row']
-export type AdminSalonRow = Database['public']['Views']['admin_salons_overview']['Row']
-export type AdminUserRow = Database['public']['Views']['admin_users_overview']['Row']
-export type AdminReviewRow = Database['public']['Views']['admin_reviews_overview']['Row']
-export type AdminStaffRow = Database['public']['Views']['admin_staff_overview']['Row']
-export type AdminRevenueRow = Database['public']['Views']['admin_revenue_overview']['Row']
-export type AdminMessageRow = Database['public']['Views']['admin_messages_overview']['Row']
+export type AdminAnalyticsRow = Database['public']['Views']['admin_analytics_overview_view']['Row']
+export type AdminAppointmentRow = Database['public']['Views']['admin_appointments_overview_view']['Row']
+export type AdminSalonRow = Database['public']['Views']['admin_salons_overview_view']['Row']
+export type AdminUserRow = Database['public']['Views']['admin_users_overview_view']['Row']
+export type AdminReviewRow = Database['public']['Views']['admin_reviews_overview_view']['Row']
+export type AdminStaffRow = Database['public']['Views']['admin_staff_overview_view']['Row']
+export type AdminRevenueRow = Database['public']['Views']['admin_revenue_overview_view']['Row']
+export type AdminMessageRow = Database['public']['Views']['admin_messages_overview_view']['Row']
 
 export interface GrowthDelta {
   current: number

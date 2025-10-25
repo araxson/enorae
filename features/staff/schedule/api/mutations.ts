@@ -9,7 +9,7 @@ import {
 
 type ServerAction<T extends (...args: never[]) => Promise<unknown>> = (
   ...args: Parameters<T>
-) => ReturnType<T>
+) => Promise<Awaited<ReturnType<T>>>
 
 function createServerActionProxy<T extends (...args: never[]) => Promise<unknown>>(
   action: T

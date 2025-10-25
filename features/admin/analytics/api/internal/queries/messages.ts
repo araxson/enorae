@@ -2,7 +2,7 @@ import 'server-only';
 import { requireAdminClient } from '@/features/admin/analytics/api/admin-analytics-shared'
 import type { AdminMessageRow } from '@/features/admin/analytics/api/admin-analytics-types'
 
-const MESSAGES_TABLE = 'admin_messages_overview'
+const MESSAGES_TABLE = 'admin_messages_overview_view'
 
 export async function getMessagesOverview(limit = 100): Promise<AdminMessageRow[]> {
   const supabase = await requireAdminClient()

@@ -265,7 +265,7 @@ export async function overrideSeverity(formData: FormData) {
       user_id: session.user.id,
       metadata: {
         session_id: validated.sessionId,
-        user_email: (record as any).user_email,
+        user_email: typedRecord.user_email,
         old_risk_level: typedRecord.risk_level,
         new_risk_level: validated.newRiskLevel,
         reason: validated.reason,

@@ -1,6 +1,9 @@
 import type { Database } from '@/lib/types/database.types'
 
-type MessageRow = Database['public']['Views']['messages']['Row']
+type NotificationsPageRow =
+  Database['public']['Functions']['get_notifications_page']['Returns'][number]
+type NotificationQueueRow =
+  Database['public']['Views']['communication_notification_queue_view']['Row']
 
 export type NotificationStatus = Database['public']['Enums']['notification_status']
 export type NotificationChannel = Database['public']['Enums']['notification_channel']
@@ -16,11 +19,16 @@ export type NotificationEntry = {
   sent_at: string | null
   notification_type: string | null
   payload: NotificationPayload
+  title?: string | null
+  message?: string | null
+  error?: string | null
+  data?: Record<string, unknown> | null
 }
 
 export type NotificationPayload = {
-  content: MessageRow['content']
-  metadata?: MessageRow['metadata']
+  title?: NotificationsPageRow['title']
+  message?: NotificationsPageRow['message']
+  data?: Record<string, unknown> | null
 }
 
 export type NotificationPreferencesMetadata = {

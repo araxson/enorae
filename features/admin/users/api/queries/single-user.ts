@@ -11,7 +11,7 @@ export async function getUserById(userId: string): Promise<AdminUser | null> {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('admin_users_overview')
+    .from('admin_users_overview_view')
     .select('*')
     .eq('id', userId)
     .single()
@@ -30,7 +30,7 @@ export async function getUserProfile(userId: string): Promise<Profile | null> {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('*')
     .eq('id', userId)
     .single()
@@ -45,11 +45,10 @@ export async function getUserRoles(userId: string): Promise<UserRole[]> {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('*')
     .eq('user_id', userId)
     .eq('is_active', true)
-    .is('deleted_at', null)
     .order('created_at', { ascending: false })
 
   if (error) throw error
@@ -62,7 +61,7 @@ export async function getUserSessions(userId: string) {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('*')
     .eq('user_id', userId)
     .eq('is_active', true)

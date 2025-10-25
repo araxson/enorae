@@ -1,10 +1,10 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type AdminUserRow = Database['public']['Views']['admin_users_overview']['Row']
-export type MetadataRow = Database['identity']['Tables']['profiles_metadata']['Row']
-export type PreferencesRow = Database['identity']['Tables']['profiles_preferences']['Row']
-export type UserRoleRow = Database['identity']['Tables']['user_roles']['Row']
-export type AuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
+export type AdminUserRow = Database['public']['Views']['admin_users_overview_view']['Row']
+export type MetadataRow = Database['public']['Views']['profiles_metadata_view']['Row']
+export type PreferencesRow = Database['public']['Views']['profiles_preferences_view']['Row']
+export type UserRoleRow = Database['public']['Views']['user_roles_view']['Row']
+export type AuditLogRow = Database['identity']['Views']['audit_logs_view']['Row']
 
 export interface ProfileSearchResult {
   id: string

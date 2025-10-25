@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { rescheduleSchema } from '@/lib/validations/customer/appointments'
+import type { Database } from '@/lib/types/database.types'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -20,11 +21,12 @@ export async function cancelAppointment(appointmentId: string): Promise<ActionRe
 
     // Verify ownership and get appointment details
     const { data: appointment, error: fetchError } = await supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('customer_id, start_time, status')
       .eq('id', appointmentId)
-      .returns<Array<{ customer_id: string | null; start_time: string | null; status: string | null }>>()
-      .single()
+      .eq('customer_id', session.user.id)
+      .limit(1)
+      .maybeSingle<Pick<Database['public']['Views']['appointments_view']['Row'], 'customer_id' | 'start_time' | 'status'>>()
 
     if (fetchError) throw fetchError
 
@@ -107,17 +109,15 @@ export async function requestReschedule(
 
     // Verify ownership and get appointment details
     const { data: appointment, error: fetchError } = await supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('customer_id, salon_id, staff_id, start_time, status')
       .eq('id', appointmentId)
-      .returns<Array<{
-        customer_id: string | null
-        salon_id: string | null
-        staff_id: string | null
-        start_time: string | null
-        status: string | null
-      }>>()
-      .single()
+      .eq('customer_id', session.user.id)
+      .limit(1)
+      .maybeSingle<Pick<
+        Database['public']['Views']['appointments_view']['Row'],
+        'customer_id' | 'salon_id' | 'staff_id' | 'start_time' | 'status'
+      >>()
 
     if (fetchError) throw fetchError
 
@@ -139,15 +139,17 @@ export async function requestReschedule(
       return { success: false, error: 'Invalid salon ID' }
     }
 
-    const { data: salon } = await supabase
-      .from('salons')
-      .select('owner_id, name')
+    const { data: salon, error: salonError } = await supabase
+      .from('salons_view')
+      .select('id, name, is_active')
       .eq('id', appointment.salon_id)
-      .returns<Array<{ owner_id: string | null; name: string | null }>>()
-      .single()
+      .limit(1)
+      .maybeSingle<Pick<Database['public']['Views']['salons_view']['Row'], 'id' | 'name' | 'is_active'>>()
 
-    if (!salon || !salon.owner_id) {
-      return { success: false, error: 'Salon not found' }
+    if (salonError) throw salonError
+
+    if (!salon || salon.is_active === false) {
+      return { success: false, error: 'Salon not available' }
     }
 
     // Create message thread for reschedule request

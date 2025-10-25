@@ -1,5 +1,5 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 export interface LoyaltyPoints {
   total_points: number
@@ -19,29 +19,20 @@ export interface LoyaltyTransaction {
 }
 
 export async function getLoyaltyPoints() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // TODO: loyalty_points table not yet in database schema
+  await requireAuth()
+  // Loyalty program is not available yet (schema absent)
   return null
 }
 
 export async function getLoyaltyTransactions(limit = 50) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // TODO: loyalty_transactions table not yet in database schema
+  await requireAuth()
+  // Loyalty program is not available yet (schema absent)
   return []
 }
 
 export async function calculateLoyaltyValue() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // TODO: loyalty_transactions table not yet in database schema
+  await requireAuth()
+  // Loyalty program is not available yet (schema absent)
   return {
     total_points: 0,
     points_earned: 0,

@@ -50,11 +50,21 @@ export async function getToastUsage(
 
   const totalToastBytes =
     tables && tables.length > 0
-      ? (tables as any[]).reduce((sum, t) => sum + t.toast_bytes, 0)
+      ? tables.reduce((sum: number, t) => sum + (typeof t === 'object' && t !== null && 'toast_and_index_size' in t && typeof t.toast_and_index_size === 'string' ? parseInt(t.toast_and_index_size) : 0), 0)
       : 0
 
+  // Map view results to ToastUsageRecord type (view has different columns)
+  const mappedTables: ToastUsageRecord[] = (tables ?? []).map(t => ({
+    id: typeof t === 'object' && t !== null && 'tablename' in t ? String(t.tablename || '') : '',
+    table_name: typeof t === 'object' && t !== null && 'tablename' in t ? String(t.tablename || '') : '',
+    toast_bytes: typeof t === 'object' && t !== null && 'toast_and_index_size' in t ? parseInt(String(t.toast_and_index_size || '0')) : 0,
+    table_bytes: typeof t === 'object' && t !== null && 'main_size' in t ? parseInt(String(t.main_size || '0')) : 0,
+    toast_percentage: typeof t === 'object' && t !== null && 'toast_index_percentage' in t ? Number(t.toast_index_percentage || 0) : 0,
+    suggested_compression: typeof t === 'object' && t !== null && 'total_size' in t ? 'pglz' : null,
+  }))
+
   return {
-    tables: (tables as ToastUsageRecord[]) ?? [],
+    tables: mappedTables,
     totalCount: totalCount ?? 0,
     highToastCount: highToastCount ?? 0,
     totalToastBytes,

@@ -50,20 +50,20 @@ export async function getAppointmentSnapshot(
 
   const [appointmentsRes, overviewRes, analyticsRes] = await Promise.all([
     supabase
-      .from('appointments')
+      .from('admin_appointments_overview_view')
       .select('*')
       .gte('start_time', startIso)
       .order('start_time', { ascending: false })
       .limit(settings.appointmentLimit)
       .returns<AppointmentRow[]>(),
     supabase
-      .from('admin_appointments_overview')
+      .from('admin_appointments_overview_view')
       .select('*')
       .order('start_time', { ascending: false })
       .limit(settings.recentLimit)
       .returns<AppointmentOverviewRow[]>(),
     supabase
-      .from('admin_analytics_overview')
+      .from('admin_analytics_overview_view')
       .select('*')
       .gte('date', startIso)
       .order('date', { ascending: false })

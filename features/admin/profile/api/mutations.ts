@@ -6,7 +6,6 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { basicDetailsSchema, metadataSchema, preferencesSchema } from './schemas'
 import type { Json } from '@/lib/types/database.types'
-import type { PostgrestError } from '@supabase/supabase-js'
 
 export interface ActionResponse {
   success: boolean
@@ -158,35 +157,90 @@ export async function updateProfilePreferencesAction(payload: unknown): Promise<
   return success('Preferences updated')
 }
 
-type IdentityAnonymizeUserArgs = { p_user_id: string }
-
-type IdentityRpcClient = ReturnType<typeof createServiceRoleClient> & {
-  rpc: (
-    fn: 'identity.anonymize_user',
-    args: IdentityAnonymizeUserArgs,
-  ) => Promise<{ data: null; error: PostgrestError | null }>
-}
-
 export async function anonymizeProfileAction(profileId: string): Promise<ActionResponse> {
   if (!profileId) {
     return failure('Invalid profile identifier')
   }
 
-  await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
-  const supabase = createServiceRoleClient() as IdentityRpcClient
+  const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
+  const supabase = createServiceRoleClient()
+  const timestamp = new Date().toISOString()
+  const anonymizedUsername = `anon_${profileId.slice(0, 8)}`
 
-  // Anonymize user by updating their profile data
-  const anonymizedData = {
-    email: `anonymized_${profileId}@deleted.local`,
-    phone: null,
-    full_name: 'Anonymized User',
-    avatar_url: null,
-    deleted_at: new Date().toISOString(),
+  const { error: profileError } = await supabase
+    .schema('identity')
+    .from('profiles')
+    .update({
+      username: anonymizedUsername,
+      deleted_at: timestamp,
+      deleted_by_id: session.user.id,
+      updated_at: timestamp,
+      updated_by_id: session.user.id,
+    })
+    .eq('id', profileId)
+
+  if (profileError) {
+    console.error('[AdminProfile] Failed to anonymize profile base record', profileError)
+    return failure(profileError.message)
   }
 
-  // TODO: Implement user anonymization when identity tables are properly exposed
-  console.log('[Admin] Would anonymize user profile:', profileId)
+  const { error: metadataError } = await supabase
+    .schema('identity')
+    .from('profiles_metadata')
+    .update({
+      full_name: 'Anonymized User',
+      avatar_url: null,
+      avatar_thumbnail_url: null,
+      cover_image_url: null,
+      interests: [],
+      tags: [],
+      social_profiles: null,
+      updated_at: timestamp,
+      updated_by_id: session.user.id,
+    })
+    .eq('profile_id', profileId)
+
+  if (metadataError) {
+    console.error('[AdminProfile] Failed to anonymize profile metadata', metadataError)
+    return failure(metadataError.message)
+  }
+
+  const { error: preferencesError } = await supabase
+    .schema('identity')
+    .from('profiles_preferences')
+    .update({
+      country_code: null,
+      locale: null,
+      timezone: null,
+      currency_code: null,
+      preferences: {},
+      updated_at: timestamp,
+      updated_by_id: session.user.id,
+    })
+    .eq('profile_id', profileId)
+
+  if (preferencesError) {
+    console.error('[AdminProfile] Failed to anonymize profile preferences', preferencesError)
+    return failure(preferencesError.message)
+  }
+
+  await supabase.schema('audit').from('audit_logs').insert({
+    event_type: 'profile_anonymized',
+    event_category: 'identity',
+    severity: 'warning',
+    user_id: session.user.id,
+    action: 'anonymize_profile',
+    entity_type: 'profile',
+    entity_id: profileId,
+    target_schema: 'identity',
+    target_table: 'profiles',
+    metadata: {
+      anonymized_profile_id: profileId,
+      anonymized_by: session.user.id,
+    },
+    is_success: true,
+  })
 
   revalidatePath('/admin/profile')
-  return success('User anonymization placeholder executed')
+  return success('User profile anonymized')
 }

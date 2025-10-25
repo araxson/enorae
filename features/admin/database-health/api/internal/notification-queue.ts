@@ -1,9 +1,9 @@
 import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import type { Database } from '@/lib/types/database.types'
+import type { Database, Json } from '@/lib/types/database.types'
 
-type NotificationQueue = Database['public']['Views']['communication_notification_queue']['Row']
+type NotificationQueue = Database['public']['Views']['communication_notification_queue_view']['Row']
 
 export interface NotificationQueueSnapshot {
   queueItems: NotificationQueue[]
@@ -22,7 +22,7 @@ export async function getNotificationQueue(
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .from('communication_notification_queue')
+    .from('communication_notification_queue_view')
     .select('*')
     .order('created_at', { ascending: true })
     .limit(limit)
@@ -34,12 +34,25 @@ export async function getNotificationQueue(
   const notificationsByType: Record<string, number> = {}
   const channelDistribution: Record<string, number> = {}
 
+  const getChannels = (payload: Json | null): string[] => {
+    if (!payload || Array.isArray(payload) || typeof payload !== 'object') {
+      return []
+    }
+
+    const rawChannels = (payload as Record<string, unknown>)['channels']
+    if (!Array.isArray(rawChannels)) {
+      return []
+    }
+
+    return rawChannels.filter((channel): channel is string => typeof channel === 'string')
+  }
+
   queueItems.forEach((item) => {
     const type = item['notification_type'] ?? 'unknown'
     notificationsByType[type] = (notificationsByType[type] ?? 0) + 1
 
-    const channels = Array.isArray(item['channels']) ? item['channels'] : []
-    channels.forEach((channel: string) => {
+    const channels = getChannels(item.payload ?? null)
+    channels.forEach((channel) => {
       channelDistribution[channel] = (channelDistribution[channel] ?? 0) + 1
     })
   })

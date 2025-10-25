@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
-import type { DailyMetricsDashboardProps } from '@/features/business/daily-analytics/types'
+import type { DailyMetricsDashboardProps } from '../types'
 
 type Props = Pick<DailyMetricsDashboardProps, 'aggregated'>
 

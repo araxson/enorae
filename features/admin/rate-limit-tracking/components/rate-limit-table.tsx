@@ -21,7 +21,7 @@ import {
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
-import type { RateLimitRecord } from '@/features/admin/rate-limit-tracking/api/queries'
+import type { RateLimitRecord } from '@/features/admin/rate-limit-tracking/types'
 import {
   unblockIdentifier,
   purgeStaleRecords,
@@ -81,10 +81,6 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
     }
   }
 
-  const getUsagePercentage = (current: number, limit: number) => {
-    return Math.round((current / limit) * 100)
-  }
-
   const getUsageColor = (percentage: number) => {
     if (percentage >= 100) return 'text-destructive'
     if (percentage >= 80) return 'text-primary'
@@ -117,22 +113,22 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
             </TableRow>
           ) : (
             records.map((record) => {
-              const usage = getUsagePercentage(record.current_count, record.limit_threshold)
+              const usage = record.usagePercent ?? 0
               return (
-                <TableRow key={record.id}>
+                <TableRow key={`${record.identifier}:${record.endpoint}`}>
                   <TableCell className="font-mono text-sm">{record.identifier}</TableCell>
                   <TableCell className="font-mono text-sm">{record.endpoint}</TableCell>
-                  <TableCell>{record.limit_threshold}</TableCell>
-                  <TableCell className="font-semibold">{record.current_count}</TableCell>
+                  <TableCell>{record.maxRequests ?? '—'}</TableCell>
+                  <TableCell className="font-semibold">{record.requestCount}</TableCell>
                   <TableCell className={`font-semibold ${getUsageColor(usage)}`}>
                     {usage}%
                   </TableCell>
                   <TableCell>{getStatusBadge(record.status)}</TableCell>
                   <TableCell className="text-sm">
-                    {format(new Date(record.last_attempt), 'MMM dd, HH:mm')}
+                    {record.lastRequestAt ? format(new Date(record.lastRequestAt), 'MMM dd, HH:mm') : '—'}
                   </TableCell>
                   <TableCell className="text-sm">
-                    {format(new Date(record.next_reset), 'MMM dd, HH:mm')}
+                    {record.windowEndAt ? format(new Date(record.windowEndAt), 'MMM dd, HH:mm') : '—'}
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>

@@ -4,7 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import { getDateRanges } from '@/lib/utils/dates'
 
-type UserRole = Database['public']['Views']['user_roles']['Row']
+type UserRole = Database['public']['Views']['user_roles_view']['Row']
+type AppointmentOverview = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
 const LOYALTY_THRESHOLDS: Array<{ min: number; tier: 'bronze' | 'silver' | 'gold' | 'platinum' }> = [
   { min: 5000, tier: 'platinum' },
@@ -32,7 +33,7 @@ export async function getVIPStatus() {
   const supabase = await createClient()
 
   const { data: roleData, error: roleError } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('*')
     .eq('user_id', session.user['id'])
     .maybeSingle<UserRole>()
@@ -50,14 +51,28 @@ export async function getVIPStatus() {
   const { month } = getDateRanges()
 
   const { data: appointments, error: appointmentsError } = await supabase
-    .from('appointments')
-    .select('total_price, created_at')
+    .from('admin_appointments_overview_view')
+    .select('id, total_price, created_at')
     .eq('customer_id', session.user['id'])
     .eq('status', 'completed')
 
   if (appointmentsError) throw appointmentsError
 
-  const records = (appointments || []) as Array<{ total_price: number | null; created_at: string | null }>
+  const uniqueAppointments = new Map<
+    string,
+    { total_price: number | null; created_at: string | null }
+  >()
+
+  for (const row of appointments || []) {
+    const id = (row as AppointmentOverview)['id']
+    if (!id || uniqueAppointments.has(id)) continue
+    uniqueAppointments.set(id, {
+      total_price: (row as AppointmentOverview)['total_price'],
+      created_at: (row as AppointmentOverview)['created_at'],
+    })
+  }
+
+  const records = Array.from(uniqueAppointments.values())
 
   const lifetimeSpend = records.reduce((sum, apt) => sum + (apt['total_price'] || 0), 0)
   const monthlySpend = records

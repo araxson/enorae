@@ -17,7 +17,7 @@ export async function AdminRoles() {
   // Fetch salons for role assignment dropdown
   const supabase = createServiceRoleClient()
   const { data: salons } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id, name')
     .eq('is_active', true)
     .order('name')

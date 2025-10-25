@@ -17,8 +17,8 @@ export async function CustomerAnalytics() {
   const startDate = new Date(endDate)
   startDate.setDate(startDate.getDate() - 90)
 
-  const start = startDate.toISOString().split('T')[0]
-  const end = endDate.toISOString().split('T')[0]
+  const start: string = startDate.toISOString().split('T')[0] || ''
+  const end: string = endDate.toISOString().split('T')[0] || ''
 
   const [insights, segmentation, cohorts, atRiskCustomers, reactivation] = await Promise.all([
     getCustomerInsights(salon.id, start, end),

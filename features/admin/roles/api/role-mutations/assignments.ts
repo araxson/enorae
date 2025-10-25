@@ -1,6 +1,7 @@
 'use server'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import type { Database } from '@/lib/types/database.types'
 
 import type { RoleType } from './types'
 
@@ -17,6 +18,7 @@ export async function applyRoleAssignment(
   actorId: string,
 ) {
   let existingQuery = supabase
+    .schema('identity')
     .from('user_roles')
     .select('id, is_active, permissions')
     .eq('user_id', data.userId)
@@ -28,18 +30,20 @@ export async function applyRoleAssignment(
     existingQuery = existingQuery.is('salon_id', null)
   }
 
-  const { data: existing } = await existingQuery.maybeSingle()
-  const existingRole =
-    (existing as { id: string; is_active: boolean; permissions: string[] | null } | null) ?? null
+  const { data: existing } = await existingQuery
+    .returns<Database['identity']['Tables']['user_roles']['Row']>()
+    .maybeSingle()
+  const existingRole = existing ?? null
 
   const permissions =
     data.permissions && data.permissions.length > 0 ? data.permissions : null
 
   if (existingRole) {
+    const role = existingRole as Database['identity']['Tables']['user_roles']['Row']
     const permissionsChanged =
-      JSON.stringify(existingRole.permissions || []) !== JSON.stringify(permissions || [])
+      JSON.stringify(role.permissions || []) !== JSON.stringify(permissions || [])
 
-    if (!existingRole.is_active || permissionsChanged) {
+    if (!role.is_active || permissionsChanged) {
       const { error } = await supabase
         .schema('identity')
         .from('user_roles')
@@ -50,11 +54,11 @@ export async function applyRoleAssignment(
           deleted_by_id: null,
           permissions,
         })
-        .eq('id', existingRole.id)
+        .eq('id', role.id)
 
       if (error) throw error
     }
-    return existingRole.id
+    return role.id
   }
 
   const { data: inserted, error } = await supabase
@@ -70,9 +74,9 @@ export async function applyRoleAssignment(
       updated_by_id: actorId,
     })
     .select('id')
+    .returns<Pick<Database['identity']['Tables']['user_roles']['Row'], 'id'>[]>()
     .single()
 
   if (error) throw error
-  return inserted.id as string
+  return inserted.id
 }
-

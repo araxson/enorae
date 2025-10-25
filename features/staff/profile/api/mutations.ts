@@ -48,7 +48,7 @@ export async function updateStaffInfo(formData: FormData): Promise<ActionRespons
     })
 
     if (!result.success) {
-      return { success: false, error: result.error.errors[0].message }
+      return { success: false, error: result.error.errors[0]?.message || 'Validation failed' }
     }
 
     const { title, bio, experienceYears } = result.data
@@ -95,7 +95,7 @@ export async function updateStaffMetadata(
 
     const validation = updateStaffMetadataSchema.safeParse(data)
     if (!validation.success) {
-      return { success: false, error: validation.error.errors[0].message }
+      return { success: false, error: validation.error.errors[0]?.message || 'Validation failed' }
     }
 
     const { specialties, certifications, interests } = validation.data

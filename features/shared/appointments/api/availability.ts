@@ -1,6 +1,5 @@
 'use server'
 
-// @ts-nocheck
 import 'server-only'
 
 import { z } from 'zod'
@@ -84,8 +83,8 @@ export async function checkStaffAvailability(params: AvailabilityArgs): Promise<
   if (!available && blockedTime && typeof blockedTime === 'object') {
     return {
       available: false,
-      reason: (blockedTime as { reason?: string | null; block_type?: string | null }).reason || undefined,
-      blockType: (blockedTime as { reason?: string | null; block_type?: string | null }).block_type || undefined,
+      reason: blockedTime.reason ?? undefined,
+      blockType: blockedTime.block_type ?? undefined,
     }
   }
 

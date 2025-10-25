@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RateLimitTable } from './rate-limit-table'
-import type { RateLimitSnapshot } from '@/features/admin/rate-limit-tracking/api/queries'
+import type { RateLimitSnapshot } from '@/features/admin/rate-limit-tracking/types'
 
 interface RateLimitClientProps {
   snapshot: RateLimitSnapshot

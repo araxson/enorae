@@ -13,7 +13,7 @@ interface AppointmentStats {
   average_ticket: number
 }
 
-type AppointmentOverviewRow = Database['public']['Views']['admin_appointments_overview']['Row']
+type AppointmentOverviewRow = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
 export async function getAppointmentStats(
   salonId: string,

@@ -1,5 +1,5 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 export interface Referral {
   id: string
@@ -12,20 +12,14 @@ export interface Referral {
 }
 
 export async function getReferralCode() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // TODO: referrals table not yet in database schema
+  await requireAuth()
+  // Referral program is not available yet (schema absent)
   return null
 }
 
 export async function getReferralStats() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // TODO: referrals table not yet in database schema
+  await requireAuth()
+  // Referral program is not available yet (schema absent)
   return {
     total_referrals: 0,
     successful_referrals: 0,
@@ -35,10 +29,7 @@ export async function getReferralStats() {
 }
 
 export async function getReferralHistory() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // TODO: referrals table not yet in database schema
+  await requireAuth()
+  // Referral program is not available yet (schema absent)
   return []
 }

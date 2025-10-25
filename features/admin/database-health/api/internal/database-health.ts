@@ -3,10 +3,10 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type TableBloat = Database['public']['Views']['table_bloat_estimate']['Row']
-type CacheHitRatio = Database['public']['Views']['table_cache_hit_ratio']['Row']
-type HotUpdateStats = Database['public']['Views']['hot_update_stats']['Row']
-type ToastUsage = Database['public']['Views']['toast_usage_summary']['Row']
+type TableBloat = Database['public']['Views']['table_bloat_estimate_view']['Row']
+type CacheHitRatio = Database['public']['Views']['table_cache_hit_ratio_view']['Row']
+type HotUpdateStats = Database['public']['Views']['hot_update_stats_view']['Row']
+type ToastUsage = Database['public']['Views']['toast_usage_summary_view']['Row']
 
 export interface DatabaseHealthSnapshot {
   bloatedTables: TableBloat[]
@@ -29,22 +29,22 @@ export async function getDatabaseHealth(
 
   const [bloatRes, cacheRes, hotUpdateRes, toastRes] = await Promise.all([
     supabase
-      .from('table_bloat_estimate')
+      .from('table_bloat_estimate_view')
       .select('*')
       .order('dead_tuple_percent', { ascending: false })
       .limit(limit),
     supabase
-      .from('table_cache_hit_ratio')
+      .from('table_cache_hit_ratio_view')
       .select('*')
       .order('cache_hit_ratio', { ascending: true })
       .limit(limit),
     supabase
-      .from('hot_update_stats')
+      .from('hot_update_stats_view')
       .select('*')
       .order('hot_update_percentage', { ascending: false })
       .limit(limit),
     supabase
-      .from('toast_usage_summary')
+      .from('toast_usage_summary_view')
       .select('*')
       .order('toast_index_percentage', { ascending: false })
       .limit(limit),

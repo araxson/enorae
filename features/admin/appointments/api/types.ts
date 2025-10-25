@@ -1,7 +1,8 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type AppointmentOverviewRow = Database['public']['Views']['admin_appointments_overview']['Row']
-export type AppointmentRow = Database['public']['Views']['appointments']['Row']
+export type AppointmentOverviewRow = Database['public']['Views']['admin_appointments_overview_view']['Row']
+// Admin features need enriched data with salon_name, customer_name, staff_name, total_price
+export type AppointmentRow = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
 export interface AppointmentStatusTotals {
   total: number

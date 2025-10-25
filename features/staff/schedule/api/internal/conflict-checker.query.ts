@@ -4,7 +4,7 @@ import { verifyStaffOwnership } from '@/features/staff/clients/api/internal/auth
 import type { Database } from '@/lib/types/database.types'
 import type { ScheduleConflict, StaffSchedule } from './types'
 
-type AppointmentRow = Database['public']['Views']['appointments']['Row']
+type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
 
 const DAY_MAP: Database['public']['Enums']['day_of_week'][] = [
   'sunday',
@@ -57,6 +57,10 @@ export async function checkScheduleConflict(
   const dayIndex = new Date(workDate).getDay()
   const dayOfWeek = DAY_MAP[dayIndex]
 
+  if (!dayOfWeek) {
+    return false
+  }
+
   const { data, error } = await supabase
     .from('staff_schedules_view')
     .select('*')
@@ -96,6 +100,14 @@ export async function getScheduleConflicts(
   const dayIndex = new Date(workDate).getDay()
   const dayOfWeek = DAY_MAP[dayIndex]
 
+  if (!dayOfWeek) {
+    return {
+      has_conflict: false,
+      conflicting_schedules: [],
+      conflicting_appointments: [],
+    }
+  }
+
   const { data: schedules, error: scheduleError } = await supabase
     .from('staff_schedules_view')
     .select('*')
@@ -117,12 +129,12 @@ export async function getScheduleConflicts(
 
   const { data: appointments, error: appointmentError } = await supabase
     .from('appointments_view')
-    .select('id, start_time, end_time, customer_name')
+    .select('id, start_time, end_time, customer_id')
     .eq('staff_id', authorizedStaffId)
     .gte('start_time', `${workDate}T00:00:00`)
     .lte('start_time', `${workDate}T23:59:59`)
     .in('status', ['confirmed', 'pending'])
-    .returns<Array<Pick<AppointmentRow, 'id' | 'start_time' | 'end_time' | 'customer_name'>>>()
+    .returns<Array<Pick<AppointmentRow, 'id' | 'start_time' | 'end_time' | 'customer_id'>>>()
 
   if (appointmentError) throw appointmentError
 
@@ -132,7 +144,7 @@ export async function getScheduleConflicts(
       id: appointment['id'] as string,
       start_time: appointment['start_time'] as string,
       end_time: appointment['end_time'] as string,
-      customer_name: appointment['customer_name'] ?? null,
+      customer_name: null,
       startMs: new Date(appointment['start_time'] as string).getTime(),
       endMs: new Date(appointment['end_time'] as string).getTime(),
     }))

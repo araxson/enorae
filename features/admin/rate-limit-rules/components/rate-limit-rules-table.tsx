@@ -10,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import {
@@ -37,7 +36,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
     try {
       const formData = new FormData()
       formData.append('ruleId', ruleId)
-      formData.append('active', (!currentActive).toString())
+      formData.append('isActive', (!currentActive).toString())
       const result = await toggleRateLimitRule(formData)
       if (result.error) {
         toast.error(result.error)
@@ -66,7 +65,8 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
     }
   }
 
-  const formatWindowSeconds = (seconds: number) => {
+  const formatWindowSeconds = (seconds: number | null | undefined) => {
+    if (!seconds || Number.isNaN(seconds)) return '—'
     if (seconds < 60) return `${seconds}s`
     if (seconds < 3600) return `${Math.round(seconds / 60)}m`
     return `${Math.round(seconds / 3600)}h`
@@ -80,7 +80,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
             <TableHead>Endpoint</TableHead>
             <TableHead>Limit</TableHead>
             <TableHead>Time Window</TableHead>
-            <TableHead>Violations Today</TableHead>
+            <TableHead>Applies To</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -94,46 +94,47 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
               </TableCell>
             </TableRow>
           ) : (
-            rules.map((rule) => (
-              <TableRow key={rule.id}>
-                <TableCell className="font-mono text-sm">{rule.endpoint}</TableCell>
-                <TableCell className="font-semibold">{rule.limit_threshold}</TableCell>
-                <TableCell>{formatWindowSeconds(rule.window_seconds)}</TableCell>
-                <TableCell className="font-semibold">{rule.recent_violations}</TableCell>
-                <TableCell>
-                  <Switch
-                    checked={rule.active}
-                    onCheckedChange={() => handleToggle(rule.id, rule.active)}
-                    disabled={isLoading}
-                  />
-                </TableCell>
-                <TableCell className="text-sm">
-                  {format(new Date(rule.created_at), 'MMM dd')}
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        disabled={isLoading}
-                      >
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        onClick={() => handleDelete(rule.id, rule.endpoint)}
-                        disabled={isLoading}
-                        className="text-destructive"
-                      >
-                        Delete Rule
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))
+            rules.map((rule) => {
+              const ruleKey = rule.id ?? `${rule.endpoint ?? 'unknown'}-${rule.rule_name ?? 'rule'}`
+              const hasRuleId = typeof rule.id === 'string' && rule.id.length > 0
+
+              return (
+                <TableRow key={ruleKey}>
+                  <TableCell className="font-mono text-sm">{rule.endpoint ?? '—'}</TableCell>
+                  <TableCell className="font-semibold">{rule.max_requests ?? '—'}</TableCell>
+                  <TableCell>{formatWindowSeconds(rule.window_seconds)}</TableCell>
+                  <TableCell className="text-sm">{rule.applies_to ?? 'all'}</TableCell>
+                  <TableCell>
+                    <Switch
+                      checked={Boolean(rule.is_active)}
+                      onCheckedChange={() => hasRuleId && handleToggle(rule.id as string, Boolean(rule.is_active))}
+                      disabled={isLoading || !hasRuleId}
+                    />
+                  </TableCell>
+                  <TableCell className="text-sm">
+                    {rule.created_at ? format(new Date(rule.created_at), 'MMM dd') : '—'}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" disabled={isLoading || !hasRuleId}>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => hasRuleId && handleDelete(rule.id as string, rule.endpoint ?? 'this endpoint')}
+                          disabled={isLoading || !hasRuleId}
+                          className="text-destructive"
+                        >
+                          Delete Rule
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              )
+            })
           )}
         </TableBody>
       </Table>

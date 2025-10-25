@@ -10,7 +10,7 @@ export async function getPlatformRevenueAnalytics(
   const supabase = await requireAdminClient()
 
   let query = supabase
-    .from('admin_revenue_overview')
+    .from('admin_revenue_overview_view')
     .select('*')
     .order('date', { ascending: false })
 

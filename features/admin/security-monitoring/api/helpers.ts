@@ -15,8 +15,8 @@ import type {
 type AuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
 type AccessMonitoringRow = Database['security']['Tables']['access_monitoring']['Row']
 type SessionSecurityRow = Database['security']['Tables']['session_security']['Row']
-type RateLimitTrackingRow = Database['security']['Tables']['rate_limit_tracking']['Row']
-type RateLimitRuleRow = Database['security']['Tables']['rate_limit_rules']['Row']
+type RateLimitTrackingRow = Database['public']['Views']['security_rate_limit_tracking_view']['Row']
+type RateLimitRuleRow = Database['public']['Views']['security_rate_limit_rules_view']['Row']
 type SecurityAuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
 
 export type {
@@ -44,71 +44,71 @@ export const normalizeIp = (value: unknown): string | null => {
 }
 
 export const toAccessAttempt = (row: AccessMonitoringRow): AccessAttempt => ({
-  id: row.id,
+  id: row.id ?? '',
   userId: row.user_id,
   resourceType: row.resource_type,
   action: row.action,
-  isGranted: row.is_granted,
+  isGranted: row.is_granted ?? false,
   ipAddress: normalizeIp(row.ip_address),
   userAgent: row.user_agent,
-  createdAt: row.created_at,
+  createdAt: row.created_at ?? new Date().toISOString(),
 })
 
 export const toSuspiciousSession = (row: SessionSecurityRow): SuspiciousSession => ({
-  id: row.id,
+  id: row.id ?? '',
   userId: row.user_id,
   ipAddress: normalizeIp(row.ip_address),
   userAgent: row.user_agent,
-  suspiciousScore: row.suspicious_score,
-  isBlocked: row.is_blocked,
+  suspiciousScore: row.suspicious_score ?? 0,
+  isBlocked: row.is_blocked ?? false,
   lastActivityAt: row.last_activity_at,
   createdAt: row.created_at,
 })
 
 export const toSecurityEvent = (row: AuditLogRow): SecurityEvent => ({
-  id: row.id,
+  id: row.id ?? '',
   eventType: row.event_type ?? row.action ?? 'unknown',
-  severity: row.severity ?? 'info',
-  eventCategory: row.event_category ?? null,
-  description: row.error_message,
+  severity: (row.severity ?? 'info') as string,
+  eventCategory: (row.event_category ?? null) as string | null,
+  description: row.error_message ?? null,
   metadata: (row.metadata as Record<string, unknown> | null) ?? null,
   userId: row.user_id,
   userEmail: (row.metadata as { user_email?: string } | null)?.user_email ?? null,
   ipAddress: normalizeIp(row.ip_address),
-  createdAt: row.created_at,
+  createdAt: (row.created_at ?? new Date().toISOString()) as string,
 })
 
 export const toRateLimitViolation = (row: RateLimitTrackingRow): RateLimitViolation => ({
-  id: row.identifier,
-  identifier: row.identifier,
-  identifierType: row.identifier_type,
-  endpoint: row.endpoint,
-  requestCount: row.request_count,
-  windowStartAt: row.window_start_at,
-  lastRequestAt: row.last_request_at,
-  lastBlockedAt: row.last_blocked_at,
-  blockedUntil: row.blocked_until,
-  userAgent: row.user_agent,
+  id: (row.identifier ?? '') as string,
+  identifier: (row.identifier ?? '') as string,
+  identifierType: (row.identifier_type ?? '') as string,
+  endpoint: (row.endpoint ?? '') as string,
+  requestCount: (row.request_count ?? 0) as number,
+  windowStartAt: (row.window_start_at ?? null) as string | null,
+  lastRequestAt: (row.last_request_at ?? null) as string | null,
+  lastBlockedAt: (row.last_blocked_at ?? null) as string | null,
+  blockedUntil: (row.blocked_until ?? null) as string | null,
+  userAgent: row.user_agent ?? null,
   metadata: (row.metadata as Record<string, unknown> | null) ?? null,
 })
 
 export const toRateLimitRule = (row: RateLimitRuleRow): RateLimitRule => ({
-  id: row.id,
-  ruleName: row.rule_name,
-  endpoint: row.endpoint,
-  appliesTo: row.applies_to,
-  maxRequests: row.max_requests,
-  windowSeconds: row.window_seconds,
-  blockDurationSeconds: row.block_duration_seconds,
-  isActive: row.is_active,
+  id: (row.id ?? '') as string,
+  ruleName: (row.rule_name ?? '') as string,
+  endpoint: (row.endpoint ?? '') as string,
+  appliesTo: (row.applies_to ?? '') as string,
+  maxRequests: (row.max_requests ?? 0) as number,
+  windowSeconds: (row.window_seconds ?? 0) as number,
+  blockDurationSeconds: (row.block_duration_seconds ?? 0) as number,
+  isActive: (row.is_active ?? false) as boolean,
 })
 
 export const toFailedLoginAttempt = (row: AuditLogRow): FailedLoginAttempt => ({
-  id: row.id,
-  userId: row.user_id,
+  id: (row.id ?? '') as string,
+  userId: (row.user_id ?? '') as string,
   ipAddress: normalizeIp(row.ip_address),
-  userAgent: row.user_agent,
-  createdAt: row.created_at,
+  userAgent: (row.user_agent ?? '') as string,
+  createdAt: (row.created_at ?? new Date().toISOString()) as string,
   metadata: (row.metadata as Record<string, unknown> | null) ?? null,
 })
 

@@ -2,104 +2,109 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import type { PostgrestError } from '@supabase/supabase-js'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 type Service = Database['public']['Views']['services_view']['Row']
 type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 type SalonReview = Database['public']['Views']['salon_reviews_view']['Row']
 type SalonMedia = Database['public']['Views']['salon_media_view']['Row']
+type SalonDescription = Pick<
+  Database['public']['Views']['salon_descriptions_view']['Row'],
+  'short_description' | 'full_description'
+>
+type SalonContact = Pick<
+  Database['public']['Views']['salon_contact_details_view']['Row'],
+  | 'primary_phone'
+  | 'primary_email'
+  | 'website_url'
+  | 'instagram_url'
+  | 'facebook_url'
+  | 'twitter_url'
+  | 'tiktok_url'
+>
+type SalonLocation = Pick<
+  Database['public']['Views']['salon_locations_view']['Row'],
+  'is_primary' | 'formatted_address'
+>
+type SalonSettings = Pick<
+  Database['public']['Views']['salon_settings_view']['Row'],
+  'booking_lead_time_hours'
+>
 
 export async function getSalonBySlug(slug: string) {
   await requireAuth()
   const supabase = await createClient()
 
-  // Get basic salon data
   const { data: salon, error: salonError } = await supabase
     .from('salons_view')
     .select('*')
     .eq('slug', slug)
-    .single() as { data: Salon | null; error: PostgrestError | null }
+    .single<Salon>()
 
   if (salonError) throw salonError
   if (!salon) throw new Error('Salon not found')
 
-  // Get all related data in parallel
-  type DescriptionRow = { short_description: string | null; full_description: string | null }
-  type ContactRow = {
-    primary_phone: string | null
-    primary_email: string | null
-    website_url: string | null
-    instagram_url: string | null
-    facebook_url: string | null
-    twitter_url: string | null
-    tiktok_url: string | null
+  const salonId = salon.id
+  if (!salonId) {
+    throw new Error('Salon identifier missing')
   }
-  type LocationRow = {
-    is_primary: boolean | null
-    formatted_address: string | null
-  }
-  type SettingsRow = {
-    booking_lead_time_hours: number | null
-  }
-  type AmenityRow = { amenities: { id: string; name: string; icon: string | null } | null }
-  type SpecialtyRow = { specialties: { id: string; name: string; category: string | null } | null }
 
   const [
-    { data: description },
-    { data: contact },
-    { data: settings },
-    { data: location },
-    { data: amenitiesData },
-    { data: specialtiesData },
-    { count: servicesCount }
+    descriptionResponse,
+    contactResponse,
+    settingsResponse,
+    locationResponse,
+    servicesResponse,
   ] = await Promise.all([
     supabase
       .from('salon_descriptions_view')
       .select('short_description, full_description')
-      .eq('salon_id', salon['id']!)
-      .maybeSingle() as unknown as Promise<{ data: DescriptionRow | null; error: PostgrestError | null }>,
+      .eq('salon_id', salonId)
+      .maybeSingle<SalonDescription>(),
     supabase
       .from('salon_contact_details_view')
-      .select('primary_phone, primary_email, website_url, instagram_url, facebook_url, twitter_url, tiktok_url')
-      .eq('salon_id', salon['id']!)
-      .maybeSingle() as unknown as Promise<{ data: ContactRow | null; error: PostgrestError | null }>,
+      .select(
+        'primary_phone, primary_email, website_url, instagram_url, facebook_url, twitter_url, tiktok_url'
+      )
+      .eq('salon_id', salonId)
+      .maybeSingle<SalonContact>(),
     supabase
       .from('salon_settings_view')
       .select('booking_lead_time_hours')
-      .eq('salon_id', salon['id']!)
-      .maybeSingle() as unknown as Promise<{ data: SettingsRow | null; error: PostgrestError | null }>,
+      .eq('salon_id', salonId)
+      .maybeSingle<SalonSettings>(),
     supabase
       .from('salon_locations_view')
       .select('is_primary, formatted_address')
-      .eq('salon_id', salon['id']!)
+      .eq('salon_id', salonId)
       .eq('is_primary', true)
-      .maybeSingle() as unknown as Promise<{ data: LocationRow | null; error: PostgrestError | null }>,
-    supabase
-      .from('salon_amenities')
-      .select('amenities(id, name, icon)')
-      .eq('salon_id', salon['id']!) as unknown as Promise<{ data: AmenityRow[] | null; error: PostgrestError | null }>,
-    supabase
-      .from('salon_specialties')
-      .select('specialties(id, name, category)')
-      .eq('salon_id', salon['id']!) as unknown as Promise<{ data: SpecialtyRow[] | null; error: PostgrestError | null }>,
+      .maybeSingle<SalonLocation>(),
     supabase
       .from('services_view')
-      .select('*', { count: 'exact', head: true })
-      .eq('salon_id', salon['id']!)
-      .eq('is_active', true)
+      .select('id', { count: 'exact', head: true })
+      .eq('salon_id', salonId)
+      .eq('is_active', true),
   ])
 
-  // Combine all data into expected format
+  const { data: description, error: descriptionError } = descriptionResponse
+  if (descriptionError) throw descriptionError
+  const { data: contact, error: contactError } = contactResponse
+  if (contactError) throw contactError
+  const { data: settings, error: settingsError } = settingsResponse
+  if (settingsError) throw settingsError
+  const { data: location, error: locationError } = locationResponse
+  if (locationError) throw locationError
+  const { count: servicesCount, error: servicesError } = servicesResponse
+  if (servicesError) throw servicesError
+
   return {
     ...salon,
-    rating: (salon as Salon & { rating_average?: number | null }).rating_average ?? null,
-    review_count: (salon as Salon & { rating_count?: number | null }).rating_count ?? null,
+    rating: salon.rating_average ?? null,
+    review_count: salon.rating_count ?? null,
     staff_count: (salon as Salon & { employee_count?: number | null }).employee_count ?? null,
     services_count: servicesCount ?? 0,
     booking_lead_time_hours:
-      settings?.booking_lead_time_hours ??
-      (salon as Salon & { booking_lead_time_hours?: number | null }).booking_lead_time_hours ??
+      settings?.booking_lead_time_hours ?? (salon as Salon & { booking_lead_time_hours?: number | null }).booking_lead_time_hours ??
       null,
     short_description: description?.short_description ?? null,
     description: description?.full_description ?? null,
@@ -111,8 +116,8 @@ export async function getSalonBySlug(slug: string) {
     twitter_url: contact?.twitter_url ?? null,
     tiktok_url: contact?.tiktok_url ?? null,
     full_address: location?.formatted_address ?? null,
-    amenities: amenitiesData?.map(a => a['amenities']).filter(Boolean) ?? [],
-    specialties: specialtiesData?.map(s => s.specialties).filter(Boolean) ?? []
+    amenities: [],
+    specialties: [],
   }
 }
 

@@ -35,51 +35,51 @@ export function CustomerInsightsDashboard({
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Lifetime Value</CardTitle>
-            <DollarSign className="h-8 w-8 text-primary" />
+        <CardHeader className="flex flex-row items-start justify-between">
+          <div className="space-y-1">
+            <CardDescription>Lifetime value</CardDescription>
+            <CardTitle>${metrics.lifetime_value.toFixed(2)}</CardTitle>
           </div>
+          <DollarSign className="h-8 w-8 text-primary" />
+        </CardHeader>
+        <CardContent className="pt-0">
           <CardDescription>{metrics.total_visits} visits recorded</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-bold">${metrics.lifetime_value.toFixed(2)}</p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Avg Ticket</CardTitle>
-            <TrendingUp className="h-8 w-8 text-secondary" />
+        <CardHeader className="flex flex-row items-start justify-between">
+          <div className="space-y-1">
+            <CardDescription>Average ticket</CardDescription>
+            <CardTitle>${metrics.avg_ticket.toFixed(2)}</CardTitle>
           </div>
+          <TrendingUp className="h-8 w-8 text-secondary" />
+        </CardHeader>
+        <CardContent className="pt-0">
           <CardDescription>${metrics.total_spent.toFixed(2)} spent to date</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-bold">${metrics.avg_ticket.toFixed(2)}</p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Visit Frequency</CardTitle>
-            <Calendar className="h-8 w-8 text-primary" />
+        <CardHeader className="flex flex-row items-start justify-between">
+          <div className="space-y-1">
+            <CardDescription>Visit frequency</CardDescription>
+            <CardTitle>{visitStats.avg_days_between_visits}d</CardTitle>
           </div>
+          <Calendar className="h-8 w-8 text-primary" />
+        </CardHeader>
+        <CardContent className="pt-0">
           <CardDescription>{visitStats.visit_frequency}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-bold">{visitStats.avg_days_between_visits}d</p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
+        <CardHeader className="flex flex-row items-start justify-between">
+          <div className="space-y-1">
             <CardTitle>Reliability</CardTitle>
-            <Star className="h-8 w-8 text-accent" />
+            <CardDescription>Cancellation and no-show trends</CardDescription>
           </div>
-          <CardDescription>Cancellation and no-show trends</CardDescription>
+          <Star className="h-8 w-8 text-accent" />
         </CardHeader>
         <CardContent className="flex gap-2 pt-0">
           <Badge variant={metrics.cancellation_rate < 10 ? 'default' : 'destructive'}>
@@ -101,20 +101,20 @@ export function CustomerInsightsDashboard({
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">First visit</p>
-            <p className="text-lg font-semibold">
+          <div className="space-y-1">
+            <CardDescription>First visit</CardDescription>
+            <CardTitle>
               {metrics.first_visit_date
                 ? formatDistanceToNow(new Date(metrics.first_visit_date), { addSuffix: true })
                 : 'Unavailable'}
-            </p>
+            </CardTitle>
           </div>
           {favoriteStaff ? (
             <div className="flex items-center gap-2 border-l pl-4">
               <Users className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="text-sm text-muted-foreground">Favorite Staff</p>
-                <p className="font-semibold">{favoriteStaff.name}</p>
+              <div className="space-y-1">
+                <CardDescription>Favorite staff</CardDescription>
+                <CardTitle>{favoriteStaff.name}</CardTitle>
               </div>
             </div>
           ) : null}

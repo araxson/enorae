@@ -15,10 +15,10 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import type { AppointmentWithDetails } from '@/features/business/appointments'
+import type { DashboardAppointment } from '@/features/customer/dashboard/api/queries/appointments'
 
 type AppointmentHistoryProps = {
-  appointments: AppointmentWithDetails[]
+  appointments: DashboardAppointment[]
 }
 
 export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
@@ -58,10 +58,7 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
                   })
                 : 'Date not available'
 
-              const serviceLabel =
-                Array.isArray(appointment['service_names']) && appointment['service_names'].length > 0
-                  ? appointment['service_names'].join(', ')
-                  : appointment['service_name'] ?? 'Service'
+              const serviceLabel = appointment['service_names'] || 'Service'
               const salonLabel = appointment['salon_name']
                 ? `at ${appointment['salon_name']}`
                 : 'Salon not specified'

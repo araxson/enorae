@@ -44,16 +44,27 @@ export async function unblockIdentifier(formData: FormData) {
       return { error: 'Rate limit record not found' }
     }
 
-    // Reset the counter on schema table
-    const { error: updateError } = await supabase
-      .schema('public')
+    const nowIso = new Date().toISOString()
+
+    let updateBuilder = supabase
+      .schema('security')
       .from('rate_limit_tracking')
       .update({
-        current_count: 0,
-        last_reset_by: session.user.id,
-        last_reset_at: new Date().toISOString(),
+        blocked_until: null,
+        request_count: 0,
+        updated_at: nowIso,
       })
       .eq('identifier', validated.identifier)
+
+    const endpoint =
+      record && typeof record === 'object' && 'endpoint' in record && typeof record.endpoint === 'string'
+        ? record.endpoint
+        : null
+    if (endpoint) {
+      updateBuilder = updateBuilder.eq('endpoint', endpoint)
+    }
+
+    const { error: updateError } = await updateBuilder
 
     if (updateError) {
       console.error('Failed to unblock identifier:', updateError)
@@ -62,6 +73,9 @@ export async function unblockIdentifier(formData: FormData) {
 
     // Audit log
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'update',
+      target_schema: 'security',
+      target_table: 'rate_limit_tracking',
       event_type: 'rate_limit_unblock',
       event_category: 'security',
       severity: 'info',
@@ -69,7 +83,7 @@ export async function unblockIdentifier(formData: FormData) {
       metadata: {
         identifier: validated.identifier,
         reason: validated.reason,
-        endpoint: (record as any).endpoint,
+        endpoint,
       },
     })
 
@@ -126,35 +140,57 @@ export async function adjustRateLimit(formData: FormData) {
         break
     }
 
-    // Create temporary adjustment record
-    const { error: insertError } = await supabase
-      .schema('public')
-      .from('rate_limit_adjustments')
-      .insert({
-        rule_id: validated.ruleId,
-        adjusted_limit: validated.newLimit,
-        adjusted_by: session.user.id,
-        reason: validated.reason,
-        expires_at: expiresAt.toISOString(),
-      })
+    const metadata =
+      rule && typeof rule === 'object' && rule !== null && 'metadata' in rule && typeof rule.metadata === 'object'
+        ? (rule.metadata as Record<string, unknown>)
+        : {}
 
-    if (insertError) {
-      console.error('Failed to adjust rate limit:', insertError)
+    const updatedMetadata = {
+      ...metadata,
+      override: {
+        newLimit: validated.newLimit,
+        expiresAt: expiresAt.toISOString(),
+        reason: validated.reason,
+        adjustedBy: session.user.id,
+        duration: validated.duration,
+      },
+    }
+
+    const { error: updateError } = await supabase
+      .schema('security')
+      .from('rate_limit_rules')
+      .update({
+        max_requests: validated.newLimit,
+        updated_at: now.toISOString(),
+        updated_by_id: session.user.id,
+        metadata: updatedMetadata,
+      })
+      .eq('id', validated.ruleId)
+
+    if (updateError) {
+      console.error('Failed to adjust rate limit:', updateError)
       return { error: 'Failed to adjust rate limit' }
     }
 
     // Audit log
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'update',
+      target_schema: 'security',
+      target_table: 'rate_limit_rules',
       event_type: 'rate_limit_adjusted',
       event_category: 'security',
       severity: 'warning',
       user_id: session.user.id,
       metadata: {
         rule_id: validated.ruleId,
-        old_limit: (rule as any).limit_threshold,
+        old_limit:
+          typeof rule === 'object' && rule !== null && 'max_requests' in rule
+            ? Number((rule as Record<string, unknown>)['max_requests'] ?? 0)
+            : 0,
         new_limit: validated.newLimit,
         reason: validated.reason,
         duration: validated.duration,
+        expires_at: expiresAt.toISOString(),
       },
     })
 
@@ -180,13 +216,17 @@ export async function purgeStaleRecords(formData: FormData) {
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
-    const { error: deleteError } = await supabase
-      .schema('public')
+    let deleteBuilder = supabase
+      .schema('security')
       .from('rate_limit_tracking')
       .delete()
       .eq('identifier', validated.identifier)
-      .eq('endpoint', validated.endpoint)
-      .lt('last_attempt', thirtyDaysAgo.toISOString())
+
+    if (validated.endpoint) {
+      deleteBuilder = deleteBuilder.eq('endpoint', validated.endpoint)
+    }
+
+    const { error: deleteError } = await deleteBuilder.lt('last_request_at', thirtyDaysAgo.toISOString())
 
     if (deleteError) {
       console.error('Failed to purge stale records:', deleteError)
@@ -195,6 +235,9 @@ export async function purgeStaleRecords(formData: FormData) {
 
     // Audit log
     await supabase.schema('audit').from('audit_logs').insert({
+      action: 'delete',
+      target_schema: 'security',
+      target_table: 'rate_limit_tracking',
       event_type: 'rate_limit_purge',
       event_category: 'maintenance',
       severity: 'info',

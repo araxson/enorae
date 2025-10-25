@@ -13,17 +13,17 @@ export async function getCustomerMetrics() {
     { count: favoritesCount },
   ] = await Promise.all([
     supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('*', { count: 'exact', head: true })
       .eq('customer_id', session.user.id)
       .gte('start_time', now),
     supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('*', { count: 'exact', head: true })
       .eq('customer_id', session.user.id)
       .eq('status', 'completed'),
     supabase
-      .from('customer_favorites')
+      .from('customer_favorites_view')
       .select('*', { count: 'exact', head: true })
       .eq('customer_id', session.user.id),
   ])

@@ -19,7 +19,7 @@ export function AcquisitionPanel({ acquisition }: AcquisitionPanelProps) {
           <CardTitle>User Acquisition</CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4 text-sm">
+      <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs text-muted-foreground">New users in last 7 days</p>
