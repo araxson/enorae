@@ -34,20 +34,20 @@ function StarRating({ rating }: { rating: number | null }) {
 
 function ReviewCard({ review }: { review: SalonReview }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [helpfulCount, setHelpfulCount] = useState(review.helpful_count || 0)
+  const [helpfulCount, setHelpfulCount] = useState(review['helpful_count'] || 0)
   const reviewDate =
-    review.created_at &&
-    new Date(review.created_at).toLocaleDateString('en-US', {
+    review['created_at'] &&
+    new Date(review['created_at']).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     })
 
   const handleMarkHelpful = async () => {
-    if (!review.id) return
+    if (!review['id']) return
 
     setIsSubmitting(true)
-    const result = await markReviewAsHelpful(review.id)
+    const result = await markReviewAsHelpful(review['id'])
 
     if (result.success) {
       setHelpfulCount((prev) => prev + 1)
@@ -63,13 +63,13 @@ function ReviewCard({ review }: { review: SalonReview }) {
     <Card>
       <CardHeader className="gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2">
-          <StarRating rating={review.rating} />
-          {review.is_verified && <Badge variant="secondary">Verified</Badge>}
+          <StarRating rating={review['rating']} />
+          {review['is_verified'] && <Badge variant="secondary">Verified</Badge>}
         </div>
         {reviewDate && <CardDescription>{reviewDate}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground">{review.comment}</p>
+        <p className="text-sm text-muted-foreground">{review['comment']}</p>
       </CardContent>
       <CardFooter className="flex flex-wrap items-center justify-between gap-2">
         <Button variant="ghost" size="sm" onClick={handleMarkHelpful} disabled={isSubmitting}>
@@ -97,7 +97,7 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
   }
 
   const avgRating =
-    reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length
+    reviews.reduce((sum, r) => sum + (r['rating'] || 0), 0) / reviews.length
 
   return (
     <div className="space-y-6">
@@ -118,7 +118,7 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
 
       <div className="grid gap-6">
         {reviews.map((review) => (
-          <ReviewCard key={review.id} review={review} />
+          <ReviewCard key={review['id']} review={review} />
         ))}
       </div>
     </div>

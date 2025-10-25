@@ -32,14 +32,14 @@ export const buildStatusTotals = (rows: AppointmentRow[]): AppointmentStatusTota
 
   return rows.reduce((acc, row) => {
     acc.total += 1
-    const status = row.status ?? 'pending'
+    const status = row['status'] ?? 'pending'
 
     if (status === 'completed') acc.completed += 1
     else if (status === 'cancelled') acc.cancelled += 1
     else if (status === 'no_show') acc.noShow += 1
     else if (status === 'in_progress' || status === 'checked_in') acc.inProgress += 1
 
-    const startTime = row.start_time ? parseISO(row.start_time) : null
+    const startTime = row['start_time'] ? parseISO(row['start_time']) : null
     if (startTime && startTime > new Date() && !['cancelled', 'no_show'].includes(status)) {
       acc.upcoming += 1
     }
@@ -53,11 +53,11 @@ export const calculatePerformanceMetrics = (
   rows: AppointmentRow[],
 ): AppointmentSnapshot['performance'] => {
   const completedRevenue = rows
-    .filter((row) => row.status === 'completed' && typeof row.total_price === 'number')
-    .reduce((acc, row) => acc + (row.total_price || 0), 0)
+    .filter((row) => row['status'] === 'completed' && typeof row['total_price'] === 'number')
+    .reduce((acc, row) => acc + (row['total_price'] || 0), 0)
 
   const averageDuration = rows.length
-    ? rows.reduce((acc, row) => acc + (row.duration_minutes || 0), 0) / rows.length
+    ? rows.reduce((acc, row) => acc + (row['duration_minutes'] || 0), 0) / rows.length
     : 0
 
   const completionRate = totals.total ? totals.completed / totals.total : 0
@@ -78,13 +78,13 @@ export const calculatePerformanceMetrics = (
 export const buildCancellationPatterns = (
   rows: AppointmentRow[],
 ): CancellationPattern[] => {
-  const cancelled = rows.filter((row) => row.status === 'cancelled' && row.start_time)
+  const cancelled = rows.filter((row) => row['status'] === 'cancelled' && row['start_time'])
   if (!cancelled.length) return []
 
   const patternMap = new Map<string, { count: number; description: string }>()
 
   cancelled.forEach((row) => {
-    const start = parseISO(row.start_time as string)
+    const start = parseISO(row['start_time'] as string)
     const label = `${getDayLabel(start)} · ${getTimeBucket(start)}`
     const description = `Cancellations during ${getTimeBucket(start).toLowerCase()} on ${getDayLabel(start)}`
     const existing = patternMap.get(label)
@@ -106,19 +106,19 @@ export const buildCancellationPatterns = (
     .sort((a, b) => b.count - a.count)
 }
 
-export const buildTrend = (
-  analyticsRows: Array<{
-    date: string | null
-    platform_appointments: number | null
-    platform_cancelled_appointments: number | null
-    platform_no_shows: number | null
-    platform_completed_appointments: number | null
-  }>,
+export const buildTrend = <T extends {
+  date: string | null
+  platform_appointments: number | null
+  platform_cancelled_appointments: number | null
+  platform_no_shows: number | null
+  platform_completed_appointments: number | null
+}>(
+  analyticsRows: T[],
 ): AppointmentTrendPoint[] =>
   analyticsRows
-    .filter((row) => row.date)
+    .filter((row) => row['date'])
     .map((row) => ({
-      date: row.date as string,
+      date: row['date'] as string,
       total: row.platform_appointments ?? 0,
       cancelled: row.platform_cancelled_appointments ?? 0,
       noShow: row.platform_no_shows ?? 0,

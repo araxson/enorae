@@ -6,7 +6,7 @@ import { ReactivationOpportunities } from './components/reactivation-opportuniti
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { getCustomerInsights, getCustomerSegmentation, getCustomerCohorts } from '@/features/business/analytics/api/queries'
 import { getAtRiskCustomers, getReactivationOpportunities } from '@/features/business/insights/api/churn-prediction'
-import { CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function CustomerAnalytics() {
   const salon = await getUserSalon()
@@ -31,12 +31,14 @@ export async function CustomerAnalytics() {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
-        <div>
-          <CardTitle>Customer Intelligence</CardTitle>
-          <CardDescription>
-            Deep dive into lifetime value, retention, and churn risk to focus on the right customers.
-          </CardDescription>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Customer intelligence</CardTitle>
+            <CardDescription>
+              Deep dive into lifetime value, retention, and churn risk to focus on the right customers.
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
         <CustomerInsightsCard
           data={{
@@ -60,10 +62,14 @@ export async function CustomerAnalytics() {
           />
         </div>
 
-        <div>
-          <CardTitle>Cohort Retention</CardTitle>
-          <CohortsTable cohorts={cohorts} start={start} end={end} />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Cohort retention</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CohortsTable cohorts={cohorts} start={start} end={end} />
+          </CardContent>
+        </Card>
       </div>
     </section>
   )

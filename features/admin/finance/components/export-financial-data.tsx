@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Download, Loader2, CheckCircle2, XCircle } from 'lucide-react'
 import { exportFinancialDataToCSV } from '@/features/admin/finance/api/mutations'
 
@@ -62,6 +62,7 @@ export function ExportFinancialData() {
               ) : (
                 <XCircle className="h-4 w-4" />
               )}
+              <AlertTitle>{message.type === 'success' ? 'Export ready' : 'Export failed'}</AlertTitle>
               <AlertDescription>{message.text}</AlertDescription>
             </Alert>
           )}

@@ -44,20 +44,20 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
   return (
     <div className="flex flex-col gap-4">
       {threads.map((thread) => {
-        if (!thread.id) {
+        if (!thread['id']) {
           return null
         }
 
         return (
-          <Link key={thread.id} href={`/staff/messages/${thread.id}`} className="block">
+          <Link key={thread['id']} href={`/staff/messages/${thread['id']}`} className="block">
             <Card>
               <CardHeader>
                 <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                   <div className="space-y-1">
-                    <CardTitle>{thread.subject}</CardTitle>
-                    {thread.last_message_at ? (
+                    <CardTitle>{thread['subject']}</CardTitle>
+                    {thread['last_message_at'] ? (
                       <CardDescription>
-                        Last message: {format(new Date(thread.last_message_at), 'PPp')}
+                        Last message: {format(new Date(thread['last_message_at']), 'PPp')}
                       </CardDescription>
                     ) : null}
                   </div>
@@ -65,7 +65,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={(event) => handleArchive(thread.id!, event)}
+                    onClick={(event) => handleArchive(thread['id']!, event)}
                   >
                     <Archive className="h-4 w-4" />
                   </Button>
@@ -74,20 +74,20 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
-                    {thread.unread_count_staff && thread.unread_count_staff > 0 ? (
-                      <Badge variant="default">{thread.unread_count_staff} unread</Badge>
+                    {thread['unread_count_staff'] && thread['unread_count_staff'] > 0 ? (
+                      <Badge variant="default">{thread['unread_count_staff']} unread</Badge>
                     ) : null}
                     <Badge variant="outline">
-                      {thread.status ? formatLabel(thread.status) : 'Unknown'}
+                      {thread['status'] ? formatLabel(thread['status']) : 'Unknown'}
                     </Badge>
-                    {thread.priority && thread.priority !== 'normal' ? (
-                      <Badge variant="destructive">{formatLabel(thread.priority)}</Badge>
+                    {thread['priority'] && thread['priority'] !== 'normal' ? (
+                      <Badge variant="destructive">{formatLabel(thread['priority'])}</Badge>
                     ) : null}
                   </div>
 
-                  {thread.customer_name ? (
+                  {thread['customer_name'] ? (
                     <p className="text-sm text-muted-foreground">
-                      Customer: {thread.customer_name}
+                      Customer: {thread['customer_name']}
                     </p>
                   ) : null}
                 </div>

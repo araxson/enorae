@@ -39,37 +39,37 @@ export async function updateService(
   if (Object.keys(serviceData).length > 0) {
     const serviceUpdates: Record<string, unknown> = {}
 
-    if (serviceData.name !== undefined) {
-      serviceUpdates.name = serviceData.name
-      if (serviceData.name?.trim()) {
-        serviceUpdates.slug = await generateUniqueServiceSlug(
+    if (serviceData['name'] !== undefined) {
+      serviceUpdates['name'] = serviceData['name']
+      if (serviceData['name']?.trim()) {
+        serviceUpdates['slug'] = await generateUniqueServiceSlug(
           supabase,
           salonId,
-          serviceData.name,
+          serviceData['name'],
           serviceId,
         )
       }
     }
 
-    if (serviceData.description !== undefined) {
-      serviceUpdates.description = serviceData.description ?? null
+    if (serviceData['description'] !== undefined) {
+      serviceUpdates['description'] = serviceData['description'] ?? null
     }
-    if (serviceData.category_id !== undefined) {
-      serviceUpdates.category_id = serviceData.category_id ?? null
+    if (serviceData['category_id'] !== undefined) {
+      serviceUpdates['category_id'] = serviceData['category_id'] ?? null
     }
-    if (serviceData.is_active !== undefined) {
-      serviceUpdates.is_active = serviceData.is_active
+    if (serviceData['is_active'] !== undefined) {
+      serviceUpdates['is_active'] = serviceData['is_active']
     }
-    if (serviceData.is_bookable !== undefined) {
-      serviceUpdates.is_bookable = serviceData.is_bookable
+    if (serviceData['is_bookable'] !== undefined) {
+      serviceUpdates['is_bookable'] = serviceData['is_bookable']
     }
-    if (serviceData.is_featured !== undefined) {
-      serviceUpdates.is_featured = serviceData.is_featured
+    if (serviceData['is_featured'] !== undefined) {
+      serviceUpdates['is_featured'] = serviceData['is_featured']
     }
 
     if (Object.keys(serviceUpdates).length > 0) {
-      serviceUpdates.updated_by_id = session.user.id
-      serviceUpdates.updated_at = timestamp
+      serviceUpdates['updated_by_id'] = session.user['id']
+      serviceUpdates['updated_at'] = timestamp
 
       const { error: serviceError } = await supabase
         .schema('catalog')
@@ -95,29 +95,29 @@ export async function updateService(
     }
 
     const pricingUpdates: Record<string, unknown> = {}
-    if (pricingData.base_price !== undefined) {
-      pricingUpdates.base_price = pricingData.base_price
+    if (pricingData['base_price'] !== undefined) {
+      pricingUpdates['base_price'] = pricingData['base_price']
     }
-    if (pricingData.currency_code !== undefined) {
-      pricingUpdates.currency_code = pricingData.currency_code
+    if (pricingData['currency_code'] !== undefined) {
+      pricingUpdates['currency_code'] = pricingData['currency_code']
     }
-    if (pricingData.is_taxable !== undefined) {
-      pricingUpdates.is_taxable = pricingData.is_taxable
+    if (pricingData['is_taxable'] !== undefined) {
+      pricingUpdates['is_taxable'] = pricingData['is_taxable']
     }
-    if (pricingData.tax_rate !== undefined) {
-      pricingUpdates.tax_rate = pricingData.tax_rate ?? null
+    if (pricingData['tax_rate'] !== undefined) {
+      pricingUpdates['tax_rate'] = pricingData['tax_rate'] ?? null
     }
-    if (pricingData.commission_rate !== undefined) {
-      pricingUpdates.commission_rate = pricingData.commission_rate ?? null
+    if (pricingData['commission_rate'] !== undefined) {
+      pricingUpdates['commission_rate'] = pricingData['commission_rate'] ?? null
     }
 
-    const basePrice = pricingData.base_price ?? existingPricing.base_price
-    const salePriceInput = pricingData.sale_price !== undefined
-      ? pricingData.sale_price
-      : existingPricing.sale_price
-    const costInput = pricingData.cost !== undefined
-      ? pricingData.cost
-      : existingPricing.cost
+    const basePrice = pricingData['base_price'] ?? existingPricing['base_price']
+    const salePriceInput = pricingData['sale_price'] !== undefined
+      ? pricingData['sale_price']
+      : existingPricing['sale_price']
+    const costInput = pricingData['cost'] !== undefined
+      ? pricingData['cost']
+      : existingPricing['cost']
 
     const { currentPrice, salePrice, profitMargin } = derivePricingMetrics(
       basePrice,
@@ -125,17 +125,17 @@ export async function updateService(
       costInput,
     )
 
-    if (pricingData.sale_price !== undefined) {
-      pricingUpdates.sale_price = salePrice
+    if (pricingData['sale_price'] !== undefined) {
+      pricingUpdates['sale_price'] = salePrice
     }
-    if (pricingData.cost !== undefined) {
-      pricingUpdates.cost = costInput ?? null
+    if (pricingData['cost'] !== undefined) {
+      pricingUpdates['cost'] = costInput ?? null
     }
-    pricingUpdates.current_price = currentPrice
-    pricingUpdates.profit_margin = profitMargin
+    pricingUpdates['current_price'] = currentPrice
+    pricingUpdates['profit_margin'] = profitMargin
 
-    pricingUpdates.updated_by_id = session.user.id
-    pricingUpdates.updated_at = timestamp
+    pricingUpdates['updated_by_id'] = session.user['id']
+    pricingUpdates['updated_at'] = timestamp
 
     const { error: pricingError } = await supabase
       .schema('catalog')
@@ -167,31 +167,31 @@ export async function updateService(
 
     const rulesUpdates: Record<string, unknown> = {}
     const derivedDurations = deriveBookingDurations(
-      bookingRules.duration_minutes !== undefined
-        ? bookingRules.duration_minutes
-        : existingRules.duration_minutes ?? 0,
-      bookingRules.buffer_minutes !== undefined
-        ? bookingRules.buffer_minutes
-        : existingRules.buffer_minutes ?? 0,
+      bookingRules['duration_minutes'] !== undefined
+        ? bookingRules['duration_minutes']
+        : existingRules['duration_minutes'] ?? 0,
+      bookingRules['buffer_minutes'] !== undefined
+        ? bookingRules['buffer_minutes']
+        : existingRules['buffer_minutes'] ?? 0,
     )
 
-    if (bookingRules.duration_minutes !== undefined) {
-      rulesUpdates.duration_minutes = derivedDurations.durationMinutes
+    if (bookingRules['duration_minutes'] !== undefined) {
+      rulesUpdates['duration_minutes'] = derivedDurations.durationMinutes
     }
-    if (bookingRules.buffer_minutes !== undefined) {
-      rulesUpdates.buffer_minutes = derivedDurations.bufferMinutes
+    if (bookingRules['buffer_minutes'] !== undefined) {
+      rulesUpdates['buffer_minutes'] = derivedDurations.bufferMinutes
     }
-    if (bookingRules.min_advance_booking_hours !== undefined) {
-      rulesUpdates.min_advance_booking_hours = bookingRules.min_advance_booking_hours ?? null
+    if (bookingRules['min_advance_booking_hours'] !== undefined) {
+      rulesUpdates['min_advance_booking_hours'] = bookingRules['min_advance_booking_hours'] ?? null
     }
-    if (bookingRules.max_advance_booking_days !== undefined) {
-      rulesUpdates.max_advance_booking_days = bookingRules.max_advance_booking_days ?? null
+    if (bookingRules['max_advance_booking_days'] !== undefined) {
+      rulesUpdates['max_advance_booking_days'] = bookingRules['max_advance_booking_days'] ?? null
     }
 
     if (Object.keys(rulesUpdates).length > 0) {
-      rulesUpdates.total_duration_minutes = derivedDurations.totalDurationMinutes
-      rulesUpdates.updated_by_id = session.user.id
-      rulesUpdates.updated_at = timestamp
+      rulesUpdates['total_duration_minutes'] = derivedDurations.totalDurationMinutes
+      rulesUpdates['updated_by_id'] = session.user['id']
+      rulesUpdates['updated_at'] = timestamp
 
       const { error: rulesError } = await supabase
         .schema('catalog')

@@ -12,9 +12,9 @@ interface RolePermissionMatrixProps {
 export function RolePermissionMatrix({ roles }: RolePermissionMatrixProps) {
   const matrix = useMemo(() => {
     return roles.reduce<Record<string, Set<string>>>((acc, role) => {
-      const key = role.role || 'unknown'
+      const key = role['role'] || 'unknown'
       if (!acc[key]) acc[key] = new Set()
-      role.permissions?.forEach((permission) => acc[key].add(permission))
+      role['permissions']?.forEach((permission) => acc[key].add(permission))
       return acc
     }, {})
   }, [roles])

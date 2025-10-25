@@ -34,25 +34,25 @@ export async function updateChainSettings(formData: FormData) {
       .from('salon_chains_view')
       .select('id')
       .eq('id', chainId)
-      .eq('owner_id', user.id)
+      .eq('owner_id', user['id'])
       .single()
 
     if (!chain) return { error: 'Chain not found or access denied' }
 
     const updates: Record<string, unknown> = {
-      updated_by_id: user.id,
+      updated_by_id: user['id'],
     }
 
     if (bookingLeadTimeHours !== undefined) {
-      updates.booking_lead_time_hours = bookingLeadTimeHours
+      updates['booking_lead_time_hours'] = bookingLeadTimeHours
     }
 
     if (cancellationHours !== undefined) {
-      updates.cancellation_hours = cancellationHours
+      updates['cancellation_hours'] = cancellationHours
     }
 
     if (isAcceptingBookings !== undefined) {
-      updates.is_accepting_bookings = isAcceptingBookings
+      updates['is_accepting_bookings'] = isAcceptingBookings
     }
 
     const { data: salons } = await supabase
@@ -68,7 +68,7 @@ export async function updateChainSettings(formData: FormData) {
       return { error: 'No salons found in chain' }
     }
 
-    const salonIds = salonList.map((s) => s.id)
+    const salonIds = salonList.map((s) => s['id'])
 
     const { error: updateError } = await supabase
       .schema('organization')
@@ -102,7 +102,7 @@ export async function assignSalonToChain(formData: FormData) {
       .from('salons')
       .select('id, owner_id')
       .eq('id', salonId)
-      .eq('owner_id', user.id)
+      .eq('owner_id', user['id'])
       .single()
 
     if (!salon) return { error: 'Salon not found or access denied' }
@@ -112,7 +112,7 @@ export async function assignSalonToChain(formData: FormData) {
         .from('salon_chains_view')
         .select('id')
         .eq('id', chainId)
-        .eq('owner_id', user.id)
+        .eq('owner_id', user['id'])
         .single()
 
       if (!chain) return { error: 'Chain not found or access denied' }
@@ -123,7 +123,7 @@ export async function assignSalonToChain(formData: FormData) {
       .from('salons')
       .update({
         chain_id: chainId || null,
-        updated_by_id: user.id,
+        updated_by_id: user['id'],
       })
       .eq('id', salonId)
 

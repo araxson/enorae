@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { SessionCardProps } from '@/features/shared/sessions/types'
@@ -28,53 +28,48 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
     return `Active ${Math.floor(diffMinutes / 1440)} days ago`
   }
 
+  const sessionLabel = session['id']?.substring(0, 8) || 'Unknown'
+
   return (
     <Card>
-      <CardContent className="space-y-4">
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-4 items-start justify-between">
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-3 items-center">
-                <p className="leading-7 font-medium">Session {session.id?.substring(0, 8) || 'Unknown'}</p>
-                {session.is_current && (
-                  <Badge variant="default">Current Session</Badge>
-                )}
-                {session.is_suspicious && (
-                  <Badge variant="destructive">Suspicious</Badge>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground">{getActivityStatus(session.updated_at)}</p>
+      <CardHeader className="space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <CardTitle>Session {sessionLabel}</CardTitle>
+              {session.is_current && <Badge variant="default">Current session</Badge>}
+              {session['is_suspicious'] && <Badge variant="destructive">Suspicious</Badge>}
             </div>
-
-            {!session.is_current && session.id && (
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => onRevoke(session.id!)}
-                disabled={isRevoking}
-              >
-                {isRevoking ? 'Revoking...' : 'Revoke'}
-              </Button>
-            )}
+            <CardDescription>{getActivityStatus(session['updated_at'])}</CardDescription>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-3">
-              <p className="text-sm font-medium w-24 text-muted-foreground">Created:</p>
-              <p className="text-sm font-medium">{formatDate(session.created_at)}</p>
-            </div>
-
-            <div className="flex gap-3">
-              <p className="text-sm font-medium w-24 text-muted-foreground">Last Updated:</p>
-              <p className="text-sm font-medium">{formatDate(session.updated_at)}</p>
-            </div>
-
-            <div className="flex gap-3">
-              <p className="text-sm font-medium w-24 text-muted-foreground">Status:</p>
-              <p className="text-sm font-medium">{session.is_active ? 'Active' : 'Inactive'}</p>
-            </div>
-          </div>
+          {!session.is_current && session['id'] && (
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => onRevoke(session['id']!)}
+              disabled={isRevoking}
+            >
+              {isRevoking ? 'Revoking...' : 'Revoke'}
+            </Button>
+          )}
         </div>
+      </CardHeader>
+      <CardContent>
+        <dl className="grid gap-2">
+          <div className="flex flex-wrap gap-3">
+            <dt className="text-muted-foreground">Created</dt>
+            <dd>{formatDate(session['created_at'])}</dd>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <dt className="text-muted-foreground">Last updated</dt>
+            <dd>{formatDate(session['updated_at'])}</dd>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <dt className="text-muted-foreground">Status</dt>
+            <dd>{session['is_active'] ? 'Active' : 'Inactive'}</dd>
+          </div>
+        </dl>
       </CardContent>
     </Card>
   )

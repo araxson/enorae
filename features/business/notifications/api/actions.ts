@@ -44,7 +44,7 @@ const updatePreferencesSchema = z.object({
 // ============================================================================
 
 function getTemplateId(template: TemplateInput) {
-  return template.id ?? globalThis.crypto.randomUUID()
+  return template['id'] ?? globalThis.crypto.randomUUID()
 }
 
 function normalizeTemplates(
@@ -53,7 +53,7 @@ function normalizeTemplates(
 ) {
   const collection = Array.isArray(existing) ? [...existing] : []
   const withoutCurrent = collection.filter(
-    (template) => template.id !== updated.id,
+    (template) => template['id'] !== updated['id'],
   )
   withoutCurrent.push(updated)
   return withoutCurrent
@@ -127,7 +127,7 @@ export async function markNotificationsRead(notificationIds?: string[]) {
   const { data: markedCount, error } = await supabase
     .schema('communication')
     .rpc('mark_notifications_read', {
-      p_user_id: user.id,
+      p_user_id: user['id'],
       p_notification_ids: validation.data,
     })
 
@@ -198,7 +198,7 @@ export async function upsertNotificationTemplate(template: TemplateInput) {
   if (!user) throw new Error('Unauthorized')
 
   const currentTemplates =
-    (user.user_metadata?.notification_templates as
+    (user.user_metadata?.['notification_templates'] as
       | NotificationTemplate[]
       | undefined) ?? []
 
@@ -206,14 +206,14 @@ export async function upsertNotificationTemplate(template: TemplateInput) {
   const templateId = getTemplateId(validation.data)
 
   const existing = currentTemplates.find(
-    (entry) => entry.id === validation.data.id,
+    (entry) => entry['id'] === validation.data['id'],
   )
 
   const updatedTemplate: NotificationTemplate = {
     ...validation.data,
     id: templateId,
     updated_at: timestamp,
-    created_at: existing?.created_at ?? timestamp,
+    created_at: existing?.['created_at'] ?? timestamp,
   }
 
   const nextTemplates = normalizeTemplates(currentTemplates, updatedTemplate)
@@ -242,12 +242,12 @@ export async function deleteNotificationTemplate(templateId: string) {
   if (!user) throw new Error('Unauthorized')
 
   const currentTemplates =
-    (user.user_metadata?.notification_templates as
+    (user.user_metadata?.['notification_templates'] as
       | NotificationTemplate[]
       | undefined) ?? []
 
   const nextTemplates = currentTemplates.filter(
-    (template) => template.id !== templateId,
+    (template) => template['id'] !== templateId,
   )
 
   const { error } = await supabase.auth.updateUser({

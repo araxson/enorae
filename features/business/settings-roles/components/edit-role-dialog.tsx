@@ -42,15 +42,15 @@ export function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps
   const { toast } = useToast()
 
   useEffect(() => {
-    if (role?.role) {
-      setSelectedRole(role.role)
+    if (role?.['role']) {
+      setSelectedRole(role['role'])
     }
   }, [role])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!role?.id || !selectedRole) {
+    if (!role?.['id'] || !selectedRole) {
       toast({
         title: 'Error',
         description: 'Invalid role data',
@@ -63,7 +63,7 @@ export function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps
     formData.append('role', selectedRole)
 
     startTransition(async () => {
-      const result = await updateUserRole(role.id!, formData)
+      const result = await updateUserRole(role['id']!, formData)
 
       if (result.error) {
         toast({
@@ -89,7 +89,7 @@ export function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps
         <DialogHeader>
           <DialogTitle>Edit Role</DialogTitle>
           <DialogDescription>
-            Update role for {role.user?.full_name || 'user'}
+            Update role for {role.user?.['full_name'] || 'user'}
           </DialogDescription>
         </DialogHeader>
 
@@ -98,7 +98,7 @@ export function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps
             <div className="space-y-2">
               <Label>User</Label>
               <div className="text-sm text-muted-foreground">
-                {role.user?.full_name} ({role.user?.email})
+                {role.user?.['full_name']} ({role.user?.['email']})
               </div>
             </div>
 

@@ -17,15 +17,15 @@ const parseNotificationPreferences = (value: ProfilePreference['preferences']): 
     return {}
   }
   const source = value as Record<string, unknown>
-  const notifications = typeof source.notifications === 'object' && source.notifications !== null
-    ? (source.notifications as Record<string, unknown>)
+  const notifications = typeof source['notifications'] === 'object' && source['notifications'] !== null
+    ? (source['notifications'] as Record<string, unknown>)
     : {}
 
   return {
-    email_appointments: typeof notifications.email_appointments === 'boolean' ? notifications.email_appointments : undefined,
-    email_promotions: typeof notifications.email_promotions === 'boolean' ? notifications.email_promotions : undefined,
-    sms_reminders: typeof notifications.sms_reminders === 'boolean' ? notifications.sms_reminders : undefined,
-    push_enabled: typeof notifications.push_enabled === 'boolean' ? notifications.push_enabled : undefined,
+    email_appointments: typeof notifications['email_appointments'] === 'boolean' ? notifications['email_appointments'] : undefined,
+    email_promotions: typeof notifications['email_promotions'] === 'boolean' ? notifications['email_promotions'] : undefined,
+    sms_reminders: typeof notifications['sms_reminders'] === 'boolean' ? notifications['sms_reminders'] : undefined,
+    push_enabled: typeof notifications['push_enabled'] === 'boolean' ? notifications['push_enabled'] : undefined,
   }
 }
 
@@ -36,11 +36,11 @@ type UserPreferencesClientProps = {
 export function UserPreferencesClient({ initialPreferences }: UserPreferencesClientProps) {
   const firstPref = initialPreferences[0]
 
-  const notificationPrefs = parseNotificationPreferences(firstPref?.preferences)
+  const notificationPrefs = parseNotificationPreferences(firstPref?.['preferences'])
   const advancedPrefs = {
-    timezone: firstPref?.timezone,
-    locale: firstPref?.locale,
-    currency_code: firstPref?.currency_code,
+    timezone: firstPref?.['timezone'],
+    locale: firstPref?.['locale'],
+    currency_code: firstPref?.['currency_code'],
   }
 
   return (

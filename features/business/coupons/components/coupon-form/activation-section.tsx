@@ -1,6 +1,6 @@
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import type { CouponFormState } from '@/features/business/coupons/components/coupon-form/coupon-form.types'
+import type { CouponFormState } from '@/features/business/coupons/components/coupon-form.types'
 
 interface CouponActivationSectionProps {
   formData: CouponFormState

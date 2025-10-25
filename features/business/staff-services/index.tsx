@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   StaffServicesNotFoundError,
   getStaffServicesData,
@@ -30,6 +30,7 @@ export async function StaffServices({ params }: StaffServicesProps) {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert variant="destructive">
+          <AlertTitle>Staff services unavailable</AlertTitle>
           <AlertDescription>{message}</AlertDescription>
         </Alert>
       </section>

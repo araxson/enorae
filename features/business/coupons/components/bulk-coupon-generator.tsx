@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/coupons.mutations'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 import { useToast } from '@/lib/hooks/use-toast'
 
 type BulkCouponGeneratorProps = {
@@ -204,9 +204,9 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
               </div>
             </div>
 
-            <div className="flex items-center justify-between rounded-md border px-3 py-2">
+            <div className="flex items-center justify-between gap-4 px-3 py-2">
               <div>
-                <Label htmlFor="bulk-active" className="text-sm font-medium">
+                <Label htmlFor="bulk-active">
                   Set campaign active
                 </Label>
                 <p className="text-xs text-muted-foreground">

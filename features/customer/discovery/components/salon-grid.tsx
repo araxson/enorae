@@ -60,41 +60,41 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {currentSalons.map((salon) => {
           // Build proper location string from address data
-          const location = salon.formatted_address ||
-            (salon.city && salon.state_province ? `${salon.city}, ${salon.state_province}` : null) ||
+          const location = salon['formatted_address'] ||
+            (salon['city'] && salon['state_province'] ? `${salon['city']}, ${salon['state_province']}` : null) ||
             'Location not specified'
 
           // Use real ratings from database
-          const rating = salon.rating_average ? Number(salon.rating_average) : undefined
-          const reviewCount = salon.rating_count || 0
+          const rating = salon['rating_average'] ? Number(salon['rating_average']) : undefined
+          const reviewCount = salon['rating_count'] || 0
 
           // Use short description, fallback to full description
-          const description = salon.short_description || salon.full_description || undefined
+          const description = salon['short_description'] || salon['full_description'] || undefined
           const initialFavorited = Boolean(
             (salon as { is_favorited?: boolean }).is_favorited,
           )
 
           return (
             <SalonCard
-              key={salon.id || ''}
-              salonId={salon.id || undefined}
-              name={salon.name || 'Unnamed Salon'}
+              key={salon['id'] || ''}
+              salonId={salon['id'] || undefined}
+              name={salon['name'] || 'Unnamed Salon'}
               description={description}
               image={undefined}
               location={location}
               rating={rating}
               reviewCount={reviewCount}
-              isAcceptingBookings={salon.is_accepting_bookings ?? true}
+              isAcceptingBookings={salon['is_accepting_bookings'] ?? true}
               onBook={() => {
-                router.push(`/salons/${salon.slug}`)
+                router.push(`/salons/${salon['slug']}`)
               }}
               onViewDetails={() => {
-                router.push(`/salons/${salon.slug}`)
+                router.push(`/salons/${salon['slug']}`)
               }}
               favoriteAction={
-                salon.id ? (
+                salon['id'] ? (
                   <FavoriteButton
-                    salonId={salon.id}
+                    salonId={salon['id']}
                     initialFavorited={initialFavorited}
                     variant="icon"
                   />

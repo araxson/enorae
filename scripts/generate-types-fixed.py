@@ -159,9 +159,9 @@ export interface Database {{
   public: {{
     Tables: {{
       [key: string]: {{
-        Row: {{ [key: string]: any }}
-        Insert: {{ [key: string]: any }}
-        Update: {{ [key: string]: any }}
+        Row: {{ [key: string]: unknown }}
+        Insert: {{ [key: string]: unknown }}
+        Update: {{ [key: string]: unknown }}
       }}
     }}
     Views: {{
@@ -174,7 +174,7 @@ export interface Database {{
           phone: string | null
           created_at: string
           updated_at: string
-          [key: string]: any
+          [key: string]: unknown
         }}
       }}
       appointments: {{
@@ -187,7 +187,7 @@ export interface Database {{
           start_time: string
           end_time: string
           status: string
-          [key: string]: any
+          [key: string]: unknown
         }}
       }}
       services: {{
@@ -197,7 +197,7 @@ export interface Database {{
           name: string
           duration: number
           price: number
-          [key: string]: any
+          [key: string]: unknown
         }}
       }}
       staff: {{
@@ -206,24 +206,32 @@ export interface Database {{
           salon_id: string
           user_id: string
           role: string
-          [key: string]: any
+          [key: string]: unknown
         }}
       }}
       [key: string]: {{
-        Row: {{ [key: string]: any }}
+        Row: {{ [key: string]: unknown }}
       }}
     }}
     Functions: {{
       [key: string]: {{
-        Args: {{ [key: string]: any }}
-        Returns: any
+        Args: {{ [key: string]: unknown }}
+        Returns: unknown
       }}
     }}
     Enums: {{
       [key: string]: string
     }}
   }}
-  {' '.join([f'{schema}: {{ Tables: {{ [key: string]: any }}, Views: {{ [key: string]: any }} }}' for schema in CORE_SCHEMAS if schema != 'public'])}
+  {'  '.join([f'''
+  {schema}: {{
+    Tables: {{ [key: string]: unknown }}
+    Views: {{ [key: string]: unknown }}
+  }}''' for schema in CORE_SCHEMAS if schema != 'public'])}
+  audit: {{
+    Tables: {{ [key: string]: unknown }}
+    Views: {{ [key: string]: unknown }}
+  }}
 }}
 
 // Helper types

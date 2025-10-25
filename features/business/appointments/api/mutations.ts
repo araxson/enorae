@@ -1,10 +1,29 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
+import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import {
+  addServiceToAppointment as addServiceToAppointmentAction,
+  updateAppointmentService as updateAppointmentServiceAction,
+  removeServiceFromAppointment as removeServiceFromAppointmentAction,
+  updateServiceStatus as updateServiceStatusAction,
+  adjustServicePricing as adjustServicePricingAction,
+} from './internal/appointment-services'
+import {
+  batchUpdateAppointmentStatus as batchUpdateAppointmentStatusAction,
+  batchAssignStaff as batchAssignStaffAction,
+  batchReschedule as batchRescheduleAction,
+} from './internal/batch'
+import {
+  bulkCancelAppointments as bulkCancelAppointmentsAction,
+  bulkConfirmAppointments as bulkConfirmAppointmentsAction,
+  bulkCompleteAppointments as bulkCompleteAppointmentsAction,
+  bulkNoShowAppointments as bulkNoShowAppointmentsAction,
+} from './internal/bulk-operations'
 
 // NOTE: Using Table type for Update because View includes computed fields
 // Views are for SELECT, schema tables for mutations
@@ -80,23 +99,29 @@ export async function completeAppointment(appointmentId: string) {
   return updateAppointmentStatus(appointmentId, 'completed')
 }
 
-export {
-  addServiceToAppointment,
-  updateAppointmentService,
-  removeServiceFromAppointment,
-  updateServiceStatus,
-  adjustServicePricing,
-} from './internal/appointment-services'
+type ServerAction<T extends (...args: never[]) => Promise<unknown>> = (
+  ...args: Parameters<T>
+) => ReturnType<T>
 
-export {
-  batchUpdateAppointmentStatus,
-  batchAssignStaff,
-  batchReschedule,
-} from './internal/batch'
+function createServerActionProxy<T extends (...args: never[]) => Promise<unknown>>(
+  action: T
+): ServerAction<T> {
+  return (...args) => action(...args)
+}
 
-export {
-  bulkCancelAppointments,
-  bulkConfirmAppointments,
-  bulkCompleteAppointments,
-  bulkNoShowAppointments,
-} from './internal/bulk-operations'
+export const addServiceToAppointment = createServerActionProxy(addServiceToAppointmentAction)
+export const updateAppointmentService = createServerActionProxy(updateAppointmentServiceAction)
+export const removeServiceFromAppointment = createServerActionProxy(removeServiceFromAppointmentAction)
+export const updateServiceStatus = createServerActionProxy(updateServiceStatusAction)
+export const adjustServicePricing = createServerActionProxy(adjustServicePricingAction)
+
+export const batchUpdateAppointmentStatus = createServerActionProxy(
+  batchUpdateAppointmentStatusAction
+)
+export const batchAssignStaff = createServerActionProxy(batchAssignStaffAction)
+export const batchReschedule = createServerActionProxy(batchRescheduleAction)
+
+export const bulkCancelAppointments = createServerActionProxy(bulkCancelAppointmentsAction)
+export const bulkConfirmAppointments = createServerActionProxy(bulkConfirmAppointmentsAction)
+export const bulkCompleteAppointments = createServerActionProxy(bulkCompleteAppointmentsAction)
+export const bulkNoShowAppointments = createServerActionProxy(bulkNoShowAppointmentsAction)

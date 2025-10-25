@@ -57,36 +57,36 @@ export async function getSalonBySlug(slug: string) {
     supabase
       .from('salon_descriptions_view')
       .select('short_description, full_description')
-      .eq('salon_id', salon.id!)
+      .eq('salon_id', salon['id']!)
       .maybeSingle() as unknown as Promise<{ data: DescriptionRow | null; error: PostgrestError | null }>,
     supabase
       .from('salon_contact_details_view')
       .select('primary_phone, primary_email, website_url, instagram_url, facebook_url, twitter_url, tiktok_url')
-      .eq('salon_id', salon.id!)
+      .eq('salon_id', salon['id']!)
       .maybeSingle() as unknown as Promise<{ data: ContactRow | null; error: PostgrestError | null }>,
     supabase
       .from('salon_settings_view')
       .select('booking_lead_time_hours')
-      .eq('salon_id', salon.id!)
+      .eq('salon_id', salon['id']!)
       .maybeSingle() as unknown as Promise<{ data: SettingsRow | null; error: PostgrestError | null }>,
     supabase
       .from('salon_locations_view')
       .select('is_primary, formatted_address')
-      .eq('salon_id', salon.id!)
+      .eq('salon_id', salon['id']!)
       .eq('is_primary', true)
       .maybeSingle() as unknown as Promise<{ data: LocationRow | null; error: PostgrestError | null }>,
     supabase
       .from('salon_amenities')
       .select('amenities(id, name, icon)')
-      .eq('salon_id', salon.id!) as unknown as Promise<{ data: AmenityRow[] | null; error: PostgrestError | null }>,
+      .eq('salon_id', salon['id']!) as unknown as Promise<{ data: AmenityRow[] | null; error: PostgrestError | null }>,
     supabase
       .from('salon_specialties')
       .select('specialties(id, name, category)')
-      .eq('salon_id', salon.id!) as unknown as Promise<{ data: SpecialtyRow[] | null; error: PostgrestError | null }>,
+      .eq('salon_id', salon['id']!) as unknown as Promise<{ data: SpecialtyRow[] | null; error: PostgrestError | null }>,
     supabase
       .from('services_view')
       .select('*', { count: 'exact', head: true })
-      .eq('salon_id', salon.id!)
+      .eq('salon_id', salon['id']!)
       .eq('is_active', true)
   ])
 
@@ -111,7 +111,7 @@ export async function getSalonBySlug(slug: string) {
     twitter_url: contact?.twitter_url ?? null,
     tiktok_url: contact?.tiktok_url ?? null,
     full_address: location?.formatted_address ?? null,
-    amenities: amenitiesData?.map(a => a.amenities).filter(Boolean) ?? [],
+    amenities: amenitiesData?.map(a => a['amenities']).filter(Boolean) ?? [],
     specialties: specialtiesData?.map(s => s.specialties).filter(Boolean) ?? []
   }
 }
@@ -199,7 +199,7 @@ export async function checkIsFavorited(salonId: string): Promise<boolean> {
     .from('customer_favorites_view')
     .select('id')
     .eq('salon_id', salonId)
-    .eq('customer_id', session.user.id)
+    .eq('customer_id', session.user['id'])
     .maybeSingle()
 
   if (error) throw error

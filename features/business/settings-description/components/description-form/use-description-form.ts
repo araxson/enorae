@@ -49,16 +49,16 @@ export function useDescriptionForm({ salonId, description }: UseDescriptionFormP
   const [success, setSuccess] = useState(false)
 
   const [arrays, setArrays] = useState<ArrayFieldState>({
-    keywords: description?.meta_keywords ?? [],
+    keywords: description?.['meta_keywords'] ?? [],
   })
 
   const descriptionFields: DescriptionFieldState = {
-    short_description: description?.short_description ?? null,
-    full_description: description?.full_description ?? null,
-    welcome_message: description?.welcome_message ?? null,
-    cancellation_policy: description?.cancellation_policy ?? null,
-    meta_title: description?.meta_title ?? null,
-    meta_description: description?.meta_description ?? null,
+    short_description: description?.['short_description'] ?? null,
+    full_description: description?.['full_description'] ?? null,
+    welcome_message: description?.['welcome_message'] ?? null,
+    cancellation_policy: description?.['cancellation_policy'] ?? null,
+    meta_title: description?.['meta_title'] ?? null,
+    meta_description: description?.['meta_description'] ?? null,
   }
 
   const setArrayField = (field: keyof ArrayFieldState, values: string[]) => {

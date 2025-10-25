@@ -39,42 +39,42 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
         if (!salon) return null
 
         return (
-          <Card key={favorite.id}>
+          <Card key={favorite['id']}>
             <div className="aspect-video w-full bg-muted" />
             <CardHeader className="space-y-1">
-              <CardTitle>{salon.name || 'Unnamed salon'}</CardTitle>
-              {salon.formatted_address ? (
+              <CardTitle>{salon['name'] || 'Unnamed salon'}</CardTitle>
+              {salon['formatted_address'] ? (
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-4 w-4" aria-hidden="true" />
-                  <CardDescription>{salon.formatted_address}</CardDescription>
+                  <CardDescription>{salon['formatted_address']}</CardDescription>
                 </div>
               ) : null}
             </CardHeader>
             <CardContent className="space-y-4">
-              {favorite.notes ? (
+              {favorite['notes'] ? (
                 <Alert>
                   <StickyNote className="h-4 w-4" aria-hidden="true" />
                   <AlertTitle>My notes</AlertTitle>
-                  <AlertDescription>{favorite.notes}</AlertDescription>
+                  <AlertDescription>{favorite['notes']}</AlertDescription>
                 </Alert>
               ) : null}
 
               <div>
                 <Badge variant="secondary">
-                  {salon.is_accepting_bookings ? 'Accepting bookings' : 'Not accepting bookings'}
+                  {salon['is_accepting_bookings'] ? 'Accepting bookings' : 'Not accepting bookings'}
                 </Badge>
               </div>
             </CardContent>
             <CardFooter className="flex flex-wrap items-center gap-2">
               <Button asChild className="flex-1 min-w-36">
-                <Link href={`/customer/salons/${salon.slug}`}>View details</Link>
+                <Link href={`/customer/salons/${salon['slug']}`}>View details</Link>
               </Button>
               <FavoriteNotesButton
-                salonId={salon.id || ''}
-                salonName={salon.name || ''}
-                initialNotes={favorite.notes}
+                salonId={salon['id'] || ''}
+                salonName={salon['name'] || ''}
+                initialNotes={favorite['notes']}
               />
-              <FavoriteButton salonId={salon.id || ''} initialFavorited variant="icon" />
+              <FavoriteButton salonId={salon['id'] || ''} initialFavorited variant="icon" />
             </CardFooter>
           </Card>
         )

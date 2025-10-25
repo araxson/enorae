@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 import type { Database } from '@/lib/types/database.types'
 
@@ -26,12 +26,14 @@ export function ContactForm({ salonId, contactDetails }: ContactFormProps) {
       <div className="flex flex-col gap-8">
         {state.error && (
           <Alert variant="destructive">
+            <AlertTitle>Update failed</AlertTitle>
             <AlertDescription>{state.error}</AlertDescription>
           </Alert>
         )}
 
         {state.success && (
           <Alert>
+            <AlertTitle>Contact details saved</AlertTitle>
             <AlertDescription>Contact details updated successfully!</AlertDescription>
           </Alert>
         )}

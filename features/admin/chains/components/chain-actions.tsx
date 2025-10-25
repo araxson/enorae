@@ -19,7 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MoreHorizontal, CheckCircle2, XCircle, Trash2, Power, PowerOff, CreditCard } from 'lucide-react'
 import { verifyChain, updateChainActiveStatus, updateChainSubscription, deleteChain } from '@/features/admin/chains/api/mutations'
 import { Textarea } from '@/components/ui/textarea'
@@ -127,6 +127,7 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
           ) : (
             <XCircle className="h-4 w-4" />
           )}
+          <AlertTitle>{message.type === 'success' ? 'Action completed' : 'Action failed'}</AlertTitle>
           <AlertDescription>{message.text}</AlertDescription>
         </Alert>
       )}

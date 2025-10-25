@@ -19,7 +19,7 @@ export async function logRoleAudit(
     user_id: actorId,
     action: eventType,
     entity_type: 'role',
-    entity_id: typeof metadata.role_id === 'string' ? metadata.role_id : null,
+    entity_id: typeof metadata['role_id'] === 'string' ? metadata['role_id'] : null,
     metadata,
     is_success: true,
     target_schema: 'identity',

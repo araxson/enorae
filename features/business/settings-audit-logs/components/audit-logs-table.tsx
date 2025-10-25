@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -72,85 +72,85 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
   return (
     <>
       <Card>
-        <div className="p-4 border-b flex justify-between items-center">
-          <div>
-            <h3 className="font-semibold">Audit Log Entries</h3>
-            <p className="text-sm text-muted-foreground">
-              Showing {logs.length} entries
-            </p>
+        <CardHeader className="flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-1">
+            <CardTitle>Audit log entries</CardTitle>
+            <CardDescription>Showing {logs.length} entries</CardDescription>
           </div>
           <Button variant="outline" size="sm" onClick={exportLogs} className="gap-2">
             <Download className="h-4 w-4" />
             Export CSV
           </Button>
-        </div>
+        </CardHeader>
 
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Timestamp</TableHead>
-                <TableHead>Action</TableHead>
-                <TableHead>Entity Type</TableHead>
-                <TableHead>IP Address</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Details</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {logs.length === 0 ? (
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                    No audit logs found
-                  </TableCell>
+                  <TableHead>Timestamp</TableHead>
+                  <TableHead>Action</TableHead>
+                  <TableHead>Entity Type</TableHead>
+                  <TableHead>IP Address</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Details</TableHead>
                 </TableRow>
-              ) : (
-                logs.map((log) => (
-                  <TableRow key={log.id}>
-                    <TableCell className="font-mono text-sm">
-                      {formatDate(log.created_at)}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{formatActionLabel(log.action)}</Badge>
-                    </TableCell>
-                    <TableCell className="capitalize">{log.entity_type}</TableCell>
-                    <TableCell className="font-mono text-sm">
-                      {log.ip_address || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {log.is_success ? (
-                        <Badge variant="default">
-                          <span className="flex items-center gap-1">
-                            <CheckCircle2 className="h-3 w-3" />
-                            Success
-                          </span>
-                        </Badge>
-                      ) : (
-                        <Badge variant="destructive">
-                          <span className="flex items-center gap-1">
-                            <XCircle className="h-3 w-3" />
-                            Failed
-                          </span>
-                        </Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setSelectedLog(log)}
-                        className="gap-2"
-                      >
-                        <Eye className="h-4 w-4" />
-                        View
-                      </Button>
+              </TableHeader>
+              <TableBody>
+                {logs.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
+                      No audit logs found
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
+                ) : (
+                  logs.map((log) => (
+                    <TableRow key={log.id}>
+                      <TableCell className="font-mono text-sm">
+                        {formatDate(log.created_at)}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{formatActionLabel(log.action)}</Badge>
+                      </TableCell>
+                      <TableCell className="capitalize">{log.entity_type}</TableCell>
+                      <TableCell className="font-mono text-sm">
+                        {log.ip_address || 'N/A'}
+                      </TableCell>
+                      <TableCell>
+                        {log.is_success ? (
+                          <Badge variant="default">
+                            <span className="flex items-center gap-1">
+                              <CheckCircle2 className="h-3 w-3" />
+                              Success
+                            </span>
+                          </Badge>
+                        ) : (
+                          <Badge variant="destructive">
+                            <span className="flex items-center gap-1">
+                              <XCircle className="h-3 w-3" />
+                              Failed
+                            </span>
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setSelectedLog(log)}
+                          className="gap-2"
+                        >
+                          <Eye className="h-4 w-4" />
+                          View
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
       </Card>
 
       <Dialog open={!!selectedLog} onOpenChange={(open) => !open && setSelectedLog(null)}>

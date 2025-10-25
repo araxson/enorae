@@ -36,12 +36,12 @@ export async function getRevenueTrendData(salonId: string, days: number = 30) {
 
   const metrics = (data || []) as DailyMetric[]
   return metrics
-    .filter(m => m.metric_at !== null)
+    .filter(m => m['metric_at'] !== null)
     .map(m => ({
-      date: m.metric_at as string,
-      revenue: Number(m.total_revenue) || 0,
-      serviceRevenue: Number(m.service_revenue) || 0,
-      productRevenue: Number(m.product_revenue) || 0,
+      date: m['metric_at'] as string,
+      revenue: Number(m['total_revenue']) || 0,
+      serviceRevenue: Number(m['service_revenue']) || 0,
+      productRevenue: Number(m['product_revenue']) || 0,
     }))
 }
 
@@ -77,10 +77,10 @@ export async function getAppointmentConversionData(salonId: string) {
 
   return {
     total: appointments.length,
-    confirmed: appointments.filter(a => a.status === 'confirmed').length,
-    completed: appointments.filter(a => a.status === 'completed').length,
-    cancelled: appointments.filter(a => a.status === 'cancelled').length,
-    noShow: appointments.filter(a => a.status === 'no_show').length,
+    confirmed: appointments.filter(a => a['status'] === 'confirmed').length,
+    completed: appointments.filter(a => a['status'] === 'completed').length,
+    cancelled: appointments.filter(a => a['status'] === 'cancelled').length,
+    noShow: appointments.filter(a => a['status'] === 'no_show').length,
   }
 }
 
@@ -120,25 +120,25 @@ export async function getStaffPerformanceData(salonId: string, limit: number = 5
   }>()
 
   appointments.forEach(apt => {
-    if (!apt.staff_id) return
+    if (!apt['staff_id']) return
 
-    const existing = staffMap.get(apt.staff_id)
+    const existing = staffMap.get(apt['staff_id'])
     if (existing) {
       existing.appointmentCount++
-      existing.totalRevenue += Number(apt.total_price) || 0
+      existing['totalRevenue'] += Number(apt['total_price']) || 0
     } else {
-      staffMap.set(apt.staff_id, {
-        id: apt.staff_id,
-        name: apt.staff_name || 'Unknown',
+      staffMap.set(apt['staff_id'], {
+        id: apt['staff_id'],
+        name: apt['staff_name'] || 'Unknown',
         appointmentCount: 1,
-        totalRevenue: Number(apt.total_price) || 0,
+        totalRevenue: Number(apt['total_price']) || 0,
       })
     }
   })
 
   // Convert to array and sort by revenue
   return Array.from(staffMap.values())
-    .sort((a, b) => b.totalRevenue - a.totalRevenue)
+    .sort((a, b) => b['totalRevenue'] - a['totalRevenue'])
     .slice(0, limit)
 }
 
@@ -176,17 +176,17 @@ export async function getServicePopularityData(salonId: string, limit: number = 
   }>()
 
   appointmentServices.forEach(aps => {
-    if (!aps.service_id || !aps.service_name) return
+    if (!aps['service_id'] || !aps['service_name']) return
 
-    const existing = serviceMap.get(aps.service_id)
+    const existing = serviceMap.get(aps['service_id'])
     if (existing) {
       existing.count++
-      existing.revenue += Number(aps.current_price) || 0
+      existing.revenue += Number(aps['current_price']) || 0
     } else {
-      serviceMap.set(aps.service_id, {
-        name: aps.service_name,
+      serviceMap.set(aps['service_id'], {
+        name: aps['service_name'],
         count: 1,
-        revenue: Number(aps.current_price) || 0,
+        revenue: Number(aps['current_price']) || 0,
       })
     }
   })

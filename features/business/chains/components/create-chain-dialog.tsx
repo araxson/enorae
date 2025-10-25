@@ -77,7 +77,7 @@ export function CreateChainDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          {isEditing && <input type="hidden" name="id" value={chain?.id ?? ''} />}
+          {isEditing && <input type="hidden" name="id" value={chain?.['id'] ?? ''} />}
 
           <div className="space-y-4">
             <div className="space-y-2">
@@ -85,7 +85,7 @@ export function CreateChainDialog({
               <Input
                 id="name"
                 name="name"
-                defaultValue={chain?.name ?? ''}
+                defaultValue={chain?.['name'] ?? ''}
                 placeholder="e.g., Luxury Salons Group"
                 required
               />
@@ -96,7 +96,7 @@ export function CreateChainDialog({
               <Input
                 id="legal_name"
                 name="legal_name"
-                defaultValue={chain?.legal_name ?? ''}
+                defaultValue={chain?.['legal_name'] ?? ''}
                 placeholder="e.g., Luxury Salons Inc."
               />
             </div>

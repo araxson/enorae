@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Plus, Trash2, Edit } from 'lucide-react'
 import { AddServiceDialog } from './add-service-dialog'
 import { EditServiceDialog } from './edit-service-dialog'
-import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { ConfirmDialog } from '@/components/shared'
 import { removeServiceFromAppointment } from '@/features/business/appointments/api/mutations'
 import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import { useToast } from '@/lib/hooks/use-toast'
@@ -69,7 +69,7 @@ export function AppointmentServicesManager({
     setIsDeleting(true)
     try {
       const formData = new FormData()
-      formData.append('appointmentServiceId', deletingService.id || '')
+      formData.append('appointmentServiceId', deletingService['id'] || '')
 
       const result = await removeServiceFromAppointment(formData)
 
@@ -82,7 +82,7 @@ export function AppointmentServicesManager({
       } else {
         toast({
           title: 'Service removed',
-          description: `${deletingService.service_name ?? 'Service'} was removed from the appointment.`,
+          description: `${deletingService['service_name'] ?? 'Service'} was removed from the appointment.`,
         })
         onUpdate()
         setDeletingService(null)
@@ -99,12 +99,12 @@ export function AppointmentServicesManager({
   }
 
   const totalPrice = services.reduce(
-    (sum, service) => sum + (Number(service.current_price) || 0),
+    (sum, service) => sum + (Number(service['current_price']) || 0),
     0
   )
 
   const totalDuration = services.reduce(
-    (sum, service) => sum + (service.duration_minutes || 0),
+    (sum, service) => sum + (service['duration_minutes'] || 0),
     0
   )
 
@@ -143,37 +143,37 @@ export function AppointmentServicesManager({
                 </TableHeader>
                 <TableBody>
                   {services.map((service) => (
-                    <TableRow key={service.id}>
+                    <TableRow key={service['id']}>
                       <TableCell>
                         <div>
-                          <p className="font-medium">{service.service_name}</p>
-                          {service.category_name && (
+                          <p className="font-medium">{service['service_name']}</p>
+                          {service['category_name'] && (
                             <p className="text-xs text-muted-foreground">
-                              {service.category_name}
+                              {service['category_name']}
                             </p>
                           )}
                         </div>
                       </TableCell>
                       <TableCell>
                         <div>
-                          <p className="text-sm">{service.staff_name || 'Unassigned'}</p>
-                          {service.staff_title && (
-                            <p className="text-xs text-muted-foreground">{service.staff_title}</p>
+                          <p className="text-sm">{service['staff_name'] || 'Unassigned'}</p>
+                          {service['staff_title'] && (
+                            <p className="text-xs text-muted-foreground">{service['staff_title']}</p>
                           )}
                         </div>
                       </TableCell>
                       <TableCell>
-                        {formatTime(service.start_time)} - {formatTime(service.end_time)}
+                        {formatTime(service['start_time'])} - {formatTime(service['end_time'])}
                       </TableCell>
                       <TableCell className="text-right">
-                        {service.duration_minutes ? `${service.duration_minutes} min` : '-'}
+                        {service['duration_minutes'] ? `${service['duration_minutes']} min` : '-'}
                       </TableCell>
                       <TableCell className="text-right">
-                        {formatCurrency(Number(service.current_price))}
+                        {formatCurrency(Number(service['current_price']))}
                       </TableCell>
                       <TableCell>
-                        <Badge variant={getStatusColor(service.status)}>
-                          {service.status || 'pending'}
+                        <Badge variant={getStatusColor(service['status'])}>
+                          {service['status'] || 'pending'}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
@@ -246,7 +246,7 @@ export function AppointmentServicesManager({
         onClose={() => setDeletingService(null)}
         onConfirm={handleDelete}
         title="Remove Service"
-        description={`Are you sure you want to remove "${deletingService?.service_name}" from this appointment?`}
+        description={`Are you sure you want to remove "${deletingService?.['service_name']}" from this appointment?`}
         isLoading={isDeleting}
       />
     </>

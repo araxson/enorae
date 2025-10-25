@@ -54,7 +54,7 @@ export async function getUserGrowthMetrics(startDate: string, endDate: string) {
 
   // Group by date
   const growthByDate = data.reduce((acc: Record<string, number>, profile) => {
-    const date = profile.created_at?.split('T')[0] || ''
+    const date = profile['created_at']?.split('T')[0] || ''
     acc[date] = (acc[date] || 0) + 1
     return acc
   }, {})
@@ -94,12 +94,12 @@ export async function getRevenueMetrics(startDate: string, endDate: string) {
     (acc, metric) => {
       const service = Number(metric.service_revenue) || 0
       const product = Number(metric.product_revenue) || 0
-      const total = Number(metric.total_revenue) || service + product
+      const total = Number(metric['total_revenue']) || service + product
 
       acc.total += total
       acc.count += 1
 
-      const salonKey = metric.salon_id ?? 'unknown'
+      const salonKey = metric['salon_id'] ?? 'unknown'
       if (!acc.bySalon[salonKey]) {
         acc.bySalon[salonKey] = { amount: 0, count: 0 }
       }
@@ -167,14 +167,14 @@ export async function getAppointmentMetrics(startDate: string, endDate: string) 
 
   // Group by status
   const byStatus = data.reduce((acc: Record<string, number>, apt) => {
-    const status = apt.status || 'unknown'
+    const status = apt['status'] || 'unknown'
     acc[status] = (acc[status] || 0) + 1
     return acc
   }, {})
 
   // Group by salon
   const bySalon = data.reduce((acc: Record<string, number>, apt) => {
-    const salonId = apt.salon_id || 'unknown'
+    const salonId = apt['salon_id'] || 'unknown'
     acc[salonId] = (acc[salonId] || 0) + 1
     return acc
   }, {})
@@ -212,9 +212,9 @@ export async function getReviewMetrics(startDate: string, endDate: string) {
   }
 
   const totalReviews = data.length
-  const flaggedReviews = data.filter((r) => r.is_flagged).length
+  const flaggedReviews = data.filter((r) => r['is_flagged']).length
   const hiddenReviews = 0
-  const averageRating = data.reduce((sum, r) => sum + (r.rating || 0), 0) / totalReviews || 0
+  const averageRating = data.reduce((sum, r) => sum + (r['rating'] || 0), 0) / totalReviews || 0
 
   return {
     total_reviews: totalReviews,
@@ -249,7 +249,7 @@ export async function getActiveUserMetrics(daysBack: number = 30) {
     }
   }
 
-  const uniqueActiveUsers = new Set(activeUsers.map((a) => a.customer_id))
+  const uniqueActiveUsers = new Set(activeUsers.map((a) => a['customer_id']))
 
   return {
     active_users_count: uniqueActiveUsers.size,

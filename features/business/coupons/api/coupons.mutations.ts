@@ -1,7 +1,6 @@
 'use server'
 
-export const COUPONS_UNSUPPORTED_MESSAGE =
-  'Coupons feature is disabled because the Supabase project does not include coupon tables. Remove coupon usage or add the necessary schema.'
+import { COUPONS_UNSUPPORTED_MESSAGE } from './messages'
 
 export async function createCoupon(..._args: unknown[]): Promise<never> {
   return Promise.reject(new Error(COUPONS_UNSUPPORTED_MESSAGE))

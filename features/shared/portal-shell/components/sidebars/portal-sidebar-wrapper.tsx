@@ -27,9 +27,9 @@ export async function PortalSidebarWrapper({
 
   const userData = session
     ? {
-        name: session.user.user_metadata?.full_name || session.user.email || 'User',
-        email: session.user.email || '',
-        avatar: session.user.user_metadata?.avatar_url || null,
+        name: session.user.user_metadata?.['full_name'] || session.user['email'] || 'User',
+        email: session.user['email'] || '',
+        avatar: session.user.user_metadata?.['avatar_url'] || null,
       }
     : {
         name: 'Guest',
@@ -43,9 +43,9 @@ export async function PortalSidebarWrapper({
     navSecondary = menu.navSecondary
 
     if (portal === 'customer') {
-      const shortcuts = await getCustomerFavoritesSummary(session.user.id)
+      const shortcuts = await getCustomerFavoritesSummary(session.user['id'])
       favorites = shortcuts.map((shortcut) => ({
-        name: shortcut.name,
+        name: shortcut['name'],
         url: shortcut.url,
         icon: 'star' as const,
         salonId: shortcut.salonId,

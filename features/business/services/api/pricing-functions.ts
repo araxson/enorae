@@ -13,7 +13,7 @@ type ServicePricingView = Database['public']['Views']['service_pricing_view']['R
 
 const dynamicPricingSchema = z.object({
   serviceId: z.string().regex(UUID_REGEX, 'Invalid service ID'),
-  bookingTime: z.coerce.date(),
+  bookingTime: z.coerce['date'](),
   customerId: z.string().regex(UUID_REGEX, 'Invalid customer ID').optional(),
 })
 
@@ -53,7 +53,7 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
     throw new Error(serviceError.message)
   }
 
-  if (service?.salon_id !== salonId) {
+  if (service?.['salon_id'] !== salonId) {
     throw new Error('Unauthorized: Service not found for your salon')
   }
 
@@ -73,7 +73,7 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
   }
 
   // Use current_price, fallback to sale_price, then base_price
-  const basePrice = pricing.current_price ?? pricing.sale_price ?? pricing.base_price ?? 0
+  const basePrice = pricing['current_price'] ?? pricing['sale_price'] ?? pricing['base_price'] ?? 0
 
   // NOTE: pricing_rules table doesn't exist in schema
   // Dynamic pricing functionality is currently not implemented
@@ -156,7 +156,7 @@ export async function validateCoupon(input: {
   //   p_code: parsed.data.code,
   //   p_salon_id: salonId,
   //   p_customer_id: parsed.data.customerId || null,
-  //   p_amount: parsed.data.amount,
+  //   p_amount: parsed.data['amount'],
   // })
 
   // For now, return invalid coupon with placeholder message

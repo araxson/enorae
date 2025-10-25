@@ -73,13 +73,13 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {locations.map((location) => (
-          <Card key={location.id}>
+          <Card key={location['id']}>
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-2">
-                    <CardTitle>{location.name}</CardTitle>
-                    {location.is_primary && (
+                    <CardTitle>{location['name']}</CardTitle>
+                    {location['is_primary'] && (
                       <Star className="h-4 w-4 fill-accent text-accent" />
                     )}
                   </div>
@@ -87,8 +87,8 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                     <div className="flex items-start gap-2">
                       <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0" />
                       <div className="flex flex-col gap-2">
-                        <p className="text-sm text-muted-foreground">/{location.slug}</p>
-                        {location.is_active ? (
+                        <p className="text-sm text-muted-foreground">/{location['slug']}</p>
+                        {location['is_active'] ? (
                           <p className="text-sm font-medium text-primary">
                             Active
                           </p>
@@ -113,11 +113,11 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                     Edit
                   </Button>
                 )}
-                {!location.is_primary && (
+                {!location['is_primary'] && (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setDeleteId(location.id)}
+                    onClick={() => setDeleteId(location['id'])}
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
                     Delete

@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ShieldBan } from 'lucide-react'
 import type { ProfileDetail } from '@/features/admin/profile/api/types'
 import { anonymizeProfileAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
@@ -69,6 +69,7 @@ export function ProfileActions({ profile, onAnonymized, isLoading }: ProfileActi
       {feedback && (
         <CardContent className="pt-0">
           <Alert variant={feedback.success ? 'default' : 'destructive'}>
+            <AlertTitle>{feedback.success ? 'Action completed' : 'Action failed'}</AlertTitle>
             <AlertDescription>{feedback.message}</AlertDescription>
           </Alert>
         </CardContent>

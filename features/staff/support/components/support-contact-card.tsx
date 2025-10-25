@@ -20,32 +20,32 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
       <CardContent>
         <div className="space-y-4">
           <Card>
-            <CardContent>
-              <div className="flex items-start justify-between gap-4 p-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-sm font-semibold">
-                    <Phone className="h-4 w-4 text-secondary" />
-                    Hotline
-                  </div>
-                  <p className="text-xs text-muted-foreground">Best for urgent issues that block work.</p>
-                </div>
-                <Badge variant="secondary">15 min avg</Badge>
+            <CardHeader className="space-y-1">
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-secondary" aria-hidden />
+                <CardTitle id="contact-hotline-title">Hotline</CardTitle>
               </div>
+              <CardDescription id="contact-hotline-description">
+                Best for urgent issues that block work.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-end">
+              <Badge variant="secondary">15 min avg</Badge>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent>
-              <div className="flex items-start justify-between gap-4 p-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-sm font-semibold">
-                    <MessageCircle className="h-4 w-4 text-primary" />
-                    Chat
-                  </div>
-                  <p className="text-xs text-muted-foreground">Great for multi-step troubleshooting.</p>
-                </div>
-                <Badge variant="outline">Live 8a–8p</Badge>
+            <CardHeader className="space-y-1">
+              <div className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-primary" aria-hidden />
+                <CardTitle id="contact-chat-title">Chat</CardTitle>
               </div>
+              <CardDescription id="contact-chat-description">
+                Great for multi-step troubleshooting.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-end">
+              <Badge variant="outline">Live 8a–8p</Badge>
             </CardContent>
           </Card>
 
@@ -65,16 +65,18 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
           </HoverCard>
 
           <Card>
-            <CardContent>
-              <div className="space-y-3 p-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold">Status alerts</span>
-                  <Switch defaultChecked aria-label="Toggle status alerts" />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Receive mobile and email alerts when ticket status changes or a fix is shipped.
-                </p>
-              </div>
+            <CardHeader className="space-y-1">
+              <CardTitle id="status-alerts-title">Status alerts</CardTitle>
+              <CardDescription id="status-alerts-description">
+                Receive mobile and email alerts when ticket status changes or a fix is shipped.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-end">
+              <Switch
+                defaultChecked
+                aria-labelledby="status-alerts-title"
+                aria-describedby="status-alerts-description"
+              />
             </CardContent>
           </Card>
         </div>

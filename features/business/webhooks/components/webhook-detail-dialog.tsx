@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { Database } from '@/lib/types/database.types'
 import { retryWebhook, deleteWebhook } from '@/features/business/webhooks/api/mutations'
 import { WebhookStatusSection } from './webhook-status-section'
@@ -43,11 +43,11 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
   }
 
   const handleRetry = async () => {
-    if (!webhook.id) return
+    if (!webhook['id']) return
     setIsRetrying(true)
     resetAlerts()
 
-    const result = await retryWebhook(webhook.id)
+    const result = await retryWebhook(webhook['id'])
 
     if (result.success) {
       setSuccess('Webhook queued for retry')
@@ -63,12 +63,12 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
   }
 
   const handleDelete = async () => {
-    if (isDeleting || !webhook.id) return
+    if (isDeleting || !webhook['id']) return
 
     setIsDeleting(true)
     resetAlerts()
 
-    const result = await deleteWebhook(webhook.id)
+    const result = await deleteWebhook(webhook['id'])
 
     if (result.success) {
       setSuccess('Webhook deleted successfully')
@@ -96,12 +96,14 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
         <div className="flex flex-col gap-6">
           {error && (
             <Alert variant="destructive">
+              <AlertTitle>Webhook action failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
 
           {success && (
             <Alert>
+              <AlertTitle>Webhook updated</AlertTitle>
               <AlertDescription>{success}</AlertDescription>
             </Alert>
           )}
@@ -110,12 +112,12 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
 
           <Separator />
 
-          <WebhookPayloadSection payload={webhook.payload} />
+          <WebhookPayloadSection payload={webhook['payload']} />
 
-          {webhook.last_error && (
+          {webhook['last_error'] && (
             <>
               <Separator />
-              <WebhookErrorSection error={webhook.last_error || 'None'} />
+              <WebhookErrorSection error={webhook['last_error'] || 'None'} />
             </>
           )}
         </div>
@@ -125,7 +127,7 @@ export function WebhookDetailDialog({ webhook, open, onOpenChange }: WebhookDeta
             onClose={() => onOpenChange(false)}
             onRetry={handleRetry}
             onDelete={handleDelete}
-            status={webhook.status || 'pending'}
+            status={webhook['status'] || 'pending'}
             isRetrying={isRetrying}
             isDeleting={isDeleting}
           />

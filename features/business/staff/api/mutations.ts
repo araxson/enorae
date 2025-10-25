@@ -29,13 +29,13 @@ export async function createStaffMember(data: StaffFormData) {
   const { data: existingProfile } = await supabase
     .from('profiles')
     .select('id')
-    .eq('email', data.email)
+    .eq('email', data['email'])
     .maybeSingle<{ id: string }>()
 
   let userId: string
 
-  if (existingProfile?.id) {
-    userId = existingProfile.id
+  if (existingProfile?.['id']) {
+    userId = existingProfile['id']
   } else {
     // Create a placeholder profile
     // In production, this would be done via invitation flow
@@ -44,15 +44,15 @@ export async function createStaffMember(data: StaffFormData) {
       .from('profiles')
       .insert({
         id: crypto.randomUUID(),
-        username: data.email.split('@')[0],
-        created_by_id: session.user.id,
-        updated_by_id: session.user.id,
+        username: data['email'].split('@')[0],
+        created_by_id: session.user['id'],
+        updated_by_id: session.user['id'],
       })
       .select('id')
       .single()
 
     if (profileError) throw profileError
-    userId = newProfile.id
+    userId = newProfile['id']
   }
 
   // Create staff profile
@@ -62,11 +62,11 @@ export async function createStaffMember(data: StaffFormData) {
     .insert({
       salon_id: salonId,
       user_id: userId,
-      title: data.title,
-      bio: data.bio,
-      experience_years: data.experience_years,
-      created_by_id: session.user.id,
-      updated_by_id: session.user.id,
+      title: data['title'],
+      bio: data['bio'],
+      experience_years: data['experience_years'],
+      created_by_id: session.user['id'],
+      updated_by_id: session.user['id'],
     })
 
   if (staffError) throw staffError
@@ -77,7 +77,7 @@ export async function createStaffMember(data: StaffFormData) {
     .from('profiles_metadata')
     .upsert({
       profile_id: userId,
-      full_name: data.full_name,
+      full_name: data['full_name'],
       updated_at: new Date().toISOString(),
     })
 
@@ -101,15 +101,15 @@ export async function updateStaffMember(staffId: string, data: Partial<StaffForm
     .maybeSingle<{ salon_id: string | null; user_id: string | null }>()
 
   if (verifyError) throw verifyError
-  if (!staff || staff.salon_id !== salonId) {
+  if (!staff || staff['salon_id'] !== salonId) {
     throw new Error('Unauthorized: Staff does not belong to your salon')
   }
 
   // Update staff profile
   const staffUpdate: Record<string, unknown> = {}
-  if (data.title !== undefined) staffUpdate.title = data.title
-  if (data.bio !== undefined) staffUpdate.bio = data.bio
-  if (data.experience_years !== undefined) staffUpdate.experience_years = data.experience_years
+  if (data['title'] !== undefined) staffUpdate['title'] = data['title']
+  if (data['bio'] !== undefined) staffUpdate['bio'] = data['bio']
+  if (data['experience_years'] !== undefined) staffUpdate['experience_years'] = data['experience_years']
 
   if (Object.keys(staffUpdate).length > 0) {
     const { error } = await supabase
@@ -122,13 +122,13 @@ export async function updateStaffMember(staffId: string, data: Partial<StaffForm
   }
 
   // Update profile metadata if name provided
-  if (data.full_name && staff.user_id) {
+  if (data['full_name'] && staff['user_id']) {
     await supabase
       .schema('identity')
       .from('profiles_metadata')
       .upsert({
-        profile_id: staff.user_id,
-        full_name: data.full_name,
+        profile_id: staff['user_id'],
+        full_name: data['full_name'],
         updated_at: new Date().toISOString(),
       })
   }
@@ -152,7 +152,7 @@ export async function deactivateStaffMember(staffId: string) {
     .eq('id', staffId)
     .maybeSingle<{ salon_id: string | null }>()
 
-  if (!staff || staff.salon_id !== salonId) {
+  if (!staff || staff['salon_id'] !== salonId) {
     throw new Error('Unauthorized')
   }
 
@@ -185,7 +185,7 @@ export async function reactivateStaffMember(staffId: string) {
     .eq('id', staffId)
     .maybeSingle<{ salon_id: string | null }>()
 
-  if (!staff || staff.salon_id !== salonId) {
+  if (!staff || staff['salon_id'] !== salonId) {
     throw new Error('Unauthorized')
   }
 

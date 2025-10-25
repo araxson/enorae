@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AdditionalInfoSection, CoordinatesSection, LocationDetailsSection, MapIntegrationSection, StreetAddressSection } from './address-form/sections'
 import { AddressValidation } from './address-validation'
 import type { LocationAddress } from './address-form/types'
@@ -64,12 +64,14 @@ export function AddressForm({ locationId, address, onSuccess }: Props) {
       <div className="flex flex-col gap-6">
         {error && (
           <Alert variant="destructive">
+            <AlertTitle>Update failed</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
 
         {success && (
           <Alert>
+            <AlertTitle>Address updated</AlertTitle>
             <AlertDescription>Address updated successfully!</AlertDescription>
           </Alert>
         )}

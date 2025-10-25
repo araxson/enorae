@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/shared/empty-state'
+import { EmptyState } from '@/components/shared'
 import { Building2 } from 'lucide-react'
 import { ChainCard } from './chain-card'
 import type { Database } from '@/lib/types/database.types'
@@ -32,7 +32,7 @@ export function ChainsList({ chains }: ChainsListProps) {
   return (
     <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {chains.map((chain) => (
-        <ChainCard key={chain.id} chain={chain} />
+        <ChainCard key={chain['id']} chain={chain} />
       ))}
     </div>
   )

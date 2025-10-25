@@ -71,9 +71,9 @@ function AppointmentDetailContent({
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-sm text-muted-foreground">{appointment.confirmation_code || 'No code'}</p>
-        <Badge variant={getStatusVariant(appointment.status)}>
-          {appointment.status ?? 'pending'}
+        <p className="text-sm text-muted-foreground">{appointment['confirmation_code'] || 'No code'}</p>
+        <Badge variant={getStatusVariant(appointment['status'])}>
+          {appointment['status'] ?? 'pending'}
         </Badge>
       </div>
 
@@ -88,8 +88,8 @@ function AppointmentDetailContent({
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">Date &amp; time</p>
             <p className="leading-7">
-              {appointment.start_time &&
-                new Date(appointment.start_time).toLocaleDateString('en-US', {
+              {appointment['start_time'] &&
+                new Date(appointment['start_time']).toLocaleDateString('en-US', {
                   weekday: 'long',
                   year: 'numeric',
                   month: 'long',
@@ -97,30 +97,30 @@ function AppointmentDetailContent({
                 })}
             </p>
             <p className="leading-7 text-muted-foreground">
-              {appointment.start_time &&
-                new Date(appointment.start_time).toLocaleTimeString('en-US', {
+              {appointment['start_time'] &&
+                new Date(appointment['start_time']).toLocaleTimeString('en-US', {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}
               {' — '}
-              {appointment.end_time &&
-                new Date(appointment.end_time).toLocaleTimeString('en-US', {
+              {appointment['end_time'] &&
+                new Date(appointment['end_time']).toLocaleTimeString('en-US', {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}
             </p>
             <div className="mt-2 flex items-center gap-2">
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">{appointment.duration_minutes || 0} minutes total</p>
+              <p className="text-sm text-muted-foreground">{appointment['duration_minutes'] || 0} minutes total</p>
             </div>
           </div>
 
-          {appointment.staff_name && (
+          {appointment['staff_name'] && (
             <>
               <Separator />
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground">Staff member</p>
-                <p className="leading-7">{appointment.staff_name}</p>
+                <p className="leading-7">{appointment['staff_name']}</p>
               </div>
             </>
           )}
@@ -147,28 +147,28 @@ function AppointmentDetailContent({
                       </TableHeader>
                       <TableBody>
                         {services.map((service) => (
-                          <TableRow key={service.id}>
+                          <TableRow key={service['id']}>
                             <TableCell>
                               <div className="space-y-1">
-                                <p className="leading-7">{service.service_name}</p>
-                                {service.category_name && (
-                                  <p className="text-sm text-muted-foreground">{service.category_name}</p>
+                                <p className="leading-7">{service['service_name']}</p>
+                                {service['category_name'] && (
+                                  <p className="text-sm text-muted-foreground">{service['category_name']}</p>
                                 )}
                               </div>
                             </TableCell>
                             <TableCell className="text-right">
                               <div className="flex items-center justify-end gap-2">
                                 <Clock className="h-3 w-3" />
-                                <span className="text-sm">{service.duration_minutes} min</span>
+                                <span className="text-sm">{service['duration_minutes']} min</span>
                               </div>
                             </TableCell>
                             <TableCell className="text-right">
-                              {formatCurrency(service.sale_price || service.current_price)}
+                              {formatCurrency(service['sale_price'] || service['current_price'])}
                             </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
-                      {appointment.total_price !== null && (
+                      {appointment['total_price'] !== null && (
                         <TableFooter>
                           <TableRow>
                             <TableCell colSpan={2} className="text-right">
@@ -177,7 +177,7 @@ function AppointmentDetailContent({
                             <TableCell className="text-right">
                               <div className="flex items-center justify-end gap-2">
                                 <DollarSign className="h-4 w-4" />
-                                {formatCurrency(appointment.total_price)}
+                                {formatCurrency(appointment['total_price'])}
                               </div>
                             </TableCell>
                           </TableRow>
@@ -189,7 +189,7 @@ function AppointmentDetailContent({
               </Card>
             ) : (
               <p className="leading-7 text-muted-foreground">
-                {appointment.service_names || 'No services listed'}
+                {appointment['service_names'] || 'No services listed'}
               </p>
             )}
           </div>
@@ -200,15 +200,15 @@ function AppointmentDetailContent({
         <Button asChild variant="outline" className="flex-1">
           <Link href="/customer/appointments">Back to appointments</Link>
         </Button>
-        {appointment.status === 'confirmed' && appointment.start_time && appointment.id && (
+        {appointment['status'] === 'confirmed' && appointment['start_time'] && appointment['id'] && (
           <>
             <RescheduleRequestDialog
-              appointmentId={appointment.id}
-              currentStartTime={appointment.start_time}
+              appointmentId={appointment['id']}
+              currentStartTime={appointment['start_time']}
             />
             <CancelAppointmentDialog
-              appointmentId={appointment.id}
-              startTime={appointment.start_time}
+              appointmentId={appointment['id']}
+              startTime={appointment['start_time']}
             />
           </>
         )}

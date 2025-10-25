@@ -17,7 +17,7 @@ export async function getAuthorizedContext(staffId: string) {
   const { data: salon } = await supabase
     .from('salons')
     .select('*')
-    .eq('owner_id', session.user.id)
+    .eq('owner_id', session.user['id'])
     .single()
 
   if (!salon) {
@@ -25,7 +25,7 @@ export async function getAuthorizedContext(staffId: string) {
   }
 
   const typedSalon = salon as Salon
-  if (!typedSalon.id) {
+  if (!typedSalon['id']) {
     return { error: 'Invalid salon' as const }
   }
 
@@ -35,7 +35,7 @@ export async function getAuthorizedContext(staffId: string) {
     .eq('id', staffId)
     .single()
 
-  if (!staff || (staff as Staff).salon_id !== typedSalon.id) {
+  if (!staff || (staff as Staff)['salon_id'] !== typedSalon['id']) {
     return { error: 'Unauthorized' as const }
   }
 

@@ -34,16 +34,16 @@ export async function getVIPStatus() {
   const { data: roleData, error: roleError } = await supabase
     .from('user_roles')
     .select('*')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .maybeSingle<UserRole>()
 
   if (roleError) throw roleError
 
-  if (!roleData || roleData.role === 'guest') {
+  if (!roleData || roleData['role'] === 'guest') {
     return { ...defaultVipResponse, isGuest: true }
   }
 
-  if (roleData.role !== 'vip_customer') {
+  if (roleData['role'] !== 'vip_customer') {
     return defaultVipResponse
   }
 
@@ -52,17 +52,17 @@ export async function getVIPStatus() {
   const { data: appointments, error: appointmentsError } = await supabase
     .from('appointments')
     .select('total_price, created_at')
-    .eq('customer_id', session.user.id)
+    .eq('customer_id', session.user['id'])
     .eq('status', 'completed')
 
   if (appointmentsError) throw appointmentsError
 
   const records = (appointments || []) as Array<{ total_price: number | null; created_at: string | null }>
 
-  const lifetimeSpend = records.reduce((sum, apt) => sum + (apt.total_price || 0), 0)
+  const lifetimeSpend = records.reduce((sum, apt) => sum + (apt['total_price'] || 0), 0)
   const monthlySpend = records
-    .filter((apt) => apt.created_at && apt.created_at >= month.start)
-    .reduce((sum, apt) => sum + (apt.total_price || 0), 0)
+    .filter((apt) => apt['created_at'] && apt['created_at'] >= month.start)
+    .reduce((sum, apt) => sum + (apt['total_price'] || 0), 0)
 
   const loyaltyTier =
     LOYALTY_THRESHOLDS.find(({ min }) => lifetimeSpend >= min)?.tier ?? defaultVipResponse.loyaltyTier
@@ -77,6 +77,6 @@ export async function getVIPStatus() {
     loyaltyTier,
     lifetimeSpend,
     monthlySpend,
-    memberSince: oldestAppointment?.created_at || null,
+    memberSince: oldestAppointment?.['created_at'] || null,
   }
 }

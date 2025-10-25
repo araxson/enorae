@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Bell, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { updateNotificationPreferences } from '@/features/shared/preferences/api/mutations'
 
@@ -165,6 +165,7 @@ export function NotificationPreferencesForm({
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Update failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -172,6 +173,7 @@ export function NotificationPreferencesForm({
           {success && (
             <Alert>
               <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Preferences saved</AlertTitle>
               <AlertDescription>Preferences updated successfully!</AlertDescription>
             </Alert>
           )}

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { updateProfile } from '@/features/business/settings-account/api/mutations'
 import type { Database } from '@/lib/types/database.types'
@@ -17,8 +17,8 @@ interface AccountInfoFormProps {
 }
 
 export function AccountInfoForm({ profile }: AccountInfoFormProps) {
-  const [fullName, setFullName] = useState(profile.full_name || '')
-  const [phone, setPhone] = useState(profile.phone || '')
+  const [fullName, setFullName] = useState(profile['full_name'] || '')
+  const [phone, setPhone] = useState(profile['phone'] || '')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -54,6 +54,7 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
             {success && (
               <Alert>
                 <CheckCircle className="h-4 w-4" />
+                <AlertTitle>Profile updated</AlertTitle>
                 <AlertDescription>Profile updated successfully</AlertDescription>
               </Alert>
             )}
@@ -61,6 +62,7 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Update failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -70,7 +72,7 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
               <Input
                 id="email"
                 type="email"
-                value={profile.email || ''}
+                value={profile['email'] || ''}
                 disabled
                 className="bg-muted"
               />

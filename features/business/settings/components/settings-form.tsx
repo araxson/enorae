@@ -27,7 +27,7 @@ interface SettingsFormProps {
 export function SettingsForm({ salonId, settings }: SettingsFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isAcceptingBookings, setIsAcceptingBookings] = useState(
-    settings?.is_accepting_bookings ?? true
+    settings?.['is_accepting_bookings'] ?? true
   )
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -88,7 +88,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     type="number"
                     min="0"
                     max="720"
-                    defaultValue={settings?.booking_lead_time_hours ?? ''}
+                    defaultValue={settings?.['booking_lead_time_hours'] ?? ''}
                     placeholder="24"
                   />
                   <p className="text-sm text-muted-foreground">Minimum hours before appointment</p>
@@ -102,7 +102,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     type="number"
                     min="0"
                     max="168"
-                    defaultValue={settings?.cancellation_hours ?? ''}
+                    defaultValue={settings?.['cancellation_hours'] ?? ''}
                     placeholder="24"
                   />
                   <p className="text-sm text-muted-foreground">Hours before appointment can be cancelled</p>
@@ -116,7 +116,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     type="number"
                     min="1"
                     max="1000"
-                    defaultValue={settings?.max_bookings_per_day ?? ''}
+                    defaultValue={settings?.['max_bookings_per_day'] ?? ''}
                     placeholder="50"
                   />
                   <p className="text-sm text-muted-foreground">Maximum daily appointments</p>
@@ -142,7 +142,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     type="number"
                     min="1"
                     max="100"
-                    defaultValue={settings?.max_services ?? ''}
+                    defaultValue={settings?.['max_services'] ?? ''}
                     placeholder="Unlimited"
                   />
                 </div>
@@ -155,7 +155,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                     type="number"
                     min="1"
                     max="500"
-                    defaultValue={settings?.max_staff ?? ''}
+                    defaultValue={settings?.['max_staff'] ?? ''}
                     placeholder="Unlimited"
                   />
                 </div>
@@ -164,7 +164,7 @@ export function SettingsForm({ salonId, settings }: SettingsFormProps) {
                   <Label htmlFor="subscription_tier">Subscription Tier</Label>
                   <Select
                     name="subscription_tier"
-                    defaultValue={settings?.subscription_tier ?? 'free'}
+                    defaultValue={settings?.['subscription_tier'] ?? 'free'}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select tier" />

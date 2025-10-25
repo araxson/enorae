@@ -39,23 +39,23 @@ export function useMediaForm({ media }: UseMediaFormParams) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isAddingImage, setIsAddingImage] = useState(false)
   const [newGalleryUrl, setNewGalleryUrl] = useState('')
-  const [galleryUrls, setGalleryUrls] = useState<string[]>(media?.gallery_urls || [])
+  const [galleryUrls, setGalleryUrls] = useState<string[]>(media?.['gallery_urls'] || [])
 
   const brandColors = useMemo<BrandColors>(() => {
-    const parsed = media?.brand_colors as BrandColors | null
+    const parsed = media?.['brand_colors'] as BrandColors | null
     return {
       ...DEFAULT_BRAND_COLORS,
       ...(parsed || {}),
     }
-  }, [media?.brand_colors])
+  }, [media?.['brand_colors']])
 
   const socialLinks = useMemo<SocialLinks>(() => {
-    const parsed = media?.social_links as SocialLinks | null
+    const parsed = media?.['social_links'] as SocialLinks | null
     return {
       ...DEFAULT_SOCIAL_LINKS,
       ...(parsed || {}),
     }
-  }, [media?.social_links])
+  }, [media?.['social_links']])
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
@@ -138,8 +138,8 @@ export function useMediaForm({ media }: UseMediaFormParams) {
       galleryUrls,
       brandColors,
       socialLinks,
-      logoUrl: media?.logo_url ?? '',
-      coverImageUrl: media?.cover_image_url ?? '',
+      logoUrl: media?.['logo_url'] ?? '',
+      coverImageUrl: media?.['cover_image_url'] ?? '',
     },
     actions: {
       setNewGalleryUrl,

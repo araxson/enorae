@@ -6,7 +6,7 @@ import {
   getGrowthOpportunities,
 } from '@/features/business/insights/api/business-insights'
 import { BusinessInsightsDashboard } from './business-insights-dashboard'
-import { CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function BusinessInsights() {
   const salonId = await getUserSalonId()
@@ -22,12 +22,14 @@ export async function BusinessInsights() {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2">
-          <CardTitle>Business Insights</CardTitle>
-          <CardDescription>
-            AI-powered insights, trend detection, and growth recommendations
-          </CardDescription>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Business insights</CardTitle>
+            <CardDescription>
+              AI-powered insights, trend detection, and growth recommendations.
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
         <BusinessInsightsDashboard
           trends={trends}

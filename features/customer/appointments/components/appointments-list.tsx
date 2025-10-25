@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/components/shared/empty-state'
+import { EmptyState } from '@/components/shared'
 import { CalendarX } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
@@ -50,16 +50,16 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {appointments.map((appointment) => (
-        <Card key={appointment.id}>
+        <Card key={appointment['id']}>
           <CardHeader className="p-6 pb-4">
-            <CardTitle>{appointment.salon_name || 'Unnamed Salon'}</CardTitle>
-            <CardDescription>{appointment.service_names || 'Service'}</CardDescription>
+            <CardTitle>{appointment['salon_name'] || 'Unnamed Salon'}</CardTitle>
+            <CardDescription>{appointment['service_names'] || 'Service'}</CardDescription>
           </CardHeader>
           <CardContent className="p-6 pt-0 space-y-3">
             <div className="space-y-1">
               <p className="text-sm">
-                {appointment.start_time &&
-                  new Date(appointment.start_time).toLocaleDateString('en-US', {
+                {appointment['start_time'] &&
+                  new Date(appointment['start_time']).toLocaleDateString('en-US', {
                     weekday: 'long',
                     year: 'numeric',
                     month: 'long',
@@ -67,8 +67,8 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
                   })}
               </p>
               <p className="text-sm text-muted-foreground">
-                {appointment.start_time &&
-                  new Date(appointment.start_time).toLocaleTimeString('en-US', {
+                {appointment['start_time'] &&
+                  new Date(appointment['start_time']).toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
                   })}
@@ -76,14 +76,14 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
             </div>
 
             <div>
-              <Badge variant={statusVariant(appointment.status ?? 'pending')}>
-                {formatStatus(appointment.status ?? 'pending')}
+              <Badge variant={statusVariant(appointment['status'] ?? 'pending')}>
+                {formatStatus(appointment['status'] ?? 'pending')}
               </Badge>
             </div>
           </CardContent>
           <CardFooter className="p-6 pt-0">
             <Button asChild variant="outline" className="w-full">
-              <Link href={`/customer/appointments/${appointment.id}`}>
+              <Link href={`/customer/appointments/${appointment['id']}`}>
                 View details
               </Link>
             </Button>

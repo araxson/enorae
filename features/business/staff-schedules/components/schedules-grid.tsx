@@ -48,12 +48,12 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
   // Group schedules by staff member
   const staffGroups = schedules.reduce(
     (acc, schedule) => {
-      const key = schedule.staff_id || 'unknown'
+      const key = schedule['staff_id'] || 'unknown'
       if (!acc[key]) {
         acc[key] = {
-          staffId: schedule.staff_id,
-          staffName: schedule.staff_name || 'Unknown',
-          staffTitle: schedule.staff_title || null,
+          staffId: schedule['staff_id'],
+          staffName: schedule['staff_name'] || 'Unknown',
+          staffTitle: schedule['staff_title'] || null,
           schedules: [],
         }
       }
@@ -136,26 +136,26 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
               </TableHeader>
               <TableBody>
                 {group.schedules
-                  .sort((a, b) => (DAY_ORDER[a.day_of_week || 'monday'] || 0) - (DAY_ORDER[b.day_of_week || 'monday'] || 0))
+                  .sort((a, b) => (DAY_ORDER[a['day_of_week'] || 'monday'] || 0) - (DAY_ORDER[b['day_of_week'] || 'monday'] || 0))
                   .map((schedule) => (
-                    <TableRow key={schedule.id}>
+                    <TableRow key={schedule['id']}>
                       <TableCell className="font-medium">
-                        {DAY_NAMES[schedule.day_of_week || 'monday'] || schedule.day_of_week}
+                        {DAY_NAMES[schedule['day_of_week'] || 'monday'] || schedule['day_of_week']}
                       </TableCell>
-                      <TableCell>{formatTime(schedule.start_time)}</TableCell>
-                      <TableCell>{formatTime(schedule.end_time)}</TableCell>
+                      <TableCell>{formatTime(schedule['start_time'])}</TableCell>
+                      <TableCell>{formatTime(schedule['end_time'])}</TableCell>
                       <TableCell>
-                        {schedule.break_start && schedule.break_end ? (
+                        {schedule['break_start'] && schedule['break_end'] ? (
                           <p className="leading-7 text-sm">
-                            {formatTime(schedule.break_start)} - {formatTime(schedule.break_end)}
+                            {formatTime(schedule['break_start'])} - {formatTime(schedule['break_end'])}
                           </p>
                         ) : (
                           <p className="text-sm text-muted-foreground text-sm">No break</p>
                         )}
                       </TableCell>
                       <TableCell>
-                        <Badge variant={schedule.is_active ? 'default' : 'secondary'}>
-                          {schedule.is_active ? 'Active' : 'Inactive'}
+                        <Badge variant={schedule['is_active'] ? 'default' : 'secondary'}>
+                          {schedule['is_active'] ? 'Active' : 'Inactive'}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
@@ -163,9 +163,9 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => schedule.id && handleToggleActive(schedule.id, schedule.is_active)}
+                            onClick={() => schedule['id'] && handleToggleActive(schedule['id'], schedule['is_active'])}
                           >
-                            {schedule.is_active ? (
+                            {schedule['is_active'] ? (
                               <PowerOff className="h-4 w-4" />
                             ) : (
                               <Power className="h-4 w-4" />
@@ -174,8 +174,8 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => schedule.id && handleDelete(schedule.id)}
-                            disabled={deletingId === schedule.id}
+                            onClick={() => schedule['id'] && handleDelete(schedule['id'])}
+                            disabled={deletingId === schedule['id']}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

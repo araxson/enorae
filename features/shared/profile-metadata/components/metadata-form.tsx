@@ -1,9 +1,8 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { Database } from '@/lib/types/database.types'
 
 import { InterestsTagsSection } from './interests-tags-section'
@@ -43,57 +42,59 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
       <div className="flex flex-col gap-8">
         {error && (
           <Alert variant="destructive">
+            <AlertTitle>Update failed</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
 
         {success && (
           <Alert>
+            <AlertTitle>Profile updated</AlertTitle>
             <AlertDescription>Profile updated successfully!</AlertDescription>
           </Alert>
         )}
 
         <Card>
+          <CardHeader>
+            <CardTitle>Profile images</CardTitle>
+            <CardDescription>Update the images customers see on your profile.</CardDescription>
+          </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold">Profile Images</h3>
-              <Separator />
-              <ProfileImagesSection
-                avatarUrl={avatarUrl}
-                coverUrl={coverUrl}
-                isUploadingAvatar={isUploadingAvatar}
-                isUploadingCover={isUploadingCover}
-                onAvatarUpload={handleAvatarUpload}
-                onCoverUpload={handleCoverUpload}
-              />
-            </div>
+            <ProfileImagesSection
+              avatarUrl={avatarUrl}
+              coverUrl={coverUrl}
+              isUploadingAvatar={isUploadingAvatar}
+              isUploadingCover={isUploadingCover}
+              onAvatarUpload={handleAvatarUpload}
+              onCoverUpload={handleCoverUpload}
+            />
           </CardContent>
         </Card>
 
         <Card>
+          <CardHeader>
+            <CardTitle>Social profiles</CardTitle>
+            <CardDescription>Share the places clients can follow your business.</CardDescription>
+          </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold">Social Profiles</h3>
-              <Separator />
-              <SocialProfilesSection defaults={socialProfiles} />
-            </div>
+            <SocialProfilesSection defaults={socialProfiles} />
           </CardContent>
         </Card>
 
         <Card>
+          <CardHeader>
+            <CardTitle>Interests and tags</CardTitle>
+            <CardDescription>Highlight services and topics that describe your brand.</CardDescription>
+          </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-6">
-              <h3 className="scroll-m-20 text-2xl font-semibold">Interests & Tags</h3>
-              <Separator />
-              <InterestsTagsSection
-                interests={interests}
-                tags={tags}
-                onAddInterest={handleAddInterest}
-                onRemoveInterest={handleRemoveInterest}
-                onAddTag={handleAddTag}
-                onRemoveTag={handleRemoveTag}
-              />
-            </div>
+            <InterestsTagsSection
+              interests={interests}
+              tags={tags}
+              onAddInterest={handleAddInterest}
+              onRemoveInterest={handleRemoveInterest}
+              onAddTag={handleAddTag}
+              onRemoveTag={handleRemoveTag}
+            />
           </CardContent>
         </Card>
 

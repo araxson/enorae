@@ -16,7 +16,7 @@ type ScheduleCalendarProps = {
 export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: ScheduleCalendarProps) {
   // Group schedules by day of week
   const schedulesByDay = schedules.reduce((acc, schedule) => {
-    const day = schedule.day_of_week
+    const day = schedule['day_of_week']
     if (!day) return acc // Skip schedules without day_of_week
     if (!acc[day]) {
       acc[day] = []
@@ -71,25 +71,25 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                   <div className="flex flex-col gap-3">
                     {daySchedules.map(schedule => (
                       <div
-                        key={schedule.id}
+                        key={schedule['id']}
                         className="flex items-center justify-between p-3 border rounded-lg"
                       >
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="font-medium">
-                              {schedule.staff?.full_name || 'Unknown Staff'}
+                              {schedule.staff?.['full_name'] || 'Unknown Staff'}
                             </span>
-                            <Badge variant={schedule.is_active ? 'default' : 'secondary'}>
-                              {schedule.is_active ? 'Active' : 'Inactive'}
+                            <Badge variant={schedule['is_active'] ? 'default' : 'secondary'}>
+                              {schedule['is_active'] ? 'Active' : 'Inactive'}
                             </Badge>
                           </div>
                           <p className="text-xs text-muted-foreground">
-                            {formatTime(schedule.start_time)} - {formatTime(schedule.end_time)}
-                            {schedule.staff?.title && ` • ${schedule.staff.title}`}
+                            {formatTime(schedule['start_time'])} - {formatTime(schedule['end_time'])}
+                            {schedule.staff?.['title'] && ` • ${schedule.staff['title']}`}
                           </p>
-                          {schedule.break_start && schedule.break_end && (
+                          {schedule['break_start'] && schedule['break_end'] && (
                             <p className="text-xs text-muted-foreground mt-1">
-                              Break: {formatTime(schedule.break_start)} - {formatTime(schedule.break_end)}
+                              Break: {formatTime(schedule['break_start'])} - {formatTime(schedule['break_end'])}
                             </p>
                           )}
                         </div>
@@ -104,11 +104,11 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                               <span className="sr-only">Edit</span>
                             </Button>
                           )}
-                          {onDelete && schedule.id && (
+                          {onDelete && schedule['id'] && (
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => onDelete(schedule.id!)}
+                              onClick={() => onDelete(schedule['id']!)}
                             >
                               <Trash2 className="h-4 w-4" />
                               <span className="sr-only">Delete</span>

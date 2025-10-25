@@ -39,10 +39,10 @@ const FORECAST_HORIZON = 7
 function sumPeriodStats(metrics: DailyMetricWithTimestamp[]): PeriodStats {
   return metrics.reduce<PeriodStats>(
     (acc, metric) => ({
-      totalRevenue: acc.totalRevenue + Number(metric.total_revenue || 0),
-      totalAppointments: acc.totalAppointments + Number(metric.total_appointments || 0),
-      newCustomers: acc.newCustomers + Number(metric.new_customers || 0),
-      returningCustomers: acc.returningCustomers + Number(metric.returning_customers || 0),
+      totalRevenue: acc['totalRevenue'] + Number(metric['total_revenue'] || 0),
+      totalAppointments: acc['totalAppointments'] + Number(metric['total_appointments'] || 0),
+      newCustomers: acc['newCustomers'] + Number(metric['new_customers'] || 0),
+      returningCustomers: acc['returningCustomers'] + Number(metric['returning_customers'] || 0),
     }),
     {
       totalRevenue: 0,
@@ -74,7 +74,7 @@ export function buildPeriodComparisons(
   }
 
   const sorted = [...metrics].sort(
-    (a, b) => new Date(a.metric_at).getTime() - new Date(b.metric_at).getTime()
+    (a, b) => new Date(a['metric_at']).getTime() - new Date(b['metric_at']).getTime()
   )
 
   const currentPeriod = sorted.slice(-DAYS_IN_COMPARISON)
@@ -84,38 +84,38 @@ export function buildPeriodComparisons(
   const previousStats = sumPeriodStats(previousPeriod)
 
   const currentRetentionDenominator =
-    currentStats.newCustomers + currentStats.returningCustomers
+    currentStats['newCustomers'] + currentStats['returningCustomers']
   const previousRetentionDenominator =
-    previousStats.newCustomers + previousStats.returningCustomers
+    previousStats['newCustomers'] + previousStats['returningCustomers']
 
   const currentRetention =
     currentRetentionDenominator === 0
       ? 0
-      : (currentStats.returningCustomers / currentRetentionDenominator) * 100
+      : (currentStats['returningCustomers'] / currentRetentionDenominator) * 100
 
   const previousRetention =
     previousRetentionDenominator === 0
       ? 0
-      : (previousStats.returningCustomers / previousRetentionDenominator) * 100
+      : (previousStats['returningCustomers'] / previousRetentionDenominator) * 100
 
   return {
     revenue: {
-      current: currentStats.totalRevenue,
-      previous: previousStats.totalRevenue,
-      change: computeChange(currentStats.totalRevenue, previousStats.totalRevenue),
+      current: currentStats['totalRevenue'],
+      previous: previousStats['totalRevenue'],
+      change: computeChange(currentStats['totalRevenue'], previousStats['totalRevenue']),
     },
     appointments: {
-      current: currentStats.totalAppointments,
-      previous: previousStats.totalAppointments,
+      current: currentStats['totalAppointments'],
+      previous: previousStats['totalAppointments'],
       change: computeChange(
-        currentStats.totalAppointments,
-        previousStats.totalAppointments
+        currentStats['totalAppointments'],
+        previousStats['totalAppointments']
       ),
     },
     newCustomers: {
-      current: currentStats.newCustomers,
-      previous: previousStats.newCustomers,
-      change: computeChange(currentStats.newCustomers, previousStats.newCustomers),
+      current: currentStats['newCustomers'],
+      previous: previousStats['newCustomers'],
+      change: computeChange(currentStats['newCustomers'], previousStats['newCustomers']),
     },
     retentionRate: {
       current: currentRetention,
@@ -138,13 +138,13 @@ export function buildRevenueForecast(
   }
 
   const sorted = [...metrics].sort(
-    (a, b) => new Date(a.metric_at).getTime() - new Date(b.metric_at).getTime()
+    (a, b) => new Date(a['metric_at']).getTime() - new Date(b['metric_at']).getTime()
   )
 
   const historical = sorted.map((metric, index) => ({
     index,
-    date: metric.metric_at,
-    revenue: Number(metric.total_revenue || 0),
+    date: metric['metric_at'],
+    revenue: Number(metric['total_revenue'] || 0),
   }))
 
   const revenueValues = historical.map((entry) => entry.revenue)
@@ -174,7 +174,7 @@ export function buildRevenueForecast(
       : averageRevenue
 
   const forecastPoints: ForecastPoint[] = historical.map((entry) => ({
-    date: entry.date,
+    date: entry['date'],
     actual: entry.revenue,
     forecast: entry.revenue,
     baseline: baselineAverage,

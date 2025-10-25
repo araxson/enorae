@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { createStaffMember, updateStaffMember } from '@/features/business/staff/api/mutations'
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
@@ -86,6 +86,7 @@ export function StaffFormDialog({ open, onClose, staff, onSuccess }: StaffFormDi
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Save failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

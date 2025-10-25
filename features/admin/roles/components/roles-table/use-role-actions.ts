@@ -24,14 +24,14 @@ export function useRoleActions() {
   const performAction = async (
     mutation: (formData: FormData) => Promise<RoleActionResponse>
   ) => {
-    if (!targetRole?.id) {
+    if (!targetRole?.['id']) {
       toast.error('Invalid role ID')
       return
     }
 
     setIsLoading(true)
     const formData = new FormData()
-    formData.append('roleId', targetRole.id)
+    formData.append('roleId', targetRole['id'])
     const result = await mutation(formData)
     setIsLoading(false)
 

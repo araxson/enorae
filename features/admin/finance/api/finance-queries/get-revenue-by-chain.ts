@@ -26,12 +26,12 @@ export async function getRevenueByChain(
   const chainMap = new Map<string, { revenue: number; salons: Set<string> }>()
 
   revenueData.forEach((row) => {
-    const chainName = row.chain_name || 'Unassigned'
+    const chainName = row['chain_name'] || 'Unassigned'
     const chainEntry = chainMap.get(chainName) ?? { revenue: 0, salons: new Set<string>() }
 
-    chainEntry.revenue += Number(row.total_revenue) || 0
-    if (row.salon_id) {
-      chainEntry.salons.add(row.salon_id)
+    chainEntry.revenue += Number(row['total_revenue']) || 0
+    if (row['salon_id']) {
+      chainEntry.salons.add(row['salon_id'])
     }
 
     chainMap.set(chainName, chainEntry)
@@ -43,5 +43,5 @@ export async function getRevenueByChain(
       totalRevenue: entry.revenue,
       salonCount: entry.salons.size,
     }))
-    .sort((a, b) => b.totalRevenue - a.totalRevenue)
+    .sort((a, b) => b['totalRevenue'] - a['totalRevenue'])
 }

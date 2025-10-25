@@ -27,21 +27,21 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
     const normalizedQuery = searchQuery.toLowerCase()
 
     return reviews.filter((review) => {
-      const customerEmail = review.customer_email?.toLowerCase() ?? ''
+      const customerEmail = review['customer_email']?.toLowerCase() ?? ''
       const matchesSearch =
         !normalizedQuery ||
-        review.salon_name?.toLowerCase().includes(normalizedQuery) ||
-        review.customer_name?.toLowerCase().includes(normalizedQuery) ||
+        review['salon_name']?.toLowerCase().includes(normalizedQuery) ||
+        review['customer_name']?.toLowerCase().includes(normalizedQuery) ||
         customerEmail.includes(normalizedQuery) ||
-        review.comment?.toLowerCase().includes(normalizedQuery)
+        review['comment']?.toLowerCase().includes(normalizedQuery)
 
       const matchesStatus =
         statusFilter === 'all' ||
-        (statusFilter === 'flagged' && review.is_flagged) ||
-        (statusFilter === 'unflagged' && !review.is_flagged) ||
-        (statusFilter === 'pending' && !review.has_response) ||
-        (statusFilter === 'responded' && review.has_response) ||
-        (statusFilter === 'featured' && review.is_featured)
+        (statusFilter === 'flagged' && review['is_flagged']) ||
+        (statusFilter === 'unflagged' && !review['is_flagged']) ||
+        (statusFilter === 'pending' && !review['has_response']) ||
+        (statusFilter === 'responded' && review['has_response']) ||
+        (statusFilter === 'featured' && review['is_featured'])
 
       const matchesRisk =
         riskFilter === 'all' || review.fakeLikelihoodLabel === riskFilter
@@ -59,7 +59,7 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
   const highRiskReviews = useMemo(
     () =>
       reviews
-        .filter((review) => review.fakeLikelihoodLabel === 'high' || review.is_flagged)
+        .filter((review) => review.fakeLikelihoodLabel === 'high' || review['is_flagged'])
         .slice(0, 5),
     [reviews]
   )
@@ -146,10 +146,10 @@ function InsightCard({ title, emptyLabel, items, renderBadge }: InsightCardProps
           <p className="text-sm text-muted-foreground text-xs">{emptyLabel}</p>
         ) : (
           items.map((review) => (
-            <div key={review.id ?? `${review.salon_id}-${review.created_at}`} className="flex items-center justify-between gap-3">
+            <div key={review['id'] ?? `${review['salon_id']}-${review['created_at']}`} className="flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-sm font-medium truncate">{review.customer_name || 'Anonymous'}</p>
-                <p className="text-xs text-muted-foreground truncate">{review.salon_name || 'Unknown salon'}</p>
+                <p className="text-sm font-medium truncate">{review['customer_name'] || 'Anonymous'}</p>
+                <p className="text-xs text-muted-foreground truncate">{review['salon_name'] || 'Unknown salon'}</p>
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 {renderBadge(review)}

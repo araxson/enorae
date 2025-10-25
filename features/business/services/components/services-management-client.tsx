@@ -6,7 +6,7 @@ import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ServicesGrid } from './services-grid'
 import { ServiceFormDialog } from './service-form-dialog'
-import { SearchInput } from '@/components/shared/search-input'
+import { SearchInput } from '@/components/shared'
 import {
   Select,
   SelectContent,
@@ -45,15 +45,15 @@ export function ServicesManagementClient({ salon, services }: ServicesManagement
   const filteredServices = useMemo(() => {
     return services.filter((service) => {
       // Status filter
-      if (statusFilter === 'active' && !service.is_active) return false
-      if (statusFilter === 'inactive' && service.is_active) return false
+      if (statusFilter === 'active' && !service['is_active']) return false
+      if (statusFilter === 'inactive' && service['is_active']) return false
 
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase()
-        const nameMatch = service.name?.toLowerCase().includes(query)
-        const descriptionMatch = service.description?.toLowerCase().includes(query)
-        const categoryMatch = service.category_name?.toLowerCase().includes(query)
+        const nameMatch = service['name']?.toLowerCase().includes(query)
+        const descriptionMatch = service['description']?.toLowerCase().includes(query)
+        const categoryMatch = service['category_name']?.toLowerCase().includes(query)
 
         return nameMatch || descriptionMatch || categoryMatch
       }
@@ -102,7 +102,7 @@ export function ServicesManagementClient({ salon, services }: ServicesManagement
         <ServiceFormDialog
           open={isDialogOpen}
           onClose={handleDialogClose}
-          salonId={salon.id}
+          salonId={salon['id']}
           service={editingService}
           onSuccess={handleSuccess}
         />

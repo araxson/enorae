@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ReviewsClient } from './components/reviews-client'
 import { getAllReviews } from './api/queries'
 import { LastUpdated } from '@/features/admin/admin-common/components'
@@ -13,20 +13,21 @@ export async function AdminReviews() {
     return (
       <section className="py-16 md:py-24 lg:py-32">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <Alert variant="destructive">
-          <AlertDescription>
-            {error instanceof Error ? error.message : 'Failed to load reviews'}
-          </AlertDescription>
-        </Alert>
+          <Alert variant="destructive">
+            <AlertTitle>Failed to load reviews</AlertTitle>
+            <AlertDescription>
+              {error instanceof Error ? error.message : 'Failed to load reviews'}
+            </AlertDescription>
+          </Alert>
         </div>
       </section>
     )
   }
 
   // Calculate moderation stats
-  const flaggedCount = reviews.filter(r => r.is_flagged).length
-  const unverifiedCount = reviews.filter(r => !r.is_verified).length
-  const needsResponseCount = reviews.filter(r => !r.has_response).length
+  const flaggedCount = reviews.filter(r => r['is_flagged']).length
+  const unverifiedCount = reviews.filter(r => !r['is_verified']).length
+  const needsResponseCount = reviews.filter(r => !r['has_response']).length
 
   return (
     <section className="py-16 md:py-24 lg:py-32">

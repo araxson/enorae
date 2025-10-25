@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import type { QueryPerformanceRecord } from '@/features/admin/database-performance/api/queries'
 
 interface QueryPerformanceTableProps {
@@ -17,10 +18,10 @@ interface QueryPerformanceTableProps {
 
 export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
   const getPerformanceColor = (meanTime: number) => {
-    if (meanTime > 500) return 'text-red-600'
-    if (meanTime > 200) return 'text-orange-600'
-    if (meanTime > 50) return 'text-yellow-600'
-    return 'text-green-600'
+    if (meanTime > 500) return 'text-destructive'
+    if (meanTime > 200) return 'text-primary'
+    if (meanTime > 50) return 'text-secondary'
+    return 'text-foreground'
   }
 
   const formatBytes = (bytes: number) => {
@@ -32,7 +33,7 @@ export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border">
+    <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -47,7 +48,7 @@ export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
         <TableBody>
           {queries.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
                 No query performance data available
               </TableCell>
             </TableRow>
@@ -75,6 +76,7 @@ export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
           )}
         </TableBody>
       </Table>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   )
 }

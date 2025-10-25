@@ -12,6 +12,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { formatDistanceToNow } from 'date-fns'
 import type { SecurityEvent } from '@/features/admin/security-monitoring/api/types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface SecurityEventsPanelProps {
   events: SecurityEvent[]
@@ -55,7 +56,7 @@ export function SecurityEventsPanel({ events }: SecurityEventsPanelProps) {
         {events.length === 0 ? (
           <CardDescription>No security events recorded for the selected timeframe.</CardDescription>
         ) : (
-          <div className="max-h-96 overflow-y-auto rounded-md border">
+          <ScrollArea className="max-h-96">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -87,7 +88,8 @@ export function SecurityEventsPanel({ events }: SecurityEventsPanelProps) {
                 ))}
               </TableBody>
             </Table>
-          </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         )}
       </CardContent>
     </Card>

@@ -55,17 +55,17 @@ export async function GET(
     ])
 
     const serviceOptions: ServiceOption[] = (services ?? [])
-      .filter((service) => typeof service?.id === 'string')
+      .filter((service) => typeof service?.['id'] === 'string')
       .map((service) => ({
-        id: service?.id as string,
-        name: service?.name ?? 'Untitled service',
+        id: service?.['id'] as string,
+        name: service?.['name'] ?? 'Untitled service',
       }))
 
     const staffOptions: StaffOption[] = (staff ?? [])
-      .filter((member) => typeof member?.id === 'string')
+      .filter((member) => typeof member?.['id'] === 'string')
       .map((member) => ({
-        id: member?.id as string,
-        name: member?.full_name ?? 'Team member',
+        id: member?.['id'] as string,
+        name: member?.['full_name'] ?? 'Team member',
       }))
 
     return NextResponse.json({

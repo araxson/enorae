@@ -29,7 +29,7 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
   const [error, setError] = useState<string | null>(null)
 
   const handleDelete = async () => {
-    if (!review.salon_id || !review.id) {
+    if (!review['salon_id'] || !review['id']) {
       setError('Review ID or Salon ID not found')
       return
     }
@@ -37,7 +37,7 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
     setIsLoading(true)
     setError(null)
 
-    const result = await deleteReview(review.id, review.salon_id)
+    const result = await deleteReview(review['id'], review['salon_id'])
 
     if (result.success) {
       setOpen(false)
@@ -67,10 +67,10 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
           </DialogDescription>
         </DialogHeader>
 
-        {review.comment && (
+        {review['comment'] && (
           <Alert>
             <AlertTitle>Your review</AlertTitle>
-            <AlertDescription>{review.comment}</AlertDescription>
+            <AlertDescription>{review['comment']}</AlertDescription>
           </Alert>
         )}
 

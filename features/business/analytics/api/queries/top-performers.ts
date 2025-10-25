@@ -36,19 +36,19 @@ export async function getTopServices(
   const serviceStats = new Map<string, ServiceStats>()
 
   appointmentServices.forEach((service) => {
-    if (!service.service_id || !service.service_name) return
+    if (!service['service_id'] || !service['service_name']) return
 
-    if (!serviceStats.has(service.service_id)) {
-      serviceStats.set(service.service_id, {
-        name: service.service_name,
+    if (!serviceStats.has(service['service_id'])) {
+      serviceStats.set(service['service_id'], {
+        name: service['service_name'],
         count: 0,
         revenue: 0,
       })
     }
 
-    const stats = serviceStats.get(service.service_id)!
+    const stats = serviceStats.get(service['service_id'])!
     stats.count += 1
-    stats.revenue += service.current_price || 0
+    stats.revenue += service['current_price'] || 0
   })
 
   return Array.from(serviceStats.values())
@@ -84,20 +84,20 @@ export async function getTopStaff(
   const stats = new Map<string, StaffStats>()
 
   appointments.forEach((appointment) => {
-    if (!appointment.staff_id) return
+    if (!appointment['staff_id']) return
 
-    if (!stats.has(appointment.staff_id)) {
-      stats.set(appointment.staff_id, {
-        name: appointment.staff_name || 'Unknown',
-        title: appointment.staff_name,
+    if (!stats.has(appointment['staff_id'])) {
+      stats.set(appointment['staff_id'], {
+        name: appointment['staff_name'] || 'Unknown',
+        title: appointment['staff_name'],
         count: 0,
         revenue: 0,
       })
     }
 
-    const entry = stats.get(appointment.staff_id)!
+    const entry = stats.get(appointment['staff_id'])!
     entry.count += 1
-    entry.revenue += appointment.total_price || 0
+    entry.revenue += appointment['total_price'] || 0
   })
 
   return Array.from(stats.values())

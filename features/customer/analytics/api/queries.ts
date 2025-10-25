@@ -28,7 +28,7 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
   const { data: appointments, error: appointmentsError } = await supabase
     .from('appointments')
     .select('*')
-    .eq('customer_id', session.user.id)
+    .eq('customer_id', session.user['id'])
     .order('start_time', { ascending: false })
     .returns<Appointment[]>()
 
@@ -36,19 +36,19 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
 
   // Calculate metrics
   const totalAppointments = appointments?.length || 0
-  const completedAppointments = appointments?.filter(a => a.status === 'completed').length || 0
-  const cancelledAppointments = appointments?.filter(a => a.status === 'cancelled').length || 0
+  const completedAppointments = appointments?.filter(a => a['status'] === 'completed').length || 0
+  const cancelledAppointments = appointments?.filter(a => a['status'] === 'cancelled').length || 0
 
   // Calculate total spending from appointment prices
   const totalSpending = appointments?.reduce((sum, apt) => {
-    const price = typeof apt.total_price === 'number' ? apt.total_price : 0
+    const price = typeof apt['total_price'] === 'number' ? apt['total_price'] : 0
     return sum + price
   }, 0) || 0
 
   // Get favorite services (most frequently booked)
   const serviceCounts: Record<string, number> = {}
   appointments?.forEach(apt => {
-    const serviceNames = (apt.service_names as string[]) || []
+    const serviceNames = (apt['service_names'] as string[]) || []
     serviceNames.forEach(name => {
       serviceCounts[name] = (serviceCounts[name] || 0) + 1
     })
@@ -84,7 +84,7 @@ export async function getAppointmentFrequency(): Promise<{ month: string; count:
   const { data: appointments, error } = await supabase
     .from('appointments')
     .select('*')
-    .eq('customer_id', session.user.id)
+    .eq('customer_id', session.user['id'])
     .gte('start_time', new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString())
     .returns<Appointment[]>()
 
@@ -93,8 +93,8 @@ export async function getAppointmentFrequency(): Promise<{ month: string; count:
   // Group by month
   const monthCounts: Record<string, number> = {}
   appointments?.forEach(apt => {
-    if (apt.start_time) {
-      const date = new Date(apt.start_time)
+    if (apt['start_time']) {
+      const date = new Date(apt['start_time'])
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
       monthCounts[monthKey] = (monthCounts[monthKey] || 0) + 1
     }

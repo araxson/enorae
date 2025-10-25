@@ -34,11 +34,15 @@ export function useVirtualization<T>({
     const start = Math.max(0, visibleStart - overscan)
     const end = Math.min(items.length, visibleEnd + overscan)
 
-    const virtualItems = []
+    const virtualItems: Array<VirtualizedItem<T>> = []
     for (let index = start; index < end; index += 1) {
+      const item = items[index]
+      if (item === undefined) {
+        continue
+      }
       virtualItems.push({
         index,
-        item: items[index],
+        item,
         style: {
           position: 'absolute',
           top: index * itemHeight,

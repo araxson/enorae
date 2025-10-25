@@ -26,7 +26,7 @@ export function EditPermissionsDialog({ role, open, onOpenChange }: EditPermissi
 
   useEffect(() => {
     if (open && role) {
-      setPermissions(role.permissions || [])
+      setPermissions(role['permissions'] || [])
     }
   }, [open, role])
 
@@ -45,14 +45,14 @@ export function EditPermissionsDialog({ role, open, onOpenChange }: EditPermissi
   }
 
   const handleSubmit = async () => {
-    if (!role?.id) {
+    if (!role?.['id']) {
       toast.error('Invalid role identifier')
       return
     }
 
     setIsLoading(true)
     const formData = new FormData()
-    formData.append('roleId', role.id)
+    formData.append('roleId', role['id'])
     formData.append('permissions', JSON.stringify(permissions))
 
     const result = await updateRolePermissions(formData)

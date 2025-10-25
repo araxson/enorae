@@ -22,7 +22,7 @@ export async function getStaffClients(staffId: string): Promise<ClientWithHistor
   const { data: staffProfile } = await supabase
     .from('staff_profiles_view')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .eq('id', staffId)
     .single()
 
@@ -42,31 +42,31 @@ export async function getStaffClients(staffId: string): Promise<ClientWithHistor
 
   appointments?.forEach((apt) => {
     const appointment = apt as Appointment
-    if (!appointment.customer_id) return
+    if (!appointment['customer_id']) return
 
-    const existing = clientsMap.get(appointment.customer_id)
+    const existing = clientsMap.get(appointment['customer_id'])
     if (existing) {
-      existing.total_appointments += 1
-      existing.total_revenue = (existing.total_revenue || 0) + (appointment.total_price || 0)
+      existing['total_appointments'] += 1
+      existing['total_revenue'] = (existing['total_revenue'] || 0) + (appointment['total_price'] || 0)
       if (
-        appointment.start_time &&
-        (!existing.last_appointment_date || appointment.start_time > existing.last_appointment_date)
+        appointment['start_time'] &&
+        (!existing.last_appointment_date || appointment['start_time'] > existing.last_appointment_date)
       ) {
-        existing.last_appointment_date = appointment.start_time
+        existing.last_appointment_date = appointment['start_time']
       }
     } else {
-      clientsMap.set(appointment.customer_id, {
-        customer_id: appointment.customer_id,
-        customer_name: appointment.customer_name,
-        customer_email: appointment.customer_email,
+      clientsMap.set(appointment['customer_id'], {
+        customer_id: appointment['customer_id'],
+        customer_name: appointment['customer_name'],
+        customer_email: appointment['customer_email'],
         total_appointments: 1,
-        last_appointment_date: appointment.start_time,
-        total_revenue: appointment.total_price || 0,
+        last_appointment_date: appointment['start_time'],
+        total_revenue: appointment['total_price'] || 0,
       })
     }
   })
 
-  return Array.from(clientsMap.values()).sort((a, b) => b.total_appointments - a.total_appointments)
+  return Array.from(clientsMap.values()).sort((a, b) => b['total_appointments'] - a['total_appointments'])
 }
 
 export async function getClientAppointmentHistory(staffId: string, customerId: string): Promise<Appointment[]> {
@@ -77,7 +77,7 @@ export async function getClientAppointmentHistory(staffId: string, customerId: s
   const { data: staffProfile } = await supabase
     .from('staff_profiles_view')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .eq('id', staffId)
     .single()
 
@@ -119,7 +119,7 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
   const { data: staffProfile } = await supabase
     .from('staff_profiles_view')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .eq('id', staffId)
     .single()
 
@@ -136,16 +136,16 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
   if (!appointments || appointments.length === 0) return null
 
   const typedAppointments = appointments as Appointment[]
-  const completed = typedAppointments.filter(a => a.status === 'completed')
-  const cancelled = typedAppointments.filter(a => a.status === 'cancelled')
+  const completed = typedAppointments.filter(a => a['status'] === 'completed')
+  const cancelled = typedAppointments.filter(a => a['status'] === 'cancelled')
 
-  const totalSpent = completed.reduce((sum, a) => sum + (a.total_price || 0), 0)
+  const totalSpent = completed.reduce((sum, a) => sum + (a['total_price'] || 0), 0)
 
   // Calculate favorite services
   const serviceMap = new Map<string, number>()
   completed.forEach(a => {
-    if (a.service_names && Array.isArray(a.service_names)) {
-      a.service_names.forEach(serviceName => {
+    if (a['service_names'] && Array.isArray(a['service_names'])) {
+      a['service_names'].forEach(serviceName => {
         const count = serviceMap.get(serviceName) || 0
         serviceMap.set(serviceName, count + 1)
       })
@@ -179,8 +179,8 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
 
   return {
     customer_id: customerId,
-    customer_name: metadata?.full_name || typedAppointments[0]?.customer_name || null,
-    customer_email: typedAppointments[0]?.customer_email || null,
+    customer_name: metadata?.['full_name'] || typedAppointments[0]?.['customer_name'] || null,
+    customer_email: typedAppointments[0]?.['customer_email'] || null,
     customer_phone: null,
     total_appointments: appointments.length,
     completed_appointments: completed.length,
@@ -211,7 +211,7 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
   const { data: staffProfile } = await supabase
     .from('staff_profiles_view')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .eq('id', staffId)
     .single()
 
@@ -230,10 +230,10 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
 
   appointments.forEach(apt => {
     const appointment = apt as Appointment
-    const serviceNames = Array.isArray(appointment.service_names)
-      ? appointment.service_names
+    const serviceNames = Array.isArray(appointment['service_names'])
+      ? appointment['service_names']
       : ['Unknown Service']
-    const price = appointment.total_price || 0
+    const price = appointment['total_price'] || 0
 
     serviceNames.forEach(serviceName => {
       const existing = serviceMap.get(serviceName)
@@ -241,8 +241,8 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
         existing.times_booked += 1
         existing.total_spent += price
         existing.avg_price = existing.total_spent / existing.times_booked
-        if (appointment.start_time && (!existing.last_booked || appointment.start_time > existing.last_booked)) {
-          existing.last_booked = appointment.start_time
+        if (appointment['start_time'] && (!existing.last_booked || appointment['start_time'] > existing.last_booked)) {
+          existing.last_booked = appointment['start_time']
         }
       } else {
         serviceMap.set(serviceName, {
@@ -250,7 +250,7 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
           times_booked: 1,
           total_spent: price,
           avg_price: price,
-          last_booked: appointment.start_time || null,
+          last_booked: appointment['start_time'] || null,
         })
       }
     })
@@ -275,7 +275,7 @@ export async function getClientRetentionMetrics(staffId: string): Promise<Client
   const { data: staffProfile } = await supabase
     .from('staff_profiles_view')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .eq('id', staffId)
     .single()
 
@@ -306,9 +306,9 @@ export async function getClientRetentionMetrics(staffId: string): Promise<Client
   // Count appointments per client
   const clientCounts = new Map<string, number>()
   typedAppointments.forEach(apt => {
-    if (apt.customer_id) {
-      const count = clientCounts.get(apt.customer_id) || 0
-      clientCounts.set(apt.customer_id, count + 1)
+    if (apt['customer_id']) {
+      const count = clientCounts.get(apt['customer_id']) || 0
+      clientCounts.set(apt['customer_id'], count + 1)
     }
   })
 

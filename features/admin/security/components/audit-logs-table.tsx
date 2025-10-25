@@ -13,6 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, Activity } from 'lucide-react'
 import type { AuditLog } from '@/features/admin/security/api/queries'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -49,63 +50,66 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
   }
 
   return (
-    <div className="border rounded-lg">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Event</TableHead>
-            <TableHead>User</TableHead>
-            <TableHead>Resource</TableHead>
-            <TableHead>IP Address</TableHead>
-            <TableHead>Time</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {logs.map((log) => (
-            <TableRow key={log.id}>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    {getEventTypeBadge(log.event_type)}
-                  </div>
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <span className="text-sm">
-                  {log.user_email || log.user_name || log.user_id || 'System'}
-                </span>
-              </TableCell>
-
-              <TableCell>
-                {log.resource_type ? (
-                  <div className="text-sm">
-                    <span className="font-medium">{log.resource_type}</span>
-                    {log.resource_id && (
-                      <span className="text-muted-foreground"> · {log.resource_id.substring(0, 8)}</span>
+    <Card>
+      <CardHeader className="sr-only">
+        <CardTitle>Audit logs</CardTitle>
+        <CardDescription>Latest recorded admin and system activity</CardDescription>
+      </CardHeader>
+      <CardContent className="p-0">
+        <ScrollArea className="w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Event</TableHead>
+                <TableHead>User</TableHead>
+                <TableHead>Resource</TableHead>
+                <TableHead>IP Address</TableHead>
+                <TableHead>Time</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {logs.map((log) => (
+                <TableRow key={log.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-muted-foreground" />
+                      <div>{getEventTypeBadge(log.event_type)}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">
+                      {log.user_email || log.user_name || log.user_id || 'System'}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    {log.resource_type ? (
+                      <div className="text-sm">
+                        <span className="font-medium">{log.resource_type}</span>
+                        {log.resource_id && (
+                          <span className="text-muted-foreground"> · {log.resource_id.substring(0, 8)}</span>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">-</span>
                     )}
-                  </div>
-                ) : (
-                  <span className="text-sm text-muted-foreground">-</span>
-                )}
-              </TableCell>
-
-              <TableCell>
-                <span className="text-sm text-muted-foreground font-mono">
-                  {log.ip_address || 'Unknown'}
-                </span>
-              </TableCell>
-
-              <TableCell>
-                <span className="text-sm text-muted-foreground">
-                  {formatDistanceToNow(new Date(log.created_at), { addSuffix: true })}
-                </span>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-mono text-sm text-muted-foreground">
+                      {log.ip_address || 'Unknown'}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm text-muted-foreground">
+                      {formatDistanceToNow(new Date(log.created_at), { addSuffix: true })}
+                    </span>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </CardContent>
+    </Card>
   )
 }

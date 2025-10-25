@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { MapPin } from 'lucide-react'
 import { LocationCard } from './components/location-card'
@@ -33,6 +33,7 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
       ) : (
         <Alert>
           <MapPin className="h-4 w-4" />
+          <AlertTitle>No assigned location</AlertTitle>
           <AlertDescription>
             No specific location assigned. You may work at any salon location.
           </AlertDescription>
@@ -47,7 +48,7 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
           <CardContent>
             <AllLocationsList
               locations={allLocations}
-              currentLocationId={myLocation?.id}
+              currentLocationId={myLocation?.['id']}
             />
           </CardContent>
         </Card>

@@ -23,7 +23,7 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
                 <h3>{category}</h3>
                 <div className="flex flex-col gap-3">
                   {categoryServices.map((service) => (
-                    <ServiceRow key={service.id} service={service} />
+                    <ServiceRow key={service['id']} service={service} />
                   ))}
                 </div>
               </div>
@@ -43,13 +43,13 @@ function ServiceRow({ service }: ServiceRowProps) {
   return (
     <div className="flex gap-4 items-start justify-between py-2">
       <div className="flex flex-col gap-2">
-        <p className="leading-7">{service.name}</p>
-        {service.description && <p className="text-muted-foreground">{service.description}</p>}
+        <p className="leading-7">{service['name']}</p>
+        {service['description'] && <p className="text-muted-foreground">{service['description']}</p>}
       </div>
       <div className="flex gap-3 items-center">
-        {service.duration_minutes && <p className="text-muted-foreground">{service.duration_minutes}m</p>}
-        {service.sale_price && (
-          <p className="leading-7 whitespace-nowrap">${service.sale_price}</p>
+        {service['duration_minutes'] && <p className="text-muted-foreground">{service['duration_minutes']}m</p>}
+        {service['sale_price'] && (
+          <p className="leading-7 whitespace-nowrap">${service['sale_price']}</p>
         )}
       </div>
     </div>

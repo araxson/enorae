@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/shared/empty-state'
+import { EmptyState } from '@/components/shared'
 import { Receipt } from 'lucide-react'
 import { TransactionCard } from './transaction-card'
 import type { CustomerTransactionWithDetails } from '@/features/customer/transactions/api/queries'
@@ -30,7 +30,7 @@ export function TransactionsList({ transactions }: TransactionsListProps) {
   return (
     <div className="flex flex-col gap-4">
       {transactions.map((transaction) => (
-        <TransactionCard key={transaction.id} transaction={transaction} />
+        <TransactionCard key={transaction['id']} transaction={transaction} />
       ))}
     </div>
   )

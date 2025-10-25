@@ -68,35 +68,35 @@ async function ensureSalonAccess(salonId: string): Promise<void> {
 
 function mapIncidentToAuditLog(row: SecurityIncidentLogRow): AuditLog {
   return {
-    id: row.id ?? '',
-    user_id: row.user_id ?? '',
-    impersonator_id: row.impersonator_id ?? null,
-    action: row.action ?? row.event_type ?? 'unknown',
-    entity_type: row.entity_type ?? 'unknown',
-    entity_id: row.entity_id ?? null,
-    old_values: normalizeRecord(row.old_values) ?? null,
-    new_values: normalizeRecord(row.new_values) ?? null,
-    ip_address: toStringOrNull(row.ip_address),
-    user_agent: row.user_agent ?? null,
-    request_id: row.request_id ?? null,
-    is_success: row.is_success ?? true,
-    error_message: row.error_message ?? null,
-    created_at: row.created_at ?? new Date().toISOString(),
+    id: row['id'] ?? '',
+    user_id: row['user_id'] ?? '',
+    impersonator_id: row['impersonator_id'] ?? null,
+    action: row['action'] ?? row['event_type'] ?? 'unknown',
+    entity_type: row['entity_type'] ?? 'unknown',
+    entity_id: row['entity_id'] ?? null,
+    old_values: normalizeRecord(row['old_values']) ?? null,
+    new_values: normalizeRecord(row['new_values']) ?? null,
+    ip_address: toStringOrNull(row['ip_address']),
+    user_agent: row['user_agent'] ?? null,
+    request_id: row['request_id'] ?? null,
+    is_success: row['is_success'] ?? true,
+    error_message: row['error_message'] ?? null,
+    created_at: row['created_at'] ?? new Date().toISOString(),
   }
 }
 
 function mapIncidentToSecurityAuditLog(row: SecurityIncidentLogRow): SecurityAuditLog {
   return {
-    id: row.id ?? '',
-    event_type: row.event_type ?? row.action ?? 'unknown',
-    severity: row.severity ?? 'info',
-    user_id: row.user_id ?? null,
-    salon_id: row.salon_id ?? null,
-    ip_address: toStringOrNull(row.ip_address),
-    user_agent: row.user_agent ?? null,
-    request_id: row.request_id ?? null,
-    metadata: normalizeRecord(row.metadata) ?? null,
-    created_at: row.created_at ?? new Date().toISOString(),
+    id: row['id'] ?? '',
+    event_type: row['event_type'] ?? row['action'] ?? 'unknown',
+    severity: row['severity'] ?? 'info',
+    user_id: row['user_id'] ?? null,
+    salon_id: row['salon_id'] ?? null,
+    ip_address: toStringOrNull(row['ip_address']),
+    user_agent: row['user_agent'] ?? null,
+    request_id: row['request_id'] ?? null,
+    metadata: normalizeRecord(row['metadata']) ?? null,
+    created_at: row['created_at'] ?? new Date().toISOString(),
   }
 }
 
@@ -115,8 +115,8 @@ export async function getAuditLogs(
     .order('created_at', { ascending: false })
     .limit(100)
 
-  if (filters?.action) {
-    query = query.eq('action', filters.action)
+  if (filters?.['action']) {
+    query = query.eq('action', filters['action'])
   }
 
   if (filters?.entityType) {
@@ -147,7 +147,7 @@ export async function getAuditLogs(
 
   const rows = (data ?? []) as SecurityIncidentLogRow[]
 
-  return rows.filter((row) => Boolean(row?.id && row?.user_id)).map(mapIncidentToAuditLog)
+  return rows.filter((row) => Boolean(row?.['id'] && row?.['user_id'])).map(mapIncidentToAuditLog)
 }
 
 export async function getSecurityAuditLogs(
@@ -174,8 +174,8 @@ export async function getSecurityAuditLogs(
     query = query.eq('event_type', filters.eventType)
   }
 
-  if (filters?.severity) {
-    query = query.eq('severity', filters.severity)
+  if (filters?.['severity']) {
+    query = query.eq('severity', filters['severity'])
   }
 
   if (filters?.startDate) {
@@ -195,7 +195,7 @@ export async function getSecurityAuditLogs(
   const rows = (data ?? []) as SecurityIncidentLogRow[]
 
   return rows
-    .filter((row) => Boolean(row?.id && (row?.event_type || row?.action)))
+    .filter((row) => Boolean(row?.['id'] && (row?.['event_type'] || row?.['action'])))
     .map(mapIncidentToSecurityAuditLog)
 }
 
@@ -225,15 +225,15 @@ export async function getAuditLogStats(salonId: string) {
       created_at: string | null
     }>
 
-  const normalizedRows = rows.filter((row) => Boolean(row.id && row.created_at))
+  const normalizedRows = rows.filter((row) => Boolean(row['id'] && row['created_at']))
 
   const totalEvents = normalizedRows.length
-  const failedActions = normalizedRows.filter((row) => row.is_success === false).length
+  const failedActions = normalizedRows.filter((row) => row['is_success'] === false).length
   const criticalEvents = normalizedRows.filter(
-    (row) => (row.severity ?? '').toLowerCase() === 'critical'
+    (row) => (row['severity'] ?? '').toLowerCase() === 'critical'
   ).length
   const warningEvents = normalizedRows.filter(
-    (row) => (row.severity ?? '').toLowerCase() === 'warning'
+    (row) => (row['severity'] ?? '').toLowerCase() === 'warning'
   ).length
 
   return {

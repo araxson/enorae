@@ -39,17 +39,17 @@ export async function updateSalonInfo(salonId: string, formData: FormData) {
     // Update salon info
     const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString(),
-      updated_by_id: session.user.id,
+      updated_by_id: session.user['id'],
     }
 
-    if (validated.business_name) {
-      updateData.business_name = validated.business_name
+    if (validated['business_name']) {
+      updateData['business_name'] = validated['business_name']
     }
-    if (validated.business_type) {
-      updateData.business_type = validated.business_type
+    if (validated['business_type']) {
+      updateData['business_type'] = validated['business_type']
     }
-    if (validated.established_at) {
-      updateData.established_at = validated.established_at
+    if (validated['established_at']) {
+      updateData['established_at'] = validated['established_at']
     }
 
     const { error } = await supabase

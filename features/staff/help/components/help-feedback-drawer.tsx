@@ -13,7 +13,7 @@ import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface HelpFeedbackDrawerProps {
   open: boolean
@@ -36,21 +36,20 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
               <Input id="bookmark-name" placeholder="e.g. Morning scheduling tips" />
             </div>
 
-            <div className="grid gap-2">
-              <Label>Notify me when</Label>
-              <Card>
-                <CardContent>
-                  <div className="space-y-2 p-4 text-sm">
-                    <Label className="flex items-center gap-2">
-                      <Checkbox defaultChecked /> New resources are added
-                    </Label>
-                    <Label className="flex items-center gap-2">
-                      <Checkbox /> Content is updated
-                    </Label>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Notify me when</CardTitle>
+                <CardDescription>Select the updates you would like to keep.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <Checkbox defaultChecked /> New resources are added
+                </Label>
+                <Label className="flex items-center gap-2">
+                  <Checkbox /> Content is updated
+                </Label>
+              </CardContent>
+            </Card>
 
             <div className="grid gap-2">
               <Label htmlFor="feedback-notes">Feedback</Label>
@@ -62,15 +61,13 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
             </div>
 
             <Card>
-              <CardContent>
-                <div className="flex items-start justify-between gap-4 p-4">
-                  <div className="space-y-1">
-                    <p>Share anonymously</p>
-                    <p className="text-muted-foreground">We will only record the feedback message.</p>
-                  </div>
-                  <Switch defaultChecked />
+              <CardHeader className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <CardTitle>Share anonymously</CardTitle>
+                  <CardDescription>We will only record the feedback message.</CardDescription>
                 </div>
-              </CardContent>
+                <Switch defaultChecked />
+              </CardHeader>
             </Card>
           </div>
         </ScrollArea>

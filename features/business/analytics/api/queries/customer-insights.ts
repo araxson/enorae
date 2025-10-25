@@ -47,8 +47,8 @@ export async function getCustomerInsights(
   if (metricsResponse.error) throw metricsResponse.error
 
   const appointments = (appointmentsResponse.data || []) as Appointment[]
-  const completed = appointments.filter(appointment => appointment.status === 'completed')
-  const revenue = completed.reduce((sum, appointment) => sum + (appointment.total_price || 0), 0)
+  const completed = appointments.filter(appointment => appointment['status'] === 'completed')
+  const revenue = completed.reduce((sum, appointment) => sum + (appointment['total_price'] || 0), 0)
   const averageOrderValue = completed.length ? revenue / completed.length : 0
 
   type CustomerAgg = {
@@ -60,24 +60,24 @@ export async function getCustomerInsights(
 
   const customers = new Map<string, CustomerAgg>()
   for (const appointment of completed) {
-    if (!appointment.customer_id) continue
-    const existing = customers.get(appointment.customer_id) || {
-      name: appointment.customer_name || 'Customer',
-      email: appointment.customer_email,
+    if (!appointment['customer_id']) continue
+    const existing = customers.get(appointment['customer_id']) || {
+      name: appointment['customer_name'] || 'Customer',
+      email: appointment['customer_email'],
       totalSpent: 0,
       visitCount: 0,
     }
-    existing.totalSpent += appointment.total_price || 0
+    existing.totalSpent += appointment['total_price'] || 0
     existing.visitCount += 1
-    customers.set(appointment.customer_id, existing)
+    customers.set(appointment['customer_id'], existing)
   }
 
   const totalCustomers = customers.size
   const averageLifetimeValue = totalCustomers ? revenue / totalCustomers : 0
 
   const dailyMetrics = (metricsResponse.data || []) as DailyMetric[]
-  const newCustomers = dailyMetrics.reduce((sum, metric) => sum + (metric.new_customers || 0), 0)
-  const returningCustomers = dailyMetrics.reduce((sum, metric) => sum + (metric.returning_customers || 0), 0)
+  const newCustomers = dailyMetrics.reduce((sum, metric) => sum + (metric['new_customers'] || 0), 0)
+  const returningCustomers = dailyMetrics.reduce((sum, metric) => sum + (metric['returning_customers'] || 0), 0)
   const retentionDenominator = newCustomers + returningCustomers
   const retentionRate = retentionDenominator > 0
     ? (returningCustomers / retentionDenominator) * 100
@@ -87,8 +87,8 @@ export async function getCustomerInsights(
     .sort((a, b) => b.totalSpent - a.totalSpent)
     .slice(0, topN)
     .map(customer => ({
-      name: customer.name,
-      email: customer.email || undefined,
+      name: customer['name'],
+      email: customer['email'] || undefined,
       totalSpent: customer.totalSpent,
       visitCount: customer.visitCount,
     }))

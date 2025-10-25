@@ -79,33 +79,33 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
               </TableHeader>
               <TableBody>
                 {salons.slice(0, 8).map((salon) => (
-                  <TableRow key={salon.id} className="last:border-0">
+                  <TableRow key={salon['id']} className="last:border-0">
                     <TableCell>
                       <div className="flex min-w-0 items-start gap-3">
                         <Avatar>
                           <AvatarFallback className="text-xs font-semibold">
-                            {getInitials(salon.name)}
+                            {getInitials(salon['name'])}
                           </AvatarFallback>
                         </Avatar>
                         <div className="min-w-0 space-y-1">
                           <p className="truncate font-medium leading-tight">
-                            {salon.name || 'Unnamed salon'}
+                            {salon['name'] || 'Unnamed salon'}
                           </p>
                           <span className="text-xs text-muted-foreground">
-                            {`${salon.location_count ?? 0} location${(salon.location_count ?? 0) === 1 ? '' : 's'} • ${salon.staff_count ?? 0} staff`}
+                            {`${salon['location_count'] ?? 0} location${(salon['location_count'] ?? 0) === 1 ? '' : 's'} • ${salon['staff_count'] ?? 0} staff`}
                           </span>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell className="hidden text-sm text-muted-foreground xl:table-cell">
-                      {safeFormatDate(salon.created_at, 'MMM d, yyyy', 'Recently')}
+                      {safeFormatDate(salon['created_at'], 'MMM d, yyyy', 'Recently')}
                     </TableCell>
                     <TableCell className="text-right">
                       <Badge
-                        variant={salon.is_accepting_bookings ? 'default' : 'outline'}
+                        variant={salon['is_accepting_bookings'] ? 'default' : 'outline'}
                         className="justify-end gap-1"
                       >
-                        {salon.is_accepting_bookings ? 'Accepting bookings' : 'Paused'}
+                        {salon['is_accepting_bookings'] ? 'Accepting bookings' : 'Paused'}
                       </Badge>
                     </TableCell>
                   </TableRow>

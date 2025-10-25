@@ -32,8 +32,8 @@ export function useBookingForm({ services, form, salonId }: UseBookingFormParams
   const serviceDurations = useMemo(() => {
     const map = new Map<string, number>()
     services.forEach((service) => {
-      if (service.id) {
-        map.set(service.id, service.duration_minutes ?? 30)
+      if (service['id']) {
+        map.set(service['id'], service['duration_minutes'] ?? 30)
       }
     })
     return map
@@ -114,7 +114,7 @@ export function useBookingForm({ services, form, salonId }: UseBookingFormParams
       formData.append('salonId', salonId)
       formData.append('serviceId', values.serviceId)
       formData.append('staffId', values.staffId)
-      formData.append('date', values.date)
+      formData.append('date', values['date'])
       formData.append('time', values.time)
       if (values.notes) {
         formData.append('notes', values.notes)

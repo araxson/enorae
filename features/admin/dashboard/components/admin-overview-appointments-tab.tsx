@@ -40,29 +40,29 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
         <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((apt) => (
-              <Card key={apt.id}>
+              <Card key={apt['id']}>
                 <CardHeader className="pb-2">
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <CardTitle>{apt.salon_name || 'Unknown salon'}</CardTitle>
+                    <CardTitle>{apt['salon_name'] || 'Unknown salon'}</CardTitle>
                     <Badge
-                      variant={appointmentStatusVariant[apt.status ?? ''] ?? 'secondary'}
+                      variant={appointmentStatusVariant[apt['status'] ?? ''] ?? 'secondary'}
                       className="capitalize"
                     >
-                      {apt.status || 'pending'}
+                      {apt['status'] || 'pending'}
                     </Badge>
                   </div>
                   <CardDescription>
-                    {apt.customer_name || 'Unknown customer'} • {apt.service_name || 'Service pending'}
+                    {apt['customer_name'] || 'Unknown customer'} • {apt['service_name'] || 'Service pending'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3 pt-0">
                   <Separator />
                   <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
                     <span>
-                      Created {safeFormatDate(apt.created_at, 'MMM d, yyyy', 'recently')}
+                      Created {safeFormatDate(apt['created_at'], 'MMM d, yyyy', 'recently')}
                     </span>
                     <span>
-                      Scheduled {safeFormatDate(apt.start_time, 'MMM d, yyyy p', 'TBD')}
+                      Scheduled {safeFormatDate(apt['start_time'], 'MMM d, yyyy p', 'TBD')}
                     </span>
                   </div>
                 </CardContent>

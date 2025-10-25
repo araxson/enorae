@@ -18,7 +18,7 @@ export async function StatsFreshnessMonitor() {
         <div className="grid gap-4 md:grid-cols-2 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Tables</CardTitle>
+              <CardTitle>Total Tables</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{snapshot.totalCount}</div>
@@ -27,10 +27,10 @@ export async function StatsFreshnessMonitor() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Stale Statistics</CardTitle>
+              <CardTitle>Stale Statistics</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">{snapshot.staleCount}</div>
+              <div className="text-2xl font-bold text-destructive">{snapshot.staleCount}</div>
               <p className="text-xs text-muted-foreground">Maintenance needed</p>
             </CardContent>
           </Card>

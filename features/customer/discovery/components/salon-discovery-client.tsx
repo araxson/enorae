@@ -21,9 +21,9 @@ export function SalonDiscoveryClient({ initialSalons }: SalonDiscoveryClientProp
       const lowerQuery = query.toLowerCase()
       filtered = filtered.filter(
         (salon) =>
-          salon.name?.toLowerCase().includes(lowerQuery) ||
-          salon.short_description?.toLowerCase().includes(lowerQuery) ||
-          salon.full_description?.toLowerCase().includes(lowerQuery)
+          salon['name']?.toLowerCase().includes(lowerQuery) ||
+          salon['short_description']?.toLowerCase().includes(lowerQuery) ||
+          salon['full_description']?.toLowerCase().includes(lowerQuery)
       )
     }
 

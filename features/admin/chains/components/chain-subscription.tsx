@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CreditCard, CheckCircle2, XCircle } from 'lucide-react'
 import { updateChainSubscription } from '@/features/admin/chains/api/mutations'
 import { Textarea } from '@/components/ui/textarea'
@@ -74,6 +74,7 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
             ) : (
               <XCircle className="h-4 w-4" />
             )}
+            <AlertTitle>{message.type === 'success' ? 'Subscription updated' : 'Update failed'}</AlertTitle>
             <AlertDescription>{message.text}</AlertDescription>
           </Alert>
         )}
@@ -128,7 +129,7 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
         </Button>
 
         <div className="rounded-lg bg-muted p-4">
-          <h4 className="mb-2">Note:</h4>
+          <p className="mb-2 text-sm font-medium">Note</p>
           <p className="text-muted-foreground">
             Subscription changes take effect immediately. Chains will be notified of any tier changes.
           </p>

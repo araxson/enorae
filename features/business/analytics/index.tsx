@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   getAnalyticsOverview,
   getTopServices,
@@ -34,6 +34,7 @@ export async function EnhancedAnalytics({ startDate, endDate }: EnhancedAnalytic
       <section className="py-16 md:py-24 lg:py-32">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <Alert>
+            <AlertTitle>Analytics unavailable</AlertTitle>
             <AlertDescription>
               {error instanceof Error ? error.message : 'Failed to load salon data'}
             </AlertDescription>

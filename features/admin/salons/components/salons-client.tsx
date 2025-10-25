@@ -33,7 +33,7 @@ export function SalonsClient({ salons, stats, insights }: SalonsClientProps) {
     return salons.filter((salon) => {
       const matchesSearch =
         !normalizedQuery ||
-        [salon.name, salon.business_name, salon.slug]
+        [salon['name'], salon.business_name, salon.slug]
           .filter(Boolean)
           .some((value) => value!.toLowerCase().includes(normalizedQuery))
 
@@ -112,9 +112,9 @@ function InsightCard({ title, subtitle, items, renderBadge }: InsightCardProps) 
           <p className="text-xs text-muted-foreground">No salons in this category.</p>
         ) : (
           items.slice(0, 5).map((salon) => (
-            <div key={salon.id} className="flex items-center justify-between gap-3">
+            <div key={salon['id']} className="flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <p className="truncate text-sm font-medium">{salon.name || 'Unnamed salon'}</p>
+                <p className="truncate text-sm font-medium">{salon['name'] || 'Unnamed salon'}</p>
                 <p className="truncate text-xs text-muted-foreground">{salon.business_name || '—'}</p>
               </div>
               {renderBadge(salon)}

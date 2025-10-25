@@ -50,35 +50,35 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
       </TableHeader>
       <TableBody>
         {services.map((service) => (
-          <TableRow key={service.id}>
+          <TableRow key={service['id']}>
             <TableCell>
               <div>
-                <p className="text-base font-medium">{service.service_name}</p>
-                {service.category_name && (
-                  <p className="text-xs text-muted-foreground">{service.category_name}</p>
+                <p className="text-base font-medium">{service['service_name']}</p>
+                {service['category_name'] && (
+                  <p className="text-xs text-muted-foreground">{service['category_name']}</p>
                 )}
               </div>
             </TableCell>
             <TableCell>
               <div>
-                <p className="text-sm">{service.staff_name || 'Unassigned'}</p>
-                {service.staff_title && (
-                  <p className="text-xs text-muted-foreground">{service.staff_title}</p>
+                <p className="text-sm">{service['staff_name'] || 'Unassigned'}</p>
+                {service['staff_title'] && (
+                  <p className="text-xs text-muted-foreground">{service['staff_title']}</p>
                 )}
               </div>
             </TableCell>
             <TableCell>
-              {formatTime(service.start_time)} - {formatTime(service.end_time)}
+              {formatTime(service['start_time'])} - {formatTime(service['end_time'])}
             </TableCell>
             <TableCell className="text-right">
-              {service.duration_minutes ? `${service.duration_minutes} min` : '-'}
+              {service['duration_minutes'] ? `${service['duration_minutes']} min` : '-'}
             </TableCell>
             <TableCell className="text-right">
-              {formatCurrency(Number(service.current_price))}
+              {formatCurrency(Number(service['current_price']))}
             </TableCell>
             <TableCell>
-              <Badge variant={getStatusColor(service.status)}>
-                {service.status || 'pending'}
+              <Badge variant={getStatusColor(service['status'])}>
+                {service['status'] || 'pending'}
               </Badge>
             </TableCell>
             <TableCell className="text-right">

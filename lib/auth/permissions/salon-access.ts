@@ -58,11 +58,14 @@ export async function getSalonContext(): Promise<SalonContext> {
   }
 
   const cookieStore = await cookies()
-  const cookieSalonId = cookieStore.get('active_salon_id')?.value
+  const cookieSalonId = cookieStore.get('active_salon_id')?.value ?? null
+  const fallbackSalonId =
+    accessibleSalonIds.length > 0 ? accessibleSalonIds[0] ?? null : null
 
-  const activeSalonId = cookieSalonId && accessibleSalonIds.includes(cookieSalonId)
-    ? cookieSalonId
-    : accessibleSalonIds[0]
+  const activeSalonId =
+    cookieSalonId && accessibleSalonIds.includes(cookieSalonId)
+      ? cookieSalonId
+      : fallbackSalonId
 
   return { activeSalonId, accessibleSalonIds }
 }

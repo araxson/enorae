@@ -85,7 +85,7 @@ export async function getUnreadCount() {
   const { data: count, error } = await supabase
     .schema('communication')
     .rpc('get_unread_count', {
-      p_user_id: user.id,
+      p_user_id: user['id'],
     })
 
   if (error) throw error
@@ -109,7 +109,7 @@ export async function getUnreadCounts() {
   const { data, error } = await supabase
     .schema('communication')
     .rpc('get_unread_counts', {
-      p_user_id: user.id,
+      p_user_id: user['id'],
     })
 
   if (error) throw error
@@ -119,7 +119,7 @@ export async function getUnreadCounts() {
 
   return {
     messages: result.messages ?? 0,
-    notifications: result.notifications ?? 0,
+    notifications: result['notifications'] ?? 0,
     total: result.total ?? 0,
   }
 }
@@ -141,7 +141,7 @@ export async function getRecentNotifications(limit: number = 20) {
   const { data, error } = await supabase
     .from('messages')
     .select('*')
-    .eq('to_user_id', user.id)
+    .eq('to_user_id', user['id'])
     .eq('context_type', 'system')
     .order('created_at', { ascending: false })
     .limit(limit)
@@ -161,10 +161,10 @@ export async function getNotificationPreferences() {
   if (!user) throw new Error('Unauthorized')
 
   const metadataPreferences =
-    (user.user_metadata?.notification_preferences as NotificationPreferencesMetadata | undefined) || {}
+    (user.user_metadata?.['notification_preferences'] as NotificationPreferencesMetadata | undefined) || {}
 
   return {
-    email: { ...defaultPreferences.email, ...(metadataPreferences.email || {}) },
+    email: { ...defaultPreferences['email'], ...(metadataPreferences['email'] || {}) },
     sms: { ...defaultPreferences.sms, ...(metadataPreferences.sms || {}) },
     in_app: { ...defaultPreferences.in_app, ...(metadataPreferences.in_app || {}) },
     push: metadataPreferences.push || {},
@@ -180,7 +180,7 @@ export async function getNotificationTemplates(): Promise<NotificationTemplate[]
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const stored = user.user_metadata?.notification_templates as NotificationTemplate[] | undefined
+  const stored = user.user_metadata?.['notification_templates'] as NotificationTemplate[] | undefined
 
   if (stored && Array.isArray(stored)) {
     return stored
@@ -223,7 +223,7 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
     .schema('communication')
     .from('messages')
     .select('id, created_at, content, context_type')
-    .eq('to_user_id', user.id)
+    .eq('to_user_id', user['id'])
     .eq('context_type', 'system')
     .order('created_at', { ascending: false })
     .limit(limit)
@@ -235,15 +235,15 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
 
   // Map messages to NotificationEntry format
   return (data || []).map(msg => ({
-    id: msg.id,
-    user_id: user.id,
+    id: msg['id'],
+    user_id: user['id'],
     channels: ['in_app'],
     status: 'delivered',
-    created_at: msg.created_at,
+    created_at: msg['created_at'],
     scheduled_for: null,
-    sent_at: msg.created_at,
+    sent_at: msg['created_at'],
     notification_type: 'system_alert',
-    payload: { content: msg.content },
+    payload: { content: msg['content'] },
   }))
 }
 
@@ -253,22 +253,22 @@ export async function getNotificationStatistics() {
   const totals = history.reduce<
     Record<NotificationStatus, { count: number; last?: string }>
   >((acc, entry) => {
-    const status = (entry.status || 'queued') as NotificationStatus
+    const status = (entry['status'] || 'queued') as NotificationStatus
     if (!acc[status]) {
-      acc[status] = { count: 0, last: entry.created_at || undefined }
+      acc[status] = { count: 0, last: entry['created_at'] || undefined }
     }
     acc[status].count += 1
-    if (entry.created_at) {
+    if (entry['created_at']) {
       acc[status].last =
-        !acc[status].last || entry.created_at > acc[status].last ? entry.created_at : acc[status].last
+        !acc[status].last || entry['created_at'] > acc[status].last ? entry['created_at'] : acc[status].last
     }
     return acc
   }, {} as Record<NotificationStatus, { count: number; last?: string }>)
 
-  const failureCount = history.filter((entry) => entry.status === 'failed' || entry.status === 'bounced').length
+  const failureCount = history.filter((entry) => entry['status'] === 'failed' || entry['status'] === 'bounced').length
 
   const channels = history.reduce<Record<NotificationChannel, number>>((acc, entry) => {
-    const entryChannels = (entry.channels || []) as NotificationChannel[]
+    const entryChannels = (entry['channels'] || []) as NotificationChannel[]
     entryChannels.forEach((channel) => {
       acc[channel] = (acc[channel] || 0) + 1
     })

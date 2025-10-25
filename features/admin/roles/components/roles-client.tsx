@@ -34,15 +34,15 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
     return roles.filter((role) => {
       const matchesSearch =
         !normalizedQuery ||
-        role.user_id?.toLowerCase().includes(normalizedQuery) ||
-        role.salon_id?.toLowerCase().includes(normalizedQuery) ||
-        role.permissions?.some((permission) => permission.toLowerCase().includes(normalizedQuery))
+        role['user_id']?.toLowerCase().includes(normalizedQuery) ||
+        role['salon_id']?.toLowerCase().includes(normalizedQuery) ||
+        role['permissions']?.some((permission) => permission.toLowerCase().includes(normalizedQuery))
 
-      const matchesRole = roleFilter === 'all' || role.role === roleFilter
+      const matchesRole = roleFilter === 'all' || role['role'] === roleFilter
       const matchesStatus =
         statusFilter === 'all' ||
-        (statusFilter === 'active' && role.is_active) ||
-        (statusFilter === 'inactive' && !role.is_active)
+        (statusFilter === 'active' && role['is_active']) ||
+        (statusFilter === 'inactive' && !role['is_active'])
 
       return matchesSearch && matchesRole && matchesStatus
     })

@@ -53,27 +53,27 @@ export async function getCustomerInsights(salonId: string) {
   let totalRevenue = 0
 
   appointments.forEach(apt => {
-    if (!apt.customer_id) return
+    if (!apt['customer_id']) return
 
-    const revenue = Number(apt.total_price) || 0
+    const revenue = Number(apt['total_price']) || 0
     totalRevenue += revenue
 
-    const existing = customerMap.get(apt.customer_id)
+    const existing = customerMap.get(apt['customer_id'])
     if (existing) {
       existing.visitCount++
       existing.totalSpent += revenue
       // Update first visit if earlier
-      if (apt.created_at && apt.created_at < existing.firstVisit) {
-        existing.firstVisit = apt.created_at
+      if (apt['created_at'] && apt['created_at'] < existing.firstVisit) {
+        existing.firstVisit = apt['created_at']
       }
     } else {
-      customerMap.set(apt.customer_id, {
-        id: apt.customer_id,
-        name: apt.customer_name || 'Unknown',
-        email: apt.customer_email,
+      customerMap.set(apt['customer_id'], {
+        id: apt['customer_id'],
+        name: apt['customer_name'] || 'Unknown',
+        email: apt['customer_email'],
         totalSpent: revenue,
         visitCount: 1,
-        firstVisit: apt.created_at || new Date().toISOString(),
+        firstVisit: apt['created_at'] || new Date().toISOString(),
       })
     }
   })
@@ -103,8 +103,8 @@ export async function getCustomerInsights(salonId: string) {
     .sort((a, b) => b.totalSpent - a.totalSpent)
     .slice(0, 5)
     .map(c => ({
-      name: c.name,
-      email: c.email || undefined,
+      name: c['name'],
+      email: c['email'] || undefined,
       totalSpent: c.totalSpent,
       visitCount: c.visitCount,
     }))

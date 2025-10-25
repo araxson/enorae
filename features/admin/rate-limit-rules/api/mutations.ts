@@ -3,9 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { requireAnyRole } from '@/lib/auth/role-guard'
-import { ROLE_GROUPS } from '@/lib/auth/constants'
 
 const createRuleSchema = z.object({
   endpoint: z.string().min(1).max(255),
@@ -73,7 +72,7 @@ export async function createRateLimitRule(formData: FormData) {
     })
 
     revalidatePath('/admin/security')
-    return { success: true, ruleId: (newRule as any)?.id }
+    return { success: true, ruleId: newRule ? (newRule as { id?: string }).id : undefined }
   } catch (error) {
     console.error('Error creating rate limit rule:', error)
     return { error: error instanceof Error ? error.message : 'Unknown error' }
@@ -96,7 +95,7 @@ export async function updateRateLimitRule(formData: FormData) {
       description: formData.get('description')?.toString(),
     })
 
-    const updatePayload: any = {}
+    const updatePayload: Record<string, number | string> = {}
     if (validated.limitThreshold) updatePayload.limit_threshold = validated.limitThreshold
     if (validated.windowSeconds) updatePayload.window_seconds = validated.windowSeconds
     if (validated.description) updatePayload.description = validated.description

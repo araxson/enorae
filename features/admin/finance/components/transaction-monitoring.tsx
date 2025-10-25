@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { StatCard } from '@/components/shared/stat-card'
+import { StatCard } from '@/components/shared'
 import { Activity, CreditCard, Users, Building2 } from 'lucide-react'
 import type { TransactionMetrics, ManualTransactionRow } from '@/features/admin/finance/api/types'
 
@@ -58,57 +58,55 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
         <CardHeader>
           <CardTitle>Recent Transactions</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Payment Method</TableHead>
+                <TableHead>Salon ID</TableHead>
+                <TableHead>Customer ID</TableHead>
+                <TableHead>Staff ID</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {metrics.recentTransactions.length === 0 ? (
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Payment Method</TableHead>
-                  <TableHead>Salon ID</TableHead>
-                  <TableHead>Customer ID</TableHead>
-                  <TableHead>Staff ID</TableHead>
+                  <TableCell colSpan={6} className="text-center text-muted-foreground">
+                    No recent transactions
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {metrics.recentTransactions.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground">
-                      No recent transactions
+              ) : (
+                metrics.recentTransactions.map((transaction) => (
+                  <TableRow key={transaction['id']}>
+                    <TableCell className="text-sm">
+                      {formatDate(transaction['created_at'])}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline">
+                        {transaction['transaction_type'] || 'Unknown'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={getPaymentMethodBadgeVariant(transaction['payment_method'])}>
+                        {transaction['payment_method'] || 'Unknown'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="font-mono text-xs">
+                      {transaction['salon_id']?.slice(0, 8) || 'N/A'}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs">
+                      {transaction['customer_id']?.slice(0, 8) || 'N/A'}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs">
+                      {transaction['staff_id']?.slice(0, 8) || 'N/A'}
                     </TableCell>
                   </TableRow>
-                ) : (
-                  metrics.recentTransactions.map((transaction) => (
-                    <TableRow key={transaction.id}>
-                      <TableCell className="text-sm">
-                        {formatDate(transaction.created_at)}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">
-                          {transaction.transaction_type || 'Unknown'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={getPaymentMethodBadgeVariant(transaction.payment_method)}>
-                          {transaction.payment_method || 'Unknown'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        {transaction.salon_id?.slice(0, 8) || 'N/A'}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        {transaction.customer_id?.slice(0, 8) || 'N/A'}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        {transaction.staff_id?.slice(0, 8) || 'N/A'}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>

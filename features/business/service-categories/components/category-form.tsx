@@ -33,12 +33,12 @@ type CategoryFormProps = {
 
 export function CategoryForm({ category, categories, open, onOpenChange }: CategoryFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [parentId, setParentId] = useState<string>(category?.parent_id || '')
+  const [parentId, setParentId] = useState<string>(category?.['parent_id'] || '')
 
   // Filter out current category and its descendants to prevent circular references
   const availableParents = categories.filter((c) => {
     if (!category) return true // Creating new, all categories available
-    if (c.id === category.id) return false // Can't be own parent
+    if (c['id'] === category['id']) return false // Can't be own parent
     // TODO: Also filter out descendants when path field is available
     return true
   })
@@ -88,7 +88,7 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
 
           <div className="grid gap-4 py-4">
             {category && (
-              <input type="hidden" name="id" value={category.id || ''} />
+              <input type="hidden" name="id" value={category['id'] || ''} />
             )}
 
             <div className="grid gap-2">
@@ -96,7 +96,7 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
               <Input
                 id="name"
                 name="name"
-                defaultValue={category?.name || ''}
+                defaultValue={category?.['name'] || ''}
                 required
                 maxLength={100}
               />
@@ -111,8 +111,8 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
                 <SelectContent>
                   <SelectItem value="none">None (Top Level)</SelectItem>
                   {availableParents.map((cat) => (
-                    <SelectItem key={cat.id} value={cat.id || ''}>
-                      {cat.parent_id ? `↳ ${cat.name}` : cat.name}
+                    <SelectItem key={cat['id']} value={cat['id'] || ''}>
+                      {cat['parent_id'] ? `↳ ${cat['name']}` : cat['name']}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -128,7 +128,7 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
               <Textarea
                 id="description"
                 name="description"
-                defaultValue={category?.description || ''}
+                defaultValue={category?.['description'] || ''}
                 maxLength={500}
                 rows={3}
               />

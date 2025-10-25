@@ -21,21 +21,21 @@ export function ReviewsClient({ reviews }: ReviewsClientProps) {
 
     // Apply filter
     if (filter === 'flagged') {
-      filtered = filtered.filter(r => r.is_flagged)
+      filtered = filtered.filter(r => r['is_flagged'])
     } else if (filter === 'unverified') {
-      filtered = filtered.filter(r => !r.is_verified)
+      filtered = filtered.filter(r => !r['is_verified'])
     } else if (filter === 'needs_response') {
-      filtered = filtered.filter(r => !r.has_response)
+      filtered = filtered.filter(r => !r['has_response'])
     }
 
     // Apply search
     if (search) {
       const query = search.toLowerCase()
       filtered = filtered.filter(r =>
-        r.salon_name?.toLowerCase().includes(query) ||
-        r.customer_name?.toLowerCase().includes(query) ||
-        r.comment?.toLowerCase().includes(query) ||
-        r.title?.toLowerCase().includes(query)
+        r['salon_name']?.toLowerCase().includes(query) ||
+        r['customer_name']?.toLowerCase().includes(query) ||
+        r['comment']?.toLowerCase().includes(query) ||
+        r['title']?.toLowerCase().includes(query)
       )
     }
 
@@ -53,13 +53,13 @@ export function ReviewsClient({ reviews }: ReviewsClientProps) {
         <TabsList>
           <TabsTrigger value="all">All ({reviews.length})</TabsTrigger>
           <TabsTrigger value="flagged">
-            Flagged ({reviews.filter(r => r.is_flagged).length})
+            Flagged ({reviews.filter(r => r['is_flagged']).length})
           </TabsTrigger>
           <TabsTrigger value="unverified">
-            Unverified ({reviews.filter(r => !r.is_verified).length})
+            Unverified ({reviews.filter(r => !r['is_verified']).length})
           </TabsTrigger>
           <TabsTrigger value="needs_response">
-            Needs Response ({reviews.filter(r => !r.has_response).length})
+            Needs Response ({reviews.filter(r => !r['has_response']).length})
           </TabsTrigger>
         </TabsList>
 

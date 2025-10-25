@@ -1,7 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 import { ArrayInput } from './array-input'
 
@@ -15,27 +14,26 @@ type RecognitionSectionProps = {
 export function RecognitionSection({ awards, certifications, onAwardsChange, onCertificationsChange }: RecognitionSectionProps) {
   return (
     <Card>
-      <CardContent>
-        <div className="flex flex-col gap-6">
-          <CardTitle>Awards & Certifications</CardTitle>
-          <Separator />
+      <CardHeader>
+        <CardTitle>Awards and certifications</CardTitle>
+        <CardDescription>Highlight recognitions that build trust with clients.</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-6">
+        <ArrayInput
+          label="Awards"
+          items={awards}
+          onAdd={(value) => onAwardsChange([...awards, value])}
+          onRemove={(index) => onAwardsChange(awards.filter((_, idx) => idx !== index))}
+          placeholder="Best Salon 2023, ..."
+        />
 
-          <ArrayInput
-            label="Awards"
-            items={awards}
-            onAdd={(value) => onAwardsChange([...awards, value])}
-            onRemove={(index) => onAwardsChange(awards.filter((_, idx) => idx !== index))}
-            placeholder="Best Salon 2023, ..."
-          />
-
-          <ArrayInput
-            label="Certifications"
-            items={certifications}
-            onAdd={(value) => onCertificationsChange([...certifications, value])}
-            onRemove={(index) => onCertificationsChange(certifications.filter((_, idx) => idx !== index))}
-            placeholder="Certified Colorist, ..."
-          />
-        </div>
+        <ArrayInput
+          label="Certifications"
+          items={certifications}
+          onAdd={(value) => onCertificationsChange([...certifications, value])}
+          onRemove={(index) => onCertificationsChange(certifications.filter((_, idx) => idx !== index))}
+          placeholder="Certified Colorist, ..."
+        />
       </CardContent>
     </Card>
   )

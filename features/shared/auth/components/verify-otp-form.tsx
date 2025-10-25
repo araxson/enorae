@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, CheckCircle2, Shield } from 'lucide-react'
 import { OTPInput, ResendOTP } from './otp-input'
 
@@ -89,6 +89,7 @@ export function VerifyOTPForm({
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Verification failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -110,6 +111,7 @@ export function VerifyOTPForm({
           {otp.length === 6 && (
             <Alert>
               <CheckCircle2 className="h-4 w-4 text-primary" />
+              <AlertTitle>Ready to verify</AlertTitle>
               <AlertDescription>Code entered. Click verify to continue.</AlertDescription>
             </Alert>
           )}

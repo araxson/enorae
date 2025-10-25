@@ -14,10 +14,10 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
   const address = [
     location.address_line1,
     location.address_line2,
-    location.city,
-    location.state_province,
-    location.postal_code,
-    location.country_code,
+    location['city'],
+    location['state_province'],
+    location['postal_code'],
+    location['country_code'],
   ].filter(Boolean).join(', ')
 
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
@@ -29,11 +29,11 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
           <div className="flex gap-4 items-start justify-between">
             <div className="flex-1">
               <div className="flex gap-3 items-center flex-wrap">
-                <CardTitle>{location.location_name || location.name}</CardTitle>
-                {location.is_primary && <Badge variant="default">Primary</Badge>}
-                {location.is_active === false && <Badge variant="secondary">Inactive</Badge>}
+                <CardTitle>{location.location_name || location['name']}</CardTitle>
+                {location['is_primary'] && <Badge variant="default">Primary</Badge>}
+                {location['is_active'] === false && <Badge variant="secondary">Inactive</Badge>}
               </div>
-              {location.salon_name && <CardDescription>{location.salon_name}</CardDescription>}
+              {location['salon_name'] && <CardDescription>{location['salon_name']}</CardDescription>}
             </div>
           </div>
         </div>
@@ -54,19 +54,19 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
             </div>
           )}
 
-          {location.email && (
+          {location['email'] && (
             <div className="flex gap-3 items-center">
               <Mail className="h-4 w-4" />
-              <p className="text-sm">{location.email}</p>
+              <p className="text-sm">{location['email']}</p>
             </div>
           )}
 
-          {location.accessibility_notes && (
+          {location['accessibility_notes'] && (
             <>
               <Separator />
               <div className="pt-3">
                 <p className="text-sm text-muted-foreground">
-                  <strong>Accessibility:</strong> {location.accessibility_notes}
+                  <strong>Accessibility:</strong> {location['accessibility_notes']}
                 </p>
               </div>
             </>

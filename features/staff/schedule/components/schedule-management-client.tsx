@@ -65,14 +65,14 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
 
   const handleEdit = (schedule: StaffScheduleWithStaff) => {
     setEditingSchedule(schedule)
-    const nextDay = schedule.day_of_week ?? ''
+    const nextDay = schedule['day_of_week'] ?? ''
     setFormData({
       day_of_week: isDayOfWeek(nextDay) ? nextDay : 'monday',
-      start_time: schedule.start_time || '09:00',
-      end_time: schedule.end_time || '17:00',
-      break_start: schedule.break_start || '',
-      break_end: schedule.break_end || '',
-      is_active: schedule.is_active ?? true,
+      start_time: schedule['start_time'] || '09:00',
+      end_time: schedule['end_time'] || '17:00',
+      break_start: schedule['break_start'] || '',
+      break_end: schedule['break_end'] || '',
+      is_active: schedule['is_active'] ?? true,
     })
     setIsDialogOpen(true)
   }
@@ -87,24 +87,24 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
 
   const handleSubmit = () => {
     startTransition(async () => {
-      if (editingSchedule?.id) {
-        await updateStaffSchedule(editingSchedule.id, {
-          day_of_week: formData.day_of_week,
-          start_time: formData.start_time,
-          end_time: formData.end_time,
-          break_start: formData.break_start || null,
-          break_end: formData.break_end || null,
-          is_active: formData.is_active,
+      if (editingSchedule?.['id']) {
+        await updateStaffSchedule(editingSchedule['id'], {
+          day_of_week: formData['day_of_week'],
+          start_time: formData['start_time'],
+          end_time: formData['end_time'],
+          break_start: formData['break_start'] || null,
+          break_end: formData['break_end'] || null,
+          is_active: formData['is_active'],
         })
       } else {
         await createStaffSchedule(salonId, {
           staff_id: staffId,
-          day_of_week: formData.day_of_week,
-          start_time: formData.start_time,
-          end_time: formData.end_time,
-          break_start: formData.break_start || undefined,
-          break_end: formData.break_end || undefined,
-          is_active: formData.is_active,
+          day_of_week: formData['day_of_week'],
+          start_time: formData['start_time'],
+          end_time: formData['end_time'],
+          break_start: formData['break_start'] || undefined,
+          break_end: formData['break_end'] || undefined,
+          is_active: formData['is_active'],
         })
       }
       setIsDialogOpen(false)
@@ -129,7 +129,7 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
             <div>
               <Label htmlFor="day_of_week">Day of Week</Label>
               <Select
-                value={formData.day_of_week}
+                value={formData['day_of_week']}
                 onValueChange={(value) => {
                   if (isDayOfWeek(value)) {
                     setFormData({ ...formData, day_of_week: value })
@@ -157,7 +157,7 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
                 <Input
                   id="start_time"
                   type="time"
-                  value={formData.start_time}
+                  value={formData['start_time']}
                   onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
                 />
               </div>
@@ -166,7 +166,7 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
                 <Input
                   id="end_time"
                   type="time"
-                  value={formData.end_time}
+                  value={formData['end_time']}
                   onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
                 />
               </div>
@@ -178,7 +178,7 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
                 <Input
                   id="break_start"
                   type="time"
-                  value={formData.break_start}
+                  value={formData['break_start']}
                   onChange={(e) => setFormData({ ...formData, break_start: e.target.value })}
                 />
               </div>
@@ -187,7 +187,7 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
                 <Input
                   id="break_end"
                   type="time"
-                  value={formData.break_end}
+                  value={formData['break_end']}
                   onChange={(e) => setFormData({ ...formData, break_end: e.target.value })}
                 />
               </div>
@@ -196,7 +196,7 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
             <div className="flex items-center space-x-2">
               <Switch
                 id="is_active"
-                checked={formData.is_active}
+                checked={formData['is_active']}
                 onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
               />
               <Label htmlFor="is_active">Active</Label>

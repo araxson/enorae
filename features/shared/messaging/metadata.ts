@@ -14,7 +14,7 @@ export async function generateThreadMetadata({
   const thread = await getThreadById(threadId).catch(() => null)
 
   return {
-    title: thread?.subject || 'Message Thread',
+    title: thread?.['subject'] || 'Message Thread',
     description: 'View and respond to messages',
   }
 }

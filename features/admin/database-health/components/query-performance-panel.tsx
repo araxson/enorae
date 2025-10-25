@@ -50,25 +50,25 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
                 {slowQueries.slice(0, 20).map((query, idx) => (
                   <TableRow key={idx}>
                     <TableCell className="font-mono text-xs max-w-md truncate">
-                      {query.query_preview ?? 'N/A'}
+                      {query['query_preview'] ?? 'N/A'}
                     </TableCell>
-                    <TableCell>{query.calls?.toLocaleString() ?? 0}</TableCell>
+                    <TableCell>{query['calls']?.toLocaleString() ?? 0}</TableCell>
                     <TableCell>
                       <Badge
                         variant={
-                          (query.avg_time_ms ?? 0) > 100
+                          (query['avg_time_ms'] ?? 0) > 100
                             ? 'destructive'
-                            : (query.avg_time_ms ?? 0) > 50
+                            : (query['avg_time_ms'] ?? 0) > 50
                               ? 'secondary'
                               : 'default'
                         }
                       >
-                        {query.avg_time_ms?.toFixed(2) ?? 0}
+                        {query['avg_time_ms']?.toFixed(2) ?? 0}
                       </Badge>
                     </TableCell>
-                    <TableCell>{query.max_time_ms?.toFixed(2) ?? 0}</TableCell>
+                    <TableCell>{query['max_time_ms']?.toFixed(2) ?? 0}</TableCell>
                     <TableCell>
-                      {query.cache_hit_ratio?.toFixed(1) ?? 0}%
+                      {query['cache_hit_ratio']?.toFixed(1) ?? 0}%
                     </TableCell>
                   </TableRow>
                 ))}
@@ -95,14 +95,14 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
                 {mostCalledQueries.slice(0, 20).map((query, idx) => (
                   <TableRow key={idx}>
                     <TableCell className="font-mono text-xs max-w-md truncate">
-                      {query.query_preview ?? 'N/A'}
+                      {query['query_preview'] ?? 'N/A'}
                     </TableCell>
                     <TableCell>
-                      <Badge>{query.calls?.toLocaleString() ?? 0}</Badge>
+                      <Badge>{query['calls']?.toLocaleString() ?? 0}</Badge>
                     </TableCell>
-                    <TableCell>{query.avg_time_ms?.toFixed(2) ?? 0}</TableCell>
+                    <TableCell>{query['avg_time_ms']?.toFixed(2) ?? 0}</TableCell>
                     <TableCell>
-                      {query.avg_rows_per_call?.toFixed(0) ?? 0}
+                      {query['avg_rows_per_call']?.toFixed(0) ?? 0}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -129,14 +129,14 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
                 {indexPerformance.slice(0, 20).map((idx, index) => (
                   <TableRow key={index}>
                     <TableCell className="font-mono text-xs">
-                      {String(idx.index_name ?? 'N/A')}
+                      {String(idx['index_name'] ?? 'N/A')}
                     </TableCell>
                     <TableCell>
-                      {idx.index_scans?.toLocaleString() ?? 0}
+                      {idx['index_scans']?.toLocaleString() ?? 0}
                     </TableCell>
-                    <TableCell>{String(idx.index_size ?? 'N/A')}</TableCell>
+                    <TableCell>{String(idx['index_size'] ?? 'N/A')}</TableCell>
                     <TableCell>
-                      {idx.avg_tuples_per_scan?.toFixed(0) ?? 0}
+                      {idx['avg_tuples_per_scan']?.toFixed(0) ?? 0}
                     </TableCell>
                   </TableRow>
                 ))}

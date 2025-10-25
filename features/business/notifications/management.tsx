@@ -9,7 +9,7 @@ import { NotificationHistoryTable } from './components/notification-history-tabl
 import { NotificationTemplatesManager } from './components/notification-templates-manager'
 import { NotificationPreferencesForm } from './components/notification-preferences-form'
 import { NotificationPreviewPanel } from './components/notification-preview-panel'
-import { CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function BusinessNotificationManagement() {
   const [history, stats, templates, preferences] = await Promise.all([
@@ -22,12 +22,14 @@ export async function BusinessNotificationManagement() {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
-        <div>
-          <CardTitle>Notification Center</CardTitle>
-          <CardDescription>
-            Monitor delivery health, manage templates, and configure automation preferences.
-          </CardDescription>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Notification center</CardTitle>
+            <CardDescription>
+              Monitor delivery health, manage templates, and configure automation preferences.
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
         <NotificationOverviewCards
           totals={stats.totals}
@@ -41,13 +43,17 @@ export async function BusinessNotificationManagement() {
 
         <NotificationPreferencesForm preferences={preferences} />
 
-        <div>
-          <CardTitle>Delivery History</CardTitle>
-          <CardDescription>
-            Recent notifications and delivery statuses for auditing and troubleshooting.
-          </CardDescription>
-          <NotificationHistoryTable history={history} />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Delivery history</CardTitle>
+            <CardDescription>
+              Recent notifications and delivery statuses for auditing and troubleshooting.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <NotificationHistoryTable history={history} />
+          </CardContent>
+        </Card>
       </div>
     </section>
   )

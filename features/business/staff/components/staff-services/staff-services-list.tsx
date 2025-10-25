@@ -6,8 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { EmptyState } from '@/components/shared/empty-state'
-import { SearchInput } from '@/components/shared/search-input'
+import { EmptyState } from '@/components/shared'
+import { SearchInput } from '@/components/shared'
 import type { StaffMemberWithServices } from './types'
 
 type StaffServicesListProps = {
@@ -59,7 +59,7 @@ export function StaffServicesList({
           <div className="flex flex-col gap-4">
             {filteredStaff.map((member) => (
               <StaffMemberCard
-                key={member.id}
+                key={member['id']}
                 member={member}
                 onManage={() => onManageStaff(member)}
               />
@@ -80,24 +80,24 @@ function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
   return (
     <div className="flex gap-4 items-center pb-4 border-b last:border-0 last:pb-0">
       <Avatar>
-        {member.avatar_url && (
-          <AvatarImage src={member.avatar_url} alt={member.full_name || 'Staff'} />
+        {member['avatar_url'] && (
+          <AvatarImage src={member['avatar_url']} alt={member['full_name'] || 'Staff'} />
         )}
         <AvatarFallback>
-          {member.full_name?.slice(0, 2).toUpperCase() || 'ST'}
+          {member['full_name']?.slice(0, 2).toUpperCase() || 'ST'}
         </AvatarFallback>
       </Avatar>
 
       <div className="flex flex-col gap-2 flex-1">
-        <h4 className="scroll-m-20 text-xl font-semibold text-base">{member.full_name || 'Staff Member'}</h4>
-        {member.title && <p className="text-sm text-muted-foreground text-sm">{member.title}</p>}
+        <h4 className="scroll-m-20 text-xl font-semibold text-base">{member['full_name'] || 'Staff Member'}</h4>
+        {member['title'] && <p className="text-sm text-muted-foreground text-sm">{member['title']}</p>}
 
         <div className="flex flex-wrap gap-2 mt-2">
           {member.services.length === 0 ? (
             <p className="text-sm text-muted-foreground text-xs">No services assigned</p>
           ) : (
             member.services.map((service: StaffMemberWithServices['services'][number]) => (
-              <ServiceBadge key={service.id} service={service} />
+              <ServiceBadge key={service['id']} service={service} />
             ))
           )}
         </div>
@@ -120,18 +120,18 @@ function ServiceBadge({
     <div className="flex flex-col gap-1">
       <Badge variant="secondary">
         <span className="flex items-center gap-1 text-xs">
-          <span>{service.service_name}</span>
-          {service.proficiency_level && (
-            <span className="opacity-70">({service.proficiency_level})</span>
+          <span>{service['service_name']}</span>
+          {service['proficiency_level'] && (
+            <span className="opacity-70">({service['proficiency_level']})</span>
           )}
         </span>
       </Badge>
 
-      {service.rating_average && service.rating_average > 0 && (
+      {service['rating_average'] && service['rating_average'] > 0 && (
         <div className="flex gap-3 text-xs text-muted-foreground mt-1">
           <span className="flex items-center gap-1">
             <Star className="h-3 w-3 text-accent" fill="currentColor" />
-            {Number(service.rating_average).toFixed(1)} rating
+            {Number(service['rating_average']).toFixed(1)} rating
           </span>
         </div>
       )}

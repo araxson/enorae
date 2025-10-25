@@ -17,7 +17,7 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
   const [editPricing, setEditPricing] = useState<ServicePricingWithService | null>(null)
 
   const avgPrice = pricing.length > 0
-    ? pricing.reduce((sum, p) => sum + (p.current_price ?? p.base_price ?? 0), 0) / pricing.length
+    ? pricing.reduce((sum, p) => sum + (p['current_price'] ?? p['base_price'] ?? 0), 0) / pricing.length
     : 0
 
   const handleAddPricing = () => {

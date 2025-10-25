@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import type { CouponFormState } from '@/features/business/coupons/components/coupon-form/coupon-form.types'
+import type { CouponFormState } from '@/features/business/coupons/components/coupon-form.types'
 
 interface CouponDiscountSectionProps {
   formData: CouponFormState

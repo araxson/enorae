@@ -1,6 +1,6 @@
 import 'server-only';
-import { requireAdminClient } from '@/features/admin/analytics/api/internal/admin-analytics-shared'
-import type { AdminAppointmentRow } from '@/features/admin/analytics/api/internal/admin-analytics-types'
+import { requireAdminClient } from '@/features/admin/analytics/api/admin-analytics-shared'
+import type { AdminAppointmentRow } from '@/features/admin/analytics/api/admin-analytics-types'
 
 const APPOINTMENTS_TABLE = 'admin_appointments_overview'
 

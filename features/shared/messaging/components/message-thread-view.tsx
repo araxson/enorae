@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { MessageBubble } from './message-bubble'
 import { MessageComposer } from './message-composer'
 
@@ -36,42 +35,34 @@ export function MessageThreadView({
 
   return (
     <div className="flex h-full flex-col gap-6">
-      <div>
-        <h3 className="scroll-m-20 text-2xl font-semibold">Conversation</h3>
-        {otherUserName && <p className="text-sm text-muted-foreground">Chatting with {otherUserName}</p>}
-      </div>
-
-      <Separator />
-
-      <div className="flex-1 min-h-96 overflow-y-auto">
-        <Card>
-          <CardContent>
-            <div className="space-y-3">
-              {messages.length === 0 ? (
-                <div className="py-12 text-center">
-                  <p className="text-sm text-muted-foreground">No messages yet. Start the conversation!</p>
-                </div>
-              ) : (
-                messages.map((message) => {
-                  const isOwn = message.from_user_id === currentUserId
-                  return (
-                    <MessageBubble
-                      key={message.id}
-                      content={message.content}
-                      isOwn={isOwn}
-                      senderName={isOwn ? 'You' : otherUserName}
-                      timestamp={message.created_at}
-                      isRead={message.is_read}
-                    />
-                  )
-                })
-              )}
-              <div ref={messagesEndRef} />
+      <Card className="flex min-h-96 flex-1 flex-col">
+        <CardHeader>
+          <CardTitle>Conversation</CardTitle>
+          {otherUserName && <CardDescription>Chatting with {otherUserName}</CardDescription>}
+        </CardHeader>
+        <CardContent className="flex flex-1 flex-col gap-3 overflow-y-auto">
+          {messages.length === 0 ? (
+            <div className="flex flex-1 items-center justify-center py-12">
+              <span className="text-muted-foreground">No messages yet. Start the conversation!</span>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-
+          ) : (
+            messages.map((message) => {
+              const isOwn = message.from_user_id === currentUserId
+              return (
+                <MessageBubble
+                  key={message.id}
+                  content={message.content}
+                  isOwn={isOwn}
+                  senderName={isOwn ? 'You' : otherUserName}
+                  timestamp={message.created_at}
+                  isRead={message.is_read}
+                />
+              )
+            })
+          )}
+          <div ref={messagesEndRef} />
+        </CardContent>
+      </Card>
       <MessageComposer onSend={onSendMessage} />
     </div>
   )

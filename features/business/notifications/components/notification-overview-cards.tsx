@@ -29,7 +29,7 @@ const statusPriority: NotificationStatus[] = [
 
 export function NotificationOverviewCards({ totals, failureRate, channels }: NotificationOverviewCardsProps) {
   const totalSent = statusPriority.reduce((sum, status) => sum + (totals[status]?.count || 0), 0)
-  const recentFailures = totals.failed?.count || 0
+  const recentFailures = totals['failed']?.count || 0
   const topChannel = Object.entries(channels).sort(([, a], [, b]) => b - a)[0]
 
   return (

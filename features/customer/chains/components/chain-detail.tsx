@@ -16,11 +16,11 @@ export function ChainDetail({ chain }: ChainDetailProps) {
       <Card>
         <CardHeader className="space-y-2">
           <div className="flex gap-4 items-center">
-            <CardTitle>{chain.name}</CardTitle>
-            {chain.is_verified ? <Badge variant="default">Verified</Badge> : null}
+            <CardTitle>{chain['name']}</CardTitle>
+            {chain['is_verified'] ? <Badge variant="default">Verified</Badge> : null}
           </div>
-          {chain.legal_name && chain.legal_name !== chain.name ? (
-            <CardDescription>Legal name: {chain.legal_name}</CardDescription>
+          {chain['legal_name'] && chain['legal_name'] !== chain['name'] ? (
+            <CardDescription>Legal name: {chain['legal_name']}</CardDescription>
           ) : null}
         </CardHeader>
         <CardContent>
@@ -29,7 +29,7 @@ export function ChainDetail({ chain }: ChainDetailProps) {
               <Store className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
               <div>
                 <p className="text-xs text-muted-foreground">Locations</p>
-                <p className="text-sm text-foreground">{chain.salon_count || 0} {chain.salon_count === 1 ? 'salon' : 'salons'}</p>
+                <p className="text-sm text-foreground">{chain['salon_count'] || 0} {chain['salon_count'] === 1 ? 'salon' : 'salons'}</p>
               </div>
             </div>
 
@@ -37,7 +37,7 @@ export function ChainDetail({ chain }: ChainDetailProps) {
               <Users className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
               <div>
                 <p className="text-xs text-muted-foreground">Staff members</p>
-                <p className="text-sm text-foreground">{chain.staff_count || 0}</p>
+                <p className="text-sm text-foreground">{chain['staff_count'] || 0}</p>
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@ export function ChainDetail({ chain }: ChainDetailProps) {
           <div className="flex gap-3 items-center">
             <Store className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">
-              {chain.salon_count || 0} {chain.salon_count === 1 ? 'Location' : 'Locations'}
+              {chain['salon_count'] || 0} {chain['salon_count'] === 1 ? 'Location' : 'Locations'}
             </p>
           </div>
         </CardFooter>
@@ -58,16 +58,16 @@ export function ChainDetail({ chain }: ChainDetailProps) {
         {chain.locations && chain.locations.length > 0 ? (
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             {chain.locations.map((salon) => (
-              <Card key={salon.id}>
+              <Card key={salon['id']}>
                 <CardHeader className="flex items-start justify-between">
-                  <CardTitle>{salon.name}</CardTitle>
-                  {salon.is_verified ? <Badge variant="secondary">Verified</Badge> : null}
+                  <CardTitle>{salon['name']}</CardTitle>
+                  {salon['is_verified'] ? <Badge variant="secondary">Verified</Badge> : null}
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {salon.address ? (
+                  {salon['address'] ? (
                     <div className="flex gap-2 items-start">
                       <MapPin className="mt-1 h-3 w-3 text-muted-foreground" aria-hidden="true" />
-                      <p className="text-sm text-muted-foreground">{salon.address}</p>
+                      <p className="text-sm text-muted-foreground">{salon['address']}</p>
                     </div>
                   ) : null}
 
@@ -78,7 +78,7 @@ export function ChainDetail({ chain }: ChainDetailProps) {
                   ) : null}
                 </CardContent>
                 <CardFooter>
-                  <Link href={`/customer/book/${salon.id}`} className="w-full">
+                  <Link href={`/customer/book/${salon['id']}`} className="w-full">
                     <Button variant="outline" size="sm" className="w-full">
                       View salon
                     </Button>

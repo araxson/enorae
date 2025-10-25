@@ -24,31 +24,31 @@ export async function getChainCompliance(): Promise<ChainCompliance[]> {
   const results: ChainCompliance[] = []
 
   for (const chain of chains ?? []) {
-    if (!chain.id) continue
+    if (!chain['id']) continue
 
     const { data: salonSummaries, error: salonsError } = await supabase
       .from('admin_salons_overview')
       .select('id, chain_id, is_accepting_bookings')
-      .eq('chain_id', chain.id)
+      .eq('chain_id', chain['id'])
       .returns<AdminSalonOverviewRow[]>()
 
     if (salonsError) throw salonsError
 
     const totalSalons = salonSummaries?.length ?? 0
     const activeSalons =
-      salonSummaries?.filter((salon) => Boolean(salon.is_accepting_bookings)).length ?? 0
+      salonSummaries?.filter((salon) => Boolean(salon['is_accepting_bookings'])).length ?? 0
     const inactiveSalons = Math.max(totalSalons - activeSalons, 0)
     const complianceRate = totalSalons > 0 ? (activeSalons / totalSalons) * 100 : 0
 
     const issues: string[] = []
-    if (!chain.is_verified) issues.push('Chain not verified')
-    if (chain.is_active === false) issues.push('Chain inactive')
+    if (!chain['is_verified']) issues.push('Chain not verified')
+    if (chain['is_active'] === false) issues.push('Chain inactive')
     if (inactiveSalons > 0) issues.push(`${inactiveSalons} paused salons`)
     if (complianceRate < 80 && totalSalons > 0) issues.push('Compliance below 80%')
 
     results.push({
-      chainId: chain.id,
-      chainName: chain.name ?? 'Unknown',
+      chainId: chain['id'],
+      chainName: chain['name'] ?? 'Unknown',
       totalSalons,
       verifiedSalons: activeSalons,
       unverifiedSalons: inactiveSalons,

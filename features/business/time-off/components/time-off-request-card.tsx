@@ -24,9 +24,9 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
   const [rejectNotes, setRejectNotes] = useState('')
 
   const handleApprove = async () => {
-    if (!request.id) return
+    if (!request['id']) return
     setIsProcessing(true)
-    const result = await onApprove(request.id)
+    const result = await onApprove(request['id'])
     if (result.error) {
       toast.error(result.error)
     } else {
@@ -36,12 +36,12 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
   }
 
   const handleReject = async () => {
-    if (!request.id || !rejectNotes.trim()) {
+    if (!request['id'] || !rejectNotes.trim()) {
       toast.error('Please provide a reason for rejection')
       return
     }
     setIsProcessing(true)
-    const result = await onReject(request.id, rejectNotes)
+    const result = await onReject(request['id'], rejectNotes)
     if (result.error) {
       toast.error(result.error)
     } else {
@@ -53,9 +53,9 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
   }
 
   const statusColor =
-    request.status === 'approved'
+    request['status'] === 'approved'
       ? 'default'
-      : request.status === 'rejected'
+      : request['status'] === 'rejected'
       ? 'destructive'
       : 'secondary'
 
@@ -66,13 +66,13 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <User className="h-4 w-4" />
-              <CardTitle>{request.staff_name || 'Unknown Staff'}</CardTitle>
+              <CardTitle>{request['staff_name'] || 'Unknown Staff'}</CardTitle>
             </div>
-            {request.staff_title && (
-              <p className="text-muted-foreground">{request.staff_title}</p>
+            {request['staff_title'] && (
+              <p className="text-muted-foreground">{request['staff_title']}</p>
             )}
           </div>
-          <Badge variant={statusColor}>{request.status}</Badge>
+          <Badge variant={statusColor}>{request['status']}</Badge>
         </div>
       </CardHeader>
       <CardContent>
@@ -81,51 +81,51 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
             <div>
               <p className="text-muted-foreground">Start Date</p>
               <p>
-                {request.start_at ? format(new Date(request.start_at), 'MMM dd, yyyy') : 'N/A'}
+                {request['start_at'] ? format(new Date(request['start_at']), 'MMM dd, yyyy') : 'N/A'}
               </p>
             </div>
             <div>
               <p className="text-muted-foreground">End Date</p>
               <p>
-                {request.end_at ? format(new Date(request.end_at), 'MMM dd, yyyy') : 'N/A'}
+                {request['end_at'] ? format(new Date(request['end_at']), 'MMM dd, yyyy') : 'N/A'}
               </p>
             </div>
           </div>
 
-          {request.duration_days && (
+          {request['duration_days'] && (
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-muted-foreground" />
-              <span>{request.duration_days} day(s)</span>
+              <span>{request['duration_days']} day(s)</span>
             </div>
           )}
 
-          {request.request_type && (
+          {request['request_type'] && (
             <div>
               <p className="text-muted-foreground">Type</p>
-              <p className="capitalize">{request.request_type.replace('_', ' ')}</p>
+              <p className="capitalize">{request['request_type'].replace('_', ' ')}</p>
             </div>
           )}
 
-          {request.reason && (
+          {request['reason'] && (
             <div>
               <p className="text-muted-foreground">Reason</p>
-              <p>{request.reason}</p>
+              <p>{request['reason']}</p>
             </div>
           )}
 
-          {request.reviewed_at && request.reviewed_by_name && (
+          {request['reviewed_at'] && request['reviewed_by_name'] && (
             <div className="pt-2 border-t">
               <p className="text-muted-foreground">
-                Reviewed by {request.reviewed_by_name} on{' '}
-                {format(new Date(request.reviewed_at), 'MMM dd, yyyy')}
+                Reviewed by {request['reviewed_by_name']} on{' '}
+                {format(new Date(request['reviewed_at']), 'MMM dd, yyyy')}
               </p>
-              {request.review_notes && (
-                <p className="mt-1">{request.review_notes}</p>
+              {request['review_notes'] && (
+                <p className="mt-1">{request['review_notes']}</p>
               )}
             </div>
           )}
 
-          {request.status === 'pending' && (
+          {request['status'] === 'pending' && (
             <div className="pt-2 border-t">
               {!showRejectForm ? (
                 <div className="flex gap-3">

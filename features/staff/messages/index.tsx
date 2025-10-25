@@ -70,14 +70,14 @@ export async function StaffMessageThreadPage({ threadId }: StaffMessageThreadPag
 
         <Card>
           <CardHeader>
-            <CardTitle>{thread.subject}</CardTitle>
-            {thread.customer_name && (
-              <CardDescription>Conversation with {thread.customer_name}</CardDescription>
+            <CardTitle>{thread['subject']}</CardTitle>
+            {thread['customer_name'] && (
+              <CardDescription>Conversation with {thread['customer_name']}</CardDescription>
             )}
           </CardHeader>
         </Card>
 
-        <MessageList messages={messages} currentUserId={session.user.id} />
+        <MessageList messages={messages} currentUserId={session.user['id']} />
         <MessageForm threadId={threadId} />
       </div>
     </section>

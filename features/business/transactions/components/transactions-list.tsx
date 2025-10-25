@@ -57,37 +57,37 @@ export function TransactionsList({ transactions }: TransactionsListProps) {
       </TableHeader>
       <TableBody>
         {transactions.map((transaction) => (
-          <TableRow key={transaction.id}>
+          <TableRow key={transaction['id']}>
             <TableCell>
               <div className="text-sm">
-                {transaction.transaction_at
-                  ? format(new Date(transaction.transaction_at), 'MMM dd, yyyy')
+                {transaction['transaction_at']
+                  ? format(new Date(transaction['transaction_at']), 'MMM dd, yyyy')
                   : 'N/A'}
               </div>
             </TableCell>
             <TableCell>
-              <Badge variant={TRANSACTION_TYPE_COLORS[transaction.transaction_type as keyof typeof TRANSACTION_TYPE_COLORS]}>
-                {TRANSACTION_TYPE_LABELS[transaction.transaction_type as keyof typeof TRANSACTION_TYPE_LABELS]}
+              <Badge variant={TRANSACTION_TYPE_COLORS[transaction['transaction_type'] as keyof typeof TRANSACTION_TYPE_COLORS]}>
+                {TRANSACTION_TYPE_LABELS[transaction['transaction_type'] as keyof typeof TRANSACTION_TYPE_LABELS]}
               </Badge>
             </TableCell>
             <TableCell>
               <div className="text-sm capitalize">
-                {transaction.payment_method || '-'}
+                {transaction['payment_method'] || '-'}
               </div>
             </TableCell>
             <TableCell>
               <div className="text-sm">
-                {transaction.created_by?.full_name || 'Unknown'}
+                {transaction.created_by?.['full_name'] || 'Unknown'}
               </div>
             </TableCell>
             <TableCell>
               <div className="text-sm text-muted-foreground">
-                {transaction.staff?.full_name || '-'}
+                {transaction.staff?.['full_name'] || '-'}
               </div>
             </TableCell>
             <TableCell>
               <div className="text-sm text-muted-foreground">
-                {transaction.customer?.full_name || '-'}
+                {transaction.customer?.['full_name'] || '-'}
               </div>
             </TableCell>
           </TableRow>

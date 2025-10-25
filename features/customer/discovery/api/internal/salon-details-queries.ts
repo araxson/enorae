@@ -48,13 +48,13 @@ export async function getSalonTodayHours(salonId: string): Promise<string> {
     6: 'saturday',
   }
 
-  const todayHours = hours.find(h => h.day_of_week === dayMap[today])
+  const todayHours = hours.find(h => h['day_of_week'] === dayMap[today])
 
   if (!todayHours) return 'Hours not available'
-  if (todayHours.is_closed) return 'Closed today'
+  if (todayHours['is_closed']) return 'Closed today'
 
-  const openTime = formatTime(todayHours.open_time)
-  const closeTime = formatTime(todayHours.close_time)
+  const openTime = formatTime(todayHours['open_time'])
+  const closeTime = formatTime(todayHours['close_time'])
 
   return `${openTime} - ${closeTime}`
 }

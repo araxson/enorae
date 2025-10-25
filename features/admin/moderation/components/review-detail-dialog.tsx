@@ -71,13 +71,13 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
             </Badge>
           </div>
         ),
-        description: review.is_flagged ? 'Currently flagged for moderator review' : 'No active flags',
+        description: review['is_flagged'] ? 'Currently flagged for moderator review' : 'No active flags',
       },
       {
         title: 'Reviewer reputation',
         badge: (
-          <Badge variant={reputationVariant(review.reviewerReputation.label)}>
-            {review.reviewerReputation.label} ({review.reviewerReputation.score})
+          <Badge variant={reputationVariant(review.reviewerReputation['label'])}>
+            {review.reviewerReputation['label']} ({review.reviewerReputation.score})
           </Badge>
         ),
         description: `${review.reviewerReputation.totalReviews} reviews · ${review.reviewerReputation.flaggedReviews} flagged`,
@@ -97,14 +97,14 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
       toast.error('Response cannot be empty')
       return
     }
-    if (!review.id) {
+    if (!review['id']) {
       toast.error('Invalid review ID')
       return
     }
 
     setIsLoading(true)
     const formData = new FormData()
-    formData.append('reviewId', review.id)
+    formData.append('reviewId', review['id'])
     formData.append('response', responseText)
 
     const result = await respondToReview(formData)
@@ -130,13 +130,13 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
 
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <InfoBlock label="Salon" value={review.salon_name || 'Unknown'} />
-            <InfoBlock label="Customer" value={review.customer_name || 'Anonymous'} helper={review.customer_email} />
+            <InfoBlock label="Salon" value={review['salon_name'] || 'Unknown'} />
+            <InfoBlock label="Customer" value={review['customer_name'] || 'Anonymous'} helper={review['customer_email']} />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             {metricCards.slice(0, 2).map((card) => (
-              <DetailCard key={card.title} {...card} />
+              <DetailCard key={card['title']} {...card} />
             ))}
           </div>
 
@@ -144,31 +144,31 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
 
           <StatusBadges review={review} />
 
-          {review.is_flagged && review.flagged_reason && (
+          {review['is_flagged'] && review['flagged_reason'] && (
             <Panel title="Flag reason" tone="destructive">
-              {review.flagged_reason}
+              {review['flagged_reason']}
             </Panel>
           )}
 
           <Panel title="Review">
-            {review.comment || 'No text provided'}
+            {review['comment'] || 'No text provided'}
             <p className="mt-2 text-xs text-muted-foreground">
-              Posted on {review.created_at ? format(new Date(review.created_at), 'MMMM d, yyyy') : 'Unknown date'}
+              Posted on {review['created_at'] ? format(new Date(review['created_at']), 'MMMM d, yyyy') : 'Unknown date'}
             </p>
           </Panel>
 
-          {review.has_response && (
+          {review['has_response'] && (
             <Panel title="Response" tone="info">
               Response has been recorded. Response content is not available in this overview.
-              {review.response_date && (
+              {review['response_date'] && (
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Responded on {format(new Date(review.response_date), 'MMMM d, yyyy')}
+                  Responded on {format(new Date(review['response_date']), 'MMMM d, yyyy')}
                 </p>
               )}
             </Panel>
           )}
 
-          {!review.has_response && !isResponding && (
+          {!review['has_response'] && !isResponding && (
             <Button onClick={() => setIsResponding(true)} variant="outline" className="gap-2">
               <MessageSquare className="h-4 w-4" />
               Add response

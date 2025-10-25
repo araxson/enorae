@@ -47,10 +47,10 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
         ) : (
           <div className="space-y-3">
             {appointments.map((appointment) => {
-              if (!appointment?.id) return null
+              if (!appointment?.['id']) return null
 
-              const appointmentDate = appointment.start_time
-                ? new Date(appointment.start_time).toLocaleDateString('en-US', {
+              const appointmentDate = appointment['start_time']
+                ? new Date(appointment['start_time']).toLocaleDateString('en-US', {
                     weekday: 'short',
                     month: 'short',
                     day: 'numeric',
@@ -59,15 +59,15 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
                 : 'Date not available'
 
               const serviceLabel =
-                Array.isArray(appointment.service_names) && appointment.service_names.length > 0
-                  ? appointment.service_names.join(', ')
-                  : appointment.service_name ?? 'Service'
-              const salonLabel = appointment.salon_name
-                ? `at ${appointment.salon_name}`
+                Array.isArray(appointment['service_names']) && appointment['service_names'].length > 0
+                  ? appointment['service_names'].join(', ')
+                  : appointment['service_name'] ?? 'Service'
+              const salonLabel = appointment['salon_name']
+                ? `at ${appointment['salon_name']}`
                 : 'Salon not specified'
 
               return (
-                <Card key={appointment.id}>
+                <Card key={appointment['id']}>
                   <CardHeader>
                     <CardTitle>{serviceLabel}</CardTitle>
                     <CardDescription>{salonLabel}</CardDescription>
@@ -76,7 +76,7 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
                     <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
                       <span className="text-sm text-muted-foreground">{appointmentDate}</span>
                       <span className="text-sm text-muted-foreground capitalize">
-                        {appointment.status ?? 'pending'}
+                        {appointment['status'] ?? 'pending'}
                       </span>
                     </div>
                   </CardContent>

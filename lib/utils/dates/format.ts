@@ -55,7 +55,8 @@ function formatWithIntl(date: Date, pattern: string, options: FormatOptions): st
   }
 
   if (pattern === DATE_FORMATS.date) {
-    return date.toISOString().split('T')[0]
+    const [isoDate] = date.toISOString().split('T')
+    return isoDate ?? options.fallback ?? date.toISOString()
   }
 
   return options.fallback ?? date.toISOString()

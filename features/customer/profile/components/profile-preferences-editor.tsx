@@ -28,10 +28,10 @@ const parsePreferences = (value: ProfilePreferences['preferences'] | undefined):
 
   const source = value as Record<string, unknown>
   return {
-    email_notifications: typeof source.email_notifications === 'boolean' ? source.email_notifications : undefined,
-    sms_notifications: typeof source.sms_notifications === 'boolean' ? source.sms_notifications : undefined,
-    appointment_reminders: typeof source.appointment_reminders === 'boolean' ? source.appointment_reminders : undefined,
-    marketing_emails: typeof source.marketing_emails === 'boolean' ? source.marketing_emails : undefined,
+    email_notifications: typeof source['email_notifications'] === 'boolean' ? source['email_notifications'] : undefined,
+    sms_notifications: typeof source['sms_notifications'] === 'boolean' ? source['sms_notifications'] : undefined,
+    appointment_reminders: typeof source['appointment_reminders'] === 'boolean' ? source['appointment_reminders'] : undefined,
+    marketing_emails: typeof source['marketing_emails'] === 'boolean' ? source['marketing_emails'] : undefined,
   }
 }
 
@@ -40,24 +40,24 @@ interface ProfilePreferencesEditorProps {
 }
 
 export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEditorProps) {
-  const [timezone, setTimezone] = useState(preferences?.timezone || 'America/New_York')
-  const [locale, setLocale] = useState(preferences?.locale || 'en-US')
-  const [currencyCode, setCurrencyCode] = useState(preferences?.currency_code || 'USD')
+  const [timezone, setTimezone] = useState(preferences?.['timezone'] || 'America/New_York')
+  const [locale, setLocale] = useState(preferences?.['locale'] || 'en-US')
+  const [currencyCode, setCurrencyCode] = useState(preferences?.['currency_code'] || 'USD')
   const [isSaving, setIsSaving] = useState(false)
 
-  const currentPrefs = parsePreferences(preferences?.preferences)
+  const currentPrefs = parsePreferences(preferences?.['preferences'])
 
   const [emailNotifications, setEmailNotifications] = useState(
-    currentPrefs.email_notifications ?? true
+    currentPrefs['email_notifications'] ?? true
   )
   const [smsNotifications, setSmsNotifications] = useState(
-    currentPrefs.sms_notifications ?? false
+    currentPrefs['sms_notifications'] ?? false
   )
   const [appointmentReminders, setAppointmentReminders] = useState(
-    currentPrefs.appointment_reminders ?? true
+    currentPrefs['appointment_reminders'] ?? true
   )
   const [marketingEmails, setMarketingEmails] = useState(
-    currentPrefs.marketing_emails ?? false
+    currentPrefs['marketing_emails'] ?? false
   )
 
   const handleSave = async () => {

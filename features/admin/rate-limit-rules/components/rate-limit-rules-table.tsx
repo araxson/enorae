@@ -19,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { RateLimitRule } from '@/features/admin/rate-limit-rules/api/queries'
@@ -72,7 +73,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border">
+    <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -88,7 +89,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
         <TableBody>
           {rules.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={7} className="py-8 text-center text-muted-foreground">
                 No rate limit rules defined
               </TableCell>
             </TableRow>
@@ -114,9 +115,8 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
-                        size="sm"
+                        size="icon"
                         disabled={isLoading}
-                        className="h-8 w-8 p-0"
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
@@ -125,7 +125,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
                       <DropdownMenuItem
                         onClick={() => handleDelete(rule.id, rule.endpoint)}
                         disabled={isLoading}
-                        className="text-red-600"
+                        className="text-destructive"
                       >
                         Delete Rule
                       </DropdownMenuItem>
@@ -137,6 +137,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
           )}
         </TableBody>
       </Table>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   )
 }

@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { revalidatePath } from 'next/cache'
-import { UUID_REGEX } from '@/features/admin/salons/utils/schemas'
+import { UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
 import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 
 /**

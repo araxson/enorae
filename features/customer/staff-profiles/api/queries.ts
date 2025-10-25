@@ -50,7 +50,7 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
   // Extract services from the nested structure
   const services = (staffServices || [])
     .map((ss: { service: Service | null }) => ss.service)
-    .filter((s): s is Service => s !== null && s.is_active === true)
+    .filter((s): s is Service => s !== null && s['is_active'] === true)
 
   return {
     ...(staff as Staff),

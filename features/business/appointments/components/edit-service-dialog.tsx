@@ -44,28 +44,28 @@ export function EditServiceDialog({
   const [isLoadingStaff, setIsLoadingStaff] = useState(false)
   const [staff, setStaff] = useState<StaffOption[]>([])
   const [formData, setFormData] = useState({
-    staffId: service.staff_id || '',
-    startTime: service.start_time
-      ? new Date(service.start_time).toTimeString().slice(0, 5)
+    staffId: service['staff_id'] || '',
+    startTime: service['start_time']
+      ? new Date(service['start_time']).toTimeString().slice(0, 5)
       : '',
-    endTime: service.end_time ? new Date(service.end_time).toTimeString().slice(0, 5) : '',
-    durationMinutes: service.duration_minutes?.toString() || '',
-    status: service.status || 'pending',
+    endTime: service['end_time'] ? new Date(service['end_time']).toTimeString().slice(0, 5) : '',
+    durationMinutes: service['duration_minutes']?.toString() || '',
+    status: service['status'] || 'pending',
   })
   const { toast } = useToast()
 
   useEffect(() => {
     setFormData({
-      staffId: service.staff_id || '',
-      startTime: service.start_time ? new Date(service.start_time).toTimeString().slice(0, 5) : '',
-      endTime: service.end_time ? new Date(service.end_time).toTimeString().slice(0, 5) : '',
-      durationMinutes: service.duration_minutes?.toString() || '',
-      status: service.status || 'pending',
+      staffId: service['staff_id'] || '',
+      startTime: service['start_time'] ? new Date(service['start_time']).toTimeString().slice(0, 5) : '',
+      endTime: service['end_time'] ? new Date(service['end_time']).toTimeString().slice(0, 5) : '',
+      durationMinutes: service['duration_minutes']?.toString() || '',
+      status: service['status'] || 'pending',
     })
   }, [service])
 
   useEffect(() => {
-    if (!isOpen || !service.appointment_id) {
+    if (!isOpen || !service['appointment_id']) {
       return
     }
 
@@ -75,11 +75,11 @@ export function EditServiceDialog({
       setIsLoadingStaff(true)
       try {
         const response = await fetch(
-          `/api/business/appointments/${service.appointment_id}/service-options`
+          `/api/business/appointments/${service['appointment_id']}/service-options`
         )
 
         if (!response.ok) {
-          throw new Error(`Failed to load staff options (${response.status})`)
+          throw new Error(`Failed to load staff options (${response['status']})`)
         }
 
         const data: { staff?: StaffOption[] } = await response.json()
@@ -108,7 +108,7 @@ export function EditServiceDialog({
     return () => {
       isMounted = false
     }
-  }, [isOpen, service.appointment_id, toast])
+  }, [isOpen, service['appointment_id'], toast])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -116,18 +116,18 @@ export function EditServiceDialog({
 
     try {
       const data = new FormData()
-      data.append('appointmentServiceId', service.id || '')
+      data.append('appointmentServiceId', service['id'] || '')
       if (formData.staffId) data.append('staffId', formData.staffId)
 
       if (formData.startTime) {
-        const startDate = service.start_time ? new Date(service.start_time) : new Date()
+        const startDate = service['start_time'] ? new Date(service['start_time']) : new Date()
         const [hours, minutes] = formData.startTime.split(':')
         startDate.setHours(Number(hours), Number(minutes), 0, 0)
         data.append('startTime', startDate.toISOString())
       }
 
       if (formData.endTime) {
-        const endDate = service.end_time ? new Date(service.end_time) : new Date()
+        const endDate = service['end_time'] ? new Date(service['end_time']) : new Date()
         const [hours, minutes] = formData.endTime.split(':')
         endDate.setHours(Number(hours), Number(minutes), 0, 0)
         data.append('endTime', endDate.toISOString())
@@ -137,8 +137,8 @@ export function EditServiceDialog({
         data.append('durationMinutes', formData.durationMinutes)
       }
 
-      if (formData.status) {
-        data.append('status', formData.status)
+      if (formData['status']) {
+        data.append('status', formData['status'])
       }
 
       const result = await updateAppointmentService(data)
@@ -181,9 +181,9 @@ export function EditServiceDialog({
           <div className="space-y-2">
             <Label>Service</Label>
             <div className="p-3 bg-muted rounded-md">
-              <p className="font-medium">{service.service_name}</p>
-              {service.category_name && (
-                <p className="text-sm text-muted-foreground">{service.category_name}</p>
+              <p className="font-medium">{service['service_name']}</p>
+              {service['category_name'] && (
+                <p className="text-sm text-muted-foreground">{service['category_name']}</p>
               )}
             </div>
           </div>
@@ -204,13 +204,13 @@ export function EditServiceDialog({
                 <SelectItem value="">Any available</SelectItem>
                 {staff.length > 0 ? (
                   staff.map((member) => (
-                    <SelectItem key={member.id} value={member.id}>
-                      {member.name}
+                    <SelectItem key={member['id']} value={member['id']}>
+                      {member['name']}
                     </SelectItem>
                   ))
-                ) : service.staff_name ? (
-                  <SelectItem value={service.staff_id || ''}>
-                    {service.staff_name}
+                ) : service['staff_name'] ? (
+                  <SelectItem value={service['staff_id'] || ''}>
+                    {service['staff_name']}
                   </SelectItem>
                 ) : (
                   <SelectItem value="no-staff" disabled>
@@ -263,7 +263,7 @@ export function EditServiceDialog({
           <div className="space-y-2">
             <Label htmlFor="status">Status</Label>
             <Select
-              value={formData.status}
+              value={formData['status']}
               onValueChange={(value) =>
                 setFormData((prev) => ({ ...prev, status: value }))
               }

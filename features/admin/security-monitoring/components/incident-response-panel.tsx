@@ -23,7 +23,7 @@ const severityBadge = (severity: string) => {
 }
 
 const guidanceFor = (severity: string) =>
-  RESPONSE_GUIDANCE[severity.toLowerCase()] ?? RESPONSE_GUIDANCE.info
+  RESPONSE_GUIDANCE[severity.toLowerCase()] ?? RESPONSE_GUIDANCE['info']
 
 export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps) {
   return (
@@ -40,11 +40,11 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
         ) : (
           <div className="flex flex-col gap-2">
             {incidents.slice(0, 6).map((incident) => (
-              <Card key={incident.id}>
+              <Card key={incident['id']}>
                 <CardHeader>
                   <div className="flex items-center justify-between gap-2">
                     <CardTitle>{incident.eventType}</CardTitle>
-                    {severityBadge(incident.severity)}
+                    {severityBadge(incident['severity'])}
                   </div>
                   <CardDescription>
                     Detected at {new Date(incident.createdAt).toLocaleString()} · IP {incident.ipAddress ?? 'Unknown'}
@@ -52,12 +52,12 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col gap-2">
-                    {incident.description ? (
-                      <CardDescription>{incident.description}</CardDescription>
+                    {incident['description'] ? (
+                      <CardDescription>{incident['description']}</CardDescription>
                     ) : null}
                     <div className="flex items-start gap-2">
                       <AlertTriangle className="h-3 w-3" aria-hidden="true" />
-                      <CardDescription>{guidanceFor(incident.severity)}</CardDescription>
+                      <CardDescription>{guidanceFor(incident['severity'])}</CardDescription>
                     </div>
                   </div>
                 </CardContent>

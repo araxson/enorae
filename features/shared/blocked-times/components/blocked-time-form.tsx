@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertCircle, Repeat } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
@@ -87,6 +87,7 @@ export function BlockedTimeForm({
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Failed to block time</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}

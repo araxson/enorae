@@ -62,7 +62,7 @@ export function ReviewsTableRow({
   onDelete,
   onViewDetail,
 }: ReviewsTableRowProps) {
-  const reviewId = review.id ?? ''
+  const reviewId = review['id'] ?? ''
   const isLoading = loadingId === reviewId
 
   return (
@@ -73,22 +73,22 @@ export function ReviewsTableRow({
         </div>
       )}
       <TableCell>
-        <div className="font-medium">{review.salon_name || 'Unknown'}</div>
+        <div className="font-medium">{review['salon_name'] || 'Unknown'}</div>
       </TableCell>
       <TableCell>
         <div>
-          <div className="font-medium">{review.customer_name || 'Anonymous'}</div>
-          <div className="text-sm text-muted-foreground">{review.customer_email}</div>
+          <div className="font-medium">{review['customer_name'] || 'Anonymous'}</div>
+          <div className="text-sm text-muted-foreground">{review['customer_email']}</div>
         </div>
       </TableCell>
       <TableCell>
         <div className="flex items-center gap-1">
           <Star className="h-4 w-4 text-accent" fill="currentColor" />
-          <span className="font-medium">{review.rating}</span>
+          <span className="font-medium">{review['rating']}</span>
         </div>
       </TableCell>
       <TableCell className="max-w-md">
-        <p className="text-sm truncate">{review.comment || 'No text'}</p>
+        <p className="text-sm truncate">{review['comment'] || 'No text'}</p>
         <p className="text-xs text-muted-foreground">{review.commentLength} chars</p>
       </TableCell>
       <TableCell>
@@ -96,7 +96,7 @@ export function ReviewsTableRow({
           <Badge variant={sentimentVariant(review.sentimentLabel)}>
             {review.sentimentLabel} ({review.sentimentScore})
           </Badge>
-          {review.has_response && (
+          {review['has_response'] && (
             <div className="flex items-center gap-1">
               <MessageSquare className="h-3 w-3" />
               <Badge variant="outline">Responded</Badge>
@@ -115,7 +115,7 @@ export function ReviewsTableRow({
               Quality {review.qualityScore}
             </Badge>
           </div>
-          {review.is_flagged && (
+          {review['is_flagged'] && (
             <div className="flex items-center gap-1">
               <Flag className="h-3 w-3" />
               <Badge variant="destructive">Flagged</Badge>
@@ -134,7 +134,7 @@ export function ReviewsTableRow({
         </div>
       </TableCell>
       <TableCell className="text-sm text-muted-foreground">
-        {review.created_at ? format(new Date(review.created_at), DATE_FORMAT) : 'N/A'}
+        {review['created_at'] ? format(new Date(review['created_at']), DATE_FORMAT) : 'N/A'}
       </TableCell>
       <TableCell>
         <DropdownMenu>
@@ -150,7 +150,7 @@ export function ReviewsTableRow({
               View Details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {review.is_flagged ? (
+            {review['is_flagged'] ? (
               <DropdownMenuItem onClick={() => onUnflag(review)}>
                 <FlagOff className="mr-2 h-4 w-4" />
                 Unflag
@@ -163,7 +163,7 @@ export function ReviewsTableRow({
             )}
             <DropdownMenuItem onClick={() => onToggleFeature(review)}>
               <Star className="mr-2 h-4 w-4" />
-              {review.is_featured ? 'Unfeature' : 'Feature'}
+              {review['is_featured'] ? 'Unfeature' : 'Feature'}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => onDelete(review)}>

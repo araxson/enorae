@@ -13,10 +13,10 @@ interface SalonLocationDetailProps {
 export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProps) {
   // Build Google Maps URL
   const getGoogleMapsUrl = () => {
-    if (locationAddress.latitude && locationAddress.longitude) {
-      return `https://www.google.com/maps/search/?api=1&query=${locationAddress.latitude},${locationAddress.longitude}`
-    } else if (locationAddress.formatted_address) {
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationAddress.formatted_address)}`
+    if (locationAddress['latitude'] && locationAddress['longitude']) {
+      return `https://www.google.com/maps/search/?api=1&query=${locationAddress['latitude']},${locationAddress['longitude']}`
+    } else if (locationAddress['formatted_address']) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationAddress['formatted_address'])}`
     }
     return null
   }
@@ -34,47 +34,47 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
       <CardContent>
         <div className="flex flex-col gap-4">
           {/* Formatted Address */}
-          {locationAddress.formatted_address && (
+          {locationAddress['formatted_address'] && (
             <div>
               <p className="mb-2 text-xs text-muted-foreground">Address</p>
               <p className="whitespace-pre-line text-sm text-foreground">
-                {locationAddress.formatted_address}
+                {locationAddress['formatted_address']}
               </p>
             </div>
           )}
 
           {/* Individual Address Components */}
-          {!locationAddress.formatted_address && (
+          {!locationAddress['formatted_address'] && (
             <div>
               <p className="mb-2 text-xs text-muted-foreground">Address</p>
               <div className="flex flex-col gap-2">
-                {locationAddress.street_address && <p className="text-sm text-foreground">{locationAddress.street_address}</p>}
-                {locationAddress.street_address_2 && <p className="text-sm text-foreground">{locationAddress.street_address_2}</p>}
+                {locationAddress['street_address'] && <p className="text-sm text-foreground">{locationAddress['street_address']}</p>}
+                {locationAddress['street_address_2'] && <p className="text-sm text-foreground">{locationAddress['street_address_2']}</p>}
                 <p className="text-sm text-foreground">
-                  {locationAddress.city}
-                  {locationAddress.state_province && `, ${locationAddress.state_province}`}
-                  {locationAddress.postal_code && ` ${locationAddress.postal_code}`}
+                  {locationAddress['city']}
+                  {locationAddress['state_province'] && `, ${locationAddress['state_province']}`}
+                  {locationAddress['postal_code'] && ` ${locationAddress['postal_code']}`}
                 </p>
-                {locationAddress.country_code && <p className="text-sm text-foreground">{locationAddress.country_code}</p>}
+                {locationAddress['country_code'] && <p className="text-sm text-foreground">{locationAddress['country_code']}</p>}
               </div>
             </div>
           )}
 
           {/* Neighborhood & Landmark */}
-          {(locationAddress.neighborhood || locationAddress.landmark) && (
+          {(locationAddress['neighborhood'] || locationAddress['landmark']) && (
             <>
               <Separator />
               <div>
-                {locationAddress.neighborhood && (
+                {locationAddress['neighborhood'] && (
                   <div className="mb-2">
                     <span className="text-xs text-muted-foreground">Neighborhood</span>
-                    <p className="text-sm text-foreground">{locationAddress.neighborhood}</p>
+                    <p className="text-sm text-foreground">{locationAddress['neighborhood']}</p>
                   </div>
                 )}
-                {locationAddress.landmark && (
+                {locationAddress['landmark'] && (
                   <div>
                     <span className="text-xs text-muted-foreground">Nearby Landmark</span>
-                    <p className="text-sm text-foreground">{locationAddress.landmark}</p>
+                    <p className="text-sm text-foreground">{locationAddress['landmark']}</p>
                   </div>
                 )}
               </div>
@@ -82,7 +82,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
           )}
 
           {/* Parking Instructions */}
-          {locationAddress.parking_instructions && (
+          {locationAddress['parking_instructions'] && (
             <>
               <Separator />
               <div>
@@ -91,14 +91,14 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
                   <span className="text-xs text-muted-foreground">Parking Information</span>
                 </div>
                 <p className="whitespace-pre-line text-sm text-foreground">
-                  {locationAddress.parking_instructions}
+                  {locationAddress['parking_instructions']}
                 </p>
               </div>
             </>
           )}
 
           {/* Accessibility Notes */}
-          {locationAddress.accessibility_notes && (
+          {locationAddress['accessibility_notes'] && (
             <>
               <Separator />
               <div>
@@ -107,7 +107,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
                   <span className="text-xs text-muted-foreground">Accessibility</span>
                 </div>
                 <p className="whitespace-pre-line text-sm text-foreground">
-                  {locationAddress.accessibility_notes}
+                  {locationAddress['accessibility_notes']}
                 </p>
               </div>
             </>
@@ -127,9 +127,9 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
           )}
 
           {/* Coordinates (for debugging/advanced users) */}
-          {locationAddress.latitude && locationAddress.longitude && (
+          {locationAddress['latitude'] && locationAddress['longitude'] && (
             <p className="text-center text-xs text-muted-foreground">
-              {locationAddress.latitude}, {locationAddress.longitude}
+              {locationAddress['latitude']}, {locationAddress['longitude']}
             </p>
           )}
         </div>

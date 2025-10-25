@@ -35,29 +35,27 @@ type ChainLocationsListProps = {
 }
 
 export function ChainLocationsList({ locations, salons }: ChainLocationsListProps) {
-  if (locations.length === 0) {
-    return (
-      <div className="text-center py-8 text-muted-foreground">
-        No locations found in this chain
-      </div>
-    )
-  }
-
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Location</TableHead>
+          <TableHead className="text-right">Appointments</TableHead>
+          <TableHead className="text-right">Revenue</TableHead>
+          <TableHead className="text-right">Rating</TableHead>
+          <TableHead className="text-right">Services</TableHead>
+          <TableHead className="text-right">Staff</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {locations.length === 0 ? (
           <TableRow>
-            <TableHead>Location</TableHead>
-            <TableHead className="text-right">Appointments</TableHead>
-            <TableHead className="text-right">Revenue</TableHead>
-            <TableHead className="text-right">Rating</TableHead>
-            <TableHead className="text-right">Services</TableHead>
-            <TableHead className="text-right">Staff</TableHead>
+            <TableCell colSpan={6} className="text-center text-muted-foreground">
+              No locations found in this chain
+            </TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {locations.map((location) => {
+        ) : (
+          locations.map((location) => {
             const salon = salons.find((s) => s.id === location.salonId)
             return (
               <TableRow key={location.salonId}>
@@ -65,26 +63,20 @@ export function ChainLocationsList({ locations, salons }: ChainLocationsListProp
                   <div>
                     <div className="font-medium">{location.salonName}</div>
                     {salon?.city && (
-                      <div className="text-sm text-muted-foreground flex items-center gap-1">
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <MapPin className="h-3 w-3" />
                         {salon.city}
                       </div>
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="text-right">
-                  {location.appointmentCount}
-                </TableCell>
-                <TableCell className="text-right">
-                  ${location.revenue.toLocaleString()}
-                </TableCell>
+                <TableCell className="text-right">{location.appointmentCount}</TableCell>
+                <TableCell className="text-right">${location.revenue.toLocaleString()}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
-                    <Star className="h-3 w-3 text-accent" fill="currentColor" />
+                    <Star className="h-3 w-3 text-primary" fill="currentColor" />
                     <span>{location.rating.toFixed(1)}</span>
-                    <span className="text-xs text-muted-foreground">
-                      ({location.reviewCount})
-                    </span>
+                    <span className="text-xs text-muted-foreground">({location.reviewCount})</span>
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
@@ -95,9 +87,9 @@ export function ChainLocationsList({ locations, salons }: ChainLocationsListProp
                 </TableCell>
               </TableRow>
             )
-          })}
-        </TableBody>
-      </Table>
-    </div>
+          })
+        )}
+      </TableBody>
+    </Table>
   )
 }

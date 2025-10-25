@@ -29,10 +29,10 @@ export async function upsertUserPreference(formData: FormData) {
       .schema('identity')
       .from('profiles_preferences')
       .select('preferences')
-      .eq('profile_id', session.user.id)
+      .eq('profile_id', session.user['id'])
       .single()
 
-    const currentPrefs = (profile?.preferences as Record<string, string>) || {}
+    const currentPrefs = (profile?.['preferences'] as Record<string, string>) || {}
     const updatedPrefs = { ...currentPrefs, [data.key]: data.value }
 
     // Upsert preferences
@@ -40,7 +40,7 @@ export async function upsertUserPreference(formData: FormData) {
       .schema('identity')
       .from('profiles_preferences')
       .upsert({
-        profile_id: session.user.id,
+        profile_id: session.user['id'],
         preferences: updatedPrefs,
       })
 
@@ -67,12 +67,12 @@ export async function deleteUserPreference(formData: FormData) {
       .schema('identity')
       .from('profiles_preferences')
       .select('preferences')
-      .eq('profile_id', session.user.id)
+      .eq('profile_id', session.user['id'])
       .single()
 
     if (!profile) return { error: 'Preferences not found' }
 
-    const currentPrefs = (profile.preferences as Record<string, string>) || {}
+    const currentPrefs = (profile['preferences'] as Record<string, string>) || {}
     delete currentPrefs[key]
 
     // Update preferences
@@ -80,7 +80,7 @@ export async function deleteUserPreference(formData: FormData) {
       .schema('identity')
       .from('profiles_preferences')
       .update({ preferences: currentPrefs })
-      .eq('profile_id', session.user.id)
+      .eq('profile_id', session.user['id'])
 
     if (updateError) return { error: updateError.message }
 
@@ -119,16 +119,16 @@ export async function updateNotificationPreferences(
       .schema('identity')
       .from('profiles_preferences')
       .select('preferences')
-      .eq('profile_id', session.user.id)
+      .eq('profile_id', session.user['id'])
       .single()
 
-    const currentPrefs = (profile?.preferences as Record<string, unknown>) || {}
+    const currentPrefs = (profile?.['preferences'] as Record<string, unknown>) || {}
 
     // Update notification preferences
     const updatedPrefs = {
       ...currentPrefs,
       notifications: {
-        ...(typeof currentPrefs.notifications === 'object' ? currentPrefs.notifications : {}),
+        ...(typeof currentPrefs['notifications'] === 'object' ? currentPrefs['notifications'] : {}),
         ...validated,
       },
     }
@@ -138,7 +138,7 @@ export async function updateNotificationPreferences(
       .schema('identity')
       .from('profiles_preferences')
       .upsert({
-        profile_id: session.user.id,
+        profile_id: session.user['id'],
         preferences: updatedPrefs,
         updated_at: new Date().toISOString(),
       })
@@ -184,10 +184,10 @@ export async function updateAdvancedPreferences(
       .schema('identity')
       .from('profiles_preferences')
       .upsert({
-        profile_id: session.user.id,
-        timezone: validated.timezone,
-        locale: validated.locale,
-        currency_code: validated.currency_code,
+        profile_id: session.user['id'],
+        timezone: validated['timezone'],
+        locale: validated['locale'],
+        currency_code: validated['currency_code'],
         updated_at: new Date().toISOString(),
       })
 

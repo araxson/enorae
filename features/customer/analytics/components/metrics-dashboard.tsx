@@ -47,11 +47,11 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
-            <Card key={stat.title}>
+            <Card key={stat['title']}>
               <CardHeader className="flex items-start justify-between space-y-0">
                 <div className="space-y-1">
-                  <CardTitle>{stat.title}</CardTitle>
-                  <CardDescription>{stat.description}</CardDescription>
+                  <CardTitle>{stat['title']}</CardTitle>
+                  <CardDescription>{stat['description']}</CardDescription>
                 </div>
                 <Icon className={`h-5 w-5 ${stat.color}`} aria-hidden="true" />
               </CardHeader>
@@ -92,20 +92,20 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
           </CardHeader>
           <CardContent className="space-y-3">
             {metrics.recentActivity.map((appointment) => (
-              <div key={appointment.id} className="flex items-start justify-between border-b pb-3 last:border-0 last:pb-0">
+              <div key={appointment['id']} className="flex items-start justify-between border-b pb-3 last:border-0 last:pb-0">
                 <div>
                   <p className="text-sm text-foreground">
-                    {Array.isArray(appointment.service_names) && appointment.service_names.length > 0
-                      ? appointment.service_names.join(', ')
+                    {Array.isArray(appointment['service_names']) && appointment['service_names'].length > 0
+                      ? appointment['service_names'].join(', ')
                       : 'Service'}
                   </p>
-                  <p className="text-sm text-muted-foreground">{appointment.salon_name || 'Salon'}</p>
+                  <p className="text-sm text-muted-foreground">{appointment['salon_name'] || 'Salon'}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-foreground">
-                    {appointment.start_time ? new Date(appointment.start_time).toLocaleDateString() : 'N/A'}
+                    {appointment['start_time'] ? new Date(appointment['start_time']).toLocaleDateString() : 'N/A'}
                   </p>
-                  <p className="text-xs text-muted-foreground capitalize">{appointment.status}</p>
+                  <p className="text-xs text-muted-foreground capitalize">{appointment['status']}</p>
                 </div>
               </div>
             ))}

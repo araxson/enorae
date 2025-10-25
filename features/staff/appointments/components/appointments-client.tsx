@@ -29,10 +29,10 @@ export function AppointmentsClient({
       return appointments.filter((appt) => {
         const matchesSearch =
           !searchQuery ||
-          appt.customer_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          appt.customer_email?.toLowerCase().includes(searchQuery.toLowerCase())
+          appt['customer_name']?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          appt['customer_email']?.toLowerCase().includes(searchQuery.toLowerCase())
 
-        const matchesStatus = statusFilter === 'all' || appt.status === statusFilter
+        const matchesStatus = statusFilter === 'all' || appt['status'] === statusFilter
 
         return matchesSearch && matchesStatus
       })

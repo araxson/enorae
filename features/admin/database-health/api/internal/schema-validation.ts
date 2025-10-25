@@ -38,7 +38,7 @@ export async function getSchemaValidation(): Promise<SchemaValidationSnapshot> {
   const tablesWithoutPK = (pkRes.data ?? []) as TableWithoutPK[]
 
   const criticalSecurityIssues = tablesWithoutRLS.filter(
-    (t) => t.rls_status === 'disabled' || t.rls_status === 'missing'
+    (t) => t['rls_status'] === 'disabled' || t['rls_status'] === 'missing'
   ).length
 
   return {

@@ -49,15 +49,11 @@ export function FormFields({ formState, updateFormState }: FormFieldsProps) {
           >
             <div className="flex items-center gap-2">
               <RadioGroupItem id="bulk-discount-type-percentage" value="percentage" />
-              <Label htmlFor="bulk-discount-type-percentage" className="text-sm font-normal">
-                Percentage (%)
-              </Label>
+              <Label htmlFor="bulk-discount-type-percentage">Percentage (%)</Label>
             </div>
             <div className="flex items-center gap-2">
               <RadioGroupItem id="bulk-discount-type-fixed" value="fixed" />
-              <Label htmlFor="bulk-discount-type-fixed" className="text-sm font-normal">
-                Fixed Amount ($)
-              </Label>
+              <Label htmlFor="bulk-discount-type-fixed">Fixed Amount ($)</Label>
             </div>
           </RadioGroup>
         </div>
@@ -148,9 +144,9 @@ export function FormFields({ formState, updateFormState }: FormFieldsProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between rounded-md border px-3 py-2">
+      <div className="flex items-center justify-between gap-4 px-3 py-2">
         <div>
-          <Label htmlFor="bulk-active" className="text-sm font-medium">
+          <Label htmlFor="bulk-active">
             Set campaign active
           </Label>
           <p className="text-xs text-muted-foreground">

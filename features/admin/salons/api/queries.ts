@@ -151,12 +151,12 @@ function deriveLicenseStatus(expiresAt: string | null): { status: LicenseStatus;
 }
 
 function deriveVerificationStatus(row: AdminSalonRow, base: SalonBaseRow | undefined): boolean {
-  if (base?.is_verified !== undefined && base?.is_verified !== null) {
-    return Boolean(base.is_verified)
+  if (base?.['is_verified'] !== undefined && base?.['is_verified'] !== null) {
+    return Boolean(base['is_verified'])
   }
 
   // Fallback heuristic: salons actively taking bookings with healthy metrics are considered verified
-  return Boolean(row.is_accepting_bookings && (row.total_revenue || row.total_bookings || 0) > 0)
+  return Boolean(row['is_accepting_bookings'] && (row['total_revenue'] || row['total_bookings'] || 0) > 0)
 }
 
 export async function getAllSalons(): Promise<SalonsResponse> {
@@ -172,7 +172,7 @@ export async function getAllSalons(): Promise<SalonsResponse> {
   if (error) throw error
   const salons = (data || []) as AdminSalonRow[]
 
-  const salonIds = salons.map((salon) => salon.id).filter(Boolean) as string[]
+  const salonIds = salons.map((salon) => salon['id']).filter(Boolean) as string[]
 
   const [settingsResult, baseResult] = await Promise.all([
     salonIds.length
@@ -195,16 +195,16 @@ export async function getAllSalons(): Promise<SalonsResponse> {
 
   const settingsMap = new Map<string, SalonSettingsRow>(
     ((settingsResult.data as (SalonSettingsRow | null | undefined)[]) || [])
-      .filter((row): row is SalonSettingsRow & { salon_id: string } => Boolean(row?.salon_id))
-      .map((row) => [row.salon_id, row])
+      .filter((row): row is SalonSettingsRow & { salon_id: string } => Boolean(row?.['salon_id']))
+      .map((row) => [row['salon_id'], row])
   )
   const baseMap = new Map<string, SalonBaseRow>(
-    (baseResult.data as SalonBaseRow[] | null | undefined)?.map((row) => [row.id, row]) || []
+    (baseResult.data as SalonBaseRow[] | null | undefined)?.map((row) => [row['id'], row]) || []
   )
 
   const adminSalons: AdminSalon[] = salons.map((salon) => {
-    const settings = settingsMap.get(salon.id ?? '')
-    const baseRecord = baseMap.get(salon.id ?? '')
+    const settings = settingsMap.get(salon['id'] ?? '')
+    const baseRecord = baseMap.get(salon['id'] ?? '')
 
     const { status: licenseStatus, days } = deriveLicenseStatus(settings?.subscription_expires_at ?? null)
     const isVerified = deriveVerificationStatus(salon, baseRecord)
@@ -212,21 +212,21 @@ export async function getAllSalons(): Promise<SalonsResponse> {
     const compliance = computeCompliance({
       isVerified,
       licenseStatus,
-      ratingAverage: salon.rating_average,
-      totalBookings: salon.total_bookings,
-      totalRevenue: salon.total_revenue,
-      staffCount: salon.staff_count,
+      ratingAverage: salon['rating_average'],
+      totalBookings: salon['total_bookings'],
+      totalRevenue: salon['total_revenue'],
+      staffCount: salon['staff_count'],
     })
 
     const healthScore = calculateHealthScore({
-      ratingAverage: salon.rating_average,
-      totalBookings: salon.total_bookings,
-      totalRevenue: salon.total_revenue,
-      staffCount: salon.staff_count,
+      ratingAverage: salon['rating_average'],
+      totalBookings: salon['total_bookings'],
+      totalRevenue: salon['total_revenue'],
+      staffCount: salon['staff_count'],
     })
 
-    const staffCapacityRatio = settings?.max_staff
-      ? Math.min((salon.staff_count ?? 0) / settings.max_staff, 2)
+    const staffCapacityRatio = settings?.['max_staff']
+      ? Math.min((salon['staff_count'] ?? 0) / settings['max_staff'], 2)
       : 0
 
     return {
@@ -240,10 +240,10 @@ export async function getAllSalons(): Promise<SalonsResponse> {
       complianceIssues: compliance.issues,
       healthScore,
       staffCapacityRatio,
-      subscriptionTier: settings?.subscription_tier ?? null,
-      business_name: baseRecord?.business_name ?? null,
-      slug: baseRecord?.slug ?? null,
-      businessType: baseRecord?.business_type ?? null,
+      subscriptionTier: settings?.['subscription_tier'] ?? null,
+      business_name: baseRecord?.['business_name'] ?? null,
+      slug: baseRecord?.['slug'] ?? null,
+      businessType: baseRecord?.['business_type'] ?? null,
     }
   })
 
@@ -260,7 +260,7 @@ export async function getAllSalons(): Promise<SalonsResponse> {
 
   const stats: SalonDashboardStats = {
     total: adminSalons.length,
-    active: adminSalons.filter((salon) => salon.is_accepting_bookings).length,
+    active: adminSalons.filter((salon) => salon['is_accepting_bookings']).length,
     verified,
     expiringLicenses: expiring.length,
     highRisk: highRisk.length,
@@ -300,11 +300,11 @@ export async function getAllSalonsLegacy(filters?: SalonFilters) {
 
 function applySalonFilters(salons: AdminSalon[], filters: SalonFilters) {
   return salons.filter((salon) => {
-    const matchesChain = !filters.chain_id || salon.chain_id === filters.chain_id
-    const matchesTier = !filters.subscription_tier || salon.subscriptionTier === filters.subscription_tier
+    const matchesChain = !filters['chain_id'] || salon['chain_id'] === filters['chain_id']
+    const matchesTier = !filters['subscription_tier'] || salon.subscriptionTier === filters['subscription_tier']
     const matchesSearch = !filters.search
       ? true
-      : [salon.name, salon.business_name, salon.slug]
+      : [salon['name'], salon['business_name'], salon['slug']]
           .filter(Boolean)
           .some((value) => value!.toLowerCase().includes(filters.search!.toLowerCase()))
 

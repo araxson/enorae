@@ -1,0 +1,3 @@
+Initialising login role...
+failed to retrieve generated types: {"message":"{\"code\":\"PGRST002\",\"details\":null,\"hint\":null,\"message\":\"Could not query the database for the schema cache. Retrying.\"}"}
+Try rerunning the command with --debug to troubleshoot the error.

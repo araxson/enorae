@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { LocationAddress } from './address-form/types'
 
@@ -144,8 +144,8 @@ export function AddressValidation({ address }: Props) {
 
           {result && result.issues.length > 0 && (
             <Alert variant="destructive">
+              <AlertTitle>Issues found</AlertTitle>
               <AlertDescription>
-                <div className="font-semibold mb-2">Issues Found:</div>
                 <ul className="list-disc list-inside space-y-1">
                   {result.issues.map((issue, i) => (
                     <li key={i} className="text-sm">{issue}</li>
@@ -157,8 +157,8 @@ export function AddressValidation({ address }: Props) {
 
           {result && result.suggestions.length > 0 && (
             <Alert>
+              <AlertTitle>Suggestions</AlertTitle>
               <AlertDescription>
-                <div className="font-semibold mb-2">Suggestions:</div>
                 <ul className="list-disc list-inside space-y-1">
                   {result.suggestions.map((suggestion, i) => (
                     <li key={i} className="text-sm">{suggestion}</li>
@@ -171,6 +171,7 @@ export function AddressValidation({ address }: Props) {
           {result && result.isValid && (
             <Alert>
               <CheckCircle className="h-4 w-4" />
+              <AlertTitle>Validation passed</AlertTitle>
               <AlertDescription>
                 Address validation passed! Your address is properly formatted and complete.
               </AlertDescription>

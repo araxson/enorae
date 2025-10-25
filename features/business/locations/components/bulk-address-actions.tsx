@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Label } from '@/components/ui/label'
 import { MapPin, Globe, CheckCircle } from 'lucide-react'
 import { bulkUpdateAddresses, geocodeAllAddresses } from '@/features/business/locations/api/bulk-address.mutations'
@@ -77,15 +77,12 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
       <CardContent>
         <div className="flex flex-col gap-6">
           <Alert>
+            <CheckCircle className="h-4 w-4" />
+            <AlertTitle>Selection status</AlertTitle>
             <AlertDescription>
-              {selectedIds.length > 0 ? (
-                <>
-                  <CheckCircle className="h-4 w-4 inline mr-2" />
-                  {selectedIds.length} location(s) selected
-                </>
-              ) : (
-                'Select locations to perform bulk actions'
-              )}
+              {selectedIds.length > 0
+                ? `${selectedIds.length} location(s) selected`
+                : 'Select locations to perform bulk actions'}
             </AlertDescription>
           </Alert>
 

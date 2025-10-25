@@ -19,7 +19,7 @@ import type { Database } from '@/lib/types/database.types'
 import { format } from 'date-fns'
 import { WebhookDetailDialog } from './webhook-detail-dialog'
 import { retryAllFailedWebhooks, clearCompletedWebhooks } from '@/features/business/webhooks/api/mutations'
-import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { ConfirmDialog } from '@/components/shared'
 
 type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
 
@@ -41,8 +41,8 @@ export function WebhookList({ webhooks }: WebhookListProps) {
   const [isRetryingAll, setIsRetryingAll] = useState(false)
   const [isClearing, setIsClearing] = useState(false)
 
-  const failedCount = webhooks.filter(w => w.status === 'failed').length
-  const completedCount = webhooks.filter(w => w.status === 'completed').length
+  const failedCount = webhooks.filter(w => w['status'] === 'failed').length
+  const completedCount = webhooks.filter(w => w['status'] === 'completed').length
 
   const handleRowClick = (webhook: WebhookQueue) => {
     setSelectedWebhook(webhook)
@@ -136,16 +136,16 @@ export function WebhookList({ webhooks }: WebhookListProps) {
         <TableBody>
           {webhooks.map((webhook) => (
             <TableRow
-              key={webhook.id}
+              key={webhook['id']}
               className="cursor-pointer hover:bg-muted/50"
               onClick={() => handleRowClick(webhook)}
             >
               <TableCell>
                 <div className="text-sm">
-                  {webhook.created_at ? format(new Date(webhook.created_at), 'MMM dd, yyyy') : '-'}
+                  {webhook['created_at'] ? format(new Date(webhook['created_at']), 'MMM dd, yyyy') : '-'}
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {webhook.created_at ? format(new Date(webhook.created_at), 'HH:mm:ss') : '-'}
+                  {webhook['created_at'] ? format(new Date(webhook['created_at']), 'HH:mm:ss') : '-'}
                 </div>
               </TableCell>
               <TableCell>
@@ -153,23 +153,23 @@ export function WebhookList({ webhooks }: WebhookListProps) {
               </TableCell>
               <TableCell>
                 <div className="max-w-xs truncate text-sm">
-                  {webhook.url}
+                  {webhook['url']}
                 </div>
               </TableCell>
               <TableCell>
-                <Badge variant={STATUS_COLORS[webhook.status as keyof typeof STATUS_COLORS]}>
-                  {webhook.status}
+                <Badge variant={STATUS_COLORS[webhook['status'] as keyof typeof STATUS_COLORS]}>
+                  {webhook['status']}
                 </Badge>
               </TableCell>
               <TableCell>
                 <span className="text-sm">
-                  {webhook.attempts || 0}
+                  {webhook['attempts'] || 0}
                 </span>
               </TableCell>
               <TableCell>
-                {webhook.completed_at ? (
+                {webhook['completed_at'] ? (
                   <div className="text-sm">
-                    {format(new Date(webhook.completed_at), 'MMM dd, HH:mm')}
+                    {format(new Date(webhook['completed_at']), 'MMM dd, HH:mm')}
                   </div>
                 ) : (
                   <span className="text-sm text-muted-foreground">-</span>
@@ -177,7 +177,7 @@ export function WebhookList({ webhooks }: WebhookListProps) {
               </TableCell>
               <TableCell>
                 <div className="max-w-xs truncate text-sm text-muted-foreground">
-                  {webhook.last_error || '-'}
+                  {webhook['last_error'] || '-'}
                 </div>
               </TableCell>
             </TableRow>

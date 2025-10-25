@@ -12,7 +12,7 @@ interface ChainComplianceTableProps {
 export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) {
   const getComplianceColor = (rate: number) => {
     if (rate >= 90) return 'text-primary'
-    if (rate >= 70) return 'text-accent'
+    if (rate >= 70) return 'text-secondary'
     return 'text-destructive'
   }
 
@@ -27,76 +27,61 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
       <CardHeader>
         <CardTitle>Chain Compliance Monitoring</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
+      <CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Chain Name</TableHead>
+              <TableHead className="text-right">Total Salons</TableHead>
+              <TableHead className="text-right">Active</TableHead>
+              <TableHead className="text-right">Paused</TableHead>
+              <TableHead>Compliance Rate</TableHead>
+              <TableHead>Issues</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {compliance.length === 0 ? (
               <TableRow>
-                <TableHead>Chain Name</TableHead>
-                <TableHead className="text-right">Total Salons</TableHead>
-                <TableHead className="text-right">Active</TableHead>
-                <TableHead className="text-right">Paused</TableHead>
-                <TableHead>Compliance Rate</TableHead>
-                <TableHead>Issues</TableHead>
+                <TableCell colSpan={6} className="text-center text-muted-foreground">
+                  No compliance data available
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {compliance.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground">
-                    No compliance data available
+            ) : (
+              compliance.map((chain) => (
+                <TableRow key={chain.chainId}>
+                  <TableCell className="font-medium">{chain.chainName}</TableCell>
+                  <TableCell className="text-right">{chain.totalSalons}</TableCell>
+                  <TableCell className="text-right text-primary">{chain.verifiedSalons}</TableCell>
+                  <TableCell className="text-right text-destructive">{chain.unverifiedSalons}</TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm font-medium ${getComplianceColor(chain.complianceRate)}`}>
+                          {chain.complianceRate.toFixed(1)}%
+                        </span>
+                      </div>
+                      <Progress value={chain.complianceRate} className="h-2" />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {chain.issues.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {chain.issues.map((issue, idx) => (
+                          <Badge key={idx} variant={getComplianceVariant(chain.complianceRate)}>
+                            <AlertCircle className="mr-1 h-3 w-3" />
+                            {issue}
+                          </Badge>
+                        ))}
+                      </div>
+                    ) : (
+                      <Badge variant="default">No issues</Badge>
+                    )}
                   </TableCell>
                 </TableRow>
-              ) : (
-                compliance.map((chain) => (
-                  <TableRow key={chain.chainId}>
-                    <TableCell className="font-medium">{chain.chainName}</TableCell>
-                    <TableCell className="text-right">{chain.totalSalons}</TableCell>
-                    <TableCell className="text-right text-primary">
-                      {chain.verifiedSalons}
-                    </TableCell>
-                    <TableCell className="text-right text-destructive">
-                      {chain.unverifiedSalons}
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span className={`text-sm font-medium ${getComplianceColor(chain.complianceRate)}`}>
-                            {chain.complianceRate.toFixed(1)}%
-                          </span>
-                        </div>
-                        <Progress
-                          value={chain.complianceRate}
-                          className="h-2"
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {chain.issues.length > 0 ? (
-                        <div className="flex flex-wrap gap-1">
-                          {chain.issues.map((issue, idx) => (
-                            <Badge
-                              key={idx}
-                              variant={getComplianceVariant(chain.complianceRate)}
-                              className="text-xs"
-                            >
-                              <AlertCircle className="mr-1 h-3 w-3" />
-                              {issue}
-                            </Badge>
-                          ))}
-                        </div>
-                      ) : (
-                        <Badge variant="default">
-                          No issues
-                        </Badge>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   )

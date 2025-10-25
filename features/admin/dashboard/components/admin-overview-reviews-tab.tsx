@@ -40,21 +40,21 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
         <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((review) => (
-              <Card key={review.id}>
+              <Card key={review['id']}>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between gap-3">
-                    <CardTitle>{review.salon_name || 'Unknown salon'}</CardTitle>
+                    <CardTitle>{review['salon_name'] || 'Unknown salon'}</CardTitle>
                     <Badge variant="outline" className="gap-1 text-xs">
                       <Star className="h-3 w-3 text-accent" fill="currentColor" />
-                      {review.rating || 0}/5
+                      {review['rating'] || 0}/5
                     </Badge>
                   </div>
-                  <CardDescription>By {review.customer_name || 'Anonymous'}</CardDescription>
+                  <CardDescription>By {review['customer_name'] || 'Anonymous'}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3 pt-0">
                   <Separator />
                   <p className="line-clamp-3 text-sm text-muted-foreground">
-                    {review.comment || 'No comment provided.'}
+                    {review['comment'] || 'No comment provided.'}
                   </p>
                 </CardContent>
               </Card>

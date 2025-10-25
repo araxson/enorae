@@ -30,10 +30,10 @@ const chartConfig = {
 export function RevenueChart({ data }: RevenueChartProps) {
   // Transform data for the chart
   const chartData = data.map((metric) => ({
-    date: format(new Date(metric.metric_at), 'MMM dd'),
-    total: Number(metric.total_revenue) || 0,
-    service: Number(metric.service_revenue) || 0,
-    product: Number(metric.product_revenue) || 0,
+    date: format(new Date(metric['metric_at']), 'MMM dd'),
+    total: Number(metric['total_revenue']) || 0,
+    service: Number(metric['service_revenue']) || 0,
+    product: Number(metric['product_revenue']) || 0,
   }))
 
   if (chartData.length === 0) {

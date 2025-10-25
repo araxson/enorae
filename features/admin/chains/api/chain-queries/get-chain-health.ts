@@ -27,7 +27,7 @@ export async function getChainHealthMetrics(chainId: string) {
     .single<SalonChainRow>()
 
   if (chainError) throw chainError
-  if (!chain?.id) {
+  if (!chain?.['id']) {
     throw new Error('Chain not found')
   }
 
@@ -36,13 +36,13 @@ export async function getChainHealthMetrics(chainId: string) {
     .select(
       'id, chain_id, rating_average, rating_count, is_accepting_bookings, total_revenue, total_bookings',
     )
-    .eq('chain_id', chain.id)
+    .eq('chain_id', chain['id'])
     .returns<AdminSalonOverviewRow[]>()
 
   if (salonsError) throw salonsError
 
   const salons = salonSummaries ?? []
-  const salonIds = salons.map((salon) => salon.id).filter((id): id is string => Boolean(id))
+  const salonIds = salons.map((salon) => salon['id']).filter((id): id is string => Boolean(id))
 
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -62,45 +62,45 @@ export async function getChainHealthMetrics(chainId: string) {
     if (revenueError) throw revenueError
 
     monthlyRevenue = (revenueRows ?? []).reduce(
-      (sum, row) => sum + (Number(row.total_revenue) || 0),
+      (sum, row) => sum + (Number(row['total_revenue']) || 0),
       0,
     )
     monthlyAppointments = (revenueRows ?? []).reduce(
-      (sum, row) => sum + (Number(row.total_appointments) || 0),
+      (sum, row) => sum + (Number(row['total_appointments']) || 0),
       0,
     )
   }
 
   const totalSalons = salons.length
-  const activeSalons = salons.filter((salon) => Boolean(salon.is_accepting_bookings)).length
+  const activeSalons = salons.filter((salon) => Boolean(salon['is_accepting_bookings'])).length
 
   const ratingTotals = salons.reduce(
     (acc, salon) => {
-      const rating = Number(salon.rating_average) || 0
-      const count = Number(salon.rating_count) || 0
-      acc.weightedSum += rating * count
-      acc.totalCount += count
+      const rating = Number(salon['rating_average']) || 0
+      const count = Number(salon['rating_count']) || 0
+      acc['weightedSum'] += rating * count
+      acc['totalCount'] += count
       return acc
     },
     { weightedSum: 0, totalCount: 0 },
   )
 
   const avgRating =
-    ratingTotals.totalCount > 0 ? ratingTotals.weightedSum / ratingTotals.totalCount : 0
+    ratingTotals['totalCount'] > 0 ? ratingTotals['weightedSum'] / ratingTotals['totalCount'] : 0
 
   return {
-    chainName: chain.name,
-    isVerified: chain.is_verified,
-    isActive: chain.is_active,
+    chainName: chain['name'],
+    isVerified: chain['is_verified'],
+    isActive: chain['is_active'],
     totalSalons,
     activeSalons,
     avgRating,
     monthlyRevenue,
     monthlyAppointments,
-    subscriptionTier: chain.subscription_tier,
+    subscriptionTier: chain['subscription_tier'],
     healthScore: calculateHealthScore({
-      isVerified: chain.is_verified ?? false,
-      isActive: chain.is_active ?? false,
+      isVerified: chain['is_verified'] ?? false,
+      isActive: chain['is_active'] ?? false,
       avgRating,
       activeSalonsRatio: totalSalons > 0 ? activeSalons / totalSalons : 0,
     }),
@@ -111,7 +111,7 @@ function calculateHealthScore(metrics: HealthScoreInput): number {
   let score = 0
 
   if (metrics.isVerified) score += 25
-  if (metrics.isActive) score += 25
+  if (metrics['isActive']) score += 25
   score += (metrics.avgRating / 5) * 25
   score += metrics.activeSalonsRatio * 25
 

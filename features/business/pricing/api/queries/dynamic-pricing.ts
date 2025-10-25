@@ -42,14 +42,14 @@ export async function calculateServicePrice(
   if (!pricing) return 0
 
   // Use current_price, fallback to sale_price, then base_price
-  const basePrice = pricing.current_price ?? pricing.sale_price ?? pricing.base_price ?? 0
+  const basePrice = pricing['current_price'] ?? pricing['sale_price'] ?? pricing['base_price'] ?? 0
 
   // Apply dynamic pricing
   return applyDynamicPricing(
     basePrice,
     serviceId,
     bookingTime,
-    pricing.salon_id ?? ''
+    pricing['salon_id'] ?? ''
   )
 }
 

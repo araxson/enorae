@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Calendar, CreditCard } from 'lucide-react'
 import type { Subscription } from './billing-subscription-form'
 
@@ -25,9 +26,11 @@ export function PaymentMethodCard({
         <Separator />
 
         <div className="flex items-center gap-6">
-          <div className="flex h-12 w-16 items-center justify-center rounded border bg-card">
-            <CreditCard className="h-6 w-6 text-muted-foreground" />
-          </div>
+          <Avatar className="h-12 w-12">
+            <AvatarFallback>
+              <CreditCard className="h-5 w-5" />
+            </AvatarFallback>
+          </Avatar>
           <div className="flex-1">
             <div className="font-medium">•••• •••• •••• 4242</div>
             <div className="text-sm text-muted-foreground">Expires 12/2026</div>

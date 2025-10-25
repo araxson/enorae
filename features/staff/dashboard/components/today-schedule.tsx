@@ -42,7 +42,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
       .slice(0, 2)
   }
 
-  const completedCount = appointments.filter(a => a.status === 'completed').length
+  const completedCount = appointments.filter(a => a['status'] === 'completed').length
 
   const formatStatus = (status: string) =>
     status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
@@ -70,12 +70,12 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
         <ScrollArea className="max-h-96">
           <div className="p-6 space-y-3">
             {appointments.map((appointment, index) => {
-              const customerInitials = getInitials(appointment.customer_name || 'Unknown')
-              const isCompleted = appointment.status === 'completed'
-              const statusConfig = { variant: getStatusVariant(appointment.status), label: appointment.status || 'pending' }
+              const customerInitials = getInitials(appointment['customer_name'] || 'Unknown')
+              const isCompleted = appointment['status'] === 'completed'
+              const statusConfig = { variant: getStatusVariant(appointment['status']), label: appointment['status'] || 'pending' }
 
               return (
-                <div key={appointment.id}>
+                <div key={appointment['id']}>
                   <Card>
                     <CardContent>
                       <div
@@ -86,7 +86,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
                         <div className="flex items-center gap-3 flex-1 min-w-0">
                           <div className="flex w-16 flex-none flex-col items-center gap-1">
                             <Clock className="h-4 w-4 text-muted-foreground" />
-                            <p className="text-sm font-semibold">{formatAppointmentTime(appointment.start_time)}</p>
+                            <p className="text-sm font-semibold">{formatAppointmentTime(appointment['start_time'])}</p>
                           </div>
 
                           <Separator orientation="vertical" className="h-10" />
@@ -99,7 +99,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
 
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium truncate">
-                              {appointment.customer_name || 'Unknown Customer'}
+                              {appointment['customer_name'] || 'Unknown Customer'}
                             </p>
                             <div className="flex items-center gap-1 text-xs text-muted-foreground">
                               <User className="h-3 w-3" />

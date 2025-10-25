@@ -16,27 +16,27 @@ export function generateLocalBusinessSchema(salon: SalonSchemaInput): Structured
   const schema: StructuredDataProps = {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
-    name: salon.name,
-    description: salon.description,
+    name: salon['name'],
+    description: salon['description'],
     image: salon.image || `${APP_URL}/default-salon.png`,
     priceRange: salon.priceRange || '$$',
   }
 
-  if (salon.address) {
-    schema.address = {
+  if (salon['address']) {
+    schema['address'] = {
       '@type': 'PostalAddress',
-      streetAddress: salon.address,
+      streetAddress: salon['address'],
     }
   }
 
-  if (salon.phone) {
-    schema.telephone = salon.phone
+  if (salon['phone']) {
+    schema['telephone'] = salon['phone']
   }
 
-  if (salon.rating && salon.reviewCount) {
-    schema.aggregateRating = {
+  if (salon['rating'] && salon.reviewCount) {
+    schema['aggregateRating'] = {
       '@type': 'AggregateRating',
-      ratingValue: salon.rating,
+      ratingValue: salon['rating'],
       reviewCount: salon.reviewCount,
       bestRating: 5,
       worstRating: 1,

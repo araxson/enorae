@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getSalonReviews, getReviewStats } from './api/queries'
 import { ReviewsList } from './components/reviews-list'
 import { ReviewsStats } from './components/reviews-stats'
@@ -16,6 +16,7 @@ export async function SalonReviews() {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
+          <AlertTitle>Reviews unavailable</AlertTitle>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Please log in to view reviews'}
           </AlertDescription>

@@ -28,13 +28,13 @@ export function TransactionsClient({
 
     const headers = ['Date', 'Type', 'Payment Method', 'Staff', 'Customer', 'Created By', 'Created At']
     const rows = transactions.map((t) => [
-      t.transaction_at ? format(new Date(t.transaction_at), 'yyyy-MM-dd') : '',
-      t.transaction_type || '',
-      t.payment_method || '',
-      t.staff?.full_name || '',
-      t.customer?.full_name || '',
-      t.created_by?.full_name || '',
-      t.created_at ? format(new Date(t.created_at), 'yyyy-MM-dd HH:mm:ss') : '',
+      t['transaction_at'] ? format(new Date(t['transaction_at']), 'yyyy-MM-dd') : '',
+      t['transaction_type'] || '',
+      t['payment_method'] || '',
+      t.staff?.['full_name'] || '',
+      t.customer?.['full_name'] || '',
+      t.created_by?.['full_name'] || '',
+      t['created_at'] ? format(new Date(t['created_at']), 'yyyy-MM-dd HH:mm:ss') : '',
     ])
 
     const csvContent = [

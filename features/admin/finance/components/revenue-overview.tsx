@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card'
-import { StatCard } from '@/components/shared/stat-card'
+import { StatCard } from '@/components/shared'
 import { DollarSign, TrendingUp, Calendar, Users } from 'lucide-react'
 import type { RevenueMetrics } from '@/features/admin/finance/api/types'
 

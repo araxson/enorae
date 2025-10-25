@@ -38,16 +38,16 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
         <ScrollArea className="h-80 pr-4">
           <div className="space-y-3">
             {rows.map((msg) => (
-              <Card key={msg.id}>
+              <Card key={msg['id']}>
                 <CardHeader className="pb-2">
-                  <CardTitle>{msg.subject || 'No subject'}</CardTitle>
+                  <CardTitle>{msg['subject'] || 'No subject'}</CardTitle>
                   <CardDescription>
-                    {msg.customer_name || 'Unknown customer'} • {msg.salon_name || 'Unknown salon'}
+                    {msg['customer_name'] || 'Unknown customer'} • {msg['salon_name'] || 'Unknown salon'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <p className="text-xs text-muted-foreground">
-                    {safeFormatDate(msg.created_at, 'MMM d, HH:mm')}
+                    {safeFormatDate(msg['created_at'], 'MMM d, HH:mm')}
                   </p>
                 </CardContent>
               </Card>

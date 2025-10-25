@@ -107,16 +107,16 @@ export async function getAggregatedMetrics(
 
   const aggregated = metrics.reduce(
     (acc, metric) => ({
-      totalRevenue: acc.totalRevenue + (metric.total_revenue || 0),
-      totalAppointments: acc.totalAppointments + (metric.total_appointments || 0),
-      completedAppointments: acc.completedAppointments + (metric.completed_appointments || 0),
-      cancelledAppointments: acc.cancelledAppointments + (metric.cancelled_appointments || 0),
-      noShowAppointments: acc.noShowAppointments + (metric.no_show_appointments || 0),
-      newCustomers: acc.newCustomers + (metric.new_customers || 0),
-      returningCustomers: acc.returningCustomers + (metric.returning_customers || 0),
-      avgUtilization: acc.avgUtilization + (metric.utilization_rate || 0),
-      serviceRevenue: acc.serviceRevenue + (metric.service_revenue || 0),
-      productRevenue: acc.productRevenue + (metric.product_revenue || 0),
+      totalRevenue: acc['totalRevenue'] + (metric['total_revenue'] || 0),
+      totalAppointments: acc['totalAppointments'] + (metric['total_appointments'] || 0),
+      completedAppointments: acc['completedAppointments'] + (metric['completed_appointments'] || 0),
+      cancelledAppointments: acc['cancelledAppointments'] + (metric['cancelled_appointments'] || 0),
+      noShowAppointments: acc['noShowAppointments'] + (metric['no_show_appointments'] || 0),
+      newCustomers: acc['newCustomers'] + (metric['new_customers'] || 0),
+      returningCustomers: acc['returningCustomers'] + (metric['returning_customers'] || 0),
+      avgUtilization: acc['avgUtilization'] + (metric['utilization_rate'] || 0),
+      serviceRevenue: acc['serviceRevenue'] + (metric['service_revenue'] || 0),
+      productRevenue: acc['productRevenue'] + (metric['product_revenue'] || 0),
     }),
     {
       totalRevenue: 0,
@@ -134,7 +134,7 @@ export async function getAggregatedMetrics(
 
   // Calculate average utilization
   if (metrics.length > 0) {
-    aggregated.avgUtilization = aggregated.avgUtilization / metrics.length
+    aggregated['avgUtilization'] = aggregated['avgUtilization'] / metrics.length
   }
 
   return aggregated
@@ -173,13 +173,13 @@ export async function getMetricsComparison(
     current,
     previous,
     trends: {
-      revenue: calculateTrend(current.totalRevenue, previous.totalRevenue),
-      appointments: calculateTrend(current.totalAppointments, previous.totalAppointments),
+      revenue: calculateTrend(current['totalRevenue'], previous['totalRevenue']),
+      appointments: calculateTrend(current['totalAppointments'], previous['totalAppointments']),
       customers: calculateTrend(
-        current.newCustomers + current.returningCustomers,
-        previous.newCustomers + previous.returningCustomers
+        current['newCustomers'] + current['returningCustomers'],
+        previous['newCustomers'] + previous['returningCustomers']
       ),
-      utilization: calculateTrend(current.avgUtilization, previous.avgUtilization),
+      utilization: calculateTrend(current['avgUtilization'], previous['avgUtilization']),
     },
   }
 }

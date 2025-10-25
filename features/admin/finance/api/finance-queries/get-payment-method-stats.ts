@@ -28,7 +28,7 @@ export async function getPaymentMethodStats(
   const methodMap = new Map<string, { count: number; transactions: ManualTransactionRow[] }>()
 
   transactions?.forEach((transaction) => {
-    const method = transaction.payment_method || 'unknown'
+    const method = transaction['payment_method'] || 'unknown'
     if (!methodMap.has(method)) {
       methodMap.set(method, { count: 0, transactions: [] })
     }
@@ -44,7 +44,7 @@ export async function getPaymentMethodStats(
       method,
       count: data.count,
       percentage: (data.count / totalTransactions) * 100,
-      lastUsed: data.transactions[0]?.created_at || null,
+      lastUsed: data.transactions[0]?.['created_at'] || null,
     }))
     .sort((a, b) => b.count - a.count)
 }

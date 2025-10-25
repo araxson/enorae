@@ -14,11 +14,11 @@ function normalizeFailedWebhooks(
   failedWebhooks: FailedWebhookRow[],
 ) {
   return failedWebhooks.map((webhook) => ({
-    id: webhook.id ?? '',
-    url: webhook.url ?? 'Unknown destination',
+    id: webhook['id'] ?? '',
+    url: webhook['url'] ?? 'Unknown destination',
     event_type: 'webhook', // event_type field doesn't exist in view, use generic type
-    error_message: webhook.last_error ?? null, // The field is 'last_error', not 'error_message'
-    created_at: webhook.created_at ?? new Date().toISOString(),
+    error_message: webhook['last_error'] ?? null, // The field is 'last_error', not 'error_message'
+    created_at: webhook['created_at'] ?? new Date().toISOString(),
   }))
 }
 

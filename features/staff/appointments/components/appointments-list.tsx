@@ -65,12 +65,12 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
       <CardContent>
         <div className="flex flex-col gap-3">
           {appointments.map((appointment) => {
-            const status = appointment.status as AppointmentStatus
+            const status = appointment['status'] as AppointmentStatus
             const config = statusConfig[status] || statusConfig.pending
             const isActionable = status === 'confirmed' || status === 'pending' || status === 'in_progress'
 
             return (
-              <Card key={appointment.id}>
+              <Card key={appointment['id']}>
                 <CardContent>
                   <div className="p-0">
                     <div
@@ -90,31 +90,31 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                         <Badge variant={config.variant}>{config.label}</Badge>
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Calendar className="h-4 w-4" />
-                          {appointment.start_time ? format(new Date(appointment.start_time), 'MMM dd, yyyy') : 'N/A'}
+                          {appointment['start_time'] ? format(new Date(appointment['start_time']), 'MMM dd, yyyy') : 'N/A'}
                         </div>
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Clock className="h-4 w-4" />
-                          {appointment.start_time ? format(new Date(appointment.start_time), 'h:mm a') : 'N/A'}
+                          {appointment['start_time'] ? format(new Date(appointment['start_time']), 'h:mm a') : 'N/A'}
                         </div>
                       </div>
 
                       <div>
-                        <p className="font-medium">{appointment.customer_name || 'Walk-in Customer'}</p>
-                        {appointment.customer_email ? (
-                          <p className="text-sm text-muted-foreground">{appointment.customer_email}</p>
+                        <p className="font-medium">{appointment['customer_name'] || 'Walk-in Customer'}</p>
+                        {appointment['customer_email'] ? (
+                          <p className="text-sm text-muted-foreground">{appointment['customer_email']}</p>
                         ) : null}
                       </div>
 
-                      {appointment.service_names ? (
+                      {appointment['service_names'] ? (
                         <div className="flex items-center gap-1 text-sm">
-                          <p className="text-sm text-muted-foreground">{appointment.service_names}</p>
+                          <p className="text-sm text-muted-foreground">{appointment['service_names']}</p>
                         </div>
                       ) : null}
 
-                      {appointment.duration_minutes ? (
+                      {appointment['duration_minutes'] ? (
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          <span>{appointment.duration_minutes} minutes</span>
+                          <span>{appointment['duration_minutes']} minutes</span>
                         </div>
                       ) : null}
                     </div>
@@ -126,7 +126,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                             size="sm"
                             variant="outline"
                             onAction={async () => {
-                              await confirmAppointment(appointment.id!)
+                              await confirmAppointment(appointment['id']!)
                               router.refresh()
                             }}
                             successMessage="Appointment confirmed"
@@ -140,7 +140,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                           <ActionButton
                             size="sm"
                             onAction={async () => {
-                              await startAppointment(appointment.id!)
+                              await startAppointment(appointment['id']!)
                               router.refresh()
                             }}
                             successMessage="Appointment started"
@@ -155,7 +155,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                             <ActionButton
                               size="sm"
                               onAction={async () => {
-                                await markAppointmentCompleted(appointment.id!)
+                                await markAppointmentCompleted(appointment['id']!)
                                 router.refresh()
                               }}
                               successMessage="Appointment completed"
@@ -168,7 +168,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
                               size="sm"
                               variant="destructive"
                               onAction={async () => {
-                                await markAppointmentNoShow(appointment.id!)
+                                await markAppointmentNoShow(appointment['id']!)
                                 router.refresh()
                               }}
                               successMessage="Marked as no-show"

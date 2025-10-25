@@ -21,11 +21,11 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
     )
   }
 
-  const peakHour = metrics.peak_hour ?? 0
-  const busiestDay = metrics.busiest_day_of_week ?? 0
-  const anomalyScore = metrics.anomaly_score ?? 0
-  const forecastAccuracy = metrics.forecast_accuracy ?? 0
-  const realtimeUpdates = metrics.real_time_updates_count ?? 0
+  const peakHour = metrics['peak_hour'] ?? 0
+  const busiestDay = metrics['busiest_day_of_week'] ?? 0
+  const anomalyScore = metrics['anomaly_score'] ?? 0
+  const forecastAccuracy = metrics['forecast_accuracy'] ?? 0
+  const realtimeUpdates = metrics['real_time_updates_count'] ?? 0
 
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const busiestDayName = dayNames[busiestDay] || 'Unknown'
@@ -99,11 +99,11 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
               <span className="text-sm font-medium">Real-time Updates</span>
               <Badge variant="secondary">{realtimeUpdates} updates</Badge>
             </div>
-            {metrics.last_real_time_update && (
+            {metrics['last_real_time_update'] && (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Last Update</span>
                 <span className="text-sm text-muted-foreground">
-                  {new Date(metrics.last_real_time_update).toLocaleString()}
+                  {new Date(metrics['last_real_time_update']).toLocaleString()}
                 </span>
               </div>
             )}
@@ -111,7 +111,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
         </CardContent>
       </Card>
 
-      {metrics.predicted_demand && (
+      {metrics['predicted_demand'] && (
         <Card>
           <CardHeader>
             <CardTitle>Demand Forecast</CardTitle>
@@ -119,13 +119,13 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
           </CardHeader>
           <CardContent>
             <pre className="text-xs bg-muted p-4 rounded-md overflow-auto">
-              {JSON.stringify(metrics.predicted_demand, null, 2)}
+              {JSON.stringify(metrics['predicted_demand'], null, 2)}
             </pre>
           </CardContent>
         </Card>
       )}
 
-      {metrics.trend_indicators && (
+      {metrics['trend_indicators'] && (
         <Card>
           <CardHeader>
             <CardTitle>Trend Indicators</CardTitle>
@@ -133,7 +133,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
           </CardHeader>
           <CardContent>
             <pre className="text-xs bg-muted p-4 rounded-md overflow-auto">
-              {JSON.stringify(metrics.trend_indicators, null, 2)}
+              {JSON.stringify(metrics['trend_indicators'], null, 2)}
             </pre>
           </CardContent>
         </Card>

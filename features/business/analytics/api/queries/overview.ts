@@ -67,20 +67,20 @@ export async function getAnalyticsOverview(
 
   const dailyMetrics: DailyMetric[] = response.data || []
 
-  const totalRevenue = dailyMetrics.reduce((sum, m) => sum + (m.total_revenue || 0), 0)
-  const serviceRevenue = dailyMetrics.reduce((sum, m) => sum + (m.service_revenue || 0), 0)
-  const productRevenue = dailyMetrics.reduce((sum, m) => sum + (m.product_revenue || 0), 0)
+  const totalRevenue = dailyMetrics.reduce((sum, m) => sum + (m['total_revenue'] || 0), 0)
+  const serviceRevenue = dailyMetrics.reduce((sum, m) => sum + (m['service_revenue'] || 0), 0)
+  const productRevenue = dailyMetrics.reduce((sum, m) => sum + (m['product_revenue'] || 0), 0)
 
-  const totalAppointments = dailyMetrics.reduce((sum, m) => sum + (m.total_appointments || 0), 0)
-  const completedAppointments = dailyMetrics.reduce((sum, m) => sum + (m.completed_appointments || 0), 0)
-  const cancelledAppointments = dailyMetrics.reduce((sum, m) => sum + (m.cancelled_appointments || 0), 0)
-  const noShowAppointments = dailyMetrics.reduce((sum, m) => sum + (m.no_show_appointments || 0), 0)
+  const totalAppointments = dailyMetrics.reduce((sum, m) => sum + (m['total_appointments'] || 0), 0)
+  const completedAppointments = dailyMetrics.reduce((sum, m) => sum + (m['completed_appointments'] || 0), 0)
+  const cancelledAppointments = dailyMetrics.reduce((sum, m) => sum + (m['cancelled_appointments'] || 0), 0)
+  const noShowAppointments = dailyMetrics.reduce((sum, m) => sum + (m['no_show_appointments'] || 0), 0)
 
-  const newCustomers = dailyMetrics.reduce((sum, m) => sum + (m.new_customers || 0), 0)
-  const returningCustomers = dailyMetrics.reduce((sum, m) => sum + (m.returning_customers || 0), 0)
+  const newCustomers = dailyMetrics.reduce((sum, m) => sum + (m['new_customers'] || 0), 0)
+  const returningCustomers = dailyMetrics.reduce((sum, m) => sum + (m['returning_customers'] || 0), 0)
 
   const avgStaffCount = dailyMetrics.length > 0
-    ? dailyMetrics.reduce((sum, m) => sum + (m.active_staff_count || 0), 0) / dailyMetrics.length
+    ? dailyMetrics.reduce((sum, m) => sum + (m['active_staff_count'] || 0), 0) / dailyMetrics.length
     : 0
 
   const periodLength = Math.max(
@@ -103,7 +103,7 @@ export async function getAnalyticsOverview(
   if (prevResponse.error) throw prevResponse.error
 
   const prevMetrics: Array<{ total_revenue: number | null }> = prevResponse.data || []
-  const prevRevenue = prevMetrics.reduce((sum, m) => sum + (m.total_revenue || 0), 0)
+  const prevRevenue = prevMetrics.reduce((sum, m) => sum + (m['total_revenue'] || 0), 0)
   const revenueGrowth = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue) * 100 : 0
 
   return {

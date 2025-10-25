@@ -24,23 +24,23 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       {locations.map((location) => {
-        const isCurrent = location.id === currentLocationId
+        const isCurrent = location['id'] === currentLocationId
         const address = [
           location.address_line1,
-          location.city,
-          location.state_province,
+          location['city'],
+          location['state_province'],
         ].filter(Boolean).join(', ')
 
         return (
-          <Card key={location.id}>
+          <Card key={location['id']}>
             <CardHeader>
               <div className="p-4 pb-2">
                 <div className="flex gap-3 items-center flex-wrap">
                   <CardTitle>
-                    {location.location_name || location.name}
+                    {location.location_name || location['name']}
                   </CardTitle>
                   {isCurrent && <Badge variant="default">Your Location</Badge>}
-                  {location.is_primary && <Badge variant="outline">Primary</Badge>}
+                  {location['is_primary'] && <Badge variant="outline">Primary</Badge>}
                 </div>
               </div>
             </CardHeader>

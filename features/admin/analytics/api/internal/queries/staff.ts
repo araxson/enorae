@@ -1,6 +1,6 @@
 import 'server-only';
-import { requireAdminClient } from '@/features/admin/analytics/api/internal/admin-analytics-shared'
-import type { AdminStaffRow } from '@/features/admin/analytics/api/internal/admin-analytics-types'
+import { requireAdminClient } from '@/features/admin/analytics/api/admin-analytics-shared'
+import type { AdminStaffRow } from '@/features/admin/analytics/api/admin-analytics-types'
 
 const STAFF_TABLE = 'admin_staff_overview'
 

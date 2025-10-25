@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import {
   getStaffCommission,
@@ -18,6 +18,7 @@ export async function StaffCommission() {
     return (
       <div className="p-4">
         <Alert>
+          <AlertTitle>Commission unavailable</AlertTitle>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Please log in to view commission data'}
           </AlertDescription>
@@ -30,6 +31,7 @@ export async function StaffCommission() {
     return (
       <div className="p-4">
         <Alert>
+          <AlertTitle>Profile not found</AlertTitle>
           <AlertDescription>Staff profile not found</AlertDescription>
         </Alert>
       </div>

@@ -23,16 +23,16 @@ export async function getServiceCategories(): Promise<ServiceCategoryWithCounts[
   const { data: staffProfile } = await supabase
     .from('staff')
     .select('salon_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .single<{ salon_id: string | null }>()
 
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
+  if (!staffProfile?.['salon_id']) throw new Error('User salon not found')
 
   // ✅ FIXED: Query view with pre-computed counts (eliminates N+1)
   const { data, error } = await supabase
     .from('service_categories_view')
     .select('*')
-    .eq('salon_id', staffProfile.salon_id)
+    .eq('salon_id', staffProfile['salon_id'])
     .is('deleted_at', null)
     .order('name', { ascending: true })
 
@@ -42,7 +42,7 @@ export async function getServiceCategories(): Promise<ServiceCategoryWithCounts[
   const categories = (data || []) as ServiceCategory[]
   return categories.map((category) => ({
     ...category,
-    service_count: category.active_services_count || 0,
+    service_count: category['active_services_count'] || 0,
   }))
 }
 
@@ -61,17 +61,17 @@ export async function getServiceCategoryById(
   const { data: staffProfile } = await supabase
     .from('staff')
     .select('salon_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .single<{ salon_id: string | null }>()
 
-  if (!staffProfile?.salon_id) throw new Error('User salon not found')
+  if (!staffProfile?.['salon_id']) throw new Error('User salon not found')
 
   // ✅ FIXED: Query view instead of table
   const { data, error } = await supabase
     .from('service_categories_view')
     .select('*')
     .eq('id', id)
-    .eq('salon_id', staffProfile.salon_id)
+    .eq('salon_id', staffProfile['salon_id'])
     .is('deleted_at', null)
     .single()
 

@@ -150,10 +150,10 @@ export function SessionList({ sessions }: SessionListProps) {
       <div className="flex flex-col gap-3">
         {sessions.map((session) => (
           <SessionCard
-            key={session.id}
+            key={session['id']}
             session={session}
             onRevoke={handleRevokeSession}
-            isRevoking={revokingId === session.id}
+            isRevoking={revokingId === session['id']}
           />
         ))}
       </div>

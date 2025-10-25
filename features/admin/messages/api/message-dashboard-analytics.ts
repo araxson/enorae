@@ -36,7 +36,7 @@ export const calculateThreadInsights = (
   let responsesWithinHour = 0
 
   const threadsWithInsights: MessageThreadWithInsights[] = threads.map((thread) => {
-    const threadId = thread.id ?? ''
+    const threadId = thread['id'] ?? ''
     const flaggedCount = artifacts.flaggedByThread.get(threadId) ?? 0
     const metadata = threadMetadataMap.get(threadId) ?? null
     const reportInfo = parseThreadMetadata(metadata)
@@ -83,39 +83,39 @@ export const buildMessageStats = (
   const responsesWithinHourRate = totalResponses > 0 ? responsesWithinHour / totalResponses : null
 
   const statusCounts = threads.reduce<Record<string, number>>((acc, thread) => {
-    const status = normaliseStatus(thread.status)?.toString() ?? 'open'
+    const status = normaliseStatus(thread['status'])?.toString() ?? 'open'
     acc[status] = (acc[status] ?? 0) + 1
     return acc
   }, {})
 
   const priorityCounts = threads.reduce<Record<string, number>>((acc, thread) => {
-    const priority = normalisePriority(thread.priority)?.toString() ?? 'normal'
+    const priority = normalisePriority(thread['priority'])?.toString() ?? 'normal'
     acc[priority] = (acc[priority] ?? 0) + 1
     return acc
   }, {})
 
   const totalUnread = threads.reduce((sum, thread) => {
-    const customerUnread = thread.unread_count_customer ?? 0
-    const staffUnread = thread.unread_count_staff ?? 0
+    const customerUnread = thread['unread_count_customer'] ?? 0
+    const staffUnread = thread['unread_count_staff'] ?? 0
     return sum + customerUnread + staffUnread
   }, 0)
 
   const flaggedThreads = threadsWithInsights.filter((thread) => thread.hasFlaggedMessages)
   const escalatedThreads = threadsWithInsights.filter((thread) => {
-    const status = normaliseStatus(thread.status)
+    const status = normaliseStatus(thread['status'])
     const isClosed = status === 'resolved' || status === 'closed' || status === 'archived'
     return thread.unresolvedReports > 0 || (!isClosed && thread.hasFlaggedMessages)
   })
 
   return {
     totalThreads: threads.length,
-    openThreads: statusCounts.open ?? 0,
-    inProgressThreads: statusCounts.in_progress ?? 0,
-    resolvedThreads: statusCounts.resolved ?? 0,
-    closedThreads: statusCounts.closed ?? 0,
-    archivedThreads: statusCounts.archived ?? 0,
-    urgentThreads: priorityCounts.urgent ?? 0,
-    highPriorityThreads: (priorityCounts.high ?? 0) + (priorityCounts.urgent ?? 0),
+    openThreads: statusCounts['open'] ?? 0,
+    inProgressThreads: statusCounts['in_progress'] ?? 0,
+    resolvedThreads: statusCounts['resolved'] ?? 0,
+    closedThreads: statusCounts['closed'] ?? 0,
+    archivedThreads: statusCounts['archived'] ?? 0,
+    urgentThreads: priorityCounts['urgent'] ?? 0,
+    highPriorityThreads: (priorityCounts['high'] ?? 0) + (priorityCounts['urgent'] ?? 0),
     totalUnread,
     avgFirstResponseMinutes: averageFirstResponse,
     responsesWithinHourRate,
@@ -155,7 +155,7 @@ export const buildReportSummary = (
   let pendingReports = 0
 
   threadsWithInsights.forEach((thread) => {
-    const metadata = threadMetadataMap.get(thread.id ?? '') ?? null
+    const metadata = threadMetadataMap.get(thread['id'] ?? '') ?? null
     const reportInfo = parseThreadMetadata(metadata)
     totalReports += reportInfo.totalReports
     openReports += reportInfo.openReports

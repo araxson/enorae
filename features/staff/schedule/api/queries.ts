@@ -42,7 +42,7 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
   const staffIds = Array.from(
     new Set(
       schedules
-        .map((schedule) => schedule.staff_id)
+        .map((schedule) => schedule['staff_id'])
         .filter((id): id is string => Boolean(id)),
     ),
   )
@@ -58,14 +58,14 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
 
     staffMap = new Map(
       (staffRows || [])
-        .filter((staff): staff is Staff => Boolean(staff?.id))
-        .map((staff) => [staff.id as string, staff as Staff]),
+        .filter((staff): staff is Staff => Boolean(staff?.['id']))
+        .map((staff) => [staff['id'] as string, staff as Staff]),
     )
   }
 
   return schedules.map((schedule) => ({
     ...schedule,
-    staff: schedule.staff_id ? staffMap.get(schedule.staff_id) ?? null : null,
+    staff: schedule['staff_id'] ? staffMap.get(schedule['staff_id']) ?? null : null,
   }))
 }
 
@@ -162,14 +162,14 @@ export async function getScheduleSalon() {
   const { data, error } = await supabase
     .from('staff_profiles_view')
     .select('salon_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .maybeSingle<{ salon_id: string | null }>()
 
-  if (error || !data?.salon_id) {
+  if (error || !data?.['salon_id']) {
     throw new Error('No salon found for your account')
   }
 
-  return { id: data.salon_id }
+  return { id: data['salon_id'] }
 }
 
 /**

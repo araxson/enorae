@@ -49,13 +49,13 @@ export async function searchProfiles(term: string, limit = 20): Promise<ProfileS
   }
 
   return (data ?? []).map((row) => ({
-    id: row.id ?? '',
-    fullName: row.full_name ?? null,
-    email: row.email ?? null,
+    id: row['id'] ?? '',
+    fullName: row['full_name'] ?? null,
+    email: row['email'] ?? null,
     username: row.username ?? null,
     primaryRole: row.primary_role ?? null,
     roles: row.roles ?? [],
-    status: row.status ?? null,
+    status: row['status'] ?? null,
   }))
 }
 
@@ -116,12 +116,12 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
   const lastActiveAt =
     activityRows.length > 0
       ? activityRows[0]?.created_at ?? null
-      : profileRow.updated_at ?? profileRow.created_at ?? null
+      : profileRow['updated_at'] ?? profileRow['created_at'] ?? null
 
   const summary = mapSummary(profileRow, lastActiveAt)
 
   const metadata: ProfileMetadataDetail = {
-    fullName: metadataRow?.full_name ?? summary.fullName,
+    fullName: metadataRow?.['full_name'] ?? summary.fullName,
     avatarUrl: metadataRow?.avatar_url ?? summary.avatarUrl,
     avatarThumbnailUrl: metadataRow?.avatar_thumbnail_url ?? null,
     coverImageUrl: metadataRow?.cover_image_url ?? null,
@@ -134,23 +134,23 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
     countryCode: preferencesRow?.country_code ?? summary.countryCode,
     locale: preferencesRow?.locale ?? summary.locale,
     timezone: preferencesRow?.timezone ?? summary.timezone,
-    updatedAt: preferencesRow?.updated_at ?? null,
+    updatedAt: preferencesRow?.['updated_at'] ?? null,
     preferences:
       (preferencesRow?.preferences as Record<string, unknown> | null | undefined) ?? {},
   }
 
   const roles = rolesRows.map<ProfileRoleSummary>((role) => ({
-    id: role.id,
+    id: role['id'],
     role: role.role,
-    salonId: role.salon_id,
-    isActive: role.is_active,
+    salonId: role['salon_id'],
+    isActive: role['is_active'],
     permissions: role.permissions ?? [],
-    createdAt: role.created_at,
+    createdAt: role['created_at'],
   }))
 
   const activity = activityRows.map<ProfileActivityEntry>((log, index) => ({
-    id: log.id ?? `audit-${index}`,
-    createdAt: log.created_at,
+    id: log['id'] ?? `audit-${index}`,
+    createdAt: log['created_at'],
     eventType: log.event_type ?? log.action,
     action: log.action,
     entityType: log.entity_type,

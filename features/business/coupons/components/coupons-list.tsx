@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog'
-import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/coupons.mutations'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 import { useToast } from '@/lib/hooks/use-toast'
 import { CouponForm } from './coupon-form'
 import type { CouponWithStats } from '@/features/business/coupons/api/queries/coupon-validation'

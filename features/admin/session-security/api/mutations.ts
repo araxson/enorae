@@ -3,9 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { requireAnyRole } from '@/lib/auth/role-guard'
-import { ROLE_GROUPS } from '@/lib/auth/constants'
 
 const quarantineSessionSchema = z.object({
   sessionId: z.string().uuid(),
@@ -28,6 +27,12 @@ const overrideSeveritySchema = z.object({
   reason: z.string().min(1).max(500),
 })
 
+type SessionSecurityRecord = {
+  user_email?: string
+  risk_level?: string
+  [key: string]: unknown
+}
+
 export async function quarantineSession(formData: FormData) {
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
@@ -48,6 +53,8 @@ export async function quarantineSession(formData: FormData) {
     if (!record) {
       return { error: 'Session security record not found' }
     }
+
+    const typedRecord = record as SessionSecurityRecord
 
     // Mark session as quarantined
     const { error: updateError } = await supabase
@@ -76,8 +83,8 @@ export async function quarantineSession(formData: FormData) {
       user_id: session.user.id,
       metadata: {
         session_id: validated.sessionId,
-        user_email: (record as any).user_email,
-        risk_level: (record as any).risk_level,
+        user_email: typedRecord.user_email,
+        risk_level: typedRecord.risk_level,
         reason: validated.reason,
       },
     })
@@ -168,6 +175,8 @@ export async function evictSession(formData: FormData) {
       return { error: 'Session security record not found' }
     }
 
+    const typedRecord = record as SessionSecurityRecord
+
     // Delete session from Supabase auth
     const { error: deleteError } = await supabase
       .schema('auth')
@@ -188,8 +197,8 @@ export async function evictSession(formData: FormData) {
       user_id: session.user.id,
       metadata: {
         session_id: validated.sessionId,
-        user_email: (record as any).user_email,
-        risk_level: (record as any).risk_level,
+        user_email: typedRecord.user_email,
+        risk_level: typedRecord.risk_level,
         reason: validated.reason,
       },
     })
@@ -228,13 +237,15 @@ export async function overrideSeverity(formData: FormData) {
       return { error: 'Session security record not found' }
     }
 
+    const typedRecord = record as SessionSecurityRecord
+
     // Update risk level
     const { error: updateError } = await supabase
       .schema('public')
       .from('session_risk_overrides')
       .insert({
         session_id: validated.sessionId,
-        original_risk_level: (record as any).risk_level,
+        original_risk_level: typedRecord.risk_level,
         override_risk_level: validated.newRiskLevel,
         overridden_by: session.user.id,
         reason: validated.reason,
@@ -255,7 +266,7 @@ export async function overrideSeverity(formData: FormData) {
       metadata: {
         session_id: validated.sessionId,
         user_email: (record as any).user_email,
-        old_risk_level: (record as any).risk_level,
+        old_risk_level: typedRecord.risk_level,
         new_risk_level: validated.newRiskLevel,
         reason: validated.reason,
       },

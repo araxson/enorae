@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Loader2, CheckCircle, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import { updatePassword } from '@/features/business/settings-account/api/mutations'
 
@@ -64,6 +64,7 @@ export function PasswordForm() {
             {success && (
               <Alert>
                 <CheckCircle className="h-4 w-4" />
+                <AlertTitle>Password updated</AlertTitle>
                 <AlertDescription>Password updated successfully</AlertDescription>
               </Alert>
             )}
@@ -71,6 +72,7 @@ export function PasswordForm() {
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Update failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

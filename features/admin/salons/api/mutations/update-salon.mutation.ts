@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { revalidatePath } from 'next/cache'
-import { updateSalonSchema, UUID_REGEX } from '@/features/admin/salons/utils/schemas'
+import { updateSalonSchema, UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
 import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 
 export async function updateSalon(formData: FormData) {
@@ -25,12 +25,12 @@ export async function updateSalon(formData: FormData) {
     const supabase = await getSupabaseClient()
 
     const updateData: Record<string, unknown> = {
-      updated_by_id: session.user.id,
+      updated_by_id: session.user['id'],
     }
 
-    if (result.data.name) updateData.name = result.data.name
-    if (result.data.businessName) updateData.business_name = result.data.businessName
-    if (result.data.businessType) updateData.business_type = result.data.businessType
+    if (result.data['name']) updateData['name'] = result.data['name']
+    if (result.data.businessName) updateData['business_name'] = result.data.businessName
+    if (result.data.businessType) updateData['business_type'] = result.data.businessType
 
     const { error } = await supabase
       .schema('organization')

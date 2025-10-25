@@ -16,11 +16,11 @@ export async function sendNotificationForTemplate(templateId: string) {
   if (!user) throw new Error('Unauthorized')
 
   const templates =
-    (user.user_metadata?.notification_templates as
+    (user.user_metadata?.['notification_templates'] as
       | NotificationTemplate[]
       | undefined) ?? []
 
-  const template = templates.find((entry) => entry.id === templateId)
+  const template = templates.find((entry) => entry['id'] === templateId)
 
   if (!template) {
     throw new Error('Template not found')
@@ -32,8 +32,8 @@ export async function sendNotificationForTemplate(templateId: string) {
   )
 
   return sendNotification({
-    userId: user.id,
-    title: template.subject || template.name,
+    userId: user['id'],
+    title: template['subject'] || template['name'],
     message,
     type: template.event,
     channels: [template.channel],

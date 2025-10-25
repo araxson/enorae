@@ -34,18 +34,18 @@ export function useServiceForm({ salonId, service, open, onClose, onSuccess }: U
 
   useEffect(() => {
     if (service) {
-      setName(service.name || '')
-      setDescription(service.description || '')
-      setBasePrice(service.price?.toString() || '')
-      setSalePrice(service.sale_price?.toString() || '')
-      setDuration(service.duration_minutes?.toString() || '')
-      setBuffer(service.buffer_minutes?.toString() || '0')
+      setName(service['name'] || '')
+      setDescription(service['description'] || '')
+      setBasePrice(service['price']?.toString() || '')
+      setSalePrice(service['sale_price']?.toString() || '')
+      setDuration(service['duration_minutes']?.toString() || '')
+      setBuffer(service['buffer_minutes']?.toString() || '0')
       setIsTaxable(true)
       setTaxRate('')
       setCommissionRate('')
-      setIsActive(service.is_active ?? true)
-      setIsBookable(service.is_bookable ?? true)
-      setIsFeatured(service.is_featured ?? false)
+      setIsActive(service['is_active'] ?? true)
+      setIsBookable(service['is_bookable'] ?? true)
+      setIsFeatured(service['is_featured'] ?? false)
     } else {
       setName('')
       setDescription('')
@@ -71,7 +71,7 @@ export function useServiceForm({ salonId, service, open, onClose, onSuccess }: U
     try {
       if (service) {
         await updateService(
-          service.id as string,
+          service['id'] as string,
           {
             name,
             description: description || undefined,

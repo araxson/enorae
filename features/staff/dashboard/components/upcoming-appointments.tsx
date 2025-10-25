@@ -48,20 +48,20 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
       <CardContent>
         <ItemGroup>
           {appointments.map((appointment, index) => (
-            <div key={appointment.id}>
+            <div key={appointment['id']}>
               <Item variant="outline" size="default">
                 <ItemMedia>
                   <Card>
                     <CardContent>
                       <div className="flex w-16 flex-col items-center justify-center gap-1 p-2">
                         <p className="text-xs font-semibold">
-                          {appointment.start_time
-                            ? format(new Date(appointment.start_time), 'MMM')
+                          {appointment['start_time']
+                            ? format(new Date(appointment['start_time']), 'MMM')
                             : '---'}
                         </p>
                         <div className="text-lg font-semibold">
-                          {appointment.start_time
-                            ? format(new Date(appointment.start_time), 'd')
+                          {appointment['start_time']
+                            ? format(new Date(appointment['start_time']), 'd')
                             : '--'}
                         </div>
                       </div>
@@ -71,15 +71,15 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
                 <ItemContent>
                   <ItemTitle>
                     <Clock className="inline h-3 w-3" aria-hidden="true" />{' '}
-                    {formatAppointmentTime(appointment.start_time)}
+                    {formatAppointmentTime(appointment['start_time'])}
                   </ItemTitle>
                   <ItemDescription>
-                    {appointment.customer_name || 'Unknown Customer'}
+                    {appointment['customer_name'] || 'Unknown Customer'}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions>
-                  <Badge variant={getStatusVariant(appointment.status)}>
-                    {appointment.status || 'pending'}
+                  <Badge variant={getStatusVariant(appointment['status'])}>
+                    {appointment['status'] || 'pending'}
                   </Badge>
                 </ItemActions>
               </Item>

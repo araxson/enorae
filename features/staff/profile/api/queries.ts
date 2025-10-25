@@ -20,7 +20,7 @@ export async function getMyStaffProfile(): Promise<StaffProfile | null> {
   const { data, error } = await supabase
     .from('staff_profiles_view')
     .select('*')
-    .eq('user_id', session.user.id)
+    .eq('user_id', session.user['id'])
     .single()
 
   if (error) {
@@ -34,7 +34,7 @@ export async function getMyStaffProfile(): Promise<StaffProfile | null> {
 export async function getMyStaffProfileDetails(): Promise<StaffProfileDetails> {
   const profile = await getMyStaffProfile()
 
-  if (!profile || !profile.user_id) {
+  if (!profile || !profile['user_id']) {
     return {
       profile,
       metadata: null,
@@ -48,12 +48,12 @@ export async function getMyStaffProfileDetails(): Promise<StaffProfileDetails> {
     supabase
       .from('profiles_metadata')
       .select('*')
-      .eq('profile_id', profile.user_id)
+      .eq('profile_id', profile['user_id'])
       .maybeSingle<StaffProfileMetadata>(),
     supabase
       .from('profiles')
       .select('username')
-      .eq('id', profile.user_id)
+      .eq('id', profile['user_id'])
       .maybeSingle<Pick<PublicProfile, 'username'>>(),
   ])
 
@@ -63,6 +63,6 @@ export async function getMyStaffProfileDetails(): Promise<StaffProfileDetails> {
   return {
     profile,
     metadata: metadataResult.data ?? null,
-    username: profileResult.data?.username ?? null,
+    username: profileResult.data?.['username'] ?? null,
   }
 }

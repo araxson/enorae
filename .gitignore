@@ -5,7 +5,7 @@
 .env.development.local
 .env.test.local
 
-# MCP Configuration (contains access tokens)
+# MCP Configuration (contains sensitive project references)
 .mcp.json
 
 # Dependencies

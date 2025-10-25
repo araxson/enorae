@@ -31,7 +31,7 @@ export function TransactionsReportDialog({
   const report = useMemo(() => {
     const byType = transactions.reduce(
       (acc, t) => {
-        const type = t.transaction_type || 'unknown'
+        const type = t['transaction_type'] || 'unknown'
         acc[type] = (acc[type] || 0) + 1
         return acc
       },
@@ -40,7 +40,7 @@ export function TransactionsReportDialog({
 
     const byPaymentMethod = transactions.reduce(
       (acc, t) => {
-        const method = t.payment_method || 'unknown'
+        const method = t['payment_method'] || 'unknown'
         acc[method] = (acc[method] || 0) + 1
         return acc
       },
@@ -49,7 +49,7 @@ export function TransactionsReportDialog({
 
     const byStaff = transactions.reduce(
       (acc, t) => {
-        const staffName = t.staff?.full_name || 'Unassigned'
+        const staffName = t.staff?.['full_name'] || 'Unassigned'
         acc[staffName] = (acc[staffName] || 0) + 1
         return acc
       },
@@ -59,22 +59,22 @@ export function TransactionsReportDialog({
     const dateRange = transactions.length > 0
       ? {
           earliest: transactions
-            .filter((t) => t.transaction_at)
+            .filter((t) => t['transaction_at'])
             .reduce(
               (min, t) => {
-                const date = new Date(t.transaction_at!)
+                const date = new Date(t['transaction_at']!)
                 return date < min ? date : min
               },
-              new Date(transactions[0].transaction_at!)
+              new Date(transactions[0]['transaction_at']!)
             ),
           latest: transactions
-            .filter((t) => t.transaction_at)
+            .filter((t) => t['transaction_at'])
             .reduce(
               (max, t) => {
-                const date = new Date(t.transaction_at!)
+                const date = new Date(t['transaction_at']!)
                 return date > max ? date : max
               },
-              new Date(transactions[0].transaction_at!)
+              new Date(transactions[0]['transaction_at']!)
             ),
         }
       : null

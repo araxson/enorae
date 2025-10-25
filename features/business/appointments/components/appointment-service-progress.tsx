@@ -26,10 +26,10 @@ export function AppointmentServiceProgress({
 
   const stats = {
     total: services.length,
-    completed: services.filter((s) => s.status === 'completed').length,
-    inProgress: services.filter((s) => s.status === 'in_progress').length,
-    pending: services.filter((s) => s.status === 'pending').length,
-    cancelled: services.filter((s) => s.status === 'cancelled').length,
+    completed: services.filter((s) => s['status'] === 'completed').length,
+    inProgress: services.filter((s) => s['status'] === 'in_progress').length,
+    pending: services.filter((s) => s['status'] === 'pending').length,
+    cancelled: services.filter((s) => s['status'] === 'cancelled').length,
   }
 
   const completionRate = stats.total > 0 ? (stats.completed / stats.total) * 100 : 0
@@ -137,21 +137,21 @@ export function AppointmentServiceProgress({
         <CardContent>
           <div className="space-y-4">
             {services.map((service) => {
-              const isCancelled = service.status === 'cancelled'
-              const nextStatus = getNextStatus(service.status)
+              const isCancelled = service['status'] === 'cancelled'
+              const nextStatus = getNextStatus(service['status'])
 
               return (
-                <Card key={service.id}>
+                <Card key={service['id']}>
                   <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div className="flex flex-1 items-center gap-4">
-                      {getStatusIcon(service.status)}
+                      {getStatusIcon(service['status'])}
                       <div className="flex-1">
-                        <p className="font-medium">{service.service_name}</p>
+                        <p className="font-medium">{service['service_name']}</p>
                         <div className="mt-1 flex items-center gap-2">
-                          <Badge variant="outline">{getStatusLabel(service.status)}</Badge>
-                          {service.staff_name && (
+                          <Badge variant="outline">{getStatusLabel(service['status'])}</Badge>
+                          {service['staff_name'] && (
                             <span className="text-sm text-muted-foreground">
-                              {service.staff_name}
+                              {service['staff_name']}
                             </span>
                           )}
                         </div>
@@ -163,22 +163,22 @@ export function AppointmentServiceProgress({
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleStatusUpdate(service.id || '', nextStatus)}
-                          disabled={updatingId === service.id}
+                          onClick={() => handleStatusUpdate(service['id'] || '', nextStatus)}
+                          disabled={updatingId === service['id']}
                         >
-                          {updatingId === service.id
+                          {updatingId === service['id']
                             ? 'Updating...'
-                            : service.status === 'completed'
+                            : service['status'] === 'completed'
                             ? 'Reset'
                             : 'Mark ' + getStatusLabel(nextStatus)}
                         </Button>
                       )}
-                      {service.status !== 'cancelled' && service.status !== 'completed' && (
+                      {service['status'] !== 'cancelled' && service['status'] !== 'completed' && (
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleStatusUpdate(service.id || '', 'cancelled')}
-                          disabled={updatingId === service.id}
+                          onClick={() => handleStatusUpdate(service['id'] || '', 'cancelled')}
+                          disabled={updatingId === service['id']}
                         >
                           Cancel
                         </Button>

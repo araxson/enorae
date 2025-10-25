@@ -13,10 +13,10 @@ function buildServiceMap(entries: AppointmentRow[] | null | undefined) {
   const serviceMap = new Map<string, ServiceRevenue>()
 
   entries?.forEach((entry) => {
-    const serviceNames = Array.isArray(entry.service_names)
-      ? entry.service_names
+    const serviceNames = Array.isArray(entry['service_names'])
+      ? entry['service_names']
       : ['Unknown Service']
-    const revenue = entry.total_price || 0
+    const revenue = entry['total_price'] || 0
 
     serviceNames.forEach(serviceName => {
       const existing = serviceMap.get(serviceName)
@@ -78,8 +78,8 @@ export async function getCommissionRates(
   }
 
   return ((services as StaffServiceRate[]) || []).map((service) => ({
-    service_id: service.service_id ?? '',
-    service_name: service.service_name ?? 'Unknown Service',
+    service_id: service['service_id'] ?? '',
+    service_name: service['service_name'] ?? 'Unknown Service',
     base_price: service.effective_price ?? 0,
     commission_percentage: DEFAULT_COMMISSION_PERCENTAGE,
     commission_flat_rate: null,

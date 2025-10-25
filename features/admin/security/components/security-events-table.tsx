@@ -12,7 +12,9 @@ import {
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, AlertTriangle, AlertCircle } from 'lucide-react'
 import type { SecurityEvent } from '@/features/admin/security/api/queries'
-import { DataTableEmpty } from '@/components/shared/data-table-empty'
+import { DataTableEmpty } from '@/components/shared/empty-states/data-table-empty'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface SecurityEventsTableProps {
   events: SecurityEvent[]
@@ -55,50 +57,55 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
   }
 
   return (
-    <div className="border rounded-lg">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Event Type</TableHead>
-            <TableHead>Severity</TableHead>
-            <TableHead>User</TableHead>
-            <TableHead>IP Address</TableHead>
-            <TableHead>Time</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {events.map((event) => (
-            <TableRow key={event.id}>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">{event.event_type}</span>
-                </div>
-              </TableCell>
-
-              <TableCell>{getSeverityBadge(event.severity)}</TableCell>
-
-              <TableCell>
-                <span className="text-sm">
-                  {event.user_email || event.user_id || 'Unknown'}
-                </span>
-              </TableCell>
-
-              <TableCell>
-                <span className="text-sm text-muted-foreground font-mono">
-                  {event.ip_address || 'Unknown'}
-                </span>
-              </TableCell>
-
-              <TableCell>
-                <span className="text-sm text-muted-foreground">
-                  {formatDistanceToNow(new Date(event.created_at), { addSuffix: true })}
-                </span>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <Card>
+      <CardHeader className="sr-only">
+        <CardTitle>Security events</CardTitle>
+        <CardDescription>Recent platform security activity</CardDescription>
+      </CardHeader>
+      <CardContent className="p-0">
+        <ScrollArea className="w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Event Type</TableHead>
+                <TableHead>Severity</TableHead>
+                <TableHead>User</TableHead>
+                <TableHead>IP Address</TableHead>
+                <TableHead>Time</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {events.map((event) => (
+                <TableRow key={event.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-medium">{event.event_type}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{getSeverityBadge(event.severity)}</TableCell>
+                  <TableCell>
+                    <span className="text-sm">
+                      {event.user_email || event.user_id || 'Unknown'}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-mono text-sm text-muted-foreground">
+                      {event.ip_address || 'Unknown'}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm text-muted-foreground">
+                      {formatDistanceToNow(new Date(event.created_at), { addSuffix: true })}
+                    </span>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </CardContent>
+    </Card>
   )
 }

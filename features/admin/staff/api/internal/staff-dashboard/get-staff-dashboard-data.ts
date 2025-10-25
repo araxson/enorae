@@ -34,10 +34,10 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
   if (staffError) throw staffError
 
   const staffRows = (staffData || []).filter(
-    (row): row is AdminStaffRow & { id: string } => Boolean(row?.id),
+    (row): row is AdminStaffRow & { id: string } => Boolean(row?.['id']),
   )
-  const userIds = Array.from(new Set(staffRows.map((row) => row.user_id).filter(Boolean))) as string[]
-  const staffIds = Array.from(new Set(staffRows.map((row) => row.id)))
+  const userIds = Array.from(new Set(staffRows.map((row) => row['user_id']).filter(Boolean))) as string[]
+  const staffIds = Array.from(new Set(staffRows.map((row) => row['id'])))
 
   const [backgroundChecks, metadataRows, appointmentRows] = await Promise.all([
     fetchBackgroundChecks(supabase, userIds),
@@ -47,7 +47,7 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
 
   const appointmentByStaff = groupAppointmentsByStaff(appointmentRows)
   const appointmentIds = appointmentRows
-    .map((appointment) => appointment.id)
+    .map((appointment) => appointment['id'])
     .filter(Boolean)
     .slice(0, MAX_REVIEW_SAMPLE)
 
@@ -55,10 +55,10 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
   const reviewsByAppointment = groupReviewsByAppointment(reviewRows)
 
   const staffWithMetrics: StaffWithMetrics[] = staffRows.map((row) => {
-    const background = backgroundChecks.get(row.user_id ?? '')
+    const background = backgroundChecks.get(row['user_id'] ?? '')
     const backgroundStatus = normalizeBackgroundStatus(background?.background_check_status)
-    const certifications = extractCertifications(metadataRows.get(row.user_id ?? ''))
-    const staffAppointments = appointmentByStaff.get(row.id) ?? []
+    const certifications = extractCertifications(metadataRows.get(row['user_id'] ?? ''))
+    const staffAppointments = appointmentByStaff.get(row['id']) ?? []
 
     const { metrics, compliance } = buildStaffMetrics(
       staffAppointments,
@@ -68,15 +68,15 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
     )
 
     return {
-      id: row.id,
-      userId: row.user_id,
-      fullName: row.full_name,
-      salonId: row.salon_id,
-      salonName: row.salon_name,
-      salonSlug: row.salon_slug,
-      staffRole: row.staff_role,
-      title: row.title,
-      experienceYears: Number(row.experience_years ?? 0),
+      id: row['id'],
+      userId: row['user_id'],
+      fullName: row['full_name'],
+      salonId: row['salon_id'],
+      salonName: row['salon_name'],
+      salonSlug: row['salon_slug'],
+      staffRole: row['staff_role'],
+      title: row['title'],
+      experienceYears: Number(row['experience_years'] ?? 0),
       background: {
         status: backgroundStatus,
         lastCheckedAt: background?.background_check_date ?? null,
@@ -90,15 +90,15 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
   const stats = calculateDashboardStats(staffWithMetrics)
 
   const highRiskStaff = staffWithMetrics
-    .filter((person) => person.compliance.status === 'critical')
+    .filter((person) => person.compliance['status'] === 'critical')
     .sort((a, b) => a.compliance.score - b.compliance.score)
     .slice(0, 10)
 
   const verificationQueue = staffWithMetrics
     .filter(
-      (person) => person.background.status === 'pending' || person.background.status === 'missing',
+      (person) => person.background['status'] === 'pending' || person.background['status'] === 'missing',
     )
-    .sort((a, b) => (a.background.status === 'missing' ? -1 : 1))
+    .sort((a, b) => (a.background['status'] === 'missing' ? -1 : 1))
     .slice(0, 10)
 
   const topPerformers = buildTopPerformers(staffWithMetrics)

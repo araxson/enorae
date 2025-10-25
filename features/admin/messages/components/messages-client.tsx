@@ -43,18 +43,18 @@ export function MessagesClient({
     return threads.filter((thread) => {
       const matchesSearch =
         !search ||
-        thread.subject?.toLowerCase().includes(search) ||
-        thread.customer_name?.toLowerCase().includes(search) ||
-        thread.customer_email?.toLowerCase().includes(search) ||
-        thread.salon_name?.toLowerCase().includes(search)
+        thread['subject']?.toLowerCase().includes(search) ||
+        thread['customer_name']?.toLowerCase().includes(search) ||
+        thread['customer_email']?.toLowerCase().includes(search) ||
+        thread['salon_name']?.toLowerCase().includes(search)
 
       const matchesStatus =
         statusFilter === 'all' ||
-        normalise(thread.status ?? 'open') === normalise(statusFilter)
+        normalise(thread['status'] ?? 'open') === normalise(statusFilter)
 
       const matchesPriority =
         priorityFilter === 'all' ||
-        normalise(thread.priority ?? 'normal') === normalise(priorityFilter)
+        normalise(thread['priority'] ?? 'normal') === normalise(priorityFilter)
 
       const matchesFlagged = !showFlaggedOnly || thread.hasFlaggedMessages || thread.unresolvedReports > 0
 

@@ -24,10 +24,10 @@ export function StaffServicesManager({
 
     const query = searchQuery.toLowerCase()
     return staff.filter((member) => {
-      const nameMatch = member.full_name?.toLowerCase().includes(query)
-      const titleMatch = member.title?.toLowerCase().includes(query)
+      const nameMatch = member['full_name']?.toLowerCase().includes(query)
+      const titleMatch = member['title']?.toLowerCase().includes(query)
       const servicesMatch = member.services.some((service) =>
-        service.service_name?.toLowerCase().includes(query),
+        service['service_name']?.toLowerCase().includes(query),
       )
 
       return nameMatch || titleMatch || servicesMatch
@@ -44,7 +44,7 @@ export function StaffServicesManager({
         onManageStaff={(member) => {
           setSelectedStaff(member)
           const ids = member.services
-            .map((service) => service.service_id)
+            .map((service) => service['service_id'])
             .filter((id): id is string => Boolean(id))
           setSelectedServices(new Set(ids))
         }}

@@ -95,20 +95,20 @@ export function deriveLicenseStatus(expiresAt: string | null): { status: License
 }
 
 export function deriveVerificationStatus(row: AdminSalonRow, base: SalonBaseRow | undefined): boolean {
-  if (base?.is_verified !== undefined && base?.is_verified !== null) {
-    return Boolean(base.is_verified)
+  if (base?.['is_verified'] !== undefined && base?.['is_verified'] !== null) {
+    return Boolean(base['is_verified'])
   }
 
-  return Boolean(row.is_accepting_bookings && (row.total_revenue || row.total_bookings || 0) > 0)
+  return Boolean(row['is_accepting_bookings'] && (row['total_revenue'] || row['total_bookings'] || 0) > 0)
 }
 
 export function applySalonFilters(salons: EnhancedSalon[], filters: SalonFilters) {
   return salons.filter((salon) => {
-    const matchesChain = !filters.chain_id || salon.chain_id === filters.chain_id
-    const matchesTier = !filters.subscription_tier || salon.subscription_tier === filters.subscription_tier
+    const matchesChain = !filters['chain_id'] || salon['chain_id'] === filters['chain_id']
+    const matchesTier = !filters['subscription_tier'] || salon['subscription_tier'] === filters['subscription_tier']
     const matchesSearch = !filters.search
       ? true
-      : [salon.name ?? '', salon.id ?? '']
+      : [salon['name'] ?? '', salon['id'] ?? '']
           .filter((value) => value.length > 0)
           .some((value) => value.toLowerCase().includes(filters.search!.toLowerCase()))
 

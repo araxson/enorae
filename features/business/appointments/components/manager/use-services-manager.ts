@@ -16,7 +16,7 @@ export function useServicesManager(onUpdate: () => void) {
     setIsDeleting(true)
     try {
       const formData = new FormData()
-      formData.append('appointmentServiceId', deletingService.id || '')
+      formData.append('appointmentServiceId', deletingService['id'] || '')
 
       const result = await removeServiceFromAppointment(formData)
 
@@ -29,7 +29,7 @@ export function useServicesManager(onUpdate: () => void) {
       } else {
         toast({
           title: 'Service removed',
-          description: `${deletingService.service_name ?? 'Service'} was removed from the appointment.`,
+          description: `${deletingService['service_name'] ?? 'Service'} was removed from the appointment.`,
         })
         onUpdate()
         setDeletingService(null)

@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { ToastUsageRecord } from '@/features/admin/database-toast/api/queries'
@@ -63,7 +64,7 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border">
+    <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -78,7 +79,7 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
         <TableBody>
           {tables.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
                 No TOAST usage data available
               </TableCell>
             </TableRow>
@@ -130,6 +131,7 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
           )}
         </TableBody>
       </Table>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   )
 }

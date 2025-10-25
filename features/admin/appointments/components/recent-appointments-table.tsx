@@ -57,30 +57,32 @@ export function RecentAppointmentsTable({ appointments }: RecentAppointmentsTabl
             </TableHeader>
             <TableBody>
               {appointments.slice(0, 40).map((appointment) => (
-                <TableRow key={appointment.id ?? `${appointment.salon_id}-${appointment.start_time}`}
+                <TableRow key={appointment['id'] ?? `${appointment['salon_id']}-${appointment['start_time']}`}
                   className="align-top">
                   <TableCell>
-                    <div className="font-medium text-foreground">{appointment.salon_name || 'Unknown'}</div>
-                    <div className="text-xs text-muted-foreground">#{appointment.confirmation_code || '—'}</div>
+                    <div className="font-medium text-foreground">{appointment['salon_name'] || 'Unknown'}</div>
+                    <div className="text-xs text-muted-foreground">#{appointment['confirmation_code'] || '—'}</div>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {appointment.customer_name || 'Walk-in'}
+                    {appointment['customer_name'] || 'Walk-in'}
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {appointment.staff_name || 'Unassigned'}
+                    {appointment['staff_name'] || 'Unassigned'}
                   </TableCell>
                   <TableCell>
                     <div className="text-xs">
-                      <Badge variant={STATUS_VARIANTS[appointment.status ?? 'pending'] ?? 'secondary'}>
-                        {(appointment.status || 'pending').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                      <Badge variant={STATUS_VARIANTS[appointment['status'] ?? 'pending'] ?? 'secondary'}>
+                        {(appointment['status'] || 'pending')
+                          .replace(/_/g, ' ')
+                          .replace(/\b\w/g, (char: string) => char.toUpperCase())}
                       </Badge>
                     </div>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {formatDateTime(appointment.start_time)}
+                    {formatDateTime(appointment['start_time'])}
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {appointment.duration_minutes ? `${appointment.duration_minutes} min` : '—'}
+                    {appointment['duration_minutes'] ? `${appointment['duration_minutes']} min` : '—'}
                   </TableCell>
                 </TableRow>
               ))}

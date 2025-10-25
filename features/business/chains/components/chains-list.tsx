@@ -76,34 +76,34 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {chains.map((chain) => (
-          <Card key={chain.id}>
+          <Card key={chain['id']}>
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex-1 space-y-2">
-                  <CardTitle>{chain.name}</CardTitle>
-                  {chain.legal_name && (
+                  <CardTitle>{chain['name']}</CardTitle>
+                  {chain['legal_name'] && (
                     <CardDescription>
-                      {chain.legal_name}
+                      {chain['legal_name']}
                     </CardDescription>
                   )}
                 </div>
                 <Badge variant="secondary">
-                  {chain.salon_count || 0} locations
+                  {chain['salon_count'] || 0} locations
                 </Badge>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {chain.staff_count !== null && chain.staff_count > 0 && (
+                {chain['staff_count'] !== null && chain['staff_count'] > 0 && (
                   <div className="text-sm text-muted-foreground">
-                    {chain.staff_count} staff members
+                    {chain['staff_count']} staff members
                   </div>
                 )}
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => router.push(`/business/chains/${chain.id}`)}
+                    onClick={() => router.push(`/business/chains/${chain['id']}`)}
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     View
@@ -121,7 +121,7 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setDeleteId(chain.id)}
+                    onClick={() => setDeleteId(chain['id'])}
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
                     Delete

@@ -30,7 +30,7 @@ export function StaffScheduleClient({
   const [activeTab, setActiveTab] = useState<'schedule' | 'blocked'>('schedule')
 
   const summaries: StaffSummary[] = useMemo(() => {
-    const activeShifts = schedules.filter((schedule) => schedule.is_active).length
+    const activeShifts = schedules.filter((schedule) => schedule['is_active']).length
     const inactiveShifts = schedules.length - activeShifts
     const futureBlocks = blockedTimes.length
 

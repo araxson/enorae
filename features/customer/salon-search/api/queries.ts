@@ -59,7 +59,7 @@ export async function searchSalons(filters: SearchFilters): Promise<SalonSearchR
       state: state || null,
       is_verified_filter: isVerified ?? null,
       limit_count: limit,
-    } as any) // Type assertion needed due to RPC type generation issue
+    } as { search_term: string | null; city: string | null; state: string | null; is_verified_filter: boolean | null; limit_count: number })
 
   if (error) throw error
 
@@ -107,7 +107,7 @@ export async function searchSalonsWithFuzzyMatch(
         .rpc('text_similarity', {
           text1: searchTerm.toLowerCase(),
           text2: salon.name.toLowerCase(),
-        } as any) // Type assertion needed due to RPC type generation issue
+        } as { text1: string; text2: string })
 
       return {
         ...salon,

@@ -1,5 +1,6 @@
 'use client'
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -24,11 +25,9 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
   if (stats.totalReviews === 0) {
     return (
       <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Star className="h-5 w-5" />
-            <CardTitle>Customer Reviews</CardTitle>
-          </div>
+        <CardHeader className="flex items-center gap-2">
+          <Star className="h-5 w-5" />
+          <CardTitle>Customer Reviews</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="py-8 text-center">
@@ -46,11 +45,9 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
     <Card>
       <CardHeader className="gap-4">
         <ButtonGroup className="w-full items-center justify-between">
-          <ButtonGroupText>
-            <span className="flex items-center gap-2">
-              <Star className="h-5 w-5" />
-              <CardTitle>Customer Reviews</CardTitle>
-            </span>
+          <ButtonGroupText className="flex items-center gap-2">
+            <Star className="h-5 w-5" />
+            <CardTitle>Customer Reviews</CardTitle>
           </ButtonGroupText>
           <ButtonGroupSeparator />
           <Tooltip>
@@ -77,7 +74,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                     return (
                       <Star
                         key={i}
-                        className={`h-4 w-4 ${isFilled ? 'text-accent' : 'text-muted-foreground'}`}
+                        className={`h-4 w-4 ${isFilled ? 'text-primary' : 'text-muted-foreground'}`}
                         fill={isFilled ? 'currentColor' : 'none'}
                       />
                     )
@@ -95,15 +92,14 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
               {stats.pendingResponses > 0 && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <div className="flex items-center gap-2 rounded-md border px-2 py-1">
-                      <MessageSquare className="h-4 w-4 text-accent" />
-                      <p className="text-sm font-medium">
-                        <Badge variant="outline">
-                          <span className="ml-1">{stats.pendingResponses}</span>
-                        </Badge>{' '}
-                        {stats.pendingResponses === 1 ? 'review needs' : 'reviews need'} response
-                      </p>
-                    </div>
+                    <Alert>
+                      <MessageSquare className="h-4 w-4" />
+                      <AlertTitle>Responses needed</AlertTitle>
+                      <AlertDescription>
+                        {stats.pendingResponses}{' '}
+                        {stats.pendingResponses === 1 ? 'review requires' : 'reviews require'} a reply
+                      </AlertDescription>
+                    </Alert>
                   </TooltipTrigger>
                   <TooltipContent>Follow up to protect guest satisfaction</TooltipContent>
                 </Tooltip>
@@ -111,15 +107,14 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
               {stats.flaggedCount > 0 && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <div className="flex items-center gap-2 rounded-md border px-2 py-1">
-                      <AlertTriangle className="h-4 w-4 text-destructive" />
-                      <p className="text-sm font-medium">
-                        <Badge variant="destructive">
-                          <span className="ml-1">{stats.flaggedCount}</span>
-                        </Badge>{' '}
-                        flagged {stats.flaggedCount === 1 ? 'review' : 'reviews'}
-                      </p>
-                    </div>
+                    <Alert variant="destructive">
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertTitle>Flagged reviews</AlertTitle>
+                      <AlertDescription>
+                        {stats.flaggedCount}{' '}
+                        {stats.flaggedCount === 1 ? 'review needs' : 'reviews need'} investigation
+                      </AlertDescription>
+                    </Alert>
                   </TooltipTrigger>
                   <TooltipContent>Investigate and resolve policy concerns</TooltipContent>
                 </Tooltip>

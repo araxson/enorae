@@ -63,11 +63,11 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
           </TableHeader>
           <TableBody>
             {appointments.map((appointment) => {
-              const config = statusConfig[appointment.status as keyof typeof statusConfig]
-              const appointmentDate = appointment.start_time ? new Date(appointment.start_time) : null
+              const config = statusConfig[appointment['status'] as keyof typeof statusConfig]
+              const appointmentDate = appointment['start_time'] ? new Date(appointment['start_time']) : null
 
               return (
-                <TableRow key={appointment.id}>
+                <TableRow key={appointment['id']}>
                   <TableCell>
                     {appointmentDate ? (
                       <div className="flex flex-col gap-2">
@@ -81,41 +81,41 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     )}
                   </TableCell>
                   <TableCell>
-                    {appointment.customer_name ||
-                     appointment.customer_email ||
+                    {appointment['customer_name'] ||
+                     appointment['customer_email'] ||
                      'N/A'}
                   </TableCell>
                   <TableCell>
-                    {appointment.staff_name ||
-                     appointment.staff_name ||
+                    {appointment['staff_name'] ||
+                     appointment['staff_name'] ||
                      'N/A'}
                   </TableCell>
                   <TableCell>
                     <Badge variant={config?.variant}>
-                      {config?.label || appointment.status}
+                      {config?.label || appointment['status']}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2 items-center">
-                      {appointment.status === 'pending' && appointment.id && (
+                      {appointment['status'] === 'pending' && appointment['id'] && (
                         <form action={handleConfirm}>
-                          <input type="hidden" name="id" value={appointment.id} />
+                          <input type="hidden" name="id" value={appointment['id']} />
                           <Button size="sm" variant="outline" type="submit">
                             Confirm
                           </Button>
                         </form>
                       )}
-                      {appointment.status === 'confirmed' && appointment.id && (
+                      {appointment['status'] === 'confirmed' && appointment['id'] && (
                         <form action={handleComplete}>
-                          <input type="hidden" name="id" value={appointment.id} />
+                          <input type="hidden" name="id" value={appointment['id']} />
                           <Button size="sm" variant="outline" type="submit">
                             Complete
                           </Button>
                         </form>
                       )}
-                      {appointment.status !== 'cancelled' && appointment.status !== 'completed' && appointment.id && (
+                      {appointment['status'] !== 'cancelled' && appointment['status'] !== 'completed' && appointment['id'] && (
                         <form action={handleCancel}>
-                          <input type="hidden" name="id" value={appointment.id} />
+                          <input type="hidden" name="id" value={appointment['id']} />
                           <Button size="sm" variant="destructive" type="submit">
                             Cancel
                           </Button>

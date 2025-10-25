@@ -82,16 +82,16 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                   const hasAlerts = thread.hasFlaggedMessages || thread.unresolvedReports > 0
                   const rowHighlight = hasAlerts ? 'bg-muted/40' : undefined
                   const rowKey =
-                    thread.id ??
-                    `${thread.salon_id ?? 'salon'}-${thread.customer_id ?? 'customer'}-${thread.last_message_at ?? thread.created_at}`
-                  const customerUnread = thread.unread_count_customer ?? 0
-                  const staffUnread = thread.unread_count_staff ?? 0
+                    thread['id'] ??
+                    `${thread['salon_id'] ?? 'salon'}-${thread['customer_id'] ?? 'customer'}-${thread['last_message_at'] ?? thread['created_at']}`
+                  const customerUnread = thread['unread_count_customer'] ?? 0
+                  const staffUnread = thread['unread_count_staff'] ?? 0
 
                   return (
                     <TableRow key={rowKey} className={rowHighlight}>
                       <TableCell className="space-y-1">
                         <div className="font-medium leading-tight">
-                          {thread.subject || 'No subject'}
+                          {thread['subject'] || 'No subject'}
                         </div>
                         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                           <span>
@@ -100,36 +100,36 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                           </span>
                           <span>
                             Thread ID:&nbsp;
-                            {thread.id ?? '—'}
+                            {thread['id'] ?? '—'}
                           </span>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="font-medium leading-tight">{thread.salon_name}</div>
-                        <p className="text-sm text-muted-foreground text-xs">{thread.salon_id}</p>
+                        <div className="font-medium leading-tight">{thread['salon_name']}</div>
+                        <p className="text-sm text-muted-foreground text-xs">{thread['salon_id']}</p>
                       </TableCell>
                       <TableCell>
-                        <div className="font-medium leading-tight">{thread.customer_name}</div>
-                        <p className="text-sm text-muted-foreground text-xs">{thread.customer_email}</p>
+                        <div className="font-medium leading-tight">{thread['customer_name']}</div>
+                        <p className="text-sm text-muted-foreground text-xs">{thread['customer_email']}</p>
                       </TableCell>
                       <TableCell>
-                        {thread.staff_name ? (
+                        {thread['staff_name'] ? (
                           <div>
-                            <div className="font-medium leading-tight">{thread.staff_name}</div>
-                            <p className="text-sm text-muted-foreground text-xs">{thread.staff_email}</p>
+                            <div className="font-medium leading-tight">{thread['staff_name']}</div>
+                            <p className="text-sm text-muted-foreground text-xs">{thread['staff_email']}</p>
                           </div>
                         ) : (
                           <p className="text-sm text-muted-foreground text-xs">Unassigned</p>
                         )}
                       </TableCell>
                       <TableCell>
-                        <Badge variant={priorityVariant(thread.priority)}>
-                          {thread.priority ?? 'normal'}
+                        <Badge variant={priorityVariant(thread['priority'])}>
+                          {thread['priority'] ?? 'normal'}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={statusVariant(thread.status)}>
-                          {thread.status ?? 'open'}
+                        <Badge variant={statusVariant(thread['status'])}>
+                          {thread['status'] ?? 'open'}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -160,8 +160,8 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                       </TableCell>
                       <TableCell>{formatMinutes(thread.firstResponseMinutes)}</TableCell>
                       <TableCell className="text-muted-foreground">
-                        {thread.last_message_at
-                          ? formatDistanceToNow(new Date(thread.last_message_at), { addSuffix: true })
+                        {thread['last_message_at']
+                          ? formatDistanceToNow(new Date(thread['last_message_at']), { addSuffix: true })
                           : 'Never'}
                       </TableCell>
                     </TableRow>

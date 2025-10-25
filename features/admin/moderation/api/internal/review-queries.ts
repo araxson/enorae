@@ -68,12 +68,12 @@ export async function getReviewsForModeration(
     .select('*')
     .order('created_at', { ascending: false })
 
-  if (filters?.is_flagged !== undefined) {
-    query = query.eq('is_flagged', filters.is_flagged)
+  if (filters?.['is_flagged'] !== undefined) {
+    query = query.eq('is_flagged', filters['is_flagged'])
   }
 
-  if (filters?.salon_id) {
-    query = query.eq('salon_id', filters.salon_id)
+  if (filters?.['salon_id']) {
+    query = query.eq('salon_id', filters['salon_id'])
   }
 
   if (filters?.date_from) {
@@ -84,17 +84,17 @@ export async function getReviewsForModeration(
     query = query.lte('created_at', filters.date_to)
   }
 
-  const { data, error } = await query.limit(REVIEW_LIMIT).returns<ReviewRow[]>()
+  const { data, error } = await query['limit'](REVIEW_LIMIT).returns<ReviewRow[]>()
   if (error) throw error
 
   const reviews = (data ?? []).filter(
     (review): review is ReviewRow & { id: string; created_at: string } =>
-      Boolean(review.id && review.created_at),
+      Boolean(review['id'] && review['created_at']),
   )
 
-  const reviewIds = reviews.map((review) => review.id)
+  const reviewIds = reviews.map((review) => review['id'])
   const customerIds = Array.from(
-    new Set(reviews.map((review) => review.customer_id).filter((id): id is string => Boolean(id))),
+    new Set(reviews.map((review) => review['customer_id']).filter((id): id is string => Boolean(id))),
   ).slice(0, 500)
 
   const [customerEmailMap, reviewerStats] = await Promise.all([
@@ -103,33 +103,33 @@ export async function getReviewsForModeration(
   ])
 
   return reviews.map((review) => {
-    const commentLength = review.comment?.length ?? 0
-    const sentiment = analyzeSentiment(review.comment || '')
+    const commentLength = review['comment']?.length ?? 0
+    const sentiment = analyzeSentiment(review['comment'] || '')
     const fake = estimateFakeLikelihood({
-      isVerified: review.is_verified ?? null,
-      helpfulCount: review.helpful_count ?? null,
+      isVerified: review['is_verified'] ?? null,
+      helpfulCount: review['helpful_count'] ?? null,
       commentLength,
-      rating: review.rating ?? null,
-      isFlagged: review.is_flagged ?? null,
-      createdAt: review.created_at,
+      rating: review['rating'] ?? null,
+      isFlagged: review['is_flagged'] ?? null,
+      createdAt: review['created_at'],
     })
     const quality = calculateQualityScore({
       commentLength,
-      helpfulCount: review.helpful_count ?? null,
-      hasResponse: review.has_response ?? null,
+      helpfulCount: review['helpful_count'] ?? null,
+      hasResponse: review['has_response'] ?? null,
       sentimentScore: sentiment.score,
-      isFlagged: review.is_flagged ?? null,
+      isFlagged: review['is_flagged'] ?? null,
     })
 
-    const stats = review.customer_id
-      ? reviewerStats.get(review.customer_id) ?? {
+    const stats = review['customer_id']
+      ? reviewerStats.get(review['customer_id']) ?? {
           totalReviews: 1,
-          flaggedReviews: review.is_flagged ? 1 : 0,
+          flaggedReviews: review['is_flagged'] ? 1 : 0,
         }
       : { totalReviews: 0, flaggedReviews: 0 }
     const reputation = computeReviewerReputation(stats)
-    const customerEmail = review.customer_id
-      ? customerEmailMap.get(review.customer_id) ?? null
+    const customerEmail = review['customer_id']
+      ? customerEmailMap.get(review['customer_id']) ?? null
       : null
 
     return {
@@ -138,11 +138,11 @@ export async function getReviewsForModeration(
       flagged_reason: null,
       deleted_at: null,
       sentimentScore: sentiment.score,
-      sentimentLabel: sentiment.label,
+      sentimentLabel: sentiment['label'],
       fakeLikelihoodScore: fake.score,
-      fakeLikelihoodLabel: fake.label,
+      fakeLikelihoodLabel: fake['label'],
       qualityScore: quality.score,
-      qualityLabel: quality.label,
+      qualityLabel: quality['label'],
       reviewerReputation: {
         ...reputation,
         totalReviews: stats.totalReviews,
@@ -195,11 +195,11 @@ async function fetchReviewerStats(
 
   const map = new Map<string, ReviewerAggregate>()
   for (const row of data || []) {
-    if (!row.customer_id) continue
-    const current = map.get(row.customer_id) ?? { totalReviews: 0, flaggedReviews: 0 }
+    if (!row['customer_id']) continue
+    const current = map.get(row['customer_id']) ?? { totalReviews: 0, flaggedReviews: 0 }
     current.totalReviews += 1
-    if (row.is_flagged) current.flaggedReviews += 1
-    map.set(row.customer_id, current)
+    if (row['is_flagged']) current.flaggedReviews += 1
+    map.set(row['customer_id'], current)
   }
   return map
 }
@@ -220,8 +220,8 @@ async function fetchCustomerEmails(
 
   const map = new Map<string, string | null>()
   for (const row of data ?? []) {
-    if (!row.id) continue
-    map.set(row.id, row.email ?? null)
+    if (!row['id']) continue
+    map.set(row['id'], row['email'] ?? null)
   }
   return map
 }

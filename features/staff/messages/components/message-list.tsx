@@ -26,11 +26,11 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
   return (
     <div className="flex flex-col gap-4">
       {messages.map((message) => {
-        const isFromMe = message.from_user_id === currentUserId
+        const isFromMe = message['from_user_id'] === currentUserId
 
         return (
           <Card
-            key={message.id}
+            key={message['id']}
             className={cn(
               'w-full max-w-xl',
               isFromMe ? 'ml-auto' : 'mr-auto'
@@ -39,10 +39,10 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
             <CardHeader>
               <div className="pb-2">
                 <CardTitle>{isFromMe ? 'You' : 'Staff member'}</CardTitle>
-                {message.created_at ? (
+                {message['created_at'] ? (
                   <CardDescription>
-                    {format(new Date(message.created_at), 'PPp')}
-                    {message.is_edited ? ' (edited)' : ''}
+                    {format(new Date(message['created_at']), 'PPp')}
+                    {message['is_edited'] ? ' (edited)' : ''}
                   </CardDescription>
                 ) : null}
               </div>
@@ -54,7 +54,7 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
                   isFromMe ? 'bg-muted' : ''
                 )}
               >
-                <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
+                <p className="whitespace-pre-wrap text-sm leading-relaxed">{message['content']}</p>
               </div>
             </CardContent>
           </Card>

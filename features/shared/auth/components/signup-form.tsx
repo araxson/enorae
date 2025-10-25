@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
@@ -76,11 +76,13 @@ export function SignupForm() {
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Sign up failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
             {success && (
               <Alert>
+                <AlertTitle>Account created</AlertTitle>
                 <AlertDescription>{success}</AlertDescription>
               </Alert>
             )}

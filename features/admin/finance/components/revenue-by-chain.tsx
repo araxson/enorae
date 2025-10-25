@@ -23,45 +23,43 @@ export function RevenueByChain({ data }: RevenueByChainProps) {
       <CardHeader>
         <CardTitle>Revenue by Chain</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
+      <CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Chain Name</TableHead>
+              <TableHead className="text-right">Salons</TableHead>
+              <TableHead className="text-right">Total Revenue</TableHead>
+              <TableHead className="text-right">% of Total</TableHead>
+              <TableHead className="text-right">Avg per Salon</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.length === 0 ? (
               <TableRow>
-                <TableHead>Chain Name</TableHead>
-                <TableHead className="text-right">Salons</TableHead>
-                <TableHead className="text-right">Total Revenue</TableHead>
-                <TableHead className="text-right">% of Total</TableHead>
-                <TableHead className="text-right">Avg per Salon</TableHead>
+                <TableCell colSpan={5} className="text-center text-muted-foreground">
+                  No chain revenue data available
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center text-muted-foreground">
-                    No chain revenue data available
+            ) : (
+              data.map((row) => (
+                <TableRow key={row.chainName}>
+                  <TableCell className="font-medium">{row.chainName}</TableCell>
+                  <TableCell className="text-right">{row.salonCount}</TableCell>
+                  <TableCell className="text-right font-medium">
+                    {formatCurrency(row.totalRevenue)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {((row.totalRevenue / totalRevenue) * 100).toFixed(1)}%
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {formatCurrency(row.totalRevenue / row.salonCount)}
                   </TableCell>
                 </TableRow>
-              ) : (
-                data.map((row) => (
-                  <TableRow key={row.chainName}>
-                    <TableCell className="font-medium">{row.chainName}</TableCell>
-                    <TableCell className="text-right">{row.salonCount}</TableCell>
-                    <TableCell className="text-right font-medium">
-                      {formatCurrency(row.totalRevenue)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {((row.totalRevenue / totalRevenue) * 100).toFixed(1)}%
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {formatCurrency(row.totalRevenue / row.salonCount)}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   )

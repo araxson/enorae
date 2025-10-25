@@ -44,25 +44,25 @@ export async function getCustomerSegmentation(
   const aggregates = new Map<string, CustomerAgg>()
 
   for (const appointment of appointments) {
-    if (!appointment.customer_id) continue
-    const current = aggregates.get(appointment.customer_id) || {
-      name: appointment.customer_name || 'Customer',
-      email: appointment.customer_email || undefined,
+    if (!appointment['customer_id']) continue
+    const current = aggregates.get(appointment['customer_id']) || {
+      name: appointment['customer_name'] || 'Customer',
+      email: appointment['customer_email'] || undefined,
       spent: 0,
       visits: 0,
       last: null,
     }
-    if (appointment.status === 'completed') {
-      current.spent += appointment.total_price || 0
+    if (appointment['status'] === 'completed') {
+      current.spent += appointment['total_price'] || 0
       current.visits += 1
-      if (appointment.start_time) {
-        const visitDate = new Date(appointment.start_time)
+      if (appointment['start_time']) {
+        const visitDate = new Date(appointment['start_time'])
         if (!current.last || visitDate > current.last) {
           current.last = visitDate
         }
       }
     }
-    aggregates.set(appointment.customer_id, current)
+    aggregates.set(appointment['customer_id'], current)
   }
 
   const ltvs = Array.from(aggregates.values()).map(customer => customer.spent)
@@ -115,8 +115,8 @@ export async function getCustomerSegmentation(
     .sort((a, b) => b.spent - a.spent)
     .slice(0, topN)
     .map(customer => ({
-      name: customer.name,
-      email: customer.email || undefined,
+      name: customer['name'],
+      email: customer['email'] || undefined,
       totalSpent: customer.spent,
       visits: customer.visits,
     }))

@@ -31,12 +31,12 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
   } = useForm<BlockedTimeFormData>({
     resolver: zodResolver(blockedTimeSchema),
     defaultValues: blockedTime ? {
-      start_time: new Date(blockedTime.start_time || '').toISOString().slice(0, 16),
-      end_time: new Date(blockedTime.end_time || '').toISOString().slice(0, 16),
-      block_type: blockedTime.block_type || 'break',
-      reason: blockedTime.reason || '',
-      is_recurring: blockedTime.is_recurring || false,
-      recurrence_pattern: blockedTime.recurrence_pattern || null,
+      start_time: new Date(blockedTime['start_time'] || '').toISOString().slice(0, 16),
+      end_time: new Date(blockedTime['end_time'] || '').toISOString().slice(0, 16),
+      block_type: blockedTime['block_type'] || 'break',
+      reason: blockedTime['reason'] || '',
+      is_recurring: blockedTime['is_recurring'] || false,
+      recurrence_pattern: blockedTime['recurrence_pattern'] || null,
     } : {
       start_time: new Date().toISOString().slice(0, 16),
       end_time: new Date(Date.now() + 3600000).toISOString().slice(0, 16),
@@ -54,8 +54,8 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
       setIsSubmitting(true)
       setError(null)
 
-      if (blockedTime?.id) {
-        await updateBlockedTime(blockedTime.id, data)
+      if (blockedTime?.['id']) {
+        await updateBlockedTime(blockedTime['id'], data)
       } else {
         await createBlockedTime(data)
       }
@@ -78,8 +78,8 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
             type="datetime-local"
             {...register('start_time')}
           />
-          {errors.start_time && (
-            <p className="text-destructive mt-1">{errors.start_time.message}</p>
+          {errors['start_time'] && (
+            <p className="text-destructive mt-1">{errors['start_time'].message}</p>
           )}
         </div>
 
@@ -90,8 +90,8 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
             type="datetime-local"
             {...register('end_time')}
           />
-          {errors.end_time && (
-            <p className="text-destructive mt-1">{errors.end_time.message}</p>
+          {errors['end_time'] && (
+            <p className="text-destructive mt-1">{errors['end_time'].message}</p>
           )}
         </div>
 
@@ -116,8 +116,8 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>
-          {errors.block_type && (
-            <p className="text-destructive mt-1">{errors.block_type.message}</p>
+          {errors['block_type'] && (
+            <p className="text-destructive mt-1">{errors['block_type'].message}</p>
           )}
         </div>
 
@@ -128,8 +128,8 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
             placeholder="Enter reason for blocked time"
             {...register('reason')}
           />
-          {errors.reason && (
-            <p className="text-destructive mt-1">{errors.reason.message}</p>
+          {errors['reason'] && (
+            <p className="text-destructive mt-1">{errors['reason'].message}</p>
           )}
         </div>
 

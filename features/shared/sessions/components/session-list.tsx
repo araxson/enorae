@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { SessionCard } from './session-card'
-import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { ConfirmDialog } from '@/components/shared'
 import { revokeSession, revokeAllOtherSessions } from '@/features/shared/sessions/api/mutations'
 import type { SessionWithDevice } from '@/features/shared/sessions/api/queries'
 
@@ -66,11 +66,9 @@ export function SessionList({ sessions }: SessionListProps) {
   if (sessions.length === 0) {
     return (
       <div className="flex flex-col gap-4">
-        <h2 className="scroll-m-20 text-3xl font-semibold">Active Sessions</h2>
         <Alert>
-          <AlertDescription>
-            <p className="leading-7">No active sessions found.</p>
-          </AlertDescription>
+          <AlertTitle>No active sessions</AlertTitle>
+          <AlertDescription>No active sessions found.</AlertDescription>
         </Alert>
       </div>
     )
@@ -105,12 +103,14 @@ export function SessionList({ sessions }: SessionListProps) {
 
       {error && (
         <Alert variant="destructive">
+          <AlertTitle>Revocation failed</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
       {success && (
         <Alert>
+          <AlertTitle>Sessions updated</AlertTitle>
           <AlertDescription>{success}</AlertDescription>
         </Alert>
       )}
@@ -118,23 +118,19 @@ export function SessionList({ sessions }: SessionListProps) {
       <div className="flex flex-col gap-4">
         {sessions.map((session) => (
           <SessionCard
-            key={session.id}
+            key={session['id']}
             session={session}
             onRevoke={handleRevokeSession}
-            isRevoking={revokingId === session.id}
+            isRevoking={revokingId === session['id']}
           />
         ))}
       </div>
 
       <Alert>
+        <AlertTitle>Security tip</AlertTitle>
         <AlertDescription>
-          <div className="flex flex-col gap-3">
-            <p className="leading-7 font-medium">Security Tip</p>
-            <p className="text-sm text-muted-foreground">
-              If you see a session you don&apos;t recognize, revoke it immediately and change your password.
-              Your current session is marked with a badge and cannot be revoked from this page.
-            </p>
-          </div>
+          If you see a session you don&apos;t recognize, revoke it immediately and change your password.
+          Your current session is marked with a badge and cannot be revoked from this page.
         </AlertDescription>
       </Alert>
     </div>

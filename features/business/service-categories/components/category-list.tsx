@@ -65,12 +65,12 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
   }
 
   // Organize categories hierarchically
-  const topLevelCategories = categories.filter((c) => !c.parent_id)
-  const subcategories = categories.filter((c) => c.parent_id)
+  const topLevelCategories = categories.filter((c) => !c['parent_id'])
+  const subcategories = categories.filter((c) => c['parent_id'])
 
   const renderCategory = (category: ServiceCategoryWithCounts, isSubcategory = false) => (
     <div
-      key={category.id}
+      key={category['id']}
       className={isSubcategory ? 'ml-8 border-l-4 border-l-primary/30 pl-4' : ''}
     >
       <Card>
@@ -78,7 +78,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
             <div className="flex items-start justify-between">
               <div className="flex flex-1 items-center gap-2">
                 {isSubcategory && <span className="text-muted-foreground">↳</span>}
-                <CardTitle>{category.name}</CardTitle>
+                <CardTitle>{category['name']}</CardTitle>
               </div>
               <Badge variant="secondary">
                 {category.service_count || 0} services
@@ -100,7 +100,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setDeleteId(category.id)}
+              onClick={() => setDeleteId(category['id'])}
             >
               <Trash2 className="mr-2 h-4 w-4" />
               Delete
@@ -115,10 +115,10 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {topLevelCategories.map((category) => (
-          <div key={category.id} className="space-y-4">
+          <div key={category['id']} className="space-y-4">
             {renderCategory(category)}
             {subcategories
-              .filter((sub) => sub.parent_id === category.id)
+              .filter((sub) => sub['parent_id'] === category['id'])
               .map((sub) => renderCategory(sub, true))}
           </div>
         ))}

@@ -34,7 +34,7 @@ export async function updateProfileBasicsAction(payload: unknown): Promise<Actio
       .from('profiles')
       .update({
         username: normalizedUsername,
-        updated_by_id: session.user.id,
+        updated_by_id: session.user['id'],
       })
       .eq('id', profileId)
 
@@ -124,15 +124,15 @@ export async function updateProfilePreferencesAction(payload: unknown): Promise<
   }
 
   const existingPreferences =
-    (existing?.preferences as Record<string, Json> | null | undefined) ?? {}
+    (existing?.['preferences'] as Record<string, Json> | null | undefined) ?? {}
   const nextPreferences: Record<string, Json> = { ...existingPreferences }
 
   if (marketingEmails !== undefined) {
-    nextPreferences.marketingEmails = marketingEmails
+    nextPreferences['marketingEmails'] = marketingEmails
   }
 
   if (smsAlerts !== undefined) {
-    nextPreferences.smsAlerts = smsAlerts
+    nextPreferences['smsAlerts'] = smsAlerts
   }
 
   const { error } = await supabase

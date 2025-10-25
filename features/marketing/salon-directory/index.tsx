@@ -71,7 +71,7 @@ export async function MarketingSalonDirectoryPage({ searchParams }: MarketingSal
     <SalonDirectory
       searchParams={{
         searchTerm: params.search,
-        city: params.city,
+        city: params['city'],
         state: params.state,
       }}
     />
@@ -96,14 +96,14 @@ export async function generateSalonProfileMetadata({ params }: SalonProfilePageP
   }
 
   return genMeta({
-    title: salon.name || 'Salon Profile',
+    title: salon['name'] || 'Salon Profile',
     description:
-      salon.short_description ||
-      `View ${salon.name} profile, services, and book appointments.`,
+      salon['short_description'] ||
+      `View ${salon['name']} profile, services, and book appointments.`,
     keywords: [
-      salon.name || '',
-      salon.city || '',
-      salon.state_province || '',
+      salon['name'] || '',
+      salon['city'] || '',
+      salon['state_province'] || '',
       'salon',
       'book appointment',
     ].filter(Boolean),
@@ -118,7 +118,7 @@ export async function MarketingSalonProfilePage({ params }: SalonProfilePageProp
     notFound()
   }
 
-  const services = await getPublicSalonServices(salon.id!)
+  const services = await getPublicSalonServices(salon['id']!)
 
   return <SalonProfileView salon={salon} services={services} />
 }

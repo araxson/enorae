@@ -39,18 +39,18 @@ export async function StaffDashboardPage() {
     )
   }
 
-  if (!staffProfile || !staffProfile.id) {
+  if (!staffProfile || !staffProfile['id']) {
     return <MissingProfileState />
   }
 
   try {
     const [todayAppointments, upcomingAppointments, metrics, commission, retentionMetrics] =
       await Promise.all([
-        getTodayAppointments(staffProfile.id),
-        getUpcomingAppointments(staffProfile.id),
-        getStaffMetrics(staffProfile.id),
-        roleLevel !== 'junior' ? getStaffCommission(staffProfile.id) : Promise.resolve(null),
-        getClientRetentionMetrics(staffProfile.id),
+        getTodayAppointments(staffProfile['id']),
+        getUpcomingAppointments(staffProfile['id']),
+        getStaffMetrics(staffProfile['id']),
+        roleLevel !== 'junior' ? getStaffCommission(staffProfile['id']) : Promise.resolve(null),
+        getClientRetentionMetrics(staffProfile['id']),
       ])
 
     if (roleLevel === 'junior') {

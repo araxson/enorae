@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -39,7 +39,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
   const [reason, setReason] = useState('')
   const [reasonError, setReasonError] = useState<string | null>(null)
 
-  const requiresReason = dialog.type === 'flag' || dialog.type === 'delete'
+  const requiresReason = dialog['type'] === 'flag' || dialog['type'] === 'delete'
 
   const openDialog = (type: DialogState['type'], review: ModerationReview) => {
     setDialog({ type, review })
@@ -54,7 +54,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
   }
 
   const handleAction = async () => {
-    if (!dialog.review || !dialog.review.id) return
+    if (!dialog.review || !dialog.review['id']) return
 
     if (requiresReason) {
       if (reason.trim().length < 10) {
@@ -63,14 +63,14 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
       }
     }
 
-    const reviewId = dialog.review.id
+    const reviewId = dialog.review['id']
     setLoadingId(reviewId)
 
     try {
       const formData = new FormData()
       formData.append('reviewId', reviewId)
 
-      switch (dialog.type) {
+      switch (dialog['type']) {
         case 'flag': {
           formData.append('reason', reason.trim())
           const result = await flagReview(formData)
@@ -85,7 +85,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
           break
         }
         case 'feature': {
-          const nextValue = !(dialog.review.is_featured ?? false)
+          const nextValue = !(dialog.review['is_featured'] ?? false)
           formData.append('isFeatured', nextValue.toString())
           const result = await featureReview(formData)
           if (result?.error) throw new Error(result.error)
@@ -113,32 +113,36 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
   }
 
   const dialogContent = useMemo(() => {
-    if (!dialog.review || !dialog.type) return null
+    if (!dialog.review || !dialog['type']) return null
 
-    const reviewLabel = dialog.review.customer_name || dialog.review.customer_email || 'Review'
+    const reviewLabel = dialog.review['customer_name'] || dialog.review['customer_email'] || 'Review'
 
     const titles: Record<NonNullable<DialogState['type']>, string> = {
       flag: 'Flag Review',
       unflag: 'Remove Flag from Review',
-      feature: dialog.review.is_featured ? 'Unfeature Review' : 'Feature Review',
+      feature: dialog.review['is_featured'] ? 'Unfeature Review' : 'Feature Review',
       delete: 'Delete Review',
     }
 
     const descriptions: Record<NonNullable<DialogState['type']>, string> = {
       flag: 'Flagging will move the review into the moderation queue for additional review.',
       unflag: 'This will remove the moderation flag and return the review to normal visibility.',
-      feature: dialog.review.is_featured
+      feature: dialog.review['is_featured']
         ? 'This will remove the review from featured placements.'
         : 'Featuring will highlight this review across the platform.',
       delete: 'This will permanently delete the review and cannot be undone.',
     }
 
-    return { title: titles[dialog.type], description: descriptions[dialog.type], reviewLabel }
+    return { title: titles[dialog['type']], description: descriptions[dialog['type']], reviewLabel }
   }, [dialog])
 
   return (
     <>
       <Card>
+        <CardHeader>
+          <CardTitle>Reviews moderation</CardTitle>
+          <CardDescription>Review customer feedback and take moderation actions.</CardDescription>
+        </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
@@ -164,7 +168,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
               ) : (
                 reviews.map((review) => (
                   <ReviewsTableRow
-                    key={review.id}
+                    key={review['id']}
                     review={review}
                     loadingId={loadingId}
                     onViewDetail={onViewDetail}
@@ -180,11 +184,11 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
         </CardContent>
       </Card>
 
-      <AlertDialog open={dialog.type !== null} onOpenChange={(open) => (open ? void 0 : closeDialog())}>
+      <AlertDialog open={dialog['type'] !== null} onOpenChange={(open) => (open ? void 0 : closeDialog())}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{dialogContent?.title}</AlertDialogTitle>
-            <AlertDialogDescription>{dialogContent?.description}</AlertDialogDescription>
+            <AlertDialogTitle>{dialogContent?.['title']}</AlertDialogTitle>
+            <AlertDialogDescription>{dialogContent?.['description']}</AlertDialogDescription>
             <AlertDialogDescription className="mt-2">
               Review by: {dialogContent?.reviewLabel}
             </AlertDialogDescription>
@@ -211,7 +215,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
           <AlertDialogFooter>
             <AlertDialogCancel disabled={loadingId !== null}>Cancel</AlertDialogCancel>
             <AlertDialogAction asChild>
-              <Button onClick={handleAction} disabled={loadingId !== null} variant={dialog.type === 'delete' ? 'destructive' : 'default'}>
+              <Button onClick={handleAction} disabled={loadingId !== null} variant={dialog['type'] === 'delete' ? 'destructive' : 'default'}>
                 {loadingId !== null ? 'Processing...' : 'Confirm'}
               </Button>
             </AlertDialogAction>

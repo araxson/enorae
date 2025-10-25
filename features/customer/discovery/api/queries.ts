@@ -31,7 +31,7 @@ export async function getSalons(categoryFilter?: string) {
       .eq('is_active', true) as { data: Service[] | null; error: PostgrestError | null }
 
     if (servicesData && servicesData.length > 0) {
-      const salonIds = [...new Set(servicesData.map((s: Service) => s.salon_id).filter(Boolean) as string[])]
+      const salonIds = [...new Set(servicesData.map((s: Service) => s['salon_id']).filter(Boolean) as string[])]
       query = supabase.from('salons_view').select('*').in('id', salonIds).eq('is_active', true)
     }
   }
@@ -76,7 +76,7 @@ export async function searchSalons(query: string, categoryFilter?: string) {
       .eq('is_active', true) as { data: Service[] | null; error: PostgrestError | null }
 
     if (servicesData && servicesData.length > 0) {
-      const salonIds = [...new Set(servicesData.map((s: Service) => s.salon_id).filter(Boolean) as string[])]
+      const salonIds = [...new Set(servicesData.map((s: Service) => s['salon_id']).filter(Boolean) as string[])]
       salonQuery = supabase
         .from('salons_view')
         .select('*')
@@ -108,7 +108,7 @@ export async function getServiceCategories(): Promise<string[]> {
 
   // Get unique category names
   const uniqueCategories = [
-    ...new Set((data || []).map((category) => category.name).filter(Boolean) as string[]),
+    ...new Set((data || []).map((category) => category['name']).filter(Boolean) as string[]),
   ]
   return uniqueCategories
 }
@@ -131,8 +131,8 @@ export async function getPopularCategories(limit: number = 10): Promise<{ catego
   // Count occurrences of each category
   const categoryCounts: Record<string, number> = {}
   ;(data || []).forEach((service) => {
-    if (service.category_name) {
-      categoryCounts[service.category_name] = (categoryCounts[service.category_name] || 0) + 1
+    if (service['category_name']) {
+      categoryCounts[service['category_name']] = (categoryCounts[service['category_name']] || 0) + 1
     }
   })
 
@@ -181,10 +181,10 @@ export async function getSalonTodayHours(salonId: string): Promise<string> {
     6: 'saturday',
   }
 
-  const todayHours = hours.find(h => h.day_of_week === dayMap[today])
+  const todayHours = hours.find(h => h['day_of_week'] === dayMap[today])
 
   if (!todayHours) return 'Hours not available'
-  if (todayHours.is_closed) return 'Closed today'
+  if (todayHours['is_closed']) return 'Closed today'
 
   // Format time
   const formatTime = (time: string | null) => {
@@ -196,8 +196,8 @@ export async function getSalonTodayHours(salonId: string): Promise<string> {
     return `${displayHour}:${minutes} ${ampm}`
   }
 
-  const openTime = formatTime(todayHours.open_time)
-  const closeTime = formatTime(todayHours.close_time)
+  const openTime = formatTime(todayHours['open_time'])
+  const closeTime = formatTime(todayHours['close_time'])
 
   return `${openTime} - ${closeTime}`
 }

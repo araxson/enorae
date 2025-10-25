@@ -39,7 +39,7 @@ export async function CustomerProfile() {
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
       <ProfileHeader profile={profile} />
-      <UsernameForm currentUsername={profile.username} />
+      <UsernameForm currentUsername={profile['username']} />
       <ProfileEditForm profile={profile} />
       <MetadataForm metadata={metadata} />
       <AppointmentsList appointments={appointments} />

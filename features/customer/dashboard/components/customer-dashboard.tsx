@@ -145,10 +145,10 @@ export async function CustomerDashboardPage() {
               ) : (
                 <div className="space-y-3">
                   {pastAppointments.map((appointment) => {
-                    if (!appointment?.id) return null
+                    if (!appointment?.['id']) return null
 
-                    const appointmentDate = appointment.start_time
-                      ? new Date(appointment.start_time).toLocaleDateString('en-US', {
+                    const appointmentDate = appointment['start_time']
+                      ? new Date(appointment['start_time']).toLocaleDateString('en-US', {
                           weekday: 'short',
                           month: 'short',
                           day: 'numeric',
@@ -157,18 +157,18 @@ export async function CustomerDashboardPage() {
                       : 'Date not available'
 
                     return (
-                      <Card key={appointment.id}>
+                      <Card key={appointment['id']}>
                         <CardHeader>
-                          <CardTitle>{appointment.service_names?.[0] ?? 'Service'}</CardTitle>
+                          <CardTitle>{appointment['service_names']?.[0] ?? 'Service'}</CardTitle>
                           <CardDescription>
-                            {appointment.salon_name ? `at ${appointment.salon_name}` : 'Salon not specified'}
+                            {appointment['salon_name'] ? `at ${appointment['salon_name']}` : 'Salon not specified'}
                           </CardDescription>
                         </CardHeader>
                         <CardContent>
                           <div className="flex flex-wrap items-center justify-between gap-3">
                             <span className="text-sm text-muted-foreground">{appointmentDate}</span>
                             <span className="text-sm text-muted-foreground capitalize">
-                              {appointment.status ?? 'pending'}
+                              {appointment['status'] ?? 'pending'}
                             </span>
                           </div>
                         </CardContent>

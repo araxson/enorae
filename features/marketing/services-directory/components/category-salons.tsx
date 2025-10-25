@@ -28,36 +28,36 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
       </p>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {salons.map((salon) => {
-          const location = [salon.city, salon.state_province].filter(Boolean).join(', ') ||
+          const location = [salon['city'], salon['state_province']].filter(Boolean).join(', ') ||
             'Location not specified'
 
           return (
             <SalonCard
-              key={salon.id}
-              salonId={salon.id || undefined}
-              name={salon.name || 'Unnamed Salon'}
-              description={salon.short_description || undefined}
+              key={salon['id']}
+              salonId={salon['id'] || undefined}
+              name={salon['name'] || 'Unnamed Salon'}
+              description={salon['short_description'] || undefined}
               image={undefined}
               location={location}
-              rating={salon.rating_average || undefined}
-              reviewCount={salon.rating_count || undefined}
+              rating={salon['rating_average'] || undefined}
+              reviewCount={salon['rating_count'] || undefined}
               hours={undefined}
               onBook={() => {
-                window.location.href = `/salons/${salon.slug}`
+                window.location.href = `/salons/${salon['slug']}`
               }}
               onViewDetails={() => {
-                window.location.href = `/salons/${salon.slug}`
+                window.location.href = `/salons/${salon['slug']}`
               }}
               onShare={() => {
                 if (navigator.share) {
                   navigator.share({
-                    title: salon.name || 'Salon',
-                    text: salon.short_description || '',
-                    url: `/salons/${salon.slug}`,
+                    title: salon['name'] || 'Salon',
+                    text: salon['short_description'] || '',
+                    url: `/salons/${salon['slug']}`,
                   })
                 } else {
                   navigator.clipboard.writeText(
-                    `${window.location.origin}/salons/${salon.slug}`
+                    `${window.location.origin}/salons/${salon['slug']}`
                   )
                 }
               }}

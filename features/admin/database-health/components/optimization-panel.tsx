@@ -68,21 +68,21 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
                       <TableCell>
                         <Badge
                           variant={
-                            rec.status === 'critical'
+                            rec['status'] === 'critical'
                               ? 'destructive'
-                              : rec.status === 'high'
+                              : rec['status'] === 'high'
                                 ? 'secondary'
                                 : 'default'
                           }
                         >
-                          {rec.status ?? 'low'}
+                          {rec['status'] ?? 'low'}
                         </Badge>
                       </TableCell>
                       <TableCell className="font-medium">
-                        {rec.optimization ?? 'N/A'}
+                        {rec['optimization'] ?? 'N/A'}
                       </TableCell>
                       <TableCell className="max-w-md">
-                        {rec.recommendation ?? 'N/A'}
+                        {rec['recommendation'] ?? 'N/A'}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -110,16 +110,16 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
               <TableBody>
                 {unusedIndexes.slice(0, 30).map((idx, index) => (
                   <TableRow key={index}>
-                    <TableCell>{String(idx.schemaname ?? 'N/A')}</TableCell>
+                    <TableCell>{String(idx['schemaname'] ?? 'N/A')}</TableCell>
                     <TableCell className="font-mono text-xs">
-                      {String(idx.index_name ?? 'N/A')}
+                      {String(idx['index_name'] ?? 'N/A')}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={(idx.scans ?? 0) === 0 ? 'destructive' : 'default'}>
-                        {idx.scans?.toLocaleString() ?? 0}
+                      <Badge variant={(idx['scans'] ?? 0) === 0 ? 'destructive' : 'default'}>
+                        {idx['scans']?.toLocaleString() ?? 0}
                       </Badge>
                     </TableCell>
-                    <TableCell>{String(idx.index_size ?? 'N/A')}</TableCell>
+                    <TableCell>{String(idx['index_size'] ?? 'N/A')}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -146,30 +146,30 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
                 {statisticsFreshness.slice(0, 30).map((stat, idx) => (
                   <TableRow key={idx}>
                     <TableCell className="font-mono text-xs">
-                      {String(stat.schemaname ?? 'N/A')}.{String(stat.tablename ?? 'N/A')}
+                      {String(stat['schemaname'] ?? 'N/A')}.{String(stat['tablename'] ?? 'N/A')}
                     </TableCell>
-                    <TableCell>{stat.live_rows?.toLocaleString() ?? 0}</TableCell>
+                    <TableCell>{stat['live_rows']?.toLocaleString() ?? 0}</TableCell>
                     <TableCell className="text-xs">
-                      {stat.last_analyze
-                        ? new Date(stat.last_analyze).toLocaleDateString()
+                      {stat['last_analyze']
+                        ? new Date(stat['last_analyze']).toLocaleDateString()
                         : 'Never'}
                     </TableCell>
                     <TableCell className="text-xs">
-                      {stat.last_autoanalyze
-                        ? new Date(stat.last_autoanalyze).toLocaleDateString()
+                      {stat['last_autoanalyze']
+                        ? new Date(stat['last_autoanalyze']).toLocaleDateString()
                         : 'Never'}
                     </TableCell>
                     <TableCell>
                       <Badge
                         variant={
-                          stat.freshness === 'stale'
+                          stat['freshness'] === 'stale'
                             ? 'destructive'
-                            : stat.freshness === 'aging'
+                            : stat['freshness'] === 'aging'
                               ? 'secondary'
                               : 'default'
                         }
                       >
-                        {stat.freshness ?? 'unknown'}
+                        {stat['freshness'] ?? 'unknown'}
                       </Badge>
                     </TableCell>
                   </TableRow>

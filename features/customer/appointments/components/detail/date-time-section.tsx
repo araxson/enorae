@@ -10,8 +10,8 @@ export function DateTimeSection({ appointment }: Pick<AppointmentDetailContentPr
       <div className="space-y-2">
         <span className="text-base text-foreground">Date &amp; time</span>
         <p className="text-sm text-foreground">
-          {appointment.start_time &&
-            new Date(appointment.start_time).toLocaleDateString('en-US', {
+          {appointment['start_time'] &&
+            new Date(appointment['start_time']).toLocaleDateString('en-US', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
@@ -19,14 +19,14 @@ export function DateTimeSection({ appointment }: Pick<AppointmentDetailContentPr
             })}
         </p>
         <p className="text-sm text-muted-foreground">
-          {appointment.start_time &&
-            new Date(appointment.start_time).toLocaleTimeString('en-US', {
+          {appointment['start_time'] &&
+            new Date(appointment['start_time']).toLocaleTimeString('en-US', {
               hour: '2-digit',
               minute: '2-digit',
             })}
           {' — '}
-          {appointment.end_time &&
-            new Date(appointment.end_time).toLocaleTimeString('en-US', {
+          {appointment['end_time'] &&
+            new Date(appointment['end_time']).toLocaleTimeString('en-US', {
               hour: '2-digit',
               minute: '2-digit',
             })}
@@ -34,17 +34,17 @@ export function DateTimeSection({ appointment }: Pick<AppointmentDetailContentPr
         <div className="mt-2 flex items-center gap-2">
           <Clock className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm text-muted-foreground">
-            {appointment.duration_minutes || 0} minutes total
+            {appointment['duration_minutes'] || 0} minutes total
           </span>
         </div>
       </div>
 
-      {appointment.staff_name && (
+      {appointment['staff_name'] && (
         <>
           <Separator />
           <div className="space-y-1">
             <span className="text-base text-foreground">Staff member</span>
-            <p className="text-sm text-foreground">{appointment.staff_name}</p>
+            <p className="text-sm text-foreground">{appointment['staff_name']}</p>
           </div>
         </>
       )}

@@ -32,21 +32,21 @@ export function useContactForm({ salonId, contactDetails }: UseContactFormParams
   const [success, setSuccess] = useState(false)
 
   const initialValues: ContactDetailsInput = {
-    primary_phone: contactDetails?.primary_phone ?? null,
-    secondary_phone: contactDetails?.secondary_phone ?? null,
-    primary_email: contactDetails?.primary_email ?? null,
-    booking_email: contactDetails?.booking_email ?? null,
-    website_url: contactDetails?.website_url ?? null,
-    booking_url: contactDetails?.booking_url ?? null,
-    facebook_url: contactDetails?.facebook_url ?? null,
-    instagram_url: contactDetails?.instagram_url ?? null,
-    twitter_url: contactDetails?.twitter_url ?? null,
-    tiktok_url: contactDetails?.tiktok_url ?? null,
-    linkedin_url: contactDetails?.linkedin_url ?? null,
-    youtube_url: contactDetails?.youtube_url ?? null,
-    whatsapp_number: contactDetails?.whatsapp_number ?? null,
-    telegram_username: contactDetails?.telegram_username ?? null,
-    hours_display_text: contactDetails?.hours_display_text ?? null,
+    primary_phone: contactDetails?.['primary_phone'] ?? null,
+    secondary_phone: contactDetails?.['secondary_phone'] ?? null,
+    primary_email: contactDetails?.['primary_email'] ?? null,
+    booking_email: contactDetails?.['booking_email'] ?? null,
+    website_url: contactDetails?.['website_url'] ?? null,
+    booking_url: contactDetails?.['booking_url'] ?? null,
+    facebook_url: contactDetails?.['facebook_url'] ?? null,
+    instagram_url: contactDetails?.['instagram_url'] ?? null,
+    twitter_url: contactDetails?.['twitter_url'] ?? null,
+    tiktok_url: contactDetails?.['tiktok_url'] ?? null,
+    linkedin_url: contactDetails?.['linkedin_url'] ?? null,
+    youtube_url: contactDetails?.['youtube_url'] ?? null,
+    whatsapp_number: contactDetails?.['whatsapp_number'] ?? null,
+    telegram_username: contactDetails?.['telegram_username'] ?? null,
+    hours_display_text: contactDetails?.['hours_display_text'] ?? null,
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

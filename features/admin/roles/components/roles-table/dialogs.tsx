@@ -28,8 +28,8 @@ export function RevokeRoleDialog({ open, onOpenChange, isLoading, onConfirm, rol
         <AlertDialogHeader>
           <AlertDialogTitle>Revoke Role</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to revoke the <strong>{role?.role?.replace(/_/g, ' ') || 'Unknown'}</strong> role
-            from <strong>{role?.user_id || 'Unknown user'}</strong>? This will deactivate the role but preserve the record.
+            Are you sure you want to revoke the <strong>{role?.['role']?.replace(/_/g, ' ') || 'Unknown'}</strong> role
+            from <strong>{role?.['user_id'] || 'Unknown user'}</strong>? This will deactivate the role but preserve the record.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

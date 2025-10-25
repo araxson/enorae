@@ -27,8 +27,8 @@ export async function requireAdminClientWithMFA(): Promise<SupabaseClient<Databa
   }
 
   // Verify MFA is enabled (aal2 = authenticated with MFA)
-  // Check both app_metadata and user.aal for MFA status
-  const aal = user.app_metadata?.aal as string | undefined
+  // Check both app_metadata and user['aal'] for MFA status
+  const aal = user.app_metadata?.['aal'] as string | undefined
 
   if (aal !== 'aal2') {
     throw new Error('MFA required for financial operations. Please enable multi-factor authentication.')

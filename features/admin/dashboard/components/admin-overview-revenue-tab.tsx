@@ -75,15 +75,15 @@ export function AdminOverviewRevenueTab({ revenue, windowSize }: RevenueTabProps
             </TableHeader>
             <TableBody>
               {rows.map((item, index) => (
-                <TableRow key={`${item.date}-${item.total_revenue}-${index}`}>
+                <TableRow key={`${item['date']}-${item['total_revenue']}-${index}`}>
                   <TableCell className="font-medium">
-                    {safeFormatDate(item.date, 'MMM d, yyyy')}
+                    {safeFormatDate(item['date'], 'MMM d, yyyy')}
                   </TableCell>
                   <TableCell className="text-right">
-                    {formatCurrency(item.total_revenue)}
+                    {formatCurrency(item['total_revenue'])}
                   </TableCell>
                   <TableCell className="text-right text-muted-foreground">
-                    {(item.total_appointments ?? 0).toLocaleString()}
+                    {(item['total_appointments'] ?? 0).toLocaleString()}
                   </TableCell>
                 </TableRow>
               ))}

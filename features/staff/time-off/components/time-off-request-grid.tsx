@@ -63,7 +63,7 @@ export function TimeOffRequestGrid({
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {displayedRequests.map((request) => (
-          <RequestCard key={request.id} request={request} isStaffView />
+          <RequestCard key={request['id']} request={request} isStaffView />
         ))}
       </div>
     </div>

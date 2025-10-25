@@ -3,9 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { requireAnyRole } from '@/lib/auth/role-guard'
-import { ROLE_GROUPS } from '@/lib/auth/constants'
 
 const acknowledgeAlertSchema = z.object({
   accessId: z.string().uuid(),
@@ -20,6 +19,12 @@ const suppressAlertSchema = z.object({
   reason: z.string().min(1).max(500),
   duration: z.enum(['1hour', '1day', '1week', 'permanent']),
 })
+
+type SecurityAccessRecord = {
+  user_email?: string
+  risk_score?: number
+  [key: string]: unknown
+}
 
 export async function acknowledgeSecurityAlert(formData: FormData) {
   try {
@@ -40,6 +45,8 @@ export async function acknowledgeSecurityAlert(formData: FormData) {
     if (!record) {
       return { error: 'Security access record not found' }
     }
+
+    const typedRecord = record as SecurityAccessRecord
 
     // Update acknowledgement status on schema table
     const { error: updateError } = await supabase
@@ -65,8 +72,8 @@ export async function acknowledgeSecurityAlert(formData: FormData) {
       user_id: session.user.id,
       metadata: {
         access_id: validated.accessId,
-        user_email: (record as any).user_email,
-        risk_score: (record as any).risk_score,
+        user_email: typedRecord.user_email,
+        risk_score: typedRecord.risk_score,
       },
     })
 
@@ -98,6 +105,8 @@ export async function dismissSecurityAlert(formData: FormData) {
       return { error: 'Security access record not found' }
     }
 
+    const typedRecord = record as SecurityAccessRecord
+
     // Update status on schema table
     const { error: updateError } = await supabase
       .schema('public')
@@ -120,8 +129,8 @@ export async function dismissSecurityAlert(formData: FormData) {
       user_id: session.user.id,
       metadata: {
         access_id: validated.accessId,
-        user_email: (record as any).user_email,
-        risk_score: (record as any).risk_score,
+        user_email: typedRecord.user_email,
+        risk_score: typedRecord.risk_score,
       },
     })
 
@@ -158,6 +167,8 @@ export async function suppressSecurityAlert(formData: FormData) {
     if (!record) {
       return { error: 'Security access record not found' }
     }
+
+    const typedRecord = record as SecurityAccessRecord
 
     // Calculate suppression expiry
     const now = new Date()
@@ -201,7 +212,7 @@ export async function suppressSecurityAlert(formData: FormData) {
       user_id: session.user.id,
       metadata: {
         access_id: validated.accessId,
-        user_email: (record as any).user_email,
+        user_email: typedRecord.user_email,
         reason: validated.reason,
         duration: validated.duration,
       },

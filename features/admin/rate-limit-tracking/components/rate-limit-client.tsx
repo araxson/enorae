@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { RateLimitTable } from './rate-limit-table'
 import type { RateLimitSnapshot } from '@/features/admin/rate-limit-tracking/api/queries'
 
@@ -23,7 +24,7 @@ export function RateLimitClient({ snapshot }: RateLimitClientProps) {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tracked</CardTitle>
+            <CardTitle>Total Tracked</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{snapshot.totalCount}</div>
@@ -33,20 +34,20 @@ export function RateLimitClient({ snapshot }: RateLimitClientProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Currently Blocked</CardTitle>
+            <CardTitle>Currently Blocked</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{snapshot.blockedCount}</div>
+            <div className="text-2xl font-bold text-destructive">{snapshot.blockedCount}</div>
             <p className="text-xs text-muted-foreground">Identifiers at limit</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Warnings</CardTitle>
+            <CardTitle>Warnings</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{snapshot.warningCount}</div>
+            <div className="text-2xl font-bold text-primary">{snapshot.warningCount}</div>
             <p className="text-xs text-muted-foreground">Approaching limit</p>
           </CardContent>
         </Card>
@@ -62,36 +63,27 @@ export function RateLimitClient({ snapshot }: RateLimitClientProps) {
         </CardHeader>
         <CardContent>
           <div className="mb-4 flex gap-2">
-            <button
+            <Button
               onClick={() => setSelectedStatus(null)}
-              className={`px-3 py-1 rounded text-sm ${
-                selectedStatus === null
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted hover:bg-muted/80'
-              }`}
+              size="sm"
+              variant={selectedStatus === null ? 'default' : 'secondary'}
             >
               All
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setSelectedStatus('blocked')}
-              className={`px-3 py-1 rounded text-sm ${
-                selectedStatus === 'blocked'
-                  ? 'bg-red-600 text-white'
-                  : 'bg-muted hover:bg-muted/80'
-              }`}
+              size="sm"
+              variant={selectedStatus === 'blocked' ? 'destructive' : 'secondary'}
             >
               Blocked
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setSelectedStatus('warning')}
-              className={`px-3 py-1 rounded text-sm ${
-                selectedStatus === 'warning'
-                  ? 'bg-orange-600 text-white'
-                  : 'bg-muted hover:bg-muted/80'
-              }`}
+              size="sm"
+              variant={selectedStatus === 'warning' ? 'default' : 'secondary'}
             >
               Warnings
-            </button>
+            </Button>
           </div>
           <RateLimitTable records={filteredRecords} />
         </CardContent>

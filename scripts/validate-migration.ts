@@ -470,7 +470,7 @@ async function main() {
     process.exit(1)
   }
 
-  const filePath = args[0]
+  const filePath = args[0]!
 
   if (!fs.existsSync(filePath)) {
     console.error(`Error: File not found: ${filePath}`)

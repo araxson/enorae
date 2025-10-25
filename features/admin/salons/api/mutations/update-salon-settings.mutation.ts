@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { revalidatePath } from 'next/cache'
-import { updateSettingsSchema, UUID_REGEX } from '@/features/admin/salons/utils/schemas'
+import { updateSettingsSchema, UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
 import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 
 export async function updateSalonSettings(formData: FormData) {
@@ -30,11 +30,11 @@ export async function updateSalonSettings(formData: FormData) {
     const updateData: Record<string, unknown> = {}
 
     if (result.data.subscriptionTier)
-      updateData.subscription_tier = result.data.subscriptionTier
+      updateData['subscription_tier'] = result.data.subscriptionTier
     if (result.data.isAcceptingBookings !== undefined)
-      updateData.is_accepting_bookings = result.data.isAcceptingBookings
-    if (result.data.maxStaff) updateData.max_staff = result.data.maxStaff
-    if (result.data.maxServices) updateData.max_services = result.data.maxServices
+      updateData['is_accepting_bookings'] = result.data.isAcceptingBookings
+    if (result.data.maxStaff) updateData['max_staff'] = result.data.maxStaff
+    if (result.data.maxServices) updateData['max_services'] = result.data.maxServices
 
     const { error } = await supabase
       .schema('organization')

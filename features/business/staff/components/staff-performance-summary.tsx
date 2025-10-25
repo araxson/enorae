@@ -16,10 +16,10 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
     .map((member) => {
       // Note: performed_count and rating_count are not available in the staff_services view
       // We count available services as a proxy for activity
-      const totalPerformed = member.services.filter((s) => s.is_available).length
-      const servicesWithRatings = member.services.filter((s) => s.rating_average && s.rating_average > 0)
+      const totalPerformed = member.services.filter((s) => s['is_available']).length
+      const servicesWithRatings = member.services.filter((s) => s['rating_average'] && s['rating_average'] > 0)
       const avgRating = servicesWithRatings.length > 0
-        ? servicesWithRatings.reduce((sum: number, s) => sum + Number(s.rating_average || 0), 0) / servicesWithRatings.length
+        ? servicesWithRatings.reduce((sum: number, s) => sum + Number(s['rating_average'] || 0), 0) / servicesWithRatings.length
         : 0
 
       return {
@@ -60,17 +60,17 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
           <CardContent>
             <div className="flex gap-4 items-center">
               <Avatar className="h-12 w-12">
-                {topPerformer.avatar_url && (
-                  <AvatarImage src={topPerformer.avatar_url} alt={topPerformer.full_name || 'Staff'} />
+                {topPerformer['avatar_url'] && (
+                  <AvatarImage src={topPerformer['avatar_url']} alt={topPerformer['full_name'] || 'Staff'} />
                 )}
                 <AvatarFallback>
-                  {topPerformer.full_name?.slice(0, 2).toUpperCase() || 'ST'}
+                  {topPerformer['full_name']?.slice(0, 2).toUpperCase() || 'ST'}
                 </AvatarFallback>
               </Avatar>
 
               <div className="flex flex-col gap-2 flex-1">
-                <p className="leading-7 font-semibold">{topPerformer.full_name || 'Staff Member'}</p>
-                {topPerformer.title && <p className="text-sm text-muted-foreground">{topPerformer.title}</p>}
+                <p className="leading-7 font-semibold">{topPerformer['full_name'] || 'Staff Member'}</p>
+                {topPerformer['title'] && <p className="text-sm text-muted-foreground">{topPerformer['title']}</p>}
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default">
                     <span className="flex items-center gap-2 text-xs">
@@ -97,17 +97,17 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
           <CardContent>
             <div className="flex gap-4 items-center">
               <Avatar className="h-12 w-12">
-                {topRated.avatar_url && (
-                  <AvatarImage src={topRated.avatar_url} alt={topRated.full_name || 'Staff'} />
+                {topRated['avatar_url'] && (
+                  <AvatarImage src={topRated['avatar_url']} alt={topRated['full_name'] || 'Staff'} />
                 )}
                 <AvatarFallback>
-                  {topRated.full_name?.slice(0, 2).toUpperCase() || 'ST'}
+                  {topRated['full_name']?.slice(0, 2).toUpperCase() || 'ST'}
                 </AvatarFallback>
               </Avatar>
 
               <div className="flex flex-col gap-2 flex-1">
-                <p className="leading-7 font-semibold">{topRated.full_name || 'Staff Member'}</p>
-                {topRated.title && <p className="text-sm text-muted-foreground">{topRated.title}</p>}
+                <p className="leading-7 font-semibold">{topRated['full_name'] || 'Staff Member'}</p>
+                {topRated['title'] && <p className="text-sm text-muted-foreground">{topRated['title']}</p>}
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default">
                     <span className="flex items-center gap-1 text-xs">

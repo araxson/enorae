@@ -35,17 +35,16 @@ export async function getNotificationQueue(
   const channelDistribution: Record<string, number> = {}
 
   queueItems.forEach((item) => {
-    const type = item.notification_type ?? 'unknown'
+    const type = item['notification_type'] ?? 'unknown'
     notificationsByType[type] = (notificationsByType[type] ?? 0) + 1
 
-    const channels = item.channels ?? []
-    channels.forEach((channel) => {
+    const channels = Array.isArray(item['channels']) ? item['channels'] : []
+    channels.forEach((channel: string) => {
       channelDistribution[channel] = (channelDistribution[channel] ?? 0) + 1
     })
   })
 
-  const oldestPending =
-    queueItems.length > 0 ? queueItems[0].created_at : null
+  const oldestPending = queueItems.length > 0 ? queueItems[0]?.created_at ?? null : null
 
   return {
     queueItems,

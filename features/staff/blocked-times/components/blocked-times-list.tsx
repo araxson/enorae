@@ -44,19 +44,19 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
   return (
     <div className="flex flex-col gap-4">
       {blockedTimes.map((blockedTime) => (
-        <Card key={blockedTime.id}>
+        <Card key={blockedTime['id']}>
           <CardHeader>
             <div className="p-4 pb-0">
               <div className="flex gap-3 items-start justify-between">
                 <div className="flex flex-col gap-3 flex-1">
                   <div className="flex gap-3 items-center flex-wrap">
-                    <CardTitle>{blockedTime.reason || 'Blocked time'}</CardTitle>
-                    <Badge variant="outline">{blockedTime.block_type}</Badge>
-                    {blockedTime.is_recurring && <Badge variant="secondary">Recurring</Badge>}
+                    <CardTitle>{blockedTime['reason'] || 'Blocked time'}</CardTitle>
+                    <Badge variant="outline">{blockedTime['block_type']}</Badge>
+                    {blockedTime['is_recurring'] && <Badge variant="secondary">Recurring</Badge>}
                   </div>
                   <CardDescription>
-                    {blockedTime.start_time && format(new Date(blockedTime.start_time), 'PPp')} –{' '}
-                    {blockedTime.end_time && format(new Date(blockedTime.end_time), 'p')}
+                    {blockedTime['start_time'] && format(new Date(blockedTime['start_time']), 'PPp')} –{' '}
+                    {blockedTime['end_time'] && format(new Date(blockedTime['end_time']), 'p')}
                   </CardDescription>
                 </div>
                 <div className="flex gap-3">
@@ -72,8 +72,8 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => blockedTime.id && handleDelete(blockedTime.id)}
-                    disabled={deletingId === blockedTime.id}
+                    onClick={() => blockedTime['id'] && handleDelete(blockedTime['id'])}
+                    disabled={deletingId === blockedTime['id']}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -81,11 +81,11 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
               </div>
             </div>
           </CardHeader>
-          {blockedTime.duration_minutes ? (
+          {blockedTime['duration_minutes'] ? (
             <CardContent>
               <div className="p-4 pt-0">
                 <p className="text-muted-foreground">
-                  Duration: {blockedTime.duration_minutes} minutes
+                  Duration: {blockedTime['duration_minutes']} minutes
                 </p>
               </div>
             </CardContent>

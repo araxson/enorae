@@ -14,7 +14,7 @@ interface MarketingUserNavProps {
 }
 
 function getInitials(user: SupabaseUser): string {
-  const name = user.user_metadata?.full_name || user.email || ''
+  const name = user.user_metadata?.['full_name'] || user['email'] || ''
   return name
     .split(' ')
     .map((n: string) => n[0])
@@ -44,15 +44,15 @@ function getPortalFromRole(role: RoleType): 'admin' | 'business' | 'staff' | 'cu
 export function MarketingUserNav({ user, role }: MarketingUserNavProps) {
   const portal = getPortalFromRole(role)
   const userData = {
-    name: user.user_metadata?.full_name || 'User',
-    email: user.email || '',
-    avatar: user.user_metadata?.avatar_url || null,
+    name: user.user_metadata?.['full_name'] || 'User',
+    email: user['email'] || '',
+    avatar: user.user_metadata?.['avatar_url'] || null,
   }
 
   const trigger = (
     <Button variant="ghost" className="relative h-9 w-9 rounded-full">
       <Avatar className="h-9 w-9">
-        <AvatarImage src={userData.avatar || undefined} alt={user.email || 'User'} />
+        <AvatarImage src={userData.avatar || undefined} alt={user['email'] || 'User'} />
         <AvatarFallback>{getInitials(user)}</AvatarFallback>
       </Avatar>
     </Button>

@@ -17,8 +17,8 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
         <CardHeader className="p-6 pb-4">
           <div className="flex gap-4 items-start justify-between flex-wrap">
             <div className="max-w-xl space-y-2">
-              <CardTitle>{profile.title || 'Staff Member'}</CardTitle>
-              {profile.bio && <CardDescription>{profile.bio}</CardDescription>}
+              <CardTitle>{profile['title'] || 'Staff Member'}</CardTitle>
+              {profile['bio'] && <CardDescription>{profile['bio']}</CardDescription>}
             </div>
             {profile.average_rating && (
               <div className="flex gap-2 items-center">
@@ -33,10 +33,10 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
         </CardHeader>
         <CardContent className="p-6 pt-0">
           <div className="flex flex-col gap-4">
-            {profile.email && (
+            {profile['email'] && (
               <div className="flex gap-3 items-center">
                 <Mail className="h-4 w-4 text-muted-foreground" />
-                <p className="text-sm">{profile.email}</p>
+                <p className="text-sm">{profile['email']}</p>
               </div>
             )}
 
@@ -75,29 +75,29 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
           <h3 className="scroll-m-20 text-2xl mb-4">Services Offered</h3>
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             {profile.services.map((service) => (
-              <Card key={service.id}>
+              <Card key={service['id']}>
                 <CardHeader className="p-4 pb-2">
                   <div className="flex gap-3 items-start justify-between">
-                    <CardTitle>{service.name}</CardTitle>
-                    {service.price && <p>${service.price}</p>}
+                    <CardTitle>{service['name']}</CardTitle>
+                    {service['price'] && <p>${service['price']}</p>}
                   </div>
-                  {service.category_name && (
+                  {service['category_name'] && (
                     <div className="flex justify-end">
-                      <Badge variant="secondary">{service.category_name}</Badge>
+                      <Badge variant="secondary">{service['category_name']}</Badge>
                     </div>
                   )}
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
                   <div className="flex flex-col gap-3">
-                    {service.description && (
+                    {service['description'] && (
                       <p className="text-sm text-muted-foreground line-clamp-2">
-                        {service.description}
+                        {service['description']}
                       </p>
                     )}
-                    {service.duration_minutes && (
+                    {service['duration_minutes'] && (
                       <p className="text-sm text-muted-foreground">
                         <Briefcase className="inline h-3 w-3 mr-1" />
-                        {service.duration_minutes} minutes
+                        {service['duration_minutes']} minutes
                       </p>
                     )}
                   </div>
@@ -109,12 +109,12 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
       )}
 
       {/* Book Appointment CTA */}
-      {profile.salon_id && (
+      {profile['salon_id'] && (
         <Card className="bg-primary/5">
           <CardHeader className="p-6 pb-2">
             <CardTitle>Book an Appointment</CardTitle>
             <CardDescription>
-              Schedule a session with {profile.title || 'this staff member'}
+              Schedule a session with {profile['title'] || 'this staff member'}
             </CardDescription>
           </CardHeader>
           <CardContent className="px-6">
@@ -123,7 +123,7 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
             </p>
           </CardContent>
           <CardFooter className="p-6 pt-0 justify-end">
-            <Link href={`/customer/book/${profile.salon_id}?staff=${profile.id}`}>
+            <Link href={`/customer/book/${profile['salon_id']}?staff=${profile['id']}`}>
               <Button>Book Now</Button>
             </Link>
           </CardFooter>

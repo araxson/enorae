@@ -5,7 +5,7 @@ import { Monitor, Smartphone, Tablet, X, AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { revokeSession } from '@/features/staff/sessions/api/mutations'
 import type { StaffSessionDetail } from '@/features/staff/sessions/types'
 
@@ -43,7 +43,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
     }
   }
 
-  const activeSessions = sessions.filter(s => s.is_active)
+  const activeSessions = sessions.filter(s => s['is_active'])
 
   if (activeSessions.length === 0) {
     return (
@@ -61,16 +61,16 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
   return (
     <div className="flex flex-col gap-4">
       {activeSessions.map((session) => {
-        const isCurrent = session.id === currentSessionId
+        const isCurrent = session['id'] === currentSessionId
         const lastActiveValue = typeof session.last_active_at === "string" ? session.last_active_at : null
-        const createdValue = typeof session.created_at === "string" ? session.created_at : null
+        const createdValue = typeof session['created_at'] === "string" ? session['created_at'] : null
         const parsedLastActive = lastActiveValue ? new Date(lastActiveValue) : null
         const parsedCreatedAt = createdValue ? new Date(createdValue) : null
         const formattedLastActive = parsedLastActive ? format(parsedLastActive, 'PPp') : null
         const formattedCreatedAt = parsedCreatedAt ? format(parsedCreatedAt, 'PPp') : null
 
         return (
-          <Card key={session.id}>
+          <Card key={session['id']}>
             <CardHeader>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex items-center gap-2">
@@ -82,8 +82,8 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => session.id && handleRevoke(session.id)}
-                    disabled={revokingId === session.id}
+                    onClick={() => session['id'] && handleRevoke(session['id'])}
+                    disabled={revokingId === session['id']}
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -108,6 +108,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
       {activeSessions.length > 1 && (
         <Alert>
           <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Multiple sessions active</AlertTitle>
           <AlertDescription>
             You have {activeSessions.length} active sessions. If you don&apos;t recognize a session, revoke it immediately.
           </AlertDescription>

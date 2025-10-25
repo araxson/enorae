@@ -13,43 +13,43 @@ export const toTimestamp = (value: string | null | undefined): number | null => 
 }
 
 export const computeFirstResponse = (thread: AdminMessageRow, messages: MessageRow[]): FirstResponseResult => {
-  const customerId = thread.customer_id
-  const staffId = thread.staff_id
+  const customerId = thread['customer_id']
+  const staffId = thread['staff_id']
   if (!customerId || !staffId || !messages.length) {
     return { minutes: null, firstCustomerMessageAt: null }
   }
 
-  const customerMessages = messages.filter((message) => message.from_user_id === customerId)
+  const customerMessages = messages.filter((message) => message['from_user_id'] === customerId)
   if (!customerMessages.length) {
     return { minutes: null, firstCustomerMessageAt: null }
   }
 
   const firstCustomerMessage = customerMessages[0]
-  const firstCustomerTimestamp = toTimestamp(firstCustomerMessage.created_at)
+  const firstCustomerTimestamp = toTimestamp(firstCustomerMessage['created_at'])
   if (firstCustomerTimestamp === null) {
     return { minutes: null, firstCustomerMessageAt: null }
   }
 
   const staffResponse = messages.find((message) => {
-    if (message.from_user_id !== staffId) return false
-    const messageTimestamp = toTimestamp(message.created_at)
+    if (message['from_user_id'] !== staffId) return false
+    const messageTimestamp = toTimestamp(message['created_at'])
     return messageTimestamp !== null && messageTimestamp > firstCustomerTimestamp
   })
 
   if (!staffResponse) {
-    return { minutes: null, firstCustomerMessageAt: firstCustomerMessage.created_at ?? null }
+    return { minutes: null, firstCustomerMessageAt: firstCustomerMessage['created_at'] ?? null }
   }
 
-  const staffResponseTimestamp = toTimestamp(staffResponse.created_at)
+  const staffResponseTimestamp = toTimestamp(staffResponse['created_at'])
   if (staffResponseTimestamp === null) {
-    return { minutes: null, firstCustomerMessageAt: firstCustomerMessage.created_at ?? null }
+    return { minutes: null, firstCustomerMessageAt: firstCustomerMessage['created_at'] ?? null }
   }
 
   const diffMinutes = (staffResponseTimestamp - firstCustomerTimestamp) / (60 * 1000)
 
   return {
     minutes: diffMinutes,
-    firstCustomerMessageAt: firstCustomerMessage.created_at ?? null,
+    firstCustomerMessageAt: firstCustomerMessage['created_at'] ?? null,
   }
 }
 

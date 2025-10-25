@@ -18,6 +18,10 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
     })
   }
 
+  const formatMethodName = (method: string) => {
+    return method.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
+  }
+
   const getMethodIcon = (method: string) => {
     const m = method.toLowerCase()
     if (m.includes('card') || m.includes('credit') || m.includes('debit')) return '💳'
@@ -34,8 +38,8 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
       <CardHeader>
         <CardTitle>Payment Method Statistics</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="rounded-md border">
+      <CardContent className="space-y-4 p-0">
+        <div className="px-6 pt-6">
           <Table>
             <TableHeader>
               <TableRow>
@@ -59,16 +63,14 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <span className="text-lg">{getMethodIcon(stat.method)}</span>
-                        <span className="font-medium capitalize">{stat.method}</span>
+                        <span className="font-medium">{formatMethodName(stat.method)}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-right font-medium">
                       {stat.count.toLocaleString()}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Badge variant="outline">
-                        {stat.percentage.toFixed(1)}%
-                      </Badge>
+                      <Badge variant="outline">{stat.percentage.toFixed(1)}%</Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
@@ -86,7 +88,7 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
         </div>
 
         {stats.length > 0 && (
-          <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center justify-between px-6 pb-6 text-sm text-muted-foreground">
             <span>Total Transactions: {totalTransactions.toLocaleString()}</span>
             <span>Methods Available: {stats.length}</span>
           </div>

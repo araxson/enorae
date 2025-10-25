@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Globe, DollarSign, Clock, AlertCircle } from 'lucide-react'
 import { updateAdvancedPreferences } from '@/features/shared/preferences/api/mutations'
@@ -192,6 +192,7 @@ export function AdvancedPreferencesForm({
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Update failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -199,6 +200,7 @@ export function AdvancedPreferencesForm({
             {success && (
               <Alert>
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Preferences saved</AlertTitle>
                 <AlertDescription>Preferences updated successfully!</AlertDescription>
               </Alert>
             )}

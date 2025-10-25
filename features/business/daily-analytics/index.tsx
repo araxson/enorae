@@ -1,8 +1,9 @@
 import { subDays, format } from 'date-fns'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { DailyMetricsDashboard } from './components/daily-metrics-dashboard'
 import { getUserSalon } from '@/features/business/staff/api/queries'
 import { getDailyMetrics, getMetricsComparison } from './api/queries'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface DailyAnalyticsProps {
   dateFrom?: string
@@ -31,6 +32,7 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
+          <AlertTitle>Analytics unavailable</AlertTitle>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Please log in to view analytics'}
           </AlertDescription>
@@ -43,6 +45,7 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
+          <AlertTitle>No salon found</AlertTitle>
           <AlertDescription>No salon found</AlertDescription>
         </Alert>
       </section>
@@ -64,14 +67,18 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <div className="flex flex-col gap-8">
-          <div>
-            <div className="text-sm text-muted-foreground">
-              Performance metrics from {currentDateFrom} to {currentDateTo}
-            </div>
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Daily analytics</CardTitle>
+              <CardDescription>
+                Performance metrics from {currentDateFrom} to {currentDateTo}
+              </CardDescription>
+            </CardHeader>
+          </Card>
 
           {metrics.length === 0 ? (
             <Alert>
+              <AlertTitle>No data available</AlertTitle>
               <AlertDescription>
                 No data available for this date range. Metrics are collected daily.
               </AlertDescription>
@@ -90,6 +97,7 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert>
+          <AlertTitle>Failed to load analytics</AlertTitle>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load analytics'}
           </AlertDescription>

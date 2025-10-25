@@ -56,12 +56,12 @@ export async function fetchReviewAggregation(
 
   ;(data ?? []).forEach((entry) => {
     const review = entry as ReviewRow
-    if (!review.customer_id) return
+    if (!review['customer_id']) return
 
-    const existing = summary.get(review.customer_id) ?? { total: 0, count: 0 }
-    existing.total += review.rating ?? 0
+    const existing = summary.get(review['customer_id']) ?? { total: 0, count: 0 }
+    existing.total += review['rating'] ?? 0
     existing.count += 1
-    summary.set(review.customer_id, existing)
+    summary.set(review['customer_id'], existing)
   })
 
   return summary
@@ -110,16 +110,16 @@ export async function fetchNameMaps(
   const staffNameMap = new Map<string, string>()
   ;(staffProfiles.data ?? []).forEach((entry) => {
     const profile = entry as StaffProfileRow
-    if (profile.id) {
-      staffNameMap.set(profile.id, profile.username || 'N/A')
+    if (profile['id']) {
+      staffNameMap.set(profile['id'], profile['username'] || 'N/A')
     }
   })
 
   const serviceNameMap = new Map<string, string>()
   ;(services.data ?? []).forEach((entry) => {
     const service = entry as Pick<ServiceRow, 'id' | 'name'>
-    if (service.id) {
-      serviceNameMap.set(service.id, service.name || 'N/A')
+    if (service['id']) {
+      serviceNameMap.set(service['id'], service['name'] || 'N/A')
     }
   })
 

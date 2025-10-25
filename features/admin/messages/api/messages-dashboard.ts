@@ -34,7 +34,7 @@ export async function getMessagesDashboard(): Promise<MessagesDashboardData> {
   }
 
   const threads = (threadsData ?? []) as AdminMessageRow[]
-  const threadIds = threads.map((thread) => thread.id).filter((id): id is string => Boolean(id))
+  const threadIds = threads.map((thread) => thread['id']).filter((id): id is string => Boolean(id))
 
   let threadMetadataMap = new Map<string, Json | null>()
   if (threadIds.length) {
@@ -46,8 +46,8 @@ export async function getMessagesDashboard(): Promise<MessagesDashboardData> {
     if (!threadMetaError && threadMetaRows) {
       threadMetadataMap = new Map(
         (threadMetaRows as Pick<MessageThreadRow, 'id' | 'metadata'>[])
-          .filter((row): row is Pick<MessageThreadRow, 'id' | 'metadata'> & { id: string } => Boolean(row.id))
-          .map((row) => [row.id, row.metadata]),
+          .filter((row): row is Pick<MessageThreadRow, 'id' | 'metadata'> & { id: string } => Boolean(row['id']))
+          .map((row) => [row['id'], row.metadata]),
       )
     }
   }

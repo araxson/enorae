@@ -6,7 +6,7 @@ interface AboutCardProps {
 }
 
 export function AboutCard({ salon }: AboutCardProps) {
-  const description = salon.full_description || salon.short_description
+  const description = salon['full_description'] || salon['short_description']
   if (!description) return null
 
   return (

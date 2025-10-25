@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 interface MessageThread {
@@ -30,9 +30,10 @@ export function ThreadList({
   if (threads.length === 0) {
     return (
       <Card>
-        <CardContent className="py-12 text-center">
-          <p className="leading-7 text-muted-foreground">No messages yet</p>
-        </CardContent>
+        <CardHeader className="items-center">
+          <CardTitle>No messages yet</CardTitle>
+          <CardDescription>Messages will appear once you start a conversation.</CardDescription>
+        </CardHeader>
       </Card>
     )
   }
@@ -69,29 +70,22 @@ export function ThreadList({
             className="block transition-opacity hover:opacity-95"
           >
             <Card className={`${unreadCount > 0 ? 'border-primary' : ''}`.trim()}>
-              <CardContent className="space-y-2 p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h4 className="scroll-m-20 text-xl font-semibold mb-0">
-                        {thread.subject || 'No subject'}
-                      </h4>
-                      {unreadCount > 0 && <Badge variant="destructive">{unreadCount}</Badge>}
-                    </div>
-                    <p className="text-sm font-medium text-muted-foreground">
-                      Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant={getPriorityVariant(thread.priority)}>
-                      {thread.priority.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
-                    </Badge>
-                    <Badge variant={thread.status === 'active' ? 'default' : 'secondary'}>
-                      {thread.status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
-                    </Badge>
-                  </div>
+              <CardHeader className="space-y-2 p-5 pb-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <CardTitle>{thread.subject || 'No subject'}</CardTitle>
+                  {unreadCount > 0 && <Badge variant="destructive">{unreadCount}</Badge>}
                 </div>
+                <CardDescription>
+                  Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-wrap items-center gap-2 p-5 pt-4">
+                <Badge variant={getPriorityVariant(thread.priority)}>
+                  {thread.priority.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                </Badge>
+                <Badge variant={thread.status === 'active' ? 'default' : 'secondary'}>
+                  {thread.status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                </Badge>
               </CardContent>
             </Card>
           </Link>

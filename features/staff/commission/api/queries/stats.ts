@@ -7,7 +7,7 @@ import type { CommissionData, DailyEarnings } from './types'
 function sumRevenue(appointments: AppointmentRow[] | null | undefined) {
   return (
     appointments?.reduce(
-      (sum, appointment) => sum + (appointment.total_price || 0),
+      (sum, appointment) => sum + (appointment['total_price'] || 0),
       0,
     ) ?? 0
   )
@@ -124,12 +124,12 @@ export async function getDailyEarnings(
 
   appointments?.forEach((record) => {
     const appointment = record as AppointmentRow
-    if (!appointment.start_time) return
+    if (!appointment['start_time']) return
 
-    const date = new Date(appointment.start_time).toISOString().split('T')[0]
+    const date = new Date(appointment['start_time']).toISOString().split('T')[0]
     const existing = earningsByDate.get(date)
 
-    const revenue = appointment.total_price || 0
+    const revenue = appointment['total_price'] || 0
 
     if (existing) {
       existing.earnings += revenue
@@ -144,6 +144,6 @@ export async function getDailyEarnings(
   })
 
   return Array.from(earningsByDate.values()).sort((a, b) =>
-    a.date.localeCompare(b.date),
+    a['date'].localeCompare(b['date']),
   )
 }

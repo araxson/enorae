@@ -33,11 +33,11 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
   const badges: ReactNode[] = [
     <span key="rating" className="flex items-center gap-1 font-semibold">
       <Star className="h-4 w-4 text-accent" fill="currentColor" />
-      {review.rating}
+      {review['rating']}
     </span>,
   ]
 
-  if (review.is_flagged) {
+  if (review['is_flagged']) {
     badges.push(
       <div key="flagged" className="flex items-center gap-1">
         <Flag className="h-3 w-3" />
@@ -45,7 +45,7 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
       </div>
     )
   }
-  if (review.is_featured) {
+  if (review['is_featured']) {
     badges.push(
       <div key="featured" className="flex items-center gap-1">
         <Star className="h-3 w-3" />
@@ -53,7 +53,7 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
       </div>
     )
   }
-  if (review.has_response) {
+  if (review['has_response']) {
     badges.push(
       <div key="responded" className="flex items-center gap-1">
         <MessageSquare className="h-3 w-3" />

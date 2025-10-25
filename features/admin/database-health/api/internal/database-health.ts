@@ -61,17 +61,17 @@ export async function getDatabaseHealth(
   const toastUsage = (toastRes.data ?? []) as ToastUsage[]
 
   const totalBloatedTables = bloatedTables.filter(
-    (t) => (t.dead_tuple_percent ?? 0) > 10
+    (t) => (t['dead_tuple_percent'] ?? 0) > 10
   ).length
   const lowCacheHitTables = cachePerformance.filter(
-    (t) => (t.cache_hit_ratio ?? 100) < 90
+    (t) => (t['cache_hit_ratio'] ?? 100) < 90
   ).length
   const hotUpdateIssues = hotUpdateStats.filter(
-    (t) => t.status === 'warning' || t.status === 'critical'
+    (t) => t['status'] === 'warning' || t['status'] === 'critical'
   ).length
 
   const avgCacheHit =
-    cachePerformance.reduce((sum, t) => sum + (t.cache_hit_ratio ?? 0), 0) /
+    cachePerformance.reduce((sum, t) => sum + (t['cache_hit_ratio'] ?? 0), 0) /
     (cachePerformance.length || 1)
 
   return {

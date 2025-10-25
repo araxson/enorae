@@ -72,14 +72,14 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
                     {tablesWithoutRLS.slice(0, 10).map((table, idx) => (
                       <TableRow key={idx}>
                         <TableCell className="font-mono text-xs">
-                          {String(table.schemaname ?? 'N/A')}
+                          {String(table['schemaname'] ?? 'N/A')}
                         </TableCell>
                         <TableCell className="font-mono text-xs">
-                          {String(table.tablename ?? 'N/A')}
+                          {String(table['tablename'] ?? 'N/A')}
                         </TableCell>
                         <TableCell>
                           <Badge variant="destructive">
-                            {String(table.rls_status ?? 'unknown')}
+                            {String(table['rls_status'] ?? 'unknown')}
                           </Badge>
                         </TableCell>
                       </TableRow>
@@ -125,10 +125,10 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
                     {tablesWithoutPK.slice(0, 10).map((table, idx) => (
                       <TableRow key={idx}>
                         <TableCell className="font-mono text-xs">
-                          {String(table.schema_name ?? 'N/A')}
+                          {String(table['schema_name'] ?? 'N/A')}
                         </TableCell>
                         <TableCell className="font-mono text-xs">
-                          {String(table.table_name ?? 'N/A')}
+                          {String(table['table_name'] ?? 'N/A')}
                         </TableCell>
                       </TableRow>
                     ))}

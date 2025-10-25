@@ -15,9 +15,13 @@ import {
 } from '@/features/admin/appointments/api/alerts'
 import { mergeSalonPerformance } from '@/features/admin/appointments/api/salons'
 import type { AppointmentSnapshot, AppointmentRow, AppointmentOverviewRow } from '@/features/admin/appointments/api/types'
-import type { Database } from '@/lib/types/database.types'
-
-type AdminAnalyticsOverviewRow = Database['public']['Views']['admin_analytics_overview']['Row']
+type AdminAnalyticsOverviewRow = {
+  date: string | null
+  platform_appointments: number | null
+  platform_cancelled_appointments: number | null
+  platform_no_shows: number | null
+  platform_completed_appointments: number | null
+}
 
 interface SnapshotOptions {
   windowInDays?: number
@@ -91,11 +95,11 @@ export async function getAppointmentSnapshot(
 
   const salonCounts = new Map<string, { count: number; salonName: string | null }>()
   appointmentRows.forEach((row) => {
-    const id = row.salon_id
+    const id = row['salon_id']
     if (!id) return
-    const record = salonCounts.get(id) ?? { count: 0, salonName: row.salon_name ?? null }
+    const record = salonCounts.get(id) ?? { count: 0, salonName: row['salon_name'] ?? null }
     record.count += 1
-    if (!record.salonName && row.salon_name) record.salonName = row.salon_name
+    if (!record.salonName && row['salon_name']) record.salonName = row['salon_name']
     salonCounts.set(id, record)
   })
 
@@ -104,17 +108,17 @@ export async function getAppointmentSnapshot(
     .slice(0, 5)
 
   const salonStats = topSalonIds.map(([salonId, info]) => {
-    const salonAppointments = appointmentRows.filter((row) => row.salon_id === salonId)
+    const salonAppointments = appointmentRows.filter((row) => row['salon_id'] === salonId)
     const totalAppointments = salonAppointments.length
-    const completedAppointments = salonAppointments.filter((row) => row.status === 'completed').length
-    const cancelledAppointments = salonAppointments.filter((row) => row.status === 'cancelled').length
-    const noShowAppointments = salonAppointments.filter((row) => row.status === 'no_show').length
+    const completedAppointments = salonAppointments.filter((row) => row['status'] === 'completed').length
+    const cancelledAppointments = salonAppointments.filter((row) => row['status'] === 'cancelled').length
+    const noShowAppointments = salonAppointments.filter((row) => row['status'] === 'no_show').length
     const totalRevenue = salonAppointments
-      .filter((row) => row.status === 'completed')
-      .reduce((sum, row) => sum + (row.total_price || 0), 0)
+      .filter((row) => row['status'] === 'completed')
+      .reduce((sum, row) => sum + (row['total_price'] || 0), 0)
     const avgDuration =
       totalAppointments > 0
-        ? salonAppointments.reduce((sum, row) => sum + (row.duration_minutes || 0), 0) /
+        ? salonAppointments.reduce((sum, row) => sum + (row['duration_minutes'] || 0), 0) /
           totalAppointments
         : 0
 

@@ -64,12 +64,12 @@ export type Env = z.infer<typeof envSchema>
  */
 function validateEnv(): Env {
   const parsed = envSchema.safeParse({
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_SUPABASE_URL: process.env['NEXT_PUBLIC_SUPABASE_URL'],
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'],
+    NEXT_PUBLIC_APP_URL: process.env['NEXT_PUBLIC_APP_URL'],
+    NEXT_PUBLIC_SITE_URL: process.env['NEXT_PUBLIC_SITE_URL'],
     NODE_ENV: process.env.NODE_ENV,
-    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    SUPABASE_SERVICE_ROLE_KEY: process.env['SUPABASE_SERVICE_ROLE_KEY'],
   })
 
   if (!parsed.success) {
@@ -88,7 +88,7 @@ function validateEnv(): Env {
  * @example
  * import { env } from '@/lib/env'
  *
- * const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL
+ * const supabaseUrl = env['NEXT_PUBLIC_SUPABASE_URL']
  */
 export const env = validateEnv()
 

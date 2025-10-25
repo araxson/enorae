@@ -17,10 +17,10 @@ interface ProfileMetadataEditorProps {
 
 export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) {
   const [interests, setInterests] = useState<string[]>(
-    (metadata?.interests as string[]) || []
+    (metadata?.['interests'] as string[]) || []
   )
   const [tags, setTags] = useState<string[]>(
-    (metadata?.tags as string[]) || []
+    (metadata?.['tags'] as string[]) || []
   )
   const [newInterest, setNewInterest] = useState('')
   const [newTag, setNewTag] = useState('')

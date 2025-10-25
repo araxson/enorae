@@ -15,7 +15,7 @@ export function RateLimitRulesClient({ snapshot }: RateLimitRulesClientProps) {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Rules</CardTitle>
+            <CardTitle>Total Rules</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{snapshot.totalCount}</div>
@@ -25,20 +25,20 @@ export function RateLimitRulesClient({ snapshot }: RateLimitRulesClientProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active</CardTitle>
+            <CardTitle>Active</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{snapshot.activeCount}</div>
+            <div className="text-2xl font-bold text-primary">{snapshot.activeCount}</div>
             <p className="text-xs text-muted-foreground">Enforced policies</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Violations Today</CardTitle>
+            <CardTitle>Violations Today</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">
+            <div className="text-2xl font-bold text-destructive">
               {snapshot.violationsTodayCount}
             </div>
             <p className="text-xs text-muted-foreground">Rate limit hits</p>

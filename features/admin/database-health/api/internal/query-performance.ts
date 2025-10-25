@@ -52,16 +52,16 @@ export async function getQueryPerformance(
   const indexPerformance = (perfRes.data ?? []) as QueryPerformance[]
 
   const totalSlowQueries = slowQueries.filter(
-    (q) => (q.avg_time_ms ?? 0) > 100
+    (q) => (q['avg_time_ms'] ?? 0) > 100
   ).length
   const totalHighCallQueries = mostCalledQueries.filter(
-    (q) => (q.calls ?? 0) > 1000
+    (q) => (q['calls'] ?? 0) > 1000
   ).length
 
   const avgTime =
-    slowQueries.reduce((sum, q) => sum + (q.avg_time_ms ?? 0), 0) /
+    slowQueries.reduce((sum, q) => sum + (q['avg_time_ms'] ?? 0), 0) /
     (slowQueries.length || 1)
-  const worstTime = Math.max(...slowQueries.map((q) => q.max_time_ms ?? 0))
+  const worstTime = Math.max(...slowQueries.map((q) => q['max_time_ms'] ?? 0))
 
   return {
     mostCalledQueries,

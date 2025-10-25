@@ -34,7 +34,7 @@ export function AppointmentDetailDialog({
 }: AppointmentDetailDialogProps) {
   if (!appointment) return null
 
-  const status = appointment.status as AppointmentStatus
+  const status = appointment['status'] as AppointmentStatus
   const config = statusConfig[status] || statusConfig.pending
 
   return (
@@ -55,8 +55,8 @@ export function AppointmentDetailDialog({
               <div>
                 <p className="text-xs text-muted-foreground">Date</p>
                 <p className="font-medium">
-                  {appointment.start_time
-                    ? format(new Date(appointment.start_time), 'EEEE, MMMM dd, yyyy')
+                  {appointment['start_time']
+                    ? format(new Date(appointment['start_time']), 'EEEE, MMMM dd, yyyy')
                     : 'N/A'}
                 </p>
               </div>
@@ -67,10 +67,10 @@ export function AppointmentDetailDialog({
               <div>
                 <p className="text-xs text-muted-foreground">Time</p>
                 <p className="font-medium">
-                  {appointment.start_time
-                    ? format(new Date(appointment.start_time), 'h:mm a')
+                  {appointment['start_time']
+                    ? format(new Date(appointment['start_time']), 'h:mm a')
                     : 'N/A'}
-                  {appointment.duration_minutes && ` (${appointment.duration_minutes} min)`}
+                  {appointment['duration_minutes'] && ` (${appointment['duration_minutes']} min)`}
                 </p>
               </div>
             </div>
@@ -85,16 +85,16 @@ export function AppointmentDetailDialog({
                 <User className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
                   <p className="text-xs text-muted-foreground">Name</p>
-                  <p>{appointment.customer_name || 'Walk-in Customer'}</p>
+                  <p>{appointment['customer_name'] || 'Walk-in Customer'}</p>
                 </div>
               </div>
 
-              {appointment.customer_email && (
+              {appointment['customer_email'] && (
                 <div className="flex gap-3 items-start">
                   <Mail className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <p className="text-xs text-muted-foreground">Email</p>
-                    <p>{appointment.customer_email}</p>
+                    <p>{appointment['customer_email']}</p>
                   </div>
                 </div>
               )}
@@ -108,19 +108,19 @@ export function AppointmentDetailDialog({
           <div>
             <p className="font-semibold mb-3">Service Details</p>
             <div className="flex flex-col gap-3">
-              {appointment.service_names && (
+              {appointment['service_names'] && (
                 <div>
                   <p className="text-xs text-muted-foreground">Services</p>
-                  <p>{appointment.service_names}</p>
+                  <p>{appointment['service_names']}</p>
                 </div>
               )}
 
-              {appointment.total_price !== undefined && appointment.total_price !== null && (
+              {appointment['total_price'] !== undefined && appointment['total_price'] !== null && (
                 <div className="flex gap-3 items-start">
                   <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <p className="text-xs text-muted-foreground">Total Price</p>
-                    <p className="font-medium">${Number(appointment.total_price).toFixed(2)}</p>
+                    <p className="font-medium">${Number(appointment['total_price']).toFixed(2)}</p>
                   </div>
                 </div>
               )}

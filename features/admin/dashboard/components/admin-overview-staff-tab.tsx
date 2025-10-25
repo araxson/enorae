@@ -54,18 +54,18 @@ export function AdminOverviewStaffTab({ staff }: StaffTabProps) {
             </TableHeader>
             <TableBody>
               {rows.map((member) => (
-                <TableRow key={member.id}>
+                <TableRow key={member['id']}>
                   <TableCell className="font-medium">
-                    {member.full_name || 'Unknown staff'}
+                    {member['full_name'] || 'Unknown staff'}
                   </TableCell>
                   <TableCell className="hidden text-sm text-muted-foreground xl:table-cell">
-                    {member.salon_name || 'Unknown salon'}
+                    {member['salon_name'] || 'Unknown salon'}
                   </TableCell>
                   <TableCell className="capitalize text-sm text-muted-foreground">
-                    {member.title || member.staff_role || 'Staff'}
+                    {member['title'] || member['staff_role'] || 'Staff'}
                   </TableCell>
                   <TableCell className="text-right text-sm font-semibold">
-                    {member.experience_years ?? 0} yrs
+                    {member['experience_years'] ?? 0} yrs
                   </TableCell>
                 </TableRow>
               ))}

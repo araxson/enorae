@@ -18,12 +18,12 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
 
   appointments.forEach((apt) => {
     const appointment = apt as Appointment
-    const services = Array.isArray(appointment.service_names) && appointment.service_names.length > 0
-      ? appointment.service_names
-      : appointment.service_name
-        ? [appointment.service_name]
+    const services = Array.isArray(appointment['service_names']) && appointment['service_names'].length > 0
+      ? appointment['service_names']
+      : appointment['service_name']
+        ? [appointment['service_name']]
         : ['Unknown Service']
-    const price = appointment.total_price || 0
+    const price = appointment['total_price'] || 0
 
     services.forEach((serviceName) => {
       const existing = serviceMap.get(serviceName)
@@ -32,10 +32,10 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
         existing.total_spent += price
         existing.avg_price = existing.total_spent / existing.times_booked
         if (
-          appointment.start_time &&
-          (!existing.last_booked || appointment.start_time > existing.last_booked)
+          appointment['start_time'] &&
+          (!existing.last_booked || appointment['start_time'] > existing.last_booked)
         ) {
-          existing.last_booked = appointment.start_time
+          existing.last_booked = appointment['start_time']
         }
       } else {
         serviceMap.set(serviceName, {
@@ -43,7 +43,7 @@ export async function getClientServiceHistory(staffId: string, customerId: strin
           times_booked: 1,
           total_spent: price,
           avg_price: price,
-          last_booked: appointment.start_time || null,
+          last_booked: appointment['start_time'] || null,
         })
       }
     })

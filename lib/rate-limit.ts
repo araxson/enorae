@@ -17,7 +17,7 @@ interface RateLimitEntry {
   resetAt: number
 }
 
-const allowInMemoryRateLimiter = process.env.ALLOW_IN_MEMORY_RATE_LIMIT === 'true'
+const allowInMemoryRateLimiter = process.env['ALLOW_IN_MEMORY_RATE_LIMIT'] === 'true'
 let inMemoryLimiterWarningShown = false
 
 class InMemoryRateLimiter {

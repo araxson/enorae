@@ -7,7 +7,7 @@ import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { AlertCircle } from 'lucide-react'
 
@@ -109,6 +109,7 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Message failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

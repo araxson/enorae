@@ -38,13 +38,13 @@ export async function searchServicesFulltext(
   if (error) throw error
 
   return (data ?? []).map((service) => ({
-    id: service.id!,
-    name: service.name!,
-    description: service.description ?? '',
-    slug: service.slug ?? undefined,
-    category_name: service.category_name ?? undefined,
-    price: service.price ? Number(service.price) : undefined,
-    duration_minutes: service.duration_minutes ?? undefined,
+    id: service['id']!,
+    name: service['name']!,
+    description: service['description'] ?? '',
+    slug: service['slug'] ?? undefined,
+    category_name: service['category_name'] ?? undefined,
+    price: service['price'] ? Number(service['price']) : undefined,
+    duration_minutes: service['duration_minutes'] ?? undefined,
   }))
 }
 
@@ -71,12 +71,12 @@ export async function searchServicesOptimized(
   if (error) throw error
 
   return (data ?? []).map((service) => ({
-    id: service.id!,
-    name: service.name!,
-    description: service.description ?? '',
-    slug: service.slug ?? undefined,
-    category_name: service.category_name ?? undefined,
-    price: service.price ? Number(service.price) : undefined,
-    duration_minutes: service.duration_minutes ?? undefined,
+    id: service['id']!,
+    name: service['name']!,
+    description: service['description'] ?? '',
+    slug: service['slug'] ?? undefined,
+    category_name: service['category_name'] ?? undefined,
+    price: service['price'] ? Number(service['price']) : undefined,
+    duration_minutes: service['duration_minutes'] ?? undefined,
   }))
 }

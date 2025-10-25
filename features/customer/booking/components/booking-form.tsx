@@ -43,8 +43,8 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
   const serviceDurations = useMemo(() => {
     const map = new Map<string, number>()
     services.forEach((service) => {
-      if (service.id) {
-        map.set(service.id, service.duration_minutes ?? 30)
+      if (service['id']) {
+        map.set(service['id'], service['duration_minutes'] ?? 30)
       }
     })
     return map
@@ -97,9 +97,9 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
         } else {
           setAvailabilityStatus('unavailable')
           // Show specific reason if available
-          if (result.reason) {
+          if (result['reason']) {
             const blockTypeLabel = result.blockType ? `(${result.blockType})` : ''
-            setAvailabilityMessage(`Time blocked ${blockTypeLabel}: ${result.reason}`)
+            setAvailabilityMessage(`Time blocked ${blockTypeLabel}: ${result['reason']}`)
           } else {
             setAvailabilityMessage('Staff member has a conflict at the selected time.')
           }
@@ -183,9 +183,9 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
               </SelectTrigger>
               <SelectContent>
                 {services.map((service) => (
-                  <SelectItem key={service.id || ''} value={service.id || ''}>
-                    {service.name}
-                    {service.category_name ? ` (${service.category_name})` : ''}
+                  <SelectItem key={service['id'] || ''} value={service['id'] || ''}>
+                    {service['name']}
+                    {service['category_name'] ? ` (${service['category_name']})` : ''}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -205,8 +205,8 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
               </SelectTrigger>
               <SelectContent>
                 {staff.map((member) => (
-                  <SelectItem key={member.id || ''} value={member.id || ''}>
-                    {member.title || 'Staff member'}
+                  <SelectItem key={member['id'] || ''} value={member['id'] || ''}>
+                    {member['title'] || 'Staff member'}
                   </SelectItem>
                 ))}
               </SelectContent>

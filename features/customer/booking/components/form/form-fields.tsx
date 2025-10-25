@@ -23,20 +23,20 @@ interface FormFieldsProps {
 export function FormFields({ services, staff, control }: FormFieldsProps) {
   const serviceOptions = services.length
     ? services
-        .filter((service) => service.id)
+        .filter((service) => service['id'])
         .map((service) => ({
-          value: service.id ?? '',
-          label: `${service.name}${service.category_name ? ` (${service.category_name})` : ''}`,
+          value: service['id'] ?? '',
+          label: `${service['name']}${service['category_name'] ? ` (${service['category_name']})` : ''}`,
         }))
     : []
 
   const staffOptions = [
     { value: '', label: 'Any available' },
     ...staff
-      .filter((member) => member.id)
+      .filter((member) => member['id'])
       .map((member) => ({
-        value: member.id ?? '',
-        label: member.title || 'Staff member',
+        value: member['id'] ?? '',
+        label: member['title'] || 'Staff member',
       })),
   ]
 

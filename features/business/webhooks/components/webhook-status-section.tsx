@@ -14,33 +14,33 @@ const LABEL_WIDTH = 'w-32'
 const DATE_FORMAT = 'MMM dd, yyyy HH:mm:ss'
 
 export function WebhookStatusSection({ webhook }: WebhookStatusSectionProps) {
-  const statusKey = webhook.status ?? 'pending'
+  const statusKey = webhook['status'] ?? 'pending'
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-4 items-center">
         <h4 className="scroll-m-20 text-xl font-semibold mb-0">Status</h4>
         <Badge variant={STATUS_COLORS[statusKey] ?? 'secondary'}>
-          {webhook.status ?? 'pending'}
+          {webhook['status'] ?? 'pending'}
         </Badge>
       </div>
 
       <div className="flex flex-col gap-3">
-        <DetailRow label="URL" value={webhook.url ?? 'N/A'} />
-        <DetailRow label="Attempts" value={String(webhook.attempts || 0)} />
-        <DetailRow label="Created" value={webhook.created_at ? format(new Date(webhook.created_at), DATE_FORMAT) : 'N/A'} />
+        <DetailRow label="URL" value={webhook['url'] ?? 'N/A'} />
+        <DetailRow label="Attempts" value={String(webhook['attempts'] || 0)} />
+        <DetailRow label="Created" value={webhook['created_at'] ? format(new Date(webhook['created_at']), DATE_FORMAT) : 'N/A'} />
 
-        {webhook.completed_at && (
+        {webhook['completed_at'] && (
           <DetailRow
             label="Completed"
-            value={format(new Date(webhook.completed_at), DATE_FORMAT)}
+            value={format(new Date(webhook['completed_at']), DATE_FORMAT)}
           />
         )}
 
-        {webhook.next_retry_at && (
+        {webhook['next_retry_at'] && (
           <DetailRow
             label="Next Retry"
-            value={format(new Date(webhook.next_retry_at), DATE_FORMAT)}
+            value={format(new Date(webhook['next_retry_at']), DATE_FORMAT)}
           />
         )}
       </div>

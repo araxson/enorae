@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/lib/hooks/use-toast'
-import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/coupons.mutations'
+import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 import { CouponFormFields } from './coupon-form-fields'
 import {
   defaultCouponFormState,

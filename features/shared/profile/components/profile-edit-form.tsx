@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Upload, User } from 'lucide-react'
 import { uploadAvatar } from '@/features/shared/profile/api/mutations'
 import { updateProfileMetadata } from '@/features/shared/profile-metadata/api/mutations'
@@ -26,7 +26,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(profile.avatar_url)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(profile['avatar_url'])
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -52,7 +52,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
       router.refresh()
     } else {
       setError(result.error)
-      setAvatarPreview(profile.avatar_url) // Reset preview on error
+      setAvatarPreview(profile['avatar_url']) // Reset preview on error
     }
 
     setIsUploadingAvatar(false)
@@ -127,7 +127,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
               <Input
                 id="full_name"
                 name="full_name"
-                defaultValue={profile.full_name || ''}
+                defaultValue={profile['full_name'] || ''}
                 placeholder="Enter your full name"
               />
             </div>
@@ -136,6 +136,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Update failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}

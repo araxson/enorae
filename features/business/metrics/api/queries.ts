@@ -119,11 +119,11 @@ export async function getDailyMetrics(days = 30): Promise<DailyMetricWithTimesta
   const metrics = (data ?? []) as DailyMetric[]
 
   return metrics.reduce<DailyMetricWithTimestamp[]>((acc, metric) => {
-    if (!metric?.metric_at) {
+    if (!metric?.['metric_at']) {
       return acc
     }
 
-    acc.push({ ...metric, metric_at: metric.metric_at })
+    acc.push({ ...metric, metric_at: metric['metric_at'] })
     return acc
   }, [])
 }

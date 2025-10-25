@@ -22,7 +22,7 @@ export function useAppointmentsFilter(appointments: AppointmentWithDetails[]): F
 
   const filteredAppointments = useMemo(() => {
     return appointments.filter((appointment) => {
-      if (statusFilter !== STATUS_ALL && appointment.status !== statusFilter) {
+      if (statusFilter !== STATUS_ALL && appointment['status'] !== statusFilter) {
         return false
       }
 
@@ -31,11 +31,11 @@ export function useAppointmentsFilter(appointments: AppointmentWithDetails[]): F
       }
 
       const query = searchQuery.toLowerCase()
-      const customerMatch = appointment.customer_name?.toLowerCase().includes(query) ||
-        appointment.customer_email?.toLowerCase().includes(query)
-      const staffMatch = appointment.staff_name?.toLowerCase().includes(query)
-      const dateMatch = appointment.start_time &&
-        format(new Date(appointment.start_time), 'MMM dd, yyyy').toLowerCase().includes(query)
+      const customerMatch = appointment['customer_name']?.toLowerCase().includes(query) ||
+        appointment['customer_email']?.toLowerCase().includes(query)
+      const staffMatch = appointment['staff_name']?.toLowerCase().includes(query)
+      const dateMatch = appointment['start_time'] &&
+        format(new Date(appointment['start_time']), 'MMM dd, yyyy').toLowerCase().includes(query)
 
       return customerMatch || staffMatch || dateMatch
     })

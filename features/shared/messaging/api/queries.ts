@@ -31,7 +31,7 @@ export async function getMessageThreadsByUser() {
   const { data, error } = await supabase
     .from('message_threads')
     .select('*')
-    .eq('customer_id', session.user.id)
+    .eq('customer_id', session.user['id'])
     .order('updated_at', { ascending: false })
 
   if (error) throw error
@@ -51,7 +51,7 @@ export async function getMessagesBetweenUsers(otherUserId: string) {
   const { data, error } = await supabase
     .from('messages')
     .select('*')
-    .or(`and(from_user_id.eq.${session.user.id},to_user_id.eq.${otherUserId}),and(from_user_id.eq.${otherUserId},to_user_id.eq.${session.user.id})`)
+    .or(`and(from_user_id.eq.${session.user['id']},to_user_id.eq.${otherUserId}),and(from_user_id.eq.${otherUserId},to_user_id.eq.${session.user['id']})`)
     .order('created_at', { ascending: true })
 
   if (error) throw error
@@ -71,7 +71,7 @@ export async function getUnreadCount() {
   const { count, error} = await supabase
     .from('messages')
     .select('*', { count: 'exact', head: true })
-    .eq('to_user_id', session.user.id)
+    .eq('to_user_id', session.user['id'])
     .eq('is_read', false)
 
   if (error) throw error
@@ -97,7 +97,7 @@ export async function getThreadById(threadId: string): Promise<MessageThread> {
   if (error) throw error
 
   // Verify access
-  if (data.customer_id !== session.user.id) {
+  if (data['customer_id'] !== session.user['id']) {
     throw new Error('Unauthorized: Not your thread')
   }
 

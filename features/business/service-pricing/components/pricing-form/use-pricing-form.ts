@@ -45,14 +45,14 @@ export function usePricingForm({ open, editPricing }: UsePricingFormParams): Pri
 
     if (editPricing) {
       setFormState({
-        serviceId: editPricing.service_id ?? '',
-        basePrice: editPricing.base_price?.toString() ?? '',
-        salePrice: editPricing.sale_price?.toString() ?? '',
-        cost: editPricing.cost?.toString() ?? '',
-        taxRate: editPricing.tax_rate?.toString() ?? '',
-        isTaxable: editPricing.is_taxable ?? true,
-        commissionRate: editPricing.commission_rate?.toString() ?? '',
-        currencyCode: editPricing.currency_code ?? 'USD',
+        serviceId: editPricing['service_id'] ?? '',
+        basePrice: editPricing['base_price']?.toString() ?? '',
+        salePrice: editPricing['sale_price']?.toString() ?? '',
+        cost: editPricing['cost']?.toString() ?? '',
+        taxRate: editPricing['tax_rate']?.toString() ?? '',
+        isTaxable: editPricing['is_taxable'] ?? true,
+        commissionRate: editPricing['commission_rate']?.toString() ?? '',
+        currencyCode: editPricing['currency_code'] ?? 'USD',
       })
     } else {
       setFormState(DEFAULT_FORM_STATE)
@@ -67,7 +67,7 @@ export function usePricingForm({ open, editPricing }: UsePricingFormParams): Pri
 
   const profitMargin = useMemo(() => {
     const price = parseFloat(formState.salePrice || formState.basePrice)
-    const cost = parseFloat(formState.cost)
+    const cost = parseFloat(formState['cost'])
 
     if (!Number.isFinite(price) || price <= 0 || !Number.isFinite(cost) || cost <= 0) {
       return '0'
@@ -75,7 +75,7 @@ export function usePricingForm({ open, editPricing }: UsePricingFormParams): Pri
 
     const margin = ((price - cost) / price) * 100
     return margin.toFixed(1)
-  }, [formState.basePrice, formState.salePrice, formState.cost])
+  }, [formState.basePrice, formState.salePrice, formState['cost']])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -84,8 +84,8 @@ export function usePricingForm({ open, editPricing }: UsePricingFormParams): Pri
     try {
       const payload = new FormData()
 
-      if (editPricing?.id) {
-        payload.append('id', editPricing.id)
+      if (editPricing?.['id']) {
+        payload.append('id', editPricing['id'])
       }
 
       payload.append('serviceId', formState.serviceId)
@@ -94,7 +94,7 @@ export function usePricingForm({ open, editPricing }: UsePricingFormParams): Pri
       payload.append('currencyCode', formState.currencyCode)
 
       if (formState.salePrice) payload.append('salePrice', formState.salePrice)
-      if (formState.cost) payload.append('cost', formState.cost)
+      if (formState['cost']) payload.append('cost', formState['cost'])
       if (formState.taxRate) payload.append('taxRate', formState.taxRate)
       if (formState.commissionRate) payload.append('commissionRate', formState.commissionRate)
 

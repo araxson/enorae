@@ -14,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, CheckCircle2, Mail, ArrowLeft } from 'lucide-react'
 
 export function ForgotPasswordForm() {
@@ -59,6 +59,7 @@ export function ForgotPasswordForm() {
             <div className="flex flex-col gap-6">
               <Alert>
                 <CheckCircle2 className="h-4 w-4 text-primary" />
+                <AlertTitle>Reset link sent</AlertTitle>
                 <AlertDescription>
                   Click the link in the email to reset your password. The link will expire in 1
                   hour.
@@ -107,6 +108,7 @@ export function ForgotPasswordForm() {
               {error && (
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Reset failed</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}

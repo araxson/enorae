@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { RateLimitRecord } from '@/features/admin/rate-limit-tracking/api/queries'
@@ -85,14 +86,14 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
   }
 
   const getUsageColor = (percentage: number) => {
-    if (percentage >= 100) return 'text-red-600'
-    if (percentage >= 80) return 'text-orange-600'
-    if (percentage >= 60) return 'text-yellow-600'
-    return 'text-green-600'
+    if (percentage >= 100) return 'text-destructive'
+    if (percentage >= 80) return 'text-primary'
+    if (percentage >= 60) return 'text-secondary'
+    return 'text-foreground'
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border">
+    <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -110,7 +111,7 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
         <TableBody>
           {records.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={9} className="py-8 text-center text-muted-foreground">
                 No rate limit records found
               </TableCell>
             </TableRow>
@@ -138,9 +139,8 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          size="sm"
+                          size="icon"
                           disabled={isLoading}
-                          className="h-8 w-8 p-0"
                         >
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
@@ -167,6 +167,7 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
           )}
         </TableBody>
       </Table>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   )
 }

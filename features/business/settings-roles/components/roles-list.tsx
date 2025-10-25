@@ -80,31 +80,31 @@ export function RolesList({ roles, onEdit, onDeactivate }: RolesListProps) {
       </TableHeader>
       <TableBody>
         {roles.map((role) => (
-          <TableRow key={role.id}>
+          <TableRow key={role['id']}>
             <TableCell>
               <div className="font-medium">
-                {role.user?.full_name || 'Unknown User'}
+                {role.user?.['full_name'] || 'Unknown User'}
               </div>
             </TableCell>
             <TableCell>
               <div className="text-sm text-muted-foreground">
-                {role.user?.email || '-'}
+                {role.user?.['email'] || '-'}
               </div>
             </TableCell>
             <TableCell>
-              <Badge variant={role.role ? (ROLE_COLORS[role.role] || 'default') : 'default'}>
-                {role.role ? (ROLE_LABELS[role.role] || role.role) : 'Unknown'}
+              <Badge variant={role['role'] ? (ROLE_COLORS[role['role']] || 'default') : 'default'}>
+                {role['role'] ? (ROLE_LABELS[role['role']] || role['role']) : 'Unknown'}
               </Badge>
             </TableCell>
             <TableCell>
               <div className="text-sm">
-                {role.salon?.name || '-'}
+                {role.salon?.['name'] || '-'}
               </div>
             </TableCell>
             <TableCell>
               <div className="text-sm text-muted-foreground">
-                {role.created_at
-                  ? format(new Date(role.created_at), 'MMM dd, yyyy')
+                {role['created_at']
+                  ? format(new Date(role['created_at']), 'MMM dd, yyyy')
                   : 'N/A'}
               </div>
             </TableCell>
@@ -120,7 +120,7 @@ export function RolesList({ roles, onEdit, onDeactivate }: RolesListProps) {
                     Edit Role
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => role.id && onDeactivate(role.id)}
+                    onClick={() => role['id'] && onDeactivate(role['id'])}
                     className="text-destructive"
                   >
                     Deactivate

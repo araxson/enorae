@@ -27,13 +27,13 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
 
   const getDayItems = (day: Date) => {
     const dayBlocked = blockedTimes.filter(bt => {
-      if (!bt.start_time) return false
-      return isSameDay(parseISO(bt.start_time), day)
+      if (!bt['start_time']) return false
+      return isSameDay(parseISO(bt['start_time']), day)
     })
 
     const dayAppointments = appointments.filter(apt => {
-      if (!apt.start_time) return false
-      return isSameDay(parseISO(apt.start_time), day)
+      if (!apt['start_time']) return false
+      return isSameDay(parseISO(apt['start_time']), day)
     })
 
     return { blocked: dayBlocked, appointments: dayAppointments }
@@ -73,15 +73,15 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                     {dayApts.length > 0 && (
                       <div className="flex flex-col gap-2">
                         {dayApts.slice(0, 3).map((apt) => (
-                          <div key={apt.id} className="rounded bg-info/10 p-2">
+                          <div key={apt['id']} className="rounded bg-info/10 p-2">
                             <div className="flex items-start gap-1">
                               <Clock className="h-3 w-3 mt-0.5 flex-shrink-0 text-info" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-xs text-muted-foreground truncate">
-                                  {apt.start_time ? format(parseISO(apt.start_time), 'h:mm a') : 'TBD'}
+                                  {apt['start_time'] ? format(parseISO(apt['start_time']), 'h:mm a') : 'TBD'}
                                 </p>
                                 <p className="text-xs text-muted-foreground truncate">
-                                  {apt.customer_name || 'Customer'}
+                                  {apt['customer_name'] || 'Customer'}
                                 </p>
                               </div>
                             </div>
@@ -99,16 +99,16 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                     {blocked.length > 0 && (
                       <div className="flex flex-col gap-2">
                         {blocked.slice(0, 2).map((bt) => (
-                          <div key={bt.id} className="rounded bg-destructive/10 p-2">
+                          <div key={bt['id']} className="rounded bg-destructive/10 p-2">
                             <div className="flex items-start gap-1">
                               <Ban className="h-3 w-3 mt-0.5 flex-shrink-0 text-destructive" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-xs text-muted-foreground truncate">
-                                  {bt.start_time ? format(parseISO(bt.start_time), 'h:mm a') : 'TBD'}
-                                  {bt.end_time && ` - ${format(parseISO(bt.end_time), 'h:mm a')}`}
+                                  {bt['start_time'] ? format(parseISO(bt['start_time']), 'h:mm a') : 'TBD'}
+                                  {bt['end_time'] && ` - ${format(parseISO(bt['end_time']), 'h:mm a')}`}
                                 </p>
                                 <p className="text-xs text-muted-foreground truncate">
-                                  {bt.reason || bt.block_type || 'Blocked'}
+                                  {bt['reason'] || bt['block_type'] || 'Blocked'}
                                 </p>
                               </div>
                             </div>

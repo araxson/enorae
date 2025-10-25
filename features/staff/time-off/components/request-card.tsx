@@ -38,16 +38,16 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
   const [isPending, startTransition] = useTransition()
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [editData, setEditData] = useState({
-    startAt: request.start_at || '',
-    endAt: request.end_at || '',
-    requestType: request.request_type || 'vacation',
-    reason: request.reason || '',
+    startAt: request['start_at'] || '',
+    endAt: request['end_at'] || '',
+    requestType: request['request_type'] || 'vacation',
+    reason: request['reason'] || '',
   })
 
   const handleApprove = () => {
     startTransition(async () => {
       const formData = new FormData()
-      formData.append('id', request.id || '')
+      formData.append('id', request['id'] || '')
       await approveTimeOffRequest(formData)
     })
   }
@@ -55,7 +55,7 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
   const handleReject = () => {
     startTransition(async () => {
       const formData = new FormData()
-      formData.append('id', request.id || '')
+      formData.append('id', request['id'] || '')
       await rejectTimeOffRequest(formData)
     })
   }
@@ -63,11 +63,11 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
   const handleUpdate = () => {
     startTransition(async () => {
       const formData = new FormData()
-      formData.append('id', request.id || '')
+      formData.append('id', request['id'] || '')
       formData.append('startAt', editData.startAt)
       formData.append('endAt', editData.endAt)
       formData.append('requestType', editData.requestType)
-      formData.append('reason', editData.reason)
+      formData.append('reason', editData['reason'])
       await updateTimeOffRequest(formData)
       setIsEditOpen(false)
     })
@@ -77,7 +77,7 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
     if (confirm('Are you sure you want to cancel this time-off request?')) {
       startTransition(async () => {
         const formData = new FormData()
-        formData.append('id', request.id || '')
+        formData.append('id', request['id'] || '')
         await cancelTimeOffRequest(formData)
       })
     }
@@ -104,13 +104,13 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
       <CardHeader>
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <CardTitle>{request.staff?.profiles?.username || 'Staff member'}</CardTitle>
+            <CardTitle>{request.staff?.profiles?.['username'] || 'Staff member'}</CardTitle>
             <CardDescription>
-              {request.request_type?.replace('_', ' ').toUpperCase() || 'N/A'}
+              {request['request_type']?.replace('_', ' ').toUpperCase() || 'N/A'}
             </CardDescription>
           </div>
-          <Badge variant={getStatusVariant(request.status || '')}>
-            {request.status ? formatStatus(request.status) : 'Unknown'}
+          <Badge variant={getStatusVariant(request['status'] || '')}>
+            {request['status'] ? formatStatus(request['status']) : 'Unknown'}
           </Badge>
         </div>
       </CardHeader>
@@ -119,16 +119,16 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
           <div className="space-y-2">
             <div className="flex gap-3">
               <p className="text-sm font-medium text-muted-foreground">From:</p>
-              <p className="text-sm font-medium">{request.start_at ? new Date(request.start_at).toLocaleDateString() : '—'}</p>
+              <p className="text-sm font-medium">{request['start_at'] ? new Date(request['start_at']).toLocaleDateString() : '—'}</p>
             </div>
             <div className="flex gap-3">
               <p className="text-sm font-medium text-muted-foreground">To:</p>
-              <p className="text-sm font-medium">{request.end_at ? new Date(request.end_at).toLocaleDateString() : '—'}</p>
+              <p className="text-sm font-medium">{request['end_at'] ? new Date(request['end_at']).toLocaleDateString() : '—'}</p>
             </div>
-            {request.reason && (
+            {request['reason'] && (
               <div className="space-y-1">
                 <p className="text-sm font-medium text-muted-foreground">Reason:</p>
-                <p className="text-sm font-medium">{request.reason}</p>
+                <p className="text-sm font-medium">{request['reason']}</p>
               </div>
             )}
           </div>
@@ -136,7 +136,7 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
           {isStaffView ? (
             // Staff view: can edit pending requests or cancel any request
             <div className="flex justify-end gap-2">
-              {request.status === 'pending' && (
+              {request['status'] === 'pending' && (
                 <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
                   <DialogTrigger asChild>
                     <Button size="sm" variant="outline" disabled={isPending}>
@@ -187,7 +187,7 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
                         <Label htmlFor="reason">Reason</Label>
                         <Textarea
                           id="reason"
-                          value={editData.reason}
+                          value={editData['reason']}
                           onChange={(e) => setEditData({ ...editData, reason: e.target.value })}
                           rows={3}
                         />
@@ -204,7 +204,7 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
                   </DialogContent>
                 </Dialog>
               )}
-              {(request.status === 'pending' || request.status === 'approved') && (
+              {(request['status'] === 'pending' || request['status'] === 'approved') && (
                 <Button size="sm" variant="destructive" onClick={handleCancel} disabled={isPending}>
                   Cancel Request
                 </Button>
@@ -212,7 +212,7 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
             </div>
           ) : (
             // Manager view: can approve/reject
-            request.status === 'pending' && (
+            request['status'] === 'pending' && (
               <div className="flex justify-end gap-2">
                 <Button size="sm" variant="outline" onClick={handleReject} disabled={isPending}>
                   Reject

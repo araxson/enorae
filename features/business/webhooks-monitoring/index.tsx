@@ -1,5 +1,5 @@
 import { generateMetadata as genMeta } from '@/lib/metadata'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MonitoringPanel } from './components/monitoring-panel'
 import { getWebhookMonitoringData } from './api/queries'
 
@@ -25,6 +25,7 @@ export async function WebhookMonitoring() {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Alert variant="destructive">
+          <AlertTitle>Monitoring unavailable</AlertTitle>
           <AlertDescription>{message}</AlertDescription>
         </Alert>
       </section>

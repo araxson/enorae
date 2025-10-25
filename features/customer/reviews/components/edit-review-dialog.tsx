@@ -30,11 +30,11 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [rating, setRating] = useState(review.rating || 3)
+  const [rating, setRating] = useState(review['rating'] || 3)
 
   // Calculate if within edit window (7 days)
-  const daysSince = review.created_at
-    ? (Date.now() - new Date(review.created_at).getTime()) / (1000 * 60 * 60 * 24)
+  const daysSince = review['created_at']
+    ? (Date.now() - new Date(review['created_at']).getTime()) / (1000 * 60 * 60 * 24)
     : 999
   const canEdit = daysSince <= 7
 
@@ -44,7 +44,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
     setError(null)
 
     const formData = new FormData(e.currentTarget)
-    const result = await updateReview(review?.id || '', formData)
+    const result = await updateReview(review?.['id'] || '', formData)
 
     if (result.success) {
       setOpen(false)
@@ -87,7 +87,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
           </Alert>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input type="hidden" name="salonId" value={review.salon_id || ''} />
+            <input type="hidden" name="salonId" value={review['salon_id'] || ''} />
 
             <div className="space-y-2">
               <Label htmlFor="rating">Overall rating *</Label>
@@ -127,7 +127,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
               <Textarea
                 id="comment"
                 name="comment"
-                defaultValue={review.comment || ''}
+                defaultValue={review['comment'] || ''}
                 placeholder="Share your experience..."
                 rows={5}
                 required

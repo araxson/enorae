@@ -92,7 +92,7 @@ export async function ChainDetailView({ chainId, chainName }: ChainDetailViewPro
         <CardHeader>
           <CardTitle>Location Performance</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <ChainLocationsList locations={analytics.locationMetrics} salons={salons} />
         </CardContent>
       </Card>

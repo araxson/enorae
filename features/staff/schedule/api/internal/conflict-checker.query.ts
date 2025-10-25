@@ -52,7 +52,7 @@ export async function checkScheduleConflict(
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 
   const { supabase, staffProfile } = await verifyStaffOwnership(staffId)
-  const authorizedStaffId = staffProfile.id
+  const authorizedStaffId = staffProfile['id']
 
   const dayIndex = new Date(workDate).getDay()
   const dayOfWeek = DAY_MAP[dayIndex]
@@ -68,13 +68,13 @@ export async function checkScheduleConflict(
   if (error) throw error
 
   const relevantSchedules = (data ?? []).filter((schedule) => {
-    if (!schedule.id) return false
-    if (excludeScheduleId && schedule.id === excludeScheduleId) return false
+    if (!schedule['id']) return false
+    if (excludeScheduleId && schedule['id'] === excludeScheduleId) return false
     return true
   })
 
   return relevantSchedules.some((schedule) =>
-    rangesOverlap(schedule.start_time ?? '', schedule.end_time ?? '', startTime, endTime),
+    rangesOverlap(schedule['start_time'] ?? '', schedule['end_time'] ?? '', startTime, endTime),
   )
 }
 
@@ -91,7 +91,7 @@ export async function getScheduleConflicts(
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 
   const { supabase, staffProfile } = await verifyStaffOwnership(staffId)
-  const authorizedStaffId = staffProfile.id
+  const authorizedStaffId = staffProfile['id']
 
   const dayIndex = new Date(workDate).getDay()
   const dayOfWeek = DAY_MAP[dayIndex]
@@ -107,9 +107,9 @@ export async function getScheduleConflicts(
   if (scheduleError) throw scheduleError
 
   const filteredSchedules = (schedules ?? []).filter((schedule) => {
-    if (!schedule.id) return false
-    if (excludeScheduleId && schedule.id === excludeScheduleId) return false
-    return rangesOverlap(schedule.start_time ?? '', schedule.end_time ?? '', startTime, endTime)
+    if (!schedule['id']) return false
+    if (excludeScheduleId && schedule['id'] === excludeScheduleId) return false
+    return rangesOverlap(schedule['start_time'] ?? '', schedule['end_time'] ?? '', startTime, endTime)
   })
 
   const targetRangeStart = new Date(`${workDate}T${startTime}`)
@@ -127,14 +127,14 @@ export async function getScheduleConflicts(
   if (appointmentError) throw appointmentError
 
   const conflictingAppointments = (appointments ?? [])
-    .filter((appointment) => appointment.id && appointment.start_time && appointment.end_time)
+    .filter((appointment) => appointment['id'] && appointment['start_time'] && appointment['end_time'])
     .map((appointment) => ({
-      id: appointment.id as string,
-      start_time: appointment.start_time as string,
-      end_time: appointment.end_time as string,
-      customer_name: appointment.customer_name ?? null,
-      startMs: new Date(appointment.start_time as string).getTime(),
-      endMs: new Date(appointment.end_time as string).getTime(),
+      id: appointment['id'] as string,
+      start_time: appointment['start_time'] as string,
+      end_time: appointment['end_time'] as string,
+      customer_name: appointment['customer_name'] ?? null,
+      startMs: new Date(appointment['start_time'] as string).getTime(),
+      endMs: new Date(appointment['end_time'] as string).getTime(),
     }))
     .filter((appointment) =>
       appointment.startMs < targetRangeEnd.getTime() && targetRangeStart.getTime() < appointment.endMs,

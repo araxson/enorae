@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useMemo, useState, useTransition } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { ProfileDetail } from '@/features/admin/profile/api/types'
 import { updateProfileMetadataAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
@@ -150,6 +150,7 @@ export function ProfileMetadataForm({ profile, onUpdated }: ProfileMetadataFormP
 
           {feedback && (
             <Alert variant={feedback.success ? 'default' : 'destructive'}>
+              <AlertTitle>{feedback.success ? 'Metadata updated' : 'Update failed'}</AlertTitle>
               <AlertDescription>{feedback.message}</AlertDescription>
             </Alert>
           )}

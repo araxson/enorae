@@ -16,7 +16,7 @@ type ServiceRow = Database['public']['Views']['services']['Row']
 export class StaffServicesNotFoundError extends Error {
   constructor(message = 'Staff member not found') {
     super(message)
-    this.name = 'StaffServicesNotFoundError'
+    this['name'] = 'StaffServicesNotFoundError'
   }
 }
 
@@ -30,14 +30,14 @@ function buildStaffWithServices(
   services: StaffServiceRow[],
 ): StaffWithServices {
   return {
-    id: staff.id!,
-    full_name: staff.full_name,
-    email: staff.email,
-    title: staff.title,
-    avatar_url: staff.avatar_url,
-    bio: staff.bio,
-    experience_years: staff.experience_years,
-    status: staff.status,
+    id: staff['id']!,
+    full_name: staff['full_name'],
+    email: staff['email'],
+    title: staff['title'],
+    avatar_url: staff['avatar_url'],
+    bio: staff['bio'],
+    experience_years: staff['experience_years'],
+    status: staff['status'],
     services,
   }
 }
@@ -47,16 +47,16 @@ export async function getStaffServicesData(
 ): Promise<StaffServicesData> {
   const staff = await getStaffById(staffId)
 
-  if (!staff || !staff.id) {
+  if (!staff || !staff['id']) {
     throw new StaffServicesNotFoundError()
   }
 
   const [assignedServices, salon] = await Promise.all([
-    getStaffServices(staff.id),
+    getStaffServices(staff['id']),
     getUserSalon(),
   ])
 
-  const availableServices = await getAvailableServices(salon.id!)
+  const availableServices = await getAvailableServices(salon['id']!)
 
   return {
     staff: buildStaffWithServices(staff as StaffRow, assignedServices),

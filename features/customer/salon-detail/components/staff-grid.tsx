@@ -34,23 +34,23 @@ export function StaffGrid({ staff }: StaffGridProps) {
       <CardContent>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {staff.map((member) => (
-            <HoverCard key={member.id || ''}>
+            <HoverCard key={member['id'] || ''}>
               <HoverCardTrigger asChild>
                 <Card className="transition-colors hover:bg-muted/50">
                   <CardHeader className="flex flex-row items-center gap-3">
                     <Avatar>
-                      {member.avatar_url && (
-                        <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />
+                      {member['avatar_url'] && (
+                        <AvatarImage src={member['avatar_url']} alt={member['title'] || 'Staff'} />
                       )}
                       <AvatarFallback>
-                        {member.title?.slice(0, 2).toUpperCase() || 'ST'}
+                        {member['title']?.slice(0, 2).toUpperCase() || 'ST'}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0 space-y-1">
-                      <CardTitle>{member.title || 'Staff member'}</CardTitle>
-                      {member.bio && (
+                      <CardTitle>{member['title'] || 'Staff member'}</CardTitle>
+                      {member['bio'] && (
                         <p className="text-sm text-muted-foreground line-clamp-2">
-                          {member.bio}
+                          {member['bio']}
                         </p>
                       )}
                     </div>
@@ -60,19 +60,19 @@ export function StaffGrid({ staff }: StaffGridProps) {
               <HoverCardContent className="w-80 space-y-3">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12">
-                    {member.avatar_url && (
-                      <AvatarImage src={member.avatar_url} alt={member.title || 'Staff'} />
+                    {member['avatar_url'] && (
+                      <AvatarImage src={member['avatar_url']} alt={member['title'] || 'Staff'} />
                     )}
                     <AvatarFallback>
-                      {member.title?.slice(0, 2).toUpperCase() || 'ST'}
+                      {member['title']?.slice(0, 2).toUpperCase() || 'ST'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="space-y-1">
-                    <h4 className="text-xl">{member.title || 'Staff member'}</h4>
-                    {member.bio && <p className="text-sm text-muted-foreground">{member.bio}</p>}
+                    <h4 className="text-xl">{member['title'] || 'Staff member'}</h4>
+                    {member['bio'] && <p className="text-sm text-muted-foreground">{member['bio']}</p>}
                   </div>
                 </div>
-                {member.bio && <p className="text-sm text-muted-foreground">{member.bio}</p>}
+                {member['bio'] && <p className="text-sm text-muted-foreground">{member['bio']}</p>}
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Calendar className="h-3 w-3" />
                   <span>Click to book an appointment</span>

@@ -112,8 +112,8 @@ function estimateFakeLikelihood(input: FakeLikelihoodInput) {
   if (input.isVerified === false) score += 20
   if (input.commentLength < 30) score += 20
   if ((input.helpfulCount ?? 0) === 0) score += 10
-  if (input.rating !== null) {
-    if (input.rating <= 2 || input.rating >= 5) score += 10
+  if (input['rating'] !== null) {
+    if (input['rating'] <= 2 || input['rating'] >= 5) score += 10
   }
   if (input.createdAt) {
     const created = new Date(input.createdAt)
@@ -218,12 +218,12 @@ export async function getReviewsForModeration(
     .select('*')
     .order('created_at', { ascending: false })
 
-  if (filters?.is_flagged !== undefined) {
-    query = query.eq('is_flagged', filters.is_flagged)
+  if (filters?.['is_flagged'] !== undefined) {
+    query = query.eq('is_flagged', filters['is_flagged'])
   }
 
-  if (filters?.salon_id) {
-    query = query.eq('salon_id', filters.salon_id)
+  if (filters?.['salon_id']) {
+    query = query.eq('salon_id', filters['salon_id'])
   }
 
   if (filters?.date_from) {
@@ -234,15 +234,15 @@ export async function getReviewsForModeration(
     query = query.lte('created_at', filters.date_to)
   }
 
-  const { data, error } = await query.limit(REVIEW_LIMIT)
+  const { data, error } = await query['limit'](REVIEW_LIMIT)
   if (error) throw error
 
   const reviews = (data || []) as ReviewRow[]
   const reviewerIds = Array.from(
-    new Set(reviews.map((review) => review.customer_id).filter(Boolean) as string[])
+    new Set(reviews.map((review) => review['customer_id']).filter(Boolean) as string[])
   ).slice(0, 500)
   const reviewIds = Array.from(
-    new Set(reviews.map((review) => review.id).filter(Boolean) as string[])
+    new Set(reviews.map((review) => review['id']).filter(Boolean) as string[])
   )
 
   const reviewerStats = await fetchReviewerStats(supabase, reviewerIds)
@@ -272,51 +272,51 @@ export async function getReviewsForModeration(
 
   const customerEmailMap = new Map(
     reviewerProfilesData
-      .filter((profile): profile is { id: string; email: string | null } => Boolean(profile.id))
-      .map((profile) => [profile.id, profile.email ?? null]),
+      .filter((profile): profile is { id: string; email: string | null } => Boolean(profile['id']))
+      .map((profile) => [profile['id'], profile['email'] ?? null]),
   )
 
   const flaggedReasonMap = new Map(
     reviewDetailsData
-      .filter((detail): detail is { id: string; flagged_reason: string | null } => Boolean(detail.id))
+      .filter((detail): detail is { id: string; flagged_reason: string | null } => Boolean(detail['id']))
       .map(({ id, flagged_reason }) => [id, flagged_reason ?? null]),
   )
 
   return reviews.map((review) => {
-    const commentLength = review.comment?.length ?? 0
-    const sentiment = analyzeSentiment(review.comment || '')
+    const commentLength = review['comment']?.length ?? 0
+    const sentiment = analyzeSentiment(review['comment'] || '')
     const fake = estimateFakeLikelihood({
-      isVerified: review.is_verified ?? null,
-      helpfulCount: review.helpful_count ?? null,
+      isVerified: review['is_verified'] ?? null,
+      helpfulCount: review['helpful_count'] ?? null,
       commentLength,
-      rating: review.rating ?? null,
-      isFlagged: review.is_flagged ?? null,
-      createdAt: review.created_at,
+      rating: review['rating'] ?? null,
+      isFlagged: review['is_flagged'] ?? null,
+      createdAt: review['created_at'],
     })
     const quality = calculateQualityScore({
       commentLength,
-      helpfulCount: review.helpful_count ?? null,
-      hasResponse: review.has_response ?? null,
+      helpfulCount: review['helpful_count'] ?? null,
+      hasResponse: review['has_response'] ?? null,
       sentimentScore: sentiment.score,
-      isFlagged: review.is_flagged ?? null,
+      isFlagged: review['is_flagged'] ?? null,
     })
 
-    const reputationSource = reviewerStats.get(review.customer_id ?? '') ?? {
-      totalReviews: review.customer_id ? 1 : 0,
-      flaggedReviews: review.is_flagged ? 1 : 0,
+    const reputationSource = reviewerStats.get(review['customer_id'] ?? '') ?? {
+      totalReviews: review['customer_id'] ? 1 : 0,
+      flaggedReviews: review['is_flagged'] ? 1 : 0,
     }
     const reputation = computeReviewerReputation(reputationSource)
 
     return {
       ...review,
-      customer_email: customerEmailMap.get(review.customer_id ?? '') ?? null,
-      flagged_reason: flaggedReasonMap.get(review.id ?? '') ?? null,
+      customer_email: customerEmailMap.get(review['customer_id'] ?? '') ?? null,
+      flagged_reason: flaggedReasonMap.get(review['id'] ?? '') ?? null,
       sentimentScore: sentiment.score,
-      sentimentLabel: sentiment.label,
+      sentimentLabel: sentiment['label'],
       fakeLikelihoodScore: fake.score,
-      fakeLikelihoodLabel: fake.label,
+      fakeLikelihoodLabel: fake['label'],
       qualityScore: quality.score,
-      qualityLabel: quality.label,
+      qualityLabel: quality['label'],
       reviewerReputation: {
         ...reputation,
         totalReviews: reputationSource.totalReviews,
@@ -408,13 +408,13 @@ export async function getModerationStats(): Promise<ModerationStats> {
   let qualitySum = 0
 
   sample.forEach((item) => {
-    const sentiment = analyzeSentiment(item.comment || '')
+    const sentiment = analyzeSentiment(item['comment'] || '')
     const quality = calculateQualityScore({
-      commentLength: item.comment?.length ?? 0,
-      helpfulCount: item.helpful_count ?? null,
-      hasResponse: item.has_response ?? null,
+      commentLength: item['comment']?.length ?? 0,
+      helpfulCount: item['helpful_count'] ?? null,
+      hasResponse: item['has_response'] ?? null,
       sentimentScore: sentiment.score,
-      isFlagged: item.is_flagged ?? null,
+      isFlagged: item['is_flagged'] ?? null,
     })
     sentimentSum += sentiment.score
     qualitySum += quality.score
@@ -450,11 +450,11 @@ async function fetchReviewerStats(
 
   const map = new Map<string, ReviewerAggregate>()
   for (const row of data || []) {
-    if (!row.customer_id) continue
-    const current = map.get(row.customer_id) ?? { totalReviews: 0, flaggedReviews: 0 }
+    if (!row['customer_id']) continue
+    const current = map.get(row['customer_id']) ?? { totalReviews: 0, flaggedReviews: 0 }
     current.totalReviews += 1
-    if (row.is_flagged) current.flaggedReviews += 1
-    map.set(row.customer_id, current)
+    if (row['is_flagged']) current.flaggedReviews += 1
+    map.set(row['customer_id'], current)
   }
   return map
 }

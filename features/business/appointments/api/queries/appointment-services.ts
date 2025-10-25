@@ -100,12 +100,12 @@ export async function calculateAppointmentServicePricing(appointmentId: string) 
   const services = await getAppointmentServices(appointmentId)
 
   const subtotal = services.reduce(
-    (sum, service) => sum + (Number(service.current_price) || 0),
+    (sum, service) => sum + (Number(service['current_price']) || 0),
     0
   )
 
   const totalDuration = services.reduce(
-    (sum, service) => sum + (service.duration_minutes || 0),
+    (sum, service) => sum + (service['duration_minutes'] || 0),
     0
   )
 
@@ -141,7 +141,7 @@ export async function getAvailableStaffForService(
 
   const staffServicesList = (staffServices ?? []) as StaffServiceRow[]
   const staffIds = staffServicesList
-    .map((ss) => ss.staff_id)
+    .map((ss) => ss['staff_id'])
     .filter((id): id is string => Boolean(id))
 
   if (staffIds.length === 0) {
@@ -173,16 +173,16 @@ export async function getAvailableStaffForService(
   const { data: conflicts } = await conflictQuery
 
   const conflictList = (conflicts ?? []) as StaffServiceRow[]
-  const busyStaffIds = new Set(conflictList.map((c) => c.staff_id).filter(Boolean))
+  const busyStaffIds = new Set(conflictList.map((c) => c['staff_id']).filter(Boolean))
 
   const staffList = (staff ?? []) as StaffSummary[]
 
   return staffList.map<StaffAvailability>((s) => ({
-    id: s.id,
-    full_name: s.full_name,
-    title: s.title,
-    avatar_url: s.avatar_url,
-    is_available: !busyStaffIds.has(s.id),
+    id: s['id'],
+    full_name: s['full_name'],
+    title: s['title'],
+    avatar_url: s['avatar_url'],
+    is_available: !busyStaffIds.has(s['id']),
   }))
 }
 
@@ -193,10 +193,10 @@ export async function getServiceCompletionStats(appointmentId: string) {
   const services = await getAppointmentServices(appointmentId)
 
   const total = services.length
-  const completed = services.filter((s) => s.status === 'completed').length
-  const inProgress = services.filter((s) => s.status === 'in_progress').length
-  const pending = services.filter((s) => s.status === 'pending').length
-  const cancelled = services.filter((s) => s.status === 'cancelled').length
+  const completed = services.filter((s) => s['status'] === 'completed').length
+  const inProgress = services.filter((s) => s['status'] === 'in_progress').length
+  const pending = services.filter((s) => s['status'] === 'pending').length
+  const cancelled = services.filter((s) => s['status'] === 'cancelled').length
 
   return {
     total,

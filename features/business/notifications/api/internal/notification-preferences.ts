@@ -14,10 +14,10 @@ export async function getNotificationPreferences() {
   if (!user) throw new Error('Unauthorized')
 
   const metadataPreferences =
-    (user.user_metadata?.notification_preferences as NotificationPreferencesMetadata | undefined) || {}
+    (user.user_metadata?.['notification_preferences'] as NotificationPreferencesMetadata | undefined) || {}
 
   return {
-    email: { ...defaultPreferences.email, ...(metadataPreferences.email || {}) },
+    email: { ...defaultPreferences['email'], ...(metadataPreferences['email'] || {}) },
     sms: { ...defaultPreferences.sms, ...(metadataPreferences.sms || {}) },
     in_app: { ...defaultPreferences.in_app, ...(metadataPreferences.in_app || {}) },
     push: metadataPreferences.push || {},
@@ -33,7 +33,7 @@ export async function getNotificationTemplates(): Promise<NotificationTemplate[]
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const stored = user.user_metadata?.notification_templates as NotificationTemplate[] | undefined
+  const stored = user.user_metadata?.['notification_templates'] as NotificationTemplate[] | undefined
 
   if (stored && Array.isArray(stored)) {
     return stored

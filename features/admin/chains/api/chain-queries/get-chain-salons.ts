@@ -24,7 +24,7 @@ export async function getChainSalons(chainId: string): Promise<ChainSalon[]> {
   if (error) throw error
 
   const salons = salonSummaries ?? []
-  const salonIds = salons.map((salon) => salon.id).filter((id): id is string => Boolean(id))
+  const salonIds = salons.map((salon) => salon['id']).filter((id): id is string => Boolean(id))
 
   if (salonIds.length === 0) {
     return []
@@ -40,7 +40,7 @@ export async function getChainSalons(chainId: string): Promise<ChainSalon[]> {
   if (locationsError) throw locationsError
 
   const locationIds = (locations ?? [])
-    .map((location) => location.id)
+    .map((location) => location['id'])
     .filter((id): id is string => Boolean(id))
 
   let addressMap = new Map<string, { city: string | null; state: string | null }>()
@@ -58,35 +58,35 @@ export async function getChainSalons(chainId: string): Promise<ChainSalon[]> {
       (addresses ?? [])
         .filter(
           (address): address is LocationAddressRow & { location_id: string } =>
-            Boolean(address.location_id),
+            Boolean(address['location_id']),
         )
         .map((address) => [
-          address.location_id,
-          { city: address.city ?? null, state: address.state_province ?? null },
+          address['location_id'],
+          { city: address['city'] ?? null, state: address['state_province'] ?? null },
         ]),
     )
   }
 
   const locationBySalonId = new Map<string, { city: string | null; state: string | null }>()
   for (const location of locations ?? []) {
-    if (!location.salon_id || !location.id) continue
-    const address = addressMap.get(location.id) ?? { city: null, state: null }
-    locationBySalonId.set(location.salon_id, address)
+    if (!location['salon_id'] || !location['id']) continue
+    const address = addressMap.get(location['id']) ?? { city: null, state: null }
+    locationBySalonId.set(location['salon_id'], address)
   }
 
   return salons
-    .filter((salon): salon is AdminSalonOverviewRow & { id: string } => Boolean(salon.id))
+    .filter((salon): salon is AdminSalonOverviewRow & { id: string } => Boolean(salon['id']))
     .map((salon) => {
-      const location = locationBySalonId.get(salon.id)
+      const location = locationBySalonId.get(salon['id'])
       return {
-        id: salon.id,
-        name: salon.name ?? 'Unknown',
-        city: location?.city ?? null,
+        id: salon['id'],
+        name: salon['name'] ?? 'Unknown',
+        city: location?.['city'] ?? null,
         state: location?.state ?? null,
-        isAcceptingBookings: Boolean(salon.is_accepting_bookings),
-        ratingAverage: typeof salon.rating_average === 'number' ? salon.rating_average : null,
-        ratingCount: Number(salon.rating_count) || 0,
-        createdAt: salon.created_at ?? null,
+        isAcceptingBookings: Boolean(salon['is_accepting_bookings']),
+        ratingAverage: typeof salon['rating_average'] === 'number' ? salon['rating_average'] : null,
+        ratingCount: Number(salon['rating_count']) || 0,
+        createdAt: salon['created_at'] ?? null,
       }
     })
 }

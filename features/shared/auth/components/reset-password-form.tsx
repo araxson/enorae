@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
@@ -66,6 +66,7 @@ export function ResetPasswordForm() {
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Password reset failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}

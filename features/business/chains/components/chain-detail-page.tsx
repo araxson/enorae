@@ -29,20 +29,20 @@ export async function ChainDetail({ params }: ChainDetailProps) {
             </Button>
           </Link>
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold">{chain.name}</h1>
-            {chain.legal_name && (
-              <div className="text-sm text-muted-foreground">{chain.legal_name}</div>
+            <h1 className="text-3xl font-bold">{chain['name']}</h1>
+            {chain['legal_name'] && (
+              <div className="text-sm text-muted-foreground">{chain['legal_name']}</div>
             )}
           </div>
         </div>
         <ChainSettingsButton
-          chainId={chain.id!}
-          chainName={chain.name!}
-          locationCount={chain.salon_count || 0}
+          chainId={chain['id']!}
+          chainName={chain['name']!}
+          locationCount={chain['salon_count'] || 0}
         />
       </div>
 
-      <ChainDetailView chainId={chain.id!} chainName={chain.name!} />
+      <ChainDetailView chainId={chain['id']!} chainName={chain['name']!} />
     </div>
   )
 }

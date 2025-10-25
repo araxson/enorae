@@ -47,17 +47,17 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
       <CardContent className="space-y-4">
         <ItemGroup>
           {favorites.map((favorite, index) => (
-            <div key={favorite.id}>
+            <div key={favorite['id']}>
               <Item variant="outline" size="sm">
                 <ItemMedia variant="icon">
                   <Heart className="h-4 w-4 fill-primary text-primary" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>
-                    {favorite.business_name || 'Favorite salon'}
+                    {favorite['business_name'] || 'Favorite salon'}
                   </ItemTitle>
                   <ItemDescription>
-                    {favorite.category_name || 'No category'}
+                    {favorite['category_name'] || 'No category'}
                   </ItemDescription>
                 </ItemContent>
               </Item>

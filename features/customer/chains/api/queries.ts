@@ -83,7 +83,7 @@ export async function getSalonChainById(
     .schema('organization')
     .from('salons')
     .select('id, name, slug, formatted_address, city, state_province, rating_average, rating_count, is_verified')
-    .eq('chain_id', chain.id!)
+    .eq('chain_id', chain['id']!)
     .eq('is_active', true)
     .is('deleted_at', null)
     .order('name', { ascending: true }) as { data: SalonRow[] | null; error: PostgrestError | null }
@@ -95,8 +95,8 @@ export async function getSalonChainById(
     locations: (locations || []).map((loc: SalonRow) => ({
       ...loc,
       address: loc.formatted_address,
-      average_rating: loc.rating_average,
-      review_count: loc.rating_count,
+      average_rating: loc['rating_average'],
+      review_count: loc['rating_count'],
     })) as ChainSalonLocation[],
   } as SalonChainWithLocations
 }

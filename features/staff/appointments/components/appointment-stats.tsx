@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, Clock, DollarSign, CheckCircle } from 'lucide-react'
 import type { StaffAppointment } from '@/features/staff/appointments/api/queries'
 
@@ -10,10 +10,10 @@ type AppointmentStatsProps = {
 
 export function AppointmentStats({ appointments }: AppointmentStatsProps) {
   const totalAppointments = appointments.length
-  const completedAppointments = appointments.filter((a) => a.status === 'completed').length
-  const totalMinutes = appointments.reduce((acc, a) => acc + (a.duration_minutes || 0), 0)
+  const completedAppointments = appointments.filter((a) => a['status'] === 'completed').length
+  const totalMinutes = appointments.reduce((acc, a) => acc + (a['duration_minutes'] || 0), 0)
   const totalHours = (totalMinutes / 60).toFixed(1)
-  const totalRevenue = appointments.reduce((acc, a) => acc + (a.total_price || 0), 0)
+  const totalRevenue = appointments.reduce((acc, a) => acc + (a['total_price'] || 0), 0)
 
   const stats = [
     {
@@ -48,17 +48,13 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
         const Icon = stat.icon
         return (
           <Card key={stat.label}>
-            <CardContent>
-              <div className="p-4">
-                <div className="flex gap-4 items-start justify-between">
-                  <div>
-                    <p className="text-muted-foreground">{stat.label}</p>
-                    <p>{stat.value}</p>
-                  </div>
-                  <Icon className={`h-4 w-4 ${stat.color}`} />
-                </div>
+            <CardHeader className="flex flex-row items-start justify-between gap-4">
+              <div className="space-y-1">
+                <CardTitle>{stat.value}</CardTitle>
+                <CardDescription>{stat.label}</CardDescription>
               </div>
-            </CardContent>
+              <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
+            </CardHeader>
           </Card>
         )
       })}

@@ -20,9 +20,9 @@ export const parsePreferences = (value: ProfilePreferences['preferences'] | unde
 
   const source = value as Record<string, unknown>
   return {
-    email_notifications: typeof source.email_notifications === 'boolean' ? source.email_notifications : undefined,
-    sms_notifications: typeof source.sms_notifications === 'boolean' ? source.sms_notifications : undefined,
-    appointment_reminders: typeof source.appointment_reminders === 'boolean' ? source.appointment_reminders : undefined,
-    marketing_emails: typeof source.marketing_emails === 'boolean' ? source.marketing_emails : undefined,
+    email_notifications: typeof source['email_notifications'] === 'boolean' ? source['email_notifications'] : undefined,
+    sms_notifications: typeof source['sms_notifications'] === 'boolean' ? source['sms_notifications'] : undefined,
+    appointment_reminders: typeof source['appointment_reminders'] === 'boolean' ? source['appointment_reminders'] : undefined,
+    marketing_emails: typeof source['marketing_emails'] === 'boolean' ? source['marketing_emails'] : undefined,
   }
 }

@@ -33,11 +33,11 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
 
     return salons.filter((salon) => {
       const haystack = [
-        salon.name,
-        salon.city,
-        salon.state_province,
-        salon.short_description,
-        salon.full_description,
+        salon['name'],
+        salon['city'],
+        salon['state_province'],
+        salon['short_description'],
+        salon['full_description'],
       ]
         .filter(Boolean)
         .join(' ')
@@ -96,20 +96,20 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {filteredSalons.map((salon, index) => {
             const location =
-              salon.formatted_address ||
-              (salon.city && salon.state_province
-                ? `${salon.city}, ${salon.state_province}`
-                : salon.city || 'Location coming soon')
+              salon['formatted_address'] ||
+              (salon['city'] && salon['state_province']
+                ? `${salon['city']}, ${salon['state_province']}`
+                : salon['city'] || 'Location coming soon')
 
-            const description = salon.short_description || undefined
+            const description = salon['short_description'] || undefined
 
             return (
               <Card
-                key={salon.id ?? salon.slug ?? `salon-${index}`}
+                key={salon['id'] ?? salon['slug'] ?? `salon-${index}`}
                 className="flex h-full flex-col"
               >
                 <CardHeader>
-                  <CardTitle>{salon.name ?? 'Salon'}</CardTitle>
+                  <CardTitle>{salon['name'] ?? 'Salon'}</CardTitle>
                   {description ? (
                     <div className="line-clamp-2">
                       <CardDescription>{description}</CardDescription>
@@ -121,14 +121,14 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
                     <MapPin className="h-4 w-4" />
                     <span>{location}</span>
                   </div>
-                  {salon.rating_average ? (
+                  {salon['rating_average'] ? (
                     <p>
-                      ⭐ {Number(salon.rating_average).toFixed(1)} • {salon.rating_count ?? 0} reviews
+                      ⭐ {Number(salon['rating_average']).toFixed(1)} • {salon['rating_count'] ?? 0} reviews
                     </p>
                   ) : null}
                 </CardContent>
                 <CardFooter className="pt-0">
-                  <Button className="w-full" onClick={() => handleBook(salon.slug)}>
+                  <Button className="w-full" onClick={() => handleBook(salon['slug'])}>
                     Book with Enorae
                   </Button>
                 </CardFooter>

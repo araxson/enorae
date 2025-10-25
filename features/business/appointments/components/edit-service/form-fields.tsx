@@ -27,9 +27,9 @@ export function FormFields({ service, formData, setFormData, isLoadingStaff, sta
       <div className="space-y-2">
         <Label>Service</Label>
         <div className="p-3 bg-muted rounded-md">
-          <p className="text-base font-medium">{service.service_name}</p>
-          {service.category_name && (
-            <p className="text-sm text-muted-foreground">{service.category_name}</p>
+          <p className="text-base font-medium">{service['service_name']}</p>
+          {service['category_name'] && (
+            <p className="text-sm text-muted-foreground">{service['category_name']}</p>
           )}
         </div>
       </div>
@@ -51,13 +51,13 @@ export function FormFields({ service, formData, setFormData, isLoadingStaff, sta
               <SelectItem value="">Any available</SelectItem>
               {staff.length > 0 ? (
                 staff.map((member) => (
-                  <SelectItem key={member.id} value={member.id}>
-                    {member.name}
+                  <SelectItem key={member['id']} value={member['id']}>
+                    {member['name']}
                   </SelectItem>
                 ))
-              ) : service.staff_name ? (
-                <SelectItem value={service.staff_id || ''}>
-                  {service.staff_name}
+              ) : service['staff_name'] ? (
+                <SelectItem value={service['staff_id'] || ''}>
+                  {service['staff_name']}
                 </SelectItem>
               ) : (
                 <SelectItem value="no-staff" disabled>
@@ -111,7 +111,7 @@ export function FormFields({ service, formData, setFormData, isLoadingStaff, sta
       <div className="space-y-2">
         <Label htmlFor="status">Status</Label>
         <Select
-          value={formData.status}
+          value={formData['status']}
           onValueChange={(value) =>
             setFormData((prev) => ({ ...prev, status: value }))
           }

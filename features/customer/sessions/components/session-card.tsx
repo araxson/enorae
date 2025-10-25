@@ -14,10 +14,10 @@ interface SessionCardProps {
 
 export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps) {
   const handleRevoke = useCallback(() => {
-    if (session.id) {
-      onRevoke(session.id)
+    if (session['id']) {
+      onRevoke(session['id'])
     }
-  }, [session.id, onRevoke])
+  }, [session['id'], onRevoke])
   const formatDate = (date: string | null) => {
     if (!date) return 'Never'
     return new Date(date).toLocaleString('en-US', {
@@ -45,32 +45,32 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
   return (
     <Card className="flex flex-col">
       <CardHeader className="gap-3">
-        <CardTitle>Session {session.id?.substring(0, 8) || 'Unknown'}</CardTitle>
-        <CardDescription>{getActivityStatus(session.updated_at)}</CardDescription>
+        <CardTitle>Session {session['id']?.substring(0, 8) || 'Unknown'}</CardTitle>
+        <CardDescription>{getActivityStatus(session['updated_at'])}</CardDescription>
         <div className="flex flex-wrap items-center gap-2">
           {session.is_current ? <Badge variant="default">Current Session</Badge> : null}
-          {session.is_suspicious ? <Badge variant="destructive">Suspicious</Badge> : null}
+          {session['is_suspicious'] ? <Badge variant="destructive">Suspicious</Badge> : null}
         </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
           <div className="flex gap-3">
             <span className="w-24 text-sm text-muted-foreground">Created:</span>
-            <span className="text-sm text-foreground">{formatDate(session.created_at)}</span>
+            <span className="text-sm text-foreground">{formatDate(session['created_at'])}</span>
           </div>
 
           <div className="flex gap-3">
             <span className="w-24 text-sm text-muted-foreground">Last Updated:</span>
-            <span className="text-sm text-foreground">{formatDate(session.updated_at)}</span>
+            <span className="text-sm text-foreground">{formatDate(session['updated_at'])}</span>
           </div>
 
           <div className="flex gap-3">
             <span className="w-24 text-sm text-muted-foreground">Status:</span>
-            <span className="text-sm text-foreground">{session.is_active ? 'Active' : 'Inactive'}</span>
+            <span className="text-sm text-foreground">{session['is_active'] ? 'Active' : 'Inactive'}</span>
           </div>
         </div>
       </CardContent>
-      {!session.is_current && session.id ? (
+      {!session.is_current && session['id'] ? (
         <CardFooter className="justify-end">
           <Button
             variant="destructive"

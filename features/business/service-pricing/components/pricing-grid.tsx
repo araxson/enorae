@@ -18,7 +18,7 @@ export function PricingGrid({ pricing, onEdit }: PricingGridProps) {
   return (
     <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {pricing.map((p) => (
-        <PricingCard key={p.id} pricing={p} onEdit={onEdit} />
+        <PricingCard key={p['id']} pricing={p} onEdit={onEdit} />
       ))}
     </div>
   )

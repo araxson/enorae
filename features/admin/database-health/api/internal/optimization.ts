@@ -49,18 +49,18 @@ export async function getOptimizationRecommendations(
   const unusedIndexes = (indexesRes.data ?? []) as UnusedIndex[]
 
   const criticalRecommendations = recommendations.filter(
-    (r) => r.status === 'critical' || r.status === 'high'
+    (r) => r['status'] === 'critical' || r['status'] === 'high'
   ).length
 
   const now = new Date()
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
   const staleStatistics = statisticsFreshness.filter((s) => {
-    const lastAnalyze = s.last_analyze ? new Date(s.last_analyze) : null
+    const lastAnalyze = s['last_analyze'] ? new Date(s['last_analyze']) : null
     return !lastAnalyze || lastAnalyze < sevenDaysAgo
   }).length
 
   const unusedIndexCount = unusedIndexes.filter(
-    (idx) => (idx.scans ?? 0) === 0
+    (idx) => (idx['scans'] ?? 0) === 0
   ).length
 
   // Estimate space savings from unused indexes (count of unused)

@@ -157,17 +157,17 @@ export function TimeOffRequestsClient({
             ) : (
               <div className="grid gap-4">
                 {teamCalendar.map((entry, idx) => (
-                  <Card key={`${entry.staff_id}-${idx}`}>
+                  <Card key={`${entry['staff_id']}-${idx}`}>
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <div>
-                          <CardTitle>{entry.staff_name}</CardTitle>
+                          <CardTitle>{entry['staff_name']}</CardTitle>
                           {entry.staff_title && (
                             <CardDescription>{entry.staff_title}</CardDescription>
                           )}
                         </div>
-                        <Badge variant={entry.status === 'approved' ? 'default' : 'secondary'}>
-                          {entry.status}
+                        <Badge variant={entry['status'] === 'approved' ? 'default' : 'secondary'}>
+                          {entry['status']}
                         </Badge>
                       </div>
                     </CardHeader>
@@ -209,7 +209,7 @@ export function TimeOffRequestsClient({
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {displayedRequests.map((request) => (
-                  <RequestCard key={request.id} request={request} isStaffView />
+                  <RequestCard key={request['id']} request={request} isStaffView />
                 ))}
               </div>
             )}

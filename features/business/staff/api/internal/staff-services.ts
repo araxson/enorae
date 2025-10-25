@@ -40,7 +40,7 @@ export async function getStaffWithServices(salonId: string): Promise<StaffWithSe
 
   // Get all staff services for this salon
   const staffIds =
-    staff?.map((s) => (s as Staff).id!).filter((id): id is string => id !== null) || []
+    staff?.map((s) => (s as Staff)['id']!).filter((id): id is string => id !== null) || []
 
   if (staffIds.length === 0) {
     return []
@@ -55,20 +55,20 @@ export async function getStaffWithServices(salonId: string): Promise<StaffWithSe
 
   // Group services by staff
   const staffWithServices: StaffWithServices[] = (staff || [])
-    .filter((member): member is typeof member & { id: string } => (member as Staff).id !== null)
+    .filter((member): member is typeof member & { id: string } => (member as Staff)['id'] !== null)
     .map((member) => {
       const staffMember = member as Staff
       return {
-        id: staffMember.id!,
-        full_name: staffMember.full_name,
-        email: staffMember.email,
-        title: staffMember.title,
-        avatar_url: staffMember.avatar_url,
-        bio: staffMember.bio,
-        experience_years: staffMember.experience_years,
-        status: staffMember.status,
+        id: staffMember['id']!,
+        full_name: staffMember['full_name'],
+        email: staffMember['email'],
+        title: staffMember['title'],
+        avatar_url: staffMember['avatar_url'],
+        bio: staffMember['bio'],
+        experience_years: staffMember['experience_years'],
+        status: staffMember['status'],
         services: (staffServices || []).filter(
-          (service) => (service as StaffService).staff_id === staffMember.id
+          (service) => (service as StaffService)['staff_id'] === staffMember['id']
         ),
       }
     })
@@ -110,7 +110,7 @@ export async function getStaffServices(staffId: string): Promise<StaffService[]>
   const { data: salon } = await supabase
     .from('salons')
     .select('*')
-    .eq('owner_id', session.user.id)
+    .eq('owner_id', session.user['id'])
     .single()
 
   if (!salon) throw new Error('Salon not found')
@@ -121,7 +121,7 @@ export async function getStaffServices(staffId: string): Promise<StaffService[]>
     .eq('id', staffId)
     .single()
 
-  if (!staff || (staff as Staff).salon_id !== (salon as Salon).id) {
+  if (!staff || (staff as Staff)['salon_id'] !== (salon as Salon)['id']) {
     throw new Error('Unauthorized')
   }
 

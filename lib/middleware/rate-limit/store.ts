@@ -7,7 +7,8 @@ const CLEANUP_INTERVAL = 5 * 60 * 1000
 setInterval(() => {
   const now = Date.now()
   Object.keys(store).forEach((key) => {
-    if (store[key].resetTime < now) {
+    const entry = store[key]
+    if (entry && entry.resetTime < now) {
       delete store[key]
     }
   })
@@ -15,8 +16,13 @@ setInterval(() => {
 
 export function getRateLimitEntry(key: string, windowMs: number) {
   const now = Date.now()
-  if (!store[key] || store[key].resetTime < now) {
-    store[key] = { count: 0, resetTime: now + windowMs }
+  const existing = store[key]
+
+  if (!existing || existing.resetTime < now) {
+    const nextEntry = { count: 0, resetTime: now + windowMs }
+    store[key] = nextEntry
+    return nextEntry
   }
-  return store[key]
+
+  return existing
 }

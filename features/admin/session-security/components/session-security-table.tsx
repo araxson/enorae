@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { toast } from 'sonner'
 import { MoreHorizontal, ShieldAlert } from 'lucide-react'
 import type { SessionSecurityRecord } from '@/features/admin/session-security/api/queries'
@@ -103,14 +104,14 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
   }
 
   const getRiskColor = (riskScore: number) => {
-    if (riskScore >= 80) return 'text-red-600'
-    if (riskScore >= 60) return 'text-orange-600'
-    if (riskScore >= 40) return 'text-yellow-600'
-    return 'text-green-600'
+    if (riskScore >= 80) return 'text-destructive'
+    if (riskScore >= 60) return 'text-primary'
+    if (riskScore >= 40) return 'text-secondary'
+    return 'text-foreground'
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border">
+    <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -127,7 +128,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
         <TableBody>
           {records.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={8} className="py-8 text-center text-muted-foreground">
                 No session security records found
               </TableCell>
             </TableRow>
@@ -150,7 +151,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
                 <TableCell>
                   {record.security_flags.length > 0 ? (
                     <div className="flex items-center gap-1">
-                      <ShieldAlert className="h-4 w-4 text-red-600" />
+                      <ShieldAlert className="h-4 w-4 text-destructive" />
                       <span className="text-sm">{record.security_flags.length} flags</span>
                     </div>
                   ) : (
@@ -165,9 +166,8 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
-                        size="sm"
+                        size="icon"
                         disabled={isLoading}
-                        className="h-8 w-8 p-0"
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
@@ -188,7 +188,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
                       <DropdownMenuItem
                         onClick={() => handleEvict(record.id, record.user_email)}
                         disabled={isLoading}
-                        className="text-red-600"
+                        className="text-destructive"
                       >
                         Evict Session
                       </DropdownMenuItem>
@@ -200,6 +200,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
           )}
         </TableBody>
       </Table>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   )
 }

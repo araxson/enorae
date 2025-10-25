@@ -69,13 +69,13 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
         <ScrollArea className="h-96">
           <div className="p-6 space-y-4">
             {appointments.map((appointment) => {
-              const salonInitials = getInitials(appointment.salon_name || 'Salon')
-              const appointmentDate = appointment.start_time
-                ? format(new Date(appointment.start_time), 'EEEE, MMMM d, yyyy')
+              const salonInitials = getInitials(appointment['salon_name'] || 'Salon')
+              const appointmentDate = appointment['start_time']
+                ? format(new Date(appointment['start_time']), 'EEEE, MMMM d, yyyy')
                 : 'Date TBD'
 
               return (
-                <Card key={appointment.id} className="group">
+                <Card key={appointment['id']} className="group">
                   <CardHeader className="flex flex-row items-start gap-4">
                     <Avatar className="h-10 w-10 border-2 border-background">
                       <AvatarFallback className="bg-primary/10 text-primary">
@@ -83,19 +83,19 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 space-y-1 min-w-0">
-                      <CardTitle>{appointment.salon_name || 'Salon TBD'}</CardTitle>
+                      <CardTitle>{appointment['salon_name'] || 'Salon TBD'}</CardTitle>
                       <CardDescription>{appointmentDate}</CardDescription>
                     </div>
-                    <Badge variant={getStatusVariant(appointment.status)}>
-                      {appointment.status || 'pending'}
+                    <Badge variant={getStatusVariant(appointment['status'])}>
+                      {appointment['status'] || 'pending'}
                     </Badge>
                   </CardHeader>
                   <CardContent className="flex flex-col gap-3">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Clock className="h-3 w-3" />
-                      <span>{formatAppointmentTime(appointment.start_time)}</span>
+                      <span>{formatAppointmentTime(appointment['start_time'])}</span>
                     </div>
-                    {appointment.salon_name && (
+                    {appointment['salon_name'] && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <MapPin className="h-3 w-3" />
                         <span>View location</span>
@@ -109,7 +109,7 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
                       className="opacity-0 transition-opacity group-hover:opacity-100"
                       asChild
                     >
-                      <Link href={`/customer/appointments/${appointment.id}`}>
+                      <Link href={`/customer/appointments/${appointment['id']}`}>
                         View
                       </Link>
                     </Button>

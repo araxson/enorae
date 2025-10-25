@@ -11,7 +11,7 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 
   const { supabase, staffProfile } = await verifyStaffOwnership()
-  if (!staffProfile.salon_id || staffProfile.salon_id !== salonId) {
+  if (!staffProfile['salon_id'] || staffProfile['salon_id'] !== salonId) {
     throw new Error('Unauthorized')
   }
 
@@ -38,7 +38,7 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
   const staffIds = Array.from(
     new Set(
       schedules
-        .map((schedule) => schedule.staff_id)
+        .map((schedule) => schedule['staff_id'])
         .filter((id): id is string => Boolean(id)),
     ),
   )
@@ -54,14 +54,14 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
 
     staffMap = new Map(
       (staffRows || [])
-        .filter((staff): staff is Staff => Boolean(staff?.id))
-        .map((staff) => [staff.id as string, staff as Staff]),
+        .filter((staff): staff is Staff => Boolean(staff?.['id']))
+        .map((staff) => [staff['id'] as string, staff as Staff]),
     )
   }
 
   return schedules.map((schedule) => ({
     ...schedule,
-    staff: schedule.staff_id ? staffMap.get(schedule.staff_id) ?? null : null,
+    staff: schedule['staff_id'] ? staffMap.get(schedule['staff_id']) ?? null : null,
   }))
 }
 

@@ -19,11 +19,11 @@ import type {
 export function groupAppointmentsByStaff(rows: AppointmentRow[]) {
   const map = new Map<string, AppointmentRow[]>()
   for (const row of rows) {
-    if (!row.staff_id) continue
-    if (!map.has(row.staff_id)) {
-      map.set(row.staff_id, [])
+    if (!row['staff_id']) continue
+    if (!map.has(row['staff_id'])) {
+      map.set(row['staff_id'], [])
     }
-    map.get(row.staff_id)!.push(row)
+    map.get(row['staff_id'])!.push(row)
   }
   return map
 }
@@ -68,25 +68,25 @@ export function calculateStaffMetrics(
   }
 
   for (const appointment of appointments) {
-    if (!appointment.status) continue
-    const status = appointment.status.toLowerCase()
+    if (!appointment['status']) continue
+    const status = appointment['status'].toLowerCase()
     if (status === 'completed') completed += 1
     else if (status === 'cancelled') cancelled += 1
     else if (status === 'no_show') noShow += 1
 
-    if (appointment.start_time) {
-      if (!lastAppointmentAt || appointment.start_time > lastAppointmentAt) {
-        lastAppointmentAt = appointment.start_time
+    if (appointment['start_time']) {
+      if (!lastAppointmentAt || appointment['start_time'] > lastAppointmentAt) {
+        lastAppointmentAt = appointment['start_time']
       }
     }
 
-    if (appointment.id) {
-      const reviews = reviewsByAppointment.get(appointment.id) ?? []
+    if (appointment['id']) {
+      const reviews = reviewsByAppointment.get(appointment['id']) ?? []
       for (const review of reviews) {
-        if (typeof review.rating === 'number') {
-          reviewAccumulator.ratings.push(review.rating)
+        if (typeof review['rating'] === 'number') {
+          reviewAccumulator.ratings.push(review['rating'])
         }
-        if (review.is_flagged) {
+        if (review['is_flagged']) {
           reviewAccumulator.flagged += 1
         }
       }
@@ -128,7 +128,7 @@ export function buildStaffMetrics(
     certificationsCount: certifications.length,
   })
 
-  return { metrics, compliance: { ...compliance, riskLabel: deriveRiskLabel(compliance.status) } }
+  return { metrics, compliance: { ...compliance, riskLabel: deriveRiskLabel(compliance['status']) } }
 }
 
 export function calculateDashboardStats(staff: StaffWithMetrics[]): StaffDashboardStats {
@@ -153,9 +153,9 @@ export function calculateDashboardStats(staff: StaffWithMetrics[]): StaffDashboa
     totalExperience += person.experienceYears
     totalCompliance += person.compliance.score
 
-    if (person.background.status === 'clear') verified += 1
-    if (person.background.status === 'pending' || person.background.status === 'missing') pending += 1
-    if (person.compliance.status === 'critical') critical += 1
+    if (person.background['status'] === 'clear') verified += 1
+    if (person.background['status'] === 'pending' || person.background['status'] === 'missing') pending += 1
+    if (person.compliance['status'] === 'critical') critical += 1
   })
 
   return {
@@ -172,8 +172,8 @@ export function buildTopPerformers(staff: StaffWithMetrics[]): StaffPerformanceB
   return staff
     .filter((person) => person.metrics.completedAppointments >= 5)
     .map<StaffPerformanceBenchmark>((person) => ({
-      id: person.id,
-      name: person.fullName || person.title || 'Staff member',
+      id: person['id'],
+      name: person.fullName || person['title'] || 'Staff member',
       salonName: person.salonName,
       averageRating: person.metrics.averageRating,
       completionRate: person.compliance.completionRate,

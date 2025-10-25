@@ -3,7 +3,7 @@
 import { useState, FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Send } from 'lucide-react'
 
 interface MessageComposerProps {
@@ -75,6 +75,7 @@ export function MessageComposer({
     <form onSubmit={handleSubmit} className="space-y-3">
       {error && (
         <Alert variant="destructive">
+          <AlertTitle>Message error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}

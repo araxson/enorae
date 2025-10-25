@@ -1,4 +1,4 @@
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getMyStaffProfileDetails } from './api/queries'
 import { ProfileClient } from './components/profile-client'
 
@@ -14,6 +14,7 @@ export async function StaffProfile() {
     return (
       <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
         <Alert>
+          <AlertTitle>Profile unavailable</AlertTitle>
           <AlertDescription>
             {error instanceof Error
               ? error.message
@@ -30,6 +31,7 @@ export async function StaffProfile() {
     return (
       <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
         <Alert>
+          <AlertTitle>Profile not found</AlertTitle>
           <AlertDescription>Staff profile not found</AlertDescription>
         </Alert>
       </div>

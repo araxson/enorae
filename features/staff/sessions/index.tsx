@@ -16,7 +16,7 @@ export function SessionsFeature({ sessions, currentSessionId }: SessionsFeatureP
         <CardHeader>
           <div className="flex flex-row items-center justify-between">
             <CardTitle>Active Sessions</CardTitle>
-            {sessions.filter(s => s.is_active).length > 1 && (
+            {sessions.filter(s => s['is_active']).length > 1 && (
               <Button variant="destructive" size="sm">
                 Revoke All Other Sessions
               </Button>

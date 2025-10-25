@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { ProfileDetail } from '@/features/admin/profile/api/types'
 import { updateProfilePreferencesAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
@@ -27,13 +27,13 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
 
   useEffect(() => {
     if (!profile) return
-    setTimezone(profile.preferences.timezone ?? profile.summary.timezone ?? '')
-    setLocale(profile.preferences.locale ?? profile.summary.locale ?? '')
-    setCountryCode(profile.preferences.countryCode ?? profile.summary.countryCode ?? '')
+    setTimezone(profile['preferences']['timezone'] ?? profile.summary['timezone'] ?? '')
+    setLocale(profile['preferences']['locale'] ?? profile.summary['locale'] ?? '')
+    setCountryCode(profile['preferences'].countryCode ?? profile.summary.countryCode ?? '')
 
-    const prefs = profile.preferences.preferences
-    setMarketingEmails(Boolean(prefs?.marketingEmails))
-    setSmsAlerts(Boolean(prefs?.smsAlerts))
+    const prefs = profile['preferences'].preferences
+    setMarketingEmails(Boolean(prefs?.['marketingEmails']))
+    setSmsAlerts(Boolean(prefs?.['smsAlerts']))
     setFeedback(initialState)
   }, [profile])
 
@@ -47,7 +47,7 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
 
     startTransition(async () => {
       const payload = {
-        profileId: profile.summary.id,
+        profileId: profile.summary['id'],
         timezone,
         locale,
         countryCode,
@@ -146,6 +146,7 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
 
           {feedback && (
             <Alert variant={feedback.success ? 'default' : 'destructive'}>
+              <AlertTitle>{feedback.success ? 'Preferences updated' : 'Update failed'}</AlertTitle>
               <AlertDescription>{feedback.message}</AlertDescription>
             </Alert>
           )}
