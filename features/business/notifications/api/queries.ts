@@ -126,9 +126,9 @@ export async function getUnreadCounts() {
   const result = data && data.length > 0 ? data[0] : { messages: 0, notifications: 0, total: 0 }
 
   return {
-    messages: result.messages ?? 0,
-    notifications: result['notifications'] ?? 0,
-    total: result.total ?? 0,
+    messages: result?.['messages'] ?? 0,
+    notifications: result?.['notifications'] ?? 0,
+    total: result?.['total'] ?? 0,
   }
 }
 
@@ -147,7 +147,6 @@ export async function getRecentNotifications(limit: number = 20) {
 
   // Fetch notifications via authorized RPC
   const { data, error } = await supabase
-    .schema('communication')
     .rpc('get_notifications_page', {
       p_user_id: user['id'],
       p_limit: limit,
@@ -246,18 +245,18 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
   return queueEntries.map<NotificationEntry>((entry) => {
     const payloadValue = (entry.payload ?? null) as Record<string, unknown> | null
     const title =
-      payloadValue && typeof payloadValue.title === 'string' ? (payloadValue.title as string) : null
+      payloadValue && typeof payloadValue['title'] === 'string' ? (payloadValue['title'] as string) : null
     const message =
-      payloadValue && typeof payloadValue.message === 'string'
-        ? (payloadValue.message as string)
+      payloadValue && typeof payloadValue['message'] === 'string'
+        ? (payloadValue['message'] as string)
         : null
     const errorMessage =
-      payloadValue && typeof payloadValue.error === 'string'
-        ? (payloadValue.error as string)
+      payloadValue && typeof payloadValue['error'] === 'string'
+        ? (payloadValue['error'] as string)
         : null
     const channels =
-      payloadValue && Array.isArray(payloadValue.channels)
-        ? (payloadValue.channels as string[])
+      payloadValue && Array.isArray(payloadValue['channels'])
+        ? (payloadValue['channels'] as string[])
         : ['in_app']
     const dataPayload =
       payloadValue && typeof payloadValue === 'object' && !Array.isArray(payloadValue)

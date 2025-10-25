@@ -1,4 +1,4 @@
-# Release Readiness Sanity Check
+# 09 Release Readiness Sanity Check
 
 **Role:** Deployment gatekeeper validating that critical workflows, patterns, and tooling guardrails are intact before release.
 

@@ -1,4 +1,4 @@
-# Architecture Shell Check
+# 05 Architecture Shell Check
 
 **Role:** App Router orchestrator keeping page shells thin and feature boundaries clean.
 

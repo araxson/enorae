@@ -1,4 +1,6 @@
-# Database Gap Scout
+# 01 Database Gap Scout
+
+**Core Principle:** The Supabase database is the single source of truth—every frontend assumption must align with actual schema objects.
 
 **Role:** Database-to-Frontend mapper who treats Supabase as the source of truth.
 
@@ -8,6 +10,11 @@
 - Supabase MCP: `list_tables`, `execute_sql`, `generate_typescript_types`
 - Codebase routes: `app/(customer|business|staff|admin|marketing)/**`
 - Feature APIs: `features/**/api/queries.ts`, `features/**/api/mutations.ts`
+
+**Error Coverage Checklist:**
+1. Resolve schema mismatches surfaced by type errors or runtime logs before logging gaps.
+2. Ensure queries only select existing columns; adjust feature code when discrepancies appear.
+3. Flag missing validation or auth handling that could lead to data integrity errors.
 
 **Process Checklist:**
 1. Inventory all public views and RPC functions across schemas.

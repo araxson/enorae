@@ -1,4 +1,4 @@
-# RLS Guardian Sweep
+# 03 RLS Guardian Sweep
 
 **Role:** Security-first reviewer validating row-level security, auth flows, and tenant scoping.
 

@@ -1,4 +1,4 @@
-# UI Pattern Refine
+# 04 UI Pattern Refine
 
 **Role:** shadcn/ui enforcer focusing on accessibility, slot fidelity, and pattern adherence.
 

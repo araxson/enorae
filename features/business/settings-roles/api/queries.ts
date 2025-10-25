@@ -59,14 +59,16 @@ export async function getUserRoles(): Promise<UserRoleWithDetails[]> {
     if (usersError) throw usersError
 
     usersById = Object.fromEntries(
-      (userRows ?? []).map((profile) => [
-        profile?.id as string,
-        {
-          id: profile?.id as string,
-          full_name: profile?.full_name ?? null,
-          email: profile?.email ?? null,
-        },
-      ])
+      (userRows ?? [])
+        .filter((profile): profile is NonNullable<typeof userRows[0]> => profile?.id !== null && profile?.id !== undefined)
+        .map((profile) => [
+          profile.id,
+          {
+            id: profile.id,
+            full_name: profile.full_name ?? null,
+            email: profile.email ?? null,
+          },
+        ])
     )
   }
 
@@ -117,13 +119,15 @@ export async function getAvailableStaff(): Promise<Array<{
   if (profilesError) throw profilesError
 
   const profilesById = new Map(
-    (profileRows ?? []).map((profile) => [
-      profile?.id as string,
-      {
-        full_name: profile?.full_name ?? null,
-        email: profile?.email ?? null,
-      },
-    ])
+    (profileRows ?? [])
+      .filter((profile): profile is NonNullable<typeof profileRows[0]> => profile?.id !== null && profile?.id !== undefined)
+      .map((profile) => [
+        profile.id,
+        {
+          full_name: profile.full_name ?? null,
+          email: profile.email ?? null,
+        },
+      ])
   )
 
   return staffProfiles
@@ -171,9 +175,9 @@ export async function getUserRoleById(id: string): Promise<UserRoleWithDetails |
       .maybeSingle()
 
     if (userError) throw userError
-    if (userRow) {
+    if (userRow && userRow.id) {
       userDetails = {
-        id: userRow.id as string,
+        id: userRow.id,
         full_name: userRow.full_name ?? null,
         email: userRow.email ?? null,
       }

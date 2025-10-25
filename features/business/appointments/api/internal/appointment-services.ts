@@ -56,7 +56,7 @@ export async function addServiceToAppointment(formData: FormData): Promise<Mutat
     })
 
     if (!parsed.success) {
-      return { error: parsed.error.errors[0].message }
+      return { error: parsed.error.errors[0]?.message ?? 'Validation failed' }
     }
 
     const data = parsed.data
@@ -120,7 +120,7 @@ export async function updateAppointmentService(formData: FormData): Promise<Muta
     })
 
     if (!parsed.success) {
-      return { error: parsed.error.errors[0].message }
+      return { error: parsed.error.errors[0]?.message ?? 'Validation failed' }
     }
 
     const data = parsed.data
@@ -129,12 +129,24 @@ export async function updateAppointmentService(formData: FormData): Promise<Muta
     const accessibleSalonIds = await getUserSalonIds()
 
     const { data: appointmentService, error: fetchError } = await supabase
+      .schema('scheduling')
       .from('appointment_services')
-      .select('appointment_id, salon_id')
+      .select('appointment_id, id')
       .eq('id', data.appointmentServiceId)
-      .maybeSingle<Pick<Database['public']['Views']['appointment_services']['Row'], 'appointment_id' | 'salon_id'>>()
+      .maybeSingle()
 
-    if (fetchError || !appointmentService?.salon_id || !accessibleSalonIds.includes(appointmentService.salon_id)) {
+    if (fetchError || !appointmentService?.appointment_id) {
+      return { error: 'Appointment service not found' }
+    }
+
+    // Fetch appointment to verify salon access
+    const { data: appointment, error: apptError } = await supabase
+      .from('appointments')
+      .select('salon_id')
+      .eq('id', appointmentService.appointment_id)
+      .single()
+
+    if (apptError || !appointment?.salon_id || !accessibleSalonIds.includes(appointment.salon_id)) {
       return { error: 'Appointment service not found or unauthorized' }
     }
 
@@ -191,7 +203,7 @@ export async function removeServiceFromAppointment(formData: FormData): Promise<
     })
 
     if (!parsed.success) {
-      return { error: parsed.error.errors[0].message }
+      return { error: parsed.error.errors[0]?.message ?? 'Validation failed' }
     }
 
     const data = parsed.data
@@ -200,17 +212,24 @@ export async function removeServiceFromAppointment(formData: FormData): Promise<
     const accessibleSalonIds = await getUserSalonIds()
 
     const { data: appointmentService, error: fetchError } = await supabase
+      .schema('scheduling')
       .from('appointment_services')
-      .select('appointment_id, salon_id')
+      .select('appointment_id, id')
       .eq('id', data.appointmentServiceId)
-      .maybeSingle<Pick<Database['public']['Views']['appointment_services']['Row'], 'appointment_id' | 'salon_id'>>()
+      .maybeSingle()
 
-    if (
-      fetchError ||
-      !appointmentService?.appointment_id ||
-      !appointmentService.salon_id ||
-      !accessibleSalonIds.includes(appointmentService.salon_id)
-    ) {
+    if (fetchError || !appointmentService?.appointment_id) {
+      return { error: 'Appointment service not found' }
+    }
+
+    // Fetch appointment to verify salon access
+    const { data: appointment, error: apptError } = await supabase
+      .from('appointments')
+      .select('salon_id')
+      .eq('id', appointmentService.appointment_id)
+      .single()
+
+    if (apptError || !appointment?.salon_id || !accessibleSalonIds.includes(appointment.salon_id)) {
       return { error: 'Appointment service not found or unauthorized' }
     }
 
@@ -259,7 +278,7 @@ export async function updateServiceStatus(formData: FormData): Promise<MutationR
     })
 
     if (!parsed.success) {
-      return { error: parsed.error.errors[0].message }
+      return { error: parsed.error.errors[0]?.message ?? 'Validation failed' }
     }
 
     const data = parsed.data
@@ -268,12 +287,24 @@ export async function updateServiceStatus(formData: FormData): Promise<MutationR
     const accessibleSalonIds = await getUserSalonIds()
 
     const { data: appointmentService, error: fetchError } = await supabase
+      .schema('scheduling')
       .from('appointment_services')
-      .select('salon_id')
+      .select('appointment_id, id')
       .eq('id', data.appointmentServiceId)
-      .maybeSingle<Pick<Database['public']['Views']['appointment_services']['Row'], 'salon_id'>>()
+      .maybeSingle()
 
-    if (!appointmentService?.salon_id || fetchError || !accessibleSalonIds.includes(appointmentService.salon_id)) {
+    if (fetchError || !appointmentService?.appointment_id) {
+      return { error: 'Appointment service not found' }
+    }
+
+    // Fetch appointment to verify salon access
+    const { data: appointment, error: apptError } = await supabase
+      .from('appointments')
+      .select('salon_id')
+      .eq('id', appointmentService.appointment_id)
+      .single()
+
+    if (apptError || !appointment?.salon_id || !accessibleSalonIds.includes(appointment.salon_id)) {
       return { error: 'Appointment service not found or unauthorized' }
     }
 
@@ -321,12 +352,24 @@ export async function adjustServicePricing(formData: FormData): Promise<Mutation
     const accessibleSalonIds = await getUserSalonIds()
 
     const { data: appointmentService, error: fetchError } = await supabase
+      .schema('scheduling')
       .from('appointment_services')
-      .select('salon_id, service_id')
+      .select('appointment_id, service_id, id')
       .eq('id', appointmentServiceId)
-      .maybeSingle<Pick<Database['public']['Views']['appointment_services']['Row'], 'salon_id' | 'service_id'>>()
+      .maybeSingle()
 
-    if (fetchError || !appointmentService?.salon_id || !accessibleSalonIds.includes(appointmentService.salon_id)) {
+    if (fetchError || !appointmentService?.appointment_id) {
+      return { error: 'Appointment service not found' }
+    }
+
+    // Fetch appointment to verify salon access
+    const { data: appointment, error: apptError } = await supabase
+      .from('appointments')
+      .select('salon_id')
+      .eq('id', appointmentService.appointment_id)
+      .single()
+
+    if (apptError || !appointment?.salon_id || !accessibleSalonIds.includes(appointment.salon_id)) {
       return { error: 'Appointment service not found or unauthorized' }
     }
 

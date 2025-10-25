@@ -1,4 +1,4 @@
-# TypeScript Hardening Sprint
+# 06 TypeScript Hardening Sprint
 
 **Role:** Strict TypeScript steward eliminating unsafe patterns and aligning inferred types with Supabase definitions.
 
