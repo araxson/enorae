@@ -3,11 +3,11 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type Profile = Database['public']['Views']['profiles']['Row']
-type Appointment = Database['public']['Views']['appointments']['Row']
-type UserRole = Database['public']['Views']['user_roles']['Row']
-type ProfileMetadata = Database['public']['Views']['profiles_metadata']['Row']
-type ProfilePreferences = Database['public']['Views']['profiles_preferences']['Row']
+type Profile = Database['public']['Views']['profiles_view']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
+type UserRole = Database['public']['Views']['user_roles_view']['Row']
+type ProfileMetadata = Database['public']['Views']['profiles_metadata_view']['Row']
+type ProfilePreferences = Database['public']['Views']['profiles_preferences_view']['Row']
 
 export type AppointmentWithRelations = Appointment & {
   salon: { id: string; name: string | null; formatted_address: string | null; primary_phone: string | null } | null
@@ -22,7 +22,7 @@ export async function getProfile() {
 
   // Explicit user filter for security
   const { data, error } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('*')
     .eq('user_id', session.user.id)
     .single()
@@ -39,7 +39,7 @@ export async function getUserAppointments() {
 
   // Explicit customer filter for security
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select(`
       *,
       salon:salon_id(id, name, formatted_address, primary_phone),
@@ -60,7 +60,7 @@ export async function getUserRoles() {
 
   // Explicit user filter for security
   const { data, error } = await supabase
-    .from('user_roles')
+    .from('user_roles_view')
     .select('*')
     .eq('user_id', session.user.id)
     .eq('is_active', true)
@@ -78,7 +78,7 @@ export async function getProfileMetadata() {
 
   // Explicit user filter for security
   const { data, error } = await supabase
-    .from('profiles_metadata')
+    .from('profiles_metadata_view')
     .select('*')
     .eq('profile_id', session.user.id)
     .maybeSingle()
@@ -95,7 +95,7 @@ export async function getProfilePreferences() {
 
   // Explicit user filter for security
   const { data, error } = await supabase
-    .from('profiles_preferences')
+    .from('profiles_preferences_view')
     .select('*')
     .eq('profile_id', session.user.id)
     .maybeSingle()

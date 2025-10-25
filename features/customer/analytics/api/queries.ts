@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
 type ManualTransaction = Database['public']['Views']['manual_transactions']['Row']
 
 export interface CustomerMetrics {
@@ -26,7 +26,7 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
 
   // Get all appointments
   const { data: appointments, error: appointmentsError } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('customer_id', session.user['id'])
     .order('start_time', { ascending: false })
@@ -82,7 +82,7 @@ export async function getAppointmentFrequency(): Promise<{ month: string; count:
   const supabase = await createClient()
 
   const { data: appointments, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('customer_id', session.user['id'])
     .gte('start_time', new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString())

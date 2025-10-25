@@ -4,8 +4,8 @@ import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
 // COMPLIANCE: Use public Views for SELECT typing
-type SalonMetricsView = Database['organization']['Views']['salon_metrics_with_counts']['Row']
-type DailyMetric = Database['public']['Views']['daily_metrics']['Row']
+type SalonMetricsView = Database['public']['Views']['salon_metrics_with_counts_view']['Row']
+type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
 
 export type DailyMetricWithTimestamp = DailyMetric & { metric_at: string }
 
@@ -28,8 +28,7 @@ export async function getLatestSalonMetrics(): Promise<SalonMetricsData | null> 
   const salonId = await requireUserSalonId()
 
   const { data, error } = await supabase
-    .schema('organization')
-    .from('salon_metrics_with_counts')
+    .from('salon_metrics_with_counts_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('updated_at', { ascending: false })
@@ -44,7 +43,7 @@ export async function getLatestSalonMetrics(): Promise<SalonMetricsData | null> 
 
   // Get salon info
   const { data: salon } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id, name')
     .eq('id', salonId)
     .single()
@@ -70,8 +69,7 @@ export async function getSalonMetricsHistory(days = 30): Promise<SalonMetricsDat
   cutoffDate.setDate(cutoffDate.getDate() - days)
 
   const { data, error } = await supabase
-    .schema('organization')
-    .from('salon_metrics_with_counts')
+    .from('salon_metrics_with_counts_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('updated_at', cutoffDate.toISOString())
@@ -81,7 +79,7 @@ export async function getSalonMetricsHistory(days = 30): Promise<SalonMetricsDat
 
   // Get salon info
   const { data: salon } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id, name')
     .eq('id', salonId)
     .single()
@@ -108,7 +106,7 @@ export async function getDailyMetrics(days = 30): Promise<DailyMetricWithTimesta
 
   // COMPLIANCE: Query public view (not schema table)
   const { data, error } = await supabase
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('metric_at', cutoffDate.toISOString().split('T')[0])

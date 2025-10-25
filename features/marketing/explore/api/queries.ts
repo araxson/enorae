@@ -4,7 +4,7 @@ import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type Salon = Database['public']['Views']['salons']['Row']
+type Salon = Database['public']['Views']['salons_view']['Row']
 
 /**
  * Public salon listing for marketing explore page.
@@ -16,7 +16,7 @@ export const getPublicSalons = cache(async function getPublicSalons(
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('is_active', true)
     .order('rating_average', { ascending: false })

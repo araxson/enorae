@@ -5,7 +5,7 @@ import { canAccessSalon } from '@/lib/auth/permissions/salon-access'
 import type { Database } from '@/lib/types/database.types'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 
-type Appointment = Database['public']['Views']['appointments']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
 
 // IMPROVED: appointments view already includes customer/staff data
 export type AppointmentWithDetails = Appointment
@@ -24,7 +24,7 @@ export async function getAppointments(salonId: string) {
 
   // IMPROVED: appointments view already includes customer/staff data
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('start_time', { ascending: false })
@@ -44,7 +44,7 @@ export async function getAppointmentsByStatus(salonId: string, status: string) {
 
   // IMPROVED: appointments view already includes customer/staff data
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('salon_id', salonId)
     .eq('status', status)

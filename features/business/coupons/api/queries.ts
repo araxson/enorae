@@ -23,7 +23,7 @@ export async function getCouponServiceOptions(
   const userSalonId = salonId || await requireUserSalonId()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('id, name')
     .eq('salon_id', userSalonId)
     .eq('is_active', true)

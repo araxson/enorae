@@ -24,7 +24,7 @@ export async function getPricingServices(
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('id, name, price')
     .eq('salon_id', salonId)
     .eq('is_active', true)

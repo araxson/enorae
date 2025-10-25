@@ -2,11 +2,16 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
+import {
+  mergeStaffWithUsers,
+  type EnrichedStaffProfile,
+} from '@/features/shared/staff/api/enrich'
 
-type Staff = Database['public']['Views']['staff']['Row']
-type Service = Database['public']['Views']['services']['Row']
+type StaffProfileRow = Database['public']['Views']['staff_profiles_view']['Row']
+type UserOverviewRow = Database['public']['Views']['admin_users_overview_view']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
-export type StaffProfile = Staff & {
+export type StaffProfile = EnrichedStaffProfile & {
   services?: Service[]
   // TODO: Add these fields to the staff view
   average_rating?: number | null
@@ -25,12 +30,10 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
   const supabase = await createClient()
 
   const { data: staff, error: staffError } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('id', staffId)
-    .eq('status', 'active')
-    .is('deleted_at', null)
-    .maybeSingle()
+    .maybeSingle<StaffProfileRow>()
 
   if (staffError) {
     if (staffError.code === 'PGRST116') return null
@@ -39,21 +42,46 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
 
   if (!staff) return null
 
+  const userIds = staff.user_id ? [staff.user_id] : []
+
+  const { data: users, error: userError } = await supabase
+    .from('admin_users_overview_view')
+    .select('*')
+    .in('id', userIds)
+    .returns<UserOverviewRow[]>()
+
+  if (userError) throw userError
+
+  const [enrichedStaff] = mergeStaffWithUsers([staff], users ?? [])
+
   // Get services offered by this staff member via staff_services junction table
   const { data: staffServices, error: servicesError } = await supabase
-    .from('staff_services')
-    .select('service:service_id(*)')
+    .from('staff_services_view')
+    .select('service_id')
     .eq('staff_id', staffId)
+    .eq('is_available', true)
 
   if (servicesError) throw servicesError
 
-  // Extract services from the nested structure
-  const services = (staffServices || [])
-    .map((ss: { service: Service | null }) => ss.service)
-    .filter((s): s is Service => s !== null && s['is_active'] === true)
+  const serviceIds = (staffServices || [])
+    .map((row) => row['service_id'])
+    .filter((id): id is string => Boolean(id))
+
+  let services: Service[] = []
+
+  if (serviceIds.length > 0) {
+    const { data: servicesData, error: servicesFetchError } = await supabase
+      .from('services_view')
+      .select('*')
+      .in('id', serviceIds)
+      .eq('is_active', true)
+
+    if (servicesFetchError) throw servicesFetchError
+    services = (servicesData || []) as Service[]
+  }
 
   return {
-    ...(staff as Staff),
+    ...(enrichedStaff ?? staff),
     services,
   } as StaffProfile
 }
@@ -61,20 +89,33 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
 /**
  * Get all active staff members for a salon
  */
-export async function getSalonStaff(salonId: string): Promise<Staff[]> {
+export async function getSalonStaff(salonId: string): Promise<EnrichedStaffProfile[]> {
   const session = await verifySession()
   if (!session) throw new Error('Unauthorized')
 
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('*')
     .eq('salon_id', salonId)
-    .eq('status', 'active')
-    .is('deleted_at', null)
     .order('created_at', { ascending: true })
+    .returns<StaffProfileRow[]>()
 
   if (error) throw error
-  return data || []
+
+  const staff = data ?? []
+  const userIds = staff
+    .map((row) => row.user_id)
+    .filter((id): id is string => typeof id === 'string')
+
+  const { data: users, error: userError } = await supabase
+    .from('admin_users_overview_view')
+    .select('*')
+    .in('id', userIds)
+    .returns<UserOverviewRow[]>()
+
+  if (userError) throw userError
+
+  return mergeStaffWithUsers(staff, users ?? [])
 }

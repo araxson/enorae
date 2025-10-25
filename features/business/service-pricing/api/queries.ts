@@ -22,7 +22,7 @@ export async function getServicePricing(): Promise<ServicePricingWithService[]> 
   const supabase = await createClient()
 
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string }>()
@@ -59,7 +59,7 @@ export async function getServicePricingByServiceId(
   const supabase = await createClient()
 
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string }>()
@@ -102,7 +102,7 @@ export async function getServicePricingById(
   const supabase = await createClient()
 
   const { data: staffProfile } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string }>()

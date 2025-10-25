@@ -4,7 +4,7 @@ import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 
-type Service = Database['public']['Views']['services']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
 // Re-export getUserSalon from shared location
 export { getUserSalon }
@@ -25,7 +25,7 @@ export async function getServices(salonId: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('name')

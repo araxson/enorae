@@ -80,7 +80,7 @@ export async function getStaffPerformanceMetrics(
 
   // Get appointment statistics with total_price
   const { data: appointments, error: apptError } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('id, status, customer_id, created_at, total_price')
     .eq('staff_id', targetStaffId)
     .gte('created_at', start)
@@ -143,7 +143,7 @@ export async function getStaffRevenueBreakdown(
 
   // Get appointments with service information and prices
   const { data: appointments, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('service_id, service_name, total_price')
     .eq('staff_id', targetStaffId)
     .eq('status', 'completed')
@@ -212,7 +212,7 @@ export async function getStaffCustomerRelationships(
   const targetStaffId = staffId || user.id
 
   const { data: appointments, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select(`
       id,
       customer_id,

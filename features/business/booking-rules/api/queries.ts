@@ -38,7 +38,7 @@ export async function getBookingRuleServices(): Promise<BookingRuleServiceOption
   const { supabase, salonId } = await resolveSalonContext()
 
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('id, name')
     .eq('salon_id', salonId)
     .is('deleted_at', null)
@@ -62,7 +62,7 @@ async function resolveSalonContext() {
   const supabase = await createClient()
 
   const { data: staffProfile, error } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
     .single<{ salon_id: string | null }>()

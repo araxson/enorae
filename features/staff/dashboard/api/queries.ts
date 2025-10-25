@@ -140,7 +140,7 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
   const [todayResult, weekResult, monthResult] = await Promise.all([
     // Today's completed appointments
     supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('total_price')
       .eq('staff_id', staffId)
       .eq('status', 'completed')
@@ -148,7 +148,7 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
       .lte('start_time', today.end),
     // Week's completed appointments
     supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('total_price')
       .eq('staff_id', staffId)
       .eq('status', 'completed')
@@ -156,7 +156,7 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
       .lte('start_time', week.end),
     // Month's completed appointments
     supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('total_price')
       .eq('staff_id', staffId)
       .eq('status', 'completed')

@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
 type AppointmentService = Database['public']['Views']['appointment_services']['Row']
 
 export async function getCustomerAppointments(): Promise<Appointment[]> {
@@ -11,7 +11,7 @@ export async function getCustomerAppointments(): Promise<Appointment[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('customer_id', session.user.id)
     .order('start_time', { ascending: false })
@@ -25,7 +25,7 @@ export async function getCustomerAppointmentById(id: string): Promise<Appointmen
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('id', id)
     .eq('customer_id', session.user.id)
@@ -45,7 +45,7 @@ export async function getAppointmentServices(appointmentId: string): Promise<App
 
   // First verify the appointment belongs to this customer
   const { data: appointment } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('*')
     .eq('id', appointmentId)
     .single()
