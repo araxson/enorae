@@ -49,11 +49,11 @@ export async function getUnreadCounts() {
   if (error) throw error
 
   // Return first result or defaults
-  const result = data && data.length > 0 ? data[0] : { messages: 0, notifications: 0, total: 0 }
+  const result = data && data.length > 0 ? data[0] : null
 
   return {
-    messages: result.messages ?? 0,
-    notifications: result.notifications ?? 0,
-    total: result.total ?? 0,
+    messages: result?.messages ?? 0,
+    notifications: result?.notifications ?? 0,
+    total: result?.total ?? 0,
   }
 }

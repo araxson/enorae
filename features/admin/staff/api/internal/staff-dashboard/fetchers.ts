@@ -21,8 +21,13 @@ export async function fetchBackgroundChecks(
 
   return new Map<string, BackgroundRow>(
     (data || [])
-      .filter((row): row is BackgroundRow => Boolean(row.user_id))
-      .map((row) => [row.user_id, { ...row }]),
+      .filter((row) => Boolean(row?.user_id))
+      .map((row) => ({
+        user_id: row.user_id as string,
+        background_check_status: row.background_check_status ?? null,
+        background_check_date: row.background_check_date ?? null,
+      }))
+      .map((row) => [row.user_id, row]),
   )
 }
 
@@ -41,8 +46,12 @@ export async function fetchProfileMetadata(
 
   return new Map<string, MetadataRow>(
     (data || [])
-      .filter((row): row is MetadataRow => Boolean(row.profile_id))
-      .map((row) => [row.profile_id, { profile_id: row.profile_id, tags: row.tags ?? null }]),
+      .filter((row) => Boolean(row?.profile_id))
+      .map((row) => ({
+        profile_id: row.profile_id as string,
+        tags: row.tags ?? null,
+      }))
+      .map((row) => [row.profile_id, row]),
   )
 }
 

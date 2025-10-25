@@ -75,7 +75,7 @@ export async function sendNotification(input: {
 
   const validation = notificationSchema.safeParse(input)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message)
+    throw new Error(validation.error.errors[0]?.message || 'Validation failed')
   }
 
   const { userId, title, message, type, channels, data } = validation.data
@@ -112,7 +112,7 @@ export async function markNotificationsRead(notificationIds?: string[]) {
 
   const validation = notificationIdsSchema.safeParse(notificationIds)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message)
+    throw new Error(validation.error.errors[0]?.message || 'Validation failed')
   }
 
   const {
@@ -154,7 +154,7 @@ export async function updateNotificationPreferences(preferences: {
 
   const validation = updatePreferencesSchema.safeParse({ preferences })
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message)
+    throw new Error(validation.error.errors[0]?.message || 'Validation failed')
   }
 
   const {
@@ -186,7 +186,7 @@ export async function upsertNotificationTemplate(template: TemplateInput) {
 
   const validation = templateSchema.safeParse(template)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message)
+    throw new Error(validation.error.errors[0]?.message || 'Validation failed')
   }
 
   const {
