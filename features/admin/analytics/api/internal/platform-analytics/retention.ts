@@ -1,5 +1,5 @@
 import type { RetentionSeriesPoint } from '@/features/admin/analytics/api/admin-analytics-types'
-import { toNumber } from './helpers'
+import { toNumber } from '@/lib/utils/analytics-calculations'
 import type { GrowthMetricsResult } from './growth'
 
 type AnalyticsRow = {

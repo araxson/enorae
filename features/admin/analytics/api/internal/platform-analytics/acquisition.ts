@@ -1,4 +1,4 @@
-import { buildBreakdown, parseDate } from './helpers'
+import { buildBreakdown, parseDate } from '@/lib/utils/analytics-calculations'
 
 type UserRow = {
   primary_role: string | null

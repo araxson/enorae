@@ -1,4 +1,19 @@
-import type { GrowthDelta, AcquisitionBreakdownItem } from '@/features/admin/analytics/api/admin-analytics-types'
+/**
+ * Analytics calculation utilities for metrics, deltas, and aggregations
+ */
+
+export interface GrowthDelta {
+  current: number
+  previous: number
+  delta: number
+  deltaPercent: number
+}
+
+export interface AcquisitionBreakdownItem {
+  label: string
+  count: number
+  percentage: number
+}
 
 export const toNumber = (value: number | null | undefined): number =>
   typeof value === 'number' && Number.isFinite(value) ? value : 0

@@ -3,7 +3,8 @@
 import { revalidatePath } from 'next/cache'
 
 import { assignServiceSchema } from './constants'
-import { getAuthorizedContext, parseUuid } from './helpers'
+import { getAuthorizedContext } from './operations'
+import { parseUuid } from '@/lib/utils/validation'
 import type { Database } from '@/lib/types/database.types'
 
 type ServiceView = Database['public']['Views']['services_view']['Row']

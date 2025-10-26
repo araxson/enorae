@@ -2,13 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import type { Database } from '@/lib/types/database.types'
-
-import { UUID_REGEX } from './constants'
-
-export type Salon = Database['public']['Views']['salons']['Row']
-export type Staff = Database['public']['Views']['staff_profiles_view']['Row']
-export type Service = Database['public']['Views']['services']['Row']
+import type { Salon, Staff } from '@/features/business/staff-services/types'
 
 export async function getAuthorizedContext(staffId: string) {
   const supabase = await createClient()
@@ -40,12 +34,4 @@ export async function getAuthorizedContext(staffId: string) {
   }
 
   return { supabase, session, salon: typedSalon, staff: staff as Staff }
-}
-
-export async function parseUuid(value: FormDataEntryValue | null | undefined) {
-  const stringValue = value?.toString()
-  if (!stringValue || !UUID_REGEX.test(stringValue)) {
-    return { error: 'Invalid identifier' as const }
-  }
-  return { value: stringValue }
 }

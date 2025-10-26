@@ -9,7 +9,7 @@ import {
   PERFORMANCE_WINDOW_DAYS,
   REFRESH_LIMIT,
 } from '@/features/admin/analytics/api/internal/platform-analytics/constants'
-import { parseDate } from '@/features/admin/analytics/api/internal/platform-analytics/helpers'
+import { parseDate } from '@/lib/utils/analytics-calculations'
 import { buildGrowthMetrics } from '@/features/admin/analytics/api/internal/platform-analytics/growth'
 import { buildRetentionMetrics } from '@/features/admin/analytics/api/internal/platform-analytics/retention'
 import { buildAcquisitionMetrics } from '@/features/admin/analytics/api/internal/platform-analytics/acquisition'

@@ -1,5 +1,5 @@
 import type { PlatformAnalyticsSnapshot, PerformanceBenchmark } from '@/features/admin/analytics/api/admin-analytics-types'
-import { toNumber } from './helpers'
+import { toNumber } from '@/lib/utils/analytics-calculations'
 
 type DailyMetricsRow = {
   salon_id: string | null

@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 
 import { UUID_REGEX } from './constants'
-import { getAuthorizedContext } from './helpers'
+import { getAuthorizedContext } from './operations'
 
 export async function bulkAssignServices(formData: FormData) {
   try {
