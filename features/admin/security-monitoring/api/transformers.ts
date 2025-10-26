@@ -10,7 +10,7 @@ import type {
   SecurityEvent,
   SecurityIncident,
   SuspiciousSession,
-} from './types'
+} from '@/features/admin/security-monitoring/types'
 
 type AuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
 type AccessMonitoringRow = Database['security']['Tables']['access_monitoring']['Row']

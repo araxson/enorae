@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { canAccessSalon } from '@/lib/auth/permissions/salon-access'

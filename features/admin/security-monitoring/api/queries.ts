@@ -10,15 +10,13 @@ import {
   toSecurityEvent,
   toSuspiciousSession,
   toIpAccessEvent,
-} from '@/features/admin/security-monitoring/api/helpers'
-import type {
-  AuditLogRow,
-  AccessMonitoringRow,
-  SessionSecurityRow,
-  RateLimitTrackingRow,
-  RateLimitRuleRow,
-  SecurityAuditLogRow,
-} from '@/features/admin/security-monitoring/api/helpers'
+  type AuditLogRow,
+  type AccessMonitoringRow,
+  type SessionSecurityRow,
+  type RateLimitTrackingRow,
+  type RateLimitRuleRow,
+  type SecurityAuditLogRow,
+} from '@/features/admin/security-monitoring/api/transformers'
 import { groupFailedLogins } from '@/features/admin/security-monitoring/api/failed-logins'
 import type {
   RateLimitViolation,

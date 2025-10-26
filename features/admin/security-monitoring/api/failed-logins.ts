@@ -1,5 +1,4 @@
-import type { AuditLogRow } from './helpers'
-import { normalizeIp, toFailedLoginAttempt } from './helpers'
+import { normalizeIp, toFailedLoginAttempt, type AuditLogRow } from './transformers'
 import type { FailedLoginSummary } from './types'
 
 export const groupFailedLogins = (rows: AuditLogRow[]): FailedLoginSummary => {

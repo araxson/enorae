@@ -10,7 +10,7 @@ import {
   notificationIdsSchema,
   notificationChannels,
   notificationEvents,
-} from './mutations/helpers'
+} from './mutations/utilities'
 import type { Database, Json } from '@/lib/types/database.types'
 import type { NotificationTemplate } from './queries'
 
