@@ -3407,6 +3407,28 @@
                     },
                     {
                       "type": "directory",
+                      "name": "queries",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "salon-calculations.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "salon-filters.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "salon-list.ts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "directory",
                       "name": "utils",
                       "children": [
                         {
@@ -3418,10 +3440,6 @@
                     {
                       "type": "file",
                       "name": "mutations.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "queries.ts"
                     }
                   ]
                 },
@@ -4642,8 +4660,26 @@
                       ]
                     },
                     {
-                      "type": "file",
-                      "name": "mutations.ts"
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "chain-crud.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "chain-membership.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "chain-settings.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        }
+                      ]
                     },
                     {
                       "type": "file",
@@ -5634,16 +5670,42 @@
                       ]
                     },
                     {
+                      "type": "directory",
+                      "name": "queries",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "notification-analytics.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "notification-counts.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "notification-list.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "notification-preferences.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "notification-templates.ts"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "actions.ts"
                     },
                     {
                       "type": "file",
                       "name": "mutations.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "queries.ts"
                     }
                   ]
                 },
@@ -10704,12 +10766,34 @@
                       ]
                     },
                     {
-                      "type": "file",
-                      "name": "mutations.ts"
+                      "type": "directory",
+                      "name": "queries",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "earnings.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "performance.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "relationships.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "revenue.ts"
+                        }
+                      ]
                     },
                     {
                       "type": "file",
-                      "name": "queries.ts"
+                      "name": "mutations.ts"
                     }
                   ]
                 },
@@ -10956,8 +11040,30 @@
                       ]
                     },
                     {
-                      "type": "file",
-                      "name": "queries.ts"
+                      "type": "directory",
+                      "name": "queries",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "client-details.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "client-history.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "client-list.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "client-retention.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        }
+                      ]
                     }
                   ]
                 },
