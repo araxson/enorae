@@ -1,9 +1,16 @@
 import 'server-only'
 
-import { differenceInCalendarDays } from 'date-fns'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import {
+  computeCompliance,
+  calculateHealthScore,
+  deriveLicenseStatus,
+  type LicenseStatus,
+  type ComplianceLevel,
+} from './salon-calculations'
+
 type AdminSalonRow = Database['public']['Views']['admin_salons_overview_view']['Row']
 type SalonSettingsRow = Database['public']['Views']['salon_settings_view']['Row']
 type SalonBaseRow = {
@@ -12,96 +19,6 @@ type SalonBaseRow = {
   slug?: string | null
   business_name?: string | null
   business_type?: string | null
-}
-
-export type LicenseStatus = 'valid' | 'expiring' | 'expired' | 'unknown'
-export type ComplianceLevel = 'low' | 'medium' | 'high'
-
-interface ComplianceInput {
-  isVerified: boolean
-  licenseStatus: LicenseStatus
-  ratingAverage: number | null
-  totalBookings: number | null
-  totalRevenue: number | null
-  staffCount: number | null
-}
-
-interface ComplianceResult {
-  score: number
-  level: ComplianceLevel
-  issues: string[]
-}
-
-interface HealthInput {
-  ratingAverage: number | null
-  totalBookings: number | null
-  totalRevenue: number | null
-  staffCount: number | null
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max)
-}
-
-function computeCompliance(input: ComplianceInput): ComplianceResult {
-  const issues: string[] = []
-  let score = 80
-
-  if (!input.isVerified) {
-    issues.push('Verification pending')
-    score -= 20
-  }
-
-  switch (input.licenseStatus) {
-    case 'expired':
-      issues.push('License expired')
-      score -= 25
-      break
-    case 'expiring':
-      issues.push('License expiring soon')
-      score -= 10
-      break
-    case 'unknown':
-      issues.push('License status unknown')
-      score -= 5
-      break
-  }
-
-  if ((input.ratingAverage ?? 0) < 3) {
-    issues.push('Low customer rating')
-    score -= 10
-  } else if ((input.ratingAverage ?? 0) > 4.5) {
-    score += 5
-  }
-
-  if ((input.totalBookings ?? 0) < 5) {
-    issues.push('Low booking volume')
-    score -= 5
-  }
-
-  const finalScore = clamp(Math.round(score), 0, 100)
-  let level: ComplianceLevel = 'low'
-
-  if (finalScore < 60) level = 'high'
-  else if (finalScore < 80) level = 'medium'
-
-  return { score: finalScore, level, issues }
-}
-
-function calculateHealthScore({
-  ratingAverage,
-  totalBookings,
-  totalRevenue,
-  staffCount,
-}: HealthInput): number {
-  const ratingScore = clamp((ratingAverage ?? 0) / 5, 0, 1)
-  const bookingScore = clamp((totalBookings ?? 0) / 200, 0, 1)
-  const revenueScore = clamp((totalRevenue ?? 0) / 150000, 0, 1)
-  const staffScore = clamp((staffCount ?? 0) / 50, 0, 1)
-
-  const weighted =
-    ratingScore * 0.35 + bookingScore * 0.25 + revenueScore * 0.3 + staffScore * 0.1
-  return Math.round(weighted * 100)
 }
 
 export type AdminSalon = AdminSalonRow & {
@@ -140,14 +57,6 @@ export interface SalonsResponse {
   salons: AdminSalon[]
   stats: SalonDashboardStats
   insights: SalonInsights
-}
-
-function deriveLicenseStatus(expiresAt: string | null): { status: LicenseStatus; days: number | null } {
-  if (!expiresAt) return { status: 'unknown', days: null }
-  const days = differenceInCalendarDays(new Date(expiresAt), new Date())
-  if (days < 0) return { status: 'expired', days }
-  if (days <= 30) return { status: 'expiring', days }
-  return { status: 'valid', days }
 }
 
 function deriveVerificationStatus(row: AdminSalonRow, base: SalonBaseRow | undefined): boolean {
@@ -280,35 +189,6 @@ export async function getAllSalons(): Promise<SalonsResponse> {
   }
 
   return { salons: adminSalons, stats, insights }
-}
-
-export interface SalonFilters {
-  chain_id?: string
-  subscription_tier?: string
-  search?: string
-  is_deleted?: boolean
-}
-
-// Compatibility export for existing call sites
-export async function getAllSalonsLegacy(filters?: SalonFilters) {
-  const { salons, stats } = await getAllSalons()
-
-  const filtered = (filters ? applySalonFilters(salons, filters) : salons)
-  return { salons: filtered, stats }
-}
-
-function applySalonFilters(salons: AdminSalon[], filters: SalonFilters) {
-  return salons.filter((salon) => {
-    const matchesChain = !filters['chain_id'] || salon['chain_id'] === filters['chain_id']
-    const matchesTier = !filters['subscription_tier'] || salon.subscriptionTier === filters['subscription_tier']
-    const matchesSearch = !filters.search
-      ? true
-      : [salon['name'], salon['business_name'], salon['slug']]
-          .filter(Boolean)
-          .some((value) => value!.toLowerCase().includes(filters.search!.toLowerCase()))
-
-    return matchesChain && matchesTier && matchesSearch
-  })
 }
 
 function countBy<T>(items: T[], selector: (item: T) => string) {

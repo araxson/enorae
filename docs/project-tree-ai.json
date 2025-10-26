@@ -1841,10 +1841,6 @@
                             },
                             {
                               "type": "file",
-                              "name": "helpers.ts"
-                            },
-                            {
-                              "type": "file",
                               "name": "performance.ts"
                             },
                             {
@@ -2110,8 +2106,38 @@
                       ]
                     },
                     {
-                      "type": "file",
-                      "name": "mutations.ts"
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "audit.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "lifecycle.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "schemas.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "status.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "subscription.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "verification.ts"
+                        }
+                      ]
                     },
                     {
                       "type": "file",
@@ -2788,12 +2814,46 @@
                       ]
                     },
                     {
-                      "type": "file",
-                      "name": "mutations.ts"
+                      "type": "directory",
+                      "name": "queries",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "fraud.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "messages.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "quality.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reputation.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reviews.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "sentiment.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "statistics.ts"
+                        }
+                      ]
                     },
                     {
                       "type": "file",
-                      "name": "queries.ts"
+                      "name": "mutations.ts"
                     }
                   ]
                 },
@@ -3557,15 +3617,15 @@
                     },
                     {
                       "type": "file",
-                      "name": "helpers.ts"
-                    },
-                    {
-                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "transformers.ts"
                     },
                     {
                       "type": "file",
@@ -5545,10 +5605,6 @@
                       "children": [
                         {
                           "type": "file",
-                          "name": "helpers.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "index.ts"
                         },
                         {
@@ -5566,6 +5622,10 @@
                         {
                           "type": "file",
                           "name": "test.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "utilities.ts"
                         },
                         {
                           "type": "file",
@@ -6421,7 +6481,7 @@
                   "children": [
                     {
                       "type": "file",
-                      "name": "helpers.ts"
+                      "name": "filtering.ts"
                     },
                     {
                       "type": "file",
@@ -7011,11 +7071,11 @@
                         },
                         {
                           "type": "file",
-                          "name": "helpers.ts"
+                          "name": "index.ts"
                         },
                         {
                           "type": "file",
-                          "name": "index.ts"
+                          "name": "operations.ts"
                         }
                       ]
                     },
@@ -7652,10 +7712,6 @@
                         {
                           "type": "file",
                           "name": "category-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "helpers.ts"
                         },
                         {
                           "type": "file",
@@ -9231,10 +9287,6 @@
                       "children": [
                         {
                           "type": "file",
-                          "name": "helpers.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "location-queries.ts"
                         },
                         {
@@ -9390,10 +9442,6 @@
                         {
                           "type": "file",
                           "name": "category-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "helpers.ts"
                         },
                         {
                           "type": "file",
@@ -10882,8 +10930,30 @@
                       ]
                     },
                     {
-                      "type": "file",
-                      "name": "mutations.ts"
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "messaging.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "notes.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "preferences.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
+                        }
+                      ]
                     },
                     {
                       "type": "file",
@@ -11796,8 +11866,34 @@
                       ]
                     },
                     {
-                      "type": "file",
-                      "name": "mutations.ts"
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "approval.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "cancellation.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "creation.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "schemas.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "update.ts"
+                        }
+                      ]
                     },
                     {
                       "type": "file",
@@ -12263,7 +12359,15 @@
             },
             {
               "type": "file",
+              "name": "analytics-calculations.ts"
+            },
+            {
+              "type": "file",
               "name": "commission.ts"
+            },
+            {
+              "type": "file",
+              "name": "formatting.ts"
             },
             {
               "type": "file",
@@ -12292,6 +12396,10 @@
             {
               "type": "file",
               "name": "review-analytics.ts"
+            },
+            {
+              "type": "file",
+              "name": "validation.ts"
             }
           ]
         },
