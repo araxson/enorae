@@ -4,7 +4,7 @@ import type { AppointmentRow, CommissionRate, ServiceRevenue } from './types'
 import {
   authorizeStaffAccess,
   calculateDefaultCommission,
-} from './helpers'
+} from '@/lib/utils/commission'
 
 const DEFAULT_COMMISSION_PERCENTAGE = 40
 const DEFAULT_COMMISSION_RATE = DEFAULT_COMMISSION_PERCENTAGE / 100

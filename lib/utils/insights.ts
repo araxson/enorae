@@ -3,7 +3,7 @@ import type {
   CustomerSegment,
   CustomerSegmentation,
   InsightsSummary,
-} from './types'
+} from '@/features/business/insights/api/queries/types'
 
 export function calculateSegment(input: {
   totalVisits: number

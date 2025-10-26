@@ -4,7 +4,7 @@ import {
   authorizeStaffAccess,
   calculateDefaultCommission,
   toDateOnly,
-} from './helpers'
+} from '@/lib/utils/commission'
 import type { PayoutSchedule } from './types'
 
 const DEFAULT_COMMISSION_RATE = 0.4

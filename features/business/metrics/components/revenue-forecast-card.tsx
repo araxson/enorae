@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
-import type { RevenueForecast } from '@/features/business/metrics/api/analytics'
+import type { RevenueForecast } from '@/lib/utils/metrics'
 
 type RevenueForecastCardProps = {
   forecast: RevenueForecast

@@ -1972,24 +1972,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "oversight.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "file",
-                      "name": "alerts.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "metrics.ts"
-                    },
-                    {
                       "type": "file",
                       "name": "mutations.ts"
                     },
@@ -1999,7 +1981,7 @@
                     },
                     {
                       "type": "file",
-                      "name": "salons.ts"
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -2580,6 +2562,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -2678,6 +2664,10 @@
                     {
                       "type": "file",
                       "name": "thread-utils.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -2789,6 +2779,10 @@
                         },
                         {
                           "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "respond-to-review.mutation.ts"
                         },
                         {
@@ -2877,10 +2871,6 @@
                   "children": [
                     {
                       "type": "file",
-                      "name": "actions.ts"
-                    },
-                    {
-                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
@@ -2894,6 +2884,10 @@
                     {
                       "type": "file",
                       "name": "schemas.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     },
                     {
                       "type": "file",
@@ -3060,6 +3054,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -3570,16 +3568,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "security-monitoring.ts"
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "failed-logins.ts"
                     },
@@ -3594,6 +3582,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -3949,6 +3941,10 @@
                         },
                         {
                           "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "single-user.ts"
                         },
                         {
@@ -4070,6 +4066,10 @@
                         {
                           "type": "file",
                           "name": "customer-segmentation.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
                         },
                         {
                           "type": "file",
@@ -4202,12 +4202,12 @@
                         {
                           "type": "file",
                           "name": "business-hours.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
                         }
                       ]
-                    },
-                    {
-                      "type": "file",
-                      "name": "actions.ts"
                     },
                     {
                       "type": "file",
@@ -4417,16 +4417,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "salon.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "export-utils.ts"
@@ -4696,6 +4686,10 @@
                         {
                           "type": "file",
                           "name": "coupon-validation.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
                         }
                       ]
                     },
@@ -5001,6 +4995,10 @@
                         },
                         {
                           "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "metrics.ts"
                         },
                         {
@@ -5032,6 +5030,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -5257,16 +5259,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "address.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "address.mutations.ts"
@@ -5734,16 +5726,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "dynamic-pricing.ts"
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "analytics.ts"
                     },
@@ -6180,6 +6162,18 @@
                   "type": "directory",
                   "name": "components",
                   "children": []
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "schema.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "types.ts"
                 }
               ]
             },
@@ -6222,16 +6216,6 @@
                         {
                           "type": "file",
                           "name": "update-service.mutation.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "service-search.ts"
                         }
                       ]
                     },
@@ -6482,6 +6466,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -6544,6 +6532,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -6612,6 +6604,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -6820,6 +6816,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7104,6 +7104,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7193,16 +7197,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "monitoring.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -7462,6 +7456,10 @@
                         {
                           "type": "file",
                           "name": "favorite-staff.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
                         }
                       ]
                     },
@@ -7598,6 +7596,10 @@
                         {
                           "type": "file",
                           "name": "favorites.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
                         },
                         {
                           "type": "file",
@@ -8261,6 +8263,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "schema.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "session-context.ts"
                     }
                   ]
@@ -8537,11 +8543,19 @@
                 },
                 {
                   "type": "file",
+                  "name": "index.tsx"
+                },
+                {
+                  "type": "file",
                   "name": "marketing-hero.tsx"
                 },
                 {
                   "type": "file",
                   "name": "newsletter-form.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8554,6 +8568,10 @@
                 {
                   "type": "file",
                   "name": "trust-badge.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "types.ts"
                 }
               ]
             },
@@ -9026,6 +9044,18 @@
                 {
                   "type": "file",
                   "name": "index.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "schema.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "types.ts"
                 }
               ]
             },
@@ -9650,6 +9680,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -9740,6 +9774,10 @@
                         {
                           "type": "file",
                           "name": "delete-blocked-time.mutation.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
                         },
                         {
                           "type": "file",
@@ -9924,16 +9962,6 @@
                         {
                           "type": "file",
                           "name": "thread-mutations.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "unread-counts.ts"
                         }
                       ]
                     },
@@ -10210,16 +10238,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "queries",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "profile-summary.ts"
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "mutations.ts"
                     },
@@ -10440,6 +10458,18 @@
                       "name": "enrich.ts"
                     }
                   ]
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "schema.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "types.ts"
                 }
               ]
             },
@@ -10610,6 +10640,18 @@
                 {
                   "type": "file",
                   "name": "index.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "schema.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "types.ts"
                 }
               ]
             }
@@ -11294,6 +11336,18 @@
                   "type": "directory",
                   "name": "components",
                   "children": []
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "schema.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "types.ts"
                 }
               ]
             },
@@ -11488,6 +11542,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -11542,6 +11600,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },

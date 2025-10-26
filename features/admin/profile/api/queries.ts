@@ -16,7 +16,7 @@ import type {
   ProfileActivityEntry,
   ProfileDetail,
 } from './types'
-import { sanitizeSearchTerm, toRecord, mapSummary } from './utils'
+import { sanitizeSearchTerm, toRecord, mapSummary } from '@/lib/utils/profile'
 
 export async function searchProfiles(term: string, limit = 20): Promise<ProfileSearchResult[]> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)

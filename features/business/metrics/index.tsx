@@ -6,7 +6,7 @@ import { RevenueForecastCard } from './components/revenue-forecast-card'
 import { StaffPerformanceCard, ServicePopularityChart } from '@/features/business/business-common/components'
 import { getTopStaff, getTopServices } from '@/features/business/analytics/api/queries'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
-import { buildPeriodComparisons, buildRevenueForecast } from './api/analytics'
+import { buildPeriodComparisons, buildRevenueForecast } from '@/lib/utils/metrics'
 import { OperationalDashboard } from '@/features/business/metrics-operational/components/operational-dashboard'
 import { getOperationalMetrics } from '@/features/business/metrics-operational/api/queries'
 

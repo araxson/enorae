@@ -1,7 +1,7 @@
 import 'server-only'
 
 import type { AppointmentRow } from './types'
-import { authorizeStaffAccess } from './helpers'
+import { authorizeStaffAccess } from '@/lib/utils/commission'
 import type { CommissionData, DailyEarnings } from './types'
 
 function sumRevenue(appointments: AppointmentRow[] | null | undefined) {

@@ -8,7 +8,7 @@ import {
   estimateFakeLikelihood,
   calculateQualityScore,
   computeReviewerReputation,
-} from './analytics'
+} from '@/lib/utils/review-analytics'
 
 type MessageThread = Database['public']['Views']['admin_messages_overview_view']['Row']
 type ReviewRow = Database['public']['Views']['admin_reviews_overview_view']['Row']

@@ -13,7 +13,7 @@ import {
   groupAppointmentsByCustomer,
   groupServicesByCustomer,
 } from './transformers'
-import { selectTopByLifetimeValue } from './helpers'
+import { selectTopByLifetimeValue } from '@/lib/utils/insights'
 import type { CustomerMetrics } from './types'
 
 export async function getCustomerInsights(

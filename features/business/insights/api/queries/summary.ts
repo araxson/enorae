@@ -6,7 +6,7 @@ import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import {
   buildSegmentationCounts,
   createEmptyInsightsSummary,
-} from './helpers'
+} from '@/lib/utils/insights'
 import type { InsightsSummary } from './types'
 import { getCustomerInsights } from './customers'
 

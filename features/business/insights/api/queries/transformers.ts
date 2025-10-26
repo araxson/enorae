@@ -5,7 +5,7 @@ import type {
   ReviewSummary,
   ServiceAggregation,
 } from './customer-types'
-import { calculateSegment } from './helpers'
+import { calculateSegment } from '@/lib/utils/insights'
 
 export function groupAppointmentsByCustomer(
   appointments: AppointmentWithProfile[],

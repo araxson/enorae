@@ -2,7 +2,7 @@
 
 import { ArrowDownRight, ArrowUpRight, Equal } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import type { MetricsComparison } from '@/features/business/metrics/api/analytics'
+import type { MetricsComparison } from '@/lib/utils/metrics'
 
 type MetricKey = keyof MetricsComparison
 
