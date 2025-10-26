@@ -13,7 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, ShieldAlert, Key } from 'lucide-react'
-import type { SchemaValidationSnapshot } from '@/features/admin/database-health/api/internal/schema-validation'
+import type { SchemaValidationSnapshot } from '@/features/admin/database-health/api/schema-validation'
 
 interface SchemaValidationPanelProps {
   data: SchemaValidationSnapshot

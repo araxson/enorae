@@ -1,6 +1,6 @@
 import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { verifyStaffOwnership } from '@/features/staff/clients/api/internal/auth'
+import { verifyStaffOwnership } from '@/lib/auth/staff'
 import type { AppointmentSummary, AppointmentServiceSummary } from './types'
 
 export interface CustomerRelationship {

@@ -13,7 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AlertCircle, Clock, Database } from 'lucide-react'
-import type { OptimizationSnapshot } from '@/features/admin/database-health/api/internal/optimization'
+import type { OptimizationSnapshot } from '@/features/admin/database-health/api/optimization'
 
 interface OptimizationPanelProps {
   data: OptimizationSnapshot

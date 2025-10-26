@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { DatabaseHealthSnapshot } from '@/features/admin/database-health/api/internal/database-health'
+import type { DatabaseHealthSnapshot } from '@/features/admin/database-health/api/database-health'
 
 interface DatabaseHealthPanelProps {
   data: DatabaseHealthSnapshot

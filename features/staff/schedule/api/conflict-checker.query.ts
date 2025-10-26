@@ -1,6 +1,6 @@
 import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { verifyStaffOwnership } from '@/features/staff/clients/api/internal/auth'
+import { verifyStaffOwnership } from '@/lib/auth/staff'
 import type { Database } from '@/lib/types/database.types'
 import type { ScheduleConflict, StaffSchedule } from './types'
 

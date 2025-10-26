@@ -1816,80 +1816,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "directory",
-                          "name": "platform-analytics",
-                          "children": [
-                            {
-                              "type": "file",
-                              "name": "acquisition.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "constants.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "feature-usage.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "growth.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "performance.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "retention.ts"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "directory",
-                          "name": "queries",
-                          "children": [
-                            {
-                              "type": "file",
-                              "name": "appointments.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "messages.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "platform.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "revenue.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "reviews.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "salons.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "staff.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "users.ts"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "admin-analytics-shared.ts"
                     },
@@ -2081,32 +2007,6 @@
                     },
                     {
                       "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "audit.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "lifecycle.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "subscription.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "verification.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
                       "name": "mutations",
                       "children": [
                         {
@@ -2236,32 +2136,6 @@
                         {
                           "type": "file",
                           "name": "verify-user-email.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "admin-overview.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "platform-metrics.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "recent-salons.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "user-stats.ts"
                         }
                       ]
                     },
@@ -2749,20 +2623,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "review-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "stats-queries.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "directory",
                       "name": "mutations",
@@ -3325,16 +3185,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "directory",
                       "name": "mutations",
@@ -4233,24 +4083,6 @@
                   "children": [
                     {
                       "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "appointment-services.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "batch.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "bulk-operations.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
                       "name": "queries",
                       "children": [
                         {
@@ -4641,24 +4473,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "crud.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "schemas.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "settings.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "directory",
                       "name": "mutations",
@@ -5607,36 +5421,6 @@
                   "children": [
                     {
                       "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "constants.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "notification-counts.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "notification-preferences.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "notification-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "notification-stats.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
                       "name": "mutations",
                       "children": [
                         {
@@ -5931,24 +5715,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "response-mutations.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "review-mutations.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -6772,24 +6538,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "role-assignment.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "role-updates.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "schemas.ts"
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "mutations.ts"
                     },
@@ -6885,16 +6633,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "staff-services.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -7016,34 +6754,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "directory",
-                          "name": "mutations",
-                          "children": [
-                            {
-                              "type": "file",
-                              "name": "delete-staff-schedule.mutation.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "shared.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "toggle-schedule-active.mutation.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "upsert-staff-schedule.mutation.ts"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "mutations.ts"
                     },
@@ -7115,32 +6825,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "assign.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "bulk.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "constants.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "index.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "operations.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -7768,28 +7452,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "category-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "salon-details-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "salon-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "mutations.ts"
                     },
@@ -8255,28 +7917,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "featured.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "locations.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "search.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -9344,32 +8984,6 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "location-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "salon-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "service-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "stats-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "mutations.ts"
                     },
@@ -9497,32 +9111,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "category-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "salon-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "service-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "stats-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -9725,28 +9313,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "login.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "otp.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "password.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -10021,24 +9587,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "message-mutations.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "schemas.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "thread-mutations.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -11953,24 +11501,6 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
-                    {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "manager-actions.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "schemas.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "staff-actions.ts"
-                        }
-                      ]
-                    },
                     {
                       "type": "directory",
                       "name": "mutations",

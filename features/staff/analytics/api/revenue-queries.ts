@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { AppointmentServiceBreakdownRow } from './types'
 import { getStaffPerformanceMetrics } from './performance-queries'
-import { verifyStaffOwnership } from '@/features/staff/clients/api/internal/auth'
+import { verifyStaffOwnership } from '@/lib/auth/staff'
 
 export interface StaffRevenueBreakdown {
   service_id: string
