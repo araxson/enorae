@@ -1,4 +1,4 @@
-import { StructuredData, generateFAQSchema } from '@/lib/seo/structured-data'
+import { StructuredData, generateFAQSchema } from '@/lib/seo'
 import { FAQPage } from './components/faq-page'
 import { questionsData } from './components/sections/questions/questions.data'
 

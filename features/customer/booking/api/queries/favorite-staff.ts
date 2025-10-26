@@ -1,20 +1,23 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 export async function calculateCustomerFavoriteStaff(
   customerId: string,
   salonId: string
 ): Promise<string | null> {
+  const session = await requireAuth()
+  if (session.user.id !== customerId) {
+    throw new Error('Unauthorized')
+  }
+
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
 
   // Find most frequently booked staff member
   const { data, error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
+    .from('appointments_view')
     .select('staff_id')
-    .eq('customer_id', customerId)
+    .eq('customer_id', session.user.id)
     .eq('salon_id', salonId)
     .eq('status', 'completed')
 
@@ -41,16 +44,18 @@ export async function getCustomerVisitFrequency(
   customerId: string,
   salonId: string
 ): Promise<number | null> {
+  const session = await requireAuth()
+  if (session.user.id !== customerId) {
+    throw new Error('Unauthorized')
+  }
+
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
 
   // Get completed appointments ordered by date
   const { data, error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
+    .from('appointments_view')
     .select('start_time')
-    .eq('customer_id', customerId)
+    .eq('customer_id', session.user.id)
     .eq('salon_id', salonId)
     .eq('status', 'completed')
     .order('start_time', { ascending: true })

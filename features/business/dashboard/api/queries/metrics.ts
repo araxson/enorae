@@ -3,7 +3,7 @@ import 'server-only'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { getUserSalonIds } from './salon'
-import type { AppointmentWithDetails } from '@/features/business/dashboard/api/types'
+import type { AppointmentWithDetails } from '@/features/business/dashboard/types'
 
 const getSupabaseClient = () => createClient()
 

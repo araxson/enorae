@@ -7,7 +7,7 @@ import {
   getFailedWebhooks,
   getWebhookStats,
   type WebhookStats,
-} from '@/features/business/webhooks/api/queries/monitoring'
+} from '@/features/business/webhooks/api/queries'
 
 type FailedWebhookRow = Database['public']['Views']['communication_webhook_queue']['Row']
 

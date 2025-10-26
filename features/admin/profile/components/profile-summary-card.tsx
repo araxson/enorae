@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Mail, ShieldQuestion, UserCircle2 } from 'lucide-react'
-import type { ProfileDetail } from '@/features/admin/profile/api/types'
+import type { ProfileDetail } from '@/features/admin/profile/types'
 
 interface ProfileSummaryCardProps {
   profile: ProfileDetail | null

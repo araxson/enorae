@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { AppointmentTrendPoint } from '@/features/admin/appointments/api/types'
+import type { AppointmentTrendPoint } from '@/features/admin/appointments/types'
 
 interface TrendTableProps {
   trend: AppointmentTrendPoint[]

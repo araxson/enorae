@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { Loader2, Search } from 'lucide-react'
-import type { ProfileSearchResult } from '@/features/admin/profile/api/types'
+import type { ProfileSearchResult } from '@/features/admin/profile/types'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface ProfileSearchPanelProps {

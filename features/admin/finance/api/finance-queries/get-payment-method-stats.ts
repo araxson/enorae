@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { ManualTransactionRow, PaymentMethodStats } from '@/features/admin/finance/api/types'
+import type { ManualTransactionRow, PaymentMethodStats } from '@/features/admin/finance/types'
 import { requireAdminClient } from './client'
 
 export async function getPaymentMethodStats(

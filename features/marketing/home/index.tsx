@@ -3,7 +3,7 @@ import {
   StructuredData,
   generateOrganizationSchema,
   generateWebSiteSchema,
-} from '@/lib/seo/structured-data'
+} from '@/lib/seo'
 import { HomePageClient } from './components/home-page-client'
 
 export function HomePage() {

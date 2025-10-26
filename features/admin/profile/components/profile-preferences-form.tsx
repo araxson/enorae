@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import type { ProfileDetail } from '@/features/admin/profile/api/types'
+import type { ProfileDetail } from '@/features/admin/profile/types'
 import { updateProfilePreferencesAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
 interface ProfilePreferencesFormProps {

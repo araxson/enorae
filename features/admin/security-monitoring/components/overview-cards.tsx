@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import { Activity, AlertTriangle, ShieldAlert, UserX, Lock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { SecurityMonitoringSnapshot, SecurityMetric } from '@/features/admin/security-monitoring/api/types'
+import type { SecurityMonitoringSnapshot, SecurityMetric } from '@/features/admin/security-monitoring/types'
 
 interface OverviewCardsProps {
   snapshot: SecurityMonitoringSnapshot

@@ -2,7 +2,7 @@ import { AlertTriangle, Clock3, ShieldOff } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatDistanceToNow } from 'date-fns'
-import type { SuspiciousSession } from '@/features/admin/security-monitoring/api/types'
+import type { SuspiciousSession } from '@/features/admin/security-monitoring/types'
 
 interface SuspiciousActivityPanelProps {
   sessions: SuspiciousSession[]

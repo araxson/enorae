@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { ProfileDetail } from '@/features/admin/profile/api/types'
+import type { ProfileDetail } from '@/features/admin/profile/types'
 
 interface ProfileActivityCardProps {
   profile: ProfileDetail | null

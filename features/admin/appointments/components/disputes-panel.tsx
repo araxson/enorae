@@ -1,7 +1,7 @@
 import { Scale } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { DisputeCandidate } from '@/features/admin/appointments/api/types'
+import type { DisputeCandidate } from '@/features/admin/appointments/types'
 
 interface DisputesPanelProps {
   disputes: DisputeCandidate[]

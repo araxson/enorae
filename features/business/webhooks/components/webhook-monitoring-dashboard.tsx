@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { RefreshCw, AlertCircle, CheckCircle, Clock, Activity } from 'lucide-react'
-import type { WebhookStats, WebhookDeliveryLog } from '@/features/business/webhooks/api/queries/monitoring'
+import type { WebhookStats, WebhookDeliveryLog } from '@/features/business/webhooks/api/queries'
 
 interface WebhookMonitoringDashboardProps {
   stats: WebhookStats

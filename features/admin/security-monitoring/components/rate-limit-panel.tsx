@@ -1,7 +1,7 @@
 import { Ban, Lock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { RateLimitRule, RateLimitViolation } from '@/features/admin/security-monitoring/api/types'
+import type { RateLimitRule, RateLimitViolation } from '@/features/admin/security-monitoring/types'
 
 interface RateLimitPanelProps {
   violations: RateLimitViolation[]

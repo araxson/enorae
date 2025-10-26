@@ -2,7 +2,7 @@ import 'server-only'
 import type { Database } from '@/lib/types/database.types'
 import type { Salon, SalonSearchParams } from './types'
 import { createPublicClient } from './helpers'
-import { createCachedQuery } from '@/lib/cache/query-cache'
+import { createCachedQuery } from '@/lib/cache'
 
 async function fetchPublicSalons(params?: SalonSearchParams): Promise<Salon[]> {
   const supabase = await createPublicClient()

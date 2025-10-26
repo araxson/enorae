@@ -1,50 +1,65 @@
 import 'server-only'
-
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
+import type { Database } from '@/lib/types/database.types'
 
-export * from './queries/dynamic-pricing'
+type ServicePricingView = Database['public']['Views']['service_pricing_view']['Row']
 
-export type PricingServiceOption = {
-  id: string
-  name: string
-  price: number
+export async function applyDynamicPricing(
+  basePrice: number,
+  serviceId: string,
+  appointmentTime: string,
+  salonId: string
+): Promise<number> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  // NOTE: pricing_rules table doesn't exist in schema
+  // Dynamic pricing functionality is currently not implemented
+  // Return base price as-is
+  // TODO: Implement dynamic pricing when pricing_rules table is added to database
+
+  return Math.round(basePrice * 100) / 100
 }
 
-export async function getPricingServices(
-  salonId: string,
-): Promise<PricingServiceOption[]> {
-  // SECURITY: Require authentication and verify salon access
-  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-  const hasAccess = await canAccessSalon(salonId)
-  if (!hasAccess) {
-    throw new Error('Unauthorized: Cannot access this salon')
-  }
-
+export async function calculateServicePrice(
+  serviceId: string,
+  customerId: string,
+  bookingTime: string
+): Promise<number> {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
-  const { data, error } = await supabase
-    .from('services_view')
-    .select('id, name, price')
-    .eq('salon_id', salonId)
-    .eq('is_active', true)
-    .order('name', { ascending: true })
+  // Get service pricing - price is stored in service_pricing table, not services table
+  const { data: pricing, error: pricingError } = await supabase
+    .from('service_pricing_view')
+    .select('*')
+    .eq('service_id', serviceId)
+    .maybeSingle<ServicePricingView>()
 
-  if (error) throw error
+  if (pricingError) throw pricingError
+  if (!pricing) return 0
 
-  const services = (data ?? []) as Array<{
-    id: string | null
-    name: string | null
-    price: number | null
-  }>
+  // Use current_price, fallback to sale_price, then base_price
+  const basePrice = pricing['current_price'] ?? pricing['sale_price'] ?? pricing['base_price'] ?? 0
 
-  return services
-    .filter((service): service is { id: string; name: string; price: number | null } =>
-      Boolean(service.id && service.name),
-    )
-    .map((service) => ({
-      id: service.id,
-      name: service.name,
-      price: service.price ?? 0,
-    }))
+  // Apply dynamic pricing
+  return applyDynamicPricing(
+    basePrice,
+    serviceId,
+    bookingTime,
+    pricing['salon_id'] ?? ''
+  )
+}
+
+export async function getPricingRules(salonId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  // NOTE: pricing_rules table doesn't exist in schema
+  // Return empty array until table is added
+  // TODO: Query from catalog.pricing_rules when table exists
+  return []
 }

@@ -12,7 +12,10 @@
     "db:types": "python3 scripts/generate_supabase_types.py",
     "test": "tsx --test \"tests/**/*.test.ts\"",
     "validate:migration": "tsx scripts/validate-migration.ts",
-    "validate:migrations:all": "tsx scripts/validate-migration.ts supabase/migrations/*.sql"
+    "validate:migrations:all": "tsx scripts/validate-migration.ts supabase/migrations/*.sql",
+    "scan:schema": "python3 scripts/database-schema-scanner.py",
+    "scan:schema:analyze": "python3 scripts/analyze-schema-scan.py",
+    "scan:schema:full": "python3 scripts/scan-and-analyze.py"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -6,7 +6,7 @@ import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/t
 
 type PortalType = keyof typeof PORTAL_MENUS
 
-interface MenuResult {
+export interface MenuResult {
   navMain: NavItem[]
   navSecondary: NavSecondaryItem[]
 }

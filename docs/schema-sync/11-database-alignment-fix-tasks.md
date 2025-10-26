@@ -1,0 +1,414 @@
+# Database Alignment Fix Tasks
+
+Started: 2025-10-26 01:03:21 UTC
+Scanner: `npm run scan:schema:full`
+
+## Baseline Metrics
+- Total mismatches: 1009
+- Critical issues: 995
+- High priority: 0
+- Medium priority: 0
+- Low priority: 14
+- Total TypeScript errors: 445
+
+## PRIORITY 1: High-Impact Files (10+ errors each)
+Total files: 10
+
+- [ ] Task P1-01: `/features/admin/dashboard/api/queries.ts` (17 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-02: `/features/customer/discovery/api/queries.ts` (14 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-03: `/features/business/dashboard/api/queries/metrics.ts` (12 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-04: `/features/staff/clients/api/queries.ts` (12 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-05: `/features/customer/salon-detail/api/queries.ts` (12 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-06: `/features/marketing/salon-directory/api/queries.ts` (11 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-07: `/features/business/chains/api/queries.ts` (10 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-08: `/features/admin/session-security/api/mutations.ts` (10 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-09: `/features/admin/analytics/api/rpc-functions.ts` (10 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+- [ ] Task P1-10: `/features/admin/analytics/api/internal/platform-analytics/growth.ts` (10 mismatches)
+  - [ ] Read file completely
+  - [ ] Identify all database access patterns
+  - [ ] Apply fixes for each mismatch
+  - [ ] Run `npm run typecheck`
+  - [ ] Verify mismatch count decreased
+  - [ ] Commit changes with alignment summary
+
+## PRIORITY 2: Medium-Impact Files (5-9 errors each)
+Total files: 60
+
+- [ ] Task P2-01: `/features/marketing/services-directory/api/queries.ts` (9 mismatches)
+- [ ] Task P2-02: `/features/staff/clients/api/mutations.ts` (9 mismatches)
+- [ ] Task P2-03: `/features/staff/schedule/api/schedule-requests.ts` (9 mismatches)
+- [ ] Task P2-04: `/features/staff/schedule/api/queries.ts` (9 mismatches)
+- [ ] Task P2-05: `/features/staff/appointments/api/mutations.ts` (9 mismatches)
+- [ ] Task P2-06: `/features/staff/dashboard/api/queries.ts` (9 mismatches)
+- [ ] Task P2-07: `/features/customer/salon-search/api/queries.ts` (9 mismatches)
+- [ ] Task P2-08: `/features/admin/dashboard/api/internal/platform-metrics.ts` (8 mismatches)
+- [ ] Task P2-09: `/features/admin/users/api/queries/stats.ts` (8 mismatches)
+- [ ] Task P2-10: `/features/staff/time-off/api/queries.ts` (8 mismatches)
+- [ ] Task P2-11: `/features/staff/time-off/api/mutations.ts` (8 mismatches)
+- [ ] Task P2-12: `/features/business/appointments/api/queries/appointment-services.ts` (7 mismatches)
+- [ ] Task P2-13: `/features/business/staff/api/mutations.ts` (7 mismatches)
+- [ ] Task P2-14: `/features/business/staff/api/internal/staff-services.ts` (7 mismatches)
+- [ ] Task P2-15: `/features/business/chains/api/mutations.ts` (7 mismatches)
+- [ ] Task P2-16: `/features/admin/security/api/monitoring.ts` (7 mismatches)
+- [ ] Task P2-17: `/features/admin/rate-limit-tracking/api/queries.ts` (7 mismatches)
+- [ ] Task P2-18: `/features/staff/appointments/api/queries.ts` (7 mismatches)
+- [ ] Task P2-19: `/features/staff/services/api/mutations.ts` (7 mismatches)
+- [ ] Task P2-20: `/features/customer/favorites/api/mutations.ts` (7 mismatches)
+- [ ] Task P2-21: `/features/business/insights/api/customer-analytics.ts` (6 mismatches)
+- [ ] Task P2-22: `/features/business/appointments/api/internal/batch.ts` (6 mismatches)
+- [ ] Task P2-23: `/features/business/appointments/api/internal/appointment-services.ts` (6 mismatches)
+- [ ] Task P2-24: `/features/business/service-pricing/api/queries.ts` (6 mismatches)
+- [ ] Task P2-25: `/features/business/settings-roles/api/queries.ts` (6 mismatches)
+- [ ] Task P2-26: `/features/business/chains/api/internal/settings.ts` (6 mismatches)
+- [ ] Task P2-27: `/features/business/webhooks/api/mutations.ts` (6 mismatches)
+- [ ] Task P2-28: `/features/business/services/api/mutations/permanently-delete-service.mutation.ts` (6 mismatches)
+- [ ] Task P2-29: `/features/business/reviews/api/mutations.ts` (6 mismatches)
+- [ ] Task P2-30: `/features/admin/security-access-monitoring/api/queries.ts` (6 mismatches)
+- [ ] Task P2-31: `/features/admin/session-security/api/queries.ts` (6 mismatches)
+- [ ] Task P2-32: `/features/admin/dashboard/api/internal/admin-overview.ts` (6 mismatches)
+- [ ] Task P2-33: `/features/admin/profile/api/queries.ts` (6 mismatches)
+- [ ] Task P2-34: `/features/admin/staff/api/internal/staff-dashboard/fetchers.ts` (6 mismatches)
+- [ ] Task P2-35: `/features/staff/time-off/api/internal/staff-actions.ts` (6 mismatches)
+- [ ] Task P2-36: `/features/staff/profile/api/mutations.ts` (6 mismatches)
+- [ ] Task P2-37: `/features/customer/staff-profiles/api/queries.ts` (6 mismatches)
+- [ ] Task P2-38: `/features/business/metrics/api/queries.ts` (5 mismatches)
+- [ ] Task P2-39: `/features/business/insights/api/churn-prediction.ts` (5 mismatches)
+- [ ] Task P2-40: `/features/business/insights/api/queries/data-access.ts` (5 mismatches)
+- [ ] Task P2-41: `/features/business/service-categories/api/mutations.ts` (5 mismatches)
+- [ ] Task P2-42: `/features/business/business-common/api/queries/salon.ts` (5 mismatches)
+- [ ] Task P2-43: `/features/business/analytics/api/queries/chain-analytics.ts` (5 mismatches)
+- [ ] Task P2-44: `/features/admin/security-monitoring/api/queries/security-monitoring.ts` (5 mismatches)
+- [ ] Task P2-45: `/features/admin/rate-limit-tracking/api/mutations.ts` (5 mismatches)
+- [ ] Task P2-46: `/features/admin/roles/api/queries.ts` (5 mismatches)
+- [ ] Task P2-47: `/features/admin/moderation/api/queries.ts` (5 mismatches)
+- [ ] Task P2-48: `/features/admin/moderation/api/mutations/ban-review-author.mutation.ts` (5 mismatches)
+- [ ] Task P2-49: `/features/admin/moderation/api/internal/stats-queries.ts` (5 mismatches)
+- [ ] Task P2-50: `/features/shared/profile-metadata/api/mutations.ts` (5 mismatches)
+- [ ] Task P2-51: `/features/staff/clients/api/internal/messaging-mutations.ts` (5 mismatches)
+- [ ] Task P2-52: `/features/staff/messages/api/queries.ts` (5 mismatches)
+- [ ] Task P2-53: `/features/staff/messages/api/mutations.ts` (5 mismatches)
+- [ ] Task P2-54: `/features/staff/location/api/queries.ts` (5 mismatches)
+- [ ] Task P2-55: `/features/customer/appointments/api/mutations.ts` (5 mismatches)
+- [ ] Task P2-56: `/features/customer/booking/api/queries.ts` (5 mismatches)
+- [ ] Task P2-57: `/features/customer/booking/api/mutations.ts` (5 mismatches)
+- [ ] Task P2-58: `/features/customer/discovery/api/internal/salon-queries.ts` (5 mismatches)
+- [ ] Task P2-59: `/features/customer/discovery/api/internal/salon-details-queries.ts` (5 mismatches)
+- [ ] Task P2-60: `/features/customer/profile/api/queries.ts` (5 mismatches)
+
+## PRIORITY 3: Lower-Impact Files (1-4 errors each)
+Total files: 251
+
+- [ ] Task P3-001: `/features/business/service-categories/api/queries.ts` (4 mismatches)
+- [ ] Task P3-002: `/features/business/dashboard/api/analytics-queries.ts` (4 mismatches)
+- [ ] Task P3-003: `/features/business/locations/api/queries/address.ts` (4 mismatches)
+- [ ] Task P3-004: `/features/business/notifications/api/queries.ts` (4 mismatches)
+- [ ] Task P3-005: `/features/business/services/api/pricing-functions.ts` (4 mismatches)
+- [ ] Task P3-006: `/features/business/reviews/api/queries.ts` (4 mismatches)
+- [ ] Task P3-007: `/features/admin/security-incidents/api/queries.ts` (4 mismatches)
+- [ ] Task P3-008: `/features/admin/security-access-monitoring/api/mutations.ts` (4 mismatches)
+- [ ] Task P3-009: `/features/admin/database-health/api/internal/database-health.ts` (4 mismatches)
+- [ ] Task P3-010: `/features/admin/profile/api/mutations.ts` (4 mismatches)
+- [ ] Task P3-011: `/features/admin/salons/api/mutations/reactivate-salon.mutation.ts` (4 mismatches)
+- [ ] Task P3-012: `/features/admin/salons/api/mutations/suspend-salon.mutation.ts` (4 mismatches)
+- [ ] Task P3-013: `/features/admin/users/api/mutations/status.ts` (4 mismatches)
+- [ ] Task P3-014: `/features/admin/users/api/mutations/status-ban.mutation.ts` (4 mismatches)
+- [ ] Task P3-015: `/features/admin/users/api/mutations/status-suspend.mutation.ts` (4 mismatches)
+- [ ] Task P3-016: `/features/admin/users/api/mutations/status-batch.mutation.ts` (4 mismatches)
+- [ ] Task P3-017: `/features/admin/users/api/queries/single-user.ts` (4 mismatches)
+- [ ] Task P3-018: `/features/admin/users/api/queries/all-users.ts` (4 mismatches)
+- [ ] Task P3-019: `/features/admin/rate-limit-rules/api/queries.ts` (4 mismatches)
+- [ ] Task P3-020: `/features/admin/moderation/api/internal/review-queries.ts` (4 mismatches)
+- [ ] Task P3-021: `/features/shared/profile/api/mutations.ts` (4 mismatches)
+- [ ] Task P3-022: `/features/shared/messaging/api/queries.ts` (4 mismatches)
+- [ ] Task P3-023: `/features/shared/messaging/api/internal/message-mutations.ts` (4 mismatches)
+- [ ] Task P3-024: `/features/shared/blocked-times/api/queries.ts` (4 mismatches)
+- [ ] Task P3-025: `/features/marketing/salon-directory/api/internal/salon-queries.ts` (4 mismatches)
+- [ ] Task P3-026: `/features/marketing/salon-directory/api/internal/service-queries.ts` (4 mismatches)
+- [ ] Task P3-027: `/features/staff/commission/api/queries/stats.ts` (4 mismatches)
+- [ ] Task P3-028: `/features/staff/operating-hours/api/queries.ts` (4 mismatches)
+- [ ] Task P3-029: `/features/staff/blocked-times/api/mutations.ts` (4 mismatches)
+- [ ] Task P3-030: `/features/customer/appointments/api/queries.ts` (4 mismatches)
+- [ ] Task P3-031: `/features/customer/chains/api/queries.ts` (4 mismatches)
+- [ ] Task P3-032: `/lib/auth/permissions/salon-access.ts` (4 mismatches)
+- [ ] Task P3-033: `/features/business/settings-audit-logs/api/queries.ts` (3 mismatches)
+- [ ] Task P3-034: `/features/business/dashboard/api/queries/salon.ts` (3 mismatches)
+- [ ] Task P3-035: `/features/business/transactions/api/mutations.ts` (3 mismatches)
+- [ ] Task P3-036: `/features/business/booking-rules/api/queries.ts` (3 mismatches)
+- [ ] Task P3-037: `/features/business/booking-rules/api/mutations.ts` (3 mismatches)
+- [ ] Task P3-038: `/features/business/locations/api/address.mutations.ts` (3 mismatches)
+- [ ] Task P3-039: `/features/business/staff-schedules/api/queries.ts` (3 mismatches)
+- [ ] Task P3-040: `/features/business/staff/api/queries.ts` (3 mismatches)
+- [ ] Task P3-041: `/features/business/webhooks/api/queries/monitoring.ts` (3 mismatches)
+- [ ] Task P3-042: `/features/business/services/api/mutations/update-service.mutation.ts` (3 mismatches)
+- [ ] Task P3-043: `/features/business/services/api/mutations/create-service.mutation.ts` (3 mismatches)
+- [ ] Task P3-044: `/features/admin/statistics-freshness/api/queries.ts` (3 mismatches)
+- [ ] Task P3-045: `/features/admin/appointments/api/queries/oversight.ts` (3 mismatches)
+- [ ] Task P3-046: `/features/admin/database-performance/api/queries.ts` (3 mismatches)
+- [ ] Task P3-047: `/features/admin/database-health/api/internal/query-performance.ts` (3 mismatches)
+- [ ] Task P3-048: `/features/admin/database-health/api/internal/optimization.ts` (3 mismatches)
+- [ ] Task P3-049: `/features/admin/salons/api/queries.ts` (3 mismatches)
+- [ ] Task P3-050: `/features/admin/salons/api/mutations/approve-salon.mutation.ts` (3 mismatches)
+- [ ] Task P3-051: `/features/admin/salons/api/mutations/reject-salon.mutation.ts` (3 mismatches)
+- [ ] Task P3-052: `/features/admin/database-toast/api/queries.ts` (3 mismatches)
+- [ ] Task P3-053: `/features/admin/users/api/mutations/status-reactivate.mutation.ts` (3 mismatches)
+- [ ] Task P3-054: `/features/admin/chains/api/chain-queries/get-chain-salons.ts` (3 mismatches)
+- [ ] Task P3-055: `/features/admin/chains/api/chain-queries/get-chain-health.ts` (3 mismatches)
+- [ ] Task P3-056: `/features/admin/moderation/api/mutations/approve-review.mutation.ts` (3 mismatches)
+- [ ] Task P3-057: `/features/admin/moderation/api/mutations/hide-review.mutation.ts` (3 mismatches)
+- [ ] Task P3-058: `/features/shared/appointments/api/availability.ts` (3 mismatches)
+- [ ] Task P3-059: `/features/shared/appointments/api/queries.ts` (3 mismatches)
+- [ ] Task P3-060: `/features/shared/sessions/api/mutations.ts` (3 mismatches)
+- [ ] Task P3-061: `/features/shared/messaging/api/mutations.ts` (3 mismatches)
+- [ ] Task P3-062: `/features/shared/messaging/api/internal/thread-mutations.ts` (3 mismatches)
+- [ ] Task P3-063: `/features/shared/notifications/api/queries.ts` (3 mismatches)
+- [ ] Task P3-064: `/features/shared/notifications/api/mutations.ts` (3 mismatches)
+- [ ] Task P3-065: `/features/marketing/salon-directory/api/internal/stats-queries.ts` (3 mismatches)
+- [ ] Task P3-066: `/features/marketing/services-directory/api/internal/service-queries.ts` (3 mismatches)
+- [ ] Task P3-067: `/features/staff/clients/api/internal/notes-mutations.ts` (3 mismatches)
+- [ ] Task P3-068: `/features/staff/clients/api/internal/client-queries.ts` (3 mismatches)
+- [ ] Task P3-069: `/features/staff/clients/api/internal/preferences-mutations.ts` (3 mismatches)
+- [ ] Task P3-070: `/features/staff/schedule/api/internal/staff-schedules.query.ts` (3 mismatches)
+- [ ] Task P3-071: `/features/staff/schedule/api/internal/conflict-checker.query.ts` (3 mismatches)
+- [ ] Task P3-072: `/features/staff/commission/api/queries/services.ts` (3 mismatches)
+- [ ] Task P3-073: `/features/staff/time-off/api/internal/manager-actions.ts` (3 mismatches)
+- [ ] Task P3-074: `/features/staff/sessions/api/mutations.ts` (3 mismatches)
+- [ ] Task P3-075: `/features/staff/profile/api/queries.ts` (3 mismatches)
+- [ ] Task P3-076: `/features/staff/analytics/api/queries.ts` (3 mismatches)
+- [ ] Task P3-077: `/features/staff/blocked-times/api/queries.ts` (3 mismatches)
+- [ ] Task P3-078: `/features/customer/booking/api/queries/blocked-times.ts` (3 mismatches)
+- [ ] Task P3-079: `/features/customer/dashboard/api/queries/metrics.ts` (3 mismatches)
+- [ ] Task P3-080: `/features/customer/sessions/api/mutations.ts` (3 mismatches)
+- [ ] Task P3-081: `/features/customer/reviews/api/mutations.ts` (3 mismatches)
+- [ ] Task P3-082: `/features/business/insights/api/business-insights.ts` (2 mismatches)
+- [ ] Task P3-083: `/features/business/daily-analytics/api/queries.ts` (2 mismatches)
+- [ ] Task P3-084: `/features/business/appointments/api/queries.ts` (2 mismatches)
+- [ ] Task P3-085: `/features/business/appointments/api/actions.ts` (2 mismatches)
+- [ ] Task P3-086: `/features/business/appointments/api/mutations.ts` (2 mismatches)
+- [ ] Task P3-087: `/features/business/appointments/api/queries/business-hours.ts` (2 mismatches)
+- [ ] Task P3-088: `/features/business/time-off/api/queries.ts` (2 mismatches)
+- [ ] Task P3-089: `/features/business/operating-hours/api/queries.ts` (2 mismatches)
+- [ ] Task P3-090: `/features/business/dashboard/api/operational-queries.ts` (2 mismatches)
+- [ ] Task P3-091: `/features/business/settings-account/api/mutations.ts` (2 mismatches)
+- [ ] Task P3-092: `/features/business/transactions/api/queries.ts` (2 mismatches)
+- [ ] Task P3-093: `/features/business/locations/api/queries.ts` (2 mismatches)
+- [ ] Task P3-094: `/features/business/locations/api/bulk-address.mutations.ts` (2 mismatches)
+- [ ] Task P3-095: `/features/business/staff-services/api/internal/helpers.ts` (2 mismatches)
+- [ ] Task P3-096: `/features/business/staff-services/api/internal/assign.ts` (2 mismatches)
+- [ ] Task P3-097: `/features/business/staff-services/api/internal/bulk.ts` (2 mismatches)
+- [ ] Task P3-098: `/features/business/staff-schedules/api/internal/mutations/upsert-staff-schedule.mutation.ts` (2 mismatches)
+- [ ] Task P3-099: `/features/business/staff-schedules/api/internal/mutations/delete-staff-schedule.mutation.ts` (2 mismatches)
+- [ ] Task P3-100: `/features/business/chains/api/internal/crud.ts` (2 mismatches)
+- [ ] Task P3-101: `/features/business/webhooks/api/queries.ts` (2 mismatches)
+- [ ] Task P3-102: `/features/business/notifications/api/actions.ts` (2 mismatches)
+- [ ] Task P3-103: `/features/business/notifications/api/mutations/helpers.ts` (2 mismatches)
+- [ ] Task P3-104: `/features/business/notifications/api/mutations/send.ts` (2 mismatches)
+- [ ] Task P3-105: `/features/business/notifications/api/internal/notification-queries.ts` (2 mismatches)
+- [ ] Task P3-106: `/features/business/notifications/api/internal/notification-counts.ts` (2 mismatches)
+- [ ] Task P3-107: `/features/business/services/api/queries/service-search.ts` (2 mismatches)
+- [ ] Task P3-108: `/features/business/analytics/api/queries/top-performers.ts` (2 mismatches)
+- [ ] Task P3-109: `/features/business/analytics/api/queries/overview.ts` (2 mismatches)
+- [ ] Task P3-110: `/features/business/analytics/api/queries/time-series.ts` (2 mismatches)
+- [ ] Task P3-111: `/features/business/analytics/api/queries/customer-insights.ts` (2 mismatches)
+- [ ] Task P3-112: `/features/business/reviews/api/internal/helpers.ts` (2 mismatches)
+- [ ] Task P3-113: `/features/admin/appointments/api/metrics.ts` (2 mismatches)
+- [ ] Task P3-114: `/features/admin/security/api/queries.ts` (2 mismatches)
+- [ ] Task P3-115: `/features/admin/database-health/api/internal/schema-validation.ts` (2 mismatches)
+- [ ] Task P3-116: `/features/admin/dashboard/api/internal/user-stats.ts` (2 mismatches)
+- [ ] Task P3-117: `/features/admin/salons/api/mutations/transfer-salon-ownership.mutation.ts` (2 mismatches)
+- [ ] Task P3-118: `/features/admin/users/api/mutations/profile.ts` (2 mismatches)
+- [ ] Task P3-119: `/features/admin/users/api/mutations/delete.ts` (2 mismatches)
+- [ ] Task P3-120: `/features/admin/rate-limit-rules/api/mutations.ts` (2 mismatches)
+- [ ] Task P3-121: `/features/admin/chains/api/mutations.ts` (2 mismatches)
+- [ ] Task P3-122: `/features/admin/chains/api/chain-queries/get-chain-compliance.ts` (2 mismatches)
+- [ ] Task P3-123: `/features/admin/chains/api/chain-queries/get-chain-analytics.ts` (2 mismatches)
+- [ ] Task P3-124: `/features/admin/analytics/api/internal/queries/platform.ts` (2 mismatches)
+- [ ] Task P3-125: `/features/admin/moderation/api/mutations/delete-review.mutation.ts` (2 mismatches)
+- [ ] Task P3-126: `/features/shared/sessions/api/queries.ts` (2 mismatches)
+- [ ] Task P3-127: `/features/shared/profile/api/queries/profile-summary.ts` (2 mismatches)
+- [ ] Task P3-128: `/features/shared/messaging/api/queries/unread-counts.ts` (2 mismatches)
+- [ ] Task P3-129: `/features/shared/blocked-times/api/mutations/update-blocked-time.mutation.ts` (2 mismatches)
+- [ ] Task P3-130: `/features/shared/blocked-times/api/mutations/delete-blocked-time.mutation.ts` (2 mismatches)
+- [ ] Task P3-131: `/features/marketing/services-directory/api/internal/category-queries.ts` (2 mismatches)
+- [ ] Task P3-132: `/features/marketing/services-directory/api/internal/salon-queries.ts` (2 mismatches)
+- [ ] Task P3-133: `/features/marketing/services-directory/api/internal/stats-queries.ts` (2 mismatches)
+- [ ] Task P3-134: `/features/staff/settings/api/queries.ts` (2 mismatches)
+- [ ] Task P3-135: `/features/staff/settings/api/mutations.ts` (2 mismatches)
+- [ ] Task P3-136: `/features/staff/schedule/api/internal/salon-staff.query.ts` (2 mismatches)
+- [ ] Task P3-137: `/features/staff/commission/api/queries/payouts.ts` (2 mismatches)
+- [ ] Task P3-138: `/features/staff/sessions/api/queries.ts` (2 mismatches)
+- [ ] Task P3-139: `/features/staff/services/api/queries.ts` (2 mismatches)
+- [ ] Task P3-140: `/features/staff/analytics/api/internal/performance-queries.ts` (2 mismatches)
+- [ ] Task P3-141: `/features/staff/analytics/api/internal/retention-queries.ts` (2 mismatches)
+- [ ] Task P3-142: `/features/customer/booking/api/queries/favorite-staff.ts` (2 mismatches)
+- [ ] Task P3-143: `/features/customer/favorites/api/queries.ts` (2 mismatches)
+- [ ] Task P3-144: `/features/customer/discovery/api/internal/category-queries.ts` (2 mismatches)
+- [ ] Task P3-145: `/features/customer/dashboard/api/queries/vip.ts` (2 mismatches)
+- [ ] Task P3-146: `/features/customer/dashboard/api/queries/appointments.ts` (2 mismatches)
+- [ ] Task P3-147: `/features/customer/transactions/api/queries.ts` (2 mismatches)
+- [ ] Task P3-148: `/features/customer/sessions/api/queries.ts` (2 mismatches)
+- [ ] Task P3-149: `/features/customer/profile/api/mutations.ts` (2 mismatches)
+- [ ] Task P3-150: `/features/customer/analytics/api/queries.ts` (2 mismatches)
+- [ ] Task P3-151: `/features/customer/reviews/api/queries.ts` (2 mismatches)
+- [ ] Task P3-152: `/features/customer/reviews/api/helpful-mutations.ts` (2 mismatches)
+- [ ] Task P3-153: `/app/api/business/appointments/[appointmentId]/service-options/route.ts` (1 mismatches)
+- [ ] Task P3-154: `/features/business/insights/api/queries/summary.ts` (1 mismatches)
+- [ ] Task P3-155: `/features/business/settings/api/queries.ts` (1 mismatches)
+- [ ] Task P3-156: `/features/business/settings/api/mutations/payment.ts` (1 mismatches)
+- [ ] Task P3-157: `/features/business/settings/api/mutations/salon.ts` (1 mismatches)
+- [ ] Task P3-158: `/features/business/settings/api/mutations/booking.ts` (1 mismatches)
+- [ ] Task P3-159: `/features/business/settings/api/mutations/cancellation.ts` (1 mismatches)
+- [ ] Task P3-160: `/features/business/metrics-operational/api/queries.ts` (1 mismatches)
+- [ ] Task P3-161: `/features/business/appointments/api/internal/bulk-operations.ts` (1 mismatches)
+- [ ] Task P3-162: `/features/business/settings-contact/api/queries.ts` (1 mismatches)
+- [ ] Task P3-163: `/features/business/settings-contact/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-164: `/features/business/time-off/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-165: `/features/business/business-common/components/salon-switcher.tsx` (1 mismatches)
+- [ ] Task P3-166: `/features/business/operating-hours/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-167: `/features/business/dashboard/api/customer-queries.ts` (1 mismatches)
+- [ ] Task P3-168: `/features/business/dashboard/api/queries/rating-stats.ts` (1 mismatches)
+- [ ] Task P3-169: `/features/business/dashboard/api/queries/appointments.ts` (1 mismatches)
+- [ ] Task P3-170: `/features/business/settings-account/api/queries.ts` (1 mismatches)
+- [ ] Task P3-171: `/features/business/coupons/api/queries.ts` (1 mismatches)
+- [ ] Task P3-172: `/features/business/settings-roles/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-173: `/features/business/settings-roles/api/internal/role-assignment.ts` (1 mismatches)
+- [ ] Task P3-174: `/features/business/settings-roles/api/internal/role-updates.ts` (1 mismatches)
+- [ ] Task P3-175: `/features/business/locations/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-176: `/features/business/staff-schedules/api/internal/mutations/toggle-schedule-active.mutation.ts` (1 mismatches)
+- [ ] Task P3-177: `/features/business/staff-schedules/api/internal/mutations/shared.ts` (1 mismatches)
+- [ ] Task P3-178: `/features/business/settings-description/api/queries.ts` (1 mismatches)
+- [ ] Task P3-179: `/features/business/settings-description/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-180: `/features/business/settings-salon/api/queries.ts` (1 mismatches)
+- [ ] Task P3-181: `/features/business/settings-salon/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-182: `/features/business/pricing/api/queries.ts` (1 mismatches)
+- [ ] Task P3-183: `/features/business/pricing/api/pricing-rules.mutations.ts` (1 mismatches)
+- [ ] Task P3-184: `/features/business/pricing/api/queries/dynamic-pricing.ts` (1 mismatches)
+- [ ] Task P3-185: `/features/business/services/api/queries.ts` (1 mismatches)
+- [ ] Task P3-186: `/features/business/services/api/mutations/delete-service.mutation.ts` (1 mismatches)
+- [ ] Task P3-187: `/features/business/services/api/mutations/shared.ts` (1 mismatches)
+- [ ] Task P3-188: `/features/business/analytics/api/queries/customer-segmentation.ts` (1 mismatches)
+- [ ] Task P3-189: `/features/business/analytics/api/queries/customer-cohorts.ts` (1 mismatches)
+- [ ] Task P3-190: `/features/business/analytics/api/queries/appointments.ts` (1 mismatches)
+- [ ] Task P3-191: `/features/business/analytics/api/queries/service-performance.ts` (1 mismatches)
+- [ ] Task P3-192: `/features/business/reviews/api/internal/review-mutations.ts` (1 mismatches)
+- [ ] Task P3-193: `/features/business/reviews/api/internal/response-mutations.ts` (1 mismatches)
+- [ ] Task P3-194: `/features/business/media/api/queries.ts` (1 mismatches)
+- [ ] Task P3-195: `/features/business/media/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-196: `/features/admin/security-incidents/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-197: `/features/admin/statistics-freshness/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-198: `/features/admin/database-performance/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-199: `/features/admin/roles/index.tsx` (1 mismatches)
+- [ ] Task P3-200: `/features/admin/roles/api/role-mutations/revoke-role.ts` (1 mismatches)
+- [ ] Task P3-201: `/features/admin/roles/api/role-mutations/update-role-permissions.ts` (1 mismatches)
+- [ ] Task P3-202: `/features/admin/roles/api/role-mutations/delete-role.ts` (1 mismatches)
+- [ ] Task P3-203: `/features/admin/roles/api/role-mutations/assignments.ts` (1 mismatches)
+- [ ] Task P3-204: `/features/admin/roles/api/role-mutations/audit.ts` (1 mismatches)
+- [ ] Task P3-205: `/features/admin/database-health/api/internal/notification-queue.ts` (1 mismatches)
+- [ ] Task P3-206: `/features/admin/dashboard/api/internal/recent-salons.ts` (1 mismatches)
+- [ ] Task P3-207: `/features/admin/dashboard/api/dashboard-mutations/audit.ts` (1 mismatches)
+- [ ] Task P3-208: `/features/admin/dashboard/api/dashboard-mutations/update-appointment-status.ts` (1 mismatches)
+- [ ] Task P3-209: `/features/admin/salons/api/mutations/update-salon-settings.mutation.ts` (1 mismatches)
+- [ ] Task P3-210: `/features/admin/salons/api/mutations/update-salon.mutation.ts` (1 mismatches)
+- [ ] Task P3-211: `/features/admin/database-toast/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-212: `/features/admin/users/api/mutations/sessions.ts` (1 mismatches)
+- [ ] Task P3-213: `/features/admin/finance/api/finance-queries/get-platform-revenue-analytics.ts` (1 mismatches)
+- [ ] Task P3-214: `/features/admin/finance/api/finance-queries/get-revenue-forecast.ts` (1 mismatches)
+- [ ] Task P3-215: `/features/admin/finance/api/finance-queries/get-revenue-by-salon.ts` (1 mismatches)
+- [ ] Task P3-216: `/features/admin/finance/api/finance-queries/get-financial-export-data.ts` (1 mismatches)
+- [ ] Task P3-217: `/features/admin/staff/api/internal/staff-dashboard/get-staff-dashboard-data.ts` (1 mismatches)
+- [ ] Task P3-218: `/features/admin/chains/api/chain-queries/get-all-salon-chains.ts` (1 mismatches)
+- [ ] Task P3-219: `/features/admin/chains/api/chain-queries/get-chain-by-id.ts` (1 mismatches)
+- [ ] Task P3-220: `/features/admin/chains/api/internal/lifecycle.ts` (1 mismatches)
+- [ ] Task P3-221: `/features/admin/chains/api/internal/subscription.ts` (1 mismatches)
+- [ ] Task P3-222: `/features/admin/chains/api/internal/audit.ts` (1 mismatches)
+- [ ] Task P3-223: `/features/admin/chains/api/internal/verification.ts` (1 mismatches)
+- [ ] Task P3-224: `/features/admin/admin-common/api/audit.ts` (1 mismatches)
+- [ ] Task P3-225: `/features/admin/analytics/api/internal/platform-analytics/performance.ts` (1 mismatches)
+- [ ] Task P3-226: `/features/admin/analytics/api/internal/platform-analytics/retention.ts` (1 mismatches)
+- [ ] Task P3-227: `/features/admin/reviews/api/queries.ts` (1 mismatches)
+- [ ] Task P3-228: `/features/admin/moderation/api/mutations/flag-review.mutation.ts` (1 mismatches)
+- [ ] Task P3-229: `/features/admin/moderation/api/mutations/unflag-review.mutation.ts` (1 mismatches)
+- [ ] Task P3-230: `/features/admin/moderation/api/mutations/feature-review.mutation.ts` (1 mismatches)
+- [ ] Task P3-231: `/features/admin/moderation/api/mutations/respond-to-review.mutation.ts` (1 mismatches)
+- [ ] Task P3-232: `/features/shared/preferences/api/queries.ts` (1 mismatches)
+- [ ] Task P3-233: `/features/shared/preferences/api/mutations.ts` (1 mismatches)
+- [ ] Task P3-234: `/features/shared/auth/api/internal/login.ts` (1 mismatches)
+- [ ] Task P3-235: `/features/shared/profile-metadata/api/queries.ts` (1 mismatches)
+- [ ] Task P3-236: `/features/shared/customer-common/api/queries.ts` (1 mismatches)
+- [ ] Task P3-237: `/features/shared/blocked-times/api/mutations/create-blocked-time.mutation.ts` (1 mismatches)
+- [ ] Task P3-238: `/features/marketing/salon-directory/api/internal/location-queries.ts` (1 mismatches)
+- [ ] Task P3-239: `/features/marketing/explore/api/queries.ts` (1 mismatches)
+- [ ] Task P3-240: `/features/staff/clients/api/internal/retention-metrics.ts` (1 mismatches)
+- [ ] Task P3-241: `/features/staff/clients/api/internal/service-history.ts` (1 mismatches)
+- [ ] Task P3-242: `/features/staff/clients/api/internal/auth.ts` (1 mismatches)
+- [ ] Task P3-243: `/features/staff/schedule/api/staff-schedules/bulk.ts` (1 mismatches)
+- [ ] Task P3-244: `/features/staff/schedule/api/staff-schedules/create.ts` (1 mismatches)
+- [ ] Task P3-245: `/features/staff/schedule/api/staff-schedules/update.ts` (1 mismatches)
+- [ ] Task P3-246: `/features/staff/schedule/api/staff-schedules/delete.ts` (1 mismatches)
+- [ ] Task P3-247: `/features/staff/commission/api/queries/helpers.ts` (1 mismatches)
+- [ ] Task P3-248: `/features/staff/analytics/api/internal/revenue-queries.ts` (1 mismatches)
+- [ ] Task P3-249: `/features/customer/dashboard/api/queries/favorites.ts` (1 mismatches)
+- [ ] Task P3-250: `/features/customer/dashboard/api/queries/roles.ts` (1 mismatches)
+- [ ] Task P3-251: `/lib/auth/session.ts` (1 mismatches)
+
+## Progress Log
+- [ ] Session 1: Pending
+
+## Notes
+- Keep `lib/types/database.types.ts` untouched.
+- Schema is the source of truth; update application code only.
+- Re-run `npm run scan:schema:full` after each batch of fixes.
+- Maintain commits aligned to feature areas for clarity.

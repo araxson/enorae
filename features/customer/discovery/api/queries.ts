@@ -3,6 +3,11 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import type { PostgrestError } from '@supabase/supabase-js'
+import {
+  discoveryFilterSchema,
+  discoveryPaginationSchema,
+  discoverySearchSchema,
+} from '@/features/customer/discovery/schema'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 type Service = Database['public']['Views']['services_view']['Row']
@@ -17,17 +22,19 @@ export async function getSalons(categoryFilter?: string) {
   await requireAuth()
   const supabase = await createClient()
 
+  const { category } = discoveryFilterSchema.parse({ category: categoryFilter })
+
   let query = supabase
     .from('salons_view')
     .select('*')
     .eq('is_active', true)
 
   // If category filter is provided, find salons offering services in that category
-  if (categoryFilter) {
+  if (category) {
     const { data: servicesData } = await supabase
       .from('services_view')
       .select('salon_id, category_name')
-      .eq('category_name', categoryFilter)
+      .eq('category_name', category)
       .eq('is_active', true) as { data: Service[] | null; error: PostgrestError | null }
 
     if (servicesData && servicesData.length > 0) {
@@ -61,18 +68,23 @@ export async function searchSalons(query: string, categoryFilter?: string) {
   await requireAuth()
   const supabase = await createClient()
 
+  const { query: sanitizedQuery, category } = discoverySearchSchema.parse({
+    query,
+    category: categoryFilter,
+  })
+
   let salonQuery = supabase
     .from('salons_view')
     .select('*')
     .eq('is_active', true)
-    .ilike('name', `%${query}%`)
+    .ilike('name', `%${sanitizedQuery}%`)
 
   // If category filter is provided, find salons offering services in that category
-  if (categoryFilter) {
+  if (category) {
     const { data: servicesData } = await supabase
       .from('services_view')
       .select('salon_id, category_name')
-      .eq('category_name', categoryFilter)
+      .eq('category_name', category)
       .eq('is_active', true) as { data: Service[] | null; error: PostgrestError | null }
 
     if (servicesData && servicesData.length > 0) {
@@ -82,7 +94,7 @@ export async function searchSalons(query: string, categoryFilter?: string) {
         .select('*')
         .in('id', salonIds)
         .eq('is_active', true)
-        .ilike('name', `%${query}%`)
+        .ilike('name', `%${sanitizedQuery}%`)
     }
   }
 
@@ -120,6 +132,8 @@ export async function getPopularCategories(limit: number = 10): Promise<{ catego
   await requireAuth()
   const supabase = await createClient()
 
+  const { limit: validatedLimit } = discoveryPaginationSchema.parse({ limit })
+
   const { data, error } = await supabase
     .from('services_view')
     .select('category_name')
@@ -140,7 +154,7 @@ export async function getPopularCategories(limit: number = 10): Promise<{ catego
   const sortedCategories = Object.entries(categoryCounts)
     .map(([category, count]) => ({ category, count }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, limit)
+    .slice(0, validatedLimit)
 
   return sortedCategories
 }

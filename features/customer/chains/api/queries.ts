@@ -2,6 +2,10 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
+import {
+  chainIdentifierSchema,
+  chainLocationSchema,
+} from '@/features/customer/chains/schema'
 
 type SalonChain = Database['public']['Views']['salon_chains_view']['Row']
 type SalonOverview = Database['public']['Views']['admin_salons_overview_view']['Row']
@@ -104,13 +108,15 @@ export async function getSalonChainById(
 
   const supabase = await createClient()
 
+  const { idOrSlug: identifier } = chainIdentifierSchema.parse({ idOrSlug })
+
   const isUuid =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug)
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier)
 
   const { data: chain, error: chainError } = await supabase
     .from('salon_chains_view')
     .select('*')
-    .eq(isUuid ? 'id' : 'slug', idOrSlug)
+    .eq(isUuid ? 'id' : 'slug', identifier)
     .eq('is_active', true)
     .maybeSingle()
 
@@ -137,5 +143,6 @@ export async function getChainLocations(chainId: string): Promise<ChainSalonLoca
   if (!session) throw new Error('Unauthorized')
 
   const supabase = await createClient()
-  return fetchChainLocations(supabase, chainId)
+  const { chainId: validatedChainId } = chainLocationSchema.parse({ chainId })
+  return fetchChainLocations(supabase, validatedChainId)
 }

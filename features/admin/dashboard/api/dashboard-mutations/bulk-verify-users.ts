@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { logSupabaseError } from '@/lib/supabase/errors'
-import { enforceAdminBulkRateLimit } from '@/lib/rate-limit/admin-bulk'
+import { enforceAdminBulkRateLimit } from '@/lib/middleware/rate-limit'
 
 import { logDashboardAudit } from './audit'
 import type { ActionResponse } from './types'

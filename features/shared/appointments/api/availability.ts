@@ -5,6 +5,7 @@ import 'server-only'
 import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -12,6 +13,7 @@ const availabilityInputSchema = z.object({
   staffId: z.string().regex(UUID_REGEX, 'Invalid staff ID'),
   startTime: z.coerce.date(),
   endTime: z.coerce.date(),
+  excludeAppointmentId: z.string().regex(UUID_REGEX, 'Invalid appointment ID').optional(),
 })
 
 const conflictInputSchema = availabilityInputSchema.extend({
@@ -22,6 +24,7 @@ type AvailabilityArgs = {
   staffId: string
   startTime: string | Date
   endTime: string | Date
+  excludeAppointmentId?: string
 }
 
 type ConflictArgs = AvailabilityArgs & {
@@ -49,18 +52,27 @@ export async function checkStaffAvailability(params: AvailabilityArgs): Promise<
     throw new Error(parsed.error.errors[0]?.message ?? 'Invalid availability input')
   }
 
-  const { staffId, startTime, endTime } = parsed.data
+  const { staffId, startTime, endTime, excludeAppointmentId } = parsed.data
+  await requireAuth()
 
   const supabase = await createClient()
+  const startIso = startTime.toISOString()
+  const endIso = endTime.toISOString()
 
   // Check for conflicting appointments
-  const { data: appointments, error: apptError } = await supabase
-    .schema('scheduling')
-    .from('appointments')
+  let appointmentQuery = supabase
+    .from('appointments_view')
     .select('id')
     .eq('staff_id', staffId)
     .neq('status', 'cancelled')
-    .or(`and(start_time.lt.${endTime.toISOString()},end_time.gt.${startTime.toISOString()})`)
+    .lt('start_time', endIso)
+    .gt('end_time', startIso)
+
+  if (excludeAppointmentId) {
+    appointmentQuery = appointmentQuery.neq('id', excludeAppointmentId)
+  }
+
+  const { data: appointments, error: apptError } = await appointmentQuery
 
   if (apptError) {
     throw new Error(apptError.message)
@@ -68,14 +80,13 @@ export async function checkStaffAvailability(params: AvailabilityArgs): Promise<
 
   // Check for blocked times
   const { data: blockedTime } = await supabase
-    .schema('scheduling')
-    .from('blocked_times')
+    .from('blocked_times_view')
     .select('reason, block_type')
     .eq('staff_id', staffId)
     .eq('is_active', true)
     .is('deleted_at', null)
-    .lte('start_time', endTime.toISOString())
-    .gte('end_time', startTime.toISOString())
+    .lt('start_time', endIso)
+    .gt('end_time', startIso)
     .maybeSingle()
 
   const available = !appointments?.length && !blockedTime
@@ -105,19 +116,28 @@ export async function checkAppointmentConflict(params: ConflictArgs): Promise<Co
     throw new Error(parsed.error.errors[0]?.message ?? 'Invalid conflict check input')
   }
 
-  const { salonId, staffId, startTime, endTime } = parsed.data
+  const { salonId, staffId, startTime, endTime, excludeAppointmentId } = parsed.data
+  await requireAuth()
 
   const supabase = await createClient()
+  const startIso = startTime.toISOString()
+  const endIso = endTime.toISOString()
 
   // Check for overlapping appointments
-  const { data: conflicts, error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
+  let conflictQuery = supabase
+    .from('appointments_view')
     .select('id')
     .eq('salon_id', salonId)
     .eq('staff_id', staffId)
     .neq('status', 'cancelled')
-    .or(`and(start_time.lt.${endTime.toISOString()},end_time.gt.${startTime.toISOString()})`)
+    .lt('start_time', endIso)
+    .gt('end_time', startIso)
+
+  if (excludeAppointmentId) {
+    conflictQuery = conflictQuery.neq('id', excludeAppointmentId)
+  }
+
+  const { data: conflicts, error } = await conflictQuery
 
   if (error) {
     throw new Error(error.message)
@@ -127,4 +147,3 @@ export async function checkAppointmentConflict(params: ConflictArgs): Promise<Co
     hasConflict: Boolean(conflicts?.length),
   }
 }
-

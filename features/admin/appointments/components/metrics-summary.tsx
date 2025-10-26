@@ -1,7 +1,7 @@
 import { Activity, CalendarCheck, CalendarX, Clock4, DollarSign, TrendingUp } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { AppointmentSnapshot } from '@/features/admin/appointments/api/types'
+import type { AppointmentSnapshot } from '@/features/admin/appointments/types'
 
 interface MetricsSummaryProps {
   totals: AppointmentSnapshot['totals']

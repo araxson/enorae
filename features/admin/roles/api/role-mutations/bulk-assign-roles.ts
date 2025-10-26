@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 
-import { enforceAdminBulkRateLimit } from '@/lib/rate-limit/admin-bulk'
+import { enforceAdminBulkRateLimit } from '@/lib/middleware/rate-limit'
 
 import { logRoleAudit } from './audit'
 import { applyRoleAssignment } from './assignments'

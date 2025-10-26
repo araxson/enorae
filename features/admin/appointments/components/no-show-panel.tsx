@@ -1,7 +1,7 @@
 import { CalendarOff } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { AppointmentSnapshot } from '@/features/admin/appointments/api/types'
+import type { AppointmentSnapshot } from '@/features/admin/appointments/types'
 
 interface NoShowPanelProps {
   noShows: AppointmentSnapshot['noShows']

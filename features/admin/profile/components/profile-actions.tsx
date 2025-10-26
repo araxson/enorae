@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ShieldBan } from 'lucide-react'
-import type { ProfileDetail } from '@/features/admin/profile/api/types'
+import type { ProfileDetail } from '@/features/admin/profile/types'
 import { anonymizeProfileAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
 interface ProfileActionsProps {

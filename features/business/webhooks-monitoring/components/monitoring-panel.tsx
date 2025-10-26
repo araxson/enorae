@@ -1,4 +1,4 @@
-import type { WebhookStats } from '@/features/business/webhooks/api/queries/monitoring'
+import type { WebhookStats } from '@/features/business/webhooks/api/queries'
 import { WebhookMonitoringDashboard } from '@/features/business/webhooks/components/webhook-monitoring-dashboard'
 import type { Database } from '@/lib/types/database.types'
 

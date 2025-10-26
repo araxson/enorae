@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { AppointmentOverviewRow } from '@/features/admin/appointments/api/types'
+import type { AppointmentOverviewRow } from '@/features/admin/appointments/types'
 
 interface RecentAppointmentsTableProps {
   appointments: AppointmentOverviewRow[]
