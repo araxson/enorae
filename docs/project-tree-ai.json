@@ -2223,10 +2223,6 @@
                         },
                         {
                           "type": "file",
-                          "name": "helpers.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "platform-metrics.ts"
                         },
                         {
@@ -2733,10 +2729,6 @@
                       "children": [
                         {
                           "type": "file",
-                          "name": "analytics.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "review-queries.ts"
                         },
                         {
@@ -2888,10 +2880,6 @@
                     {
                       "type": "file",
                       "name": "types.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "utils.ts"
                     }
                   ]
                 },
@@ -3281,10 +3269,6 @@
                       "type": "directory",
                       "name": "internal",
                       "children": [
-                        {
-                          "type": "file",
-                          "name": "helpers.ts"
-                        },
                         {
                           "type": "file",
                           "name": "types.ts"
@@ -3892,10 +3876,6 @@
                         {
                           "type": "file",
                           "name": "delete.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "helpers.ts"
                         },
                         {
                           "type": "file",
@@ -5143,10 +5123,6 @@
                         },
                         {
                           "type": "file",
-                          "name": "helpers.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "index.ts"
                         },
                         {
@@ -5439,10 +5415,6 @@
                   "children": [
                     {
                       "type": "file",
-                      "name": "analytics.ts"
-                    },
-                    {
-                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
@@ -5727,10 +5699,6 @@
                   "children": [
                     {
                       "type": "file",
-                      "name": "analytics.ts"
-                    },
-                    {
-                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
@@ -5845,10 +5813,6 @@
                       "type": "directory",
                       "name": "internal",
                       "children": [
-                        {
-                          "type": "file",
-                          "name": "helpers.ts"
-                        },
                         {
                           "type": "file",
                           "name": "response-mutations.ts"
@@ -10977,10 +10941,6 @@
                       "children": [
                         {
                           "type": "file",
-                          "name": "helpers.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "index.ts"
                         },
                         {
@@ -12303,7 +12263,35 @@
             },
             {
               "type": "file",
+              "name": "commission.ts"
+            },
+            {
+              "type": "file",
               "name": "index.ts"
+            },
+            {
+              "type": "file",
+              "name": "insights.ts"
+            },
+            {
+              "type": "file",
+              "name": "metrics.ts"
+            },
+            {
+              "type": "file",
+              "name": "pricing.ts"
+            },
+            {
+              "type": "file",
+              "name": "profile.ts"
+            },
+            {
+              "type": "file",
+              "name": "review-access.ts"
+            },
+            {
+              "type": "file",
+              "name": "review-analytics.ts"
             }
           ]
         },
