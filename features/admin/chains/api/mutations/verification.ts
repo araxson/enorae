@@ -25,7 +25,7 @@ export async function verifyChain(data: {
   try {
     const parsed = verifyChainSchema.safeParse(data)
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0]?.message ?? 'Invalid chain payload' }
+      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid chain payload' }
     }
 
     const { chainId, isVerified } = parsed.data

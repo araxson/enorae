@@ -20,7 +20,7 @@ interface BlockedTimesCalendarProps {
 }
 
 export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStart = new Date() }: BlockedTimesCalendarProps) {
-  const weekDays = useMemo(() => {
+  const weekDays = useMemo((): Date[] => {
     const start = startOfWeek(weekStart, { weekStartsOn: 1 }) // Monday
     return Array.from({ length: 7 }, (_, i) => addDays(start, i))
   }, [weekStart])
@@ -47,7 +47,7 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
           <CardTitle>Weekly Schedule</CardTitle>
         </div>
         <p className="text-xs text-muted-foreground">
-          Week of {format(weekDays[0], 'MMM d')} - {format(weekDays[6], 'MMM d, yyyy')}
+          Week of {weekDays[0] ? format(weekDays[0], 'MMM d') : 'N/A'} - {weekDays[6] ? format(weekDays[6], 'MMM d, yyyy') : 'N/A'}
         </p>
       </CardHeader>
       <CardContent>

@@ -8,7 +8,7 @@ import { EmptyState } from '@/features/shared/ui-components'
 import { CalendarX } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments_view']['Row']
+type Appointment = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
 type AppointmentStatus = NonNullable<Appointment['status']>
 
@@ -53,7 +53,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
         <Card key={appointment['id']}>
           <CardHeader className="p-6 pb-4">
             <CardTitle>{appointment['salon_name'] || 'Unnamed Salon'}</CardTitle>
-            <CardDescription>{appointment['service_names'] || 'Service'}</CardDescription>
+            <CardDescription>{appointment['service_name'] || 'Service'}</CardDescription>
           </CardHeader>
           <CardContent className="p-6 pt-0 space-y-3">
             <div className="space-y-1">

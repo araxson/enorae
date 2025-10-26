@@ -39,8 +39,7 @@ export async function createThread(input: z.infer<typeof createThreadSchema>) {
 
     // Verify salon exists
     const { data: salon, error: salonError } = await supabase
-      .schema('organization')
-      .from('salons')
+      .from('salons_view')
       .select('id')
       .eq('id', validated.salon_id)
       .single()
@@ -75,7 +74,7 @@ export async function createThread(input: z.infer<typeof createThreadSchema>) {
     return { data, error: null }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.errors[0].message }
+      return { error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
     return { error: 'Failed to create thread' }
   }
@@ -122,7 +121,7 @@ export async function sendMessage(input: z.infer<typeof sendMessageSchema>) {
     return { data, error: null }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.errors[0].message }
+      return { error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
     return { error: 'Failed to send message' }
   }
@@ -243,7 +242,7 @@ export async function archiveThread(threadId: string) {
         updated_at: new Date().toISOString(),
       })
       .eq('id', threadId)
-      .or(`customer_id.eq.${session.user.id},salon_id.in.(select id from organization.salons where owner_id = ${session.user.id})`)
+      .eq('customer_id', session.user.id)
 
     if (error) {
       return { error: error.message }

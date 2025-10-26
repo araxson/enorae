@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { getCustomerAppointmentById, getAppointmentServices } from '@/features/customer/appointments/api/queries'
+import { getCustomerAppointmentById } from '@/features/customer/appointments/api/queries'
 import { CancelAppointmentDialog } from '@/features/customer/appointments/components/cancel-appointment-dialog'
 import { RescheduleRequestDialog } from '@/features/customer/appointments/components/reschedule-request-dialog'
 import { Clock, DollarSign } from 'lucide-react'
@@ -35,10 +35,7 @@ const getStatusVariant = (status: string | null) => {
 }
 
 export async function AppointmentDetail({ appointmentId }: AppointmentDetailProps) {
-  const [appointment, services] = await Promise.all([
-    getCustomerAppointmentById(appointmentId),
-    getAppointmentServices(appointmentId),
-  ])
+  const appointment = await getCustomerAppointmentById(appointmentId)
 
   if (!appointment) {
     notFound()
@@ -46,17 +43,15 @@ export async function AppointmentDetail({ appointmentId }: AppointmentDetailProp
 
   return (
     <div className="mx-auto max-w-4xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
-      <AppointmentDetailContent appointment={appointment} services={services} />
+      <AppointmentDetailContent appointment={appointment} />
     </div>
   )
 }
 
 function AppointmentDetailContent({
   appointment,
-  services,
 }: {
   appointment: Awaited<ReturnType<typeof getCustomerAppointmentById>>
-  services: Awaited<ReturnType<typeof getAppointmentServices>>
 }) {
   if (!appointment) return null
 
@@ -128,70 +123,28 @@ function AppointmentDetailContent({
           <Separator />
 
           <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">Services</p>
-            {services.length > 0 ? (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Service details</CardTitle>
-                  <CardDescription>Items booked for this visit</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="-mx-4 sm:-mx-6">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Service</TableHead>
-                          <TableHead className="text-right">Duration</TableHead>
-                          <TableHead className="text-right">Price</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {services.map((service) => (
-                          <TableRow key={service['id']}>
-                            <TableCell>
-                              <div className="space-y-1">
-                                <p className="leading-7">{service['service_name']}</p>
-                                {service['category_name'] && (
-                                  <p className="text-sm text-muted-foreground">{service['category_name']}</p>
-                                )}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                <Clock className="h-3 w-3" />
-                                <span className="text-sm">{service['duration_minutes']} min</span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              {formatCurrency(service['sale_price'] || service['current_price'])}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                      {appointment['total_price'] !== null && (
-                        <TableFooter>
-                          <TableRow>
-                            <TableCell colSpan={2} className="text-right">
-                              Total
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                <DollarSign className="h-4 w-4" />
-                                {formatCurrency(appointment['total_price'])}
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        </TableFooter>
-                      )}
-                    </Table>
+            <p className="text-sm text-muted-foreground">Service</p>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div>
+                    <p className="leading-7">{appointment['service_name'] || 'No service specified'}</p>
                   </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <p className="leading-7 text-muted-foreground">
-                {appointment['service_names'] || 'No services listed'}
-              </p>
-            )}
+                  {appointment['duration_minutes'] && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>{appointment['duration_minutes']} minutes</span>
+                    </div>
+                  )}
+                  {appointment['total_price'] !== null && (
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4" />
+                      <span className="text-lg font-semibold">{formatCurrency(appointment['total_price'])}</span>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </CardContent>
       </Card>

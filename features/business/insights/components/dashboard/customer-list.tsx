@@ -1,10 +1,12 @@
+import { Star } from 'lucide-react'
+
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
 
-import { Star } from 'lucide-react'
-import type { CustomerMetrics } from './types'
 import { formatCurrency, formatPercentage, getSegmentIcon, getSegmentColor } from './utils'
+
+import type { CustomerMetrics } from './types'
 
 interface CustomerListProps {
   topCustomers: CustomerMetrics[]

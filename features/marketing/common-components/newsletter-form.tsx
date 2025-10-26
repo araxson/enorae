@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Mail, CheckCircle } from 'lucide-react'
 import { toast } from 'sonner'
-import { subscribeToNewsletter } from '@/features/marketing/home/api/mutations'
+import { subscribeToNewsletter } from '@/features/marketing/newsletter/api/mutations'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 interface NewsletterFormProps {

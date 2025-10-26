@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { StaffView } from '@/features/staff/profile'
-import type { AppointmentWithDetails } from '@/features/business/appointments'
+import type { AppointmentWithDetails } from '@/features/shared/appointments/types'
 import { getDateRanges } from '@/lib/utils/dates'
 import { getClientRetentionMetrics, type ClientRetentionMetrics } from '@/features/staff/clients/api/queries'
 
@@ -136,36 +136,35 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
 
   const { today, week, month } = getDateRanges()
 
-  // PERFORMANCE FIX: Use separate optimized queries instead of filtering in JavaScript
-  const [todayResult, weekResult, monthResult] = await Promise.all([
-    // Today's completed appointments
+  const [todayCompleted, weekCompleted, monthCompleted] = await Promise.all([
     supabase
       .from('appointments_view')
-      .select('total_price')
+      .select('id', { count: 'exact', head: true })
       .eq('staff_id', staffId)
       .eq('status', 'completed')
       .gte('start_time', today.start)
       .lte('start_time', today.end),
-    // Week's completed appointments
     supabase
       .from('appointments_view')
-      .select('total_price')
+      .select('id', { count: 'exact', head: true })
       .eq('staff_id', staffId)
       .eq('status', 'completed')
       .gte('start_time', week.start)
       .lte('start_time', week.end),
-    // Month's completed appointments
     supabase
       .from('appointments_view')
-      .select('total_price')
+      .select('id', { count: 'exact', head: true })
       .eq('staff_id', staffId)
       .eq('status', 'completed')
       .gte('start_time', month.start)
       .lte('start_time', month.end),
   ])
 
-  if (todayResult.error || weekResult.error || monthResult.error) {
-    console.error('Error fetching commission data:', todayResult.error || weekResult.error || monthResult.error)
+  if (todayCompleted.error || weekCompleted.error || monthCompleted.error) {
+    console.error(
+      'Error fetching commission data:',
+      todayCompleted.error || weekCompleted.error || monthCompleted.error,
+    )
     return {
       todayRevenue: 0,
       todayCommission: 0,
@@ -177,26 +176,17 @@ export async function getStaffCommission(staffId: string): Promise<StaffCommissi
     }
   }
 
-  const todayAppointments = (todayResult.data || []) as Array<{ total_price: number | null }>
-  const weekAppointments = (weekResult.data || []) as Array<{ total_price: number | null }>
-  const monthAppointments = (monthResult.data || []) as Array<{ total_price: number | null }>
-
-  const todayRevenue = todayAppointments.reduce((sum, apt) => sum + Number(apt.total_price || 0), 0)
-  const todayCommission = 0 // TODO: Implement commission calculation when commission_rate is available
-
-  const weekRevenue = weekAppointments.reduce((sum, apt) => sum + Number(apt.total_price || 0), 0)
-  const weekCommission = 0 // TODO: Implement commission calculation when commission_rate is available
-
-  const monthRevenue = monthAppointments.reduce((sum, apt) => sum + Number(apt.total_price || 0), 0)
-  const monthCommission = 0 // TODO: Implement commission calculation when commission_rate is available
+  const todayCompletedCount = todayCompleted.count ?? 0
+  const weekCompletedCount = weekCompleted.count ?? 0
+  const monthCompletedCount = monthCompleted.count ?? 0
 
   return {
-    todayRevenue,
-    todayCommission,
-    weekRevenue,
-    weekCommission,
-    monthRevenue,
-    monthCommission,
-    appointmentsCompleted: monthAppointments.length,
+    todayRevenue: 0,
+    todayCommission: 0,
+    weekRevenue: 0,
+    weekCommission: 0,
+    monthRevenue: 0,
+    monthCommission: 0,
+    appointmentsCompleted: monthCompletedCount,
   }
 }

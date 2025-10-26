@@ -12,7 +12,7 @@ import { ServiceTaxSection } from './service-tax-section'
 import type { ServiceFormHook } from './use-service-form'
 import type { Database } from '@/lib/types/database.types'
 
-type Service = Database['public']['Views']['services']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
 type ServiceFormContentProps = {
   service: Service | null | undefined

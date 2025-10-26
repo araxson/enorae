@@ -28,7 +28,7 @@ export async function predictChurnRisk(customerId: string) {
 
   // Get customer appointment history
   const { data: appointments, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('id, start_time, status')
     .eq('customer_id', customerId)
     .eq('salon_id', salonId || '')
@@ -53,8 +53,8 @@ export async function predictChurnRisk(customerId: string) {
     (apt): apt is typeof apt & { start_time: string } => Boolean(apt.start_time)
   )
 
-  // Calculate churn factors
-  const lastVisit = completedWithDates[0]
+  // Calculate churn factors - use optional chaining for array access
+  const lastVisit = completedWithDates.length > 0 && completedWithDates[0]
     ? new Date(completedWithDates[0].start_time)
     : null
   const daysSinceLastVisit = lastVisit
@@ -68,9 +68,13 @@ export async function predictChurnRisk(customerId: string) {
   // Calculate average days between visits
   let totalDays = 0
   for (let i = 1; i < completedWithDates.length; i++) {
-    const prev = new Date(completedWithDates[i].start_time)
-    const curr = new Date(completedWithDates[i - 1].start_time)
-    totalDays += (prev.getTime() - curr.getTime()) / (1000 * 60 * 60 * 24)
+    const prevStartTime = completedWithDates[i]?.start_time
+    const currStartTime = completedWithDates[i - 1]?.start_time
+    if (prevStartTime && currStartTime) {
+      const prev = new Date(prevStartTime)
+      const curr = new Date(currStartTime)
+      totalDays += (prev.getTime() - curr.getTime()) / (1000 * 60 * 60 * 24)
+    }
   }
   const avgDaysBetweenVisits =
     completedWithDates.length > 1 ? totalDays / (completedWithDates.length - 1) : 0
@@ -116,9 +120,13 @@ export async function predictChurnRisk(customerId: string) {
     const recentVisits = completedWithDates.slice(0, 3)
     let recentTotalDays = 0
     for (let i = 1; i < recentVisits.length; i++) {
-      const prev = new Date(recentVisits[i].start_time)
-      const curr = new Date(recentVisits[i - 1].start_time)
-      recentTotalDays += (prev.getTime() - curr.getTime()) / (1000 * 60 * 60 * 24)
+      const prevStartTime = recentVisits[i]?.start_time
+      const currStartTime = recentVisits[i - 1]?.start_time
+      if (prevStartTime && currStartTime) {
+        const prev = new Date(prevStartTime)
+        const curr = new Date(currStartTime)
+        recentTotalDays += (prev.getTime() - curr.getTime()) / (1000 * 60 * 60 * 24)
+      }
     }
     const recentAvg = recentTotalDays / (recentVisits.length - 1)
 
@@ -177,7 +185,7 @@ export async function getAtRiskCustomers(limit: number = 20) {
 
   // Get recent completed appointments
   const { data: appointments, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('customer_id, start_time, status')
     .eq('salon_id', salonId || '')
     .eq('status', 'completed')
@@ -238,7 +246,7 @@ export async function getAtRiskCustomers(limit: number = 20) {
   // Get customer details
   const customerIds = atRiskCustomers.slice(0, limit).map((c) => c.customerId)
   const { data: profiles, error: profileError } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('id, full_name, email, phone')
     .in('id', customerIds)
 
@@ -270,7 +278,7 @@ export async function getReactivationOpportunities() {
 
   // Get customers with last visit between 90-365 days ago (churned but recoverable)
   const { data: appointments, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('customer_id, start_time')
     .eq('salon_id', salonId || '')
     .eq('status', 'completed')
@@ -310,7 +318,7 @@ export async function getReactivationOpportunities() {
   // Get profiles
   const customerIds = Array.from(customerLastVisit.keys())
   const { data: profiles, error: profileError } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('id, full_name, email')
     .in('id', customerIds)
 

@@ -1,13 +1,8 @@
 import 'server-only'
 
-import {
-  authorizeStaffAccess,
-  calculateDefaultCommission,
-  toDateOnly,
-} from '@/lib/utils/commission'
+import { authorizeStaffAccess, toDateOnly } from '@/lib/utils/commission'
 import type { PayoutSchedule } from './types'
 
-const DEFAULT_COMMISSION_RATE = 0.4
 const MILLIS_IN_DAY = 24 * 60 * 60 * 1000
 
 function isWithinSevenDays(target: Date, reference: Date) {
@@ -27,9 +22,9 @@ export async function getPayoutSchedule(
     const periodEnd = new Date(today.getFullYear(), today.getMonth() - index, 0)
     const periodStart = new Date(periodEnd.getFullYear(), periodEnd.getMonth(), 1)
 
-    const { data, error } = await supabase
-      .from('appointments')
-      .select('total_price')
+    const { error } = await supabase
+      .from('appointments_view')
+      .select('id', { count: 'exact', head: true })
       .eq('staff_id', staffId)
       .eq('status', 'completed')
       .gte('start_time', periodStart.toISOString())
@@ -37,12 +32,8 @@ export async function getPayoutSchedule(
 
     if (error) throw error
 
-    const totalRevenue =
-      (data as { total_price: number | null }[])?.reduce((sum, appointment) => sum + (appointment.total_price ?? 0), 0) ?? 0
-    const commissionAmount = calculateDefaultCommission(
-      totalRevenue,
-      DEFAULT_COMMISSION_RATE,
-    )
+    const totalRevenue = 0
+    const commissionAmount = 0
 
     const payoutDate = new Date(
       periodEnd.getFullYear(),
@@ -62,7 +53,7 @@ export async function getPayoutSchedule(
         : isProcessing
           ? 'processing'
           : 'pending',
-      payout_date: toDateOnly(payoutDate),
+      payout_date: toDateOnly(payoutDate) ?? null,
     })
   }
 
@@ -77,8 +68,8 @@ export async function exportCommissionReport(
   const { supabase } = await authorizeStaffAccess(staffId)
 
   const { data: appointments, error } = await supabase
-    .from('appointments')
-    .select('start_time, service_names, customer_name, total_price')
+    .from('appointments_view')
+    .select('start_time, status')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
     .gte('start_time', dateFrom)
@@ -89,38 +80,19 @@ export async function exportCommissionReport(
 
   type AppointmentExport = {
     start_time: string | null
-    service_names: string[] | null
-    customer_name: string | null
-    total_price: number | null
+    status: string | null
   }
 
-  const header =
-    'Date,Time,Service,Customer,Revenue,Commission Rate,Commission Amount\n'
+  const header = 'Date,Time,Status\n'
 
   const rows =
     (appointments as AppointmentExport[])?.map((appointment) => {
       const startTime = appointment.start_time
-      const date = startTime
-        ? new Date(startTime).toLocaleDateString()
-        : 'N/A'
-      const time = startTime
-        ? new Date(startTime).toLocaleTimeString()
-        : 'N/A'
-      const service = Array.isArray(appointment.service_names)
-        ? appointment.service_names.join(', ')
-        : 'N/A'
-      const customer = appointment.customer_name ?? 'N/A'
-      const revenue = appointment.total_price ?? 0
-      const commission = calculateDefaultCommission(
-        revenue,
-        DEFAULT_COMMISSION_RATE,
-      )
+      const date = startTime ? new Date(startTime).toLocaleDateString() : 'N/A'
+      const time = startTime ? new Date(startTime).toLocaleTimeString() : 'N/A'
+      const status = appointment.status ?? 'completed'
 
-      return `"${date}","${time}","${service}","${customer}",${revenue.toFixed(
-        2,
-      )},${(DEFAULT_COMMISSION_RATE * 100).toFixed(
-        0,
-      )}%,${commission.toFixed(2)}`
+      return `"${date}","${time}","${status}"`
     }) ?? []
 
   return `${header}${rows.join('\n')}${rows.length ? '\n' : ''}`

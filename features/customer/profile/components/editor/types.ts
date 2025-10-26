@@ -1,6 +1,6 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type ProfilePreferences = Database['public']['Views']['profiles_preferences']['Row']
+export type ProfilePreferences = Database['identity']['Tables']['profiles_preferences']['Row']
 
 export type PreferenceSettings = {
   email_notifications?: boolean

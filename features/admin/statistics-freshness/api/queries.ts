@@ -2,6 +2,9 @@ import 'server-only'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import type { Database } from '@/lib/types/database.types'
+
+type StatsFreshnessViewRow = Database['public']['Views']['statistics_freshness_view']['Row']
 
 export interface StatsFreshnessRecord {
   id: string
@@ -10,6 +13,20 @@ export interface StatsFreshnessRecord {
   row_estimate: number
   dead_rows: number
   maintenance_recommended: boolean
+}
+
+function toStatsFreshnessRecord(row: StatsFreshnessViewRow): StatsFreshnessRecord {
+  const schemaname = String(row.schemaname ?? 'public')
+  const tablename = String(row.tablename ?? 'unknown')
+  return {
+    id: `${schemaname}.${tablename}`,
+    table_name: `${schemaname}.${tablename}`,
+    last_analyze: row.last_analyze ?? new Date().toISOString(),
+    row_estimate: row.live_rows ?? 0,
+    dead_rows: row.rows_modified_since_analyze ?? 0,
+    maintenance_recommended:
+      (row.rows_modified_since_analyze ?? 0) > (row.live_rows ?? 0) * 0.2,
+  }
 }
 
 export interface StatsFreshnessSnapshot {
@@ -48,7 +65,7 @@ export async function getStatisticsFreshness(
     .eq('maintenance_recommended', true)
 
   return {
-    tables: (tables as StatsFreshnessRecord[]) ?? [],
+    tables: (tables ?? []).map(toStatsFreshnessRecord),
     totalCount: totalCount ?? 0,
     staleCount: staleCount ?? 0,
   }

@@ -13,7 +13,7 @@ import {
   ButtonGroupText,
 } from '@/components/ui/button-group'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import type { AppointmentWithDetails } from '@/features/business/appointments'
+import type { AppointmentWithDetails } from '@/features/business/dashboard/api/types'
 import { getStatusConfig } from '@/lib/constants/appointment-statuses'
 import { formatAppointmentDate, formatAppointmentTime } from '@/lib/utils/dates'
 import { Calendar, User, Clock, MoreHorizontal, ChevronRight } from 'lucide-react'
@@ -75,11 +75,11 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
           <ScrollArea className="h-96">
             <div className="p-6 space-y-4">
               {appointments.map((appointment, index) => {
-                const statusConfig = getStatusConfig(appointment['status'])
-                const customerInitials = getInitials(appointment['customer_name'] || 'Guest')
+                const statusConfig = getStatusConfig(appointment.status)
+                const customerInitials = getInitials('Guest')
 
                 return (
-                  <div key={appointment['id']}>
+                  <div key={appointment.id}>
                     <div className="group -mx-2 flex items-start gap-4 rounded-lg p-2 transition-colors hover:bg-accent/50">
                       <Avatar className="h-10 w-10 border-2 border-background">
                         <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
@@ -90,7 +90,7 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
                       <div className="min-w-0 flex-1 space-y-1">
                         <div className="flex items-center gap-2">
                           <p className="truncate text-sm font-medium">
-                            {appointment['customer_name'] || 'Guest'}
+                            Customer ID: {appointment.customer_id}
                           </p>
                           <Badge variant={statusConfig.variant}>
                             {statusConfig.label}
@@ -100,18 +100,18 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
-                            <span>{formatAppointmentDate(appointment['start_time'])}</span>
+                            <span>{formatAppointmentDate(appointment.start_time)}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-3 w-3" />
-                            <span>{formatAppointmentTime(appointment['start_time'])}</span>
+                            <span>{formatAppointmentTime(appointment.start_time)}</span>
                           </div>
                         </div>
 
-                        {appointment['staff_name'] && (
+                        {appointment.staff_id && (
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <User className="h-3 w-3" />
-                            <span>{appointment['staff_name']}</span>
+                            <span>Staff ID: {appointment.staff_id}</span>
                           </div>
                         )}
                       </div>

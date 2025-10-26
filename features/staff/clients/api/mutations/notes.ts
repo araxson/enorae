@@ -24,7 +24,7 @@ export async function addClientNote(
 
     const validation = clientNoteSchema.safeParse(data)
     if (!validation.success) {
-      return { success: false, error: validation.error.errors[0].message }
+      return { success: false, error: validation.error.issues[0]?.message || "Validation failed" }
     }
 
     const { customerId, note } = validation.data
@@ -44,7 +44,7 @@ export async function addClientNote(
     let threadId: string
 
     const { data: existingThread } = await supabase
-      .from('message_threads')
+      .schema('communication').from('message_threads')
       .select('id, metadata')
       .eq('salon_id', staff.salon_id)
       .eq('customer_id', customerId)
@@ -68,7 +68,7 @@ export async function addClientNote(
 
       const { error } = await supabase
         .schema('communication')
-        .from('message_threads')
+        .schema('communication').from('message_threads')
         .update({
           metadata: { ...(existingThread.metadata ?? {}), notes: updatedNotes },
           updated_at: new Date().toISOString(),
@@ -80,7 +80,7 @@ export async function addClientNote(
       // Create new thread with note
       const { error: threadError } = await supabase
         .schema('communication')
-        .from('message_threads')
+        .schema('communication').from('message_threads')
         .insert({
           salon_id: staff.salon_id,
           customer_id: customerId,

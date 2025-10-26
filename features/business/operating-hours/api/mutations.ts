@@ -19,7 +19,7 @@ function numberToDayName(day: number): DayOfWeek {
   if (day < 0 || day > 6) {
     throw new Error('Day must be between 0 and 6')
   }
-  return DAY_NAMES[day]
+  return DAY_NAMES[day] as DayOfWeek
 }
 
 // Validation schemas
@@ -107,7 +107,7 @@ export async function upsertOperatingHours(input: z.infer<typeof operatingHourSc
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.errors[0].message }
+      return { error: error.issues[0]?.message ?? 'Validation failed' }
     }
     return { error: 'Failed to save operating hours' }
   }
@@ -154,7 +154,7 @@ export async function bulkUpdateOperatingHours(
     // Check for errors
     const errors = results.filter((r) => r.error)
     if (errors.length > 0) {
-      return { error: errors[0].error }
+      return { error: errors[0]?.error ?? 'Update failed' }
     }
 
     return { success: true, error: null }

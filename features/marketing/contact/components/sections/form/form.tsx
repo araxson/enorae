@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { contactSchema, type ContactSchema } from '@/features/marketing/contact/schema'
-import { submitContactMessage } from '@/features/marketing/home/api/mutations'
+import { submitContactMessage } from '@/features/marketing/contact/api/mutations'
 
 export function ContactForm() {
   const form = useForm<ContactSchema>({

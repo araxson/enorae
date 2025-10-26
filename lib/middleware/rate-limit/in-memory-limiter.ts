@@ -42,9 +42,10 @@ class InMemoryRateLimiter {
     }
 
     // Cleanup expired entries every minute
+    const CLEANUP_INTERVAL_MS = 60000 // 1 minute
     this.cleanupInterval = setInterval(() => {
       this.cleanup()
-    }, 60000)
+    }, CLEANUP_INTERVAL_MS)
   }
 
   async limit(identifier: string): Promise<{ success: boolean; limit: number; remaining: number; reset: number }> {
@@ -105,9 +106,17 @@ class InMemoryRateLimiter {
   }
 }
 
+import { RATE_LIMITS } from '@/lib/config/constants'
+
 // Rate limiters for different routes
 // Auth routes: 10 requests per 10 minutes
-export const authRateLimiter = new InMemoryRateLimiter(10, 10 * 60 * 1000)
+export const authRateLimiter = new InMemoryRateLimiter(
+  RATE_LIMITS.IN_MEMORY_AUTH.limit,
+  RATE_LIMITS.IN_MEMORY_AUTH.windowMs
+)
 
 // API routes: 100 requests per minute
-export const apiRateLimiter = new InMemoryRateLimiter(100, 60 * 1000)
+export const apiRateLimiter = new InMemoryRateLimiter(
+  RATE_LIMITS.IN_MEMORY_API.limit,
+  RATE_LIMITS.IN_MEMORY_API.windowMs
+)

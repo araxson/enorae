@@ -3,7 +3,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type Profile = Database['public']['Views']['profiles']['Row']
+type Profile = Database['public']['Views']['profiles_view']['Row']
 
 /**
  * Get current user's profile information
@@ -13,7 +13,7 @@ export async function getUserProfile(): Promise<Profile> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('*')
     .eq('id', session.user.id)
     .single()

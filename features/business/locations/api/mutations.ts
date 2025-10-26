@@ -24,7 +24,7 @@ export async function createSalonLocation(formData: FormData) {
       isPrimary: formData.get('isPrimary') === 'true',
     })
 
-    if (!result.success) return { error: result.error.errors[0].message }
+    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
 
     const data = result.data
     const supabase = await createClient()
@@ -74,7 +74,7 @@ export async function updateSalonLocation(formData: FormData) {
       isPrimary: formData.get('isPrimary') === 'true',
     })
 
-    if (!result.success) return { error: result.error.errors[0].message }
+    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
 
     const data = result.data
     const supabase = await createClient()

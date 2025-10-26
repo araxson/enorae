@@ -35,7 +35,8 @@ export function useMetadataForm({ metadata }: UseMetadataFormParams) {
 
   const notifySuccess = () => {
     setSuccess(true)
-    setTimeout(() => setSuccess(false), 3000)
+    const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
+    setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
   }
 
   const handleAvatarUpload = async (file: File | null) => {

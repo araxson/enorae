@@ -41,16 +41,26 @@ export async function updateSalonMedia(formData: FormData) {
     const video_url = formData.get('video_url') as string | null
     const brand_colors = formData.get('brand_colors') as string | null
 
+    let brandColorsData: string[] | undefined
+    if (brand_colors) {
+      try {
+        const parsed = JSON.parse(brand_colors)
+        brandColorsData = Array.isArray(parsed) ? parsed.filter((c): c is string => typeof c === 'string') : undefined
+      } catch {
+        return { error: 'Invalid brand colors format' }
+      }
+    }
+
     const validation = updateMediaSchema.safeParse({
       salonId,
       logo_url: logo_url || undefined,
       cover_image_url: cover_image_url || undefined,
       video_url: video_url || undefined,
-      brand_colors: brand_colors ? JSON.parse(brand_colors) : undefined,
+      brand_colors: brandColorsData,
     })
 
     if (!validation.success) {
-      return { error: validation.error.errors[0].message }
+      return { error: validation.error.issues[0]?.message ?? 'Validation failed' }
     }
 
     // Verify ownership
@@ -66,7 +76,7 @@ export async function updateSalonMedia(formData: FormData) {
         logo_url: logo_url || null,
         cover_image_url: cover_image_url || null,
         video_url: video_url || null,
-        brand_colors: brand_colors ? JSON.parse(brand_colors) : null,
+        brand_colors: brandColorsData || null,
       })
 
     if (error) throw error
@@ -88,7 +98,7 @@ export async function addGalleryImage(formData: FormData) {
 
     const validation = addImageSchema.safeParse({ salonId, imageUrl })
     if (!validation.success) {
-      return { error: validation.error.errors[0].message }
+      return { error: validation.error.issues[0]?.message ?? 'Validation failed' }
     }
 
     // Verify ownership
@@ -134,7 +144,7 @@ export async function removeGalleryImage(formData: FormData) {
 
     const validation = removeImageSchema.safeParse({ salonId, imageUrl })
     if (!validation.success) {
-      return { error: validation.error.errors[0].message }
+      return { error: validation.error.issues[0]?.message ?? 'Validation failed' }
     }
 
     // Verify ownership

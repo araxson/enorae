@@ -21,7 +21,7 @@ export async function createSalonChain(formData: FormData) {
       legal_name: formData.get('legal_name'),
     })
 
-    if (!result.success) return { error: result.error.errors[0].message }
+    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
 
     const data = result.data
     const supabase = await createClient()
@@ -62,7 +62,7 @@ export async function updateSalonChain(formData: FormData) {
       legal_name: formData.get('legal_name'),
     })
 
-    if (!result.success) return { error: result.error.errors[0].message }
+    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
 
     const data = result.data
     const supabase = await createClient()
@@ -102,8 +102,7 @@ export async function deleteSalonChain(formData: FormData) {
 
     // Check if chain has salons
     const { count } = await supabase
-      .schema('organization')
-      .from('salons')
+      .from('salons_view')
       .select('*', { count: 'exact', head: true })
       .eq('chain_id', id)
       .is('deleted_at', null)

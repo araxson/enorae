@@ -3,29 +3,7 @@ import { SubscriptionOverviewCard } from './subscription-overview-card'
 import { UsageQuotaCard } from './usage-quota-card'
 import { PaymentMethodCard } from './payment-method-card'
 import { InvoiceHistoryCard } from './invoice-history-card'
-
-export interface Subscription {
-  tier: 'basic' | 'professional' | 'enterprise'
-  status: 'active' | 'trial' | 'cancelled'
-  billingCycle: 'monthly' | 'yearly'
-  nextBillingDate: string
-  price: number
-}
-
-export interface UsageQuota {
-  name: string
-  used: number
-  limit: number
-  unit: string
-}
-
-export interface Invoice {
-  id: string
-  date: string
-  amount: number
-  status: 'paid' | 'pending' | 'overdue'
-  downloadUrl?: string
-}
+import type { Subscription, UsageQuota, Invoice } from '../types'
 
 interface BillingSubscriptionFormProps {
   subscription?: Subscription

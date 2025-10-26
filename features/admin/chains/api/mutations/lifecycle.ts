@@ -24,7 +24,7 @@ export async function deleteChain(data: {
   try {
     const parsed = deleteChainSchema.safeParse(data)
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0]?.message ?? 'Invalid deletion payload' }
+      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid deletion payload' }
     }
 
     const { chainId } = parsed.data
@@ -80,7 +80,7 @@ export async function restoreChain(chainId: string): Promise<ChainActionResponse
   try {
     const parsed = chainIdSchema.safeParse(chainId)
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0]?.message ?? 'Invalid chain identifier' }
+      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid chain identifier' }
     }
 
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)

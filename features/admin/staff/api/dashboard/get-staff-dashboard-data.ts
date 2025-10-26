@@ -33,11 +33,13 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
 
   if (staffError) throw staffError
 
-  const staffRows = (staffData || []).filter(
-    (row): row is AdminStaffRow & { id: string } => Boolean(row?.['id']),
+  const staffRows = (staffData || []).filter((row) => Boolean(row?.id))
+  const userIds = Array.from(
+    new Set(staffRows.map((row) => row.user_id).filter((id): id is string => Boolean(id)))
   )
-  const userIds = Array.from(new Set(staffRows.map((row) => row['user_id']).filter(Boolean))) as string[]
-  const staffIds = Array.from(new Set(staffRows.map((row) => row['id'])))
+  const staffIds = Array.from(
+    new Set(staffRows.map((row) => row.id).filter((id): id is string => Boolean(id)))
+  )
 
   const [backgroundChecks, metadataRows, appointmentRows] = await Promise.all([
     fetchBackgroundChecks(supabase, userIds),
@@ -47,18 +49,21 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
 
   const appointmentByStaff = groupAppointmentsByStaff(appointmentRows)
   const appointmentIds = appointmentRows
-    .map((appointment) => appointment['id'])
+    .map((appointment) => appointment.id)
     .filter(Boolean)
     .slice(0, MAX_REVIEW_SAMPLE)
 
   const reviewRows = await fetchReviewSample(supabase, appointmentIds)
   const reviewsByAppointment = groupReviewsByAppointment(reviewRows)
 
-  const staffWithMetrics: StaffWithMetrics[] = staffRows.map((row) => {
-    const background = backgroundChecks.get(row['user_id'] ?? '')
-    const backgroundStatus = normalizeBackgroundStatus(background?.background_check_status)
-    const certifications = extractCertifications(metadataRows.get(row['user_id'] ?? ''))
-    const staffAppointments = appointmentByStaff.get(row['id']) ?? []
+  const staffWithMetrics: StaffWithMetrics[] = staffRows
+    .filter((row): row is typeof staffRows[number] & { id: string; salon_id: string } => Boolean(row.id && row.salon_id))
+    .map((row) => {
+      const userId = row.user_id ?? ''
+      const background = backgroundChecks.get(userId)
+      const backgroundStatus = normalizeBackgroundStatus(background?.background_check_status)
+      const certifications = extractCertifications(metadataRows.get(userId))
+      const staffAppointments = appointmentByStaff.get(row.id) ?? []
 
     const { metrics, compliance } = buildStaffMetrics(
       staffAppointments,
@@ -67,16 +72,16 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
       certifications,
     )
 
-    return {
-      id: row['id'],
-      userId: row['user_id'],
-      fullName: row['full_name'],
-      salonId: row['salon_id'],
-      salonName: row['salon_name'],
-      salonSlug: row['salon_slug'],
-      staffRole: row['staff_role'],
-      title: row['title'],
-      experienceYears: Number(row['experience_years'] ?? 0),
+      return {
+        id: row.id!,
+        userId: row.user_id,
+        fullName: row.full_name,
+        salonId: row.salon_id!,
+        salonName: row.salon_name,
+        salonSlug: row.salon_slug ?? '',
+        staffRole: row.staff_role,
+        title: row.title,
+        experienceYears: Number(row.experience_years ?? 0),
       background: {
         status: backgroundStatus,
         lastCheckedAt: background?.background_check_date ?? null,

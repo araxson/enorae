@@ -25,7 +25,7 @@ export async function updateChainSubscription(data: {
   try {
     const parsed = updateChainSubscriptionSchema.safeParse(data)
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0]?.message ?? 'Invalid subscription payload' }
+      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid subscription payload' }
     }
 
     const { chainId, subscriptionTier } = parsed.data

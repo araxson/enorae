@@ -10,4 +10,4 @@ export type {
   StaffDashboardStats,
   StaffPerformanceBenchmark,
   StaffWithMetrics,
-} from './types'
+} from './core-types'

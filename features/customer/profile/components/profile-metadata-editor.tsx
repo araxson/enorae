@@ -9,7 +9,7 @@ import { Heart, Tag, X } from 'lucide-react'
 import { updateProfileMetadata } from '@/features/customer/profile/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
-type ProfileMetadata = Database['public']['Views']['profiles_metadata']['Row']
+type ProfileMetadata = Database['public']['Views']['profiles_metadata_view']['Row']
 
 interface ProfileMetadataEditorProps {
   metadata: ProfileMetadata | null

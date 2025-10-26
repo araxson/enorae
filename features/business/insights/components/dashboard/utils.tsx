@@ -6,17 +6,10 @@ import {
   UserPlus,
   UserX,
 } from 'lucide-react'
+import { formatCurrency, formatPercentage } from '@/lib/utils/formatting'
 
-export const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount)
-}
-
-export const formatPercentage = (value: number) => {
-  return `${value.toFixed(1)}%`
-}
+// Re-export for backward compatibility
+export { formatCurrency, formatPercentage }
 
 export const getSegmentIcon = (segment: string) => {
   switch (segment) {

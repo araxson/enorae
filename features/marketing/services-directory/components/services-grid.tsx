@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import type { Database } from '@/lib/types/database.types'
 import { Clock, DollarSign, Sparkles } from 'lucide-react'
 
-type Service = Database['public']['Views']['services']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
 interface ServicesGridProps {
   services: Service[]

@@ -29,11 +29,11 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
     // Check if trying to revoke current session
     const { data: targetSession, error: targetError } = await supabase
       .from('sessions_view')
-      .select('id, is_current, is_active')
+      .select('id, is_active')
       .eq('id', validated.sessionId)
       .eq('user_id', user.id)
       .maybeSingle<
-        Pick<Database['public']['Views']['sessions_view']['Row'], 'id' | 'is_current' | 'is_active'>
+        Pick<Database['public']['Views']['sessions_view']['Row'], 'id' | 'is_active'>
       >()
 
     if (targetError) throw targetError
@@ -42,8 +42,9 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
       return { success: false, error: 'Session not found' }
     }
 
-    if (targetSession.is_current) {
-      return { success: false, error: 'Cannot revoke current session. Use sign out instead.' }
+    // Note: Revoking a session sets is_active to false
+    if (!targetSession.is_active) {
+      return { success: false, error: 'Session is already inactive.' }
     }
 
     // ✅ FIXED: Update identity.sessions table to mark as inactive
@@ -91,12 +92,11 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
       .select('id')
       .eq('user_id', user.id)
       .eq('is_active', true)
-      .eq('is_current', true)
       .maybeSingle<Pick<Database['public']['Views']['sessions_view']['Row'], 'id'>>()
 
     if (currentError) throw currentError
 
-    if (!currentSession) {
+    if (!currentSession || typeof currentSession.id !== 'string') {
       return { success: false, error: 'No active session' }
     }
 
@@ -111,7 +111,7 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
       })
       .eq('user_id', user.id)
       .eq('is_active', true)
-      .neq('id', currentSession.id)
+      .neq('id', currentSession.id as string)
       .select('id')
 
     if (error) throw error

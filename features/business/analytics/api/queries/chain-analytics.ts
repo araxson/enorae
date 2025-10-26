@@ -17,13 +17,13 @@ export async function getChainSalonBreakdown(
 
   const [{ data: metrics, error: metricsError }, { data: salons, error: salonsError }] = await Promise.all([
     supabase
-      .from('daily_metrics')
+      .from('daily_metrics_view')
       .select('salon_id, total_revenue, total_appointments')
       .in('salon_id', salonIds)
       .gte('metric_at', startDate)
       .lte('metric_at', endDate),
     supabase
-      .from('salons')
+      .from('salons_view')
       .select('id, name')
       .in('id', salonIds),
   ])
@@ -93,19 +93,19 @@ export async function getChainRevenueComparison(
 
   const [current, previous, yoy] = await Promise.all([
     supabase
-      .from('daily_metrics')
+      .from('daily_metrics_view')
       .select('total_revenue')
       .in('salon_id', salonIds)
       .gte('metric_at', startDate)
       .lte('metric_at', endDate),
     supabase
-      .from('daily_metrics')
+      .from('daily_metrics_view')
       .select('total_revenue')
       .in('salon_id', salonIds)
       .gte('metric_at', prevStartDate)
       .lte('metric_at', prevEndDate),
     supabase
-      .from('daily_metrics')
+      .from('daily_metrics_view')
       .select('total_revenue')
       .in('salon_id', salonIds)
       .gte('metric_at', yoyStartDate)

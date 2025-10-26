@@ -38,7 +38,7 @@ export async function getWebhookStats(): Promise<WebhookStats> {
   }
 
   const { data, error } = await supabase
-    .from('communication_webhook_queue')
+    .from('communication_webhook_queue_view')
     .select('id, status, created_at, completed_at')
     .returns<WebhookQueueRow[]>()
 
@@ -90,7 +90,7 @@ export async function getWebhookDeliveryLogs(webhookId: string, limit = 50): Pro
   // Use communication_webhook_queue table since delivery_logs view doesn't exist yet
   // This table contains delivery attempts with status and timing information
   const { data, error } = await supabase
-    .from('communication_webhook_queue')
+    .from('communication_webhook_queue_view')
     .select('id, status, created_at, completed_at, last_error, attempts')
     .order('created_at', { ascending: false })
     .limit(limit)
@@ -125,12 +125,44 @@ export async function getFailedWebhooks(limit = 50) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('communication_webhook_queue')
+    .from('communication_webhook_queue_view')
     .select('*')
     .eq('salon_id', salonId)
     .eq('status', 'failed')
     .order('created_at', { ascending: false })
     .limit(limit)
+
+  if (error) throw error
+  return data
+}
+
+export async function getWebhookQueue() {
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('communication_webhook_queue_view')
+    .select('*')
+    .eq('salon_id', salonId)
+    .order('created_at', { ascending: false })
+    .limit(100)
+
+  if (error) throw error
+  return data || []
+}
+
+export async function getWebhookQueueById(id: string) {
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const salonId = await requireUserSalonId()
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('communication_webhook_queue_view')
+    .select('*')
+    .eq('id', id)
+    .eq('salon_id', salonId)
+    .maybeSingle()
 
   if (error) throw error
   return data

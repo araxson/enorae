@@ -6,7 +6,7 @@ import { ServiceFormContent } from './service-form/service-form-content'
 import { useServiceForm } from './service-form/use-service-form'
 import type { Database } from '@/lib/types/database.types'
 
-type Service = Database['public']['Views']['services']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
 interface ServiceFormDialogProps {
   open: boolean

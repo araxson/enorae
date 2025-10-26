@@ -3,8 +3,9 @@ import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
 
-type DailyMetric = Database['analytics']['Tables']['daily_metrics']['Row']
-type OperationalMetric = Database['analytics']['Tables']['operational_metrics']['Row']
+// Type aliases for database views
+type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
+type OperationalMetric = Database['public']['Views']['operational_metrics_view']['Row']
 
 export interface TrendInsight {
   metric: string
@@ -45,8 +46,7 @@ export async function getTrendInsights(salonId: string): Promise<TrendInsight[]>
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
   const { data: metrics, error } = await supabase
-    .schema('analytics')
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('metric_at', thirtyDaysAgo.toISOString().split('T')[0])
@@ -58,10 +58,13 @@ export async function getTrendInsights(salonId: string): Promise<TrendInsight[]>
     return []
   }
 
+  // Explicitly type the metrics array
+  const typedMetrics = metrics as DailyMetric[]
+
   // Calculate trends
   const trends: TrendInsight[] = []
-  const recentMetrics = metrics.slice(-7) // Last 7 days
-  const previousMetrics = metrics.slice(-14, -7) // Previous 7 days
+  const recentMetrics = typedMetrics.slice(-7) // Last 7 days
+  const previousMetrics = typedMetrics.slice(-14, -7) // Previous 7 days
 
   // Revenue trend
   const recentRevenue = recentMetrics.reduce((sum, m) => sum + (Number(m.total_revenue) || 0), 0)
@@ -122,8 +125,7 @@ export async function getBusinessRecommendations(salonId: string): Promise<Busin
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
   const { data: metrics } = await supabase
-    .schema('analytics')
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('metric_at', thirtyDaysAgo.toISOString().split('T')[0])
@@ -133,7 +135,9 @@ export async function getBusinessRecommendations(salonId: string): Promise<Busin
     return recommendations
   }
 
-  const recentMetrics = metrics.slice(0, 7)
+  // Explicitly type the metrics array
+  const typedMetrics = metrics as DailyMetric[]
+  const recentMetrics = typedMetrics.slice(0, 7)
 
   // Check cancellation rate
   const totalAppts = recentMetrics.reduce((sum, m) => sum + (m.total_appointments || 0), 0)
@@ -178,8 +182,8 @@ export async function getBusinessRecommendations(salonId: string): Promise<Busin
   }
 
   // Check revenue growth
-  const firstWeek = metrics.slice(-7)
-  const lastWeek = metrics.slice(0, 7)
+  const firstWeek = typedMetrics.slice(-7)
+  const lastWeek = typedMetrics.slice(0, 7)
   const firstRevenue = firstWeek.reduce((sum, m) => sum + (Number(m.total_revenue) || 0), 0)
   const lastRevenue = lastWeek.reduce((sum, m) => sum + (Number(m.total_revenue) || 0), 0)
   const revenueGrowth = firstRevenue > 0 ? ((lastRevenue - firstRevenue) / firstRevenue) * 100 : 0
@@ -250,8 +254,7 @@ export async function getAnomalyAlerts(salonId: string): Promise<AnomalyAlert[]>
 
   // Get recent metrics with anomaly scores
   const { data: metrics } = await supabase
-    .schema('analytics')
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('metric_at', { ascending: false })
@@ -259,8 +262,14 @@ export async function getAnomalyAlerts(salonId: string): Promise<AnomalyAlert[]>
 
   if (!metrics) return alerts
 
+  // Explicitly type the metrics array
+  const typedMetrics = metrics as DailyMetric[]
+
   // Check for anomalies
-  metrics.forEach((metric) => {
+  typedMetrics.forEach((metric) => {
+    // Skip if required fields are null
+    if (!metric.id || !metric.metric_at) return
+
     const anomalyScore = Number(metric.anomaly_score) || 0
 
     if (anomalyScore > 0.8) {
@@ -301,31 +310,33 @@ export async function getGrowthOpportunities(salonId: string) {
 
   // Get operational metrics
   const { data: operational } = await supabase
-    .schema('analytics')
-    .from('operational_metrics')
+    .from('operational_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('metric_at', { ascending: false })
     .limit(1)
     .single()
 
+  // Explicitly type the operational metric
+  const typedOperational = operational as OperationalMetric | null
+
   const opportunities = []
 
-  if (operational?.peak_hour) {
+  if (typedOperational?.peak_hour) {
     opportunities.push({
       type: 'scheduling',
       title: 'Optimize Peak Hour Staffing',
-      description: `Peak demand is at ${operational.peak_hour}:00. Ensure adequate staff coverage.`,
+      description: `Peak demand is at ${typedOperational.peak_hour}:00. Ensure adequate staff coverage.`,
       potential: 'Improve revenue by 10-15%'
     })
   }
 
-  if (operational?.busiest_day_of_week) {
+  if (typedOperational?.busiest_day_of_week !== null && typedOperational?.busiest_day_of_week !== undefined) {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     opportunities.push({
       type: 'marketing',
       title: 'Target Slow Days',
-      description: `${days[operational.busiest_day_of_week]} is your busiest day. Create promotions for slower days.`,
+      description: `${days[typedOperational.busiest_day_of_week]} is your busiest day. Create promotions for slower days.`,
       potential: 'Increase weekly bookings by 20%'
     })
   }

@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const serviceSchema = z.object({
   name: z
-    .string({ required_error: 'Service name is required' })
+    .string()
     .trim()
     .min(1, 'Service name is required')
     .max(120, 'Service name must be 120 characters or fewer'),
@@ -19,10 +19,10 @@ export const serviceSchema = z.object({
 
 export const pricingSchema = z
   .object({
-    base_price: z.number({ required_error: 'Base price is required' }).min(0, 'Base price must be positive'),
+    base_price: z.number().min(0, 'Base price must be positive'),
     sale_price: z.number().min(0, 'Sale price cannot be negative').nullable().optional(),
     currency_code: z
-      .string({ required_error: 'Currency code is required' })
+      .string()
       .trim()
       .length(3, 'Currency code must be a 3-letter ISO code')
       .transform((code) => code.toUpperCase()),
@@ -49,7 +49,7 @@ export const pricingSchema = z
 export const bookingRulesSchema = z
   .object({
     duration_minutes: z
-      .number({ required_error: 'Duration is required' })
+      .number()
       .int('Duration must be a whole number')
       .min(1, 'Duration must be at least one minute'),
     buffer_minutes: z
@@ -90,5 +90,5 @@ export const bookingRulesSchema = z
   )
 
 export function extractFirstError(error: z.ZodError): string {
-  return error.errors[0]?.message ?? 'Invalid service data'
+  return error.issues[0]?.message ?? 'Invalid service data'
 }

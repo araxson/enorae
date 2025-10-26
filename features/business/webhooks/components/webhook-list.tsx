@@ -21,7 +21,7 @@ import { WebhookDetailDialog } from './webhook-detail-dialog'
 import { retryAllFailedWebhooks, clearCompletedWebhooks } from '@/features/business/webhooks/api/mutations'
 import { ConfirmDialog } from '@/features/shared/ui-components'
 
-type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
+type WebhookQueue = Database['public']['Views']['communication_webhook_queue_view']['Row']
 
 type WebhookListProps = {
   webhooks: WebhookQueue[]

@@ -1,6 +1,6 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type AppointmentRow = Database['public']['Views']['appointments']['Row']
+export type AppointmentRow = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
 export type CommissionData = {
   todayEarnings: number

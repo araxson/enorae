@@ -91,7 +91,7 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
               ))}
             </div>
           ) : (
-            <Alert variant="secondary" className="flex flex-col items-center gap-3 py-6">
+            <Alert className="flex flex-col items-center gap-3 py-6">
               <Upload className="h-12 w-12 text-muted-foreground" />
               <AlertTitle>No portfolio images yet</AlertTitle>
               <AlertDescription>Add your best work!</AlertDescription>

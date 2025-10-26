@@ -51,10 +51,16 @@ export function UserDropdown({
   const router = useRouter()
 
   async function handleSignOut() {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    router.push('/login')
-    router.refresh()
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      router.push('/login')
+      router.refresh()
+    } catch (error) {
+      console.error('Sign out error:', error)
+      // Still navigate to login even if sign out fails
+      router.push('/login')
+    }
   }
 
   const profileRoute = `/${portal}/profile`

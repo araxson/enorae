@@ -17,7 +17,7 @@ import { updateSalonSettings } from '@/features/business/settings/api/mutations'
 import { toast } from 'sonner'
 import type { Database } from '@/lib/types/database.types'
 
-type SalonSettings = Database['public']['Views']['salon_settings']['Row']
+type SalonSettings = Database['public']['Views']['salon_settings_view']['Row']
 
 interface SettingsFormProps {
   salonId: string

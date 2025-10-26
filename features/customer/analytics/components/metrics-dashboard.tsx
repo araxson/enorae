@@ -95,9 +95,7 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
               <div key={appointment['id']} className="flex items-start justify-between border-b pb-3 last:border-0 last:pb-0">
                 <div>
                   <p className="text-sm text-foreground">
-                    {Array.isArray(appointment['service_names']) && appointment['service_names'].length > 0
-                      ? appointment['service_names'].join(', ')
-                      : 'Service'}
+                    {appointment['service_name'] || 'Service'}
                   </p>
                   <p className="text-sm text-muted-foreground">{appointment['salon_name'] || 'Salon'}</p>
                 </div>

@@ -1,4 +1,5 @@
 import { APP_URL } from '@/lib/constants'
+import { SEO_CONSTANTS } from '@/lib/config/constants'
 import type { StructuredDataProps } from './schema-types'
 
 export type SalonSchemaInput = {
@@ -18,8 +19,8 @@ export function generateLocalBusinessSchema(salon: SalonSchemaInput): Structured
     '@type': 'BeautySalon',
     name: salon['name'],
     description: salon['description'],
-    image: salon.image || `${APP_URL}/default-salon.png`,
-    priceRange: salon.priceRange || '$$',
+    image: salon.image || `${APP_URL}${SEO_CONSTANTS.DEFAULT_SALON_IMAGE}`,
+    priceRange: salon.priceRange || SEO_CONSTANTS.DEFAULT_PRICE_RANGE,
   }
 
   if (salon['address']) {
@@ -38,8 +39,8 @@ export function generateLocalBusinessSchema(salon: SalonSchemaInput): Structured
       '@type': 'AggregateRating',
       ratingValue: salon['rating'],
       reviewCount: salon.reviewCount,
-      bestRating: 5,
-      worstRating: 1,
+      bestRating: SEO_CONSTANTS.RATING_SCALE.best,
+      worstRating: SEO_CONSTANTS.RATING_SCALE.worst,
     }
   }
 

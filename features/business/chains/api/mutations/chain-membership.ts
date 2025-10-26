@@ -25,7 +25,7 @@ export async function assignSalonToChain(formData: FormData) {
 
     // Verify salon ownership
     const { data: salon } = await supabase
-      .from('salons')
+      .from('salons_view')
       .select('id, owner_id')
       .eq('id', salonId)
       .eq('owner_id', user['id'])

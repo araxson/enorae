@@ -1,4 +1,4 @@
-import { getSecurityMonitoringSnapshot } from './api/queries/security-monitoring'
+import { getSecurityMonitoringSnapshot } from './api/queries'
 import { SecurityDashboard } from './components/security-dashboard'
 
 export async function SecurityMonitoring() {

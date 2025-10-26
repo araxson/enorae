@@ -23,12 +23,12 @@ export async function getCustomerCohorts(
   const today = new Date()
   const start = new Date(today)
   start.setMonth(start.getMonth() - (months + 6))
-  const startDate = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), 1)).toISOString().split('T')[0]
-  const endDate = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1)).toISOString().split('T')[0]
+  const startDate = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), 1)).toISOString().split('T')[0] || ''
+  const endDate = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1)).toISOString().split('T')[0] || ''
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('customer_id, status, start_time')
     .eq('salon_id', salonId)
     .gte('start_time', startDate)
@@ -38,7 +38,10 @@ export async function getCustomerCohorts(
 
   const appointments = (data || []) as Appointment[]
 
-  const toMonthIndex = (date: Date) => date.getUTCFullYear() * 12 + date.getUTCMonth()
+  const toMonthIndex = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date
+    return d.getUTCFullYear() * 12 + d.getUTCMonth()
+  }
   const toCohortLabel = (index: number) => {
     const year = Math.floor(index / 12)
     const month = index % 12

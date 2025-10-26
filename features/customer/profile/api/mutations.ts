@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import type { Json } from '@/lib/types/database.types'
 
 export async function updateProfileMetadata(formData: FormData) {
   const session = await requireAuth()
@@ -59,7 +60,18 @@ export async function updateProfilePreferences(formData: FormData) {
   const currencyCode = formData.get('currency_code')?.toString()
   const preferencesJson = formData.get('preferences')?.toString()
 
-  const preferences = preferencesJson ? JSON.parse(preferencesJson) : {}
+  let preferences: Record<string, unknown> = {}
+  if (preferencesJson) {
+    try {
+      const parsed = JSON.parse(preferencesJson)
+      preferences = typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed) ? parsed : {}
+    } catch {
+      return { error: 'Invalid preferences format' }
+    }
+  }
+
+  // Cast preferences to Json type for database storage
+  const preferencesForDb = preferences as unknown as Json
 
   const { error } = await supabase
     .schema('identity')
@@ -69,7 +81,7 @@ export async function updateProfilePreferences(formData: FormData) {
       timezone: timezone || null,
       locale: locale || null,
       currency_code: currencyCode || null,
-      preferences: preferences,
+      preferences: preferencesForDb,
       updated_at: new Date().toISOString(),
     })
 

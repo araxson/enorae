@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
-import type { ActionResponse } from './types'
+import type { ActionResponse } from './clients-types'
 
 const messageClientSchema = z.object({
   customerId: z.string().uuid(),
@@ -25,7 +25,7 @@ export async function messageClient(
 
     const validation = messageClientSchema.safeParse(data)
     if (!validation.success) {
-      return { success: false, error: validation.error.errors[0].message }
+      return { success: false, error: validation.error.issues[0]?.message || 'Validation failed' }
     }
 
     const { customerId, message, subject } = validation.data
@@ -45,7 +45,7 @@ export async function messageClient(
     let threadId: string
 
     const { data: existingThread } = await supabase
-      .from('message_threads')
+      .schema('communication').from('message_threads')
       .select('id')
       .eq('salon_id', staff.salon_id)
       .eq('customer_id', customerId)
@@ -58,7 +58,7 @@ export async function messageClient(
       // Create new thread
       const { data: newThread, error: threadError } = await supabase
         .schema('communication')
-        .from('message_threads')
+        .schema('communication').from('message_threads')
         .insert({
           salon_id: staff.salon_id,
           customer_id: customerId,
@@ -82,7 +82,7 @@ export async function messageClient(
     // Send message
     const { error: messageError } = await supabase
       .schema('communication')
-      .from('messages')
+      .schema('communication').from('messages')
       .insert({
         from_user_id: session.user.id,
         to_user_id: customerId,
@@ -97,14 +97,14 @@ export async function messageClient(
 
     // Update thread last_message_at and increment unread count
     const { data: currentThread } = await supabase
-      .from('message_threads')
+      .schema('communication').from('message_threads')
       .select('unread_count_customer')
       .eq('id', threadId)
       .single<{ unread_count_customer: number }>()
 
     await supabase
       .schema('communication')
-      .from('message_threads')
+      .schema('communication').from('message_threads')
       .update({
         last_message_at: new Date().toISOString(),
         last_message_by_id: session.user.id,

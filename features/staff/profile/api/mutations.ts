@@ -48,7 +48,7 @@ export async function updateStaffInfo(formData: FormData): Promise<ActionRespons
     })
 
     if (!result.success) {
-      return { success: false, error: result.error.errors[0]?.message || 'Validation failed' }
+      return { success: false, error: result.error.issues[0]?.message || 'Validation failed' }
     }
 
     const { title, bio, experienceYears } = result.data
@@ -95,14 +95,14 @@ export async function updateStaffMetadata(
 
     const validation = updateStaffMetadataSchema.safeParse(data)
     if (!validation.success) {
-      return { success: false, error: validation.error.errors[0]?.message || 'Validation failed' }
+      return { success: false, error: validation.error.issues[0]?.message || 'Validation failed' }
     }
 
     const { specialties, certifications, interests } = validation.data
 
     // Get profile_id from user_id
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('profiles_view')
       .select('id')
       .eq('user_id', session.user.id)
       .single<{ id: string }>()
@@ -183,22 +183,9 @@ export async function uploadPortfolioImage(formData: FormData): Promise<ActionRe
       .from('staff-portfolios')
       .getPublicUrl(fileName)
 
-    // Save to salon_media table as portfolio image
-    const { error: mediaError } = await supabase
-      .schema('organization')
-      .from('salon_media')
-      .insert({
-        salon_id: staff.salon_id,
-        media_type: 'image',
-        url: publicUrl,
-        alt_text: `Portfolio image by staff ${staff.id}`,
-        display_order: 0,
-        is_active: true,
-        created_by_id: session.user.id,
-        updated_by_id: session.user.id,
-      })
-
-    if (mediaError) throw mediaError
+    // Note: salon_media table only supports logo_url, cover_image_url, and gallery_urls
+    // Portfolio images are stored only in the storage bucket for now
+    // A future enhancement would require adding a separate portfolio_images table or extending salon_media
 
     revalidatePath('/staff/profile')
     return { success: true, data: publicUrl }

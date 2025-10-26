@@ -27,10 +27,7 @@ export function FormFields({ service, formData, setFormData, isLoadingStaff, sta
       <div className="space-y-2">
         <Label>Service</Label>
         <div className="p-3 bg-muted rounded-md">
-          <p className="text-base font-medium">{service['service_name']}</p>
-          {service['category_name'] && (
-            <p className="text-sm text-muted-foreground">{service['category_name']}</p>
-          )}
+          <p className="text-base font-medium">Service ID: {service['service_id']}</p>
         </div>
       </div>
 
@@ -55,10 +52,6 @@ export function FormFields({ service, formData, setFormData, isLoadingStaff, sta
                     {member['name']}
                   </SelectItem>
                 ))
-              ) : service['staff_name'] ? (
-                <SelectItem value={service['staff_id'] || ''}>
-                  {service['staff_name']}
-                </SelectItem>
               ) : (
                 <SelectItem value="no-staff" disabled>
                   {isLoadingStaff ? 'Loading staff...' : 'No staff available'}

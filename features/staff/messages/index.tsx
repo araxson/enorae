@@ -71,8 +71,8 @@ export async function StaffMessageThreadPage({ threadId }: StaffMessageThreadPag
         <Card>
           <CardHeader>
             <CardTitle>{thread['subject']}</CardTitle>
-            {thread['customer_name'] && (
-              <CardDescription>Conversation with {thread['customer_name']}</CardDescription>
+            {thread['customer_id'] && (
+              <CardDescription>Customer: {thread['customer_id']}</CardDescription>
             )}
           </CardHeader>
         </Card>

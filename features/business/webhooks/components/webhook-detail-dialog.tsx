@@ -20,7 +20,7 @@ import { WebhookErrorSection } from './webhook-error-section'
 import { WebhookActionButtons } from './webhook-detail-actions'
 import { Separator } from '@/components/ui/separator'
 
-type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
+type WebhookQueue = Database['public']['Views']['communication_webhook_queue_view']['Row']
 
 type WebhookDetailDialogProps = {
   webhook: WebhookQueue | null

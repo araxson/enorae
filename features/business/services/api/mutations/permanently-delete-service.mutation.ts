@@ -20,7 +20,7 @@ export async function permanentlyDeleteService(
   })
 
   const { data: appointments, error: checkError } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('id')
     .eq('service_id', serviceId)
     .limit(1)

@@ -10,7 +10,7 @@ export function LastUpdated() {
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(new Date())
-    }, 60000) // Update every minute
+    }, 60000) // Update every 1 minute (60000ms)
 
     return () => clearInterval(interval)
   }, [])

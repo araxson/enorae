@@ -78,7 +78,7 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
                   </TableCell>
                 </TableRow>
               ) : (
-                metrics.recentTransactions.map((transaction) => (
+                metrics.recentTransactions.map((transaction: { id: string; salon_id: string | null; customer_id: string | null; amount: number; payment_method: string | null; transaction_type: string | null; created_at: string | null }) => (
                   <TableRow key={transaction.id}>
                     <TableCell className="text-sm">
                       {formatDate(transaction.created_at)}

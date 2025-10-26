@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Activity, TrendingUp, AlertTriangle, Clock, Calendar } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
-type OperationalMetric = Database['public']['Views']['operational_metrics']['Row']
+type OperationalMetric = Database['public']['Views']['operational_metrics_view']['Row']
 
 type OperationalDashboardProps = {
   metrics: OperationalMetric | null

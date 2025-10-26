@@ -2,4 +2,4 @@ import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import type { Database } from '@/lib/types/database.types'
 
 export type StaffMemberWithServices = StaffWithServices
-export type ServiceRow = Database['public']['Views']['services']['Row']
+export type ServiceRow = Database['public']['Views']['services_view']['Row']

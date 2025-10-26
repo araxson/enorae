@@ -46,7 +46,7 @@ export async function updatePaymentMethods(
   } catch (error) {
     console.error('Error updating payment methods:', error)
     if (error instanceof z.ZodError) {
-      return { error: `Validation failed: ${error.errors[0]?.message}` }
+      return { error: `Validation failed: ${error.issues[0]?.message}` }
     }
     return { error: 'Failed to update payment methods' }
   }

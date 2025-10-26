@@ -43,7 +43,7 @@ export const notificationSchema = z.object({
   message: z.string().min(1),
   type: z.enum(notificationEvents),
   channels: z.array(z.enum(notificationChannels)).optional(),
-  data: z.record(z.unknown()).optional(),
+  data: z.record(z.string(), z.unknown()).optional(),
 })
 
 export const notificationIdsSchema = z.array(z.string().uuid()).optional()

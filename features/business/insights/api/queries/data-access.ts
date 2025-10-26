@@ -17,7 +17,7 @@ export async function fetchAppointments(
   salonId: string,
 ): Promise<AppointmentWithProfile[]> {
   const { data, error } = await client
-    .from('appointments')
+    .from('appointments_view')
     .select(`
       id,
       customer_id,
@@ -76,6 +76,7 @@ export async function fetchAppointmentServices(
   }
 
   const { data, error } = await client
+    .schema('scheduling')
     .from('appointment_services')
     .select('*')
     .in('appointment_id', appointmentIds)
@@ -92,13 +93,13 @@ export async function fetchNameMaps(
   const [staffProfiles, services] = await Promise.all([
     staffIds.size
       ? client
-          .from('profiles')
+          .from('profiles_view')
           .select('id, username')
           .in('id', Array.from(staffIds))
       : Promise.resolve({ data: [], error: null }),
     serviceIds.size
       ? client
-          .from('services')
+          .from('services_view')
           .select('id, name')
           .in('id', Array.from(serviceIds))
       : Promise.resolve({ data: [], error: null }),

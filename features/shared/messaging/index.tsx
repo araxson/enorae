@@ -13,7 +13,7 @@ export async function Messaging() {
     redirect('/login')
   }
 
-  const threads = await getMessageThreadsByUser()
+  const threads = await getMessageThreadsByUser(session.user.id)
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">

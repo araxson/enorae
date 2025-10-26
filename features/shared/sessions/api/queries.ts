@@ -15,7 +15,7 @@ export async function getUserSessions(): Promise<SessionWithMetadata[]> {
 
   // ✅ FIXED: Query identity.sessions via public view (application sessions)
   const { data, error } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('*')
     .eq('user_id', user.id)
     .eq('is_active', true)
@@ -35,7 +35,7 @@ export async function getSessionCount(): Promise<number> {
 
   // ✅ FIXED: Query identity.sessions via public view
   const { count, error } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', user.id)
     .eq('is_active', true)

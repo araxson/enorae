@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createStaffSchema, updateStaffSchema } from '../schema'
 
 export type StaffFormData = {
   email: string
@@ -15,10 +16,21 @@ export type StaffFormData = {
 
 /**
  * Create a new staff member and invite them to the platform
+ *
+ * Security: Validates all inputs with Zod schema before processing
  */
 export async function createStaffMember(data: StaffFormData) {
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
+
+  // Validate input with Zod schema
+  const validation = createStaffSchema.safeParse(data)
+  if (!validation.success) {
+    const firstError = validation.error.issues[0]
+    throw new Error(firstError?.message ?? 'Validation failed')
+  }
+
+  const validatedData = validation.data
   const supabase = await createClient()
 
   // First, create or get the user profile
@@ -29,7 +41,7 @@ export async function createStaffMember(data: StaffFormData) {
   const { data: existingProfile } = await supabase
     .from('profiles')
     .select('id')
-    .eq('email', data['email'])
+    .eq('email', validatedData.email)
     .maybeSingle<{ id: string }>()
 
   let userId: string
@@ -44,7 +56,7 @@ export async function createStaffMember(data: StaffFormData) {
       .from('profiles')
       .insert({
         id: crypto.randomUUID(),
-        username: data['email'].split('@')[0],
+        username: validatedData.email.split('@')[0],
         created_by_id: session.user['id'],
         updated_by_id: session.user['id'],
       })
@@ -58,13 +70,13 @@ export async function createStaffMember(data: StaffFormData) {
   // Create staff profile
   const { error: staffError } = await supabase
     .schema('organization')
-    .from('staff_profiles')
+    .schema('organization').from('staff_profiles')
     .insert({
       salon_id: salonId,
       user_id: userId,
-      title: data['title'],
-      bio: data['bio'],
-      experience_years: data['experience_years'],
+      title: validatedData.title,
+      bio: validatedData.bio,
+      experience_years: validatedData.experience_years,
       created_by_id: session.user['id'],
       updated_by_id: session.user['id'],
     })
@@ -77,7 +89,7 @@ export async function createStaffMember(data: StaffFormData) {
     .from('profiles_metadata')
     .upsert({
       profile_id: userId,
-      full_name: data['full_name'],
+      full_name: validatedData.full_name,
       updated_at: new Date().toISOString(),
     })
 
@@ -87,10 +99,21 @@ export async function createStaffMember(data: StaffFormData) {
 
 /**
  * Update an existing staff member
+ *
+ * Security: Validates all inputs with Zod schema before processing
  */
 export async function updateStaffMember(staffId: string, data: Partial<StaffFormData>) {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
+
+  // Validate input with Zod schema
+  const validation = updateStaffSchema.safeParse(data)
+  if (!validation.success) {
+    const firstError = validation.error.issues[0]
+    throw new Error(firstError?.message ?? 'Validation failed')
+  }
+
+  const validatedData = validation.data
   const supabase = await createClient()
 
   // Verify staff belongs to user's salon
@@ -107,14 +130,14 @@ export async function updateStaffMember(staffId: string, data: Partial<StaffForm
 
   // Update staff profile
   const staffUpdate: Record<string, unknown> = {}
-  if (data['title'] !== undefined) staffUpdate['title'] = data['title']
-  if (data['bio'] !== undefined) staffUpdate['bio'] = data['bio']
-  if (data['experience_years'] !== undefined) staffUpdate['experience_years'] = data['experience_years']
+  if (validatedData.title !== undefined) staffUpdate['title'] = validatedData.title
+  if (validatedData.bio !== undefined) staffUpdate['bio'] = validatedData.bio
+  if (validatedData.experience_years !== undefined) staffUpdate['experience_years'] = validatedData.experience_years
 
   if (Object.keys(staffUpdate).length > 0) {
     const { error } = await supabase
       .schema('organization')
-      .from('staff_profiles')
+      .schema('organization').from('staff_profiles')
       .update(staffUpdate)
       .eq('id', staffId)
 
@@ -122,13 +145,13 @@ export async function updateStaffMember(staffId: string, data: Partial<StaffForm
   }
 
   // Update profile metadata if name provided
-  if (data['full_name'] && staff['user_id']) {
+  if (validatedData.full_name && staff['user_id']) {
     await supabase
       .schema('identity')
       .from('profiles_metadata')
       .upsert({
         profile_id: staff['user_id'],
-        full_name: data['full_name'],
+        full_name: validatedData.full_name,
         updated_at: new Date().toISOString(),
       })
   }
@@ -158,7 +181,7 @@ export async function deactivateStaffMember(staffId: string) {
 
   const { error } = await supabase
     .schema('organization')
-    .from('staff_profiles')
+    .schema('organization').from('staff_profiles')
     .update({
       deleted_at: new Date().toISOString(),
     })
@@ -191,7 +214,7 @@ export async function reactivateStaffMember(staffId: string) {
 
   const { error } = await supabase
     .schema('organization')
-    .from('staff_profiles')
+    .schema('organization').from('staff_profiles')
     .update({
       deleted_at: null,
     })

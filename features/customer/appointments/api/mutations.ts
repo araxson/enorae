@@ -102,20 +102,20 @@ export async function requestReschedule(
     })
 
     if (!result.success) {
-      return { success: false, error: result.error.errors[0].message }
+      return { success: false, error: result.error.issues[0]?.message ?? 'Validation failed' }
     }
 
     const { newStartTime, reason } = result.data
 
     // Verify ownership and get appointment details
     const { data: appointment, error: fetchError } = await supabase
-      .from('appointments_view')
+      .from('admin_appointments_overview_view')
       .select('customer_id, salon_id, staff_id, start_time, status')
       .eq('id', appointmentId)
       .eq('customer_id', session.user.id)
       .limit(1)
       .maybeSingle<Pick<
-        Database['public']['Views']['appointments_view']['Row'],
+        Database['public']['Views']['admin_appointments_overview_view']['Row'],
         'customer_id' | 'salon_id' | 'staff_id' | 'start_time' | 'status'
       >>()
 

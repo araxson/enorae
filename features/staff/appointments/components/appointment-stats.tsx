@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, Clock, DollarSign, CheckCircle } from 'lucide-react'
+import { Calendar, Clock, CheckCircle, History } from 'lucide-react'
 import type { StaffAppointment } from '@/features/staff/appointments/api/queries'
 
 type AppointmentStatsProps = {
@@ -13,7 +13,7 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
   const completedAppointments = appointments.filter((a) => a['status'] === 'completed').length
   const totalMinutes = appointments.reduce((acc, a) => acc + (a['duration_minutes'] || 0), 0)
   const totalHours = (totalMinutes / 60).toFixed(1)
-  const totalRevenue = appointments.reduce((acc, a) => acc + (a['total_price'] || 0), 0)
+  const pendingAppointments = appointments.filter((a) => a['status'] === 'pending').length
 
   const stats = [
     {
@@ -35,10 +35,10 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
       color: 'text-accent',
     },
     {
-      label: 'Revenue',
-      value: `$${totalRevenue.toFixed(2)}`,
-      icon: DollarSign,
-      color: 'text-accent',
+      label: 'Pending',
+      value: pendingAppointments.toString(),
+      icon: History,
+      color: 'text-muted-foreground',
     },
   ]
 

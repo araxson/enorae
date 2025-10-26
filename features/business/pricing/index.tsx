@@ -1,9 +1,10 @@
-import { getPricingRules, getPricingServices } from './api/queries'
+import { getPricingRules } from './api/queries'
+import { getPricingServices, buildPricingAnalytics } from './api/analytics'
+import type { PricingService } from './api/analytics'
 import { PricingRulesForm } from './components/pricing-rules-form'
 import { PricingRulesList } from './components/pricing-rules-list'
 import { DynamicPricingDashboard } from './components/dynamic-pricing-dashboard'
 import { BulkPricingAdjuster } from './components/bulk-pricing-adjuster'
-import { buildPricingAnalytics } from './api/analytics'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -23,6 +24,8 @@ type PricingRuleRecord = {
   is_active: boolean | null
   priority: number | null
 }
+
+type ServiceForForm = PricingService & { id: string }
 
 export async function DynamicPricing() {
   const salon = await getUserSalon()
@@ -55,7 +58,6 @@ export async function DynamicPricing() {
 
   const analytics = buildPricingAnalytics(
     normalizedRules.map((rule) => ({
-      id: rule.id,
       rule_type: rule.rule_type,
       multiplier: rule.multiplier,
       fixed_adjustment: rule.fixed_adjustment,
@@ -82,12 +84,12 @@ export async function DynamicPricing() {
         rules={analytics.rules}
         scenarios={analytics.scenarios}
         insights={analytics.insights}
-        services={serviceList}
+        services={serviceList.map(s => ({ id: s.id }))}
       />
 
-      <BulkPricingAdjuster salonId={salon.id} services={serviceList} />
+      <BulkPricingAdjuster salonId={salon.id} services={serviceList.map(s => ({ id: s.id, name: s.name || 'Untitled Service', price: s.base_price ?? undefined }))} />
 
-      <PricingRulesForm salonId={salon.id} services={serviceList} />
+      <PricingRulesForm salonId={salon.id} services={serviceList.map(s => ({ id: s.id, name: s.name || 'Untitled Service', price: s.base_price ?? undefined }))} />
 
       <Card>
         <CardHeader>

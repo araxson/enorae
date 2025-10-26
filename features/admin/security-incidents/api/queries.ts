@@ -2,6 +2,10 @@ import 'server-only'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import type { Database } from '@/lib/types/database.types'
+
+type SecurityIncidentLogRow =
+  Database['public']['Views']['security_incident_logs_view']['Row']
 
 export interface SecurityIncidentRecord {
   id: string
@@ -13,6 +17,26 @@ export interface SecurityIncidentRecord {
   remediation_status: 'pending' | 'in_progress' | 'resolved'
   occurred_at: string
   created_at: string
+}
+
+function toSecurityIncidentRecord(row: SecurityIncidentLogRow): SecurityIncidentRecord {
+  const metadata = (row.metadata as Record<string, unknown> | null) ?? {}
+  return {
+    id: row.id ?? '',
+    event_type: row.event_type ?? 'unknown',
+    severity: (row.severity ?? 'info') as 'info' | 'warning' | 'critical',
+    user_email: (metadata['user_email'] as string | null) ?? null,
+    description: row.error_message ?? (metadata['description'] as string) ?? '',
+    impacted_resources:
+      (metadata['impacted_resources'] as string[]) ?? (row.entity_id ? [row.entity_id] : []),
+    remediation_status: (metadata['remediation_status'] as
+      | 'pending'
+      | 'in_progress'
+      | 'resolved'
+      | null) ?? 'pending',
+    occurred_at: row.created_at ?? new Date().toISOString(),
+    created_at: row.created_at ?? new Date().toISOString(),
+  }
 }
 
 export interface SecurityIncidentsSnapshot {
@@ -57,7 +81,7 @@ export async function getSecurityIncidents(
     .eq('remediation_status', 'pending')
 
   return {
-    incidents: (incidents as SecurityIncidentRecord[]) ?? [],
+    incidents: (incidents ?? []).map(toSecurityIncidentRecord),
     totalCount: totalCount ?? 0,
     criticalCount: criticalCount ?? 0,
     pendingCount: pendingCount ?? 0,

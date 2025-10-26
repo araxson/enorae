@@ -1,6 +1,8 @@
 'use client'
 
+import { format } from 'date-fns'
 import { Users, Calendar, DollarSign, Star } from 'lucide-react'
+
 import {
   Card,
   CardContent,
@@ -8,8 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+
 import type { SalonMetricsData } from '@/features/business/metrics/api/queries'
-import { format } from 'date-fns'
 
 type MetricsOverviewProps = {
   metrics: SalonMetricsData | null

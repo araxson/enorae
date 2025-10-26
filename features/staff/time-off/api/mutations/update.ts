@@ -35,7 +35,7 @@ export async function updateTimeOffRequest(formData: FormData) {
 
     // Verify ownership and status - staff can only edit their own pending requests
     const { data: request, error: fetchError } = await supabase
-      .from('time_off_requests')
+      .schema('scheduling').from('time_off_requests')
       .select('staff_id, staff_user_id, status')
       .eq('id', id)
       .single<{ staff_id: string; staff_user_id: string | null; status: string }>()
@@ -68,7 +68,7 @@ export async function updateTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .schema('scheduling').from('time_off_requests')
       .update<TimeOffRequestUpdate>(updateData)
       .eq('id', id)
       .eq('staff_id', staffProfile.id) // Security check

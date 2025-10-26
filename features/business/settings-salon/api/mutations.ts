@@ -67,7 +67,7 @@ export async function updateSalonInfo(salonId: string, formData: FormData) {
   } catch (error) {
     console.error('Error updating salon info:', error)
     if (error instanceof z.ZodError) {
-      return { error: 'Validation failed: ' + error.errors[0]?.message }
+      return { error: 'Validation failed: ' + error.issues[0]?.message }
     }
     return { error: 'Failed to update salon information' }
   }

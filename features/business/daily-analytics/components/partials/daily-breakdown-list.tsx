@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { DailyMetricsDashboardProps } from '../types'
-import { formatCurrency } from '@/features/business/daily-analytics/utils/value-formatters'
+import { formatCurrency } from '@/features/business/business-common'
 
 type Props = Pick<DailyMetricsDashboardProps, 'metrics'>
 

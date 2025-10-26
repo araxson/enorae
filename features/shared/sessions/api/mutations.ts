@@ -24,7 +24,7 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
 
     // Check if session exists and belongs to user
     const { data: targetSession, error: targetError } = await supabase
-      .from('sessions')
+      .from('sessions_view')
       .select('id, is_active')
       .eq('id', sessionId)
       .eq('user_id', user.id)
@@ -72,9 +72,9 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
     const { supabase, user } = await requireSessionContext()
 
     // Get all active sessions to find count (we'll keep the most recently updated one)
-    type SessionData = { id: string; updated_at: string }
+    type SessionData = { id: string | null; updated_at: string | null }
     const { data: activeSessions, error: fetchError } = await supabase
-      .from('sessions')
+      .from('sessions_view')
       .select('id, updated_at')
       .eq('user_id', user.id)
       .eq('is_active', true)
@@ -89,8 +89,13 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
     }
 
     // Keep the most recently updated session (likely the current one)
-    const currentSessionId = activeSessions[0].id
-    const sessionIdsToRevoke = activeSessions.slice(1).map(s => s.id)
+    const firstSession = activeSessions[0]
+    if (!firstSession || typeof firstSession.id !== 'string') {
+      return { success: false, error: 'Invalid session data' }
+    }
+
+    const currentSessionId = firstSession.id
+    const sessionIdsToRevoke = activeSessions.slice(1).filter((s) => typeof s.id === 'string').map(s => s.id as string)
 
     if (sessionIdsToRevoke.length === 0) {
       return { success: true, data: { count: 0 } }

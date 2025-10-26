@@ -32,10 +32,10 @@ const templateSchema = z.object({
 
 const updatePreferencesSchema = z.object({
   preferences: z.object({
-    email: z.record(z.boolean()).optional(),
-    sms: z.record(z.boolean()).optional(),
-    in_app: z.record(z.boolean()).optional(),
-    push: z.record(z.boolean()).optional(),
+    email: z.record(z.string(), z.boolean()).optional(),
+    sms: z.record(z.string(), z.boolean()).optional(),
+    in_app: z.record(z.string(), z.boolean()).optional(),
+    push: z.record(z.string(), z.boolean()).optional(),
   }),
 })
 
@@ -75,14 +75,13 @@ export async function sendNotification(input: {
 
   const validation = notificationSchema.safeParse(input)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0]?.message || 'Validation failed')
+    throw new Error(validation.error.issues[0]?.message || 'Validation failed')
   }
 
   const { userId, title, message, type, channels, data } = validation.data
 
-  const payloadData: Json | undefined = data
-    ? (JSON.parse(JSON.stringify(data)) as Json)
-    : undefined
+  // Use structuredClone for type-safe deep copy instead of JSON.parse(JSON.stringify)
+  const payloadData: Json | undefined = data ? (structuredClone(data) as Json) : undefined
 
   await ensureRecipientAuthorized(supabase, userId)
 
@@ -112,7 +111,7 @@ export async function markNotificationsRead(notificationIds?: string[]) {
 
   const validation = notificationIdsSchema.safeParse(notificationIds)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0]?.message || 'Validation failed')
+    throw new Error(validation.error.issues[0]?.message || 'Validation failed')
   }
 
   const {
@@ -154,7 +153,7 @@ export async function updateNotificationPreferences(preferences: {
 
   const validation = updatePreferencesSchema.safeParse({ preferences })
   if (!validation.success) {
-    throw new Error(validation.error.errors[0]?.message || 'Validation failed')
+    throw new Error(validation.error.issues[0]?.message || 'Validation failed')
   }
 
   const {
@@ -186,7 +185,7 @@ export async function upsertNotificationTemplate(template: TemplateInput) {
 
   const validation = templateSchema.safeParse(template)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0]?.message || 'Validation failed')
+    throw new Error(validation.error.issues[0]?.message || 'Validation failed')
   }
 
   const {

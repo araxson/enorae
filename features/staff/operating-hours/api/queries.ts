@@ -43,8 +43,9 @@ export async function getTodayOperatingHours(): Promise<OperatingHours | null> {
 
   if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')
 
-  const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+  const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const
   const today = days[new Date().getDay()]
+  if (!today) throw new Error('Invalid day')
 
   const { data, error } = await supabase
     .from('operating_hours_view')

@@ -36,7 +36,7 @@ export async function updateLocationAddress(
 
     // Verify location ownership through salon
     const { data: location } = await supabase
-      .from('salon_locations')
+      .from('salon_locations_view')
       .select('salon_id')
       .eq('id', locationId)
       .single<{ salon_id: string | null }>()
@@ -104,7 +104,7 @@ export async function deleteLocationAddress(locationId: string): Promise<ActionR
 
     // Verify location ownership through salon
     const { data: location } = await supabase
-      .from('salon_locations')
+      .from('salon_locations_view')
       .select('salon_id')
       .eq('id', locationId)
       .single<{ salon_id: string | null }>()

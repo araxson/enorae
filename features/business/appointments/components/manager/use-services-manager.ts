@@ -18,21 +18,21 @@ export function useServicesManager(onUpdate: () => void) {
       const formData = new FormData()
       formData.append('appointmentServiceId', deletingService['id'] || '')
 
-      const result = await removeServiceFromAppointment(formData)
+      try {
+        await removeServiceFromAppointment(formData)
 
-      if ('error' in result) {
-        toast({
-          variant: 'destructive',
-          title: 'Unable to remove service',
-          description: result.error,
-        })
-      } else {
         toast({
           title: 'Service removed',
-          description: `${deletingService['service_name'] ?? 'Service'} was removed from the appointment.`,
+          description: 'Service was removed from the appointment.',
         })
         onUpdate()
         setDeletingService(null)
+      } catch (error) {
+        toast({
+          variant: 'destructive',
+          title: 'Unable to remove service',
+          description: error instanceof Error ? error.message : 'An error occurred',
+        })
       }
     } catch (error) {
       toast({

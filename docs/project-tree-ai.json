@@ -2238,34 +2238,8 @@
                   "name": "api",
                   "children": [
                     {
-                      "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "database-health.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "notification-queue.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "optimization.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "query-performance.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "schema-validation.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "snapshot.ts"
-                        }
-                      ]
+                      "type": "file",
+                      "name": "database-health.ts"
                     },
                     {
                       "type": "file",
@@ -2273,7 +2247,27 @@
                     },
                     {
                       "type": "file",
+                      "name": "notification-queue.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "optimization.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "query-performance.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema-validation.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "snapshot.ts"
                     }
                   ]
                 },
@@ -3105,6 +3099,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "permissions-editor.tsx"
                     },
                     {
@@ -3651,37 +3649,39 @@
                   "children": [
                     {
                       "type": "directory",
-                      "name": "internal",
+                      "name": "dashboard",
                       "children": [
                         {
-                          "type": "directory",
-                          "name": "staff-dashboard",
-                          "children": [
-                            {
-                              "type": "file",
-                              "name": "aggregations.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "constants.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "fetchers.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "get-staff-dashboard-data.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "metrics.ts"
-                            },
-                            {
-                              "type": "file",
-                              "name": "types.ts"
-                            }
-                          ]
+                          "type": "file",
+                          "name": "aggregations.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "constants.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "core-types.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "dashboard-types.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "fetchers.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "get-staff-dashboard-data.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "metrics.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
                         }
                       ]
                     },
@@ -4096,6 +4096,10 @@
                         {
                           "type": "file",
                           "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "service-options.ts"
                         }
                       ]
                     },
@@ -4117,6 +4121,14 @@
                       "type": "directory",
                       "name": "add-service",
                       "children": [
+                        {
+                          "type": "file",
+                          "name": "add-service-dialog-client.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "add-service-dialog-wrapper.tsx"
+                        },
                         {
                           "type": "file",
                           "name": "form-fields.tsx"
@@ -4236,6 +4248,10 @@
                     {
                       "type": "file",
                       "name": "edit-service-dialog.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -4318,6 +4334,10 @@
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "salon-context.ts"
                     }
                   ]
                 },
@@ -4434,20 +4454,6 @@
                     {
                       "type": "file",
                       "name": "value-formatters.ts"
-                    }
-                  ]
-                },
-                {
-                  "type": "directory",
-                  "name": "utils",
-                  "children": [
-                    {
-                      "type": "file",
-                      "name": "formatters.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "index.ts"
                     }
                   ]
                 },
@@ -4824,32 +4830,12 @@
                       ]
                     },
                     {
-                      "type": "directory",
-                      "name": "utils",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "value-formatters.ts"
-                        }
-                      ]
-                    },
-                    {
                       "type": "file",
                       "name": "daily-metrics-dashboard.tsx"
                     },
                     {
                       "type": "file",
                       "name": "types.ts"
-                    }
-                  ]
-                },
-                {
-                  "type": "directory",
-                  "name": "utils",
-                  "children": [
-                    {
-                      "type": "file",
-                      "name": "value-formatters.ts"
                     }
                   ]
                 },
@@ -4970,6 +4956,10 @@
                     {
                       "type": "file",
                       "name": "dashboard-view.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -5425,6 +5415,10 @@
                       "children": [
                         {
                           "type": "file",
+                          "name": "helpers.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "index.ts"
                         },
                         {
@@ -5603,6 +5597,10 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
+                    {
+                      "type": "file",
+                      "name": "analytics.ts"
+                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -5927,10 +5925,6 @@
                     },
                     {
                       "type": "file",
-                      "name": "shared.ts"
-                    },
-                    {
-                      "type": "file",
                       "name": "upsert-service-pricing.mutation.ts"
                     }
                   ]
@@ -6003,34 +5997,6 @@
             },
             {
               "type": "directory",
-              "name": "service-product-usage",
-              "children": [
-                {
-                  "type": "directory",
-                  "name": "api",
-                  "children": []
-                },
-                {
-                  "type": "directory",
-                  "name": "components",
-                  "children": []
-                },
-                {
-                  "type": "file",
-                  "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "types.ts"
-                }
-              ]
-            },
-            {
-              "type": "directory",
               "name": "services",
               "children": [
                 {
@@ -6068,16 +6034,6 @@
                         {
                           "type": "file",
                           "name": "update-service.mutation.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
-                      "name": "utils",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "calculations.ts"
                         }
                       ]
                     },
@@ -8783,6 +8739,22 @@
             },
             {
               "type": "directory",
+              "name": "newsletter",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "api",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "mutations.ts"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "directory",
               "name": "pricing",
               "children": [
                 {
@@ -9341,6 +9313,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "login-form.tsx"
                     },
                     {
@@ -9604,6 +9580,10 @@
                     {
                       "type": "file",
                       "name": "create-thread-dialog.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -10293,28 +10273,6 @@
                   "children": [
                     {
                       "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "performance-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "retention-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "revenue-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
                       "name": "queries",
                       "children": [
                         {
@@ -10341,7 +10299,23 @@
                     },
                     {
                       "type": "file",
+                      "name": "analytics-types.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "performance-queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "retention-queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "revenue-queries.ts"
                     }
                   ]
                 },
@@ -10525,44 +10499,6 @@
                   "children": [
                     {
                       "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "auth.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "client-queries.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "messaging-mutations.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "notes-mutations.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "preferences-mutations.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "retention-metrics.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "service-history.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
                       "name": "mutations",
                       "children": [
                         {
@@ -10612,6 +10548,34 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "client-queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "clients-types.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "messaging-mutations.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "notes-mutations.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "preferences-mutations.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "retention-metrics.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "service-history.ts"
                     }
                   ]
                 },
@@ -11107,28 +11071,6 @@
                   "children": [
                     {
                       "type": "directory",
-                      "name": "internal",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "conflict-checker.query.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "salon-staff.query.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "staff-schedules.query.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "directory",
                       "name": "staff-schedules",
                       "children": [
                         {
@@ -11167,6 +11109,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "conflict-checker.query.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
@@ -11175,7 +11121,23 @@
                     },
                     {
                       "type": "file",
+                      "name": "salon-staff.query.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "schedule-requests.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schedule-types.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "staff-schedules.query.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -11591,6 +11553,16 @@
       "children": [
         {
           "type": "directory",
+          "name": "api",
+          "children": [
+            {
+              "type": "file",
+              "name": "fetch-wrapper.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
           "name": "auth",
           "children": [
             {
@@ -11630,6 +11602,10 @@
             {
               "type": "file",
               "name": "session.ts"
+            },
+            {
+              "type": "file",
+              "name": "staff.ts"
             }
           ]
         },
@@ -11666,6 +11642,16 @@
             {
               "type": "file",
               "name": "query-keys.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "config",
+          "children": [
+            {
+              "type": "file",
+              "name": "env.ts"
             }
           ]
         },
@@ -11913,6 +11899,16 @@
         },
         {
           "type": "directory",
+          "name": "services",
+          "children": [
+            {
+              "type": "file",
+              "name": "calculations.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
           "name": "supabase",
           "children": [
             {
@@ -12000,10 +11996,6 @@
             {
               "type": "file",
               "name": "commission.ts"
-            },
-            {
-              "type": "file",
-              "name": "formatting.ts"
             },
             {
               "type": "file",
@@ -12161,6 +12153,10 @@
     },
     {
       "type": "file",
+      "name": "ABSOLUTE_PATHS_REFERENCE.txt"
+    },
+    {
+      "type": "file",
       "name": "AGENTS.md"
     },
     {
@@ -12173,7 +12169,27 @@
     },
     {
       "type": "file",
+      "name": "CONSOLIDATION_CHANGES_SUMMARY.txt"
+    },
+    {
+      "type": "file",
+      "name": "DEAD_CODE_CLEANUP_REPORT.md"
+    },
+    {
+      "type": "file",
+      "name": "DETAILED_CHANGES_REFERENCE.md"
+    },
+    {
+      "type": "file",
       "name": "eslint.config.mjs"
+    },
+    {
+      "type": "file",
+      "name": "FILE_PLACEMENT_AUDIT_INDEX.md"
+    },
+    {
+      "type": "file",
+      "name": "FILE_PLACEMENT_CONSOLIDATION_REPORT.md"
     },
     {
       "type": "file",
@@ -12206,14 +12222,6 @@
     {
       "type": "file",
       "name": "readme.md"
-    },
-    {
-      "type": "file",
-      "name": "SCHEMA-ALIGNMENT-TASKS.md"
-    },
-    {
-      "type": "file",
-      "name": "SHADCN_FIXES_PROMPT.md"
     },
     {
       "type": "file",

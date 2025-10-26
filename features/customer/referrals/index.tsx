@@ -1,9 +1,12 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
+
 import { getReferralCode, getReferralStats, getReferralHistory } from './api/queries'
 import { ReferralDashboard } from './components/referral-dashboard'
 
+import { PageLoading } from '@/features/shared/ui-components'
+
 export async function ReferralProgram() {
+
   const referralCode = await getReferralCode()
   const stats = await getReferralStats()
   const history = await getReferralHistory()

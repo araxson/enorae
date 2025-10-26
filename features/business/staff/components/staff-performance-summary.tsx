@@ -16,15 +16,21 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
     .map((member) => {
       // Note: performed_count and rating_count are not available in the staff_services view
       // We count available services as a proxy for activity
-      const totalPerformed = member.services.filter((s) => s['is_available']).length
-      const servicesWithRatings = member.services.filter((s) => s['rating_average'] && s['rating_average'] > 0)
-      const avgRating = servicesWithRatings.length > 0
-        ? servicesWithRatings.reduce((sum: number, s) => sum + Number(s['rating_average'] || 0), 0) / servicesWithRatings.length
-        : 0
+      const performedServices = member.services.filter((service) => service.is_available === true)
+      const servicesWithRatings = member.services.filter(
+        (service) => typeof service.rating_average === 'number' && service.rating_average > 0
+      )
+      const avgRating =
+        servicesWithRatings.length > 0
+          ? servicesWithRatings.reduce(
+              (sum, service) => sum + (service.rating_average ?? 0),
+              0
+            ) / servicesWithRatings.length
+          : 0
 
       return {
         ...member,
-        totalPerformed,
+        totalPerformed: performedServices.length,
         avgRating,
         totalRatings: servicesWithRatings.length,
       }
@@ -33,12 +39,12 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
 
   // Top performers
   const topPerformer = staffWithMetrics.reduce(
-    (max, member) => (member.totalPerformed > max.totalPerformed ? member : max),
+    (max, member) => (member.totalPerformed > (max?.totalPerformed ?? 0) ? member : max),
     staffWithMetrics[0]
   )
 
   const topRated = staffWithMetrics.reduce(
-    (max, member) => (member.avgRating > max.avgRating ? member : max),
+    (max, member) => (member.avgRating > (max?.avgRating ?? 0) ? member : max),
     staffWithMetrics[0]
   )
 

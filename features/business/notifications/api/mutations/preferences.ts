@@ -5,10 +5,10 @@ import { getSupabaseClient, revalidateNotifications } from './helpers'
 
 const updatePreferencesSchema = z.object({
   preferences: z.object({
-    email: z.record(z.boolean()).optional(),
-    sms: z.record(z.boolean()).optional(),
-    in_app: z.record(z.boolean()).optional(),
-    push: z.record(z.boolean()).optional(),
+    email: z.record(z.string(), z.boolean()).optional(),
+    sms: z.record(z.string(), z.boolean()).optional(),
+    in_app: z.record(z.string(), z.boolean()).optional(),
+    push: z.record(z.string(), z.boolean()).optional(),
   }),
 })
 
@@ -22,7 +22,7 @@ export async function updateNotificationPreferences(preferences: {
 
   const validation = updatePreferencesSchema.safeParse({ preferences })
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message)
+    throw new Error(validation.error.issues[0]?.message ?? "Validation failed")
   }
 
   const {

@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -8,7 +7,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ruleLabels, type RuleType } from './constants'
+
+import { ruleLabels } from './constants'
+
+import type { Dispatch, SetStateAction } from 'react'
+import type { RuleType } from './constants'
 import type { PricingRuleFormState } from './types'
 
 type FormStateSetter = Dispatch<SetStateAction<PricingRuleFormState>>

@@ -1,36 +1,25 @@
 import 'server-only'
 
 import type { AppointmentRow, CommissionRate, ServiceRevenue } from './types'
-import {
-  authorizeStaffAccess,
-  calculateDefaultCommission,
-} from '@/lib/utils/commission'
+import { authorizeStaffAccess } from '@/lib/utils/commission'
 
 const DEFAULT_COMMISSION_PERCENTAGE = 40
-const DEFAULT_COMMISSION_RATE = DEFAULT_COMMISSION_PERCENTAGE / 100
 
 function buildServiceMap(entries: AppointmentRow[] | null | undefined) {
   const serviceMap = new Map<string, ServiceRevenue>()
 
   entries?.forEach((entry) => {
-    const serviceNames = Array.isArray(entry['service_names'])
-      ? entry['service_names']
-      : ['Unknown Service']
-    const revenue = entry['total_price'] || 0
-
-    serviceNames.forEach(serviceName => {
-      const existing = serviceMap.get(serviceName)
-      if (existing) {
-        existing.revenue += revenue
-        existing.count += 1
-      } else {
-        serviceMap.set(serviceName, {
-          service_name: serviceName,
-          revenue,
-          count: 1,
-        })
-      }
-    })
+    const serviceName = entry['id'] || 'Unknown Service'
+    const existing = serviceMap.get(serviceName)
+    if (existing) {
+      existing.count += 1
+    } else {
+      serviceMap.set(serviceName, {
+        service_name: serviceName,
+        revenue: 0,
+        count: 1,
+      })
+    }
   })
 
   return serviceMap
@@ -106,14 +95,8 @@ export async function getServiceCommissionBreakdown(
   const serviceMap = buildServiceMap(data as AppointmentRow[])
 
   serviceMap.forEach((value) => {
-    const commissionAmount = calculateDefaultCommission(
-      value.revenue,
-      DEFAULT_COMMISSION_RATE,
-    )
-
     value.commission_rate = DEFAULT_COMMISSION_PERCENTAGE
-    value.commission_amount =
-      (value.commission_amount ?? 0) + commissionAmount
+    value.commission_amount = value.commission_amount ?? 0
   })
 
   return Array.from(serviceMap.values()).sort(

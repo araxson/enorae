@@ -2,7 +2,9 @@ import 'server-only'
 
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
-import type { AppointmentWithDetails } from '@/features/business/dashboard/types'
+import type { Database } from '@/lib/types/database.types'
+
+type AppointmentWithDetails = Database['public']['Views']['appointments_view']['Row']
 
 export async function getRecentAppointments(
   salonId: string,
@@ -18,7 +20,7 @@ export async function getRecentAppointments(
 
   try {
     const { data, error } = await supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('*')
       .eq('salon_id', salonId)
       .order('created_at', { ascending: false })

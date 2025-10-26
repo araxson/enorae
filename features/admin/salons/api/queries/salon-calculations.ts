@@ -84,7 +84,9 @@ export function calculateHealthScore({
 }: HealthInput): number {
   const ratingScore = clamp((ratingAverage ?? 0) / 5, 0, 1)
   const bookingScore = clamp((totalBookings ?? 0) / 200, 0, 1)
-  const revenueScore = clamp((totalRevenue ?? 0) / 150000, 0, 1)
+  // Revenue score: normalized by max threshold of $150k
+  const MAX_REVENUE_THRESHOLD = 150000
+  const revenueScore = clamp((totalRevenue ?? 0) / MAX_REVENUE_THRESHOLD, 0, 1)
   const staffScore = clamp((staffCount ?? 0) / 50, 0, 1)
 
   const weighted =

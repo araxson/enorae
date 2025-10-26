@@ -2,6 +2,19 @@ import 'server-only'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import type { Database } from '@/lib/types/database.types'
+
+type SessionSecurityViewRow =
+  Database['public']['Views']['security_session_security_view']['Row']
+
+function normalizeIp(value: unknown): string {
+  if (typeof value === 'string') return value
+  if (Array.isArray(value)) {
+    const match = value.find((entry) => typeof entry === 'string')
+    return match ?? ''
+  }
+  return ''
+}
 
 export interface SessionSecurityRecord {
   id: string
@@ -18,6 +31,31 @@ export interface SessionSecurityRecord {
   created_at: string
   security_flags: string[]
   requires_mfa_override: boolean
+}
+
+function toSessionSecurityRecord(row: SessionSecurityViewRow): SessionSecurityRecord {
+  const suspiciousScore = row.suspicious_score ?? 0
+  let riskLevel: 'low' | 'medium' | 'high' | 'critical' = 'low'
+  if (suspiciousScore >= 90) riskLevel = 'critical'
+  else if (suspiciousScore >= 70) riskLevel = 'high'
+  else if (suspiciousScore >= 40) riskLevel = 'medium'
+
+  return {
+    id: row.id ?? '',
+    user_id: row.user_id ?? '',
+    user_email: '', // Not in view, would need join
+    session_id: row.session_id ?? '',
+    risk_score: suspiciousScore,
+    risk_level: riskLevel,
+    has_mfa: false, // Not in view, would need join
+    mfa_enabled_at: null, // Not in view
+    ip_address: normalizeIp(row.ip_address),
+    device_fingerprint: '', // Not in view
+    last_activity: row.last_activity_at ?? new Date().toISOString(),
+    created_at: row.created_at ?? new Date().toISOString(),
+    security_flags: row.is_blocked ? ['blocked'] : [],
+    requires_mfa_override: false, // Not in view
+  }
 }
 
 export interface SessionSecuritySnapshot {
@@ -76,7 +114,7 @@ export async function getSessionSecurityMonitoring(
     .eq('has_mfa', true)
 
   return {
-    records: (records as SessionSecurityRecord[]) ?? [],
+    records: (records ?? []).map(toSessionSecurityRecord),
     totalCount: totalCount ?? 0,
     criticalCount: criticalCount ?? 0,
     highRiskCount: highRiskCount ?? 0,
@@ -102,5 +140,5 @@ export async function getSessionSecurityDetail(
     return null
   }
 
-  return (record as SessionSecurityRecord) ?? null
+  return record ? toSessionSecurityRecord(record) : null
 }

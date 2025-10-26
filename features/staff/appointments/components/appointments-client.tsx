@@ -29,8 +29,9 @@ export function AppointmentsClient({
       return appointments.filter((appt) => {
         const matchesSearch =
           !searchQuery ||
-          appt['customer_name']?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          appt['customer_email']?.toLowerCase().includes(searchQuery.toLowerCase())
+          appt.customer_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          appt.confirmation_code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          appt.id?.toLowerCase().includes(searchQuery.toLowerCase())
 
         const matchesStatus = statusFilter === 'all' || appt['status'] === statusFilter
 
@@ -100,7 +101,7 @@ export function AppointmentsClient({
       tabs={tabs}
       activeTab={activeTab}
       onTabChange={setActiveTab}
-      searchPlaceholder="Search by client or email…"
+      searchPlaceholder="Search by customer or confirmation…"
       searchValue={searchQuery}
       onSearchChange={setSearchQuery}
       filters={[

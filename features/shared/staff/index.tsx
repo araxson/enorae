@@ -1,3 +1,4 @@
 // Feature export
 // This file serves as the main entry point for this feature
-export { default } from './components'
+// NOTE: No component export available - feature is in development
+// export { default } from './components'

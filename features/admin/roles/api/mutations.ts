@@ -8,12 +8,12 @@ import { deleteRole as deleteRoleAction } from './role-mutations/delete-role'
 
 type ServerAction<T extends (...args: never[]) => Promise<unknown>> = (
   ...args: Parameters<T>
-) => ReturnType<T>
+) => Promise<Awaited<ReturnType<T>>>
 
 function createServerActionProxy<T extends (...args: never[]) => Promise<unknown>>(
   action: T
 ): ServerAction<T> {
-  return (...args) => action(...args)
+  return ((...args) => action(...args)) as ServerAction<T>
 }
 
 export const assignRole = createServerActionProxy(assignRoleAction)

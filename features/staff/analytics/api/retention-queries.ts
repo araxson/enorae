@@ -1,7 +1,7 @@
 import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
-import type { AppointmentSummary, AppointmentServiceSummary } from './types'
+import type { AppointmentSummary } from './analytics-types'
 
 export interface CustomerRelationship {
   customer_id: string
@@ -22,11 +22,11 @@ export async function getStaffCustomerRelationships(
   const targetStaffId = staffProfile.id
 
   const { data: appointments, error } = await supabase
-    .from('appointments')
-    .select('id, customer_id, customer_name, customer_email, created_at')
+    .from('appointments_view')
+    .select('id, customer_id, created_at, start_time, status')
     .eq('staff_id', targetStaffId)
     .eq('status', 'completed')
-    .order('created_at', { ascending: false })
+    .order('start_time', { ascending: false })
     .limit(100)
     .returns<AppointmentSummary[]>()
 
@@ -46,7 +46,7 @@ export async function getStaffCustomerRelationships(
   appointmentRows.forEach(appt => {
     const customerId = appt.customer_id
     if (!customerId) return
-    const customerName = appt.customer_name || appt.customer_email || 'Unknown Customer'
+    const customerName = customerId // Use customer_id as fallback since name/email not in appointments table
 
     if (!customerMap.has(customerId)) {
       customerMap.set(customerId, {
@@ -62,40 +62,11 @@ export async function getStaffCustomerRelationships(
     if (!customer) return
 
     customer.appointments += 1
-    if (appt.created_at && (!customer.lastDate || new Date(appt.created_at) > new Date(customer.lastDate))) {
-      customer.lastDate = appt.created_at
+    const referenceDate = appt.start_time ?? appt.created_at
+    if (referenceDate && (!customer.lastDate || new Date(referenceDate) > new Date(customer.lastDate))) {
+      customer.lastDate = referenceDate
     }
   })
-
-  const appointmentIds = appointmentRows
-    .map(appt => appt.id)
-    .filter((id): id is string => Boolean(id))
-
-  if (appointmentIds.length > 0) {
-    const { data: serviceRows, error: servicesError } = await supabase
-      .from('appointment_services')
-      .select('appointment_id, service_name, service_price, customer_id, staff_id, created_at')
-      .in('appointment_id', appointmentIds)
-      .eq('staff_id', targetStaffId)
-      .returns<AppointmentServiceSummary[]>()
-
-    if (servicesError) throw servicesError
-
-    serviceRows?.forEach(service => {
-      if (!service.customer_id) return
-      const customer = customerMap.get(service.customer_id)
-      if (!customer) return
-
-      customer.revenue += Number(service.service_price ?? 0)
-      const serviceName = service.service_name ?? 'Service'
-      const serviceCount = customer.serviceCounts.get(serviceName) ?? 0
-      customer.serviceCounts.set(serviceName, serviceCount + 1)
-
-      if (service.created_at && (!customer.lastDate || new Date(service.created_at) > new Date(customer.lastDate))) {
-        customer.lastDate = service.created_at
-      }
-    })
-  }
 
   return Array.from(customerMap.entries())
     .map(([customerId, data]) => ({

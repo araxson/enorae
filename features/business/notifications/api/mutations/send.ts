@@ -15,15 +15,22 @@ export async function sendNotification(input: {
 
   const validation = notificationSchema.safeParse(input)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message)
+    throw new Error(validation.error.issues[0]?.message ?? "Validation failed")
   }
 
   const { userId, title, message, type, channels, data } = validation.data
 
-  await ensureRecipientAuthorized(supabase, userId)
+  // Get current user for authorization
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError) throw authError
+  if (!user) throw new Error('Unauthorized')
 
-  // Send notification using RPC function
-  const payloadData = data ? (JSON.parse(JSON.stringify(data)) as Json) : undefined
+  // Check if user is authorized to send to this recipient
+  const isAuthorized = await ensureRecipientAuthorized(userId, user.id)
+  if (!isAuthorized) throw new Error('Not authorized to send to this recipient')
+
+  // Send notification using RPC function - use structuredClone for type-safe deep copy
+  const payloadData = data ? (structuredClone(data) as Json) : undefined
 
   const { data: notificationId, error } = await supabase
     .schema('communication')
@@ -47,7 +54,7 @@ export async function markNotificationsRead(notificationIds?: string[]) {
 
   const validation = notificationIdsSchema.safeParse(notificationIds)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message)
+    throw new Error(validation.error.issues[0]?.message ?? "Validation failed")
   }
 
   const {

@@ -26,7 +26,7 @@ export function ExportButton({ data, filename, variant = 'outline', size = 'sm' 
     setIsExporting(true)
     try {
       // Get headers from first object
-      const headers = Object.keys(data[0])
+      const headers = Object.keys(data[0] ?? {})
 
       // Create CSV content
       const csvContent = [

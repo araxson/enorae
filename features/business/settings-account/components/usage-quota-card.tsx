@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
-import type { UsageQuota } from './billing-subscription-form'
+import type { UsageQuota } from '../types'
 import { Progress } from '@/components/ui/progress'
 
 export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {

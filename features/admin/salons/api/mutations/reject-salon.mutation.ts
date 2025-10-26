@@ -26,8 +26,7 @@ export async function rejectSalon(formData: FormData) {
 
     // Get salon info for notification
     const { data: salon, error: fetchError } = await supabase
-      .schema('organization')
-      .from('salons')
+      .from('salons_view')
       .select('name')
       .eq('id', salonId)
       .maybeSingle()

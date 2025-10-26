@@ -52,7 +52,7 @@ export const verifySession = cache(async (): Promise<Session | null> => {
 
   // Get user role from database
   const { data: roleData } = await supabase
-    .from('user_roles')
+    .schema('identity').from('user_roles')
     .select('role')
     .eq('user_id', user.id)
     .single<{ role: RoleType }>()

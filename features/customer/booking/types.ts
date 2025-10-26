@@ -1,7 +1,7 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type Service = Database['public']['Views']['services']['Row']
-export type Staff = Database['public']['Views']['staff']['Row']
+export type Service = Database['public']['Views']['services_view']['Row']
+export type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 export interface BookingFormProps {
   salonId: string

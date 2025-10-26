@@ -5,7 +5,7 @@ import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { canAccessSalon } from '@/lib/auth/permissions/salon-access'
 import type { Database } from '@/lib/types/database.types'
 
-type OperationalMetric = Database['public']['Views']['operational_metrics']['Row']
+type OperationalMetric = Database['public']['Views']['operational_metrics_view']['Row']
 
 export async function getOperationalMetrics(salonId: string): Promise<OperationalMetric | null> {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -16,7 +16,7 @@ export async function getOperationalMetrics(salonId: string): Promise<Operationa
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('operational_metrics')
+    .from('operational_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('metric_at', { ascending: false })

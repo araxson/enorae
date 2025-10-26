@@ -36,30 +36,3 @@ export type AnalyticsOverview = {
     utilization: number
   }
 }
-
-export function isServicePerformance(data: unknown): data is ServicePerformance {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    'name' in data &&
-    'count' in data &&
-    'revenue' in data &&
-    typeof (data as ServicePerformance).name === 'string' &&
-    typeof (data as ServicePerformance).count === 'number' &&
-    typeof (data as ServicePerformance).revenue === 'number'
-  )
-}
-
-export function isStaffPerformance(data: unknown): data is StaffPerformance {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    'name' in data &&
-    'title' in data &&
-    'count' in data &&
-    'revenue' in data &&
-    typeof (data as StaffPerformance).name === 'string' &&
-    typeof (data as StaffPerformance).count === 'number' &&
-    typeof (data as StaffPerformance).revenue === 'number'
-  )
-}

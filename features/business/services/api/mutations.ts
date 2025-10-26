@@ -10,13 +10,13 @@ import { updateService as updateServiceAction } from './mutations/update-service
 import { deleteService as deleteServiceAction } from './mutations/delete-service.mutation'
 import { permanentlyDeleteService as permanentlyDeleteServiceAction } from './mutations/permanently-delete-service.mutation'
 
-type ServerAction<T extends (...args: never[]) => Promise<unknown>> = (
-  ...args: Parameters<T>
-) => ReturnType<T>
+type ServerAction<TArgs extends unknown[], TResult> = (
+  ...args: TArgs
+) => Promise<TResult>
 
-function createServerActionProxy<T extends (...args: never[]) => Promise<unknown>>(
-  action: T
-): ServerAction<T> {
+function createServerActionProxy<TArgs extends unknown[], TResult>(
+  action: (...args: TArgs) => Promise<TResult>
+): ServerAction<TArgs, TResult> {
   return (...args) => action(...args)
 }
 

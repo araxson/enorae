@@ -1,3 +1,4 @@
+import 'server-only'
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 
 interface CouponValidationResult {
@@ -100,6 +101,7 @@ export function buildCouponEffectiveness(analytics: CouponAnalyticsSnapshot) {
   const usageByDay = usage.reduce<Record<string, { uses: number; discount: number }>>((acc, entry) => {
     if (!entry.created_at) return acc
     const day = entry.created_at.split('T')[0]
+    if (!day) return acc
     const bucket = acc[day] ?? { uses: 0, discount: 0 }
     bucket.uses += 1
     bucket.discount += Number(entry.discount_amount || 0)

@@ -9,7 +9,7 @@ export async function getMySessions(): Promise<Session[]> {
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('*')
     .eq('user_id', session.user.id)
     .order('last_active_at', { ascending: false })
@@ -24,7 +24,7 @@ export async function getCurrentSessionId(): Promise<string | null> {
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('is_current', true)

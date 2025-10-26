@@ -9,7 +9,7 @@ import { TodaySchedule } from '@/features/staff/dashboard/components/today-sched
 import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
 import { RoleBadge } from './role-badge'
 import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
-import type { AppointmentWithDetails } from '@/features/business/appointments'
+import type { AppointmentWithDetails } from '@/features/shared/appointments/types'
 import type { StaffMetricsSummary } from '@/features/staff/dashboard/api/queries'
 
 type Props = {

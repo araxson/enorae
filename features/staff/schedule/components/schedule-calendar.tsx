@@ -14,15 +14,15 @@ type ScheduleCalendarProps = {
 }
 
 export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: ScheduleCalendarProps) {
-  // Group schedules by day of week
+  // Group schedules by day of week - immutably
   const schedulesByDay = schedules.reduce((acc, schedule) => {
     const day = schedule['day_of_week']
     if (!day) return acc // Skip schedules without day_of_week
-    if (!acc[day]) {
-      acc[day] = []
+
+    return {
+      ...acc,
+      [day]: [...(acc[day] || []), schedule]
     }
-    acc[day].push(schedule)
-    return acc
   }, {} as Record<string, StaffScheduleWithStaff[]>)
 
   const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']

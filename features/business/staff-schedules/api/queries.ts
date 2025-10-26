@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type StaffSchedule = Database['public']['Views']['staff_schedules']['Row']
+type StaffSchedule = Database['public']['Views']['staff_schedules_view']['Row']
 
 export type StaffScheduleWithDetails = StaffSchedule & {
   staff_name?: string | null
@@ -19,7 +19,7 @@ export async function getStaffSchedules(): Promise<StaffScheduleWithDetails[]> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff_schedules')
+    .schema('scheduling').from('staff_schedules')
     .select('*, staff:staff_id(full_name, title)')
     .eq('salon_id', salonId)
     .order('staff_id')
@@ -49,7 +49,7 @@ export async function getStaffSchedulesByStaffId(
   }
 
   const { data, error } = await supabase
-    .from('staff_schedules')
+    .schema('scheduling').from('staff_schedules')
     .select('*, staff:staff_id(full_name, title)')
     .eq('staff_id', staffId)
     .eq('salon_id', salonId)

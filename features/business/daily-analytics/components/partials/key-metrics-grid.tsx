@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 import { MetricCard } from './metric-card'
 import type { DailyMetricsDashboardProps } from '../types'
-import { formatCurrency } from '@/features/business/daily-analytics/utils/value-formatters'
+import { formatCurrency } from '@/features/business/business-common'
 
 type Props = Pick<DailyMetricsDashboardProps, 'aggregated' | 'trends'>
 

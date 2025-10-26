@@ -46,9 +46,7 @@ export const NOTE_SCHEMA = z.string().trim().max(1000, 'Note must not exceed 100
 export const CONFIRMATION_TOKEN_SCHEMA = UUID_SCHEMA
 
 // Boolean acknowledgment (for critical actions)
-export const ACKNOWLEDGMENT_SCHEMA = z.literal(true, {
-  errorMap: () => ({ message: 'You must acknowledge this action' }),
-})
+export const ACKNOWLEDGMENT_SCHEMA = z.literal(true, 'You must acknowledge this action')
 
 // Bulk operation limits
 export const BULK_IDS_SCHEMA = z
@@ -91,7 +89,7 @@ export function validateFormData<T>(
   const result = schema.safeParse(data)
 
   if (!result.success) {
-    const firstError = result.error.errors[0]
+    const firstError = result.error.issues[0]
     return {
       success: false,
       error: firstError?.message ?? 'Validation failed',

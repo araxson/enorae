@@ -1,3 +1,4 @@
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { getUserSalonId } from '@/lib/auth'
 import {
   getTrendInsights,
@@ -5,8 +6,8 @@ import {
   getAnomalyAlerts,
   getGrowthOpportunities,
 } from '@/features/business/insights/api/business-insights'
+
 import { BusinessInsightsDashboard } from './business-insights-dashboard'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function BusinessInsights() {
   const salonId = await getUserSalonId()

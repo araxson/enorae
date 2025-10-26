@@ -30,7 +30,7 @@ export async function bulkAssignRoles(
     if (!validation.success) {
       return {
         success: false,
-        error: validation.error.errors[0]?.message || 'Invalid bulk payload',
+        error: validation.error.issues[0]?.message || 'Invalid bulk payload',
       }
     }
 

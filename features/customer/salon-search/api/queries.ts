@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { ANALYTICS_CONFIG, BUSINESS_THRESHOLDS } from '@/lib/config/constants'
 
 type SalonViewRow = Database['public']['Views']['salons_view']['Row']
 type ServiceViewRow = Database['public']['Views']['services_view']['Row']
@@ -51,17 +52,42 @@ export async function searchSalons(filters: SearchFilters): Promise<SalonSearchR
     limit = 20,
   } = filters
 
-  // Use the search_salons RPC function
-  const { data, error } = await supabase
-    .rpc('search_salons', {
-      search_term: searchTerm || null,
-      city: city || null,
-      state: state || null,
-      is_verified_filter: isVerified ?? null,
-      limit_count: limit,
-    } as { search_term: string | null; city: string | null; state: string | null; is_verified_filter: boolean | null; limit_count: number })
+  // Query salons directly using filters
+  let query = supabase
+    .from('salons_view')
+    .select('id, name, slug, address, rating_average, is_verified, is_featured')
+
+  if (searchTerm) {
+    query = query.ilike('name', `%${searchTerm}%`)
+  }
+  if (isVerified !== undefined) {
+    query = query.eq('is_verified', isVerified)
+  }
+
+  const { data: salons, error } = await query.limit(limit)
 
   if (error) throw error
+
+  // Transform results to match expected format
+  type SalonRow = {
+    id: string
+    name: string | null
+    slug: string | null
+    address: { street?: string; city?: string; state?: string; zip_code?: string } | null
+    rating_average: number | null
+    is_verified: boolean | null
+    is_featured: boolean | null
+  }
+
+  const data = (salons || []).map((salon: SalonRow) => ({
+    id: salon.id,
+    name: salon.name || '',
+    slug: salon.slug || '',
+    address: salon.address || null,
+    rating_average: salon.rating_average || 0,
+    is_verified: salon.is_verified || false,
+    is_featured: salon.is_featured || false,
+  }))
 
   // Filter by rating if specified
   let results = (data ?? []) as SalonSearchResult[]
@@ -100,36 +126,43 @@ export async function searchSalonsWithFuzzyMatch(
 
   if (error) throw error
 
-  // Calculate similarity for each salon
-  const salonsWithSimilarity = await Promise.all(
-    (salons || []).map(async (salon) => {
-      const { data: similarity } = await supabase
-        .rpc('text_similarity', {
-          text1: searchTerm.toLowerCase(),
-          text2: salon.name.toLowerCase(),
-        } as { text1: string; text2: string })
+  // Calculate similarity for each salon using simple string matching (character-by-character comparison)
+  const salonsWithSimilarity = (salons || []).map((salon: SalonRow) => {
+    const searchLower = searchTerm.toLowerCase()
+    const nameLower = (salon.name || '').toLowerCase()
 
-      return {
-        ...salon,
-        similarity_score: similarity || 0,
+    // Count matching characters at the same position
+    let characterMatchCount = 0
+    for (let charIndex = 0; charIndex < Math.min(searchLower.length, nameLower.length); charIndex++) {
+      if (searchLower[charIndex] === nameLower[charIndex]) {
+        characterMatchCount++
       }
-    })
-  )
+    }
+    const similarityScore = characterMatchCount / Math.max(searchLower.length, nameLower.length)
 
-  // Sort by similarity and return top results
+    return {
+      ...salon,
+      similarity_score: similarityScore,
+    }
+  })
+
+  // Filter out low-quality matches and sort by similarity
   return salonsWithSimilarity
-    .filter((s) => s.similarity_score > 0.1) // Filter out very low matches
-    .sort((a, b) => (b.similarity_score || 0) - (a.similarity_score || 0))
+    .filter((salon) => salon.similarity_score > BUSINESS_THRESHOLDS.SALON_SEARCH_SIMILARITY_THRESHOLD)
+    .sort((salonA, salonB) => (salonB.similarity_score || 0) - (salonA.similarity_score || 0))
     .slice(0, limit)
 }
 
+/**
+ * Get search suggestions for salon names (for autocomplete)
+ */
 export async function getSalonSearchSuggestions(
   searchTerm: string,
-  limit = 5
+  limit = ANALYTICS_CONFIG.DEFAULT_SEARCH_SUGGESTIONS_LIMIT
 ): Promise<{ name: string; slug: string }[]> {
   await requireAuth()
 
-  if (!searchTerm || searchTerm.length < 2) {
+  if (!searchTerm || searchTerm.length < ANALYTICS_CONFIG.MIN_SEARCH_TERM_LENGTH) {
     return []
   }
 
@@ -265,15 +298,25 @@ export async function getNearbyServices(
 
   if (error) throw error
 
-  // Filter by same city
+  // Filter by same city and ensure all required fields exist
   const nearbyServices = (services || [])
-    .filter((service: ServiceWithSalon) => service.salons?.address?.city === salon.address?.city)
+    .filter((service: ServiceWithSalon) => {
+      // Must have id and name
+      if (!service.id || !service.name) return false
+
+      const serviceAddress = service.salons?.address
+      const salonAddress = salon.address
+      if (typeof serviceAddress === 'object' && serviceAddress !== null && typeof salonAddress === 'object' && salonAddress !== null) {
+        return (serviceAddress as { city?: string }).city === (salonAddress as { city?: string }).city
+      }
+      return false
+    })
     .slice(0, limit)
     .map((service: ServiceWithSalon) => ({
-      id: service.id,
-      name: service.name || 'Unknown Service',
-      salon_name: service.salons?.name || 'Unknown',
-      salon_slug: service.salons?.slug || '',
+      id: service.id!,
+      name: service.name!,
+      salon_name: service.salons?.name ?? 'Unknown',
+      salon_slug: service.salons?.slug ?? '',
     }))
 
   return nearbyServices

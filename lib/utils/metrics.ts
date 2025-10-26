@@ -1,3 +1,4 @@
+import { ANALYTICS_CONFIG } from '@/lib/config/constants'
 import type { DailyMetricWithTimestamp } from '@/features/business/metrics/api/queries'
 
 type PeriodStats = {
@@ -33,8 +34,7 @@ export type RevenueForecast = {
   projectedGrowth: number
 }
 
-const DAYS_IN_COMPARISON = 7
-const FORECAST_HORIZON = 7
+const PERCENTAGE_FULL_INCREASE = 100
 
 function sumPeriodStats(metrics: DailyMetricWithTimestamp[]): PeriodStats {
   return metrics.reduce<PeriodStats>(
@@ -53,14 +53,24 @@ function sumPeriodStats(metrics: DailyMetricWithTimestamp[]): PeriodStats {
   )
 }
 
+/**
+ * Calculate percentage change between current and previous period values
+ * @param current - Current period value
+ * @param previous - Previous period value
+ * @returns Percentage change (positive for increase, negative for decrease)
+ */
 function computeChange(current: number, previous: number): number {
   if (previous === 0) {
-    return current === 0 ? 0 : 100
+    return current === 0 ? 0 : PERCENTAGE_FULL_INCREASE
   }
 
-  return ((current - previous) / previous) * 100
+  return ((current - previous) / previous) * PERCENTAGE_FULL_INCREASE
 }
 
+/**
+ * Build period-over-period comparison metrics
+ * Compares current period against previous period for revenue, appointments, and customer metrics
+ */
 export function buildPeriodComparisons(
   metrics: DailyMetricWithTimestamp[]
 ): MetricsComparison {
@@ -73,12 +83,13 @@ export function buildPeriodComparisons(
     }
   }
 
-  const sorted = [...metrics].sort(
+  const sortedMetrics = [...metrics].sort(
     (a, b) => new Date(a['metric_at']).getTime() - new Date(b['metric_at']).getTime()
   )
 
-  const currentPeriod = sorted.slice(-DAYS_IN_COMPARISON)
-  const previousPeriod = sorted.slice(-DAYS_IN_COMPARISON * 2, -DAYS_IN_COMPARISON)
+  const comparisonDays = ANALYTICS_CONFIG.PERIOD_COMPARISON_DAYS
+  const currentPeriod = sortedMetrics.slice(-comparisonDays)
+  const previousPeriod = sortedMetrics.slice(-comparisonDays * 2, -comparisonDays)
 
   const currentStats = sumPeriodStats(currentPeriod)
   const previousStats = sumPeriodStats(previousPeriod)
@@ -125,9 +136,15 @@ export function buildPeriodComparisons(
   }
 }
 
+/**
+ * Build revenue forecast using linear regression
+ * Generates historical + future forecast points based on trend analysis
+ * @param metrics - Historical daily metrics
+ * @param horizon - Number of days to forecast into the future
+ */
 export function buildRevenueForecast(
   metrics: DailyMetricWithTimestamp[],
-  horizon: number = FORECAST_HORIZON
+  horizon: number = ANALYTICS_CONFIG.REVENUE_FORECAST_HORIZON_DAYS
 ): RevenueForecast {
   if (metrics.length === 0) {
     return {
@@ -137,85 +154,85 @@ export function buildRevenueForecast(
     }
   }
 
-  const sorted = [...metrics].sort(
-    (a, b) => new Date(a['metric_at']).getTime() - new Date(b['metric_at']).getTime()
+  const sortedMetrics = [...metrics].sort(
+    (metricA, metricB) => new Date(metricA['metric_at']).getTime() - new Date(metricB['metric_at']).getTime()
   )
 
-  const historical = sorted.map((metric, index) => ({
+  const historicalData = sortedMetrics.map((metric, index) => ({
     index,
     date: metric['metric_at'],
     revenue: Number(metric['total_revenue'] || 0),
   }))
 
-  const revenueValues = historical.map((entry) => entry.revenue)
+  const revenueValues = historicalData.map((entry) => entry.revenue)
   const averageRevenue =
     revenueValues.reduce((sum, value) => sum + value, 0) / revenueValues.length
 
-  // Simple linear regression for trend line
-  const n = historical.length
-  const sumX = historical.reduce((sum, entry) => sum + entry.index, 0)
-  const sumY = revenueValues.reduce((sum, value) => sum + value, 0)
-  const sumX2 = historical.reduce((sum, entry) => sum + entry.index ** 2, 0)
-  const sumXY = historical.reduce(
+  // Simple linear regression for trend line: y = mx + b
+  const dataPointCount = historicalData.length
+  const sumOfIndices = historicalData.reduce((sum, entry) => sum + entry.index, 0)
+  const sumOfRevenues = revenueValues.reduce((sum, value) => sum + value, 0)
+  const sumOfSquaredIndices = historicalData.reduce((sum, entry) => sum + entry.index ** 2, 0)
+  const sumOfProductIndexRevenue = historicalData.reduce(
     (sum, entry) => sum + entry.index * entry.revenue,
     0
   )
 
-  const denominator = n * sumX2 - sumX ** 2
-  const slope = denominator !== 0 ? (n * sumXY - sumX * sumY) / denominator : 0
-  const intercept = (sumY - slope * sumX) / n
+  const regressionDenominator = dataPointCount * sumOfSquaredIndices - sumOfIndices ** 2
+  const trendSlope = regressionDenominator !== 0
+    ? (dataPointCount * sumOfProductIndexRevenue - sumOfIndices * sumOfRevenues) / regressionDenominator
+    : 0
+  const trendIntercept = (sumOfRevenues - trendSlope * sumOfIndices) / dataPointCount
 
-  const lastIndex = historical.at(-1)?.index ?? 0
-  const lastDate = historical.at(-1)?.date
-  const baseline = revenueValues.slice(-DAYS_IN_COMPARISON)
+  const lastDataIndex = historicalData.at(-1)?.index ?? 0
+  const lastDataDate = historicalData.at(-1)?.date
+  const recentBaselinePeriod = revenueValues.slice(-ANALYTICS_CONFIG.PERIOD_COMPARISON_DAYS)
   const baselineAverage =
-    baseline.length > 0
-      ? baseline.reduce((sum, value) => sum + value, 0) / baseline.length
+    recentBaselinePeriod.length > 0
+      ? recentBaselinePeriod.reduce((sum, value) => sum + value, 0) / recentBaselinePeriod.length
       : averageRevenue
 
-  const forecastPoints: ForecastPoint[] = historical.map((entry) => ({
+  const historicalForecastPoints: ForecastPoint[] = historicalData.map((entry) => ({
     date: entry['date'],
     actual: entry.revenue,
     forecast: entry.revenue,
     baseline: baselineAverage,
   }))
 
-  if (!lastDate) {
+  if (!lastDataDate) {
     return {
-      points: forecastPoints,
+      points: historicalForecastPoints,
       averageRevenue,
       projectedGrowth: 0,
     }
   }
 
-  const lastDateObj = new Date(lastDate)
-  const futurePoints: ForecastPoint[] = []
+  const lastDate = new Date(lastDataDate)
+  const futureForecastPoints: ForecastPoint[] = []
 
-  for (let i = 1; i <= horizon; i += 1) {
-    const futureDate = new Date(lastDateObj)
-    futureDate.setDate(futureDate.getDate() + i)
+  for (let dayOffset = 1; dayOffset <= horizon; dayOffset += 1) {
+    const futureDate = new Date(lastDate)
+    futureDate.setDate(futureDate.getDate() + dayOffset)
 
-    const x = lastIndex + i
-    const predicted = Math.max(intercept + slope * x, 0)
+    const forecastIndex = lastDataIndex + dayOffset
+    const predictedRevenue = Math.max(trendIntercept + trendSlope * forecastIndex, 0)
 
-    futurePoints.push({
-      date: futureDate.toISOString().split('T')[0],
-      forecast: predicted,
+    const futureDateString = futureDate.toISOString().split('T')[0] ?? ''
+    futureForecastPoints.push({
+      date: futureDateString,
+      forecast: predictedRevenue,
       baseline: baselineAverage,
     })
   }
 
+  const averageForecastRevenue = futureForecastPoints.reduce((sum, entry) => sum + entry.forecast, 0) / futureForecastPoints.length
   const projectedGrowth =
     averageRevenue === 0
       ? 0
-      : ((futurePoints.reduce((sum, entry) => sum + entry.forecast, 0) /
-          futurePoints.length -
-          averageRevenue) /
-          averageRevenue) *
-        100
+      : ((averageForecastRevenue - averageRevenue) / averageRevenue) * PERCENTAGE_FULL_INCREASE
 
   return {
-    points: [...forecastPoints, ...futurePoints],
+    points: [...historicalForecastPoints, ...futureForecastPoints],
     averageRevenue,
     projectedGrowth,
   }

@@ -10,4 +10,4 @@ export type {
   StaffDashboardStats,
   StaffPerformanceBenchmark,
   StaffWithMetrics,
-} from './dashboard-types'
+} from './core-types'

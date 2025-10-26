@@ -20,9 +20,9 @@ export async function getSalonBusinessInfo() {
   // Query from public salons_view to respect RLS and view contract
   const { data, error } = await supabase
     .from('salons_view')
-    .select('id, name, business_name, business_type, established_at')
+    .select('id, name')
     .eq('id', salon.id)
-    .returns<Pick<SalonView, 'id' | 'name' | 'business_name' | 'business_type' | 'established_at'>[]>()
+    .returns<Pick<SalonView, 'id' | 'name'>[]>()
     .single()
 
   if (error) throw error

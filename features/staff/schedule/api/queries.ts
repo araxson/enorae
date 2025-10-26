@@ -62,7 +62,7 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
           const staffTyped = staff as Staff
           return [staffTyped['id'] as string, staffTyped] as const
         })
-        .filter(([id]): id is [string, Staff] => Boolean(id)),
+        .filter((entry): entry is readonly [string, Staff] => Boolean(entry[0])),
     )
   }
 

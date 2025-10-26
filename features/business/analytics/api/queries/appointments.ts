@@ -27,7 +27,7 @@ export async function getAppointmentStats(
   if (!user) throw new Error('Unauthorized')
 
   const { data, error } = await supabase
-    .from('admin_appointments_overview')
+    .from('admin_appointments_overview_view')
     .select('status, start_time, id')
     .eq('salon_id', salonId)
     .gte('start_time', startDate)

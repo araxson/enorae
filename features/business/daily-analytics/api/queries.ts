@@ -4,7 +4,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { canAccessSalon } from '@/lib/auth/permissions'
 import type { Database } from '@/lib/types/database.types'
 
-type DailyMetric = Database['public']['Views']['daily_metrics']['Row']
+type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
 
 export type DailyMetricsWithTrends = DailyMetric & {
   previousPeriod?: DailyMetric | null
@@ -35,7 +35,7 @@ export async function getDailyMetrics(
   }
 
   const { data, error } = await supabase
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('metric_at', dateFrom)
@@ -61,7 +61,7 @@ export async function getLatestDailyMetric(salonId: string): Promise<DailyMetric
   }
 
   const { data, error } = await supabase
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('metric_at', { ascending: false })

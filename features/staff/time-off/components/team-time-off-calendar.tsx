@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-
+import { formatDateSimple as formatDate } from '@/lib/utils/date-time'
 import type { TeamTimeOffCalendar } from '@/features/staff/time-off/api/queries'
 
 interface TeamTimeOffCalendarProps {
@@ -55,8 +55,4 @@ export function TeamTimeOffCalendarSection({ entries }: TeamTimeOffCalendarProps
       )}
     </div>
   )
-}
-
-function formatDate(value: string) {
-  return new Date(value).toLocaleDateString()
 }

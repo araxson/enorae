@@ -39,7 +39,7 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
       recurrence_pattern: blockedTime['recurrence_pattern'] || null,
     } : {
       start_time: new Date().toISOString().slice(0, 16),
-      end_time: new Date(Date.now() + 3600000).toISOString().slice(0, 16),
+      end_time: new Date(Date.now() + 3600000).toISOString().slice(0, 16), // Default: 1 hour from now (3600000ms)
       block_type: 'break',
       reason: '',
       is_recurring: false,

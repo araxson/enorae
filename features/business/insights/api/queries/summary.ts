@@ -10,7 +10,7 @@ import {
 import type { InsightsSummary } from './types'
 import { getCustomerInsights } from './customers'
 
-type AppointmentRow = Database['public']['Views']['appointments']['Row']
+type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
 
 const CUSTOMER_SAMPLE_LIMIT = 1000
 
@@ -21,7 +21,7 @@ export async function getInsightsSummary(): Promise<InsightsSummary> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('appointments')
+    .from('appointments_view')
     .select('customer_id, status, created_at')
     .eq('salon_id', salonId)
 

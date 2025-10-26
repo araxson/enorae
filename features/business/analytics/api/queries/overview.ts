@@ -56,7 +56,7 @@ export async function getAnalyticsOverview(
   }
 
   const response = await supabase
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('*')
     .in('salon_id', targetSalonIds)
     .gte('metric_at', startDate)
@@ -94,7 +94,7 @@ export async function getAnalyticsOverview(
     .split('T')[0]
 
   const prevResponse = await supabase
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('total_revenue')
     .in('salon_id', targetSalonIds)
     .gte('metric_at', prevStartDate)

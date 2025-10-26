@@ -28,7 +28,7 @@ export async function upsertBookingRule(formData: FormData) {
       maxAdvanceBookingDays: formData.get('maxAdvanceBookingDays') ? parseInt(formData.get('maxAdvanceBookingDays') as string) : undefined,
     })
 
-    if (!result.success) return { error: result.error.errors[0].message }
+    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
 
     const data = result.data
     const supabase = await createClient()
@@ -36,7 +36,7 @@ export async function upsertBookingRule(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', session.user.id)
       .single<{ salon_id: string | null }>()

@@ -1,0 +1,5 @@
+export { AppointmentHistory } from './appointment-history'
+export { CustomerMetrics } from './customer-metrics'
+export { FavoritesList } from './favorites-list'
+export { UpcomingBookings } from './upcoming-bookings'
+export { VIPStatusCard } from './vip-status-card'

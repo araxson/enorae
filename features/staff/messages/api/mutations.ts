@@ -2,7 +2,26 @@
 import { revalidatePath } from 'next/cache'
 import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
-import { messageSchema, threadMessageSchema, type MessageFormData, type ThreadMessageFormData } from '@/features/staff/messages/schema'
+import {
+  messageSchema,
+  threadMessageSchema,
+  type MessageFormData,
+  type ThreadMessageFormData,
+} from '@/features/staff/messages/schema'
+
+async function resolveStaffId(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string,
+): Promise<string | null> {
+  const { data, error } = await supabase
+    .from('staff_profiles_view')
+    .select('id')
+    .eq('user_id', userId)
+    .maybeSingle<{ id: string | null }>()
+
+  if (error) throw error
+  return data?.id ?? null
+}
 
 export async function sendMessage(data: MessageFormData) {
   const session = await verifySession()
@@ -14,7 +33,7 @@ export async function sendMessage(data: MessageFormData) {
 
   const { error } = await supabase
     .schema('communication')
-    .from('messages')
+    .schema('communication').from('messages')
     .insert({
       from_user_id: session.user.id,
       to_user_id: validated.to_user_id,
@@ -38,17 +57,19 @@ export async function sendThreadMessage(threadId: string, data: ThreadMessageFor
   const validated = threadMessageSchema.parse(data)
 
   const supabase = await createClient()
+  const staffId = await resolveStaffId(supabase, session.user.id)
+  if (!staffId) throw new Error('Unauthorized')
 
   // Get thread details to find recipient
   const { data: thread, error: threadError } = await supabase
-    .from('message_threads')
+    .schema('communication').from('message_threads')
     .select('staff_id, customer_id')
     .eq('id', threadId)
     .single<{ staff_id: string | null; customer_id: string | null }>()
 
   if (threadError || !thread) throw new Error('Thread not found')
 
-  if (thread.staff_id !== session.user.id) {
+  if (thread.staff_id !== staffId) {
     throw new Error('Unauthorized to send message in this thread')
   }
 
@@ -56,7 +77,7 @@ export async function sendThreadMessage(threadId: string, data: ThreadMessageFor
 
   const { error } = await supabase
     .schema('communication')
-    .from('messages')
+    .schema('communication').from('messages')
     .insert({
       from_user_id: session.user.id,
       to_user_id: thread.customer_id,
@@ -78,22 +99,24 @@ export async function markThreadAsRead(threadId: string) {
   if (!session) throw new Error('Unauthorized')
 
   const supabase = await createClient()
+  const staffId = await resolveStaffId(supabase, session.user.id)
+  if (!staffId) throw new Error('Unauthorized')
 
   // Verify thread access
   const { data: thread } = await supabase
-    .from('message_threads')
+    .schema('communication').from('message_threads')
     .select('staff_id')
     .eq('id', threadId)
     .single<{ staff_id: string | null }>()
 
-  if (!thread || thread.staff_id !== session.user.id) {
+  if (!thread || thread.staff_id !== staffId) {
     throw new Error('Unauthorized to access this thread')
   }
 
   // Mark all messages in thread as read
   const { error } = await supabase
     .schema('communication')
-    .from('messages')
+    .schema('communication').from('messages')
     .update({
       is_read: true,
       read_at: new Date().toISOString(),
@@ -112,21 +135,23 @@ export async function archiveThread(threadId: string) {
   if (!session) throw new Error('Unauthorized')
 
   const supabase = await createClient()
+  const staffId = await resolveStaffId(supabase, session.user.id)
+  if (!staffId) throw new Error('Unauthorized')
 
   // Verify thread access
   const { data: thread } = await supabase
-    .from('message_threads')
+    .schema('communication').from('message_threads')
     .select('staff_id')
     .eq('id', threadId)
     .single<{ staff_id: string | null }>()
 
-  if (!thread || thread.staff_id !== session.user.id) {
+  if (!thread || thread.staff_id !== staffId) {
     throw new Error('Unauthorized to access this thread')
   }
 
   const { error } = await supabase
     .schema('communication')
-    .from('message_threads')
+    .schema('communication').from('message_threads')
     .update({
       status: 'archived',
       updated_at: new Date().toISOString(),

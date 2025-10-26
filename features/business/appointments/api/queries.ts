@@ -14,9 +14,15 @@ export type AppointmentWithDetails = Appointment
 export { getUserSalon }
 
 export async function getAppointments(salonId: string) {
+  console.log('Fetching appointments', { salonId })
+
   // SECURITY: Require authentication
-  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
+    console.error('getAppointments unauthorized access attempt', {
+      salonId,
+      userId: session.user.id
+    })
     throw new Error('Unauthorized: Not your salon')
   }
 
@@ -29,14 +35,35 @@ export async function getAppointments(salonId: string) {
     .eq('salon_id', salonId)
     .order('start_time', { ascending: false })
 
-  if (error) throw error
+  if (error) {
+    console.error('getAppointments query failed', {
+      salonId,
+      userId: session.user.id,
+      error: error.message
+    })
+    throw error
+  }
+
+  console.log('getAppointments completed', {
+    salonId,
+    count: data?.length ?? 0,
+    userId: session.user.id
+  })
+
   return data as AppointmentWithDetails[]
 }
 
 export async function getAppointmentsByStatus(salonId: string, status: string) {
+  console.log('Fetching appointments by status', { salonId, status })
+
   // SECURITY: Require authentication
-  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
+    console.error('getAppointmentsByStatus unauthorized access attempt', {
+      salonId,
+      status,
+      userId: session.user.id
+    })
     throw new Error('Unauthorized: Not your salon')
   }
 
@@ -50,6 +77,22 @@ export async function getAppointmentsByStatus(salonId: string, status: string) {
     .eq('status', status)
     .order('start_time', { ascending: false })
 
-  if (error) throw error
+  if (error) {
+    console.error('getAppointmentsByStatus query failed', {
+      salonId,
+      status,
+      userId: session.user.id,
+      error: error.message
+    })
+    throw error
+  }
+
+  console.log('getAppointmentsByStatus completed', {
+    salonId,
+    status,
+    count: data?.length ?? 0,
+    userId: session.user.id
+  })
+
   return data as AppointmentWithDetails[]
 }

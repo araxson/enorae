@@ -109,6 +109,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
                       checked={Boolean(rule.is_active)}
                       onCheckedChange={() => hasRuleId && handleToggle(rule.id as string, Boolean(rule.is_active))}
                       disabled={isLoading || !hasRuleId}
+                      aria-label={`Toggle rate limit rule for ${rule.endpoint} ${rule.is_active ? 'inactive' : 'active'}`}
                     />
                   </TableCell>
                   <TableCell className="text-sm">
@@ -117,7 +118,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" disabled={isLoading || !hasRuleId}>
+                        <Button variant="ghost" size="icon" disabled={isLoading || !hasRuleId} aria-label={`Actions for rate limit rule ${rule.endpoint}`}>
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>

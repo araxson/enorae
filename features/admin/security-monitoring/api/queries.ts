@@ -168,13 +168,21 @@ export async function getSecurityMonitoringSnapshot(
   const accessAttempts = accessRows.map(toAccessAttempt)
   if (accessRes.error) console.error('[SecurityMonitoring] Access query failed', accessRes.error)
 
-  const suspiciousSessions = ((sessionsRes.data ?? []) as SessionSecurityRow[]).map(toSuspiciousSession)
+  const suspiciousSessions = (sessionsRes.data ?? []).map((row) => toSuspiciousSession(row as SessionSecurityRow))
   if (sessionsRes.error) console.error('[SecurityMonitoring] Session query failed', sessionsRes.error)
 
-  const recentEvents = ((eventsRes.data ?? []) as AuditLogRow[]).map(toSecurityEvent)
+  // Cast eventsRes.data to proper type - these are from audit_logs_view which matches AuditLogRow
+  const eventsData = eventsRes.data as unknown[]
+  const recentEvents = (eventsData ?? [])
+    .filter((row): row is Record<string, unknown> => row !== null && typeof row === 'object')
+    .map((row) => toSecurityEvent(row as unknown as AuditLogRow))
   if (eventsRes.error) console.error('[SecurityMonitoring] Audit events query failed', eventsRes.error)
 
-  const failedLoginRows = ((failedLoginsRes.data ?? []) as AuditLogRow[])
+  // Cast failedLoginsRes.data to proper type
+  const failedLoginsData = failedLoginsRes.data as unknown[]
+  const failedLoginRows = (failedLoginsData ?? [])
+    .filter((row): row is Record<string, unknown> => row !== null && typeof row === 'object')
+    .map((row) => row as unknown as AuditLogRow)
   if (failedLoginsRes.error) console.error('[SecurityMonitoring] Failed login query failed', failedLoginsRes.error)
   const failedLoginSummary = groupFailedLogins(failedLoginRows)
 

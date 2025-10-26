@@ -39,11 +39,8 @@ export function StaffGrid({ staff }: StaffGridProps) {
                 <Card className="transition-colors hover:bg-muted/50">
                   <CardHeader className="flex flex-row items-center gap-3">
                     <Avatar>
-                      {member['avatar_url'] && (
-                        <AvatarImage src={member['avatar_url']} alt={member['title'] || 'Staff'} />
-                      )}
                       <AvatarFallback>
-                        {member['title']?.slice(0, 2).toUpperCase() || 'ST'}
+                        {member.title?.slice(0, 2).toUpperCase() || 'ST'}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0 space-y-1">
@@ -60,11 +57,8 @@ export function StaffGrid({ staff }: StaffGridProps) {
               <HoverCardContent className="w-80 space-y-3">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12">
-                    {member['avatar_url'] && (
-                      <AvatarImage src={member['avatar_url']} alt={member['title'] || 'Staff'} />
-                    )}
                     <AvatarFallback>
-                      {member['title']?.slice(0, 2).toUpperCase() || 'ST'}
+                      {member.title?.slice(0, 2).toUpperCase() || 'ST'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="space-y-1">

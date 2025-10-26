@@ -20,6 +20,7 @@ export async function calculateCustomerFavoriteStaff(
     .eq('customer_id', session.user.id)
     .eq('salon_id', salonId)
     .eq('status', 'completed')
+    .returns<Array<{ staff_id: string | null }>>()
 
   if (error) throw error
   if (!data?.length) return null
@@ -59,18 +60,27 @@ export async function getCustomerVisitFrequency(
     .eq('salon_id', salonId)
     .eq('status', 'completed')
     .order('start_time', { ascending: true })
+    .returns<Array<{ start_time: string | null }>>()
 
   if (error) throw error
   if (!data || data.length < 2) return null
 
+  const validDates: Array<{ start_time: string }> = data.filter((item): item is { start_time: string } => item.start_time !== null && item.start_time !== undefined)
+  if (validDates.length < 2) return null
+
   // Calculate average days between consecutive visits
   let totalDaysBetween = 0
-  for (let i = 1; i < data.length; i++) {
-    const prevDate = new Date(data[i - 1].start_time)
-    const currDate = new Date(data[i].start_time)
+  for (let i = 1; i < validDates.length; i++) {
+    const prevItem = validDates[i - 1]
+    const currItem = validDates[i]
+    if (!prevItem || !currItem) continue
+    const prevTime = prevItem.start_time
+    const currTime = currItem.start_time
+    const prevDate = new Date(prevTime)
+    const currDate = new Date(currTime)
     const daysDiff = Math.floor((currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24))
     totalDaysBetween += daysDiff
   }
 
-  return Math.round(totalDaysBetween / (data.length - 1))
+  return Math.round(totalDaysBetween / (validDates.length - 1))
 }

@@ -13,7 +13,7 @@ export async function deleteBlockedTime(id: string) {
     await resolveSessionRoles()
 
     const { data: existingBlockedTime, error: fetchError } = await supabase
-      .from('blocked_times')
+      .schema('scheduling').from('blocked_times')
       .select('salon_id')
       .eq('id', id)
       .single<{ salon_id: string | null }>()
@@ -26,7 +26,7 @@ export async function deleteBlockedTime(id: string) {
 
     const { error } = await supabase
       .schema('scheduling')
-      .from('blocked_times')
+      .schema('scheduling').from('blocked_times')
       .delete()
       .eq('id', id)
       .eq('salon_id', existingBlockedTime.salon_id)

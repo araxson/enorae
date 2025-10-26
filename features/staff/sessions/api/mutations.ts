@@ -11,7 +11,7 @@ export async function revokeSession(sessionId: string) {
 
   // Verify the session belongs to the user
   const { data: sessionData } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('user_id')
     .eq('id', sessionId)
     .single<{ user_id: string | null }>()
@@ -42,7 +42,7 @@ export async function revokeAllSessions() {
   const supabase = await createClient()
 
   const { data: currentSession, error: currentSessionError } = await supabase
-    .from('sessions')
+    .from('sessions_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('is_current', true)

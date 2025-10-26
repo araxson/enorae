@@ -3,18 +3,14 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import { getDateRanges } from '@/lib/utils/dates'
+import { BUSINESS_THRESHOLDS } from '@/lib/config/constants'
 
 type UserRole = Database['public']['Views']['user_roles_view']['Row']
 type AppointmentOverview = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
-const LOYALTY_THRESHOLDS: Array<{ min: number; tier: 'bronze' | 'silver' | 'gold' | 'platinum' }> = [
-  { min: 5000, tier: 'platinum' },
-  { min: 2000, tier: 'gold' },
-  { min: 500, tier: 'silver' },
-  { min: 0, tier: 'bronze' },
-]
-
-const LOYALTY_DIVISOR = 10
+// Import loyalty configuration from centralized config
+const LOYALTY_THRESHOLDS = BUSINESS_THRESHOLDS.LOYALTY_TIERS
+const LOYALTY_DIVISOR = BUSINESS_THRESHOLDS.LOYALTY_POINTS_DIVISOR
 
 const defaultVipResponse = {
   isVIP: false,

@@ -2,27 +2,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import type { Database } from '@/lib/types/database.types'
 
-type Profile = Database['public']['Views']['profiles']['Row']
+type Profile = Database['public']['Views']['profiles_view']['Row']
+type ProfileMetadata = Database['public']['Views']['profiles_metadata_view']['Row']
 
 interface ProfileHeaderProps {
   profile: Profile
+  metadata?: ProfileMetadata | null
 }
 
-export function ProfileHeader({ profile }: ProfileHeaderProps) {
+export function ProfileHeader({ profile, metadata }: ProfileHeaderProps) {
   return (
     <Card>
       <CardHeader className="flex items-center gap-4">
         <Avatar className="h-16 w-16">
-          {profile['avatar_url'] && <AvatarImage src={profile['avatar_url']} />}
+          {metadata?.avatar_url && <AvatarImage src={metadata.avatar_url} />}
           <AvatarFallback className="text-xl">
-            {profile['username']?.slice(0, 2).toUpperCase() || 'U'}
+            {profile.username?.slice(0, 2).toUpperCase() || 'U'}
           </AvatarFallback>
         </Avatar>
 
         <div className="space-y-1">
-          <CardTitle>{profile['full_name'] || profile['username'] || 'User'}</CardTitle>
+          <CardTitle>{profile.username || 'User'}</CardTitle>
           <CardDescription>
-            {profile['username'] ? `@${profile['username']}` : `ID: ${profile['id']}`}
+            {profile.username ? `@${profile.username}` : `ID: ${profile.id ?? 'unknown'}`}
           </CardDescription>
         </div>
       </CardHeader>

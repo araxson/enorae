@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
 // COMPLIANCE: Use public View type for reads
-type SalonSettings = Database['public']['Views']['salon_settings']['Row']
+type SalonSettings = Database['public']['Views']['salon_settings_view']['Row']
 
 export async function getSalonSettings(salonId: string): Promise<SalonSettings | null> {
   // SECURITY: Require business user role
@@ -16,7 +16,7 @@ export async function getSalonSettings(salonId: string): Promise<SalonSettings |
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salon_settings')
+    .from('salon_settings_view')
     .select('*')
     .eq('salon_id', salonId)
     .single()

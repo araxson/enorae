@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
 import { STATUS_COLORS } from './webhook-detail-constants'
 
-type WebhookQueue = Database['public']['Views']['communication_webhook_queue']['Row']
+type WebhookQueue = Database['public']['Views']['communication_webhook_queue_view']['Row']
 
 type WebhookStatusSectionProps = {
   webhook: WebhookQueue

@@ -18,7 +18,7 @@ export async function exportToCSV<T extends Record<string, unknown>>(
 
   // Use provided columns or extract from first row
   const headers =
-    columns || Object.keys(data[0]).map((key) => ({ key, label: key }))
+    columns || (data[0] ? Object.keys(data[0]).map((key) => ({ key, label: key })) : [])
 
   // Create CSV header row
   const headerRow = headers.map((h) => `"${h.label}"`).join(',')
@@ -91,7 +91,7 @@ export async function exportToPDF<T extends Record<string, unknown>>(
   const { title = 'Export', includeTimestamp = true, columns } = options || {}
 
   // Extract headers
-  const headers = columns || Object.keys(data[0]).map((key) => ({ key, label: key }))
+  const headers = columns || (data[0] ? Object.keys(data[0]).map((key) => ({ key, label: key })) : [])
 
   // Build PDF content as plain text (for basic PDF generation)
   const lines: string[] = []

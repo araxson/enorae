@@ -1,8 +1,11 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
+
 import { Notifications } from './components/notifications'
 
+import { PageLoading } from '@/features/shared/ui-components'
+
 export function NotificationsFeature() {
+
   return (
     <Suspense fallback={<PageLoading />}>
       <Notifications />

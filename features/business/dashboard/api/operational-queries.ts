@@ -3,7 +3,7 @@ import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
 type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
 /**
@@ -21,15 +21,15 @@ export async function getOperationalMetrics(salonId: string) {
   // Get appointments for capacity calculations
   const [appointmentsResult, staffResult] = await Promise.all([
     supabase
-      .from('appointments')
-      .select('start_time, end_time, status, created_at')
+      .from('appointments_view')
+      .select('start_time, end_time, status, created_at, staff_id')
       .eq('salon_id', salonId)
       .gte('start_time', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()),
     supabase
-      .from('staff_profiles_view')
-      .select('id, status')
+      .from('staff_enriched_view')
+      .select('id, status, is_active')
       .eq('salon_id', salonId)
-      .eq('status', 'active')
+      .eq('is_active', true),
   ])
 
   if (appointmentsResult.error || staffResult.error) {

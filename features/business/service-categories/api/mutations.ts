@@ -28,7 +28,7 @@ export async function createServiceCategory(formData: FormData) {
       iconName: formData.get('iconName'),
     })
 
-    if (!result.success) return { error: result.error.errors[0].message }
+    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
 
     const data = result.data
     const supabase = await createClient()
@@ -36,7 +36,7 @@ export async function createServiceCategory(formData: FormData) {
     if (authError || !user) return { error: 'Unauthorized' }
 
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', user.id)
       .single<{ salon_id: string | null }>()
@@ -84,7 +84,7 @@ export async function updateServiceCategory(formData: FormData) {
       iconName: formData.get('iconName'),
     })
 
-    if (!result.success) return { error: result.error.errors[0].message }
+    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
 
     const data = result.data
     const supabase = await createClient()
@@ -92,7 +92,7 @@ export async function updateServiceCategory(formData: FormData) {
     if (authError || !user) return { error: 'Unauthorized' }
 
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', user.id)
       .single<{ salon_id: string | null }>()
@@ -137,7 +137,7 @@ export async function deleteServiceCategory(formData: FormData) {
     if (authError || !user) return { error: 'Unauthorized' }
 
     const { data: staffProfile } = await supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', user.id)
       .single<{ salon_id: string | null }>()
@@ -146,7 +146,7 @@ export async function deleteServiceCategory(formData: FormData) {
 
     // Check if category has services
     const { count } = await supabase
-      .from('services')
+      .from('services_view')
       .select('*', { count: 'exact', head: true })
       .eq('category_id', id)
       .is('deleted_at', null)

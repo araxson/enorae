@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
 
-type BlockedTime = Database['public']['Views']['blocked_times']['Row']
+type BlockedTime = Database['scheduling']['Tables']['blocked_times']['Row']
 
 /**
  * Get blocked times for a salon (customer view)
@@ -20,6 +20,7 @@ export async function getSalonBlockedTimes(
   const now = startDate || new Date()
 
   const { data, error } = await supabase
+    .schema('scheduling')
     .from('blocked_times')
     .select('*')
     .eq('salon_id', salonId)
@@ -47,6 +48,7 @@ export async function getStaffBlockedTimes(
   const now = startDate || new Date()
 
   const { data, error } = await supabase
+    .schema('scheduling')
     .from('blocked_times')
     .select('*')
     .eq('staff_id', staffId)
@@ -73,6 +75,7 @@ export async function checkTimeSlotBlocked(
   const supabase = await createClient()
 
   const { data, error } = await supabase
+    .schema('scheduling')
     .from('blocked_times')
     .select('id, reason, block_type')
     .eq('staff_id', staffId)
@@ -80,7 +83,7 @@ export async function checkTimeSlotBlocked(
     .is('deleted_at', null)
     .lte('start_time', endTime)
     .gte('end_time', startTime)
-    .maybeSingle<{ id: string; reason: string | null; block_type: string | null }>()
+    .maybeSingle<{ id: string | null; reason: string | null; block_type: string | null }>()
 
   if (error) throw error
 

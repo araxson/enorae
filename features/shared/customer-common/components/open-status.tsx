@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { formatHourTo12Hour } from '@/lib/utils/date-time'
 
 interface OpenStatusProps {
   isOpen: boolean
@@ -14,7 +15,7 @@ export function OpenStatus({ isOpen, nextOpenTime, className }: OpenStatusProps)
       variant={isOpen ? 'default' : 'secondary'}
       className={cn('gap-1', className)}
     >
-      <Clock className="h-3 w-3" />
+      <Clock className="h-3 w-3" aria-hidden="true" />
       {isOpen ? 'Open Now' : nextOpenTime ? `Opens ${nextOpenTime}` : 'Closed'}
     </Badge>
   )
@@ -53,8 +54,23 @@ export function isCurrentlyOpen(operatingHours: {
   }
 
   const currentTime = now.getHours() * 60 + now.getMinutes()
-  const [openHour, openMin] = todayHours.open_time.split(':').map(Number)
-  const [closeHour, closeMin] = todayHours.close_time.split(':').map(Number)
+  const openParts = todayHours.open_time.split(':').map(Number)
+  const closeParts = todayHours.close_time.split(':').map(Number)
+
+  const openHour = openParts[0]
+  const openMin = openParts[1]
+  const closeHour = closeParts[0]
+  const closeMin = closeParts[1]
+
+  // Ensure all parts are valid numbers
+  if (
+    openHour === undefined || openMin === undefined ||
+    closeHour === undefined || closeMin === undefined ||
+    isNaN(openHour) || isNaN(openMin) ||
+    isNaN(closeHour) || isNaN(closeMin)
+  ) {
+    return false
+  }
 
   const openTime = openHour * 60 + openMin
   const closeTime = closeHour * 60 + closeMin
@@ -89,8 +105,15 @@ export function getNextOpenTime(operatingHours: {
     )
 
     if (dayHours && !dayHours.is_closed && dayHours.open_time) {
-      const [hour, minute] = dayHours.open_time.split(':').map(Number)
-      const formattedTime = formatTime(hour, minute)
+      const timeParts = dayHours.open_time.split(':').map(Number)
+      const hour = timeParts[0]
+      const minute = timeParts[1]
+
+      if (hour === undefined || minute === undefined || isNaN(hour) || isNaN(minute)) {
+        continue
+      }
+
+      const formattedTime = formatHourTo12Hour(hour, minute)
 
       if (i === 1) {
         return `tomorrow at ${formattedTime}`
@@ -101,11 +124,4 @@ export function getNextOpenTime(operatingHours: {
   }
 
   return undefined
-}
-
-function formatTime(hour: number, minute: number): string {
-  const ampm = hour >= 12 ? 'PM' : 'AM'
-  const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
-  const displayMinute = minute.toString().padStart(2, '0')
-  return `${displayHour}:${displayMinute} ${ampm}`
 }

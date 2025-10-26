@@ -42,7 +42,8 @@ export async function getUserRoles(): Promise<UserRoleWithDetails[]> {
 
   if (error) throw error
 
-  const roles = (data ?? []) as Array<(UserRole & { salon?: { id: string | null; name: string | null } | null })>
+  type RoleWithSalon = UserRole & { salon?: { id: string | null; name: string | null } | null }
+  const roles = (data ?? []) as RoleWithSalon[]
 
   const userIds = Array.from(
     new Set(roles.map((role) => role.user_id).filter((id): id is string => Boolean(id)))
@@ -58,25 +59,25 @@ export async function getUserRoles(): Promise<UserRoleWithDetails[]> {
 
     if (usersError) throw usersError
 
-    usersById = Object.fromEntries(
-      (userRows ?? [])
-        .filter((profile): profile is NonNullable<typeof userRows[0]> => profile?.id !== null && profile?.id !== undefined)
-        .map((profile) => [
-          profile.id,
-          {
-            id: profile.id,
-            full_name: profile.full_name ?? null,
-            email: profile.email ?? null,
-          },
-        ])
-    )
+    type ProfileRow = { id: string | null; full_name: string | null; email: string | null }
+    const profilesTyped = (userRows ?? []) as ProfileRow[]
+
+    for (const profile of profilesTyped) {
+      if (profile?.id) {
+        usersById[profile.id] = {
+          id: profile.id,
+          full_name: profile.full_name ?? null,
+          email: profile.email ?? null,
+        }
+      }
+    }
   }
 
   return roles.map((role) => ({
     ...role,
     user: role.user_id ? usersById[role.user_id] ?? null : null,
     salon: role.salon ?? null,
-  }))
+  } as UserRoleWithDetails))
 }
 
 /**
@@ -118,17 +119,18 @@ export async function getAvailableStaff(): Promise<Array<{
 
   if (profilesError) throw profilesError
 
-  const profilesById = new Map(
-    (profileRows ?? [])
-      .filter((profile): profile is NonNullable<typeof profileRows[0]> => profile?.id !== null && profile?.id !== undefined)
-      .map((profile) => [
-        profile.id,
-        {
-          full_name: profile.full_name ?? null,
-          email: profile.email ?? null,
-        },
-      ])
-  )
+  type ProfileRow = { id: string | null; full_name: string | null; email: string | null }
+  const profilesTyped = (profileRows ?? []) as ProfileRow[]
+
+  const profilesById = new Map<string, { full_name: string | null; email: string | null }>()
+  for (const profile of profilesTyped) {
+    if (profile?.id) {
+      profilesById.set(profile.id, {
+        full_name: profile.full_name ?? null,
+        email: profile.email ?? null,
+      })
+    }
+  }
 
   return staffProfiles
     .map((profile) => ({
@@ -165,28 +167,35 @@ export async function getUserRoleById(id: string): Promise<UserRoleWithDetails |
   if (error) throw error
   if (!data) return null
 
+  type RoleWithSalon = UserRole & { salon?: { id: string | null; name: string | null } | null }
+  const roleData = data as RoleWithSalon
+
   let userDetails: UserRoleWithDetails['user'] = null
 
-  if (data.user_id) {
+  if (roleData.user_id) {
     const { data: userRow, error: userError } = await supabase
       .from('profiles_view')
       .select('id, full_name, email')
-      .eq('id', data.user_id)
+      .eq('id', roleData.user_id)
       .maybeSingle()
 
     if (userError) throw userError
-    if (userRow && userRow.id) {
+
+    type ProfileRow = { id: string | null; full_name: string | null; email: string | null }
+    const profileData = userRow as ProfileRow | null
+
+    if (profileData?.id) {
       userDetails = {
-        id: userRow.id,
-        full_name: userRow.full_name ?? null,
-        email: userRow.email ?? null,
+        id: profileData.id,
+        full_name: profileData.full_name ?? null,
+        email: profileData.email ?? null,
       }
     }
   }
 
   return {
-    ...data,
+    ...roleData,
     user: userDetails,
-    salon: data.salon ?? null,
+    salon: roleData.salon ?? null,
   } as UserRoleWithDetails
 }

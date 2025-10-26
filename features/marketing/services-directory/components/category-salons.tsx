@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { SalonCard } from '@/features/shared/salons'
 import type { Database } from '@/lib/types/database.types'
 
-type Salon = Database['public']['Views']['salons']['Row']
+type Salon = Database['public']['Views']['salons_view']['Row']
 
 interface CategorySalonsProps {
   salons: Salon[]

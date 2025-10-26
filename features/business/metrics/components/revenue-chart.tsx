@@ -6,7 +6,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
 
-type DailyMetric = Database['public']['Views']['daily_metrics']['Row'] & { metric_at: string }
+type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row'] & { metric_at: string }
 
 interface RevenueChartProps {
   data: DailyMetric[]

@@ -9,25 +9,12 @@ import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from
 import { formatDistanceToNow } from 'date-fns'
 import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '@/features/shared/notifications/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
-import type { Json } from '@/lib/types/database.types'
+import type { Database } from '@/lib/types/database.types'
 
-// TODO: communication_notification_queue view doesn't exist yet
-type Notification = {
-  id: string
-  user_id: string
-  channels: string[]
-  status: string | null
-  created_at: string | null
-  scheduled_for: string | null
-  sent_at: string | null
-  notification_type: string | null
-  payload: Json | null
-  title?: string
-  message?: string
-}
+type Message = Database['communication']['Tables']['messages']['Row']
 
 type Props = {
-  notifications: Notification[]
+  notifications: Message[]
 }
 
 export function NotificationCenter({ notifications }: Props) {
@@ -36,12 +23,12 @@ export function NotificationCenter({ notifications }: Props) {
 
   const filteredNotifications = notifications.filter((n) => {
     if (activeTab === 'all') return true
-    if (activeTab === 'unread') return n.status === 'pending'
-    if (activeTab === 'read') return n.status === 'delivered'
-    return n.channels?.includes(activeTab)
+    if (activeTab === 'unread') return !n.is_read
+    if (activeTab === 'read') return n.is_read
+    return n.context_type === activeTab
   })
 
-  const unreadCount = notifications.filter((n) => n.status === 'pending').length
+  const unreadCount = notifications.filter((n) => !n.is_read).length
 
   const handleMarkAsRead = async (id: string) => {
     try {
@@ -91,11 +78,11 @@ export function NotificationCenter({ notifications }: Props) {
     }
   }
 
-  const getChannelIcon = (channels: string[] | null) => {
-    if (!channels || channels.length === 0) return <Bell className="h-4 w-4" />
-    if (channels.includes('email')) return <Mail className="h-4 w-4" />
-    if (channels.includes('sms')) return <MessageSquare className="h-4 w-4" />
-    if (channels.includes('push')) return <Smartphone className="h-4 w-4" />
+  const getChannelIcon = (contextType: string | null) => {
+    if (!contextType) return <Bell className="h-4 w-4" />
+    if (contextType === 'email') return <Mail className="h-4 w-4" />
+    if (contextType === 'sms') return <MessageSquare className="h-4 w-4" />
+    if (contextType === 'push') return <Smartphone className="h-4 w-4" />
     return <Bell className="h-4 w-4" />
   }
 
@@ -139,37 +126,29 @@ export function NotificationCenter({ notifications }: Props) {
                 </div>
               ) : (
                 filteredNotifications.map((notification) => (
-                  <Card key={notification.id} className={notification.status === 'pending' ? 'border-primary' : ''}>
+                  <Card key={notification.id} className={!notification.is_read ? 'border-primary' : ''}>
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            {getChannelIcon(notification.channels)}
-                            <h4 className="font-semibold">{notification.title}</h4>
-                            {notification.status === 'pending' && <Badge variant="secondary">New</Badge>}
+                            {getChannelIcon(notification.context_type)}
+                            <h4 className="font-semibold">{notification.content}</h4>
+                            {!notification.is_read && <Badge variant="secondary">New</Badge>}
                           </div>
                           <p className="text-sm text-muted-foreground mb-2">
-                            {notification.message}
+                            {notification.context_type && `Type: ${notification.context_type}`}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(new Date(notification.created_at || ''), { addSuffix: true })}
+                            {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                           </p>
-                          {notification.channels && notification.channels.length > 0 && (
-                            <div className="mt-2 flex gap-1 text-xs">
-                              {notification.channels.map((channel) => (
-                                <Badge key={channel} variant="outline">
-                                  {channel}
-                                </Badge>
-                              ))}
-                            </div>
-                          )}
                         </div>
                         <div className="flex gap-1">
-                          {notification.status === 'pending' && (
+                          {!notification.is_read && (
                             <Button
                               variant="ghost"
                               size="icon"
                               onClick={() => handleMarkAsRead(notification.id)}
+                              aria-label="Mark notification as read"
                             >
                               <Check className="h-4 w-4" />
                             </Button>
@@ -178,6 +157,7 @@ export function NotificationCenter({ notifications }: Props) {
                             variant="ghost"
                             size="icon"
                             onClick={() => handleDelete(notification.id)}
+                            aria-label="Delete notification"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

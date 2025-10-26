@@ -1,6 +1,6 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { verifyStaffOwnership } from '@/lib/auth/staff'
 
 export interface CustomerRelationship {
   customer_id: string
@@ -13,10 +13,7 @@ export interface CustomerRelationship {
 
 type AppointmentWithCustomerProfile = {
   customer_id: string
-  created_at: string
-  profiles: {
-    username: string | null
-  } | null
+  start_time: string
 }
 
 export async function getStaffCustomerRelationships(
@@ -25,68 +22,76 @@ export async function getStaffCustomerRelationships(
 ): Promise<CustomerRelationship[]> {
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  const targetStaffId = staffId || user.id
+  const { supabase, staffProfile } = await verifyStaffOwnership(staffId)
+  const targetStaffId = staffProfile.id
 
   const { data: appointments, error } = await supabase
     .from('appointments_view')
-    .select(`
-      id,
-      customer_id,
-      created_at,
-      profiles:customer_id (
-        username
-      )
-    `)
+    .select('customer_id, start_time')
     .eq('staff_id', targetStaffId)
     .eq('status', 'completed')
-    .order('created_at', { ascending: false })
+    .order('start_time', { ascending: false })
     .limit(100)
+    .returns<AppointmentWithCustomerProfile[]>()
 
   if (error) throw error
 
   // Aggregate by customer
   const customerMap = new Map<string, {
-    name: string
+    name: string | null
     appointments: number
     revenue: number
     lastDate: string
     services: string[]
   }>()
 
-  const customerAppointments = (appointments as unknown as AppointmentWithCustomerProfile[] | null) ?? []
+  const customerAppointments = appointments ?? []
 
-  customerAppointments.forEach((appt: AppointmentWithCustomerProfile) => {
+  customerAppointments.forEach((appt) => {
     const customerId = appt.customer_id
-    const customerName = appt.profiles?.username || 'Unknown Customer'
+    const customerName = null
 
     if (!customerMap.has(customerId)) {
       customerMap.set(customerId, {
         name: customerName,
         appointments: 0,
         revenue: 0,
-        lastDate: appt.created_at,
+        lastDate: appt.start_time,
         services: []
       })
     }
 
     const customer = customerMap.get(customerId)!
     customer.appointments += 1
-    customer.revenue += 50 // Placeholder - would need to fetch actual pricing
-    if (new Date(appt.created_at) > new Date(customer.lastDate)) {
-      customer.lastDate = appt.created_at
+    if (new Date(appt.start_time) > new Date(customer.lastDate)) {
+      customer.lastDate = appt.start_time
     }
   })
+
+  const customerIds = Array.from(customerMap.keys()).filter(Boolean)
+  if (customerIds.length > 0) {
+    const { data: customerProfiles, error: profileError } = await supabase
+      .from('profiles_view')
+      .select('id, full_name, username')
+      .in('id', customerIds)
+      .returns<Array<{ id: string; full_name: string | null; username: string | null }>>()
+
+    if (profileError) throw profileError
+
+    customerProfiles?.forEach((profile) => {
+      const entry = customerMap.get(profile.id)
+      if (entry) {
+        entry.name = profile.full_name ?? profile.username ?? 'Customer'
+      }
+    })
+  }
 
   return Array.from(customerMap.entries())
     .map(([customerId, data]) => ({
       customer_id: customerId,
-      customer_name: data.name,
+      customer_name: data.name ?? 'Customer',
       total_appointments: data.appointments,
-      total_spent: data.revenue,
+      total_spent: 0,
       last_appointment_date: data.lastDate,
       favorite_service: data.services[0] || 'N/A',
     }))

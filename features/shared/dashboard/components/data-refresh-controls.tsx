@@ -32,7 +32,8 @@ export function DataRefreshControls({
     const updateRelativeLabel = () => {
       const now = new Date()
       const diffMs = now.getTime() - generatedDate.getTime()
-      const minutes = Math.round(diffMs / 60000)
+      const MS_PER_MINUTE = 60000 // 1 minute in milliseconds
+      const minutes = Math.round(diffMs / MS_PER_MINUTE)
 
       if (minutes <= 0) {
         setRelativeLabel('Updated just now')
@@ -47,13 +48,15 @@ export function DataRefreshControls({
     }
 
     updateRelativeLabel()
-    const interval = window.setInterval(updateRelativeLabel, 60000)
+    const UPDATE_INTERVAL_MS = 60000 // Update every 1 minute
+    const interval = window.setInterval(updateRelativeLabel, UPDATE_INTERVAL_MS)
 
     return () => window.clearInterval(interval)
   }, [generatedDate])
 
   const handleRefresh = () => {
-    startTransition(async () => {
+    startTransition(() => {
+      // ASYNC FIX: router.refresh() is sync, no need for async wrapper
       router.refresh()
     })
   }

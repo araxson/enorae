@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -17,25 +17,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
 import { useToast } from '@/lib/hooks/use-toast'
 import { addServiceToAppointment } from '@/features/business/appointments/api/mutations'
+import { useServiceFormOptions } from './shared/use-service-form-data'
+import {
+  StaffSelector,
+  TimeRangeFields,
+  DurationField,
+} from './shared/service-form-fields'
 
 interface AddServiceDialogProps {
   appointmentId: string
   isOpen: boolean
   onClose: () => void
   onSuccess: () => void
-}
-
-type ServiceOption = {
-  id: string
-  name: string
-}
-
-type StaffOption = {
-  id: string
-  name: string
 }
 
 export function AddServiceDialog({
@@ -45,9 +40,6 @@ export function AddServiceDialog({
   onSuccess,
 }: AddServiceDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isLoadingOptions, setIsLoadingOptions] = useState(false)
-  const [services, setServices] = useState<ServiceOption[]>([])
-  const [staff, setStaff] = useState<StaffOption[]>([])
   const [formData, setFormData] = useState({
     serviceId: '',
     staffId: '',
@@ -56,57 +48,10 @@ export function AddServiceDialog({
     durationMinutes: '',
   })
   const { toast } = useToast()
-
-  useEffect(() => {
-    if (!isOpen || !appointmentId) {
-      return
-    }
-
-    let isMounted = true
-
-    const loadOptions = async () => {
-      setIsLoadingOptions(true)
-      try {
-        const response = await fetch(
-          `/api/business/appointments/${appointmentId}/service-options`
-        )
-
-        if (!response.ok) {
-          throw new Error(`Failed to load options (${response.status})`)
-        }
-
-        const data: { services?: ServiceOption[]; staff?: StaffOption[] } =
-          await response.json()
-
-        if (!isMounted) return
-
-        setServices(data.services ?? [])
-        setStaff(data.staff ?? [])
-      } catch (error) {
-        console.error('Failed to load appointment service options:', error)
-        if (isMounted) {
-          toast({
-            variant: 'destructive',
-            title: 'Unable to load service options',
-            description:
-              error instanceof Error
-                ? error.message
-                : 'Please try again in a moment.',
-          })
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoadingOptions(false)
-        }
-      }
-    }
-
-    void loadOptions()
-
-    return () => {
-      isMounted = false
-    }
-  }, [appointmentId, isOpen, toast])
+  const { options, isLoading: isLoadingOptions } = useServiceFormOptions(
+    appointmentId,
+    isOpen
+  )
 
   const resetForm = () => {
     setFormData({
@@ -141,21 +86,21 @@ export function AddServiceDialog({
       if (formData.endTime) data.append('endTime', formData.endTime)
       if (formData.durationMinutes) data.append('durationMinutes', formData.durationMinutes)
 
-      const result = await addServiceToAppointment(data)
+      try {
+        await addServiceToAppointment(data)
 
-      if ('error' in result) {
+        toast({
+          title: 'Service added',
+          description: 'The service was added to the appointment.',
+        })
+      } catch (error) {
         toast({
           variant: 'destructive',
           title: 'Unable to add service',
-          description: result.error,
+          description: error instanceof Error ? error.message : 'An error occurred',
         })
         return
       }
-
-      toast({
-        title: 'Service added',
-        description: 'The service was added to the appointment.',
-      })
 
       resetForm()
       onSuccess()
@@ -189,11 +134,15 @@ export function AddServiceDialog({
               disabled={isLoadingOptions}
             >
               <SelectTrigger>
-                <SelectValue placeholder={isLoadingOptions ? 'Loading services...' : 'Select a service'} />
+                <SelectValue
+                  placeholder={
+                    isLoadingOptions ? 'Loading services...' : 'Select a service'
+                  }
+                />
               </SelectTrigger>
               <SelectContent>
-                {services.length > 0 ? (
-                  services.map((service) => (
+                {options.services.length > 0 ? (
+                  options.services.map((service) => (
                     <SelectItem key={service.id} value={service.id}>
                       {service.name}
                     </SelectItem>
@@ -207,74 +156,28 @@ export function AddServiceDialog({
             </Select>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="staff">Staff (Optional)</Label>
-            <Select
-              value={formData.staffId}
-              onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, staffId: value }))
-              }
-              disabled={isLoadingOptions}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={isLoadingOptions ? 'Loading staff...' : 'Select staff member'} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">Any available</SelectItem>
-                {staff.length > 0 ? (
-                  staff.map((member) => (
-                    <SelectItem key={member.id} value={member.id}>
-                      {member.name}
-                    </SelectItem>
-                  ))
-                ) : (
-                  <SelectItem value="no-staff" disabled>
-                    {isLoadingOptions ? 'Loading staff...' : 'No staff available'}
-                  </SelectItem>
-                )}
-              </SelectContent>
-            </Select>
-          </div>
+          <StaffSelector
+            value={formData.staffId}
+            onChange={(value) => setFormData((prev) => ({ ...prev, staffId: value }))}
+            staff={options.staff}
+            isLoading={isLoadingOptions}
+          />
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="startTime">Start Time</Label>
-              <Input
-                id="startTime"
-                type="time"
-                value={formData.startTime}
-                onChange={(event) =>
-                  setFormData((prev) => ({ ...prev, startTime: event.target.value }))
-                }
-              />
-            </div>
+          <TimeRangeFields
+            startTime={formData.startTime}
+            endTime={formData.endTime}
+            onStartChange={(value) =>
+              setFormData((prev) => ({ ...prev, startTime: value }))
+            }
+            onEndChange={(value) => setFormData((prev) => ({ ...prev, endTime: value }))}
+          />
 
-            <div className="space-y-2">
-              <Label htmlFor="endTime">End Time</Label>
-              <Input
-                id="endTime"
-                type="time"
-                value={formData.endTime}
-                onChange={(event) =>
-                  setFormData((prev) => ({ ...prev, endTime: event.target.value }))
-                }
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="duration">Duration (minutes)</Label>
-            <Input
-              id="duration"
-              type="number"
-              min="1"
-              value={formData.durationMinutes}
-              onChange={(event) =>
-                setFormData((prev) => ({ ...prev, durationMinutes: event.target.value }))
-              }
-              placeholder="e.g., 60"
-            />
-          </div>
+          <DurationField
+            value={formData.durationMinutes}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, durationMinutes: value }))
+            }
+          />
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>

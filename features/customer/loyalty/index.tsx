@@ -1,10 +1,13 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
-import { generateMetadata as genMeta } from '@/lib/metadata'
+
 import { getLoyaltyPoints, getLoyaltyTransactions } from './api/queries'
 import { LoyaltyDashboard } from './components/loyalty-dashboard'
 
+import { PageLoading } from '@/features/shared/ui-components'
+import { generateMetadata as genMeta } from '@/lib/metadata'
+
 export const loyaltyMetadata = genMeta({
+
   title: 'Loyalty Rewards',
   description: 'Earn points with every visit and redeem them for exclusive rewards',
 })

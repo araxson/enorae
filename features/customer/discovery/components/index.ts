@@ -1,0 +1,7 @@
+export { SalonContactDetails } from './salon-contact-details'
+export { SalonDescriptionComponent } from './salon-description'
+export { SalonDiscoveryClient } from './salon-discovery-client'
+export { SalonGrid } from './salon-grid'
+export { SalonLocationDetail } from './salon-location-detail'
+export { SalonMediaGallery } from './salon-media-gallery'
+export { SearchFilters } from './search-filters'

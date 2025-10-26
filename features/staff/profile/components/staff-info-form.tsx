@@ -33,7 +33,8 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
 
     if (result.success) {
       setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
+      const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
+      setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error)
     }

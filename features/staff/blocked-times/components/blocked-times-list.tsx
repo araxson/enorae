@@ -81,12 +81,20 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
               </div>
             </div>
           </CardHeader>
-          {blockedTime['duration_minutes'] ? (
+          {blockedTime['start_time'] && blockedTime['end_time'] ? (
             <CardContent>
               <div className="p-4 pt-0">
-                <p className="text-muted-foreground">
-                  Duration: {blockedTime['duration_minutes']} minutes
-                </p>
+                {(() => {
+                  const start = new Date(blockedTime['start_time'])
+                  const end = new Date(blockedTime['end_time'])
+                  const durationMs = end.getTime() - start.getTime()
+                  const durationMinutes = Math.round(durationMs / (1000 * 60))
+                  return (
+                    <p className="text-muted-foreground">
+                      Duration: {durationMinutes} minutes
+                    </p>
+                  )
+                })()}
               </div>
             </CardContent>
           ) : null}

@@ -1,8 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   TrendingUp,
   TrendingDown,
@@ -14,6 +11,11 @@ import {
   Lightbulb,
   TrendingUpIcon
 } from 'lucide-react'
+
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
 import type { TrendInsight, BusinessRecommendation, AnomalyAlert } from '@/features/business/insights/api/business-insights'
 
 interface BusinessInsightsDashboardProps {

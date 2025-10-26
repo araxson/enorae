@@ -22,8 +22,7 @@ export async function approveSalon(formData: FormData) {
 
     // Get salon owner for notification
     const { data: salon, error: salonError } = await supabase
-      .schema('organization')
-      .from('salons')
+      .from('salons_view')
       .select('name')
       .eq('id', salonId)
       .maybeSingle()

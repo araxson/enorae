@@ -46,4 +46,4 @@ export type SecurityAuditFilters = {
   endDate?: string
 }
 
-export type SecurityIncidentLogRow = Database['public']['Views']['security_incident_logs']['Row']
+export type SecurityIncidentLogRow = Database['public']['Views']['security_incident_logs_view']['Row']

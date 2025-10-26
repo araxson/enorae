@@ -44,8 +44,8 @@ export async function EnhancedAnalytics({ startDate, endDate }: EnhancedAnalytic
     )
   }
 
-  const end: string = endDate || new Date().toISOString().split('T')[0]
-  const start: string = startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  const end = endDate ?? new Date().toISOString().split('T')[0] ?? ''
+  const start = startDate ?? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] ?? ''
 
   const [overview, topServices, topStaff, insights, cohorts] = await Promise.all([
     getAnalyticsOverview(salon.id, start, end),

@@ -21,11 +21,4 @@ export { RankingList } from './ranking-list'
 export type { RankingItem } from './ranking-list'
 export { StatBadge, ComparisonBadge } from './stat-badge'
 export { DateRangeFilter, SearchInput as BusinessSearchInput, StatusFilter } from './filters'
-export {
-  servicePerformanceToRankingItems,
-  staffPerformanceToRankingItems,
-  customerDataToRankingItems,
-  extractRevenueBreakdown,
-  calculatePreviousPeriodAmount,
-} from './ranking-adapters'
 export { formatCurrency, formatPercentage } from './value-formatters'

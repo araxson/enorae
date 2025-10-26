@@ -65,7 +65,7 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
 
   const serviceIds = (staffServices || [])
     .map((row) => row['service_id'])
-    .filter((id): id is string => Boolean(id))
+    .filter((id) => typeof id === 'string')
 
   let services: Service[] = []
 

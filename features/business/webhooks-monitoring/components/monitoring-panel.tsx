@@ -3,7 +3,7 @@ import { WebhookMonitoringDashboard } from '@/features/business/webhooks/compone
 import type { Database } from '@/lib/types/database.types'
 
 type FailedWebhookRow =
-  Database['public']['Views']['communication_webhook_queue']['Row']
+  Database['public']['Views']['communication_webhook_queue_view']['Row']
 
 interface MonitoringPanelProps {
   stats: WebhookStats

@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { formatPercentage } from '@/features/business/business-common/utils/formatters'
+import { formatPercentage } from '@/features/business/business-common/components/value-formatters'
 
 type StatBadgeProps = {
   value: number

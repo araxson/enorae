@@ -8,7 +8,9 @@ interface TransactionCardProps {
 }
 
 export function TransactionCard({ transaction }: TransactionCardProps) {
-  const transactionDate = new Date(transaction['transaction_at'] || new Date())
+  const transactionDate = transaction.transaction_at
+    ? new Date(transaction.transaction_at)
+    : new Date()
 
   const getTypeColor = (type: string | null): "default" | "destructive" | "secondary" | "outline" => {
     if (!type) return 'outline'
@@ -29,13 +31,13 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1">
-            <CardTitle>{transaction.salon?.['name'] || 'Unknown Salon'}</CardTitle>
+            <CardTitle>{transaction.salon?.name || 'Unknown Salon'}</CardTitle>
             <CardDescription>
               {format(transactionDate, 'PPP')} at {format(transactionDate, 'p')}
             </CardDescription>
           </div>
-          <Badge variant={getTypeColor(transaction['transaction_type'])}>
-            {transaction['transaction_type'] || 'Unknown'}
+          <Badge variant={getTypeColor(transaction.transaction_type || null)}>
+            {transaction.transaction_type || 'Unknown'}
           </Badge>
         </div>
       </CardHeader>
@@ -44,23 +46,27 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           {transaction.staff && (
             <div>
               <p className="text-sm text-muted-foreground">Staff Member</p>
-              <p className="leading-7">{transaction.staff['full_name']}</p>
+              <p className="leading-7">{transaction.staff.full_name}</p>
             </div>
           )}
 
-          {transaction['payment_method'] && (
+          {transaction.payment_method && (
             <div>
               <p className="text-sm text-muted-foreground">Payment Method</p>
-              <p className="leading-7 capitalize">{transaction['payment_method']}</p>
+              <p className="leading-7 capitalize">{transaction.payment_method}</p>
             </div>
           )}
 
           {transaction.appointment && (
             <div>
               <p className="text-sm text-muted-foreground">Related Appointment</p>
-              <p className="text-sm">
-                {format(new Date(transaction.appointment.scheduled_at || ''), 'PPP')}
-              </p>
+              {transaction.appointment.start_time ? (
+                <p className="text-sm">
+                  {format(new Date(transaction.appointment.start_time), 'PPP')}
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">Scheduled time unavailable</p>
+              )}
             </div>
           )}
         </div>

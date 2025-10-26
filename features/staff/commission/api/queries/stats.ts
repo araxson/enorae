@@ -7,7 +7,7 @@ import type { CommissionData, DailyEarnings } from './types'
 function sumRevenue(appointments: AppointmentRow[] | null | undefined) {
   return (
     appointments?.reduce(
-      (sum, appointment) => sum + (appointment['total_price'] || 0),
+      (sum, appointment) => sum + (appointment.total_price ?? 0),
       0,
     ) ?? 0
   )
@@ -36,7 +36,7 @@ export async function getStaffCommission(
   const endOfDay = toEndOfDay(now)
 
   const { data: todayAppointments, error: todayError } = await supabase
-    .from('appointments')
+    .from('admin_appointments_overview_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
@@ -55,7 +55,7 @@ export async function getStaffCommission(
   endOfWeek.setHours(23, 59, 59, 999)
 
   const { data: weekAppointments, error: weekError } = await supabase
-    .from('appointments')
+    .from('admin_appointments_overview_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
@@ -78,7 +78,7 @@ export async function getStaffCommission(
   )
 
   const { data: monthAppointments, error: monthError } = await supabase
-    .from('appointments')
+    .from('admin_appointments_overview_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
@@ -111,7 +111,7 @@ export async function getDailyEarnings(
   startDate.setDate(startDate.getDate() - days)
 
   const { data: appointments, error } = await supabase
-    .from('appointments')
+    .from('admin_appointments_overview_view')
     .select('*')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
@@ -124,12 +124,14 @@ export async function getDailyEarnings(
 
   appointments?.forEach((record) => {
     const appointment = record as AppointmentRow
-    if (!appointment['start_time']) return
+    if (!appointment.start_time) return
 
-    const date = new Date(appointment['start_time']).toISOString().split('T')[0]
+    const dateStr = new Date(appointment.start_time).toISOString().split('T')[0]
+    if (!dateStr) return
+    const date = dateStr
     const existing = earningsByDate.get(date)
 
-    const revenue = appointment['total_price'] || 0
+    const revenue = appointment.total_price ?? 0
 
     if (existing) {
       existing.earnings += revenue
@@ -144,6 +146,6 @@ export async function getDailyEarnings(
   })
 
   return Array.from(earningsByDate.values()).sort((a, b) =>
-    a['date'].localeCompare(b['date']),
+    a.date.localeCompare(b.date),
   )
 }

@@ -84,7 +84,7 @@ export const toRateLimitViolation = (row: RateLimitTrackingRow): RateLimitViolat
   identifierType: (row.identifier_type ?? '') as string,
   endpoint: (row.endpoint ?? '') as string,
   requestCount: (row.request_count ?? 0) as number,
-  windowStartAt: (row.window_start_at ?? null) as string | null,
+  windowStartAt: (row.window_start_at ?? new Date().toISOString()) as string,
   lastRequestAt: (row.last_request_at ?? null) as string | null,
   lastBlockedAt: (row.last_blocked_at ?? null) as string | null,
   blockedUntil: (row.blocked_until ?? null) as string | null,

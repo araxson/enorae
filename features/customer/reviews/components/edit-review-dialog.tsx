@@ -44,17 +44,22 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
     setIsLoading(true)
     setError(null)
 
-    const formData = new FormData(e.currentTarget)
-    const result = await updateReview(review?.['id'] || '', formData)
+    try {
+      const formData = new FormData(e.currentTarget)
+      const result = await updateReview(review?.['id'] || '', formData)
 
-    if (result.success) {
-      setOpen(false)
-      router.refresh()
-    } else {
-      setError(result.error || 'Failed to update review')
+      if (result.success) {
+        setOpen(false)
+        router.refresh()
+      } else {
+        setError(result.error || 'Failed to update review')
+      }
+    } catch (error) {
+      console.error('Error updating review:', error)
+      setError('An unexpected error occurred. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
   }
 
   return (

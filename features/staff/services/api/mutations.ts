@@ -38,7 +38,7 @@ export async function toggleServiceAvailability(staffServiceId: string, isAvaila
 
   const { error } = await supabase
     .schema('catalog')
-    .from('staff_services')
+    .schema('organization').from('staff_services')
     .update(updatePayload)
     .eq('id', staffServiceId)
 
@@ -84,7 +84,7 @@ export async function updateServiceProficiency(
 
   const { error } = await supabase
     .schema('catalog')
-    .from('staff_services')
+    .schema('organization').from('staff_services')
     .update(proficiencyUpdate)
     .eq('id', staffServiceId)
 

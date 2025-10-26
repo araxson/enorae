@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input'
 import { MapPin, Search, Sparkles } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 
-type Salon = Database['public']['Views']['salons']['Row']
+type Salon = Database['public']['Views']['salons_view']['Row']
 
 interface MarketingExploreViewProps {
   salons: Salon[]

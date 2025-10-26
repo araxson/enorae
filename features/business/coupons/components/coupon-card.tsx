@@ -64,6 +64,7 @@ export const CouponCard = memo(function CouponCard({
               variant="ghost"
               size="icon"
               onClick={() => coupon.code && onCopy(coupon.code)}
+              aria-label={`Copy coupon code ${coupon.code}`}
             >
               <Copy className="h-4 w-4" />
             </Button>
@@ -106,11 +107,12 @@ export const CouponCard = memo(function CouponCard({
               checked={coupon.is_active}
               onCheckedChange={onToggle}
               disabled={isExpired(coupon.valid_until)}
+              aria-label={`Toggle coupon ${coupon.code} ${coupon.is_active ? 'inactive' : 'active'}`}
             />
-            <Button variant="ghost" size="icon" onClick={() => onEdit(coupon)}>
+            <Button variant="ghost" size="icon" onClick={() => onEdit(coupon)} aria-label={`Edit coupon ${coupon.code}`}>
               <Pencil className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={onDelete}>
+            <Button variant="ghost" size="icon" onClick={onDelete} aria-label={`Delete coupon ${coupon.code}`}>
               <Trash2 className="h-4 w-4" />
             </Button>
           </div>

@@ -1,7 +1,7 @@
 import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
-import type { AppointmentSummary, AppointmentRevenueRow } from './types'
+import type { AppointmentSummary } from './analytics-types'
 
 export interface StaffPerformanceMetrics {
   total_appointments: number
@@ -32,11 +32,11 @@ export async function getStaffPerformanceMetrics(
 
   // Get appointment statistics
   const { data: appointments, error: apptError } = await supabase
-    .from('appointments')
-    .select('id, status, customer_id, created_at')
+    .from('appointments_view')
+    .select('id, status, customer_id, start_time, created_at')
     .eq('staff_id', targetStaffId)
-    .gte('created_at', start)
-    .lte('created_at', end)
+    .gte('start_time', start)
+    .lte('start_time', end)
     .returns<AppointmentSummary[]>()
 
   if (apptError) throw apptError
@@ -64,25 +64,8 @@ export async function getStaffPerformanceMetrics(
   const repeatCustomers = Object.values(customerCounts).filter(count => count > 1).length
 
   // Get revenue data from appointment services
-  const appointmentIds = appointmentRows
-    .map(a => a.id)
-    .filter((id): id is string => Boolean(id))
-  let totalRevenue = 0
-  if (appointmentIds.length > 0) {
-    const { data: services, error: servicesError } = await supabase
-      .from('appointment_services')
-      .select('appointment_id, service_price, staff_id')
-      .in('appointment_id', appointmentIds)
-      .eq('staff_id', targetStaffId)
-      .returns<AppointmentRevenueRow[]>()
-
-    if (servicesError) throw servicesError
-
-    totalRevenue = (services ?? []).reduce(
-      (sum, service) => sum + Number(service.service_price ?? 0),
-      0
-    )
-  }
+  // appointments_view does not expose pricing data; defer revenue calculations to future pricing view.
+  const totalRevenue = 0
 
   return {
     total_appointments: totalAppointments,

@@ -17,7 +17,7 @@ import { assignRole } from '@/features/admin/roles/api/mutations'
 import { PermissionsEditor } from './permissions-editor'
 import { RoleSelector } from './role-selector'
 import { SalonSelector } from './salon-selector'
-import type { RoleTemplate } from '@/features/admin/roles/utils/templates'
+import type { RoleTemplate } from '@/features/admin/roles/components/role-templates'
 import type { RoleValue } from './types'
 
 type AssignRoleFormProps = {

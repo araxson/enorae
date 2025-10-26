@@ -46,13 +46,19 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  // Turbopack configuration
+  // See https://nextjs.org/docs/app/api-reference/next-config-js/turbopack
+  turbopack: {
+    // Turbopack is faster and more efficient than Webpack
+    // Configuration options can be added here as needed
+    // For now using default optimized configuration
+  },
+
   // Experimental features
   experimental: {
     // Enable optimistic client cache
     optimisticClientCache: true,
   },
-
-  webpack: (config) => config,
 };
 
 export default nextConfig;

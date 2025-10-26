@@ -1,6 +1,9 @@
+'use server'
+
+import { revalidateTag as nextRevalidateTag } from 'next/cache'
+
 export async function revalidateCacheTags(tags: string[]) {
-  const { revalidateTag } = await import('next/cache')
-  tags.forEach((tag) => revalidateTag(tag))
+  tags.forEach((tag) => nextRevalidateTag(tag))
 }
 
 export function withRevalidation<T extends (...args: never[]) => Promise<unknown>>(

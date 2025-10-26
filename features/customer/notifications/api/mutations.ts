@@ -7,13 +7,13 @@ import {
   sendNotification as sendNotificationAction,
 } from '@/features/shared/notifications/api/mutations'
 
-type ServerAction<T extends (...args: never[]) => Promise<unknown>> = (
-  ...args: Parameters<T>
-) => ReturnType<T>
+type ServerAction<TArgs extends unknown[], TResult> = (
+  ...args: TArgs
+) => Promise<TResult>
 
-function createServerActionProxy<T extends (...args: never[]) => Promise<unknown>>(
-  action: T
-): ServerAction<T> {
+function createServerActionProxy<TArgs extends unknown[], TResult>(
+  action: (...args: TArgs) => Promise<TResult>
+): ServerAction<TArgs, TResult> {
   return (...args) => action(...args)
 }
 

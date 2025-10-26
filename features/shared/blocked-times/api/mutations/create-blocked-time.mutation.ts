@@ -54,7 +54,7 @@ export async function createBlockedTime(input: z.infer<typeof blockedTimeSchema>
     return { data, error: null }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.errors[0].message }
+      return { error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
     if (error instanceof Error && error.message.includes('Unauthorized')) {
       return { error: error.message }

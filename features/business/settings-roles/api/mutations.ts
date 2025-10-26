@@ -23,9 +23,7 @@ const VALID_ROLES = [
 
 const userRoleSchema = z.object({
   user_id: z.string().regex(UUID_REGEX, 'Invalid user ID'),
-  role: z.enum(VALID_ROLES, {
-    errorMap: () => ({ message: 'Invalid role' }),
-  }),
+  role: z.enum(VALID_ROLES),
   salon_id: z.string().regex(UUID_REGEX, 'Invalid salon ID').optional(),
   permissions: z.array(z.string()).optional(),
 })
@@ -50,13 +48,22 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
     }
 
     // Parse and validate input
+    const permissionsRaw = formData.get('permissions')
+    let permissions: string[] | undefined
+    if (permissionsRaw) {
+      try {
+        const parsed = JSON.parse(permissionsRaw as string)
+        permissions = Array.isArray(parsed) ? parsed.filter((p): p is string => typeof p === 'string') : undefined
+      } catch {
+        return { error: 'Invalid permissions format' }
+      }
+    }
+
     const input = {
       user_id: formData.get('userId') as string,
       role: formData.get('role') as string,
       salon_id: formData.get('salonId') as string || undefined,
-      permissions: formData.get('permissions')
-        ? JSON.parse(formData.get('permissions') as string)
-        : undefined,
+      permissions,
     }
 
     const validated = userRoleSchema.parse(input)
@@ -68,13 +75,18 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
 
     const supabase = await createClient()
 
+    const targetSalonId = validated.salon_id || accessibleSalonIds[0]
+    if (!targetSalonId) {
+      return { error: 'No salon ID available' }
+    }
+
     // Check if user already has a role for this salon
     const { data: existingRole } = await supabase
       .schema('identity')
       .from('user_roles')
       .select('id')
       .eq('user_id', validated.user_id)
-      .eq('salon_id', validated.salon_id || accessibleSalonIds[0])
+      .eq('salon_id', targetSalonId)
       .is('deleted_at', null)
       .single()
 
@@ -89,7 +101,7 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
       .insert({
         user_id: validated.user_id,
         role: validated.role,
-        salon_id: validated.salon_id || accessibleSalonIds[0],
+        salon_id: targetSalonId,
         permissions: validated.permissions || [],
         is_active: true,
         created_by_id: session.user.id,
@@ -107,7 +119,7 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
     return { success: true, data }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.errors[0].message }
+      return { error: error.issues[0]?.message || 'Validation failed' }
     }
     return { error: 'Failed to assign user role' }
   }
@@ -150,9 +162,16 @@ export async function updateUserRole(
 
     // Parse input
     const role = formData.get('role') as string
-    const permissions = formData.get('permissions')
-      ? JSON.parse(formData.get('permissions') as string)
-      : undefined
+    const permissionsRaw = formData.get('permissions')
+    let permissions: string[] | undefined
+    if (permissionsRaw) {
+      try {
+        const parsed = JSON.parse(permissionsRaw as string)
+        permissions = Array.isArray(parsed) ? parsed.filter((p): p is string => typeof p === 'string') : undefined
+      } catch {
+        return { error: 'Invalid permissions format' }
+      }
+    }
 
     // Update role
     const { data, error } = await supabase
@@ -176,7 +195,7 @@ export async function updateUserRole(
     return { success: true, data }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.errors[0].message }
+      return { error: error.issues[0]?.message || 'Validation failed' }
     }
     return { error: 'Failed to update user role' }
   }

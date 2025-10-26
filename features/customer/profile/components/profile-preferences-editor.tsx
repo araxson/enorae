@@ -12,7 +12,7 @@ import { Bell, Globe, DollarSign, Shield } from 'lucide-react'
 import { updateProfilePreferences } from '@/features/customer/profile/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
-type ProfilePreferences = Database['public']['Views']['profiles_preferences']['Row']
+type ProfilePreferences = Database['public']['Views']['profiles_preferences_view']['Row']
 
 type PreferenceSettings = {
   email_notifications?: boolean

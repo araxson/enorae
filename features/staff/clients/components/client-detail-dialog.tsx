@@ -10,7 +10,7 @@ import { Calendar, DollarSign, Mail, User } from 'lucide-react'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
 
 type ClientDetailDialogProps = {
   client: ClientWithHistory | null
@@ -29,13 +29,55 @@ export function ClientDetailDialog({
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (open && client) {
+    if (!open || !client) return
+
+    let isMounted = true
+    const controller = new AbortController()
+
+    const loadAppointments = async () => {
       setLoading(true)
-      fetch(`/api/staff/clients/${client['customer_id']}/appointments?staffId=${staffId}`)
-        .then((res) => res.json())
-        .then((data) => setAppointments(data || []))
-        .catch(console.error)
-        .finally(() => setLoading(false))
+      try {
+        // API_INTEGRATION_FIX: Add 10 second timeout for API calls
+        const API_REQUEST_TIMEOUT_MS = 10000 // 10 seconds
+        const timeoutSignal = AbortSignal.timeout(API_REQUEST_TIMEOUT_MS)
+        const response = await fetch(
+          `/api/staff/clients/${client['customer_id']}/appointments?staffId=${staffId}`,
+          {
+            signal: AbortSignal.any([controller.signal, timeoutSignal]),
+          }
+        )
+
+        if (!response.ok) {
+          throw new Error(`Failed to load appointments: ${response.status}`)
+        }
+
+        const data = await response.json()
+        if (isMounted) {
+          setAppointments(data || [])
+        }
+      } catch (error) {
+        // API_INTEGRATION_FIX: Handle AbortError and timeout errors
+        if (error instanceof Error && error.name === 'AbortError') {
+          console.log('Appointments load request cancelled or timed out')
+          return
+        }
+        console.error('[ClientDetail] Failed to load appointments', error)
+        if (isMounted) {
+          setAppointments([])
+          // TODO: Add toast notification for user feedback
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadAppointments()
+
+    return () => {
+      isMounted = false
+      controller.abort()
     }
   }, [open, client, staffId])
 
@@ -45,7 +87,7 @@ export function ClientDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{client['customer_name'] || 'Client Details'}</DialogTitle>
+          <DialogTitle>{client['customer_name'] || client['customer_id'] || 'Client Details'}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-6">
@@ -55,6 +97,9 @@ export function ClientDetailDialog({
               <div>
                 <p className="text-xs text-muted-foreground">Name</p>
                 <p className="font-medium">{client['customer_name'] || 'Walk-in Customer'}</p>
+                {client['customer_id'] ? (
+                  <p className="text-xs text-muted-foreground">ID {client['customer_id']}</p>
+                ) : null}
               </div>
             </div>
 
@@ -98,10 +143,8 @@ export function ClientDetailDialog({
             ) : (
               <div className="flex flex-col gap-3">
                 {appointments.map((apt) => {
-                  const serviceNames =
-                    Array.isArray(apt['service_names']) && apt['service_names'].length > 0
-                      ? apt['service_names'].join(', ')
-                      : apt['service_names'] || 'Appointment'
+                  // TODO: Add service_names array to appointments view
+                  const serviceNames = 'Appointment'
                   const startTime = apt['start_time']
                     ? format(new Date(apt['start_time']), 'MMM dd, yyyy • h:mm a')
                     : null
@@ -123,9 +166,6 @@ export function ClientDetailDialog({
                             <span className="text-muted-foreground">{apt['duration_minutes']} minutes</span>
                           )}
                         </div>
-                        {apt['total_price'] !== undefined && apt['total_price'] !== null && (
-                          <span>${Number(apt['total_price']).toFixed(2)}</span>
-                        )}
                       </CardContent>
                     </Card>
                   )

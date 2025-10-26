@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import type { Database } from '@/lib/types/database.types'
 
-type SalonOption = Pick<Database['organization']['Tables']['salons']['Row'], 'id' | 'name'>
+type SalonOption = Pick<Database['public']['Views']['salons_view']['Row'], 'id' | 'name'>
 
 export async function BusinessSalonSwitcher() {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -22,8 +22,7 @@ export async function BusinessSalonSwitcher() {
 
   const supabase = await createClient()
   const { data } = await supabase
-    .schema('organization')
-    .from('salons')
+    .from('salons_view')
     .select('id, name')
     .in('id', accessibleSalonIds)
     .order('name', { ascending: true })
@@ -61,7 +60,7 @@ export async function BusinessSalonSwitcher() {
           className="w-64 rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
         >
           {salons.map(salon => (
-            <option key={salon.id} value={salon.id}>
+            <option key={salon.id || 'unknown'} value={salon.id || ''}>
               {salon.name || 'Untitled Salon'}
             </option>
           ))}

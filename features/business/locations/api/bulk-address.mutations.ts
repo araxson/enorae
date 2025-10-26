@@ -46,7 +46,7 @@ export async function geocodeAllAddresses(salonId: string) {
 
   // Get all locations for this salon without coordinates
   const { data: locations, error: locationsError } = await supabase
-    .from('salon_locations')
+    .from('salon_locations_view')
     .select('id, street_address, city, state_province, postal_code, country_code')
     .eq('salon_id', salonId)
     .is('latitude', null)

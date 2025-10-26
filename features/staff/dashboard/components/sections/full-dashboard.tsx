@@ -10,7 +10,7 @@ import { StaffMetrics } from '@/features/staff/dashboard/components/staff-metric
 import { TodaySchedule } from '@/features/staff/dashboard/components/today-schedule'
 import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
 import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
-import type { AppointmentWithDetails } from '@/features/business/appointments'
+import type { AppointmentWithDetails } from '@/features/shared/appointments/types'
 import type { StaffCommissionSummary, StaffMetricsSummary, ClientRetentionMetrics } from '@/features/staff/dashboard/api/queries'
 
 type Props = {

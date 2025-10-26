@@ -11,7 +11,7 @@ import { SocialLinksSection } from './contact-form/social-links-section'
 import { useContactForm } from './contact-form/use-contact-form'
 import { WebsiteBookingSection } from './contact-form/website-booking-section'
 
-type SalonContactDetails = Database['public']['Views']['salon_contact_details']['Row']
+type SalonContactDetails = Database['public']['Views']['salon_contact_details_view']['Row']
 
 type ContactFormProps = {
   salonId: string

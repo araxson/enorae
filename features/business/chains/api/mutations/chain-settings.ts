@@ -39,7 +39,7 @@ const optionalBoolean = z
     }
     if (typeof value === 'boolean') return value
     return value
-  }, z.boolean({ invalid_type_error: 'isAcceptingBookings must be true or false' }))
+  }, z.boolean('isAcceptingBookings must be true or false'))
   .optional()
 
 const chainSettingsSchema = z.object({
@@ -63,7 +63,7 @@ export async function updateChainSettings(formData: FormData) {
     })
 
     if (!payloadResult.success) {
-      return { error: payloadResult.error.errors[0]?.message ?? 'Invalid settings payload' }
+      return { error: payloadResult.error.issues[0]?.message ?? 'Invalid settings payload' }
     }
 
     const {
@@ -105,7 +105,7 @@ export async function updateChainSettings(formData: FormData) {
 
     // Get all salons in chain
     const { data: salons } = await supabase
-      .from('salons')
+      .from('salons_view')
       .select('id')
       .eq('chain_id', chainId)
       .is('deleted_at', null)

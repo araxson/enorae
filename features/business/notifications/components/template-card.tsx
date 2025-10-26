@@ -1,5 +1,6 @@
 'use client'
 
+import { memo, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -13,7 +14,16 @@ interface TemplateCardProps {
   disabled?: boolean
 }
 
-export function TemplateCard({ template, onEdit, onDelete, disabled }: TemplateCardProps) {
+// PERFORMANCE: Wrap in React.memo to prevent re-renders in list views
+function TemplateCardComponent({ template, onEdit, onDelete, disabled }: TemplateCardProps) {
+  // PERFORMANCE: Wrap inline handlers to prevent new function creation on every render
+  const handleEdit = useCallback(() => {
+    onEdit(template)
+  }, [onEdit, template])
+
+  const handleDelete = useCallback(() => {
+    onDelete(template.id)
+  }, [onDelete, template.id])
   return (
     <Card className="border-muted">
       <CardHeader>
@@ -45,7 +55,7 @@ export function TemplateCard({ template, onEdit, onDelete, disabled }: TemplateC
           <Button
             variant="outline"
             size="sm"
-            onClick={() => onEdit(template)}
+            onClick={handleEdit}
             disabled={disabled}
           >
             <PenLine className="mr-2 h-4 w-4" />
@@ -54,7 +64,7 @@ export function TemplateCard({ template, onEdit, onDelete, disabled }: TemplateC
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onDelete(template.id)}
+            onClick={handleDelete}
             disabled={disabled}
           >
             <Trash2 className="mr-2 h-4 w-4" />
@@ -65,3 +75,6 @@ export function TemplateCard({ template, onEdit, onDelete, disabled }: TemplateC
     </Card>
   )
 }
+
+// PERFORMANCE: Export memoized version
+export const TemplateCard = memo(TemplateCardComponent)

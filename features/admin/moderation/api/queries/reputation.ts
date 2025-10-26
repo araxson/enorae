@@ -17,6 +17,7 @@ export interface ReviewerAggregate {
   flaggedReviews: number
 }
 
+// Maximum number of reviewer records to sample for reputation calculation
 const REVIEWER_SAMPLE_LIMIT = 5000
 
 function clamp(value: number, min: number, max: number) {

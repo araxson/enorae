@@ -10,7 +10,7 @@ import { ArrayFieldsSection } from './description-form/array-fields-section'
 import { SeoSection } from './description-form/seo-section'
 import { useDescriptionForm } from './description-form/use-description-form'
 
-type SalonDescription = Database['public']['Views']['salon_descriptions']['Row']
+type SalonDescription = Database['public']['Views']['salon_descriptions_view']['Row']
 
 type DescriptionFormProps = {
   salonId: string

@@ -65,7 +65,7 @@ export function TransactionsReportDialog({
                 const date = new Date(t['transaction_at']!)
                 return date < min ? date : min
               },
-              new Date(transactions[0]['transaction_at']!)
+              new Date(transactions[0]?.['transaction_at'] || new Date())
             ),
           latest: transactions
             .filter((t) => t['transaction_at'])
@@ -74,7 +74,7 @@ export function TransactionsReportDialog({
                 const date = new Date(t['transaction_at']!)
                 return date > max ? date : max
               },
-              new Date(transactions[0]['transaction_at']!)
+              new Date(transactions[0]?.['transaction_at'] || new Date())
             ),
         }
       : null

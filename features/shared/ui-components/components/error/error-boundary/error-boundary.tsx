@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect } from 'react'
+
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { DigestInfo } from './digest-info'
-import { DevelopmentDetails } from './development-details'
+
 import { ErrorBoundaryActions } from './actions'
+import { DevelopmentDetails } from './development-details'
+import { DigestInfo } from './digest-info'
 import { detectErrorType, ERROR_DESCRIPTIONS, ERROR_TITLES, getErrorIcon } from './utils'
 
 interface ErrorBoundaryProps {

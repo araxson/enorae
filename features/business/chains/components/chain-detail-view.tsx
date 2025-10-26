@@ -10,10 +10,19 @@ type ChainDetailViewProps = {
 }
 
 export async function ChainDetailView({ chainId, chainName }: ChainDetailViewProps) {
-  const [salons, analytics] = await Promise.all([
+  const [rawSalons, analytics] = await Promise.all([
     getChainSalons(chainId),
     getChainAnalytics(chainId),
   ])
+
+  // Filter salons to ensure required fields are present
+  const salons = rawSalons
+    .filter((salon): salon is typeof rawSalons[number] & { id: string } => Boolean(salon.id))
+    .map((salon) => ({
+      id: salon.id,
+      name: salon.name ?? 'Unnamed Salon',
+      city: salon.city,
+    }))
 
   return (
     <div className="space-y-6">

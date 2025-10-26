@@ -13,23 +13,12 @@ import {
 } from './mutations/sessions'
 import { deleteUserPermanently as deleteUserPermanentlyAction } from './mutations/delete'
 
-type ServerAction<T extends (...args: never[]) => Promise<unknown>> = (
-  ...args: Parameters<T>
-) => ReturnType<T>
-
-function createServerActionProxy<T extends (...args: never[]) => Promise<unknown>>(
-  action: T
-): ServerAction<T> {
-  return (...args) => action(...args)
-}
-
-export const updateUserProfile = createServerActionProxy(updateUserProfileAction)
-export const suspendUser = createServerActionProxy(suspendUserAction)
-export const reactivateUser = createServerActionProxy(reactivateUserAction)
-export const banUser = createServerActionProxy(banUserAction)
-export const batchUpdateUserStatus = createServerActionProxy(batchUpdateUserStatusAction)
-export const terminateSession = createServerActionProxy(terminateSessionAction)
-export const terminateAllUserSessions = createServerActionProxy(
-  terminateAllUserSessionsAction
-)
-export const deleteUserPermanently = createServerActionProxy(deleteUserPermanentlyAction)
+// Re-export server actions directly - they are already proper server actions
+export const updateUserProfile = updateUserProfileAction
+export const suspendUser = suspendUserAction
+export const reactivateUser = reactivateUserAction
+export const banUser = banUserAction
+export const batchUpdateUserStatus = batchUpdateUserStatusAction
+export const terminateSession = terminateSessionAction
+export const terminateAllUserSessions = terminateAllUserSessionsAction
+export const deleteUserPermanently = deleteUserPermanentlyAction

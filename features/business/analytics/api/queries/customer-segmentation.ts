@@ -25,8 +25,8 @@ export async function getCustomerSegmentation(
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('appointments')
-    .select('customer_id, customer_name, customer_email, total_price, start_time, status')
+    .from('appointments_view')
+    .select('customer_id, start_time, status')
     .eq('salon_id', salonId)
 
   if (error) throw error
@@ -46,14 +46,14 @@ export async function getCustomerSegmentation(
   for (const appointment of appointments) {
     if (!appointment['customer_id']) continue
     const current = aggregates.get(appointment['customer_id']) || {
-      name: appointment['customer_name'] || 'Customer',
-      email: appointment['customer_email'] || undefined,
+      name: 'Customer', // customer_name doesn't exist in appointments_view
+      email: undefined, // customer_email doesn't exist in appointments_view
       spent: 0,
       visits: 0,
       last: null,
     }
     if (appointment['status'] === 'completed') {
-      current.spent += appointment['total_price'] || 0
+      // NOTE: total_price doesn't exist in appointments_view - spent remains 0
       current.visits += 1
       if (appointment['start_time']) {
         const visitDate = new Date(appointment['start_time'])
@@ -71,8 +71,8 @@ export async function getCustomerSegmentation(
   const sorted = ltvs.slice().sort((a, b) => a - b)
   const medianLTV = sorted.length
     ? (sorted.length % 2 === 1
-      ? sorted[Math.floor((sorted.length - 1) / 2)]
-      : (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2)
+      ? sorted[Math.floor((sorted.length - 1) / 2)] ?? 0
+      : ((sorted[sorted.length / 2 - 1] ?? 0) + (sorted[sorted.length / 2] ?? 0)) / 2)
     : 0
 
   let active = 0

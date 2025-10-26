@@ -9,13 +9,14 @@ export async function markNotificationAsRead(notificationId: string) {
   if (!user) throw new Error('Unauthorized')
 
   const { error } = await supabase
-    .from('communication_notification_queue')
+    .schema('communication')
+    .from('messages')
     .update({
-      status: 'delivered',
-      sent_at: new Date().toISOString(),
-    } as never)
+      is_read: true,
+      read_at: new Date().toISOString(),
+    })
     .eq('id', notificationId)
-    .eq('user_id', user.id)
+    .eq('to_user_id', user.id)
 
   if (error) throw error
 
@@ -29,13 +30,14 @@ export async function markAllNotificationsAsRead() {
   if (!user) throw new Error('Unauthorized')
 
   const { error } = await supabase
-    .from('communication_notification_queue')
+    .schema('communication')
+    .from('messages')
     .update({
-      status: 'delivered',
-      sent_at: new Date().toISOString(),
-    } as never)
-    .eq('user_id', user.id)
-    .eq('status', 'pending')
+      is_read: true,
+      read_at: new Date().toISOString(),
+    })
+    .eq('to_user_id', user.id)
+    .eq('is_read', false)
 
   if (error) throw error
 
@@ -49,10 +51,11 @@ export async function deleteNotification(notificationId: string) {
   if (!user) throw new Error('Unauthorized')
 
   const { error } = await supabase
-    .from('communication_notification_queue')
+    .schema('communication')
+    .from('messages')
     .delete()
     .eq('id', notificationId)
-    .eq('user_id', user.id)
+    .eq('to_user_id', user.id)
 
   if (error) throw error
 
@@ -72,9 +75,22 @@ export async function sendNotification(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  // TODO: Implement notification creation when RPC function types are available
-  // The create_notification RPC function exists in the database but types are not exported
-  console.log('[Notification] Would create:', { userId, type, title, message, channels, data })
+  // Send notification as a message
+  const { error } = await supabase
+    .schema('communication')
+    .from('messages')
+    .insert({
+      from_user_id: user.id,
+      to_user_id: userId,
+      content: message,
+      context_type: type,
+      is_read: false,
+    })
+
+  if (error) {
+    console.error('[Notification] Failed to send:', error)
+    return { success: false }
+  }
 
   revalidatePath('/notifications')
   return { success: true }

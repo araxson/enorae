@@ -44,11 +44,13 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
   const handleTemplateSelect = (index: number, template: RoleTemplate | undefined) => {
     setRows((current) => {
       const next = [...current]
+      const currentRow = next[index]
+      if (!currentRow) return current
       next[index] = {
-        ...next[index],
+        ...currentRow,
         templateId: template?.id ?? '',
-        role: template ? (template.role as RoleValue) : next[index].role,
-        permissions: template?.permissions ?? next[index].permissions,
+        role: template ? (template.role as RoleValue) : currentRow.role,
+        permissions: template?.permissions ?? currentRow.permissions,
       }
       return next
     })
@@ -57,7 +59,9 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
   const handleRowChange = (index: number, patch: Partial<RowState>) => {
     setRows((current) => {
       const next = [...current]
-      next[index] = { ...next[index], ...patch }
+      const currentRow = next[index]
+      if (!currentRow) return current
+      next[index] = { ...currentRow, ...patch }
       return next
     })
   }

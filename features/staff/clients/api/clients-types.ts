@@ -1,6 +1,6 @@
 import type { Database, Json } from '@/lib/types/database.types'
 
-export type Appointment = Database['public']['Views']['appointments']['Row']
+export type Appointment = Database['public']['Views']['appointments_view']['Row']
 
 export type ClientWithHistory = {
   customer_id: string

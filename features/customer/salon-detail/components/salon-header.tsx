@@ -29,13 +29,16 @@ interface SalonHeaderProps {
 }
 
 export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderProps) {
-  const images = media?.['gallery_urls'] && media['gallery_urls'].length > 0
-    ? media['gallery_urls'].map((url, index) => ({
-        url,
-        alt: `${salon['name']} - Image ${index + 1}`,
-      }))
-    : media?.['cover_image_url']
-    ? [{ url: media['cover_image_url'], alt: `${salon['name']} cover image` }]
+  const galleryUrls = media?.gallery_urls && Array.isArray(media.gallery_urls) ? media.gallery_urls : []
+  const coverImage = media?.cover_image_url
+
+  const images = galleryUrls.length > 0
+    ? galleryUrls.map((url, index) => ({
+        url: url || '',
+        alt: `${salon.name} - Image ${index + 1}`,
+      })).filter(img => img.url)
+    : coverImage
+    ? [{ url: coverImage, alt: `${salon.name} cover image` }]
     : [
         {
           url: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200',
@@ -56,7 +59,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
                   <CarouselItem key={index}>
                     <div className="relative aspect-[21/9] w-full overflow-hidden bg-muted">
                       <Image
-                        src={image['url']}
+                        src={image.url}
                         alt={image.alt}
                         fill
                         className="object-cover"
@@ -68,27 +71,27 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
               <CarouselPrevious className="left-4" />
               <CarouselNext className="right-4" />
             </Carousel>
-          ) : (
+          ) : images.length > 0 ? (
             <div className="relative aspect-[21/9] w-full overflow-hidden bg-muted">
               <Image
-                src={images[0].url}
-                alt={images[0].alt}
+                src={images[0]?.url ?? ''}
+                alt={images[0]?.alt ?? ''}
                 fill
                 className="object-cover"
               />
             </div>
-          )}
+          ) : null}
         </div>
       </CardContent>
       <CardHeader className="gap-3">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 space-y-2">
-            <CardTitle>{salon['name']}</CardTitle>
-            {salon['short_description'] && <CardDescription>{salon['short_description']}</CardDescription>}
+            <CardTitle>{salon.name}</CardTitle>
+            {salon.short_description && <CardDescription>{salon.short_description}</CardDescription>}
           </div>
-          {salon['id'] && (
+          {salon.id && (
             <FavoriteButton
-              salonId={salon['id']}
+              salonId={salon.id}
               initialFavorited={isFavorited}
               variant="default"
             />

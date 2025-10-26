@@ -7,9 +7,16 @@ import { mergeStaffWithUsers, type EnrichedStaffProfile } from '@/features/share
 
 type StaffProfileRow = Database['public']['Views']['staff_profiles_view']['Row']
 type UserOverviewRow = Database['public']['Views']['admin_users_overview_view']['Row']
+type StaffServiceRow = Database['public']['Views']['staff_services_view']['Row']
 
-// Re-export getUserSalon from shared location
+// Re-export types
 export { getUserSalon }
+export type { EnrichedStaffProfile }
+
+// Type for staff with their associated services
+export type StaffWithServices = EnrichedStaffProfile & {
+  services: StaffServiceRow[]
+}
 
 async function fetchStaffUsers(
   supabase: Awaited<ReturnType<typeof createClient>>,
@@ -91,9 +98,50 @@ export async function getStaffById(staffId: string): Promise<EnrichedStaffProfil
   return enriched ?? null
 }
 
-export {
-  getStaffWithServices,
-  getAvailableServices,
-  getStaffServices,
-  type StaffWithServices,
-} from './internal/staff-services'
+export async function getStaffWithServices(salonId: string) {
+  const supabase = await createClient()
+
+  // Get all staff for the salon
+  const staff = await getStaff(salonId)
+
+  // Get all staff services for the salon
+  const { data: staffServices, error } = await supabase
+    .from('staff_services_view')
+    .select('*')
+    .eq('salon_id', salonId)
+    .returns<StaffServiceRow[]>()
+
+  if (error) throw error
+
+  // Group services by staff_id
+  const servicesByStaffId = new Map<string, StaffServiceRow[]>()
+  staffServices?.forEach(service => {
+    const staffId = service.staff_id
+    if (staffId) {
+      if (!servicesByStaffId.has(staffId)) {
+        servicesByStaffId.set(staffId, [])
+      }
+      servicesByStaffId.get(staffId)?.push(service)
+    }
+  })
+
+  // Merge staff with their services
+  return staff.map(staffMember => {
+    const staffId = staffMember.id ?? null
+    return {
+      ...staffMember,
+      services: staffId ? servicesByStaffId.get(staffId) ?? [] : [],
+    }
+  })
+}
+
+export async function getAvailableServices(salonId: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('services_view')
+    .select('*')
+    .eq('salon_id', salonId)
+
+  if (error) throw error
+  return data ?? []
+}

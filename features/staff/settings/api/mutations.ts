@@ -13,7 +13,7 @@ export async function updateUserPreferences(preferences: Partial<UserPreferences
 
   // Get profile ID
   const { data: profile, error: profileError } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .single<{ id: string }>()

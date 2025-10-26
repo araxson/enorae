@@ -40,7 +40,7 @@ async function fetchChainLocations(
   if (overviewError) throw overviewError
 
   const sanitizedOverview = (overviewData || []).filter(
-    (row): row is SalonOverview & { id: string } => typeof row['id'] === 'string'
+    (row) => typeof row['id'] === 'string' && row['id'] !== null
   )
 
   if (sanitizedOverview.length === 0) {
@@ -57,8 +57,8 @@ async function fetchChainLocations(
 
   const detailMap = new Map(
     (detailData || [])
-      .filter((detail): detail is SalonDetail & { id: string } => typeof detail['id'] === 'string')
-      .map((detail) => [detail['id'], detail])
+      .filter((detail) => typeof detail['id'] === 'string' && detail['id'] !== null)
+      .map((detail) => [detail['id']!, detail])
   )
 
   return sanitizedOverview.map<ChainSalonLocation>((row) => {
@@ -118,19 +118,19 @@ export async function getSalonChainById(
     .select('*')
     .eq(isUuid ? 'id' : 'slug', identifier)
     .eq('is_active', true)
-    .maybeSingle()
+    .maybeSingle<{ id: string; [key: string]: unknown }>()
 
   if (chainError) {
     if (chainError.code === 'PGRST116') return null
     throw chainError
   }
 
-  if (!chain || !chain['id']) return null
+  if (!chain || typeof chain.id !== 'string') return null
 
-  const locations = await fetchChainLocations(supabase, chain['id'])
+  const locations = await fetchChainLocations(supabase, chain.id)
 
   return {
-    ...chain,
+    ...(chain as SalonChain),
     locations,
   } as SalonChainWithLocations
 }

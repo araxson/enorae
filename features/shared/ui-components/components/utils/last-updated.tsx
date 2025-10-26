@@ -22,7 +22,8 @@ export function LastUpdated() {
     const updateRelativeTime = () => {
       const now = new Date()
       const diff = now.getTime() - lastUpdated.getTime()
-      const minutes = Math.floor(diff / 60000)
+      const MS_PER_MINUTE = 60000 // 1 minute in milliseconds
+      const minutes = Math.floor(diff / MS_PER_MINUTE)
 
       if (minutes === 0) {
         setRelativeTime('Just now')
@@ -40,7 +41,8 @@ export function LastUpdated() {
     updateRelativeTime()
 
     // Update every minute
-    const interval = setInterval(updateRelativeTime, 60000)
+    const UPDATE_INTERVAL_MS = 60000 // Update every 1 minute
+    const interval = setInterval(updateRelativeTime, UPDATE_INTERVAL_MS)
 
     return () => clearInterval(interval)
   }, [lastUpdated])

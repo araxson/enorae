@@ -85,7 +85,7 @@ export async function getUserSalonIds(userId: string): Promise<string[]> {
 
   if (ownedSalonsError) throw ownedSalonsError
 
-  salonIds.push(...(ownedSalons ?? []).map(s => s.id))
+  salonIds.push(...(ownedSalons ?? []).map(s => s.id).filter((id): id is string => id !== null))
 
   // Get salons where user is staff
   const { data: staffProfiles, error: staffProfilesError } = await supabase

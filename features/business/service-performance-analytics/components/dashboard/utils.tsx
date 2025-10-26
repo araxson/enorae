@@ -1,4 +1,5 @@
 import { TrendingUp, TrendingDown, BarChart3 } from 'lucide-react'
+import { formatCurrency } from '@/lib/utils/formatting'
 
 export const getPerformanceIcon = (cancellationRate: number) => {
   if (cancellationRate < 10) return <TrendingUp className="h-4 w-4 text-primary" />
@@ -6,9 +7,5 @@ export const getPerformanceIcon = (cancellationRate: number) => {
   return <BarChart3 className="h-4 w-4 text-accent" />
 }
 
-export const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount)
-}
+// Re-export for backward compatibility
+export { formatCurrency }

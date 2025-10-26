@@ -24,7 +24,7 @@ export async function updateBlockedTime(id: string, input: Partial<z.infer<typeo
     const session = await resolveSessionRoles()
 
     const { data: existingBlockedTime, error: fetchError } = await supabase
-      .from('blocked_times')
+      .schema('scheduling').from('blocked_times')
       .select('salon_id')
       .eq('id', id)
       .single<{ salon_id: string | null }>()
@@ -37,7 +37,7 @@ export async function updateBlockedTime(id: string, input: Partial<z.infer<typeo
 
     const parsed = updateSchema.safeParse(input)
     if (!parsed.success) {
-      return { error: parsed.error.errors[0]?.message ?? 'Invalid block data' }
+      return { error: parsed.error.issues[0]?.message ?? 'Invalid block data' }
     }
 
     if (parsed.data.start_time && parsed.data.end_time) {
@@ -48,7 +48,7 @@ export async function updateBlockedTime(id: string, input: Partial<z.infer<typeo
 
     const { data, error } = await supabase
       .schema('scheduling')
-      .from('blocked_times')
+      .schema('scheduling').from('blocked_times')
       .update({
         ...parsed.data,
         updated_at: new Date().toISOString(),

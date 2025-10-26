@@ -10,15 +10,10 @@ export function parsePermissions(
 
   try {
     const parsed = JSON.parse(raw)
-    if (
-      Array.isArray(parsed) &&
-      parsed.every((item) => typeof item === 'string')
-    ) {
-      return parsed as string[]
-    }
+    if (!Array.isArray(parsed)) return undefined
+    // Type guard: filter to ensure all items are strings
+    return parsed.filter((item): item is string => typeof item === 'string')
   } catch {
     return undefined
   }
-
-  return undefined
 }

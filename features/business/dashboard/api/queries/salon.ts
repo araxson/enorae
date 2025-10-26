@@ -2,7 +2,9 @@ import 'server-only'
 
 import { requireAnyRole, requireUserSalonId, requireAuth, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
-import type { SalonView } from '@/features/business/dashboard/types'
+import type { Database } from '@/lib/types/database.types'
+
+type SalonView = Database['public']['Views']['salons_view']['Row']
 
 export async function getUserSalon(): Promise<SalonView> {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -10,7 +12,7 @@ export async function getUserSalon(): Promise<SalonView> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
     .eq('id', salonId)
     .single()
@@ -26,8 +28,9 @@ export async function getUserSalonIds(): Promise<string[]> {
     const session = await requireAuth()
 
     const { data: tenantData, error: tenantError } = await supabase
-      .from('salon_chains_view')
-      .select('id')
+      .schema('organization')
+      .from('salon_chains')
+      .select('id, deleted_at')
       .eq('owner_id', session.user.id)
       .maybeSingle()
 
@@ -35,13 +38,16 @@ export async function getUserSalonIds(): Promise<string[]> {
       console.error('[getUserSalonIds] Tenant query error:', tenantError)
     }
 
-    const chain = tenantData as { id: string } | null
+    const chain = tenantData && tenantData.deleted_at === null
+      ? { id: tenantData.id as string }
+      : null
 
     if (chain) {
       const { data: chainSalons, error: chainError } = await supabase
-        .from('salons')
+        .from('salons_view')
         .select('id')
         .eq('chain_id', chain.id)
+        .is('deleted_at', null)
 
       if (chainError) {
         console.error('[getUserSalonIds] Chain salons query error:', chainError)

@@ -21,20 +21,23 @@ export async function SalonMetrics() {
   const startDate = new Date(endDate)
   startDate.setDate(startDate.getDate() - 29)
 
+  const startDateStr = startDate.toISOString().split('T')[0] || ''
+  const endDateStr = endDate.toISOString().split('T')[0] || ''
+
   const [latestMetrics, dailyMetrics, topStaff, topServices, operationalMetrics] =
     await Promise.all([
       getLatestSalonMetrics(),
       getDailyMetrics(60),
       getTopStaff(
         salon.id,
-        startDate.toISOString().split('T')[0],
-        endDate.toISOString().split('T')[0],
+        startDateStr,
+        endDateStr,
         5
       ),
       getTopServices(
         salon.id,
-        startDate.toISOString().split('T')[0],
-        endDate.toISOString().split('T')[0],
+        startDateStr,
+        endDateStr,
         8
       ),
       getOperationalMetrics(salon.id),
@@ -44,7 +47,7 @@ export async function SalonMetrics() {
   const forecast = buildRevenueForecast(dailyMetrics)
   const recentMetrics = dailyMetrics.slice(-30)
 
-  const staffLeaderboard = topStaff.map((staff, index) => ({
+  const staffLeaderboard = topStaff.map((staff: { name: string; title: string | null; count: number; revenue: number }, index: number) => ({
     id: `staff-${index}-${staff.name}`,
     name: staff.name,
     title: staff.title,
@@ -53,7 +56,7 @@ export async function SalonMetrics() {
     totalRevenue: staff.revenue,
   }))
 
-  const popularServices = topServices.map((service) => ({
+  const popularServices = topServices.map((service: { name: string; count: number; revenue: number }) => ({
     name: service.name,
     count: service.count,
     revenue: service.revenue,

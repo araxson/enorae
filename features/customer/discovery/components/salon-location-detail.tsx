@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator'
 import { MapPin, Navigation, ParkingCircle, Accessibility } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
-type LocationAddress = Database['public']['Views']['location_addresses']['Row']
+type LocationAddress = Database['public']['Views']['location_addresses_view']['Row']
 
 interface SalonLocationDetailProps {
   locationAddress: LocationAddress

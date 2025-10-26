@@ -4,7 +4,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type DailyMetricsRow = Database['analytics']['Tables']['daily_metrics']['Row']
+type DailyMetricsRow = Database['public']['Views']['daily_metrics_view']['Row']
 type AdminSalonRow = Database['public']['Views']['admin_salons_overview_view']['Row']
 type AdminAppointmentRow = Database['public']['Views']['admin_appointments_overview_view']['Row']
 type ProfileRow = Database['public']['Views']['profiles_view']['Row']
@@ -18,10 +18,10 @@ export async function getPlatformMetrics() {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = await createClient()
 
-  // Get counts from various tables
+  // Get counts from canonical public views
   const [usersResult, salonsResult, appointmentsResult, reviewsResult] = await Promise.all([
-    supabase.from('profiles').select('id', { count: 'exact', head: true }),
-    supabase.from('salons').select('id', { count: 'exact', head: true }),
+    supabase.from('profiles_view').select('id', { count: 'exact', head: true }),
+    supabase.from('salons_view').select('id', { count: 'exact', head: true }),
     supabase.from('appointments_view').select('id', { count: 'exact', head: true }),
     supabase.from('salon_reviews_view').select('id', { count: 'exact', head: true }),
   ])
@@ -42,7 +42,7 @@ export async function getUserGrowthMetrics(startDate: string, endDate: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('created_at')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
@@ -73,8 +73,7 @@ export async function getRevenueMetrics(startDate: string, endDate: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .schema('analytics')
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('metric_at, salon_id, total_revenue, service_revenue, product_revenue')
     .gte('metric_at', startDate)
     .lte('metric_at', endDate)

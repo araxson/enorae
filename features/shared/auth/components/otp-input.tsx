@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useRef, KeyboardEvent, ClipboardEvent, ChangeEvent } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo, KeyboardEvent, ClipboardEvent, ChangeEvent } from 'react'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 interface OTPInputProps {
@@ -23,7 +24,8 @@ export function OTPInput({
   const [otp, setOtp] = useState<string[]>(Array(length).fill(''))
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
-  const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
+  // PERFORMANCE: Wrap handler in useCallback to prevent re-creation
+  const handleChange = useCallback((index: number, e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
 
     // Only allow single digit
@@ -48,9 +50,9 @@ export function OTPInput({
     if (otpString.length === length && !otpString.includes('')) {
       onComplete?.(otpString)
     }
-  }
+  }, [length, onChange, onComplete, otp])
 
-  const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = useCallback((index: number, e: KeyboardEvent<HTMLInputElement>) => {
     // Handle backspace
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus()
@@ -63,9 +65,9 @@ export function OTPInput({
     if (e.key === 'ArrowRight' && index < length - 1) {
       inputRefs.current[index + 1]?.focus()
     }
-  }
+  }, [length, otp])
 
-  const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
+  const handlePaste = useCallback((e: ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault()
     const pastedData = e.clipboardData.getData('text/plain').slice(0, length)
 
@@ -91,15 +93,18 @@ export function OTPInput({
     if (otpString.length === length && !otpString.includes('')) {
       onComplete?.(otpString)
     }
-  }
+  }, [length, onChange, onComplete])
 
-  const handleFocus = (index: number) => {
+  const handleFocus = useCallback((index: number) => {
     inputRefs.current[index]?.select()
-  }
+  }, [])
+
+  // PERFORMANCE: Memoize input array to prevent re-creation on every render
+  const inputs = useMemo(() => Array.from({ length }), [length])
 
   return (
     <div className={cn('flex justify-center gap-4', className)}>
-      {Array.from({ length }).map((_, index) => (
+      {inputs.map((_, index) => (
         <Input
           key={index}
           ref={(el) => {
@@ -144,6 +149,22 @@ export function ResendOTP({
   const [countdown, setCountdown] = useState(0)
   const [isResending, setIsResending] = useState(false)
 
+  // ASYNC FIX: Cleanup timer when component unmounts or countdown resets
+  useEffect(() => {
+    if (countdown === 0) return
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [countdown])
+
   const handleResend = async () => {
     if (countdown > 0 || disabled || isResending) return
 
@@ -151,17 +172,8 @@ export function ResendOTP({
     try {
       await onResend()
       setCountdown(cooldownSeconds)
-
-      // Start countdown
-      const timer = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer)
-            return 0
-          }
-          return prev - 1
-        })
-      }, 1000)
+    } catch (error) {
+      console.error('Failed to resend OTP:', error)
     } finally {
       setIsResending(false)
     }
@@ -170,15 +182,16 @@ export function ResendOTP({
   const canResend = countdown === 0 && !disabled && !isResending
 
   return (
-    <button
+    <Button
       type="button"
+      variant="link"
       onClick={handleResend}
       disabled={!canResend}
       className={cn(
-        'text-sm transition-colors',
+        'text-sm p-0 h-auto',
         canResend
-          ? 'text-primary hover:underline cursor-pointer'
-          : 'text-muted-foreground cursor-not-allowed'
+          ? 'text-primary'
+          : 'text-muted-foreground'
       )}
     >
       {isResending
@@ -186,6 +199,6 @@ export function ResendOTP({
         : countdown > 0
         ? `Resend in ${countdown}s`
         : 'Resend code'}
-    </button>
+    </Button>
   )
 }

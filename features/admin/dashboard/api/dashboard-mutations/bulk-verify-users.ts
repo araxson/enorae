@@ -27,7 +27,7 @@ export async function bulkVerifyUsers(
       if (!validation.success) {
         return {
           success: false,
-          error: validation.error.errors[0]?.message ?? 'Invalid user IDs',
+          error: validation.error.issues[0]?.message ?? 'Invalid user IDs',
         }
       }
       ids = validation.data

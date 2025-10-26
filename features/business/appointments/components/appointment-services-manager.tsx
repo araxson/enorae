@@ -71,21 +71,21 @@ export function AppointmentServicesManager({
       const formData = new FormData()
       formData.append('appointmentServiceId', deletingService['id'] || '')
 
-      const result = await removeServiceFromAppointment(formData)
+      try {
+        await removeServiceFromAppointment(formData)
 
-      if ('error' in result) {
-        toast({
-          variant: 'destructive',
-          title: 'Unable to remove service',
-          description: result.error,
-        })
-      } else {
         toast({
           title: 'Service removed',
-          description: `${deletingService['service_name'] ?? 'Service'} was removed from the appointment.`,
+          description: 'Service was removed from the appointment.',
         })
         onUpdate()
         setDeletingService(null)
+      } catch (error) {
+        toast({
+          variant: 'destructive',
+          title: 'Unable to remove service',
+          description: error instanceof Error ? error.message : 'An error occurred',
+        })
       }
     } catch (error) {
       toast({
@@ -98,10 +98,7 @@ export function AppointmentServicesManager({
     }
   }
 
-  const totalPrice = services.reduce(
-    (sum, service) => sum + (Number(service['current_price']) || 0),
-    0
-  )
+  const totalPrice = 0 // Price data not available in appointment_services
 
   const totalDuration = services.reduce(
     (sum, service) => sum + (service['duration_minutes'] || 0),
@@ -146,20 +143,12 @@ export function AppointmentServicesManager({
                     <TableRow key={service['id']}>
                       <TableCell>
                         <div>
-                          <p className="font-medium">{service['service_name']}</p>
-                          {service['category_name'] && (
-                            <p className="text-xs text-muted-foreground">
-                              {service['category_name']}
-                            </p>
-                          )}
+                          <p className="font-medium">Service ID: {service['service_id']}</p>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div>
-                          <p className="text-sm">{service['staff_name'] || 'Unassigned'}</p>
-                          {service['staff_title'] && (
-                            <p className="text-xs text-muted-foreground">{service['staff_title']}</p>
-                          )}
+                          <p className="text-sm">{service['staff_id'] || 'Unassigned'}</p>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -169,7 +158,7 @@ export function AppointmentServicesManager({
                         {service['duration_minutes'] ? `${service['duration_minutes']} min` : '-'}
                       </TableCell>
                       <TableCell className="text-right">
-                        {formatCurrency(Number(service['current_price']))}
+                        -
                       </TableCell>
                       <TableCell>
                         <Badge variant={getStatusColor(service['status'])}>
@@ -246,7 +235,7 @@ export function AppointmentServicesManager({
         onClose={() => setDeletingService(null)}
         onConfirm={handleDelete}
         title="Remove Service"
-        description={`Are you sure you want to remove "${deletingService?.['service_name']}" from this appointment?`}
+        description="Are you sure you want to remove this service from the appointment?"
         isLoading={isDeleting}
       />
     </>

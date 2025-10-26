@@ -9,7 +9,7 @@ import {
   type WebhookStats,
 } from '@/features/business/webhooks/api/queries'
 
-type FailedWebhookRow = Database['public']['Views']['communication_webhook_queue']['Row']
+type FailedWebhookRow = Database['public']['Views']['communication_webhook_queue_view']['Row']
 
 export interface WebhookMonitoringData {
   stats: WebhookStats

@@ -64,16 +64,16 @@ export function ChainDetail({ chain }: ChainDetailProps) {
                   {salon['is_verified'] ? <Badge variant="secondary">Verified</Badge> : null}
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {salon['address'] ? (
+                  {salon['formatted_address'] ? (
                     <div className="flex gap-2 items-start">
                       <MapPin className="mt-1 h-3 w-3 text-muted-foreground" aria-hidden="true" />
-                      <p className="text-sm text-muted-foreground">{salon['address']}</p>
+                      <p className="text-sm text-muted-foreground">{salon['formatted_address']}</p>
                     </div>
                   ) : null}
 
-                  {typeof salon.average_rating === 'number' ? (
+                  {typeof salon['rating_average'] === 'number' ? (
                     <p className="text-sm text-muted-foreground">
-                      ⭐ {salon.average_rating.toFixed(1)} ({salon.review_count || 0} reviews)
+                      ⭐ {salon['rating_average'].toFixed(1)} ({salon['rating_count'] || 0} reviews)
                     </p>
                   ) : null}
                 </CardContent>

@@ -1,10 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import {
   Users,
   DollarSign,
@@ -17,8 +13,14 @@ import {
   UserPlus,
   UserX,
 } from 'lucide-react'
-import type { CustomerMetrics, InsightsSummary } from '@/features/business/insights/api/queries'
+
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
+
+import type { CustomerMetrics, InsightsSummary } from '@/features/business/insights/api/queries'
 
 interface CustomerInsightsDashboardProps {
   summary: InsightsSummary

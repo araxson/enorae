@@ -1,22 +1,9 @@
-export const RATE_LIMITS = {
-  DASHBOARD: {
-    limit: 100,
-    windowSeconds: 60,
-    namespace: 'dashboard',
-  },
-  ADMIN: {
-    limit: 50,
-    windowSeconds: 60,
-    namespace: 'admin',
-  },
-  MUTATIONS: {
-    limit: 30,
-    windowSeconds: 60,
-    namespace: 'mutations',
-  },
-  AUTH: {
-    limit: 5,
-    windowSeconds: 15 * 60,
-    namespace: 'auth',
-  },
-} as const
+/**
+ * Rate Limit Configurations
+ *
+ * Centralized rate limiting configuration.
+ * Import from @/lib/config for consistency.
+ */
+import { RATE_LIMITS as CONFIG_RATE_LIMITS } from '@/lib/config/constants'
+
+export const RATE_LIMITS = CONFIG_RATE_LIMITS

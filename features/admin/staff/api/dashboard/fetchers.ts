@@ -6,29 +6,13 @@ import { APPOINTMENT_LOOKBACK_DAYS, MAX_APPOINTMENT_SAMPLE, MAX_REVIEW_SAMPLE } 
 import type { AppointmentRow, BackgroundRow, MetadataRow, ReviewRow } from './types'
 
 export async function fetchBackgroundChecks(
-  supabase: ReturnType<typeof createServiceRoleClient>,
-  userIds: string[],
+  _supabase: ReturnType<typeof createServiceRoleClient>,
+  _userIds: string[],
 ) {
-  if (!userIds.length) return new Map<string, BackgroundRow>()
-
-  const { data, error } = await supabase
-    .schema('private')
-    .from('user_sensitive_data')
-    .select('user_id, background_check_status, background_check_date')
-    .in('user_id', userIds)
-
-  if (error) throw error
-
-  return new Map<string, BackgroundRow>(
-    (data || [])
-      .filter((row) => Boolean(row?.user_id))
-      .map((row) => ({
-        user_id: row.user_id as string,
-        background_check_status: row.background_check_status ?? null,
-        background_check_date: row.background_check_date ?? null,
-      }))
-      .map((row) => [row.user_id, row]),
-  )
+  // NOTE: Background check functionality disabled - table 'private.user_sensitive_data' does not exist in database
+  // Database is source of truth - this feature cannot be implemented until the table is created
+  // TODO: Create private.user_sensitive_data table if background checks are needed
+  return new Map<string, BackgroundRow>()
 }
 
 export async function fetchProfileMetadata(
@@ -38,7 +22,7 @@ export async function fetchProfileMetadata(
   if (!userIds.length) return new Map<string, MetadataRow>()
 
   const { data, error } = await supabase
-    .from('profiles_metadata')
+    .from('profiles_metadata_view')
     .select('profile_id, tags')
     .in('profile_id', userIds)
 
@@ -77,20 +61,22 @@ export async function fetchRecentAppointments(
 
 export async function fetchReviewSample(
   supabase: ReturnType<typeof createServiceRoleClient>,
-  appointmentIds: (string | null)[],
+  _appointmentIds: (string | null)[],
 ) {
-  if (!appointmentIds.length) return [] as ReviewRow[]
-
-  const validIds = appointmentIds.filter(Boolean) as string[]
-  if (!validIds.length) return [] as ReviewRow[]
-
+  // NOTE: salon_reviews_view does not have appointment_id column
+  // Fetch recent reviews without appointment filtering
   const { data, error } = await supabase
-    .schema('engagement')
-    .from('salon_reviews')
-    .select('appointment_id, rating, is_flagged, customer_id, created_at')
-    .in('appointment_id', validIds)
+    .from('salon_reviews_view')
+    .select('id, rating, is_flagged, customer_id, created_at')
+    .order('created_at', { ascending: false })
     .limit(MAX_REVIEW_SAMPLE)
 
   if (error) throw error
-  return (data || []) as ReviewRow[]
+  return (data || []).map(row => ({
+    id: row.id ?? '',
+    rating: row.rating,
+    is_flagged: row.is_flagged,
+    customer_id: row.customer_id,
+    created_at: row.created_at,
+  })) as ReviewRow[]
 }

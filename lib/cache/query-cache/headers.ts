@@ -1,9 +1,15 @@
+import { CACHE_DURATION } from '@/lib/config/constants'
+
 export function getCacheHeaders(config: {
   maxAge?: number
   staleWhileRevalidate?: number
   public?: boolean
 }) {
-  const { maxAge = 60, staleWhileRevalidate = 300, public: isPublic = false } = config
+  const {
+    maxAge = CACHE_DURATION.DASHBOARD,
+    staleWhileRevalidate = CACHE_DURATION.SWR_DEFAULT,
+    public: isPublic = false,
+  } = config
 
   const directives = [
     isPublic ? 'public' : 'private',
@@ -17,10 +23,23 @@ export function getCacheHeaders(config: {
 }
 
 export const CACHE_HEADERS = {
-  DASHBOARD: getCacheHeaders({ maxAge: 60, staleWhileRevalidate: 300 }),
-  METRICS: getCacheHeaders({ maxAge: 30, staleWhileRevalidate: 120 }),
-  USER_DATA: getCacheHeaders({ maxAge: 300, staleWhileRevalidate: 900 }),
-  STATIC: getCacheHeaders({ maxAge: 3600, staleWhileRevalidate: 86400, public: true }),
+  DASHBOARD: getCacheHeaders({
+    maxAge: CACHE_DURATION.DASHBOARD,
+    staleWhileRevalidate: CACHE_DURATION.SWR_DEFAULT,
+  }),
+  METRICS: getCacheHeaders({
+    maxAge: CACHE_DURATION.METRICS,
+    staleWhileRevalidate: CACHE_DURATION.SWR_METRICS,
+  }),
+  USER_DATA: getCacheHeaders({
+    maxAge: CACHE_DURATION.USER_DATA,
+    staleWhileRevalidate: CACHE_DURATION.SWR_USER_DATA,
+  }),
+  STATIC: getCacheHeaders({
+    maxAge: CACHE_DURATION.STATIC,
+    staleWhileRevalidate: CACHE_DURATION.SWR_STATIC,
+    public: true,
+  }),
   NO_CACHE: {
     'Cache-Control': 'no-store, no-cache, must-revalidate',
   },

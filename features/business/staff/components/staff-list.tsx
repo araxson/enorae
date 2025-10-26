@@ -35,7 +35,6 @@ export function StaffList({ staff }: StaffListProps) {
               className="flex gap-4 items-center pb-4 border-b last:border-0 last:pb-0"
             >
               <Avatar>
-                {member['avatar_url'] && <AvatarImage src={member['avatar_url']} alt={member['title'] || 'Staff'} />}
                 <AvatarFallback>
                   {member['title']?.slice(0, 2).toUpperCase() || 'ST'}
                 </AvatarFallback>

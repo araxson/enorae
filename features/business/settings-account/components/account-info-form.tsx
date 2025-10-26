@@ -10,7 +10,7 @@ import { Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { updateProfile } from '@/features/business/settings-account/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
-type Profile = Database['public']['Views']['profiles']['Row']
+type Profile = Database['public']['Views']['profiles_view']['Row']
 
 interface AccountInfoFormProps {
   profile: Profile

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useCallback } from 'react'
 import { toast } from 'sonner'
 import { MoreHorizontal, Trash2, Star } from 'lucide-react'
 import {
@@ -41,7 +41,8 @@ export function NavFavorites({
   const [pendingId, setPendingId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
-  const handleRemoveFavorite = (salonId?: string) => {
+  // PERFORMANCE: Wrap handler in useCallback to prevent re-creation
+  const handleRemoveFavorite = useCallback((salonId?: string) => {
     if (!salonId) {
       toast.error('Unable to remove this favorite. Please try again later.')
       return
@@ -59,11 +60,15 @@ export function NavFavorites({
           toast.success('Removed from favorites')
           router.refresh()
         })
+        .catch((error) => {
+          console.error('Failed to remove favorite:', error)
+          toast.error('An unexpected error occurred. Please try again.')
+        })
         .finally(() => {
           setPendingId((prev) => (prev === salonId ? null : prev))
         })
     })
-  }
+  }, [router])
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">

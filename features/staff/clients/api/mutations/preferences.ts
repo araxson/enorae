@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { ActionResponse, ThreadMetadata } from './types'
+import type { Json } from '@/lib/types/database.types'
 
 /**
  * Update client preferences (allergies, preferred services, etc.)
@@ -50,13 +51,16 @@ export async function updateClientPreferences(
       },
     }
 
+    // Convert to JSON-safe object for database storage
+    const metadataForDb = structuredClone(updatedMetadata) as Json
+
     if (existingThread?.id) {
       // Update existing thread
       const { error } = await supabase
         .schema('communication')
         .from('message_threads')
         .update({
-          metadata: JSON.parse(JSON.stringify(updatedMetadata)),
+          metadata: metadataForDb,
           updated_at: new Date().toISOString(),
         })
         .eq('id', existingThread.id)
@@ -74,7 +78,7 @@ export async function updateClientPreferences(
           subject: 'Client Preferences',
           status: 'open',
           priority: 'normal',
-          metadata: JSON.parse(JSON.stringify(updatedMetadata)),
+          metadata: metadataForDb,
           created_by_id: session.user.id,
           updated_by_id: session.user.id,
         })

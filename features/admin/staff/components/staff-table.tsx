@@ -1,6 +1,5 @@
 'use client'
 
-import { format } from 'date-fns'
 import {
   Table,
   TableBody,
@@ -14,15 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 import { StaffRiskBadge } from './staff-risk-badge'
-
-function formatDate(value: string | null) {
-  if (!value) return '—'
-  try {
-    return format(new Date(value), 'MMM d, yyyy')
-  } catch (error) {
-    return '—'
-  }
-}
+import { formatDate } from '@/lib/utils/date-time'
 
 function renderBackgroundBadge(status: StaffWithMetrics['background']['status']) {
   switch (status) {

@@ -10,6 +10,10 @@ type StaffOption = { id: string; name: string }
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+function hasValidId<T extends { id: unknown }>(item: T | null | undefined): item is T & { id: string } {
+  return item != null && typeof item.id === 'string'
+}
+
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ appointmentId: string }> }
@@ -30,7 +34,7 @@ export async function GET(
 
     const supabase = await createClient()
     const { data: appointment, error: appointmentError } = await supabase
-      .from('appointments')
+      .from('appointments_view')
       .select('salon_id')
       .eq('id', appointmentId)
       .in('salon_id', accessibleSalonIds)
@@ -55,17 +59,17 @@ export async function GET(
     ])
 
     const serviceOptions: ServiceOption[] = (services ?? [])
-      .filter((service) => typeof service?.['id'] === 'string')
+      .filter(hasValidId)
       .map((service) => ({
-        id: service?.['id'] as string,
-        name: service?.['name'] ?? 'Untitled service',
+        id: service.id,
+        name: service.name ?? 'Untitled service',
       }))
 
     const staffOptions: StaffOption[] = (staff ?? [])
-      .filter((member) => typeof member?.['id'] === 'string')
+      .filter(hasValidId)
       .map((member) => ({
-        id: member?.['id'] as string,
-        name: member?.['full_name'] ?? 'Team member',
+        id: member.id,
+        name: member.full_name ?? 'Team member',
       }))
 
     return NextResponse.json({

@@ -1,6 +1,6 @@
 import type { Database } from '@/lib/types/database.types'
 
-type DailyMetric = Database['public']['Views']['daily_metrics']['Row']
+type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
 
 type AggregatedMetrics = {
   totalRevenue: number

@@ -115,7 +115,7 @@ export async function getPublicCategoryBySlug(
   if (services.length === 0) return null
 
   const firstService = services[0]
-  if (!firstService.category_name || !firstService.category_slug) return null
+  if (!firstService || !firstService.category_name || !firstService.category_slug) return null
 
   return {
     name: firstService.category_name,

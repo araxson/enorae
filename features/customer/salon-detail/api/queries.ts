@@ -23,9 +23,11 @@ type SalonContact = Pick<
   | 'tiktok_url'
 >
 type SalonLocation = Pick<
-  Database['public']['Views']['salon_locations_view']['Row'],
-  'is_primary' | 'formatted_address'
->
+  Database['organization']['Tables']['salon_locations']['Row'],
+  'is_primary'
+> & {
+  formatted_address?: string | null
+}
 type SalonSettings = Pick<
   Database['public']['Views']['salon_settings_view']['Row'],
   'booking_lead_time_hours'

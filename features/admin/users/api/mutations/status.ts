@@ -15,7 +15,7 @@ export async function suspendUser(formData: FormData) {
     })
 
     if (!result.success) {
-      return { error: result.error.errors[0]?.message ?? 'Invalid form data' }
+      return { error: result.error.issues[0]?.message ?? 'Invalid form data' }
     }
 
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)

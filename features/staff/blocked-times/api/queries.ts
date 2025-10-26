@@ -9,7 +9,8 @@ export async function getMyBlockedTimes(): Promise<BlockedTime[]> {
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('blocked_times_view')
+    .schema('scheduling')
+    .from('blocked_times')
     .select('*')
     .eq('staff_id', session.user.id)
     .eq('is_active', true)
@@ -25,7 +26,8 @@ export async function getBlockedTimeById(id: string): Promise<BlockedTime | null
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('blocked_times_view')
+    .schema('scheduling')
+    .from('blocked_times')
     .select('*')
     .eq('id', id)
     .eq('staff_id', session.user.id)
@@ -44,7 +46,8 @@ export async function getUpcomingBlockedTimes(): Promise<BlockedTime[]> {
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('blocked_times_view')
+    .schema('scheduling')
+    .from('blocked_times')
     .select('*')
     .eq('staff_id', session.user.id)
     .eq('is_active', true)

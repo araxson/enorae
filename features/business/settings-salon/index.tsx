@@ -8,11 +8,11 @@ export async function SalonBusinessInfo() {
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
         <SalonInfoForm
-          salonId={salon.id}
-          salonName={salon.name}
-          businessName={salon.business_name ?? null}
-          businessType={salon.business_type ?? null}
-          establishedAt={salon.established_at ?? null}
+          salonId={salon.id ?? ''}
+          salonName={salon.name ?? ''}
+          businessName={null}
+          businessType={null}
+          establishedAt={null}
         />
       </div>
     </section>

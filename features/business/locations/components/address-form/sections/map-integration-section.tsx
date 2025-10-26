@@ -7,7 +7,12 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { MapPin, Search, Check } from 'lucide-react'
+import { MapPin, Search, Check, AlertCircle } from 'lucide-react'
+import { EXTERNAL_APIS } from '@/lib/config/env'
+import {
+  GoogleMapsAutocompleteResponseSchema,
+  GoogleMapsGeocodeResponseSchema,
+} from '@/lib/config/google-maps-schema'
 import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
 
 type Props = {
@@ -24,18 +29,93 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
   }>>([])
   const [selectedAddress, setSelectedAddress] = useState<Partial<LocationAddress> | null>(null)
 
+  // ASYNC FIX: Debounce address search with proper cleanup
+  useEffect(() => {
+    if (!searchQuery || searchQuery.length < 3) {
+      setSuggestions([])
+      return
+    }
+
+    if (!EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()) {
+      return
+    }
+
+    const controller = new AbortController()
+    const debounceTimer = setTimeout(async () => {
+      setIsSearching(true)
+      try {
+        const apiKey = EXTERNAL_APIS.GOOGLE_MAPS.getApiKey()
+        const url = `${EXTERNAL_APIS.GOOGLE_MAPS.AUTOCOMPLETE_URL}?input=${encodeURIComponent(searchQuery)}&key=${apiKey}`
+
+        const response = await fetch(url, { signal: controller.signal })
+
+        if (!response.ok) {
+          throw new Error(`Autocomplete request failed: ${response.status}`)
+        }
+
+        const rawData = await response.json()
+
+        // API_INTEGRATION_FIX: Validate Google Maps API response
+        const validationResult = GoogleMapsAutocompleteResponseSchema.safeParse(rawData)
+        if (!validationResult.success) {
+          console.error('[MapIntegration] Invalid autocomplete response:', validationResult.error)
+          throw new Error('Invalid autocomplete response format')
+        }
+
+        const data = validationResult.data
+        if (data.predictions) {
+          setSuggestions(data.predictions.slice(0, 5))
+        }
+      } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          return
+        }
+        console.error('[MapIntegration] Address search error:', error)
+        setSuggestions([])
+      } finally {
+        setIsSearching(false)
+      }
+    }, 300)
+
+    return () => {
+      clearTimeout(debounceTimer)
+      controller.abort()
+    }
+  }, [searchQuery])
+
   // Geocode address to get coordinates
   const geocodeAddress = useCallback(async (fullAddress: string) => {
+    if (!EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()) {
+      console.error('[MapIntegration] Google Maps API not configured')
+      return
+    }
+
     setIsSearching(true)
     try {
-      // Using Google Maps Geocoding API
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullAddress)}&key=${process.env['NEXT_PUBLIC_GOOGLE_MAPS_API_KEY']}`
-      )
-      const data = await response.json()
+      const apiKey = EXTERNAL_APIS.GOOGLE_MAPS.getApiKey()
+      const url = `${EXTERNAL_APIS.GOOGLE_MAPS.GEOCODE_URL}?address=${encodeURIComponent(fullAddress)}&key=${apiKey}`
 
+      const response = await fetch(url)
+
+      if (!response.ok) {
+        throw new Error(`Geocoding request failed: ${response.status}`)
+      }
+
+      const rawData = await response.json()
+
+      // API_INTEGRATION_FIX: Validate Google Maps API response
+      const validationResult = GoogleMapsGeocodeResponseSchema.safeParse(rawData)
+      if (!validationResult.success) {
+        console.error('[MapIntegration] Invalid geocode response:', validationResult.error)
+        throw new Error('Invalid geocode response format')
+      }
+
+      const data = validationResult.data
       if (data.results && data.results.length > 0) {
         const result = data.results[0]
+        if (!result) {
+          throw new Error('No geocode result found')
+        }
         const location = result.geometry.location
 
         const addressData: Partial<LocationAddress> = {
@@ -49,35 +129,13 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
         onAddressSelect?.(addressData)
       }
     } catch (error) {
-      console.error('Geocoding error:', error)
+      console.error('[MapIntegration] Geocoding error:', error)
+      setSelectedAddress(null)
     } finally {
       setIsSearching(false)
     }
   }, [onAddressSelect])
 
-  // Search for address suggestions
-  const searchAddress = useCallback(async (query: string) => {
-    if (!query || query.length < 3) {
-      setSuggestions([])
-      return
-    }
-
-    setIsSearching(true)
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(query)}&key=${process.env['NEXT_PUBLIC_GOOGLE_MAPS_API_KEY']}`
-      )
-      const data = await response.json()
-
-      if (data.predictions) {
-        setSuggestions(data.predictions.slice(0, 5))
-      }
-    } catch (error) {
-      console.error('Address search error:', error)
-    } finally {
-      setIsSearching(false)
-    }
-  }, [])
 
   const handleSuggestionClick = async (placeId: string, description: string) => {
     setSuggestions([])
@@ -102,6 +160,16 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
         <div className="flex flex-col gap-6">
           <Separator />
 
+          {!EXTERNAL_APIS.GOOGLE_MAPS.isEnabled() && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Google Maps Not Configured</AlertTitle>
+              <AlertDescription>
+                Address autocomplete and geocoding are unavailable. Please configure NEXT_PUBLIC_GOOGLE_MAPS_API_KEY.
+              </AlertDescription>
+            </Alert>
+          )}
+
           <div className="flex flex-col gap-3">
             <Label htmlFor="address-search">Search Address</Label>
             <div className="flex gap-3">
@@ -109,10 +177,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
                 <Input
                   id="address-search"
                   value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value)
-                    searchAddress(e.target.value)
-                  }}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Start typing to search for an address..."
                 />
                 {suggestions.length > 0 && (
@@ -134,7 +199,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
                 type="button"
                 variant="outline"
                 onClick={handleManualGeocode}
-                disabled={isSearching || !address?.['street_address']}
+                disabled={isSearching || !address?.['street_address'] || !EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()}
               >
                 <Search className="h-4 w-4 mr-2" />
                 Geocode
@@ -155,14 +220,14 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
             </Alert>
           )}
 
-          {address?.['latitude'] && address?.['longitude'] && (
+          {address?.['latitude'] && address?.['longitude'] && EXTERNAL_APIS.GOOGLE_MAPS.isEnabled() && (
             <div className="border rounded-md overflow-hidden">
               <iframe
                 width="100%"
                 height="300"
                 className="w-full border-0"
                 loading="lazy"
-                src={`https://maps.google.com/maps?q=${address['latitude']},${address['longitude']}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                src={`${EXTERNAL_APIS.GOOGLE_MAPS.EMBED_URL}?q=${address['latitude']},${address['longitude']}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                 title="Location Map"
               />
             </div>

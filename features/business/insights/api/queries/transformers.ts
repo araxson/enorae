@@ -1,3 +1,4 @@
+import 'server-only'
 import type { CustomerMetrics } from './types'
 import type {
   AppointmentWithProfile,
@@ -129,7 +130,7 @@ export function buildMetricsList(
         ? serviceNameMap.get(
             Array.from(aggregate.serviceCounts.entries()).sort(
               (a, b) => b[1] - a[1],
-            )[0][0],
+            )[0]?.[0] ?? '',
           ) ?? 'N/A'
         : 'N/A'
 
@@ -138,7 +139,7 @@ export function buildMetricsList(
         ? staffNameMap.get(
             Array.from(aggregate.staffCounts.entries()).sort(
               (a, b) => b[1] - a[1],
-            )[0][0],
+            )[0]?.[0] ?? '',
           ) ?? 'N/A'
         : 'N/A'
 

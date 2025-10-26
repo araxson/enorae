@@ -1,6 +1,6 @@
 import type { Database } from '@/lib/types/database.types'
 
-export type BlockedTime = Database['public']['Views']['blocked_times_view']['Row']
+export type BlockedTime = Database['scheduling']['Tables']['blocked_times']['Row']
 
 export type BlockType = 'break' | 'personal' | 'meeting' | 'other'
 

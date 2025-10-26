@@ -4,8 +4,9 @@ import 'server-only'
 
 import { z } from 'zod'
 
-import { resolveSalonContext, UUID_REGEX } from '@/features/business/service-pricing/api/shared'
+import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { ANALYTICS_CONFIG } from '@/lib/config/constants'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
@@ -35,7 +36,7 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
   })
 
   if (!payload.success) {
-    throw new Error(payload.error.errors[0]?.message ?? 'Invalid pricing input')
+    throw new Error(payload.error.issues[0]?.message ?? 'Invalid pricing input')
   }
 
   const { bookingTime, serviceId, customerId } = payload.data
@@ -75,13 +76,14 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
   // Use current_price, fallback to sale_price, then base_price
   const basePrice = pricing['current_price'] ?? pricing['sale_price'] ?? pricing['base_price'] ?? 0
 
-  // NOTE: pricing_rules table doesn't exist in schema
-  // Dynamic pricing functionality is currently not implemented
-  // Return base price as-is
-  // TODO: Implement dynamic pricing when pricing_rules table is added to database
-
+  /**
+   * NOTE: pricing_rules table doesn't exist in current database schema
+   * Dynamic pricing functionality requires database migration to add pricing_rules table
+   * Returning base price without any dynamic adjustments until schema is updated
+   */
+  const DECIMAL_MULTIPLIER = 100 // For 2 decimal places precision
   return {
-    price: Math.round(basePrice * 100) / 100,
+    price: Math.round(basePrice * DECIMAL_MULTIPLIER) / DECIMAL_MULTIPLIER,
   }
 }
 
@@ -103,15 +105,20 @@ export async function applyDynamicPricing({
 
   const supabase = await createClient()
 
-  // TODO: Replace with actual RPC when database function is available
-  // const { data, error } = await supabase.rpc('apply_dynamic_pricing', {
-  //   p_base_price: basePrice,
-  //   p_service_id: serviceId,
-  //   p_booking_time: typeof bookingTime === 'string' ? bookingTime : bookingTime.toISOString(),
-  //   p_salon_id: salonId,
-  // })
-
-  // For now, return base price without adjustments
+  /**
+   * NOTE: Database RPC function 'apply_dynamic_pricing' not yet implemented
+   * Requires database migration to create catalog.apply_dynamic_pricing function
+   *
+   * Expected signature:
+   * catalog.apply_dynamic_pricing(
+   *   p_base_price: numeric,
+   *   p_service_id: uuid,
+   *   p_booking_time: timestamptz,
+   *   p_salon_id: uuid
+   * ) RETURNS numeric
+   *
+   * Until implemented, returning base price without any dynamic adjustments
+   */
   return basePrice
 }
 
@@ -142,7 +149,7 @@ export async function validateCoupon(input: {
   if (!parsed.success) {
     return {
       valid: false,
-      error: parsed.error.errors[0]?.message ?? 'Invalid input',
+      error: parsed.error.issues[0]?.message ?? 'Invalid input',
     }
   }
 
@@ -151,15 +158,20 @@ export async function validateCoupon(input: {
 
   const supabase = await createClient()
 
-  // TODO: Replace with actual RPC when database function is available
-  // const { data, error } = await supabase.rpc('validate_coupon', {
-  //   p_code: parsed.data.code,
-  //   p_salon_id: salonId,
-  //   p_customer_id: parsed.data.customerId || null,
-  //   p_amount: parsed.data['amount'],
-  // })
-
-  // For now, return invalid coupon with placeholder message
+  /**
+   * NOTE: Database RPC function 'validate_coupon' not yet implemented
+   * Requires database migration to create catalog.validate_coupon function
+   *
+   * Expected signature:
+   * catalog.validate_coupon(
+   *   p_code: text,
+   *   p_salon_id: uuid,
+   *   p_customer_id: uuid,
+   *   p_amount: numeric
+   * ) RETURNS jsonb
+   *
+   * Until implemented, all coupon validations return invalid
+   */
   return {
     valid: false,
     error: 'Coupon validation not yet implemented (database function pending)',

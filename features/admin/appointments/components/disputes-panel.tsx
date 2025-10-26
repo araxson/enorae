@@ -33,7 +33,7 @@ export function DisputesPanel({ disputes }: DisputesPanelProps) {
                     <CardTitle>{item.customerName || 'Unknown customer'}</CardTitle>
                     <div className="text-xs">
                       <Badge variant="secondary">
-                        {(item.status || '').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                        {(item.status || '').replace(/_/g, ' ').replace(/\b\w/g, (char: string) => char.toUpperCase())}
                       </Badge>
                     </div>
                   </div>

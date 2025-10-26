@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
 import { addServiceToAppointment } from '@/features/business/appointments/api/mutations'
+import { ServiceOptionsResponseSchema } from '@/features/business/appointments/api/queries/service-options-schema'
 import type { ServiceOption, StaffOption, ServiceFormData } from './types'
 
 export function useAddServiceForm(
@@ -27,26 +28,45 @@ export function useAddServiceForm(
     }
 
     let isMounted = true
+    const controller = new AbortController()
 
     const loadOptions = async () => {
       setIsLoadingOptions(true)
       try {
+        // API_INTEGRATION_FIX: Add 10 second timeout for API calls
+        const API_REQUEST_TIMEOUT_MS = 10000 // 10 seconds
+        const timeoutSignal = AbortSignal.timeout(API_REQUEST_TIMEOUT_MS)
         const response = await fetch(
-          `/api/business/appointments/${appointmentId}/service-options`
+          `/api/business/appointments/${appointmentId}/service-options`,
+          {
+            signal: AbortSignal.any([controller.signal, timeoutSignal]),
+          }
         )
 
         if (!response.ok) {
           throw new Error(`Failed to load options (${response.status})`)
         }
 
-        const data: { services?: ServiceOption[]; staff?: StaffOption[] } =
-          await response.json()
+        const rawData = await response.json()
+
+        // API_INTEGRATION_FIX: Validate response schema
+        const validationResult = ServiceOptionsResponseSchema.safeParse(rawData)
+        if (!validationResult.success) {
+          console.error('[AddService] Invalid API response:', validationResult.error)
+          throw new Error('Invalid API response format')
+        }
 
         if (!isMounted) return
 
+        const data = validationResult.data
         setServices(data.services ?? [])
         setStaff(data.staff ?? [])
       } catch (error) {
+        // API_INTEGRATION_FIX: Handle AbortError and timeout errors
+        if (error instanceof Error && error.name === 'AbortError') {
+          console.log('Service options load request cancelled or timed out')
+          return
+        }
         console.error('Failed to load appointment service options:', error)
         if (isMounted) {
           toast({
@@ -69,6 +89,7 @@ export function useAddServiceForm(
 
     return () => {
       isMounted = false
+      controller.abort()
     }
   }, [appointmentId, isOpen, toast])
 
@@ -105,21 +126,21 @@ export function useAddServiceForm(
       if (formData.endTime) data.append('endTime', formData.endTime)
       if (formData.durationMinutes) data.append('durationMinutes', formData.durationMinutes)
 
-      const result = await addServiceToAppointment(data)
+      try {
+        await addServiceToAppointment(data)
 
-      if ('error' in result) {
+        toast({
+          title: 'Service added',
+          description: 'The service was added to the appointment.',
+        })
+      } catch (error) {
         toast({
           variant: 'destructive',
           title: 'Unable to add service',
-          description: result.error,
+          description: error instanceof Error ? error.message : 'An error occurred',
         })
         return
       }
-
-      toast({
-        title: 'Service added',
-        description: 'The service was added to the appointment.',
-      })
 
       resetForm()
       onSuccess()

@@ -13,7 +13,7 @@ function numberToDayName(day: number): DayOfWeek {
   if (day < 0 || day > 6) {
     throw new Error('Day must be between 0 and 6')
   }
-  return DAY_NAMES[day]
+  return DAY_NAMES[day] as DayOfWeek
 }
 
 /**
@@ -29,7 +29,7 @@ export async function getOperatingHoursBySalon(salonId: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('operating_hours')
+    .from('operating_hours_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('day_of_week', { ascending: true })
@@ -53,7 +53,7 @@ export async function getOperatingHoursByDay(salonId: string, dayOfWeek: DayOfWe
   const dayName = typeof dayOfWeek === 'number' ? numberToDayName(dayOfWeek) : dayOfWeek
 
   const { data, error } = await supabase
-    .from('operating_hours')
+    .from('operating_hours_view')
     .select('*')
     .eq('salon_id', salonId)
     .eq('day_of_week', dayName)

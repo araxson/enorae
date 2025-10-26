@@ -2,8 +2,11 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { TrendingUp, TrendingDown, DollarSign, Star, BarChart3, Users, Link2 } from 'lucide-react'
+import { TrendingUp, TrendingDown, BarChart3, Users, Link2, Star } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
+import { RevenueLeaders } from './partials/revenue-leaders'
+import { PopularityRanking } from './partials/popularity-ranking'
+import { formatCurrency } from './partials/format-utils'
 
 type ServiceProfitability = {
   service_id: string
@@ -49,14 +52,6 @@ export function ServicePerformanceDashboard({
   pairings,
   durationAccuracy,
 }: Props) {
-  const topServices = [...services]
-    .sort((a, b) => b.total_revenue - a.total_revenue)
-    .slice(0, 5)
-
-  const trendingServices = [...services]
-    .sort((a, b) => b.total_bookings - a.total_bookings)
-    .slice(0, 5)
-
   const mostProfitable = [...profitability]
     .sort((a, b) => b.profit - a.profit)
     .slice(0, 5)
@@ -67,84 +62,11 @@ export function ServicePerformanceDashboard({
     return <BarChart3 className="h-4 w-4 text-accent" />
   }
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount)
-  }
-
   return (
     <div className="flex flex-col gap-8">
       <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
-              <CardTitle>Top Revenue Generators</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col gap-4">
-              {topServices.map((service, index) => (
-                <div key={service.service_id} className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Badge variant={index === 0 ? 'default' : 'secondary'}>
-                      #{index + 1}
-                    </Badge>
-                    <div>
-                      <h4>{service.service_name}</h4>
-                      <p className="text-muted-foreground">
-                        {service.total_bookings} bookings
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p>{formatCurrency(service.total_revenue)}</p>
-                    <div className="flex items-center gap-1 text-muted-foreground">
-                      <Star className="h-3 w-3 text-accent" />
-                      {service.avg_rating?.toFixed(1) || 'N/A'}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            </CardContent>
-          </Card>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              <CardTitle>Most Popular Services</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col gap-4">
-              {trendingServices.map((service, index) => (
-                <div key={service.service_id} className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Badge variant={index === 0 ? 'default' : 'outline'}>
-                      #{index + 1}
-                    </Badge>
-                    <div>
-                      <h4>{service.service_name}</h4>
-                      <p className="text-muted-foreground">
-                        Popularity: {service.popularity_score?.toFixed(0) || 0}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="">{service.total_bookings} bookings</p>
-                    <p className="text-muted-foreground">
-                      {formatCurrency(service.total_revenue)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            </CardContent>
-          </Card>
+        <RevenueLeaders services={services} formatCurrency={formatCurrency} />
+        <PopularityRanking services={services} formatCurrency={formatCurrency} />
       </div>
 
       <Card>

@@ -46,12 +46,13 @@ export async function getMyStaffProfileDetails(): Promise<StaffProfileDetails> {
 
   const [metadataResult, profileResult] = await Promise.all([
     supabase
+      .schema('identity')
       .from('profiles_metadata')
       .select('*')
       .eq('profile_id', profile['user_id'])
       .maybeSingle<StaffProfileMetadata>(),
     supabase
-      .from('profiles')
+      .from('profiles_view')
       .select('username')
       .eq('id', profile['user_id'])
       .maybeSingle<Pick<PublicProfile, 'username'>>(),

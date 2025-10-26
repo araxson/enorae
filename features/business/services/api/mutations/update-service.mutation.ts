@@ -8,7 +8,7 @@ import {
   generateUniqueServiceSlug,
   type SupabaseServerClient,
 } from './shared'
-import { deriveBookingDurations, derivePricingMetrics } from '@/features/business/services/api/utils/calculations'
+import { deriveBookingDurations, derivePricingMetrics } from '@/lib/services/calculations'
 import type {
   ServiceFormData,
   ServicePricingData,

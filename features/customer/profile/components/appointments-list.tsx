@@ -3,7 +3,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import type { Database } from '@/lib/types/database.types'
 import { format } from 'date-fns'
 
-type Appointment = Database['public']['Views']['appointments']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
 type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed'
 
 type AppointmentWithDetails = Appointment & {

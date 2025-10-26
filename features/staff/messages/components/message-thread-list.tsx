@@ -85,9 +85,9 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                     ) : null}
                   </div>
 
-                  {thread['customer_name'] ? (
+                  {thread['customer_id'] ? (
                     <p className="text-sm text-muted-foreground">
-                      Customer: {thread['customer_name']}
+                      Customer ID: {thread['customer_id']}
                     </p>
                   ) : null}
                 </div>

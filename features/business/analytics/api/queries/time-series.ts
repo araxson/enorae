@@ -18,7 +18,7 @@ export async function getDailyMetricsTimeSeries(
   const supabase = await createClient()
 
   const response = await supabase
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('metric_at', startDate)
@@ -54,7 +54,7 @@ export async function getCustomerTrends(
   const supabase = await createClient()
 
   const response = await supabase
-    .from('daily_metrics')
+    .from('daily_metrics_view')
     .select('metric_at, new_customers, returning_customers')
     .eq('salon_id', salonId)
     .gte('metric_at', startDate)

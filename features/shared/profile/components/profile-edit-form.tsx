@@ -14,7 +14,7 @@ import { uploadAvatar } from '@/features/shared/profile/api/mutations'
 import { updateProfileMetadata } from '@/features/shared/profile-metadata/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
-type Profile = Database['public']['Views']['profiles']['Row']
+type Profile = Database['public']['Views']['profiles_view']['Row']
 
 interface ProfileEditFormProps {
   profile: Profile

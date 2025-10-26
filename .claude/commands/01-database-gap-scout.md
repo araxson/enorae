@@ -1,27 +1,158 @@
-# 01 Database Gap Scout
 
-**Core Principle:** The Supabase database is the single source of truth—every frontend assumption must align with actual schema objects.
+**Core Principle:** Database is source of truth—code must conform to database, never the reverse.
 
-**Role:** Database-to-Frontend mapper who treats Supabase as the source of truth.
+**Mission:**
+1. Read database schema using Supabase MCP (READ-ONLY) and focus on one customer portal
+2. Find ALL mismatches between database and code
+4. Fix mismatches by aligning code to database
 
-**Action Mode:** Surface feature gaps and land the necessary frontend and API code fixes so the UI mirrors the validated schema—never edit the database directly.
+**CRITICAL RULES:**
+- ❌ NEVER edit database schema
+- ❌ NEVER edit `lib/types/database.types.ts`
+- ❌ NEVER use mock data
+- ❌ NEVER create extra markdown docs
+- ✅ Use Supabase MCP to READ database only
+- ✅ Ask user before deleting features
 
-**Goal:** Surface every feature gap between database capabilities and exposed UI flows.
+---
 
-**Key Inputs:**
-- Supabase MCP: `list_tables`, `execute_sql`, `generate_typescript_types`
-- Codebase routes: `app/(customer|business|staff|admin|marketing)/**`
-- Feature APIs: `features/**/api/queries.ts`, `features/**/api/mutations.ts`
+## Step 1: Scan Database
 
-**Error Coverage Checklist:**
-1. Resolve schema mismatches surfaced by type errors or runtime logs before logging gaps.
-2. Ensure queries only select existing columns; adjust feature code when discrepancies appear.
-3. Flag missing validation or auth handling that could lead to data integrity errors.
+Use Supabase MCP to discover:
+```
+mcp__supabase__list_tables - Get all tables/views from all schemas
+mcp__supabase__generate_typescript_types - Get current types
+```
 
-**Process Checklist (Code-Only Scope):**
-1. Inventory all public views and RPC functions across schemas.
-2. Map each view/function to existing frontend touchpoints.
-3. Flag missing CRUD operations per view (List, Show, Create, Update, Delete).
-4. Rank gaps by business impact: Critical → High → Medium → Low.
+Extract from each schema:
+- Tables and views (especially `*_view` public views)
+- RPC functions
+- Column names and types
 
-**Deliverable:** One markdown report per portal in `docs/gaps/` using the existing task template, highlighting required frontend/API code changes and documenting any database follow-ups for coordination.
+---
+
+## Step 2: Scan Codebase
+
+Find database access:
+```bash
+find app -name "page.tsx" -type f
+find features -name "queries.ts" -o -name "mutations.ts"
+```
+
+---
+
+## Step 3: Identify Mismatches
+
+### Type A: Schema Mismatches (CRITICAL - breaks app)
+1. **Non-existent tables/views** - `.from('table')` but table doesn't exist
+2. **Non-existent columns** - `row.column` but column doesn't exist
+3. **Non-existent RPCs** - `.rpc('func')` but RPC doesn't exist
+4. **Type mismatches** - Types don't match database schema
+5. **Invalid schemas** - `.schema('name')` but schema doesn't exist
+6. **Wrong SELECTs** - Selecting columns that don't exist
+
+### Type B: Feature Gaps (code doesn't implement what database supports)
+1. **LIST** - Missing index/dashboard page
+2. **SHOW** - Missing detail page
+3. **CREATE** - Missing create form/mutation
+4. **UPDATE** - Missing edit form/mutation
+5. **DELETE** - Missing delete action
+
+---
+
+
+## Step 4: Fix Mismatches
+
+### PHASE 1: Fix Schema Mismatches (Type A)
+
+**Non-existent table/view:**
+```typescript
+// ❌ BEFORE
+await supabase.from('services').select('*')
+
+// ✅ AFTER - Use actual table from database
+await supabase.from('catalog_services_view').select('*')
+// OR comment out if shouldn't exist
+```
+
+**Non-existent column:**
+```typescript
+// ❌ BEFORE
+const name = service.service_name
+
+// ✅ AFTER - Use actual column
+const name = service.name
+```
+
+**Non-existent RPC:**
+```typescript
+// ❌ BEFORE
+await supabase.rpc('calc_total', { userId })
+
+// ✅ AFTER - Use query instead
+await supabase.from('orders_view').select('total').eq('user_id', userId)
+```
+
+**Type mismatch:**
+```typescript
+// ❌ BEFORE
+const date: string = row.created_at
+
+// ✅ AFTER
+const date: string | null = row.created_at
+```
+
+### PHASE 2: Implement Features (Type B)
+
+For each CRITICAL/HIGH gap:
+
+**1. Create structure:**
+```
+features/[portal]/[feature]/
+├── components/
+├── api/
+│   ├── queries.ts      # 'server-only'
+│   └── mutations.ts    # 'use server'
+├── types.ts
+├── schema.ts
+└── index.tsx
+```
+
+**2. Implementation checklist:**
+- [ ] Verify table/view exists (Supabase MCP)
+- [ ] Verify all columns exist (Supabase MCP)
+- [ ] `queries.ts` has `'server-only'`
+- [ ] `mutations.ts` has `'use server'`
+- [ ] Auth checks in all queries/mutations
+- [ ] Use public views for reads
+- [ ] Use schema tables for writes
+- [ ] Zod validation schemas
+- [ ] `revalidatePath()` after mutations
+- [ ] shadcn/ui components only
+- [ ] Pages are thin shells
+- [ ] No `any` types
+- [ ] No mock data
+- [ ] No extra markdown files
+
+**3. Test and verify:**
+- Run `npm run typecheck`
+- Test CRUD operations
+- Update gap report with ✅
+
+---
+
+## Success Criteria
+
+**Audit Complete:**
+- ✅ Database scanned (Supabase MCP)
+- ✅ Code scanned
+
+**Fix Complete:**
+- ✅ All schema mismatches fixed
+- ✅ All CRITICAL gaps implemented
+- ✅ All HIGH gaps implemented
+- ✅ Zero TypeScript errors
+- ✅ No mock data
+- ✅ No extra markdown files
+- ✅ Database never edited
+- ✅ Code 100% aligned with database

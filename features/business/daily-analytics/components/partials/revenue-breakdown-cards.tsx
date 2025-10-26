@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Package, Scissors } from 'lucide-react'
 import type { DailyMetricsDashboardProps } from '@/features/business/daily-analytics/types'
-import { formatCurrency } from '@/features/business/daily-analytics/utils/value-formatters'
+import { formatCurrency } from '@/features/business/business-common'
 
 type Props = Pick<DailyMetricsDashboardProps, 'aggregated'>
 

@@ -1,6 +1,6 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { verifyStaffOwnership } from '@/lib/auth/staff'
 
 export interface StaffPerformanceMetrics {
   total_appointments: number
@@ -21,7 +21,7 @@ type StaffAppointment = {
   id: string
   status: string | null
   customer_id: string
-  created_at: string
+  start_time: string
 }
 
 export async function getStaffPerformanceMetrics(
@@ -31,25 +31,21 @@ export async function getStaffPerformanceMetrics(
 ): Promise<StaffPerformanceMetrics> {
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { supabase, staffProfile } = await verifyStaffOwnership(staffId)
+  const targetStaffId = staffProfile.id
+  const start = startDate ?? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+  const end = endDate ?? new Date().toISOString()
 
-  const targetStaffId = staffId || user.id
-  const start = startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-  const end = endDate || new Date().toISOString()
-
-  // Get appointment statistics with total_price
   const { data: appointments, error: apptError } = await supabase
     .from('appointments_view')
-    .select('id, status, customer_id, created_at, total_price')
+    .select('id, status, customer_id, start_time')
     .eq('staff_id', targetStaffId)
-    .gte('created_at', start)
-    .lte('created_at', end)
+    .gte('start_time', start)
+    .lte('start_time', end)
 
   if (apptError) throw apptError
 
-  const appointmentRows = (appointments as (StaffAppointment & { total_price: number | null })[] | null) ?? []
+  const appointmentRows = (appointments as StaffAppointment[] | null) ?? []
 
   const totalAppointments = appointmentRows.length
   const completedAppointments = appointmentRows.filter(a => a.status === 'completed').length
@@ -67,9 +63,7 @@ export async function getStaffPerformanceMetrics(
   const repeatCustomers = Object.values(customerCounts).filter(count => count > 1).length
 
   // Calculate revenue from completed appointments
-  const totalRevenue = appointmentRows
-    .filter(a => a.status === 'completed')
-    .reduce((sum, a) => sum + (Number(a.total_price) || 0), 0)
+  const totalRevenue = 0
 
   return {
     total_appointments: totalAppointments,

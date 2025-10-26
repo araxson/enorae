@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Star, MapPin } from 'lucide-react'
+import type { Database } from '@/lib/types/database.types'
 
 type LocationMetric = {
   salonId: string
@@ -22,12 +23,7 @@ type LocationMetric = {
   staffCount: number
 }
 
-type Salon = {
-  id: string
-  name: string
-  city?: string | null
-  location_name?: string | null
-}
+type Salon = Pick<Database['public']['Views']['salons_view']['Row'], 'id' | 'name' | 'city'>
 
 type ChainLocationsListProps = {
   locations: LocationMetric[]

@@ -7,7 +7,7 @@ import { EmptyState } from '@/features/shared/ui-components'
 import { Scissors, Edit, DollarSign, Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
-type Service = Database['public']['Views']['services']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
 interface ServicesGridProps {
   services: Service[]

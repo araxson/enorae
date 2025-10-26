@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { upsertStaffSchedule } from '@/features/business/staff-schedules/api/mutations'
+import { upsertStaffSchedule, type UpsertPayload } from '@/features/business/staff-schedules/api/mutations'
 import { useScheduleFormState } from './form/use-schedule-form-state'
 import { ScheduleFormFields } from './form/schedule-form-fields'
 import type { SchedulePayload } from './form/schedule-options'
@@ -21,7 +21,7 @@ type ScheduleFormProps = {
   onSuccess?: () => void
 }
 
-type UpsertPayload = {
+type LocalUpsertPayload = {
   staffId: string
   dayOfWeek: Exclude<SchedulePayload['dayOfWeek'], ''>
   startTime: string

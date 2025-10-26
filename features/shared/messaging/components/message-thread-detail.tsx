@@ -20,7 +20,7 @@ export async function MessageThreadDetail({ threadId }: MessageThreadDetailProps
 
   const [thread, messages] = await Promise.all([
     getThreadById(threadId),
-    getMessagesBetweenUsers(threadId), // threadId now represents otherUserId
+    getMessagesBetweenUsers(session.user.id, threadId), // Get messages between current user and other user
   ])
 
   return (

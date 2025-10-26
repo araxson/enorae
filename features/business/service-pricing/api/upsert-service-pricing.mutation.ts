@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { resolveSalonContext, UUID_REGEX } from './shared'
+import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
 
 const pricingSchema = z.object({
   serviceId: z.string().regex(UUID_REGEX, 'Invalid service ID'),
@@ -79,7 +79,7 @@ export async function upsertServicePricing(formData: FormData) {
     const parsed = schema.safeParse(payload)
 
     if (!parsed.success) {
-      return { error: parsed.error.errors[0].message }
+      return { error: parsed.error.issues[0]?.message || 'Validation failed' }
     }
 
     const { supabase, session, salonId } = await resolveSalonContext()

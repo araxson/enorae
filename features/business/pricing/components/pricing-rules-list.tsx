@@ -124,8 +124,9 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
               <Switch
                 checked={rule.is_active}
                 onCheckedChange={() => handleToggle(rule.id, rule.is_active)}
+                aria-label={`Toggle pricing rule ${rule.rule_name} ${rule.is_active ? 'inactive' : 'active'}`}
               />
-              <Button variant="ghost" size="icon" onClick={() => handleDelete(rule.id)}>
+              <Button variant="ghost" size="icon" onClick={() => handleDelete(rule.id)} aria-label={`Delete pricing rule ${rule.rule_name}`}>
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>

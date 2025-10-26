@@ -29,14 +29,10 @@ export function groupAppointmentsByStaff(rows: AppointmentRow[]) {
 }
 
 export function groupReviewsByAppointment(rows: ReviewRow[]) {
+  // NOTE: salon_reviews_view does not have appointment_id column
+  // Return all reviews as a single group since they cannot be filtered by appointment
   const map = new Map<string, ReviewRow[]>()
-  for (const row of rows) {
-    if (!row.appointment_id) continue
-    if (!map.has(row.appointment_id)) {
-      map.set(row.appointment_id, [])
-    }
-    map.get(row.appointment_id)!.push(row)
-  }
+  map.set('all_reviews', rows)
   return map
 }
 
@@ -79,17 +75,16 @@ export function calculateStaffMetrics(
         lastAppointmentAt = appointment['start_time']
       }
     }
+  }
 
-    if (appointment['id']) {
-      const reviews = reviewsByAppointment.get(appointment['id']) ?? []
-      for (const review of reviews) {
-        if (typeof review['rating'] === 'number') {
-          reviewAccumulator.ratings.push(review['rating'])
-        }
-        if (review['is_flagged']) {
-          reviewAccumulator.flagged += 1
-        }
-      }
+  // NOTE: salon_reviews_view does not have appointment_id, so we process all reviews
+  const allReviews = reviewsByAppointment.get('all_reviews') ?? []
+  for (const review of allReviews) {
+    if (typeof review.rating === 'number') {
+      reviewAccumulator.ratings.push(review.rating)
+    }
+    if (review.is_flagged) {
+      reviewAccumulator.flagged += 1
     }
   }
 
@@ -117,7 +112,7 @@ export function buildStaffMetrics(
 ) {
   const metrics = calculateStaffMetrics(staffAppointments, reviewsByAppointment)
 
-  const compliance = calculateComplianceScore({
+  const complianceResult = calculateComplianceScore({
     totalAppointments: metrics.totalAppointments,
     completedAppointments: metrics.completedAppointments,
     cancelledAppointments: metrics.cancelledAppointments,
@@ -128,7 +123,19 @@ export function buildStaffMetrics(
     certificationsCount: certifications.length,
   })
 
-  return { metrics, compliance: { ...compliance, riskLabel: deriveRiskLabel(compliance['status']) } }
+  return {
+    metrics,
+    compliance: {
+      score: complianceResult.score,
+      status: complianceResult.status,
+      completionRate: complianceResult.completionRate,
+      noShowRate: complianceResult.noShowRate,
+      cancellationRate: complianceResult.cancellationRate,
+      flaggedRate: complianceResult.flaggedRate,
+      riskLabel: deriveRiskLabel(complianceResult.status),
+      issues: complianceResult.issues,
+    },
+  }
 }
 
 export function calculateDashboardStats(staff: StaffWithMetrics[]): StaffDashboardStats {

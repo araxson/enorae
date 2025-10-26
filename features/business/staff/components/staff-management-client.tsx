@@ -10,7 +10,7 @@ import { StaffFormDialog } from './staff-form-dialog'
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import type { Database } from '@/lib/types/database.types'
 
-type Service = Database['public']['Views']['services']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
 interface StaffManagementClientProps {
   staffWithServices: StaffWithServices[]

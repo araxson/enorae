@@ -1,4 +1,9 @@
 import { Suspense } from 'react'
+
+import { AppointmentsList } from './components/appointments-list'
+import { ProfileHeader } from './components/profile-header'
+import { getProfile, getUserAppointments } from './api/queries'
+
 import { PageLoading } from '@/features/shared/ui-components'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { generateMetadata as genMeta } from '@/lib/metadata'
@@ -6,11 +11,9 @@ import { MetadataForm } from '@/features/shared/profile-metadata'
 import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
 import { ProfileEditForm } from '@/features/shared/profile/components/profile-edit-form'
 import { UsernameForm } from '@/features/shared/profile/components/username-form'
-import { AppointmentsList } from './components/appointments-list'
-import { ProfileHeader } from './components/profile-header'
-import { getProfile, getUserAppointments } from './api/queries'
 
 export const customerProfileMetadata = genMeta({
+
   title: 'My Profile',
   description: 'Manage your profile and view your appointment history.',
   noIndex: true,

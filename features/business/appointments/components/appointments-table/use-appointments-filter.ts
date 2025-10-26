@@ -31,9 +31,10 @@ export function useAppointmentsFilter(appointments: AppointmentWithDetails[]): F
       }
 
       const query = searchQuery.toLowerCase()
-      const customerMatch = appointment['customer_name']?.toLowerCase().includes(query) ||
-        appointment['customer_email']?.toLowerCase().includes(query)
-      const staffMatch = appointment['staff_name']?.toLowerCase().includes(query)
+      // NOTE: customer_name, customer_email, staff_name don't exist in appointments_view
+      // Search only by customer_id, staff_id, and date
+      const customerMatch = appointment['customer_id']?.toLowerCase().includes(query)
+      const staffMatch = appointment['staff_id']?.toLowerCase().includes(query)
       const dateMatch = appointment['start_time'] &&
         format(new Date(appointment['start_time']), 'MMM dd, yyyy').toLowerCase().includes(query)
 

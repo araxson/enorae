@@ -53,18 +53,12 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
           <TableRow key={service['id']}>
             <TableCell>
               <div>
-                <p className="text-base font-medium">{service['service_name']}</p>
-                {service['category_name'] && (
-                  <p className="text-xs text-muted-foreground">{service['category_name']}</p>
-                )}
+                <p className="text-base font-medium">Service ID: {service['service_id']}</p>
               </div>
             </TableCell>
             <TableCell>
               <div>
-                <p className="text-sm">{service['staff_name'] || 'Unassigned'}</p>
-                {service['staff_title'] && (
-                  <p className="text-xs text-muted-foreground">{service['staff_title']}</p>
-                )}
+                <p className="text-sm">{service['staff_id'] || 'Unassigned'}</p>
               </div>
             </TableCell>
             <TableCell>
@@ -74,7 +68,7 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
               {service['duration_minutes'] ? `${service['duration_minutes']} min` : '-'}
             </TableCell>
             <TableCell className="text-right">
-              {formatCurrency(Number(service['current_price']))}
+              -
             </TableCell>
             <TableCell>
               <Badge variant={getStatusColor(service['status'])}>
@@ -83,7 +77,7 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
             </TableCell>
             <TableCell className="text-right">
               <div className="flex items-center justify-end gap-2">
-                <Button variant="ghost" size="sm" onClick={handleEdit(service)}>
+                <Button variant="ghost" size="sm" onClick={handleEdit(service)} aria-label={`Edit service ${service['service_id']}`}>
                   <Edit className="h-4 w-4" />
                 </Button>
                 <Button
@@ -91,6 +85,7 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
                   size="sm"
                   onClick={handleDelete(service)}
                   disabled={services.length <= 1}
+                  aria-label={`Delete service ${service['service_id']}`}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

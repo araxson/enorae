@@ -55,7 +55,7 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
     return { success: true }
   } catch (error) {
     if (error instanceof ZodError) {
-      return { error: error.errors[0].message }
+      return { error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
     return { error: error instanceof Error ? error.message : 'Failed to create review' }
   }
@@ -90,6 +90,9 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
     }
 
     // Check 7-day edit window
+    if (!review.created_at) {
+      return { error: 'Review creation date missing' }
+    }
     const daysSince = (Date.now() - new Date(review.created_at).getTime()) / (1000 * 60 * 60 * 24)
     if (daysSince > 7) {
       return { error: 'Reviews can only be edited within 7 days of creation' }
@@ -127,12 +130,14 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
     if (error) throw error
 
     revalidatePath('/customer/reviews')
-    revalidatePath(`/customer/salons/${review.salon_id}`)
+    if (review.salon_id) {
+      revalidatePath(`/customer/salons/${review.salon_id}`)
+    }
 
     return { success: true }
   } catch (error) {
     if (error instanceof ZodError) {
-      return { error: error.errors[0].message }
+      return { error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
     return { error: error instanceof Error ? error.message : 'Failed to update review' }
   }

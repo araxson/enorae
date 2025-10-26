@@ -3,9 +3,9 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments']['Row']
+type Appointment = Database['public']['Views']['appointments_view']['Row']
 
-export type AppointmentStatus = 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'no_show'
+export type AppointmentStatus = Database['public']['Enums']['appointment_status']
 
 export type StaffAppointment = Appointment
 

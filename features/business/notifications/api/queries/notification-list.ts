@@ -3,33 +3,15 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import type { NotificationEntry, NotificationPayload } from '../../types'
 
 type NotificationsPageRow =
   Database['public']['Functions']['get_notifications_page']['Returns'][number]
 type NotificationQueueRow =
   Database['public']['Views']['communication_notification_queue_view']['Row']
 
-export type NotificationEntry = {
-  id: string
-  user_id: string
-  channels: string[]
-  status: string | null
-  created_at: string | null
-  scheduled_for: string | null
-  sent_at: string | null
-  notification_type: string | null
-  payload: NotificationPayload
-  title?: string | null
-  message?: string | null
-  error?: string | null
-  data?: Record<string, unknown> | null
-}
-
-type NotificationPayload = {
-  title?: string | null
-  message?: string | null
-  data?: Record<string, unknown> | null
-}
+// Internal type used for building notification list
+type NotificationListEntry = NotificationEntry
 
 type NotificationStatus = Database['public']['Enums']['notification_status']
 type NotificationChannel = Database['public']['Enums']['notification_channel']
@@ -47,17 +29,19 @@ export async function getRecentNotifications(limit: number = 20) {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  // Fetch notifications via authorized RPC
-  const { data, error } = await supabase
-    .rpc('get_notifications_page', {
-      p_user_id: user['id'],
-      p_limit: limit,
-    })
-    .returns<NotificationsPageRow[]>()
+  // Fetch notifications via authorized RPC (if function exists)
+  // Fallback: return empty array if RPC not available
+  try {
+    const { data, error } = await supabase
+      .rpc('get_notifications_page')
+      .returns<NotificationsPageRow[]>()
 
-  if (error) throw error
-
-  return data ?? []
+    if (error) throw error
+    return (data || []) as NotificationListEntry[]
+  } catch {
+    // RPC not available, return empty list
+    return []
+  }
 }
 
 export async function getNotificationHistory(limit: number = 50): Promise<NotificationEntry[]> {

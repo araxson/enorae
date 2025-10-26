@@ -4,7 +4,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
 
-type AuditLogRow = Database['identity']['Views']['audit_logs_view']['Row']
+type AuditLogRow = Database['public']['Views']['security_incident_logs_view']['Row']
 
 /**
  * Get security events with filtering
@@ -22,8 +22,7 @@ export async function getSecurityEvents(filters: {
   const supabase = createServiceRoleClient()
 
   let query = supabase
-    .schema('identity')
-    .from('audit_logs_view')
+    .from('security_incident_logs_view')
     .select('*')
     .order('created_at', { ascending: false })
 
@@ -65,8 +64,7 @@ export async function getCriticalSecurityEvents(limit: number = 50) {
   const supabase = createServiceRoleClient()
 
   const { data, error } = await supabase
-    .schema('identity')
-    .from('audit_logs_view')
+    .from('security_incident_logs_view')
     .select('*')
     .eq('is_success', false)
     .order('created_at', { ascending: false })
@@ -88,7 +86,7 @@ export async function getFailedAuthAttempts(hoursBack: number = 24) {
   cutoffDate.setHours(cutoffDate.getHours() - hoursBack)
 
   const { data, error } = await supabase
-    .from('audit_logs_view')
+    .from('security_incident_logs_view')
     .select('*')
     .eq('event_category', 'security')
     .eq('is_success', false)
@@ -131,8 +129,7 @@ export async function getAdminActivitySummary(daysBack: number = 7) {
   cutoffDate.setDate(cutoffDate.getDate() - daysBack)
 
   const { data, error } = await supabase
-    .schema('identity')
-    .from('audit_logs_view')
+    .from('security_incident_logs_view')
     .select('*')
     .in('action', [
       'suspend_user',
@@ -190,8 +187,7 @@ export async function getSystemHealthMetrics() {
   oneHourAgo.setHours(oneHourAgo.getHours() - 1)
 
   const { data: recentLogs } = await supabase
-    .schema('identity')
-    .from('audit_logs_view')
+    .from('security_incident_logs_view')
     .select('is_success')
     .gte('created_at', oneHourAgo.toISOString())
 
@@ -240,8 +236,7 @@ export async function getDataIntegrityAlerts() {
 
   // Check for reviews without ratings
   const { count: invalidReviews } = await supabase
-    .schema('engagement')
-    .from('salon_reviews')
+    .from('salon_reviews_view')
     .select('id', { count: 'exact', head: true })
     .is('rating', null)
 
@@ -255,17 +250,15 @@ export async function getDataIntegrityAlerts() {
 
   // Check for salons without settings
   const { data: salonRows } = await supabase
-    .schema('organization')
-    .from('salons')
+    .from('salons_view')
     .select('id')
 
   const { data: settingsRows } = await supabase
-    .schema('organization')
-    .from('salon_settings')
+    .from('salon_settings_view')
     .select('salon_id')
 
-  const salonIds = new Set((salonRows ?? []).map((row) => row.id))
-  const settingsIds = new Set((settingsRows ?? []).map((row) => row.salon_id).filter(Boolean) as string[])
+  const salonIds = new Set((salonRows ?? []).map((row) => row.id).filter((id): id is string => id !== null))
+  const settingsIds = new Set((settingsRows ?? []).map((row) => row.salon_id).filter((id): id is string => id !== null))
 
   const salonsMissingSettings = Array.from(salonIds).filter((id) => !settingsIds.has(id)).length
 

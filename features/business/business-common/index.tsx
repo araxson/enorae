@@ -1,4 +1,4 @@
 export * from './components'
 export * from './api/queries'
-export * from './utils'
+export * from './components/value-formatters'
 export * from './types'

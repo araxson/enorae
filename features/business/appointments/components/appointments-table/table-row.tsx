@@ -32,8 +32,8 @@ export function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCan
           'No date'
         )}
       </TableCell>
-      <TableCell>{appointment['customer_name'] || appointment['customer_email'] || 'N/A'}</TableCell>
-      <TableCell>{appointment['staff_name'] || appointment['staff_name'] || 'N/A'}</TableCell>
+      <TableCell>{appointment['customer_id'] || 'N/A'}</TableCell>
+      <TableCell>{appointment['staff_id'] || 'N/A'}</TableCell>
       <TableCell>
         <Badge variant={config?.variant}>{config?.label || appointment['status']}</Badge>
       </TableCell>

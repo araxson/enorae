@@ -17,7 +17,7 @@ export async function upsertUserPreference(formData: FormData) {
       value: formData.get('value'),
     })
 
-    if (!result.success) return { error: result.error.errors[0].message }
+    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
 
     const data = result.data
     const supabase = await createClient()
@@ -152,7 +152,7 @@ export async function updateNotificationPreferences(
     return { success: true, data: undefined }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0].message }
+      return { success: false, error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
     return {
       success: false,
@@ -201,7 +201,7 @@ export async function updateAdvancedPreferences(
     return { success: true, data: undefined }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0].message }
+      return { success: false, error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
     return {
       success: false,

@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Download } from 'lucide-react'
-import type { Invoice } from './billing-subscription-form'
+import type { Invoice } from '../types'
 
 export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
   return (

@@ -24,7 +24,7 @@ export async function assignRole(formData: FormData): Promise<RoleActionResponse
 
     const validation = assignmentSchema.safeParse(payload)
     if (!validation.success) {
-      return { success: false, error: validation.error.errors[0]?.message ?? 'Invalid payload' }
+      return { success: false, error: validation.error.issues[0]?.message ?? 'Invalid payload' }
     }
 
     if (ROLES_NEEDING_SALON.includes(payload.role) && !payload.salonId) {

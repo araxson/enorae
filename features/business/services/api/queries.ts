@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type ServiceViewRow = Database['public']['Views']['services']['Row']
+type ServiceViewRow = Database['public']['Views']['services_view']['Row']
 
 interface ServiceSearchResult {
   id: string
@@ -26,7 +26,7 @@ export async function searchServicesFulltext(
 
   // Search services using ILIKE pattern matching from public view
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('id, name, description, slug, category_name, price, duration_minutes')
     .eq('salon_id', salonId)
     .eq('is_active', true)
@@ -58,7 +58,7 @@ export async function searchServicesOptimized(
 
   // Optimized search using text similarity from public view
   const { data, error } = await supabase
-    .from('services')
+    .from('services_view')
     .select('id, name, description, slug, category_name, price, duration_minutes')
     .eq('salon_id', salonId)
     .eq('is_active', true)
@@ -79,4 +79,45 @@ export async function searchServicesOptimized(
     price: service['price'] ? Number(service['price']) : undefined,
     duration_minutes: service['duration_minutes'] ?? undefined,
   }))
+}
+
+export async function getServices(salonId: string): Promise<ServiceViewRow[]> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data, error } = await supabase
+    .from('services_view')
+    .select('*')
+    .eq('salon_id', salonId)
+    .eq('is_active', true)
+    .is('deleted_at', null)
+    .order('name')
+    .returns<ServiceViewRow[]>()
+
+  if (error) throw error
+
+  return data ?? []
+}
+
+export async function getUserSalon(): Promise<{ id: string } | null> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  // Get user's salon from staff_profiles_view
+  const { data, error } = await supabase
+    .from('staff_profiles_view')
+    .select('salon_id')
+    .eq('user_id', user.id)
+    .maybeSingle<{ salon_id: string | null }>()
+
+  if (error) throw error
+
+  // Explicitly handle the salon_id which can be null
+  if (data?.salon_id) {
+    return { id: data.salon_id }
+  }
+
+  return null
 }

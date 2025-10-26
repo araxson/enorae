@@ -2,7 +2,7 @@ import type { Database } from '@/lib/types/database.types'
 import { StaffServicesManager } from '@/features/business/staff/components/staff-services-manager'
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
 
-type ServiceRow = Database['public']['Views']['services']['Row']
+type ServiceRow = Database['public']['Views']['services_view']['Row']
 
 interface StaffServicesPanelProps {
   staff: StaffWithServices

@@ -43,7 +43,7 @@ export function usePreferencesForm(preferences: ProfilePreferences | null) {
 
       const validation = profilePreferencesFormSchema.safeParse(preferencesPayload)
       if (!validation.success) {
-        toast.error(validation.error.errors[0].message)
+        toast.error(validation.error.issues[0]?.message ?? "Validation failed")
         return
       }
 

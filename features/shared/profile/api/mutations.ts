@@ -40,7 +40,7 @@ export async function updateUsername(formData: FormData): Promise<ActionResponse
     })
 
     if (!result.success) {
-      return { success: false, error: result.error.errors[0].message }
+      return { success: false, error: result.error.issues[0]?.message ?? 'Validation failed' }
     }
 
     const { username } = result.data

@@ -19,18 +19,6 @@ export async function markReviewAsHelpful(reviewId: string): Promise<ActionResul
     const session = await requireAuth()
     const supabase = await createClient()
 
-    // Check if user already voted
-    const { data: existingVote } = await supabase
-      .from('review_helpful_votes')
-      .select('id')
-      .eq('review_id', reviewId)
-      .eq('user_id', session.user.id)
-      .single()
-
-    if (existingVote) {
-      return { success: false, error: 'You already marked this review as helpful', alreadyVoted: true }
-    }
-
     // Insert vote record (prevents duplicates via UNIQUE constraint)
     const { error: voteError } = await supabase
       .schema('engagement')

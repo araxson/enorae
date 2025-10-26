@@ -101,6 +101,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
               size="icon"
               className="absolute right-2 top-2 z-10"
               onClick={closeLightbox}
+              aria-label="Close lightbox"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -109,7 +110,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
               <>
                 <div className="relative aspect-video w-full">
                   <Image
-                    src={allImages[selectedIndex]}
+                    src={allImages[selectedIndex] ?? ''}
                     alt={`Salon photo ${selectedIndex + 1}`}
                     fill
                     className="object-contain"
@@ -124,6 +125,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
                       onClick={goToPrevious}
                       disabled={selectedIndex === 0}
                       className="bg-black/50 text-white hover:bg-black/70"
+                      aria-label="Previous image"
                     >
                       <ChevronLeft className="h-6 w-6" />
                     </Button>
@@ -133,6 +135,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
                       onClick={goToNext}
                       disabled={selectedIndex === allImages.length - 1}
                       className="bg-black/50 text-white hover:bg-black/70"
+                      aria-label="Next image"
                     >
                       <ChevronRight className="h-6 w-6" />
                     </Button>

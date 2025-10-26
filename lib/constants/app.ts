@@ -1,35 +1,49 @@
-import { env } from '@/lib/env'
-
 /**
  * Core Application Constants
  *
- * Application metadata, branding, contact information
+ * DEPRECATED: This file is deprecated. Import from @/lib/config instead.
+ *
+ * @deprecated Use @/lib/config for all configuration values
  */
 
+import { env } from '@/lib/env'
+import {
+  APP_METADATA,
+  PLATFORM_SOCIAL_URLS,
+  PLATFORM_CONTACT,
+} from '@/lib/config/constants'
+
 /**
- * Application Metadata
+ * @deprecated Import APP_METADATA from @/lib/config instead
  */
-export const APP_NAME = 'Enorae'
-export const APP_DESCRIPTION = 'Modern salon booking platform with role-based portals for customers, staff, business owners, and platform administrators.'
+export const APP_NAME = APP_METADATA.name
+
+/**
+ * @deprecated Import APP_METADATA from @/lib/config instead
+ */
+export const APP_DESCRIPTION = APP_METADATA.description
+
+/**
+ * @deprecated Import ENV from @/lib/config instead
+ */
 export const APP_URL = env.NEXT_PUBLIC_APP_URL ?? env.NEXT_PUBLIC_SITE_URL
 
 /**
- * Application Version
+ * @deprecated Import APP_METADATA from @/lib/config instead
  */
-export const APP_VERSION = '1.0.0'
+export const APP_VERSION = APP_METADATA.version
 
 /**
- * Social Media Links
+ * @deprecated Import PLATFORM_SOCIAL_URLS from @/lib/config instead
  */
-export const SOCIAL_LINKS = {
-  twitter: 'https://twitter.com/enorae',
-  facebook: 'https://facebook.com/enorae',
-  instagram: 'https://instagram.com/enorae',
-  linkedin: 'https://linkedin.com/company/enorae',
-} as const
+export const SOCIAL_LINKS = PLATFORM_SOCIAL_URLS
 
 /**
- * Contact Information
+ * @deprecated Import PLATFORM_CONTACT from @/lib/config instead
  */
-export const CONTACT_EMAIL = 'hello@enorae.com'
-export const SUPPORT_EMAIL = 'support@enorae.com'
+export const CONTACT_EMAIL = PLATFORM_CONTACT.email
+
+/**
+ * @deprecated Import PLATFORM_CONTACT from @/lib/config instead
+ */
+export const SUPPORT_EMAIL = PLATFORM_CONTACT.support

@@ -3,8 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments_view']['Row']
-type ManualTransaction = Database['public']['Views']['manual_transactions']['Row']
+type Appointment = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
 export interface CustomerMetrics {
   totalSpending: number
@@ -26,7 +25,7 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
 
   // Get all appointments
   const { data: appointments, error: appointmentsError } = await supabase
-    .from('appointments_view')
+    .from('admin_appointments_overview_view')
     .select('*')
     .eq('customer_id', session.user['id'])
     .order('start_time', { ascending: false })
@@ -48,10 +47,10 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
   // Get favorite services (most frequently booked)
   const serviceCounts: Record<string, number> = {}
   appointments?.forEach(apt => {
-    const serviceNames = (apt['service_names'] as string[]) || []
-    serviceNames.forEach(name => {
-      serviceCounts[name] = (serviceCounts[name] || 0) + 1
-    })
+    const serviceName = apt['service_name']
+    if (serviceName) {
+      serviceCounts[serviceName] = (serviceCounts[serviceName] || 0) + 1
+    }
   })
 
   const favoriteServices = Object.entries(serviceCounts)
@@ -82,7 +81,7 @@ export async function getAppointmentFrequency(): Promise<{ month: string; count:
   const supabase = await createClient()
 
   const { data: appointments, error } = await supabase
-    .from('appointments_view')
+    .from('admin_appointments_overview_view')
     .select('*')
     .eq('customer_id', session.user['id'])
     .gte('start_time', new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString())

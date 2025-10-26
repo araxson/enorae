@@ -41,20 +41,20 @@ export function AppointmentServiceProgress({
       formData.append('appointmentServiceId', serviceId)
       formData.append('status', newStatus)
 
-      const result = await updateServiceStatus(formData)
+      try {
+        await updateServiceStatus(formData)
 
-      if ('error' in result) {
-        toast({
-          variant: 'destructive',
-          title: 'Unable to update service status',
-          description: result.error,
-        })
-      } else {
         toast({
           title: 'Service updated',
           description: 'The service status was updated successfully.',
         })
         onUpdate()
+      } catch (error) {
+        toast({
+          variant: 'destructive',
+          title: 'Unable to update service status',
+          description: error instanceof Error ? error.message : 'An error occurred',
+        })
       }
     } catch (error) {
       toast({
@@ -146,14 +146,9 @@ export function AppointmentServiceProgress({
                     <div className="flex flex-1 items-center gap-4">
                       {getStatusIcon(service['status'])}
                       <div className="flex-1">
-                        <p className="font-medium">{service['service_name']}</p>
+                        <p className="font-medium">Service ID: {service['service_id']}</p>
                         <div className="mt-1 flex items-center gap-2">
                           <Badge variant="outline">{getStatusLabel(service['status'])}</Badge>
-                          {service['staff_name'] && (
-                            <span className="text-sm text-muted-foreground">
-                              {service['staff_name']}
-                            </span>
-                          )}
                         </div>
                       </div>
                     </div>

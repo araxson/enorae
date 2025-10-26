@@ -19,12 +19,18 @@ export async function getTopServices(
     throw new Error('Unauthorized: Not your salon')
   }
 
+  // NOTE: appointment_services table exists in scheduling schema but doesn't have
+  // service_name, current_price columns, and doesn't have salon_id filter capability
+  // This function cannot work without an enriched view
+  return []
+
+  /* DISABLED - appointment_services lacks required columns
   const supabase = await createClient()
 
   const { data, error } = await supabase
+    .schema('scheduling')
     .from('appointment_services')
-    .select('service_id, service_name, current_price, status, appointment_id')
-    .eq('salon_id', salonId)
+    .select('service_id, status, appointment_id')
     .eq('status', 'completed')
     .gte('start_time', startDate)
     .lte('start_time', endDate)
@@ -36,24 +42,24 @@ export async function getTopServices(
   const serviceStats = new Map<string, ServiceStats>()
 
   appointmentServices.forEach((service) => {
-    if (!service['service_id'] || !service['service_name']) return
+    if (!service['service_id']) return
 
     if (!serviceStats.has(service['service_id'])) {
       serviceStats.set(service['service_id'], {
-        name: service['service_name'],
+        name: 'Unknown Service', // service_name doesn't exist
         count: 0,
-        revenue: 0,
+        revenue: 0, // current_price doesn't exist
       })
     }
 
     const stats = serviceStats.get(service['service_id'])!
     stats.count += 1
-    stats.revenue += service['current_price'] || 0
   })
 
   return Array.from(serviceStats.values())
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, limit)
+  */
 }
 
 export async function getTopStaff(
@@ -70,8 +76,8 @@ export async function getTopStaff(
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('appointments')
-    .select('staff_id, staff_name, staff_name, total_price')
+    .from('appointments_view')
+    .select('staff_id')
     .eq('salon_id', salonId)
     .eq('status', 'completed')
     .gte('start_time', startDate)
@@ -88,16 +94,16 @@ export async function getTopStaff(
 
     if (!stats.has(appointment['staff_id'])) {
       stats.set(appointment['staff_id'], {
-        name: appointment['staff_name'] || 'Unknown',
-        title: appointment['staff_name'],
+        name: 'Unknown', // staff_name doesn't exist in appointments_view
+        title: 'Unknown', // staff_name doesn't exist
         count: 0,
-        revenue: 0,
+        revenue: 0, // total_price doesn't exist in appointments_view
       })
     }
 
     const entry = stats.get(appointment['staff_id'])!
     entry.count += 1
-    entry.revenue += appointment['total_price'] || 0
+    // NOTE: revenue remains 0 because total_price doesn't exist
   })
 
   return Array.from(stats.values())

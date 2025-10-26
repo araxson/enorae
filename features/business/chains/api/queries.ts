@@ -1,28 +1,90 @@
 import 'server-only'
+
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-// FIXED: Use salon_chains_view instead of table
 type SalonChain = Database['public']['Views']['salon_chains_view']['Row']
+type SalonChainRecord = Database['organization']['Tables']['salon_chains']['Row']
+type SalonRecord = Database['organization']['Tables']['salons']['Row']
+type SalonViewRow = Database['public']['Views']['salons_view']['Row']
+type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
+type ManualTransactionRow = Database['public']['Views']['manual_transactions_view']['Row']
+type StaffRow = Database['public']['Views']['staff_enriched_view']['Row']
+type ServiceRow = Database['public']['Views']['services_view']['Row']
+
+const REVENUE_TRANSACTION_TYPES: Array<NonNullable<ManualTransactionRow['transaction_type']>> = [
+  'service_payment',
+  'product_sale',
+  'tip',
+  'fee',
+  'other',
+]
+
 export type SalonChainWithCounts = SalonChain
+
+async function getChainSalonRows(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  chainId: string,
+  ownerId: string
+): Promise<Array<{ id: string; name: string }>> {
+  const { data: chainRecord, error: chainRecordError } = await supabase
+    .schema('organization')
+    .from('salon_chains')
+    .select('id, owner_id, deleted_at')
+    .eq('id', chainId)
+    .eq('owner_id', ownerId)
+    .maybeSingle<Pick<SalonChainRecord, 'id' | 'owner_id' | 'deleted_at'>>()
+
+  if (chainRecordError) throw chainRecordError
+  if (!chainRecord || chainRecord.deleted_at !== null) {
+    throw new Error('Chain not found or access denied')
+  }
+
+  const { data: salonRows, error: salonRowsError } = await supabase
+    .from('salons_view')
+    .select('id, name')
+    .eq('chain_id', chainId)
+    .is('deleted_at', null)
+    .returns<Pick<SalonViewRow, 'id' | 'name'>[]>()
+
+  if (salonRowsError) throw salonRowsError
+
+  return (salonRows ?? []).filter(
+    (row): row is { id: string; name: string } => Boolean(row.id)
+  )
+}
 
 /**
  * Get all chains accessible to the user
  * Uses salon_chains_view for pre-computed salon_count and total_staff_count
  */
 export async function getSalonChains(): Promise<SalonChain[]> {
-  // SECURITY: Require authentication
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
   const supabase = await createClient()
 
-  // Query the view instead of table - view includes salon_count and total_staff_count
+  const { data: ownedChains, error: ownedChainsError } = await supabase
+    .schema('organization')
+    .from('salon_chains')
+    .select('id, deleted_at')
+    .eq('owner_id', session.user.id)
+    .returns<Pick<SalonChainRecord, 'id' | 'deleted_at'>[]>()
+
+  if (ownedChainsError) throw ownedChainsError
+
+  const chainIds = (ownedChains ?? [])
+    .filter(chain => chain.deleted_at === null)
+    .map(chain => chain.id)
+    .filter((id): id is string => Boolean(id))
+
+  if (chainIds.length === 0) {
+    return []
+  }
+
   const { data, error } = await supabase
     .from('salon_chains_view')
     .select('*')
-    .eq('owner_id', session.user.id)
-    .is('deleted_at', null)
+    .in('id', chainIds)
     .order('name', { ascending: true })
 
   if (error) throw error
@@ -31,30 +93,37 @@ export async function getSalonChains(): Promise<SalonChain[]> {
 
 /**
  * Get single salon chain by ID
- * Uses salon_chains_view for enriched data
  */
-export async function getSalonChainById(
-  id: string
-): Promise<SalonChain | null> {
-  // SECURITY: Require authentication
+export async function getSalonChainById(id: string): Promise<SalonChain | null> {
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-
   const supabase = await createClient()
+
+  const { data: chainRows } = await supabase
+    .schema('organization')
+    .from('salon_chains')
+    .select('id, owner_id, deleted_at')
+    .eq('id', id)
+    .eq('owner_id', session.user.id)
+    .returns<Pick<SalonChainRecord, 'id' | 'owner_id' | 'deleted_at'>[]>()
+    .limit(1)
+
+  const chainRecord = chainRows?.[0]
+  if (!chainRecord || chainRecord.deleted_at !== null) {
+    return null
+  }
 
   const { data, error } = await supabase
     .from('salon_chains_view')
     .select('*')
     .eq('id', id)
-    .eq('owner_id', session.user.id)
-    .is('deleted_at', null)
-    .single()
+    .maybeSingle()
 
   if (error) {
     if (error.code === 'PGRST116') return null
     throw error
   }
 
-  return data as SalonChain
+  return (data || null) as SalonChain | null
 }
 
 /**
@@ -64,26 +133,19 @@ export async function getChainSalons(chainId: string) {
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
 
-  // First verify user owns the chain
-  const { data: chain } = await supabase
-    .from('salon_chains_view')
-    .select('id')
-    .eq('id', chainId)
-    .eq('owner_id', session.user.id)
-    .single()
+  const ownedSalons = await getChainSalonRows(supabase, chainId, session.user.id)
+  if (!ownedSalons.length) {
+    return []
+  }
 
-  if (!chain) throw new Error('Chain not found or access denied')
-
-  // Get all salons in the chain with location details
   const { data, error } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('*')
-    .eq('chain_id', chainId)
-    .is('deleted_at', null)
+    .in('id', ownedSalons.map(salon => salon.id))
     .order('name', { ascending: true })
 
   if (error) throw error
-  return data || []
+  return (data || []) as SalonViewRow[]
 }
 
 /**
@@ -93,27 +155,8 @@ export async function getChainAnalytics(chainId: string) {
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
 
-  // Verify ownership
-  const { data: chain } = await supabase
-    .from('salon_chains_view')
-    .select('id')
-    .eq('id', chainId)
-    .eq('owner_id', session.user.id)
-    .single()
-
-  if (!chain) throw new Error('Chain not found or access denied')
-
-  // Get all salon IDs in chain
-  const { data: salonsData } = await supabase
-    .from('salons')
-    .select('id, name')
-    .eq('chain_id', chainId)
-    .is('deleted_at', null)
-
-  type SalonBasic = { id: string; name: string }
-  const salons = (salonsData || []) as SalonBasic[]
-
-  if (salons.length === 0) {
+  const ownedSalons = await getChainSalonRows(supabase, chainId, session.user.id)
+  if (!ownedSalons.length) {
     return {
       totalLocations: 0,
       totalAppointments: 0,
@@ -126,104 +169,114 @@ export async function getChainAnalytics(chainId: string) {
     }
   }
 
-  const salonIds = salons.map((s) => s.id)
+  const salonIds = ownedSalons.map(salon => salon.id)
 
-  // Get appointments count and revenue
-  const { data: appointmentsData } = await supabase
-    .from('appointments')
-    .select('salon_id, total_price')
-    .in('salon_id', salonIds)
-    .eq('status', 'completed')
+  const [appointmentsResponse, transactionsResponse, ratingsResponse, staffResponse, servicesResponse] = await Promise.all([
+    supabase
+      .from('appointments_view')
+      .select('id, salon_id')
+      .in('salon_id', salonIds)
+      .eq('status', 'completed'),
+    supabase
+      .from('manual_transactions_view')
+      .select('salon_id, amount, transaction_type')
+      .in('salon_id', salonIds)
+      .in('transaction_type', REVENUE_TRANSACTION_TYPES),
+    supabase
+      .from('salons_view')
+      .select('id, name, rating_average, rating_count')
+      .in('id', salonIds),
+    supabase
+      .from('staff_enriched_view')
+      .select('salon_id, is_active')
+      .in('salon_id', salonIds)
+      .eq('is_active', true),
+    supabase
+      .from('services_view')
+      .select('salon_id, is_active')
+      .in('salon_id', salonIds)
+      .eq('is_active', true),
+  ])
 
-  type AppointmentData = { salon_id: string; total_price: number }
-  const appointments = (appointmentsData || []) as AppointmentData[]
+  if (appointmentsResponse.error) throw appointmentsResponse.error
+  if (transactionsResponse.error) throw transactionsResponse.error
+  if (ratingsResponse.error) throw ratingsResponse.error
+  if (staffResponse.error) throw staffResponse.error
+  if (servicesResponse.error) throw servicesResponse.error
 
-  // Get ratings and counts
-  const { data: ratingsData } = await supabase
-    .from('salons')
-    .select('id, name, rating_average, rating_count')
-    .in('id', salonIds)
+  const appointments = (appointmentsResponse.data ?? []) as AppointmentRow[]
+  const transactions = (transactionsResponse.data ?? []) as ManualTransactionRow[]
+  const ratingRows = (ratingsResponse.data ?? []) as SalonViewRow[]
+  const staffRows = (staffResponse.data ?? []) as StaffRow[]
+  const serviceRows = (servicesResponse.data ?? []) as ServiceRow[]
 
-  type SalonData = { id: string; name: string; rating_average: number; rating_count: number }
-  const ratings = (ratingsData || []) as SalonData[]
+  const revenueBySalon = new Map<string, number>()
+  transactions.forEach(tx => {
+    if (!tx.salon_id) return
+    const amount = Number(tx.amount ?? 0)
+    if (!amount) return
+    revenueBySalon.set(tx.salon_id, (revenueBySalon.get(tx.salon_id) ?? 0) + amount)
+  })
 
-  // Get staff count
-  const { data: staffData } = await supabase
-    .from('staff')
-    .select('salon_id')
-    .in('salon_id', salonIds)
-    .eq('is_active', true)
+  const ratingBySalon = new Map<string, SalonViewRow>()
+  ratingRows.forEach(row => {
+    if (row.id) {
+      ratingBySalon.set(row.id, row)
+    }
+  })
 
-  type StaffData = { salon_id: string }
-  const staff = (staffData || []) as StaffData[]
+  const staffCountBySalon = new Map<string, number>()
+  staffRows.forEach(row => {
+    if (!row.salon_id) return
+    staffCountBySalon.set(row.salon_id, (staffCountBySalon.get(row.salon_id) ?? 0) + 1)
+  })
 
-  // Get service counts
-  const { data: servicesData } = await supabase
-    .from('services')
-    .select('salon_id')
-    .in('salon_id', salonIds)
-    .eq('is_active', true)
-    .is('deleted_at', null)
+  const serviceCountBySalon = new Map<string, number>()
+  serviceRows.forEach(row => {
+    if (!row.salon_id) return
+    serviceCountBySalon.set(row.salon_id, (serviceCountBySalon.get(row.salon_id) ?? 0) + 1)
+  })
 
-  type ServiceData = { salon_id: string | null }
-  const services = (servicesData || []) as ServiceData[]
-
-  const servicesBySalon = services.reduce<Record<string, number>>((acc, row) => {
-    if (!row.salon_id) return acc
-    acc[row.salon_id] = (acc[row.salon_id] || 0) + 1
-    return acc
-  }, {})
-
-  // Aggregate data
-  const totalRevenue = appointments.reduce(
-    (sum, apt) => sum + (Number(apt.total_price) || 0),
-    0
-  )
-
+  const totalRevenue = Array.from(revenueBySalon.values()).reduce((sum, value) => sum + value, 0)
   const totalAppointments = appointments.length
+  const totalServices = serviceRows.length
+  const totalStaff = staffRows.length
 
-  const avgRating = ratings.length > 0
-    ? ratings.reduce((sum, s) => sum + (Number(s.rating_average) || 0), 0) / ratings.length
+  const ratingValues = ratingRows
+    .map(row => Number(row.rating_average) || 0)
+    .filter(value => value > 0)
+
+  const averageRating = ratingValues.length
+    ? ratingValues.reduce((sum, value) => sum + value, 0) / ratingValues.length
     : 0
 
-  const totalReviews = ratings.reduce(
-    (sum, s) => sum + (Number(s.rating_count) || 0),
+  const totalReviews = ratingRows.reduce(
+    (sum, row) => sum + (Number(row.rating_count) || 0),
     0
   )
 
-  const totalServices = services.length
-  const totalStaff = staff.length
-
-  // Create location-level metrics
-  const locationMetrics = salons.map((salon) => {
-    const locationAppointments = appointments.filter(
-      (a) => a.salon_id === salon.id
-    )
-    const locationRating = ratings.find((r) => r.id === salon.id)
-    const locationStaffCount = staff.filter(
-      (s) => s.salon_id === salon.id
-    ).length
+  const locationMetrics = ownedSalons.map(salon => {
+    const ratingRow = ratingBySalon.get(salon.id)
+    const revenue = revenueBySalon.get(salon.id) ?? 0
+    const appointmentCount = appointments.filter(app => app.salon_id === salon.id).length
 
     return {
       salonId: salon.id,
-      salonName: salon.name,
-      appointmentCount: locationAppointments.length,
-      revenue: locationAppointments.reduce(
-        (sum, apt) => sum + (Number(apt.total_price) || 0),
-        0
-      ),
-      rating: Number(locationRating?.rating_average) || 0,
-      reviewCount: Number(locationRating?.rating_count) || 0,
-      staffCount: locationStaffCount,
-      servicesCount: servicesBySalon[salon.id] || 0,
+      salonName: ratingRow?.name || salon.name,
+      appointmentCount,
+      revenue,
+      rating: Number(ratingRow?.rating_average) || 0,
+      reviewCount: Number(ratingRow?.rating_count) || 0,
+      staffCount: staffCountBySalon.get(salon.id) ?? 0,
+      servicesCount: serviceCountBySalon.get(salon.id) ?? 0,
     }
   })
 
   return {
-    totalLocations: salons.length,
+    totalLocations: ownedSalons.length,
     totalAppointments,
     totalRevenue,
-    averageRating: avgRating,
+    averageRating,
     totalReviews,
     totalServices,
     totalStaff,

@@ -30,6 +30,7 @@ export function PermissionsEditor({ permissions, onAdd, onRemove }: PermissionsE
           onChange={(event) => setValue(event.target.value)}
           placeholder="Add permission key"
           className="h-9 w-full sm:w-56"
+          aria-label="Permission key"
         />
         <Button type="button" size="sm" variant="outline" onClick={handleAdd}>
           <Plus className="mr-1 h-4 w-4" />

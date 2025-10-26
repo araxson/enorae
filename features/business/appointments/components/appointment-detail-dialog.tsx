@@ -25,30 +25,63 @@ export function AppointmentDetailDialog({
 }: AppointmentDetailDialogProps) {
   const [services, setServices] = useState<AppointmentServiceDetails[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   useEffect(() => {
-    if (isOpen && appointmentId) {
-      loadServices()
+    if (!isOpen || !appointmentId) {
+      return
     }
-  }, [isOpen, appointmentId])
 
-  const loadServices = async () => {
-    setIsLoading(true)
-    try {
-      const response = await fetch(`/api/appointments/${appointmentId}/services`)
-      if (response.ok) {
+    let isMounted = true
+    const controller = new AbortController()
+
+    const loadServices = async () => {
+      setIsLoading(true)
+      try {
+        // API_INTEGRATION_FIX: Add 10 second timeout for API calls
+        const API_REQUEST_TIMEOUT_MS = 10000 // 10 seconds
+        const timeoutSignal = AbortSignal.timeout(API_REQUEST_TIMEOUT_MS)
+        const response = await fetch(`/api/appointments/${appointmentId}/services`, {
+          signal: AbortSignal.any([controller.signal, timeoutSignal]),
+        })
+
+        if (!response.ok) {
+          throw new Error(`Failed to load services: ${response.status}`)
+        }
+
         const data = await response.json()
-        setServices(data.services || [])
+        if (isMounted) {
+          setServices(data.services || [])
+        }
+      } catch (error) {
+        // API_INTEGRATION_FIX: Handle AbortError and timeout errors
+        if (error instanceof Error && error.name === 'AbortError') {
+          console.log('Services load request cancelled or timed out')
+          return
+        }
+        console.error('[AppointmentDetail] Failed to load services', error)
+        if (isMounted) {
+          setServices([])
+          // TODO: Add toast notification for user feedback
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
       }
-    } catch (error) {
-      console.error('Failed to load services:', error)
-    } finally {
-      setIsLoading(false)
     }
-  }
 
+    void loadServices()
+
+    return () => {
+      isMounted = false
+      controller.abort()
+    }
+  }, [isOpen, appointmentId, refreshKey])
+
+  // API_INTEGRATION_FIX: Update handler to reload services
   const handleServicesUpdate = () => {
-    loadServices()
+    setRefreshKey(prev => prev + 1)
   }
 
   return (

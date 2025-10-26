@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { z } from 'zod'
-import { getSupabaseClient, revalidateNotifications, notificationChannels, notificationEvents } from './helpers'
+import { getSupabaseClient, revalidateNotifications, notificationChannels, notificationEvents } from '../mutations/utilities'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 
 const templateSchema = z.object({
@@ -22,7 +22,7 @@ function normalizeTemplates(
 ) {
   const collection = Array.isArray(existing) ? [...existing] : []
   const withoutCurrent = collection.filter(
-    (template) => template['id'] !== updated['id'],
+    (template) => template.id !== updated.id,
   )
   withoutCurrent.push(updated)
   return withoutCurrent
@@ -35,7 +35,7 @@ export async function upsertNotificationTemplate(
 
   const validation = templateSchema.safeParse(template)
   if (!validation.success) {
-    throw new Error(validation.error.errors[0].message)
+    throw new Error(validation.error.issues[0]?.message ?? 'Validation failed')
   }
 
   const {
@@ -52,22 +52,22 @@ export async function upsertNotificationTemplate(
       | undefined) ?? []
 
   const timestamp = new Date().toISOString()
-  const templateId = validation.data['id'] ?? globalThis.crypto.randomUUID()
+  const templateId = validation.data.id ?? globalThis.crypto.randomUUID()
 
   const existing = currentTemplates.find(
-    (entry) => entry['id'] === validation.data['id'],
+    (entry) => entry.id === validation.data.id,
   )
 
   const updatedTemplate: NotificationTemplate = {
     id: templateId,
-    name: validation.data['name'],
-    description: validation.data['description'],
+    name: validation.data.name,
+    description: validation.data.description ?? undefined,
     channel: validation.data.channel,
     event: validation.data.event,
-    subject: validation.data['subject'],
+    subject: validation.data.subject ?? undefined,
     body: validation.data.body,
     updated_at: timestamp,
-    created_at: existing?.['created_at'] ?? timestamp,
+    created_at: existing?.created_at ?? timestamp,
   }
 
   const nextTemplates = normalizeTemplates(currentTemplates, updatedTemplate)
@@ -101,7 +101,7 @@ export async function deleteNotificationTemplate(templateId: string) {
       | undefined) ?? []
 
   const nextTemplates = currentTemplates.filter(
-    (template) => template['id'] !== templateId,
+    (template) => template.id !== templateId,
   )
 
   const { error } = await supabase.auth.updateUser({

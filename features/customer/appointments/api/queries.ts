@@ -3,15 +3,14 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type Appointment = Database['public']['Views']['appointments_view']['Row']
-type AppointmentService = Database['public']['Views']['appointment_services_view']['Row']
+type Appointment = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
 export async function getCustomerAppointments(): Promise<Appointment[]> {
   const session = await requireAuth()
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('appointments_view')
+    .from('admin_appointments_overview_view')
     .select('*')
     .eq('customer_id', session.user.id)
     .order('start_time', { ascending: false })
@@ -25,7 +24,7 @@ export async function getCustomerAppointmentById(id: string): Promise<Appointmen
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('appointments_view')
+    .from('admin_appointments_overview_view')
     .select('*')
     .eq('id', id)
     .eq('customer_id', session.user.id)
@@ -39,28 +38,21 @@ export async function getCustomerAppointmentById(id: string): Promise<Appointmen
   return data
 }
 
-export async function getAppointmentServices(appointmentId: string): Promise<AppointmentService[]> {
-  const session = await requireAuth()
+// Note: Service information is now included in admin_appointments_overview_view
+// via the service_name field. No separate query needed.
+
+
+export async function getAppointmentServices(appointmentId: string) {
   const supabase = await createClient()
-
-  // First verify the appointment belongs to this customer
-  const { data: appointment, error: appointmentError } = await supabase
-    .from('appointments_view')
-    .select('id, customer_id')
-    .eq('id', appointmentId)
-    .maybeSingle<Pick<Appointment, 'id' | 'customer_id'>>()
-
-  if (appointmentError) throw appointmentError
-  if (!appointment || appointment.customer_id !== session.user.id) {
-    throw new Error('Unauthorized')
-  }
-
+  
+  // Get appointment details which includes service information
   const { data, error } = await supabase
-    .from('appointment_services_view')
-    .select('*')
-    .eq('appointment_id', appointmentId)
-    .order('created_at', { ascending: true })
+    .from("appointments_view")
+    .select("*")
+    .eq("id", appointmentId)
+    .single()
 
   if (error) throw error
-  return data || []
+  
+  return data ? [data] : []
 }

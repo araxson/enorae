@@ -51,12 +51,17 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
     } finally {
       setIsRefreshing(false)
     }
-  }, [])
+  }, []) // No dependencies - refresh function is stable
 
   useEffect(() => {
-    const timer = setInterval(refresh, REFRESH_INTERVAL_MS)
-    return () => clearInterval(timer)
-  }, [refresh])
+    const timer = setInterval(() => {
+      void refresh()
+    }, REFRESH_INTERVAL_MS)
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [refresh]) // Includes refresh in dependencies as required
 
   return (
     <div className="flex flex-col gap-10">

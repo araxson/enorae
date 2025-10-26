@@ -1,3 +1,5 @@
+import { ANALYTICS_CONFIG } from '@/lib/config/constants'
+
 type RawPricingRule = {
   id: string
   rule_type: string
@@ -43,17 +45,34 @@ export type DashboardInsight = {
   potential_revenue_increase: number
 }
 
-const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+const DAYS_OF_WEEK = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const
+const DEFAULT_BUSINESS_START_HOUR = 8
+const DEFAULT_BUSINESS_END_HOUR = 18
+const ALL_DAYS_OF_WEEK = [0, 1, 2, 3, 4, 5, 6]
 
-const parseTime = (value: string | null, fallback: number) => {
+/**
+ * Parse time string (HH:MM format) to hour number
+ * @param value - Time string in HH:MM format
+ * @param fallback - Default hour to use if parsing fails
+ * @returns Hour as number (0-23)
+ */
+const parseTime = (value: string | null, fallback: number): number => {
   if (!value) return fallback
   const [hour] = value.split(':').map(Number)
-  return Number.isFinite(hour) ? hour : fallback
+  return Number.isFinite(hour) && hour !== undefined ? hour : fallback
 }
 
-const toPercentage = (rule: RawPricingRule) => {
-  if (rule.multiplier && rule.multiplier !== 1) {
-    return (rule.multiplier - 1) * 100
+/**
+ * Convert pricing rule to percentage adjustment
+ * @param rule - Raw pricing rule from database
+ * @returns Percentage adjustment (positive for surge, negative for discount)
+ */
+const toPercentage = (rule: RawPricingRule): number => {
+  const MULTIPLIER_NEUTRAL_VALUE = 1
+  const PERCENTAGE_MULTIPLIER = 100
+
+  if (rule.multiplier && rule.multiplier !== MULTIPLIER_NEUTRAL_VALUE) {
+    return (rule.multiplier - MULTIPLIER_NEUTRAL_VALUE) * PERCENTAGE_MULTIPLIER
   }
   if (rule.fixed_adjustment) {
     return rule.fixed_adjustment
@@ -61,6 +80,10 @@ const toPercentage = (rule: RawPricingRule) => {
   return 0
 }
 
+/**
+ * Build comprehensive pricing analytics including rules, scenarios, and insights
+ * Used for dynamic pricing dashboard and revenue forecasting
+ */
 export function buildPricingAnalytics(
   rules: RawPricingRule[],
   services: ServiceInfo[]
@@ -73,19 +96,19 @@ export function buildPricingAnalytics(
 
   const dashboardRules: DashboardRule[] = activeRules.flatMap((rule) => {
     const percentage = toPercentage(rule)
-    const type = percentage >= 0 ? 'surge' : 'discount'
-    const hours = {
-      start: parseTime(rule.start_time, 8),
-      end: parseTime(rule.end_time, 18),
+    const adjustmentType = percentage >= 0 ? 'surge' : 'discount'
+    const operatingHours = {
+      start: parseTime(rule.start_time, DEFAULT_BUSINESS_START_HOUR) ?? DEFAULT_BUSINESS_START_HOUR,
+      end: parseTime(rule.end_time, DEFAULT_BUSINESS_END_HOUR) ?? DEFAULT_BUSINESS_END_HOUR,
     }
 
-    const days = rule.days_of_week?.length ? rule.days_of_week : [0, 1, 2, 3, 4, 5, 6]
+    const applicableDays = rule.days_of_week?.length ? rule.days_of_week : ALL_DAYS_OF_WEEK
 
-    return days.map((dayIndex) => ({
-      day_of_week: dayNames[dayIndex] ?? 'sunday',
-      hour_start: hours.start,
-      hour_end: hours.end,
-      adjustment_type: type,
+    return applicableDays.map((dayIndex) => ({
+      day_of_week: DAYS_OF_WEEK[dayIndex] ?? 'sunday',
+      hour_start: operatingHours.start,
+      hour_end: operatingHours.end,
+      adjustment_type: adjustmentType,
       adjustment_percentage: Math.abs(percentage),
     }))
   })
@@ -93,7 +116,7 @@ export function buildPricingAnalytics(
   const scenarios: DashboardScenario[] = []
   const insightsMap = new Map<string, { base: number; peak: number[]; off: number[]; count: number }>()
 
-  const estimatedBookings = 25
+  const ESTIMATED_BOOKINGS_PER_SERVICE = 25
 
   for (const service of services) {
     const basePrice = Number(service.price || 0)
@@ -101,10 +124,13 @@ export function buildPricingAnalytics(
 
     for (const rule of dashboardRules) {
       const adjustmentPercent = rule.adjustment_percentage
+      const PERCENTAGE_DIVISOR = 100
+      const MULTIPLIER_NEUTRAL = 1
+
       const adjustedPrice =
         rule.adjustment_type === 'surge'
-          ? basePrice * (1 + adjustmentPercent / 100)
-          : basePrice * (1 - adjustmentPercent / 100)
+          ? basePrice * (MULTIPLIER_NEUTRAL + adjustmentPercent / PERCENTAGE_DIVISOR)
+          : basePrice * (MULTIPLIER_NEUTRAL - adjustmentPercent / PERCENTAGE_DIVISOR)
 
       scenarios.push({
         service_id: service.id,
@@ -112,49 +138,54 @@ export function buildPricingAnalytics(
         day: rule.day_of_week,
         hour: rule.hour_start,
         base_price: basePrice,
-        adjusted_price: Number(adjustedPrice.toFixed(2)),
+        adjusted_price: Number(adjustedPrice.toFixed(ANALYTICS_CONFIG.PRICE_DECIMAL_PLACES)),
         adjustment_type: rule.adjustment_type,
         adjustment_percentage: adjustmentPercent,
       })
 
-      const insight = insightsMap.get(service.id)
-      if (!insight) continue
-      insight.count += 1
+      const insightData = insightsMap.get(service.id)
+      if (!insightData) continue
+      insightData.count += 1
       if (rule.adjustment_type === 'surge') {
-        insight.peak.push(adjustedPrice)
+        insightData.peak.push(adjustedPrice)
       } else {
-        insight.off.push(adjustedPrice)
+        insightData.off.push(adjustedPrice)
       }
     }
   }
 
+  /**
+   * Calculate average of number array, fallback to base if empty
+   */
+  const calculateAverage = (values: number[], fallbackBase: number): number =>
+    values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : fallbackBase
+
   const insights: DashboardInsight[] = services.map((service) => {
-    const record = insightsMap.get(service.id)
-    if (!record) {
+    const insightRecord = insightsMap.get(service.id)
+    const servicePriceBase = Number(service.price || 0)
+
+    if (!insightRecord) {
       return {
         service_id: service.id,
         service_name: service.name,
-        base_price: Number(service.price || 0),
-        avg_off_peak_price: Number(service.price || 0),
-        avg_peak_price: Number(service.price || 0),
+        base_price: servicePriceBase,
+        avg_off_peak_price: servicePriceBase,
+        avg_peak_price: servicePriceBase,
         potential_revenue_increase: 0,
       }
     }
 
-    const average = (values: number[]) =>
-      values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : record.base
-
-    const avgPeak = average(record.peak)
-    const avgOffPeak = average(record.off)
-    const potentialIncrease = (avgPeak - record.base) * estimatedBookings
+    const averagePeakPrice = calculateAverage(insightRecord.peak, insightRecord.base)
+    const averageOffPeakPrice = calculateAverage(insightRecord.off, insightRecord.base)
+    const potentialRevenueIncrease = (averagePeakPrice - insightRecord.base) * ESTIMATED_BOOKINGS_PER_SERVICE
 
     return {
       service_id: service.id,
       service_name: service.name,
-      base_price: record.base,
-      avg_off_peak_price: Number(avgOffPeak.toFixed(2)),
-      avg_peak_price: Number(avgPeak.toFixed(2)),
-      potential_revenue_increase: Number(Math.max(potentialIncrease, 0).toFixed(2)),
+      base_price: insightRecord.base,
+      avg_off_peak_price: Number(averageOffPeakPrice.toFixed(ANALYTICS_CONFIG.PRICE_DECIMAL_PLACES)),
+      avg_peak_price: Number(averagePeakPrice.toFixed(ANALYTICS_CONFIG.PRICE_DECIMAL_PLACES)),
+      potential_revenue_increase: Number(Math.max(potentialRevenueIncrease, 0).toFixed(ANALYTICS_CONFIG.PRICE_DECIMAL_PLACES)),
     }
   })
 

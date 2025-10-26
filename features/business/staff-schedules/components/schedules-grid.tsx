@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { Trash2, Power, PowerOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -46,32 +46,40 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   // Group schedules by staff member
-  const staffGroups = schedules.reduce(
-    (acc, schedule) => {
-      const key = schedule['staff_id'] || 'unknown'
-      if (!acc[key]) {
-        acc[key] = {
-          staffId: schedule['staff_id'],
-          staffName: schedule['staff_name'] || 'Unknown',
-          staffTitle: schedule['staff_title'] || null,
-          schedules: [],
-        }
-      }
-      acc[key].schedules.push(schedule)
-      return acc
-    },
-    {} as Record<
-      string,
-      {
-        staffId: string | null
-        staffName: string
-        staffTitle: string | null
-        schedules: StaffScheduleWithDetails[]
-      }
-    >
-  )
+  type StaffGroup = {
+    staffId: string | null
+    staffName: string
+    staffTitle: string | null
+    schedules: StaffScheduleWithDetails[]
+  }
 
-  const handleDelete = async (scheduleId: string) => {
+  // PERFORMANCE: Memoize grouping logic to prevent re-computation on every render
+  const staffGroups = useMemo(() => {
+    return schedules.reduce<Record<string, StaffGroup>>(
+      (acc, schedule) => {
+        const key = schedule['staff_id'] || 'unknown'
+
+        if (!acc[key]) {
+          // PERFORMANCE: Mutate accumulator instead of spreading to reduce object creation
+          acc[key] = {
+            staffId: schedule['staff_id'],
+            staffName: schedule['staff_name'] || 'Unknown',
+            staffTitle: schedule['staff_title'] || null,
+            schedules: [schedule],
+          }
+          return acc
+        }
+
+        // PERFORMANCE: Mutate array instead of spreading
+        acc[key].schedules.push(schedule)
+        return acc
+      },
+      {}
+    )
+  }, [schedules])
+
+  // PERFORMANCE: Wrap callbacks in useCallback to prevent re-creation on every render
+  const handleDelete = useCallback(async (scheduleId: string) => {
     if (!confirm('Are you sure you want to delete this schedule?')) return
 
     setDeletingId(scheduleId)
@@ -84,9 +92,9 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
     } else {
       toast.error(result.error)
     }
-  }
+  }, [onUpdate])
 
-  const handleToggleActive = async (scheduleId: string, isActive: boolean | null) => {
+  const handleToggleActive = useCallback(async (scheduleId: string, isActive: boolean | null) => {
     const result = await toggleScheduleActive(scheduleId, !isActive)
     if (result.success) {
       toast.success(isActive ? 'Schedule deactivated' : 'Schedule activated')
@@ -94,13 +102,13 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
     } else {
       toast.error(result.error)
     }
-  }
+  }, [onUpdate])
 
-  const formatTime = (time: string | null) => {
+  const formatTime = useCallback((time: string | null) => {
     if (!time) return ''
     // Remove seconds if present
     return time.substring(0, 5)
-  }
+  }, [])
 
   if (Object.keys(staffGroups).length === 0) {
     return (
@@ -136,8 +144,8 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
               </TableHeader>
               <TableBody>
                 {group.schedules
-                  .sort((a, b) => (DAY_ORDER[a['day_of_week'] || 'monday'] || 0) - (DAY_ORDER[b['day_of_week'] || 'monday'] || 0))
-                  .map((schedule) => (
+                  .sort((a: StaffScheduleWithDetails, b: StaffScheduleWithDetails) => (DAY_ORDER[a['day_of_week'] || 'monday'] || 0) - (DAY_ORDER[b['day_of_week'] || 'monday'] || 0))
+                  .map((schedule: StaffScheduleWithDetails) => (
                     <TableRow key={schedule['id']}>
                       <TableCell className="font-medium">
                         {DAY_NAMES[schedule['day_of_week'] || 'monday'] || schedule['day_of_week']}

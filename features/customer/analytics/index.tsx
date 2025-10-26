@@ -1,10 +1,13 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
-import { generateMetadata as genMeta } from '@/lib/metadata'
+
 import { getCustomerMetrics } from './api/queries'
 import { MetricsDashboard } from './components/metrics-dashboard'
 
+import { PageLoading } from '@/features/shared/ui-components'
+import { generateMetadata as genMeta } from '@/lib/metadata'
+
 export const customerAnalyticsMetadata = genMeta({
+
   title: 'Analytics | Enorae',
   description: 'View your personal analytics and insights',
 })

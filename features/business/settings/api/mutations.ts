@@ -1,8 +1,6 @@
 'use server'
 
-export * from './mutations'
-
-// Direct re-export to help TypeScript resolver
+// Direct exports from mutation files
 export { updateSalonSettings, toggleAcceptingBookings, toggleFeature } from './mutations/salon'
 export { updateBookingRules } from './mutations/booking'
 export { updateCancellationPolicy } from './mutations/cancellation'

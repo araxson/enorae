@@ -85,14 +85,14 @@ export async function getReviewStats(salonId: string): Promise<{
 
   const { data: reviews, error } = await supabase
     .schema('engagement')
-    .from('salon_reviews_with_counts')
+    .from('salon_reviews_with_counts_view')
     .select('rating, response, is_flagged')
     .eq('salon_id', salonId)
 
   if (error) throw error
 
   type ReviewData = { rating: number | null; response: string | null; is_flagged: boolean | null }
-  const reviewsTyped = (reviews || []) as ReviewData[]
+  const reviewsTyped = reviews ?? []
 
   const totalReviews = reviewsTyped.length
   const averageRating = totalReviews > 0
@@ -126,7 +126,7 @@ export async function getReviewById(id: string): Promise<SalonReviewWithDetails 
 
   const { data, error } = await supabase
     .schema('engagement')
-    .from('salon_reviews_with_counts')
+    .from('salon_reviews_with_counts_view')
     .select('*')
     .eq('id', id)
     .eq('salon_id', salonId)
@@ -141,7 +141,7 @@ export async function getReviewById(id: string): Promise<SalonReviewWithDetails 
   let customer_name: string | null = null
   let responded_by_name: string | null = null
 
-  if (data.customer_id) {
+  if (data && 'customer_id' in data && data.customer_id) {
     const { data: customer } = await supabase
       .schema('identity')
       .from('profiles_metadata')
@@ -151,7 +151,7 @@ export async function getReviewById(id: string): Promise<SalonReviewWithDetails 
     customer_name = customer?.full_name ?? null
   }
 
-  if (data.responded_by_id) {
+  if (data && 'responded_by_id' in data && data.responded_by_id) {
     const { data: responder } = await supabase
       .schema('identity')
       .from('profiles_metadata')
@@ -165,5 +165,5 @@ export async function getReviewById(id: string): Promise<SalonReviewWithDetails 
     ...data,
     customer_name,
     responded_by_name,
-  }
+  } as SalonReviewWithDetails
 }

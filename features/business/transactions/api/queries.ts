@@ -88,5 +88,7 @@ export async function getManualTransactionById(
     throw error
   }
 
-  return data as unknown as ManualTransactionWithDetails
+  // Type guard to ensure data matches expected shape
+  if (!data || typeof data !== 'object') return null
+  return data as ManualTransactionWithDetails
 }

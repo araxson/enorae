@@ -44,7 +44,7 @@ export interface AuditLogFilters {
   isSuccess?: boolean
 }
 
-type SecurityIncidentLogRow = Database['public']['Views']['security_incident_logs']['Row']
+type SecurityIncidentLogRow = Database['public']['Views']['security_incident_logs_view']['Row']
 
 function normalizeRecord(value: unknown): Record<string, unknown> | null {
   if (value && typeof value === 'object' && !Array.isArray(value)) {
@@ -109,7 +109,7 @@ export async function getAuditLogs(
   const supabase = await createClient()
 
   let query = supabase
-    .from('security_incident_logs')
+    .from('security_incident_logs_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
@@ -164,7 +164,7 @@ export async function getSecurityAuditLogs(
   const supabase = await createClient()
 
   let query = supabase
-    .from('security_incident_logs')
+    .from('security_incident_logs_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
@@ -208,7 +208,7 @@ export async function getAuditLogStats(salonId: string) {
   oneDayAgo.setDate(oneDayAgo.getDate() - 1)
 
   const { data, error } = await supabase
-    .from('security_incident_logs')
+    .from('security_incident_logs_view')
     .select('id, is_success, severity, created_at')
     .eq('salon_id', salonId)
     .gte('created_at', oneDayAgo.toISOString())

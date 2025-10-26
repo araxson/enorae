@@ -20,9 +20,9 @@ export async function getUserSalonIds(): Promise<string[]> {
   const supabase = await createClient()
 
   const [ownedSalonsResult, staffSalonsResult] = await Promise.all([
-    supabase.from('salons').select('id').eq('owner_id', session.user.id),
+    supabase.from('salons_view').select('id').eq('owner_id', session.user.id),
     supabase
-      .from('staff')
+      .from('staff_profiles_view')
       .select('salon_id')
       .eq('user_id', session.user.id)
       .not('salon_id', 'is', null),
@@ -130,7 +130,7 @@ export async function canAccessSalon(salonId: string): Promise<boolean> {
   const supabase = await createClient()
 
   const { data: salonData } = await supabase
-    .from('salons')
+    .from('salons_view')
     .select('id')
     .eq('id', salonId)
     .eq('owner_id', session.user.id)
@@ -139,7 +139,7 @@ export async function canAccessSalon(salonId: string): Promise<boolean> {
   if (salonData) return true
 
   const { data: staffData } = await supabase
-    .from('staff')
+    .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .eq('salon_id', salonId)

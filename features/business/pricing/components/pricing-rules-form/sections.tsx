@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import type { Dispatch, SetStateAction } from 'react'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -11,7 +11,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { dayOptions, segmentOptions, ruleLabels, type RuleType } from './constants'
+
+import { dayOptions, segmentOptions, ruleLabels } from './constants'
+
+import type { Dispatch, SetStateAction } from 'react'
+import type { RuleType } from './constants'
 import type { PricingRuleFormState } from './types'
 
 type FormStateSetter = Dispatch<SetStateAction<PricingRuleFormState>>

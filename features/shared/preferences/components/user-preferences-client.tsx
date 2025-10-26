@@ -12,7 +12,7 @@ type NotificationSettings = {
   push_enabled?: boolean
 }
 
-const parseNotificationPreferences = (value: ProfilePreference['preferences']): NotificationSettings => {
+const parseNotificationPreferences = (value: ProfilePreference['preferences'] | undefined): NotificationSettings => {
   if (!value || typeof value !== 'object') {
     return {}
   }

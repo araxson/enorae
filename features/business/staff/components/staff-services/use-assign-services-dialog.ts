@@ -57,12 +57,12 @@ export function useAssignServicesDialog({
 
     setIsSubmitting(true)
     const formData = new FormData()
-    formData.append('staffId', staff.id)
-    formData.append('serviceId', selectedService)
-    if (proficiencyLevel) formData.append('proficiencyLevel', proficiencyLevel)
-    if (priceOverride) formData.append('priceOverride', priceOverride)
-    if (durationOverride) formData.append('durationOverride', durationOverride)
-    if (notes) formData.append('notes', notes)
+    formData.append('staffId', String(staff.id))
+    formData.append('serviceId', String(selectedService))
+    if (proficiencyLevel) formData.append('proficiencyLevel', String(proficiencyLevel))
+    if (priceOverride) formData.append('priceOverride', String(priceOverride))
+    if (durationOverride) formData.append('durationOverride', String(durationOverride))
+    if (notes) formData.append('notes', String(notes))
 
     const result = await assignServiceToStaff(formData)
 
@@ -82,8 +82,8 @@ export function useAssignServicesDialog({
 
     setIsSubmitting(true)
     const formData = new FormData()
-    formData.append('staffId', staff.id)
-    formData.append('serviceIds', JSON.stringify(Array.from(selectedServices)))
+    formData.append('staffId', String(staff.id))
+    formData.append('serviceIds', String(JSON.stringify(Array.from(selectedServices))))
 
     const result = await bulkAssignServices(formData)
     if (result.error) {
@@ -100,8 +100,8 @@ export function useAssignServicesDialog({
     if (!staff) return
 
     const formData = new FormData()
-    formData.append('staffId', staff.id)
-    formData.append('serviceId', serviceId)
+    formData.append('staffId', String(staff.id))
+    formData.append('serviceId', String(serviceId))
 
     const result = await unassignServiceFromStaff(formData)
     if (result.error) {

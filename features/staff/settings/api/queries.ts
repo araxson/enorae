@@ -44,7 +44,7 @@ export async function getUserPreferences(): Promise<UserPreferences> {
 
   // Get profile metadata which stores preferences
   const { data: profile } = await supabase
-    .from('profiles')
+    .from('profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
     .single<{ id: string }>()
@@ -52,6 +52,7 @@ export async function getUserPreferences(): Promise<UserPreferences> {
   if (!profile?.id) return DEFAULT_PREFERENCES
 
   const { data: metadata } = await supabase
+    .schema('identity')
     .from('profiles_metadata')
     .select('*')
     .eq('profile_id', profile.id)

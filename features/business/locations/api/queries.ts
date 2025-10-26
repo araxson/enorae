@@ -2,8 +2,7 @@ import 'server-only'
 import { requireAnyRole, getSalonContext, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-
-type LocationAddress = Database['public']['Views']['location_addresses']['Row']
+import type { SalonLocation, LocationAddress } from '../types'
 
 export async function getLocationAddress(locationId: string): Promise<LocationAddress | null> {
   // SECURITY: Require business user role
@@ -12,7 +11,7 @@ export async function getLocationAddress(locationId: string): Promise<LocationAd
 
   // Verify location ownership through salon
   const { data: location } = await supabase
-    .from('salon_locations')
+    .from('salon_locations_view')
     .select('salon_id')
     .eq('id', locationId)
     .single<{ salon_id: string | null }>()
@@ -22,7 +21,7 @@ export async function getLocationAddress(locationId: string): Promise<LocationAd
   }
 
   const { data, error } = await supabase
-    .from('location_addresses')
+    .from('location_addresses_view')
     .select('*')
     .eq('location_id', locationId)
     .single()
@@ -43,7 +42,7 @@ export async function getAllLocationAddresses(): Promise<LocationAddress[]> {
 
   // Get all locations for user's salons
   const { data: locations } = await supabase
-    .from('salon_locations')
+    .from('salon_locations_view')
     .select('id')
     .in('salon_id', salonIds)
     .returns<{ id: string }[]>()
@@ -56,9 +55,28 @@ export async function getAllLocationAddresses(): Promise<LocationAddress[]> {
 
   // Get all addresses for these locations
   const { data, error } = await supabase
-    .from('location_addresses')
+    .from('location_addresses_view')
     .select('*')
     .in('location_id', locationIds)
+
+  if (error) throw error
+  return data || []
+}
+
+export async function getSalonLocations(): Promise<SalonLocation[]> {
+  // SECURITY: Require business user role
+  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const supabase = await createClient()
+
+  const { accessibleSalonIds: salonIds } = await getSalonContext()
+  if (!salonIds.length) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('salon_locations_view')
+    .select('*')
+    .in('salon_id', salonIds)
 
   if (error) throw error
   return data || []

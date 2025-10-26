@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { createService, updateService } from '@/features/business/services/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
-type Service = Database['public']['Views']['services']['Row']
+type Service = Database['public']['Views']['services_view']['Row']
 
 type UseServiceFormParams = {
   salonId: string

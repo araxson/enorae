@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Select,
   SelectContent,
@@ -29,17 +29,14 @@ export function SalonSwitcherClient({
   name,
   triggerId,
 }: SalonSwitcherClientProps) {
-  const [value, setValue] = useState(defaultSalonId)
+  // Derive initial value from props - no state sync needed
+  const initialValue = useMemo(() => {
+    if (defaultSalonId) return defaultSalonId
+    if (salons.length > 0 && salons[0]?.id) return salons[0].id
+    return ''
+  }, [defaultSalonId, salons])
 
-  useEffect(() => {
-    setValue(defaultSalonId)
-  }, [defaultSalonId])
-
-  useEffect(() => {
-    if (!value && salons.length > 0) {
-      setValue(salons[0].id)
-    }
-  }, [salons, value])
+  const [value, setValue] = useState(initialValue)
 
   return (
     <div className="w-64">

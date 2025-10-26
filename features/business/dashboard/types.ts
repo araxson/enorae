@@ -1,4 +1,8 @@
-import type { AppointmentWithDetails, SalonView } from './api/queries'
+import type { Database } from '@/lib/types/database.types'
+
+// Database view types
+export type AppointmentWithDetails = Database['public']['Views']['appointments_view']['Row']
+export type SalonView = Database['public']['Views']['salons_view']['Row']
 
 export type BusinessDashboardMetrics = {
   totalAppointments: number

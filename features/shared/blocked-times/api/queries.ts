@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-type BlockedTime = Database['public']['Views']['blocked_times_view']['Row']
+type BlockedTime = Database['scheduling']['Tables']['blocked_times']['Row']
 
 export type BlockedTimeWithRelations = BlockedTime & {
   staff: { id: string; full_name: string | null } | null
@@ -24,7 +24,8 @@ export async function getBlockedTimesBySalon(salonId: string) {
 
   // Explicit salon filter for security
   const { data, error } = await supabase
-    .from('blocked_times_view')
+    .schema('scheduling')
+    .from('blocked_times')
     .select('*')
     .eq('salon_id', salonId)
     .order('start_time', { ascending: true })
@@ -44,7 +45,8 @@ export async function getBlockedTimesByStaff(staffId: string) {
 
   // Explicit staff filter for security
   const { data, error } = await supabase
-    .from('blocked_times_view')
+    .schema('scheduling')
+    .from('blocked_times')
     .select('*')
     .eq('staff_id', staffId)
     .order('start_time', { ascending: true })
@@ -69,7 +71,8 @@ export async function getUpcomingBlockedTimes(salonId: string) {
 
   // Explicit salon filter for security
   const { data, error } = await supabase
-    .from('blocked_times_view')
+    .schema('scheduling')
+    .from('blocked_times')
     .select('*')
     .eq('salon_id', salonId)
     .gte('start_time', now)
@@ -90,7 +93,8 @@ export async function getBlockedTimeById(id: string) {
 
   // Fetch and verify ownership/scope
   const { data, error } = await supabase
-    .from('blocked_times_view')
+    .schema('scheduling')
+    .from('blocked_times')
     .select('*')
     .eq('id', id)
     .maybeSingle<{ salon_id: string | null }>()

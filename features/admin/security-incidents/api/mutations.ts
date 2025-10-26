@@ -89,7 +89,7 @@ export async function logSecurityIncident(formData: FormData) {
 
     if (!validationResult.success) {
       const message =
-        validationResult.error.errors[0]?.message ?? 'Invalid incident payload submitted'
+        validationResult.error.issues[0]?.message ?? 'Invalid incident payload submitted'
       console.error('[AdminSecurityIncidents] Validation failed', validationResult.error)
       return { error: message }
     }

@@ -5,7 +5,9 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 
-export type AppointmentStatus = 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'no_show'
+import type { Database } from '@/lib/types/database.types'
+
+export type AppointmentStatus = Database['public']['Enums']['appointment_status']
 
 const appointmentNotesSchema = z.object({
   appointmentId: z.string().uuid(),
@@ -133,7 +135,7 @@ export async function addAppointmentNotes(
 
     const validation = appointmentNotesSchema.safeParse(data)
     if (!validation.success) {
-      return { success: false, error: validation.error.errors[0].message }
+      return { success: false, error: validation.error.issues[0]?.message || "Validation failed" }
     }
 
     const { appointmentId, serviceNotes, productsUsed, nextVisitRecommendations } = validation.data
@@ -145,8 +147,8 @@ export async function addAppointmentNotes(
       .eq('id', appointmentId)
       .single<{ staff_id: string; customer_id: string; salon_id: string }>()
 
-    if (!appointment) {
-      return { success: false, error: 'Appointment not found' }
+    if (!appointment || !appointment.staff_id) {
+      return { success: false, error: 'Appointment not found or not assigned to staff' }
     }
 
   const { data: staffProfile } = await supabase

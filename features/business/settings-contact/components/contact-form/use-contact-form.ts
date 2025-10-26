@@ -6,7 +6,7 @@ import { updateSalonContactDetails, type ContactDetailsInput } from '@/features/
 
 import type { Database } from '@/lib/types/database.types'
 
-type SalonContactDetails = Database['public']['Views']['salon_contact_details']['Row']
+type SalonContactDetails = Database['public']['Views']['salon_contact_details_view']['Row']
 
 type UseContactFormParams = {
   salonId: string
@@ -79,7 +79,8 @@ export function useContactForm({ salonId, contactDetails }: UseContactFormParams
 
     if (result.success) {
       setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
+      const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
+      setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error ?? 'Unable to update contact details')
     }

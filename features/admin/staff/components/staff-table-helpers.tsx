@@ -1,15 +1,8 @@
-import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
+import { formatDate } from '@/lib/utils/date-time'
 
-export function formatDate(value: string | null) {
-  if (!value) return '—'
-  try {
-    return format(new Date(value), 'MMM d, yyyy')
-  } catch (error) {
-    return '—'
-  }
-}
+export { formatDate }
 
 export function renderBackgroundBadge(status: StaffWithMetrics['background']['status']) {
   switch (status) {

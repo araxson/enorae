@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation'
+
+import { Separator } from '@/components/ui/separator'
 import { verifySession } from '@/lib/auth'
+
 import { getCustomerAppointments } from './api/queries'
 import { AppointmentsList } from './components/appointments-list'
-import { Separator } from '@/components/ui/separator'
 
 export async function CustomerAppointments() {
   const session = await verifySession()

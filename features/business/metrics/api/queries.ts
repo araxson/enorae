@@ -3,8 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-// COMPLIANCE: Use public Views for SELECT typing
-type SalonMetricsView = Database['public']['Views']['salon_metrics_with_counts_view']['Row']
+// COMPLIANCE: Use organization schema Views for SELECT typing
+type SalonMetricsView = Database['organization']['Views']['salon_metrics_with_counts_view']['Row']
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
 
 export type DailyMetricWithTimestamp = DailyMetric & { metric_at: string }
@@ -28,18 +28,20 @@ export async function getLatestSalonMetrics(): Promise<SalonMetricsData | null> 
   const salonId = await requireUserSalonId()
 
   const { data, error } = await supabase
-    .from('salon_metrics_with_counts_view')
+    .schema('analytics').from('salon_metrics_with_counts_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('updated_at', { ascending: false })
     .limit(1)
-    .single()
+    .maybeSingle<SalonMetricsView>()
 
   if (error) {
     // No metrics found yet
     if (error.code === 'PGRST116') return null
     throw error
   }
+
+  if (!data) return null
 
   // Get salon info
   const { data: salon } = await supabase
@@ -69,11 +71,12 @@ export async function getSalonMetricsHistory(days = 30): Promise<SalonMetricsDat
   cutoffDate.setDate(cutoffDate.getDate() - days)
 
   const { data, error } = await supabase
-    .from('salon_metrics_with_counts_view')
+    .schema('analytics').from('salon_metrics_with_counts_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('updated_at', cutoffDate.toISOString())
     .order('updated_at', { ascending: true })
+    .returns<SalonMetricsView[]>()
 
   if (error) throw error
 

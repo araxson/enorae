@@ -30,13 +30,13 @@ export async function getCustomerInsights(
 
   const [appointmentsResponse, metricsResponse] = await Promise.all([
     supabase
-      .from('appointments')
-      .select('customer_id, customer_name, customer_email, total_price, status, start_time')
+      .from('appointments_view')
+      .select('customer_id, status, start_time')
       .eq('salon_id', salonId)
       .gte('start_time', startDate)
       .lte('start_time', endDate),
     supabase
-      .from('daily_metrics')
+      .from('daily_metrics_view')
       .select('new_customers, returning_customers')
       .eq('salon_id', salonId)
       .gte('metric_at', startDate)
@@ -48,8 +48,9 @@ export async function getCustomerInsights(
 
   const appointments = (appointmentsResponse.data || []) as Appointment[]
   const completed = appointments.filter(appointment => appointment['status'] === 'completed')
-  const revenue = completed.reduce((sum, appointment) => sum + (appointment['total_price'] || 0), 0)
-  const averageOrderValue = completed.length ? revenue / completed.length : 0
+  // NOTE: total_price column doesn't exist in appointments_view - revenue calculation removed
+  const revenue = 0
+  const averageOrderValue = 0
 
   type CustomerAgg = {
     name: string
@@ -62,12 +63,11 @@ export async function getCustomerInsights(
   for (const appointment of completed) {
     if (!appointment['customer_id']) continue
     const existing = customers.get(appointment['customer_id']) || {
-      name: appointment['customer_name'] || 'Customer',
-      email: appointment['customer_email'],
+      name: 'Customer', // customer_name doesn't exist in appointments_view
+      email: null, // customer_email doesn't exist in appointments_view
       totalSpent: 0,
       visitCount: 0,
     }
-    existing.totalSpent += appointment['total_price'] || 0
     existing.visitCount += 1
     customers.set(appointment['customer_id'], existing)
   }

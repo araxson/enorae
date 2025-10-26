@@ -2,27 +2,10 @@
  * Coupon utility functions
  * Pure functions that can be used in both server and client components
  */
+import 'server-only'
+import type { CouponAnalyticsSnapshot } from './coupon-validation'
 
-export type CouponAnalyticsSnapshot = {
-  coupons: Array<{
-    id: string
-    code: string
-    description: string | null
-    is_active: boolean
-    valid_until: string | null
-    deleted_at: string | null
-    stats: {
-      totalUses: number
-      totalDiscount: number
-    }
-  }>
-  usage: Array<{
-    created_at: string
-    discount_amount: number
-  }>
-}
-
-export function buildCouponEffectiveness(analytics: CouponAnalyticsSnapshot) {
+export function buildCouponEffectivenessReport(analytics: CouponAnalyticsSnapshot) {
   const { coupons, usage } = analytics
 
   const totalDiscount = coupons.reduce((sum, coupon) => sum + coupon.stats.totalDiscount, 0)
@@ -40,6 +23,7 @@ export function buildCouponEffectiveness(analytics: CouponAnalyticsSnapshot) {
   const usageByDay = usage.reduce<Record<string, { uses: number; discount: number }>>((acc, entry) => {
     if (!entry.created_at) return acc
     const day = entry.created_at.split('T')[0]
+    if (!day) return acc
     const bucket = acc[day] ?? { uses: 0, discount: 0 }
     bucket.uses += 1
     bucket.discount += Number(entry.discount_amount || 0)

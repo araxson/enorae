@@ -4,18 +4,15 @@ import { Phone, Mail, Globe, Facebook, Instagram, Twitter, MessageCircle } from 
 import type { Database } from '@/lib/types/database.types'
 import { Separator } from '@/components/ui/separator'
 
-type SalonContactDetails = Database['public']['Views']['salon_contact_details']['Row']
+type SalonContactDetails = Database['public']['Views']['salons_view']['Row']
 
 interface SalonContactDetailsProps {
   contactDetails: SalonContactDetails
 }
 
 export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps) {
-  const socialLinks = [
-    { icon: Facebook, url: contactDetails['facebook_url'], label: 'Facebook' },
-    { icon: Instagram, url: contactDetails['instagram_url'], label: 'Instagram' },
-    { icon: Twitter, url: contactDetails['twitter_url'], label: 'Twitter' },
-  ].filter(link => link['url'])
+  // Note: Social media links not available in current database schema
+  const socialLinks: Array<{ icon: typeof Facebook; url: string; label: string }> = []
 
   return (
     <Card>
@@ -66,60 +63,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
             </div>
           )}
 
-          {/* WhatsApp */}
-          {contactDetails['whatsapp_number'] && (
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <MessageCircle className="h-4 w-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">WhatsApp</p>
-              </div>
-              <Button size="sm" variant="outline" asChild>
-                <a
-                  href={`https://wa.me/${contactDetails['whatsapp_number'].replace(/\D/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Message
-                </a>
-              </Button>
-            </div>
-          )}
-
-          {/* Social Media */}
-          {socialLinks.length > 0 && (
-            <div>
-              <Separator className="my-4" />
-              <p className="text-sm text-muted-foreground">Follow us</p>
-              <div className="mt-3 flex items-center gap-3">
-                {socialLinks.map((link) => {
-                  const Icon = link.icon
-                  return (
-                    <Button
-                      key={link['label']}
-                      size="sm"
-                      variant="outline"
-                      className="flex-1"
-                      asChild
-                    >
-                      <a href={link['url']!} target="_blank" rel="noopener noreferrer">
-                        <Icon className="h-4 w-4 mr-2" />
-                        {link['label']}
-                      </a>
-                    </Button>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Operating Hours Display */}
-          {contactDetails['hours_display_text'] && (
-            <div>
-              <Separator className="my-4" />
-              <p className="text-sm text-muted-foreground">Hours</p>
-              <div className="mt-2 text-sm whitespace-pre-line">{contactDetails['hours_display_text']}</div>
-            </div>
-          )}
+          {/* Note: WhatsApp, social media, and hours display not available in current database schema */}
         </div>
       </CardContent>
     </Card>

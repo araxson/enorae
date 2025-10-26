@@ -42,7 +42,7 @@ export async function updateCancellationPolicy(
   } catch (error) {
     console.error('Error updating cancellation policy:', error)
     if (error instanceof z.ZodError) {
-      return { error: `Validation failed: ${error.errors[0]?.message}` }
+      return { error: `Validation failed: ${error.issues[0]?.message}` }
     }
     return { error: 'Failed to update cancellation policy' }
   }

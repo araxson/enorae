@@ -201,10 +201,13 @@ export async function getSalonTodayHours(salonId: string): Promise<string> {
   if (todayHours['is_closed']) return 'Closed today'
 
   // Format time
-  const formatTime = (time: string | null) => {
+  const formatTime = (time: string | null | undefined) => {
     if (!time) return ''
-    const [hours, minutes] = time.split(':')
-    const hour = parseInt(hours)
+    const parts = time.split(':')
+    if (parts.length < 2) return time
+    const hours = parts[0] ?? ''
+    const minutes = parts[1] ?? ''
+    const hour = parseInt(hours || '0')
     const ampm = hour >= 12 ? 'PM' : 'AM'
     const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
     return `${displayHour}:${minutes} ${ampm}`

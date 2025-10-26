@@ -2,16 +2,15 @@ import 'server-only'
 
 import type { Database } from '@/lib/types/database.types'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
-import {
-  getStaffById,
-  getAvailableServices,
-  getStaffServices,
-  type StaffWithServices,
-} from '@/features/business/staff/api/queries'
+import { getStaffById, type EnrichedStaffProfile } from '@/features/business/staff/api/queries'
+import { createClient } from '@/lib/supabase/server'
 
-type StaffRow = Database['public']['Views']['staff_profiles_view']['Row']
-type StaffServiceRow = Database['public']['Views']['staff_services']['Row']
-type ServiceRow = Database['public']['Views']['services']['Row']
+type StaffServiceRow = Database['public']['Views']['staff_services_view']['Row']
+type ServiceRow = Database['public']['Views']['services_view']['Row']
+
+export interface StaffWithServices extends EnrichedStaffProfile {
+  services: StaffServiceRow[]
+}
 
 export class StaffServicesNotFoundError extends Error {
   constructor(message = 'Staff member not found') {
@@ -26,20 +25,37 @@ export interface StaffServicesData {
 }
 
 function buildStaffWithServices(
-  staff: StaffRow,
+  staff: EnrichedStaffProfile,
   services: StaffServiceRow[],
 ): StaffWithServices {
   return {
-    id: staff['id']!,
-    full_name: staff['full_name'],
-    email: staff['email'],
-    title: staff['title'],
-    avatar_url: staff['avatar_url'],
-    bio: staff['bio'],
-    experience_years: staff['experience_years'],
-    status: staff['status'],
+    ...staff,
     services,
   }
+}
+
+async function getStaffServices(staffId: string): Promise<StaffServiceRow[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('staff_services_view')
+    .select('*')
+    .eq('staff_id', staffId)
+    .returns<StaffServiceRow[]>()
+
+  if (error) throw error
+  return data ?? []
+}
+
+async function getAvailableServices(salonId: string): Promise<ServiceRow[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('services_view')
+    .select('*')
+    .eq('salon_id', salonId)
+    .returns<ServiceRow[]>()
+
+  if (error) throw error
+  return data ?? []
 }
 
 export async function getStaffServicesData(
@@ -47,19 +63,19 @@ export async function getStaffServicesData(
 ): Promise<StaffServicesData> {
   const staff = await getStaffById(staffId)
 
-  if (!staff || !staff['id']) {
+  if (!staff || !staff.id) {
     throw new StaffServicesNotFoundError()
   }
 
   const [assignedServices, salon] = await Promise.all([
-    getStaffServices(staff['id']),
+    getStaffServices(staff.id),
     getUserSalon(),
   ])
 
-  const availableServices = await getAvailableServices(salon['id']!)
+  const availableServices = await getAvailableServices(salon.id!)
 
   return {
-    staff: buildStaffWithServices(staff as StaffRow, assignedServices),
+    staff: buildStaffWithServices(staff, assignedServices),
     availableServices,
   }
 }

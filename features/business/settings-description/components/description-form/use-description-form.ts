@@ -6,7 +6,7 @@ import { updateSalonDescription, type DescriptionInput } from '@/features/busine
 
 import type { Database } from '@/lib/types/database.types'
 
-type SalonDescription = Database['public']['Views']['salon_descriptions']['Row']
+type SalonDescription = Database['public']['Views']['salon_descriptions_view']['Row']
 
 type UseDescriptionFormParams = {
   salonId: string
@@ -87,7 +87,8 @@ export function useDescriptionForm({ salonId, description }: UseDescriptionFormP
 
     if (result.success) {
       setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
+      const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
+      setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error ?? 'Unable to update description')
     }

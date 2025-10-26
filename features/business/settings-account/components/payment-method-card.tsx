@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Calendar, CreditCard } from 'lucide-react'
-import type { Subscription } from './billing-subscription-form'
+import type { Subscription } from '../types'
 
 export function PaymentMethodCard({
   subscription,

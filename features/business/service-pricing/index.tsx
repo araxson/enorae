@@ -4,6 +4,9 @@ import { ServicePricingClient } from './components/service-pricing-client'
 
 export async function ServicePricing() {
   const salon = await getUserSalon()
+  if (!salon) {
+    throw new Error('No salon found for user')
+  }
   const [pricing, services] = await Promise.all([
     getServicePricing(),
     getServices(salon.id!),

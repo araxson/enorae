@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { resolveSalonContext, UUID_REGEX } from './shared'
+import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
 
 const CATALOG_SCHEMA = 'catalog'
 const PRICING_TABLE = 'service_pricing'

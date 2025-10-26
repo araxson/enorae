@@ -1,34 +1,26 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import type { Json } from '@/lib/types/database.types'
+import type { Database } from '@/lib/types/database.types'
 
-// TODO: communication_notification_queue view doesn't exist yet
-type Notification = {
-  id: string
-  user_id: string
-  channels: string[]
-  status: string | null
-  created_at: string | null
-  scheduled_for: string | null
-  sent_at: string | null
-  notification_type: string | null
-  payload: Json | null
-}
+type Message = Database['communication']['Tables']['messages']['Row']
 
 export async function getNotifications(limit = 50) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Use messages table to get notifications (messages sent to the user)
   const { data, error } = await supabase
-    .from('communication_notification_queue')
+    .schema('communication')
+    .from('messages')
     .select('*')
-    .eq('user_id', user.id)
+    .eq('to_user_id', user.id)
+    .eq('is_read', false)
     .order('created_at', { ascending: false })
     .limit(limit)
 
   if (error) throw error
-  return data as Notification[]
+  return data as Message[]
 }
 
 export async function getUnreadNotificationsCount(): Promise<number> {
@@ -36,12 +28,13 @@ export async function getUnreadNotificationsCount(): Promise<number> {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  // Count unread notifications directly
+  // Count unread messages
   const { count, error } = await supabase
-    .from('communication_notification_queue')
+    .schema('communication')
+    .from('messages')
     .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id)
-    .eq('status', 'pending')
+    .eq('to_user_id', user.id)
+    .eq('is_read', false)
 
   if (error) {
     console.error('Error getting unread count:', error)
@@ -56,14 +49,16 @@ export async function getNotificationsByChannel(channel: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  // Use messages table with context_type filter for channel
   const { data, error } = await supabase
-    .from('communication_notification_queue')
+    .schema('communication')
+    .from('messages')
     .select('*')
-    .eq('user_id', user.id)
-    .contains('channels', [channel])
+    .eq('to_user_id', user.id)
+    .eq('context_type', channel)
     .order('created_at', { ascending: false })
     .limit(100)
 
   if (error) throw error
-  return data as Notification[]
+  return data as Message[]
 }

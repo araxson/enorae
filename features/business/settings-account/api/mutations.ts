@@ -109,10 +109,12 @@ export async function updateTwoFactorAuth(enabled: boolean) {
     // Get enrolled factors
     const { data: factors } = await supabase.auth.mfa.listFactors()
 
-    if (factors && factors.totp && factors.totp.length > 0) {
+    // Type guard: Check if TOTP factors exist and have at least one entry
+    const totpFactors = factors?.totp
+    if (Array.isArray(totpFactors) && totpFactors.length > 0 && totpFactors[0]) {
       // Unenroll from MFA
       const { error } = await supabase.auth.mfa.unenroll({
-        factorId: factors.totp[0].id,
+        factorId: totpFactors[0].id,
       })
 
       if (error) throw error

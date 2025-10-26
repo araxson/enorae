@@ -3,7 +3,7 @@ import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from 
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-type SalonDescription = Database['public']['Views']['salon_descriptions']['Row']
+type SalonDescription = Database['public']['Views']['salon_descriptions_view']['Row']
 
 export async function getSalonDescription(salonId: string): Promise<SalonDescription | null> {
   // SECURITY: Require business user role
@@ -15,7 +15,7 @@ export async function getSalonDescription(salonId: string): Promise<SalonDescrip
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('salon_descriptions')
+    .from('salon_descriptions_view')
     .select('*')
     .eq('salon_id', salonId)
     .single()

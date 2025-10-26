@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { sendMessage, markMessagesAsRead } from '@/features/shared/messaging/api/mutations'
 import { format } from 'date-fns'
@@ -33,7 +33,23 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    markMessagesAsRead(threadId)
+    let isMounted = true
+
+    const markAsRead = async () => {
+      try {
+        await markMessagesAsRead(threadId)
+      } catch (err) {
+        console.error('Failed to mark messages as read:', err)
+      }
+    }
+
+    if (isMounted) {
+      void markAsRead()
+    }
+
+    return () => {
+      isMounted = false
+    }
   }, [threadId])
 
   async function handleSend() {

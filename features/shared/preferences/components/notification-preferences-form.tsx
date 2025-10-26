@@ -47,7 +47,8 @@ export function NotificationPreferencesForm({
     if (result.success) {
       setSuccess(true)
       router.refresh()
-      setTimeout(() => setSuccess(false), 3000)
+      const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
+      setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error)
     }

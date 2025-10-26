@@ -17,7 +17,7 @@ export async function respondToReview(formData: FormData) {
     })
 
     if (!result.success) {
-      return { error: result.error.errors[0]?.message ?? 'Validation failed' }
+      return { error: result.error.issues[0]?.message ?? 'Validation failed' }
     }
 
     const session = await resolveAdminSession()

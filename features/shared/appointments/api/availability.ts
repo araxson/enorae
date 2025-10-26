@@ -49,7 +49,7 @@ export async function checkStaffAvailability(params: AvailabilityArgs): Promise<
   })
 
   if (!parsed.success) {
-    throw new Error(parsed.error.errors[0]?.message ?? 'Invalid availability input')
+    throw new Error(parsed.error.issues[0]?.message ?? 'Invalid availability input')
   }
 
   const { staffId, startTime, endTime, excludeAppointmentId } = parsed.data
@@ -83,11 +83,10 @@ export async function checkStaffAvailability(params: AvailabilityArgs): Promise<
     .from('blocked_times_view')
     .select('reason, block_type')
     .eq('staff_id', staffId)
-    .eq('is_active', true)
     .is('deleted_at', null)
     .lt('start_time', endIso)
     .gt('end_time', startIso)
-    .maybeSingle()
+    .maybeSingle<{ reason: string | null; block_type: string | null }>()
 
   const available = !appointments?.length && !blockedTime
 
@@ -113,7 +112,7 @@ export async function checkAppointmentConflict(params: ConflictArgs): Promise<Co
   })
 
   if (!parsed.success) {
-    throw new Error(parsed.error.errors[0]?.message ?? 'Invalid conflict check input')
+    throw new Error(parsed.error.issues[0]?.message ?? 'Invalid conflict check input')
   }
 
   const { salonId, staffId, startTime, endTime, excludeAppointmentId } = parsed.data
@@ -143,7 +142,33 @@ export async function checkAppointmentConflict(params: ConflictArgs): Promise<Co
     throw new Error(error.message)
   }
 
+  // FIX 4: Also check service-level conflicts in appointment_services table
+  // A service might have different start/end times than the appointment overall
+  let serviceConflictQuery = supabase
+    .schema('scheduling')
+    .from('appointment_services')
+    .select('id')
+    .eq('staff_id', staffId)
+    .neq('status', 'cancelled')
+    .not('start_time', 'is', null)
+    .not('end_time', 'is', null)
+    .lt('start_time', endIso)
+    .gt('end_time', startIso)
+
+  if (excludeAppointmentId) {
+    serviceConflictQuery = serviceConflictQuery.neq('appointment_id', excludeAppointmentId)
+  }
+
+  const { data: serviceConflicts, error: serviceError } = await serviceConflictQuery
+
+  if (serviceError) {
+    throw new Error(serviceError.message)
+  }
+
+  const hasServiceConflict = Boolean(serviceConflicts?.length)
+  const hasConflict = Boolean(conflicts?.length) || hasServiceConflict
+
   return {
-    hasConflict: Boolean(conflicts?.length),
+    hasConflict,
   }
 }

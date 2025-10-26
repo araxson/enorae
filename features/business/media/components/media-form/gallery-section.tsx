@@ -6,6 +6,7 @@ import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 type GallerySectionProps = {
   galleryUrls: string[]
   newGalleryUrl: string
@@ -31,12 +32,19 @@ export function GallerySection({
       <CardContent>
         <div className="flex flex-col gap-6">
           <div className="flex gap-2">
-            <Input
-              value={newGalleryUrl}
-              onChange={(event) => onNewGalleryUrlChange(event.target.value)}
-              placeholder="https://example.com/photo.jpg"
-              type="url"
-            />
+            <div className="flex-1">
+              <Label htmlFor="gallery-url-input" className="sr-only">
+                Gallery image URL
+              </Label>
+              <Input
+                id="gallery-url-input"
+                value={newGalleryUrl}
+                onChange={(event) => onNewGalleryUrlChange(event.target.value)}
+                placeholder="https://example.com/photo.jpg"
+                type="url"
+                aria-label="Gallery image URL"
+              />
+            </div>
             <Button type="button" onClick={onAddImage} disabled={isAddingImage || !newGalleryUrl.trim()}>
               Add
             </Button>
@@ -53,6 +61,7 @@ export function GallerySection({
                     size="icon"
                     className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100"
                     onClick={() => onRemoveImage(url)}
+                    aria-label={`Remove image ${index + 1}`}
                   >
                     <X className="h-4 w-4" />
                   </Button>

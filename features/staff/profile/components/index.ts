@@ -1,0 +1,6 @@
+export { CertificationsEditor } from './certifications-editor'
+export { PortfolioGallery } from './portfolio-gallery'
+export { ProfileClient } from './profile-client'
+export { ProfilePhotoUpload } from './profile-photo-upload'
+export { SpecialtiesEditor } from './specialties-editor'
+export { StaffInfoForm } from './staff-info-form'

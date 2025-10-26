@@ -30,7 +30,7 @@ export async function cancelTimeOffRequest(formData: FormData) {
 
     // Verify ownership and status
     const { data: request, error: fetchError } = await supabase
-      .from('time_off_requests')
+      .schema('scheduling').from('time_off_requests')
       .select('staff_id, staff_user_id, status')
       .eq('id', id)
       .single<{ staff_id: string; staff_user_id: string | null; status: string }>()
@@ -54,7 +54,7 @@ export async function cancelTimeOffRequest(formData: FormData) {
 
     const { error: updateError } = await supabase
       .schema('scheduling')
-      .from('time_off_requests')
+      .schema('scheduling').from('time_off_requests')
       .update<TimeOffRequestUpdate>(cancelPayload)
       .eq('id', id)
       .eq('staff_id', staffProfile.id) // Security check

@@ -81,14 +81,10 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     )}
                   </TableCell>
                   <TableCell>
-                    {appointment['customer_name'] ||
-                     appointment['customer_email'] ||
-                     'N/A'}
+                    {appointment['customer_id'] || 'N/A'}
                   </TableCell>
                   <TableCell>
-                    {appointment['staff_name'] ||
-                     appointment['staff_name'] ||
-                     'N/A'}
+                    {appointment['staff_id'] || 'N/A'}
                   </TableCell>
                   <TableCell>
                     <Badge variant={config?.variant}>
