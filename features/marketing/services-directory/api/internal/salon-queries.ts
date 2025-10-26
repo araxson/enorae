@@ -1,6 +1,12 @@
 import 'server-only'
-import { createPublicClient } from './helpers'
+import { createClient } from '@/lib/supabase/server'
 import type { Service, Salon } from './types'
+
+async function createPublicClient() {
+  const client = await createClient()
+  await client.auth.getUser().catch(() => ({ data: { user: null } }))
+  return client
+}
 
 /**
  * Get salons offering a specific service category

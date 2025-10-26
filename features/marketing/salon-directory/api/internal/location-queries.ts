@@ -1,6 +1,10 @@
 import 'server-only'
-import { createPublicClient } from './helpers'
+import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+
+async function createPublicClient() {
+  return createClient()
+}
 
 type SalonView = Database['public']['Views']['salons']['Row']
 

@@ -1,6 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
+import { formatTime } from '@/lib/utils/formatting'
 import type {
   OperatingHours,
   SalonContactDetails,
@@ -8,7 +9,6 @@ import type {
   SalonMediaView,
   LocationAddress,
 } from './types'
-import { formatTime } from './helpers'
 
 /**
  * Get operating hours for a salon

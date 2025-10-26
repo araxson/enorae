@@ -1,7 +1,11 @@
 import 'server-only'
+import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import type { Salon, Service } from './types'
-import { createPublicClient } from './helpers'
+
+async function createPublicClient() {
+  return createClient()
+}
 
 type ServiceRow = Pick<Service, 'salon_id' | 'category_name'>
 

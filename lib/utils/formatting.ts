@@ -1,3 +1,7 @@
+/**
+ * Text formatting utilities for discovery features
+ */
+
 export function sanitizeDiscoverySearchInput(value: string): string {
   return value.replace(/[%]/g, '').replace(/,/g, '').trim()
 }

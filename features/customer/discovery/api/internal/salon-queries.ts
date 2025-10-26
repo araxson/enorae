@@ -1,10 +1,10 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
+import { sanitizeDiscoverySearchInput } from '@/lib/utils/formatting'
 import type { Database } from '@/lib/types/database.types'
 import type { PostgrestError } from '@supabase/supabase-js'
 import type { Salon } from './types'
-import { sanitizeDiscoverySearchInput } from './helpers'
 
 type ServiceRow = Database['public']['Views']['services_view']['Row']
 

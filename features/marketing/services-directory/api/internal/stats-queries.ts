@@ -1,6 +1,12 @@
 import 'server-only'
-import { createPublicClient } from './helpers'
+import { createClient } from '@/lib/supabase/server'
 import type { Service } from './types'
+
+async function createPublicClient() {
+  const client = await createClient()
+  await client.auth.getUser().catch(() => ({ data: { user: null } }))
+  return client
+}
 
 /**
  * Get popular services based on featured flag and salon count
