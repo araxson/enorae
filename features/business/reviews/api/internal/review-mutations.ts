@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { ActionResponse } from './types'
-import { verifyReviewAccess } from './helpers'
+import { verifyReviewAccess } from '@/lib/utils/review-access'
 
 /**
  * Flag a review
