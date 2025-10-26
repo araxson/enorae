@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, useTransition } from 'react'
 
-import { getProfileDetailAction, searchProfilesAction } from '@/features/admin/profile/api/actions'
+import { getProfileDetail, searchProfiles } from '@/features/admin/profile/api/queries'
 import type { ProfileDetail, ProfileSearchResult } from '@/features/admin/profile/types'
 import { useDebouncedCallback } from '@/lib/performance'
 import { ProfileSearchPanel } from './profile-search-panel'
@@ -34,7 +34,7 @@ export function ProfileManagementClient({
     setSelectedId(profileId)
     setIsLoadingProfile(true)
     try {
-      const detail = await getProfileDetailAction(profileId)
+      const detail = await getProfileDetail(profileId)
       setSelectedProfile(detail)
     } finally {
       setIsLoadingProfile(false)
@@ -45,7 +45,7 @@ export function ProfileManagementClient({
     if (!selectedId) return
     setIsLoadingProfile(true)
     try {
-      const detail = await getProfileDetailAction(selectedId)
+      const detail = await getProfileDetail(selectedId)
       setSelectedProfile(detail)
     } finally {
       setIsLoadingProfile(false)
@@ -55,7 +55,7 @@ export function ProfileManagementClient({
   const runSearch = useCallback(async (value: string) => {
     setIsSearching(true)
     try {
-      const results = await searchProfilesAction(value.trim())
+      const results = await searchProfiles(value.trim())
       setProfiles(results)
       return results
     } finally {
