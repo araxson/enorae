@@ -111,8 +111,14 @@ export function TimeOffRequestsClient({
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Time Off Balance ({balance.year})</CardTitle>
-                <CardDescription>Your annual time off allocation and usage</CardDescription>
+                <ItemGroup>
+                  <Item variant="muted" size="sm">
+                    <ItemContent>
+                      <CardTitle>Time Off Balance ({balance.year})</CardTitle>
+                      <CardDescription>Your annual time off allocation and usage</CardDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -180,7 +186,14 @@ export function TimeOffRequestsClient({
 
         {activeTab === 'team' && (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Team Time Off Calendar</h3>
+            <ItemGroup>
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <CardTitle>Team Time Off Calendar</CardTitle>
+                  <ItemDescription>See upcoming requests across the staff.</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
             {teamCalendar.length === 0 ? (
               <Card>
                 <CardContent>
@@ -196,9 +209,9 @@ export function TimeOffRequestsClient({
               <div className="grid gap-4">
                 {teamCalendar.map((entry, idx) => (
                   <Card key={`${entry['staff_id']}-${idx}`}>
-                    <CardContent className="space-y-3">
+                    <CardHeader>
                       <ItemGroup>
-                        <Item>
+                        <Item variant="muted" size="sm">
                           <ItemContent>
                             <ItemTitle>{entry['staff_name']}</ItemTitle>
                             {entry.staff_title && (
@@ -212,14 +225,22 @@ export function TimeOffRequestsClient({
                           </ItemActions>
                         </Item>
                       </ItemGroup>
-                      <div className="flex items-center justify-between text-sm">
-                        <div>
-                          <p className="font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</p>
-                          <div className="capitalize">
-                            <CardDescription>{entry.request_type.replace('_', ' ')}</CardDescription>
-                          </div>
-                        </div>
-                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ItemGroup>
+                        <Item>
+                          <ItemContent>
+                            <ItemTitle>
+                              {new Date(entry.start_at).toLocaleDateString()} – {new Date(entry.end_at).toLocaleDateString()}
+                            </ItemTitle>
+                            <ItemDescription>
+                              <span className="capitalize">
+                                {entry.request_type.replace('_', ' ')}
+                              </span>
+                            </ItemDescription>
+                          </ItemContent>
+                        </Item>
+                      </ItemGroup>
                     </CardContent>
                   </Card>
                 ))}

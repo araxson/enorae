@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { DollarSign, Star } from 'lucide-react'
 import {
@@ -7,6 +6,8 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
+  ItemTitle,
 } from '@/components/ui/item'
 
 type ServicePerformance = {
@@ -28,23 +29,19 @@ export function RevenueLeaders({ services, formatCurrency }: RevenueLeadersProps
     .slice(0, 5)
 
   return (
-    <Card className="md:col-span-2">
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <DollarSign className="h-5 w-5" />
-          <CardTitle>Top Revenue Generators</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="md:col-span-2 flex-col gap-4">
+      <ItemHeader className="items-center gap-2">
+        <DollarSign className="h-5 w-5" />
+        <ItemTitle>Top Revenue Generators</ItemTitle>
+      </ItemHeader>
+      <ItemContent>
         <ItemGroup className="flex flex-col gap-4">
           {topServices.map((service, index) => (
             <Item key={service.service_id}>
               <ItemContent className="flex items-center gap-3">
                 <Badge variant={index === 0 ? 'default' : 'secondary'}>#{index + 1}</Badge>
                 <div>
-                  <ItemTitle className="text-lg font-semibold">
-                    {service.service_name}
-                  </ItemTitle>
+                  <ItemTitle>{service.service_name}</ItemTitle>
                   <ItemDescription>{service.total_bookings} bookings</ItemDescription>
                 </div>
               </ItemContent>
@@ -58,7 +55,7 @@ export function RevenueLeaders({ services, formatCurrency }: RevenueLeadersProps
             </Item>
           ))}
         </ItemGroup>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

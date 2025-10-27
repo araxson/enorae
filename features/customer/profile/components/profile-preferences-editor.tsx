@@ -19,6 +19,13 @@ import {
   FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 
 type ProfilePreferences = Database['public']['Views']['profiles_preferences_view']['Row']
 
@@ -93,10 +100,19 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Account Preferences</CardTitle>
-        <CardDescription>
-          Manage your notification settings, regional preferences, and privacy options
-        </CardDescription>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Shield className="h-4 w-4" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Account Preferences</CardTitle>
+              <CardDescription>
+                Manage your notification settings, regional preferences, and privacy options
+              </CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="regional" className="space-y-4">
@@ -250,7 +266,14 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
         </Tabs>
 
         <Button onClick={handleSave} disabled={isSaving} className="mt-6 w-full">
-          {isSaving ? 'Saving...' : 'Save Preferences'}
+          {isSaving ? (
+            <>
+              <Spinner className="size-4" />
+              <span>Saving</span>
+            </>
+          ) : (
+            <span>Save Preferences</span>
+          )}
         </Button>
       </CardContent>
     </Card>

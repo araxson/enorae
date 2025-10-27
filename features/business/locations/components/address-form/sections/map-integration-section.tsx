@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -15,6 +14,17 @@ import {
   GoogleMapsGeocodeResponseSchema,
 } from '@/lib/config/google-maps-schema'
 import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 type Props = {
   address: LocationAddress | null
@@ -171,16 +181,22 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
             </Alert>
           )}
 
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="address-search">Search Address</Label>
+          <Field>
+            <FieldLabel htmlFor="address-search">Search Address</FieldLabel>
+            <FieldContent>
               <div className="flex gap-3">
-                <div className="flex-1 relative">
-                  <Input
-                    id="address-search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Start typing to search for an address..."
-                  />
+                <div className="relative flex-1">
+                  <InputGroup>
+                    <InputGroupAddon>
+                      <Search className="h-4 w-4" aria-hidden="true" />
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      id="address-search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Start typing to search for an address..."
+                    />
+                  </InputGroup>
                   {suggestions.length > 0 && (
                     <div className="absolute left-0 right-0 top-full z-10 mt-1">
                       <Command aria-label="Address suggestions">
@@ -206,18 +222,19 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
                     </div>
                   )}
                 </div>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleManualGeocode}
-                disabled={isSearching || !address?.['street_address'] || !EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()}
-              >
-                <Search className="h-4 w-4 mr-2" />
-                Geocode
-              </Button>
-            </div>
-            <p className="text-sm text-muted-foreground">Search for your address to automatically fill coordinates</p>
-          </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleManualGeocode}
+                  disabled={isSearching || !address?.['street_address'] || !EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()}
+                >
+                  <Search className="mr-2 h-4 w-4" />
+                  Geocode
+                </Button>
+              </div>
+            </FieldContent>
+            <FieldDescription>Search for your address to automatically fill coordinates.</FieldDescription>
+          </Field>
 
           {selectedAddress && (
             <Alert>

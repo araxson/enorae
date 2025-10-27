@@ -8,6 +8,7 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface DataTableEmptyProps {
   icon?: LucideIcon
@@ -38,7 +39,9 @@ export function DataTableEmpty({
       </EmptyHeader>
       {action ? (
         <EmptyContent>
-          <Button onClick={action.onClick}>{action.label}</Button>
+          <ButtonGroup>
+            <Button onClick={action.onClick}>{action.label}</Button>
+          </ButtonGroup>
         </EmptyContent>
       ) : null}
     </Empty>

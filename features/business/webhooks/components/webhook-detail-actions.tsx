@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { ConfirmDialog } from '@/features/shared/ui-components'
 import { RefreshCw, Trash2 } from 'lucide-react'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type WebhookActionProps = {
   onClose: () => void
@@ -33,7 +34,7 @@ export function WebhookActionButtons({
         </Button>
       </ConfirmDialog>
 
-      <div className="flex gap-3">
+      <ButtonGroup>
         <Button variant="outline" onClick={onClose}>
           Close
         </Button>
@@ -44,7 +45,7 @@ export function WebhookActionButtons({
             {isRetrying ? 'Retrying...' : 'Retry'}
           </Button>
         )}
-      </div>
+      </ButtonGroup>
     </div>
   )
 }

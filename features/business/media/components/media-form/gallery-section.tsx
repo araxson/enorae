@@ -5,8 +5,19 @@ import { X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { InputGroup, InputGroupButton, InputGroupInput } from '@/components/ui/input-group'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 type GallerySectionProps = {
   galleryUrls: string[]
@@ -31,25 +42,29 @@ export function GallerySection({
         <CardTitle>Photo Gallery</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-          <div className="flex gap-2">
-            <div className="flex-1">
-              <Label htmlFor="gallery-url-input" className="sr-only">
-                Gallery image URL
-              </Label>
-              <Input
-                id="gallery-url-input"
-                value={newGalleryUrl}
-                onChange={(event) => onNewGalleryUrlChange(event.target.value)}
-                placeholder="https://example.com/photo.jpg"
-                type="url"
-                aria-label="Gallery image URL"
-              />
-            </div>
-            <Button type="button" onClick={onAddImage} disabled={isAddingImage || !newGalleryUrl.trim()}>
-              Add
-            </Button>
-          </div>
+        <FieldSet className="flex flex-col gap-6">
+          <Field>
+            <FieldLabel htmlFor="gallery-url-input">Gallery image URL</FieldLabel>
+            <FieldContent>
+              <InputGroup>
+                <InputGroupInput
+                  id="gallery-url-input"
+                  value={newGalleryUrl}
+                  onChange={(event) => onNewGalleryUrlChange(event.target.value)}
+                  placeholder="https://example.com/photo.jpg"
+                  type="url"
+                  aria-label="Gallery image URL"
+                />
+                <InputGroupButton
+                  type="button"
+                  onClick={onAddImage}
+                  disabled={isAddingImage || !newGalleryUrl.trim()}
+                >
+                  Add
+                </InputGroupButton>
+              </InputGroup>
+            </FieldContent>
+          </Field>
 
           {galleryUrls.length > 0 ? (
             <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
@@ -72,9 +87,14 @@ export function GallerySection({
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground">No gallery images yet. Add your first image above.</p>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No gallery images yet</EmptyTitle>
+                <EmptyDescription>Add your first image using the field above.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
-        </div>
+        </FieldSet>
       </CardContent>
     </Card>
   )

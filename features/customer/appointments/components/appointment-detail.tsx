@@ -4,7 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import {
   Table,
   TableBody,
@@ -17,7 +25,7 @@ import {
 import { getCustomerAppointmentById } from '@/features/customer/appointments/api/queries'
 import { CancelAppointmentDialog } from '@/features/customer/appointments/components/cancel-appointment-dialog'
 import { RescheduleRequestDialog } from '@/features/customer/appointments/components/reschedule-request-dialog'
-import { Clock, DollarSign } from 'lucide-react'
+import { Check, Clock, DollarSign } from 'lucide-react'
 import { ButtonGroup } from '@/components/ui/button-group'
 
 interface AppointmentDetailProps {
@@ -69,7 +77,11 @@ function AppointmentDetailContent({
     <div className="space-y-8">
       <ItemGroup>
         <Item>
+          <ItemMedia variant="icon">
+            <Check className="h-4 w-4" aria-hidden="true" />
+          </ItemMedia>
           <ItemContent>
+            <ItemTitle>Confirmation</ItemTitle>
             <ItemDescription>{appointment['confirmation_code'] || 'No code'}</ItemDescription>
           </ItemContent>
           <ItemActions className="flex-none">
@@ -143,16 +155,20 @@ function AppointmentDetailContent({
                   </Item>
                   {appointment['duration_minutes'] && (
                     <Item>
-                      <ItemContent className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <ItemMedia variant="icon">
                         <Clock className="h-4 w-4" />
-                        <span>{appointment['duration_minutes']} minutes</span>
+                      </ItemMedia>
+                      <ItemContent>
+                        <ItemDescription>{appointment['duration_minutes']} minutes</ItemDescription>
                       </ItemContent>
                     </Item>
                   )}
                   {appointment['total_price'] !== null && (
                     <Item>
-                      <ItemContent className="flex items-center gap-2">
+                      <ItemMedia variant="icon">
                         <DollarSign className="h-4 w-4" />
+                      </ItemMedia>
+                      <ItemContent>
                         <span className="text-lg font-semibold">
                           {formatCurrency(appointment['total_price'])}
                         </span>

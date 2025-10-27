@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { RateLimitTable } from './rate-limit-table'
 import type { RateLimitSnapshot } from '@/features/admin/rate-limit-tracking/types'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface RateLimitClientProps {
   snapshot: RateLimitSnapshot
@@ -62,7 +63,7 @@ export function RateLimitClient({ snapshot }: RateLimitClientProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="mb-4 flex gap-2">
+          <ButtonGroup className="mb-4">
             <Button
               onClick={() => setSelectedStatus(null)}
               size="sm"
@@ -84,7 +85,7 @@ export function RateLimitClient({ snapshot }: RateLimitClientProps) {
             >
               Warnings
             </Button>
-          </div>
+          </ButtonGroup>
           <RateLimitTable records={filteredRecords} />
         </CardContent>
       </Card>

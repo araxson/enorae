@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/table'
 import type { AppointmentOverviewRow } from '@/features/admin/appointments/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface RecentAppointmentsTableProps {
   appointments: AppointmentOverviewRow[]
@@ -37,14 +39,23 @@ export function RecentAppointmentsTable({ appointments }: RecentAppointmentsTabl
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle>Most Recent Appointments</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Most Recent Appointments</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ScrollArea className="w-full">
           {appointments.length === 0 ? (
-            <p className="py-6 text-center text-sm text-muted-foreground">
-              Supabase returned no appointments for the selected window.
-            </p>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No appointments returned</EmptyTitle>
+                <EmptyDescription>Supabase has no appointments for the selected window.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <Table>
               <TableHeader>

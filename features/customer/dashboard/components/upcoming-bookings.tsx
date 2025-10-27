@@ -116,18 +116,20 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
                           </Badge>
                         </ItemHeader>
                         <ItemDescription>{appointmentDate}</ItemDescription>
-                        <div className="flex flex-col gap-3 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-3 w-3" />
+                        <ItemDescription>
+                          <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                            <Clock className="h-3 w-3" aria-hidden="true" />
                             <span>{formatAppointmentTime(appointment['start_time'])}</span>
-                          </div>
-                          {appointment['salon_name'] ? (
-                            <div className="flex items-center gap-2">
-                              <MapPin className="h-3 w-3" />
+                          </span>
+                        </ItemDescription>
+                        {appointment['salon_name'] ? (
+                          <ItemDescription>
+                            <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                              <MapPin className="h-3 w-3" aria-hidden="true" />
                               <span>View location</span>
-                            </div>
-                          ) : null}
-                        </div>
+                            </span>
+                          </ItemDescription>
+                        ) : null}
                       </ItemContent>
                       <ItemActions className="ml-auto">
                         <Button

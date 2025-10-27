@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { toggleFavorite } from '@/features/customer/favorites/api/mutations'
+import { Spinner } from '@/components/ui/spinner'
 
 interface FavoriteButtonProps {
   salonId: string
@@ -49,7 +50,11 @@ export function FavoriteButton({ salonId, initialFavorited = false, variant = 'd
               disabled={loading}
               aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
             >
-              <Heart className={favorited ? 'fill-current' : ''} />
+              {loading ? (
+                <Spinner className="size-4" />
+              ) : (
+                <Heart className={favorited ? 'fill-current' : ''} />
+              )}
             </Button>
           </TooltipTrigger>
           <TooltipContent>
@@ -69,8 +74,17 @@ export function FavoriteButton({ salonId, initialFavorited = false, variant = 'd
             onClick={handleToggle}
             disabled={loading}
           >
-            <Heart className={favorited ? 'fill-current mr-2' : 'mr-2'} />
-            {loading ? 'Loading...' : favorited ? 'Favorited' : 'Add to Favorites'}
+            {loading ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Updating</span>
+              </>
+            ) : (
+              <>
+                <Heart className={favorited ? 'fill-current' : ''} />
+                <span>{favorited ? 'Favorited' : 'Add to Favorites'}</span>
+              </>
+            )}
           </Button>
         </TooltipTrigger>
         <TooltipContent>

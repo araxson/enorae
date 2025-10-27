@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { ChainActions } from './chain-actions'
 import type { Database } from '@/lib/types/database.types'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 type SalonChain = Database['public']['Views']['salon_chains_view']['Row']
 
@@ -29,8 +30,14 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Salon Chains</CardTitle>
-        <CardDescription>Review chain memberships and platform status.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Salon Chains</CardTitle>
+              <CardDescription>Review chain memberships and platform status.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       {chains.length === 0 ? (
         <CardContent className="py-12">
@@ -60,12 +67,16 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
               {chains.map((chain) => (
                 <TableRow key={chain['id']}>
                   <TableCell>
-                    <div>
-                      <p className="font-medium">{chain['name']}</p>
-                      {chain['legal_name'] && chain['legal_name'] !== chain['name'] && (
-                        <p className="text-xs text-muted-foreground">{chain['legal_name']}</p>
-                      )}
-                    </div>
+                    <ItemGroup>
+                      <Item variant="muted" className="flex-col items-start gap-1">
+                        <ItemContent>
+                          <ItemTitle>{chain['name']}</ItemTitle>
+                          {chain['legal_name'] && chain['legal_name'] !== chain['name'] ? (
+                            <ItemDescription>{chain['legal_name']}</ItemDescription>
+                          ) : null}
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
                   </TableCell>
                   <TableCell className="text-right">{chain['salon_count'] || 0}</TableCell>
                   <TableCell className="text-right">{chain['staff_count'] || 0}</TableCell>

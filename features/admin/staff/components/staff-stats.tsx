@@ -1,7 +1,13 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ShieldCheck, AlertTriangle, ClipboardCheck, Users, TrendingUp, Gauge } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { StaffDashboardStats } from '@/features/admin/staff/api/queries'
 
 const STAT_ICON_CLASSES = 'h-4 w-4'
@@ -47,24 +53,22 @@ export function StaffStats({ stats }: { stats: StaffDashboardStats }) {
   ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <ItemGroup className="grid gap-4 md:grid-cols-3">
       {statCards.map((card) => {
         const Icon = card.icon
         return (
-          <Card key={card.label}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>{card.label}</CardTitle>
+          <Item key={card.label} variant="outline" className="flex-col items-start gap-3">
+            <ItemContent className="w-full gap-2">
+              <div className="flex items-center justify-between gap-3">
+                <ItemTitle>{card.label}</ItemTitle>
                 <Icon className={`${STAT_ICON_CLASSES} ${card.tone}`} />
               </div>
-              <CardDescription>Staff readiness indicator.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-semibold">{card.value}</p>
-            </CardContent>
-          </Card>
+              <ItemDescription>Staff readiness indicator.</ItemDescription>
+              <span className="text-3xl font-semibold text-foreground">{card.value}</span>
+            </ItemContent>
+          </Item>
         )
       })}
-    </div>
+    </ItemGroup>
   )
 }

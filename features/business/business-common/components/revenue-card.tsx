@@ -3,7 +3,6 @@
 import { cn } from '@/lib/utils'
 
 import type { ReactNode, ComponentType } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react'
@@ -14,6 +13,8 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
+  ItemTitle,
 } from '@/components/ui/item'
 
 type RevenueCardProps = {
@@ -124,23 +125,19 @@ export function RevenueCard({
   const formattedAmount = formatCurrency(amount, { currency })
 
   return (
-    <Card role="article" aria-label={`${title} revenue metric`} className={cardClasses}>
-      <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <CardTitle>{title}</CardTitle>
-              {subtitle ? <CardDescription>{subtitle}</CardDescription> : null}
-            </ItemContent>
-            {IconComponent ? (
-              <ItemActions className="flex-none text-muted-foreground">
-                <IconComponent className="h-4 w-4" aria-hidden="true" />
-              </ItemActions>
-            ) : null}
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent>
+    <Item role="article" aria-label={`${title} revenue metric`} variant="outline" className={`flex-col gap-4 ${cardClasses}`}>
+      <ItemHeader className="items-start justify-between">
+        <div className="space-y-1">
+          <ItemTitle>{title}</ItemTitle>
+          {subtitle ? <ItemDescription>{subtitle}</ItemDescription> : null}
+        </div>
+        {IconComponent ? (
+          <ItemActions className="flex-none text-muted-foreground">
+            <IconComponent className="h-4 w-4" aria-hidden="true" />
+          </ItemActions>
+        ) : null}
+      </ItemHeader>
+      <ItemContent>
         <div className={cn('flex flex-col', compact ? 'gap-2' : 'gap-3')}>
           {/* Primary amount */}
           <ItemGroup>
@@ -209,7 +206,7 @@ export function RevenueCard({
           {/* Subtitle */}
           {!subtitle ? null : <div className="text-xs text-muted-foreground">{subtitle}</div>}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

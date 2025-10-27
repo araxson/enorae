@@ -22,11 +22,11 @@ export function DailyBreakdownList({ metrics }: Props) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Daily Breakdown</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemTitle>Daily Breakdown</ItemTitle>
+      </ItemHeader>
+      <ItemContent>
         <ItemGroup className="max-h-96 overflow-y-auto">
           {metrics.map((metric) => (
             <Item key={metric.id} variant="outline" className="flex-col items-start gap-3">
@@ -63,7 +63,7 @@ export function DailyBreakdownList({ metrics }: Props) {
             </Item>
           ))}
         </ItemGroup>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

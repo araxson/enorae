@@ -9,8 +9,14 @@ import {
   Field,
   FieldContent,
   FieldDescription,
+  FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface ProfilePhotoUploadProps {
   currentPhotoUrl?: string | null
@@ -53,11 +59,18 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Profile Photo</CardTitle>
-        <CardDescription>Upload a clear photo so clients recognize you.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Profile Photo</CardTitle>
+              <CardDescription>Upload a clear photo so clients recognize you.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <FieldSet className="flex flex-col gap-4">
+          <FieldLegend>Photo details</FieldLegend>
           <Field>
             <FieldContent>
               <div className="flex items-center gap-6">

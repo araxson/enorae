@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { SecurityIncident } from '@/features/admin/security-monitoring/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface IncidentResponsePanelProps {
   incidents: SecurityIncident[]
@@ -31,10 +32,14 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-          <CardTitle>Security Incident Response</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted" className="items-center gap-2">
+            <ItemContent className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4" aria-hidden="true" />
+              <CardTitle>Security Incident Response</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         {incidents.length === 0 ? (
@@ -45,7 +50,7 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="flex flex-col gap-2">
+          <ItemGroup className="flex-col gap-2">
             {incidents.slice(0, 6).map((incident) => (
               <Alert
                 key={incident['id']}
@@ -69,7 +74,7 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
                 </div>
               </Alert>
             ))}
-          </div>
+          </ItemGroup>
         )}
       </CardContent>
     </Card>

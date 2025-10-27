@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Edit2, Trash2, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Empty,
@@ -110,8 +111,8 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
                 </div>
               </TableCell>
               <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  {onEdit && (
+                <ButtonGroup className="ml-auto justify-end">
+                  {onEdit ? (
                     <Button
                       variant="ghost"
                       size="icon"
@@ -120,7 +121,7 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
                       <Edit2 className="h-4 w-4" />
                       <span className="sr-only">Edit</span>
                     </Button>
-                  )}
+                  ) : null}
                   <Button
                     variant="ghost"
                     size="icon"
@@ -129,7 +130,7 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Delete</span>
                   </Button>
-                </div>
+                </ButtonGroup>
               </TableCell>
             </TableRow>
           ))}

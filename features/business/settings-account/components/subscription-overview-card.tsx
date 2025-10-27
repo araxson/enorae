@@ -1,10 +1,16 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { CheckCircle2, TrendingUp } from 'lucide-react'
 import type { Subscription } from '../types'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 const tierFeatures: Record<Subscription['tier'], string[]> = {
   basic: [
@@ -45,20 +51,20 @@ export function SubscriptionOverviewCard({
         : 'outline'
 
   return (
-    <Card>
-      <CardHeader className="flex items-start justify-between">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader className="flex items-start justify-between">
         <div>
-          <CardTitle>Current Subscription</CardTitle>
-          <CardDescription>Manage your plan and billing</CardDescription>
+          <ItemTitle>Current Subscription</ItemTitle>
+          <ItemDescription>Manage your plan and billing</ItemDescription>
         </div>
         <Badge variant={tierVariant}>{subscription.tier.toUpperCase()}</Badge>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-8">
+      </ItemHeader>
+      <ItemContent className="flex flex-col gap-8">
         <Separator />
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
-            <CardDescription>Plan Details</CardDescription>
+            <ItemDescription>Plan Details</ItemDescription>
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm">Tier</span>
@@ -91,7 +97,7 @@ export function SubscriptionOverviewCard({
           </div>
 
           <div>
-            <CardDescription>Features Included</CardDescription>
+            <ItemDescription>Features Included</ItemDescription>
             <ul className="space-y-1.5">
               {tierFeatures[subscription.tier].map((feature) => (
                 <li key={feature} className="flex gap-2 text-sm">
@@ -115,7 +121,7 @@ export function SubscriptionOverviewCard({
             Cancel Subscription
           </Button>
         </ButtonGroup>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

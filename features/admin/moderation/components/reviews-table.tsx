@@ -16,11 +16,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Label } from '@/components/ui/label'
 import { flagReview, unflagReview, deleteReview, featureReview } from '@/features/admin/moderation/api/mutations'
 import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import { ReviewsTableRow } from './reviews-table-row'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 const EMPTY_MESSAGE = 'No reviews found'
 
@@ -141,8 +150,14 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Reviews moderation</CardTitle>
-          <CardDescription>Review customer feedback and take moderation actions.</CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Reviews moderation</CardTitle>
+                <CardDescription>Review customer feedback and take moderation actions.</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
@@ -200,31 +215,44 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
             </AlertDialogDescription>
           </AlertDialogHeader>
 
-          {requiresReason && (
-            <div className="space-y-2">
-              <Label htmlFor="moderation-reason">Reason (required)</Label>
-              <Textarea
-                id="moderation-reason"
-                value={reason}
-                onChange={(event) => {
-                  setReason(event.target.value)
-                  setReasonError(null)
-                }}
-                placeholder="Provide context for this action"
-                aria-invalid={Boolean(reasonError)}
-                autoFocus
-              />
-              {reasonError && <p className="text-sm text-destructive">{reasonError}</p>}
-            </div>
-          )}
+          {requiresReason ? (
+            <Field data-invalid={Boolean(reasonError)}>
+              <FieldLabel htmlFor="moderation-reason">Reason (required)</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="moderation-reason"
+                  value={reason}
+                  onChange={(event) => {
+                    setReason(event.target.value)
+                    setReasonError(null)
+                  }}
+                  placeholder="Provide context for this action"
+                  aria-invalid={Boolean(reasonError)}
+                  autoFocus
+                  rows={4}
+                />
+                <FieldDescription>Required for audit logging and reviewer visibility.</FieldDescription>
+              </FieldContent>
+              {reasonError ? <FieldError>{reasonError}</FieldError> : null}
+            </Field>
+          ) : null}
 
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={loadingId !== null}>Cancel</AlertDialogCancel>
-            <AlertDialogAction asChild>
-              <Button onClick={handleAction} disabled={loadingId !== null} variant={dialog['type'] === 'delete' ? 'destructive' : 'default'}>
-                {loadingId !== null ? 'Processing...' : 'Confirm'}
-              </Button>
-            </AlertDialogAction>
+            <ButtonGroup>
+              <AlertDialogCancel disabled={loadingId !== null}>Cancel</AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button onClick={handleAction} disabled={loadingId !== null} variant={dialog['type'] === 'delete' ? 'destructive' : 'default'}>
+                  {loadingId !== null ? (
+                    <>
+                      <Spinner className="size-4" />
+                      <span>Processing…</span>
+                    </>
+                  ) : (
+                    <span>Confirm</span>
+                  )}
+                </Button>
+              </AlertDialogAction>
+            </ButtonGroup>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

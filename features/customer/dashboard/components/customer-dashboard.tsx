@@ -18,13 +18,6 @@ import {
   AlertCircle,
 } from 'lucide-react'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
   Tabs,
   TabsContent,
   TabsList,
@@ -45,10 +38,13 @@ import {
 } from '@/components/ui/empty'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemHeader,
+  ItemFooter,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -82,50 +78,65 @@ export async function CustomerDashboardPage() {
 
     return (
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        <Card>
-          <CardContent className="p-6">
-            <Empty>
-              <EmptyMedia variant="icon">
-                <AlertCircle className="h-6 w-6" />
-              </EmptyMedia>
-              <EmptyHeader>
-                <EmptyTitle>Error loading dashboard</EmptyTitle>
-                <EmptyDescription>
-                  We couldn't load your dashboard data. Please try again.
-                </EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent>
-                <Button asChild variant="outline">
-                  <Link href="/customer">Refresh</Link>
-                </Button>
-              </EmptyContent>
-            </Empty>
-          </CardContent>
-        </Card>
+        <Empty>
+          <EmptyMedia variant="icon">
+            <AlertCircle className="h-6 w-6" />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>Error loading dashboard</EmptyTitle>
+            <EmptyDescription>
+              We couldn't load your dashboard data. Please try again.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button asChild variant="outline">
+              <Link href="/customer">Refresh</Link>
+            </Button>
+          </EmptyContent>
+        </Empty>
       </div>
     )
   }
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        {vipStatus?.isVIP ? (
-          <div className="flex items-center gap-2">
-            <Crown className="h-3.5 w-3.5" />
-            <Badge variant="default">VIP {vipStatus.loyaltyTier?.toUpperCase()}</Badge>
-          </div>
-        ) : (
-          <span className="text-sm text-muted-foreground">
-            Welcome back
-          </span>
-        )}
-
-        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-          <LastUpdated />
-          <Separator orientation="vertical" className="hidden h-4 sm:block" />
-          <RefreshButton />
-        </div>
-      </div>
+      <ItemGroup className="gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Item variant="muted" size="sm" className="flex-1">
+          {vipStatus?.isVIP ? (
+            <>
+              <ItemMedia variant="icon">
+                <Crown className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>VIP member</ItemTitle>
+                <ItemDescription>
+                  Tier {vipStatus.loyaltyTier?.toUpperCase() ?? 'Standard'}
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <Badge variant="default">VIP</Badge>
+              </ItemActions>
+            </>
+          ) : (
+            <ItemContent>
+              <ItemTitle>Welcome back</ItemTitle>
+              <ItemDescription>Pick up where you left off.</ItemDescription>
+            </ItemContent>
+          )}
+        </Item>
+        <Item variant="muted" size="sm" className="flex-1">
+          <ItemContent>
+            <ItemTitle>Dashboard status</ItemTitle>
+            <ItemDescription>
+              <LastUpdated />
+            </ItemDescription>
+          </ItemContent>
+          <ItemActions className="flex-none items-center gap-3 text-sm text-muted-foreground">
+            <Separator orientation="vertical" className="hidden h-4 sm:block" />
+            <RefreshButton />
+          </ItemActions>
+        </Item>
+      </ItemGroup>
 
       {vipStatus && vipStatus.isVIP ? <VIPStatusCard vipStatus={vipStatus} /> : null}
 
@@ -156,12 +167,12 @@ export async function CustomerDashboardPage() {
         </TabsContent>
 
         <TabsContent value="history">
-          <Card>
-            <CardHeader>
-              <CardTitle>Past appointments</CardTitle>
-              <CardDescription>{pastAppointments?.length ?? 0} completed</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <Item variant="outline" className="flex flex-col gap-4 p-6">
+            <ItemHeader className="flex-col items-start gap-1 p-0">
+              <ItemTitle>Past appointments</ItemTitle>
+              <ItemDescription>{pastAppointments?.length ?? 0} completed</ItemDescription>
+            </ItemHeader>
+            <ItemContent className="p-0">
               {!pastAppointments || pastAppointments.length === 0 ? (
                 <Empty>
                   <EmptyMedia variant="icon">
@@ -186,31 +197,43 @@ export async function CustomerDashboardPage() {
                           day: 'numeric',
                           year: 'numeric',
                         })
-                      : 'Date not available'
+                      : null
+
+                    const statusLabel = (appointment['status'] ?? 'pending')
+                      .replace(/_/g, ' ')
+                      .replace(/\b\w/g, (char) => char.toUpperCase())
 
                     return (
                       <Item key={appointment['id']} variant="outline" size="sm">
                         <ItemContent>
                           <ItemHeader>
                             <ItemTitle>{appointment['service_names'] || 'Service'}</ItemTitle>
-                            <Badge variant="secondary">
-                              {appointment['status'] ?? 'pending'}
-                            </Badge>
+                            <Badge variant="secondary">{statusLabel}</Badge>
                           </ItemHeader>
                           <ItemDescription>
                             {appointment['salon_name']
                               ? `at ${appointment['salon_name']}`
                               : 'Salon not specified'}
                           </ItemDescription>
-                          <div className="text-sm text-muted-foreground">{appointmentDate}</div>
                         </ItemContent>
+                        <ItemFooter className="flex-none">
+                          <ItemDescription>
+                            {appointmentDate ? (
+                              <time dateTime={appointment['start_time'] || undefined}>
+                                {appointmentDate}
+                              </time>
+                            ) : (
+                              'Date not available'
+                            )}
+                          </ItemDescription>
+                        </ItemFooter>
                       </Item>
                     )
                   })}
                 </ItemGroup>
               )}
-            </CardContent>
-          </Card>
+            </ItemContent>
+          </Item>
         </TabsContent>
       </Tabs>
     </div>

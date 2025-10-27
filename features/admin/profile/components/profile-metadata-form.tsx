@@ -5,6 +5,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import type { ProfileDetail } from '@/features/admin/profile/types'
 import { updateProfileMetadataAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
@@ -96,57 +106,65 @@ export function ProfileMetadataForm({ profile, onUpdated }: ProfileMetadataFormP
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle>Metadata &amp; social</CardTitle>
-        <CardDescription>Maintain tags, interests, and external profile links.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Metadata &amp; social</CardTitle>
+              <CardDescription>Maintain tags, interests, and external profile links.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="admin-profile-tags" className="text-sm font-medium">
-              Tags
-            </label>
-            <Textarea
-              id="admin-profile-tags"
-              value={tagsInput}
-              onChange={(event) => setTagsInput(event.target.value)}
-              placeholder="support, vip, beta"
-              rows={2}
-              disabled={isPending}
-            />
-            <p className="text-xs text-muted-foreground">Comma separated, max 15 tags.</p>
-          </div>
+          <FieldGroup className="gap-4">
+            <Field>
+              <FieldLabel htmlFor="admin-profile-tags">Tags</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="admin-profile-tags"
+                  value={tagsInput}
+                  onChange={(event) => setTagsInput(event.target.value)}
+                  placeholder="support, vip, beta"
+                  rows={2}
+                  disabled={isPending}
+                />
+                <FieldDescription>Comma separated, max 15 tags.</FieldDescription>
+              </FieldContent>
+            </Field>
 
-          <div className="space-y-2">
-            <label htmlFor="admin-profile-interests" className="text-sm font-medium">
-              Interests
-            </label>
-            <Textarea
-              id="admin-profile-interests"
-              value={interestsInput}
-              onChange={(event) => setInterestsInput(event.target.value)}
-              placeholder="haircare, wellness, loyalty"
-              rows={2}
-              disabled={isPending}
-            />
-            <p className="text-xs text-muted-foreground">Comma separated, max 20 entries.</p>
-          </div>
+            <Field>
+              <FieldLabel htmlFor="admin-profile-interests">Interests</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="admin-profile-interests"
+                  value={interestsInput}
+                  onChange={(event) => setInterestsInput(event.target.value)}
+                  placeholder="haircare, wellness, loyalty"
+                  rows={2}
+                  disabled={isPending}
+                />
+                <FieldDescription>Comma separated, max 20 entries.</FieldDescription>
+              </FieldContent>
+            </Field>
 
-          <div className="space-y-2">
-            <label htmlFor="admin-profile-social" className="text-sm font-medium">
-              Social profiles
-            </label>
-            <Textarea
-              id="admin-profile-social"
-              value={socialInput}
-              onChange={(event) => setSocialInput(event.target.value)}
-              placeholder={'instagram=https://instagram.com/username\nwebsite=https://salon.com'}
-              rows={4}
-              disabled={isPending}
-            />
-            <p className="text-xs text-muted-foreground">
-              Enter one key=value pair per line. Keys become labels, values must be URLs.
-            </p>
-          </div>
+            <Field>
+              <FieldLabel htmlFor="admin-profile-social">Social profiles</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="admin-profile-social"
+                  value={socialInput}
+                  onChange={(event) => setSocialInput(event.target.value)}
+                  placeholder={'instagram=https://instagram.com/username\nwebsite=https://salon.com'}
+                  rows={4}
+                  disabled={isPending}
+                />
+                <FieldDescription>
+                  Enter one key=value pair per line. Keys become labels, values must be URLs.
+                </FieldDescription>
+              </FieldContent>
+            </Field>
+          </FieldGroup>
 
           {feedback && (
             <Alert variant={feedback.success ? 'default' : 'destructive'}>
@@ -155,24 +173,39 @@ export function ProfileMetadataForm({ profile, onUpdated }: ProfileMetadataFormP
             </Alert>
           )}
 
-          <div className="flex items-center gap-3">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? 'Saving…' : hasMetadata ? 'Update metadata' : 'Create metadata'}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => {
-                setTagsInput(toListString(profile.metadata.tags))
-                setInterestsInput(toListString(profile.metadata.interests))
-                setSocialInput(serializeSocial(profile.metadata.socialProfiles))
-                setFeedback(initialState)
-              }}
-              disabled={isPending}
-            >
-              Reset
-            </Button>
-          </div>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemActions>
+                <ButtonGroup>
+                  <Button type="submit" disabled={isPending}>
+                    {isPending ? (
+                      <>
+                        <Spinner className="mr-2" />
+                        Saving…
+                      </>
+                    ) : hasMetadata ? (
+                      'Update metadata'
+                    ) : (
+                      'Create metadata'
+                    )}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => {
+                      setTagsInput(toListString(profile.metadata.tags))
+                      setInterestsInput(toListString(profile.metadata.interests))
+                      setSocialInput(serializeSocial(profile.metadata.socialProfiles))
+                      setFeedback(initialState)
+                    }}
+                    disabled={isPending}
+                  >
+                    Reset
+                  </Button>
+                </ButtonGroup>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </form>
       </CardContent>
     </Card>

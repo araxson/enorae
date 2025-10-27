@@ -12,6 +12,13 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
 
 const WarningText = ({ children }: { children: React.ReactNode }) => (
   <span className="text-destructive font-semibold">{children}</span>
@@ -38,8 +45,15 @@ export function SuspendUserDialog({ open, onOpenChange, isLoading, onConfirm, us
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} disabled={isLoading}>
-            {isLoading ? 'Suspending...' : 'Suspend User'}
+          <AlertDialogAction onClick={onConfirm} disabled={isLoading} className="flex items-center gap-2">
+            {isLoading ? (
+              <>
+                <Spinner />
+                Suspending…
+              </>
+            ) : (
+              'Suspend User'
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -60,8 +74,15 @@ export function ReactivateUserDialog({ open, onOpenChange, isLoading, onConfirm,
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} disabled={isLoading}>
-            {isLoading ? 'Reactivating...' : 'Reactivate User'}
+          <AlertDialogAction onClick={onConfirm} disabled={isLoading} className="flex items-center gap-2">
+            {isLoading ? (
+              <>
+                <Spinner />
+                Reactivating…
+              </>
+            ) : (
+              'Reactivate User'
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -88,8 +109,15 @@ export function TerminateSessionsDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} disabled={isLoading}>
-            {isLoading ? 'Terminating...' : 'Terminate Sessions'}
+          <AlertDialogAction onClick={onConfirm} disabled={isLoading} className="flex items-center gap-2">
+            {isLoading ? (
+              <>
+                <Spinner />
+                Terminating…
+              </>
+            ) : (
+              'Terminate Sessions'
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -130,21 +158,23 @@ export function DeleteUserDialog({
             be lost. This should only be done for GDPR compliance or legal requests.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="delete-user-reason">
-            Reason (minimum 10 characters)
-          </label>
-          <Textarea
-            id="delete-user-reason"
-            value={reason}
-            onChange={(event) => onReasonChange(event.target.value)}
-            placeholder="Provide the rationale for this permanent deletion"
-            autoFocus
-          />
-          {!isReasonValid && (
-            <p className="text-sm text-destructive">Please provide a reason of at least 10 characters.</p>
-          )}
-        </div>
+        <Field data-invalid={!isReasonValid}>
+          <FieldLabel htmlFor="delete-user-reason">Reason (minimum 10 characters)</FieldLabel>
+          <FieldContent>
+            <Textarea
+              id="delete-user-reason"
+              value={reason}
+              onChange={(event) => onReasonChange(event.target.value)}
+              placeholder="Provide the rationale for this permanent deletion"
+              autoFocus
+            />
+            {!isReasonValid ? (
+              <FieldDescription className="text-destructive">
+                Please provide a reason of at least 10 characters.
+              </FieldDescription>
+            ) : null}
+          </FieldContent>
+        </Field>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
@@ -152,8 +182,16 @@ export function DeleteUserDialog({
               onClick={onConfirm}
               disabled={isLoading || !isReasonValid}
               variant="destructive"
+              className="flex items-center gap-2"
             >
-              {isLoading ? 'Deleting...' : 'Delete Permanently'}
+              {isLoading ? (
+                <>
+                  <Spinner />
+                  Deleting…
+                </>
+              ) : (
+                'Delete Permanently'
+              )}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

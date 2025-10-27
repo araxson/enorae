@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { assignRole } from '@/features/admin/roles/api/mutations'
@@ -19,6 +18,16 @@ import { RoleSelector } from './role-selector'
 import { SalonSelector } from './salon-selector'
 import type { RoleTemplate } from '@/features/admin/roles/components/role-templates'
 import type { RoleValue } from './types'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
 
 type AssignRoleFormProps = {
   open: boolean
@@ -129,32 +138,40 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
         }}
       >
         <DialogHeader>
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5" />
-            <DialogTitle>Assign Role</DialogTitle>
-          </div>
-          <DialogDescription>
-            Assign a role to a user and optionally configure granular permissions with templates.
-          </DialogDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemMedia variant="icon">
+                <Shield className="h-5 w-5" />
+              </ItemMedia>
+            <ItemContent>
+              <DialogTitle>Assign Role</DialogTitle>
+              <DialogDescription>
+                Assign a role to a user and optionally configure granular permissions with templates.
+              </DialogDescription>
+            </ItemContent>
+            </Item>
+          </ItemGroup>
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="userId">User ID *</Label>
-                <Input
-                  ref={userIdRef}
-                  id="userId"
-                  placeholder="Enter user UUID"
-                  value={userId}
-                  onChange={(event) => setUserId(event.target.value)}
-                  required
-                  aria-invalid={Boolean(errors.userId)}
-                />
-                <p className="text-xs text-muted-foreground">The UUID of the user to assign the role to</p>
-                {errors.userId && <p className="text-xs text-destructive">{errors.userId}</p>}
-              </div>
+              <Field data-invalid={Boolean(errors.userId)}>
+                <FieldLabel htmlFor="userId">User ID *</FieldLabel>
+                <FieldContent>
+                  <Input
+                    ref={userIdRef}
+                    id="userId"
+                    placeholder="Enter user UUID"
+                    value={userId}
+                    onChange={(event) => setUserId(event.target.value)}
+                    required
+                    aria-invalid={Boolean(errors.userId)}
+                  />
+                  <FieldDescription>The UUID of the user to assign the role to.</FieldDescription>
+                </FieldContent>
+                {errors.userId ? <FieldError>{errors.userId}</FieldError> : null}
+              </Field>
 
               <RoleSelector
                 role={role}
@@ -185,10 +202,16 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
             </div>
 
             <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <Label>Permissions</Label>
-                <p className="text-xs text-muted-foreground">Templates prefill permissions; add or remove as needed.</p>
-              </div>
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <FieldLabel>Permissions</FieldLabel>
+                    <ItemDescription>
+                      Templates prefill permissions; add or remove as needed.
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
               <PermissionsEditor
                 permissions={permissions}
                 onAdd={handleAddPermission}
@@ -196,14 +219,21 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
               />
             </div>
 
-            <div className="flex justify-end gap-6">
+            <ButtonGroup className="justify-end">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? 'Assigning...' : 'Assign Role'}
+                {isLoading ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Assigning…</span>
+                  </>
+                ) : (
+                  <span>Assign Role</span>
+                )}
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
         </form>
       </DialogContent>

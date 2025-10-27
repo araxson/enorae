@@ -22,6 +22,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface BookingRulesClientProps {
   rules: BookingRuleWithService[]
@@ -61,10 +62,12 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
               {rules.length} {rules.length === 1 ? 'rule' : 'rules'} configured
             </p>
           </div>
-          <Button onClick={handleCreate} disabled={servicesWithoutRules.length === 0}>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Rule
-          </Button>
+          <ButtonGroup>
+            <Button onClick={handleCreate} disabled={servicesWithoutRules.length === 0}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Rule
+            </Button>
+          </ButtonGroup>
         </div>
 
         {rules.length === 0 ? (
@@ -79,10 +82,12 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              <Button onClick={handleCreate}>
-                <Plus className="h-4 w-4 mr-2" />
-                Create First Rule
-              </Button>
+              <ButtonGroup>
+                <Button onClick={handleCreate}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create First Rule
+                </Button>
+              </ButtonGroup>
             </EmptyContent>
           </Empty>
         ) : (
@@ -131,9 +136,11 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                   </div>
                 </ItemContent>
                 <ItemActions>
-                  <Button variant="outline" size="sm" onClick={() => handleEdit(rule)} className="w-full">
-                    Edit Rule
-                  </Button>
+                  <ButtonGroup className="w-full">
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(rule)} className="w-full">
+                      Edit Rule
+                    </Button>
+                  </ButtonGroup>
                 </ItemActions>
               </Item>
             ))}

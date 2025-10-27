@@ -32,6 +32,7 @@ import {
   isExpired,
   renderValidity,
 } from './coupon-card.helpers'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 export interface CouponCardProps {
   coupon: CouponWithStats
@@ -69,14 +70,16 @@ export const CouponCard = memo(function CouponCard({
             {coupon.description ? <CardDescription>{coupon.description}</CardDescription> : null}
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => coupon.code && onCopy(coupon.code)}
-              aria-label={`Copy coupon code ${coupon.code}`}
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
+            <ButtonGroup>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => coupon.code && onCopy(coupon.code)}
+                aria-label={`Copy coupon code ${coupon.code}`}
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </ButtonGroup>
             {statusBadge}
           </div>
         </div>
@@ -126,12 +129,14 @@ export const CouponCard = memo(function CouponCard({
               disabled={isExpired(coupon.valid_until)}
               aria-label={`Toggle coupon ${coupon.code} ${coupon.is_active ? 'inactive' : 'active'}`}
             />
-            <Button variant="ghost" size="icon" onClick={() => onEdit(coupon)} aria-label={`Edit coupon ${coupon.code}`}>
-              <Pencil className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={onDelete} aria-label={`Delete coupon ${coupon.code}`}>
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <ButtonGroup>
+              <Button variant="ghost" size="icon" onClick={() => onEdit(coupon)} aria-label={`Edit coupon ${coupon.code}`}>
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={onDelete} aria-label={`Delete coupon ${coupon.code}`}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </ButtonGroup>
           </div>
         </div>
 

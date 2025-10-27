@@ -2,10 +2,16 @@
 
 import { cn } from '@/lib/utils'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface PricingCardProps {
   pricing: ServicePricingWithService
@@ -24,12 +30,12 @@ export function PricingCard({ pricing, onEdit }: PricingCardProps) {
   const hasDiscount = pricing['sale_price'] && pricing['base_price'] && pricing['sale_price'] < pricing['base_price']
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-start justify-between">
-        <CardTitle>{pricing.service?.['name'] || 'Unknown Service'}</CardTitle>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader className="flex flex-row items-start justify-between">
+        <ItemTitle>{pricing.service?.['name'] || 'Unknown Service'}</ItemTitle>
         {hasDiscount ? <Badge variant="destructive">Sale</Badge> : null}
-      </CardHeader>
-      <CardContent>
+      </ItemHeader>
+      <ItemContent>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-2">
             <div className="flex gap-3">
@@ -82,15 +88,15 @@ export function PricingCard({ pricing, onEdit }: PricingCardProps) {
             </div>
           </div>
 
-          <div className="flex gap-3 justify-end">
-            {onEdit && (
+          {onEdit ? (
+            <ButtonGroup className="justify-end">
               <Button size="sm" variant="outline" onClick={() => onEdit(pricing)}>
                 Edit
               </Button>
-            )}
-          </div>
+            </ButtonGroup>
+          ) : null}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

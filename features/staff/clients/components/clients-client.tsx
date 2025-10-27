@@ -105,7 +105,13 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Clients</CardTitle>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <CardTitle>Clients</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -153,17 +159,23 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredAndSortedClients.map((client) => (
-            <Card
-              key={client.customer_id}
-              className="cursor-pointer transition-colors hover:bg-accent"
-              onClick={() => setSelectedClient(client)}
-            >
-              <CardHeader>
-                <CardTitle>{client.customer_name || 'Walk-in Customer'}</CardTitle>
-                {client.customer_email ? (
-                  <CardDescription>{client.customer_email}</CardDescription>
-                ) : null}
-              </CardHeader>
+              <Card
+                key={client.customer_id}
+                className="cursor-pointer transition-colors hover:bg-accent"
+                onClick={() => setSelectedClient(client)}
+              >
+                <CardHeader>
+                  <ItemGroup>
+                    <Item variant="muted" size="sm">
+                      <ItemContent>
+                        <CardTitle>{client.customer_name || 'Walk-in Customer'}</CardTitle>
+                        {client.customer_email ? (
+                          <CardDescription>{client.customer_email}</CardDescription>
+                        ) : null}
+                      </ItemContent>
+                    </Item>
+                  </ItemGroup>
+                </CardHeader>
               <CardContent>
                 <ItemGroup className="gap-2">
                   <Item size="sm" variant="muted">

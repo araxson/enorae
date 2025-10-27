@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
@@ -253,7 +254,14 @@ export function BulkCouponGenerator({ salonId }: BulkCouponGeneratorProps) {
             </ItemGroup>
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? 'Generating...' : `Generate ${formState.count} Coupons`}
+              {isSubmitting ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Generating...</span>
+                </>
+              ) : (
+                <span>{`Generate ${formState.count} Coupons`}</span>
+              )}
             </Button>
           </FieldSet>
         </form>

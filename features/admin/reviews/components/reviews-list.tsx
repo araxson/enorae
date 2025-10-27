@@ -6,6 +6,15 @@ import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type AdminReview = Database['public']['Views']['admin_reviews_overview_view']['Row']
 
@@ -18,8 +27,14 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Reviews</CardTitle>
-          <CardDescription>No review activity found.</CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Reviews</CardTitle>
+                <CardDescription>No review activity found.</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="pt-6">
           <Empty>
@@ -38,35 +53,39 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
       {reviews.map((review) => (
         <Card key={review['id']}>
           <CardHeader>
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
+            <ItemGroup>
+              <Item className="flex-col items-start gap-2" variant="muted" size="sm">
+                <ItemMedia variant="icon">
                   <Building2 className="h-4 w-4" />
-                  <CardTitle>{review['salon_name']}</CardTitle>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => {
-                      const rating = review['rating'] ?? 0
-                      const isFilled = i < Math.round(rating)
-                      return (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${isFilled ? 'text-accent' : 'text-muted-foreground'}`}
-                          fill={isFilled ? 'currentColor' : 'none'}
-                        />
-                      )
-                    })}
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>{review['salon_name']}</ItemTitle>
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => {
+                        const rating = review['rating'] ?? 0
+                        const isFilled = i < Math.round(rating)
+                        return (
+                          <Star
+                            key={i}
+                            className={`h-4 w-4 ${isFilled ? 'text-accent' : 'text-muted-foreground'}`}
+                            fill={isFilled ? 'currentColor' : 'none'}
+                          />
+                        )
+                      })}
+                    </div>
+                    <ItemDescription>{review['rating']}/5</ItemDescription>
                   </div>
-                  <CardDescription>{review['rating']}/5</CardDescription>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                {review['is_verified'] && <Badge>Verified</Badge>}
-                {review['is_featured'] && <Badge variant="secondary">Featured</Badge>}
-                {review['is_flagged'] && <Badge variant="destructive">Flagged</Badge>}
-              </div>
-            </div>
+                </ItemContent>
+                <ItemActions>
+                  <div className="flex gap-2">
+                    {review['is_verified'] && <Badge>Verified</Badge>}
+                    {review['is_featured'] && <Badge variant="secondary">Featured</Badge>}
+                    {review['is_flagged'] && <Badge variant="destructive">Flagged</Badge>}
+                  </div>
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
               <div className="flex flex-col gap-6">

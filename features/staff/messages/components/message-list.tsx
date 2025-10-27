@@ -4,7 +4,14 @@ import { format } from 'date-fns'
 import { MessageCircle } from 'lucide-react'
 import type { Message } from '@/features/staff/messages/types'
 import { cn } from '@/lib/utils'
-import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemContent,
+  ItemFooter,
+  ItemGroup,
+  ItemTitle,
+  ItemSeparator,
+} from '@/components/ui/item'
 import {
   Empty,
   EmptyDescription,
@@ -34,42 +41,44 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <ItemGroup className="gap-3">
       {messages.map((message, index) => {
         const isFromMe = message['from_user_id'] === currentUserId
 
         return (
           <Fragment key={message['id']}>
-            <article
+            <Item
+              variant={isFromMe ? 'muted' : 'outline'}
+              size="sm"
               className={cn(
-                'flex w-full max-w-xl flex-col gap-1',
-                isFromMe ? 'ml-auto items-end' : 'mr-auto items-start'
+                'max-w-xl flex-col gap-2',
+                isFromMe ? 'ml-auto items-end text-right' : 'mr-auto items-start'
               )}
             >
-              <div className="flex items-center gap-2 px-1">
-                <span className="text-xs font-medium text-muted-foreground">
+              <ItemContent className="gap-2">
+                <ItemTitle className="text-xs font-medium text-muted-foreground">
                   {isFromMe ? 'You' : 'Staff member'}
-                </span>
-                {message['created_at'] ? (
-                  <span className="text-xs text-muted-foreground">
-                    {format(new Date(message['created_at']), 'PPp')}
-                    {message['is_edited'] ? ' (edited)' : ''}
-                  </span>
-                ) : null}
-              </div>
-              <div
-                className={cn(
-                  'max-w-full rounded-lg px-4 py-3',
-                  isFromMe ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                )}
-              >
+                </ItemTitle>
                 <p className="whitespace-pre-wrap text-sm leading-relaxed">{message['content']}</p>
-              </div>
-            </article>
-            {index < messages.length - 1 ? <Separator /> : null}
+              </ItemContent>
+              {message['created_at'] ? (
+                <ItemFooter
+                  className={cn(
+                    'gap-2 text-xs text-muted-foreground',
+                    isFromMe ? 'justify-end' : 'justify-start'
+                  )}
+                >
+                  <time dateTime={message['created_at']}>
+                    {format(new Date(message['created_at']), 'PPp')}
+                  </time>
+                  {message['is_edited'] ? <span aria-label="Message edited">(edited)</span> : null}
+                </ItemFooter>
+              ) : null}
+            </Item>
+            {index < messages.length - 1 ? <ItemSeparator /> : null}
           </Fragment>
         )
       })}
-    </div>
+    </ItemGroup>
   )
 }

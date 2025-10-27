@@ -1,12 +1,23 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Search, ShieldAlert } from 'lucide-react'
+import { Search, ShieldAlert, X } from 'lucide-react'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 declare global {
   interface WindowEventMap {
@@ -50,20 +61,42 @@ export function MessagesFilters({
   }, [onSearch, onStatusChange, onPriorityChange, onFlaggedChange])
 
   return (
-    <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-      <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search messages..."
-          value={searchValue}
-          onChange={(e) => {
-            setSearchValue(e.target.value)
-            onSearch(e.target.value)
-          }}
-          className="pl-9"
-        />
-      </div>
-      <div className="flex flex-wrap items-center gap-3">
+    <ItemGroup className="flex flex-col gap-4 lg:flex-row lg:items-center">
+      <Item variant="muted" className="flex-1">
+        <ItemContent>
+          <InputGroup className="flex-1" aria-label="Search messages">
+            <InputGroupAddon>
+              <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            </InputGroupAddon>
+            <InputGroupInput
+              placeholder="Search messages..."
+              value={searchValue}
+              onChange={(e) => {
+                setSearchValue(e.target.value)
+                onSearch(e.target.value)
+              }}
+            />
+            <InputGroupAddon align="inline-end">
+              {searchValue ? (
+                <InputGroupButton
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Clear search"
+                  onClick={() => {
+                    setSearchValue('')
+                    onSearch('')
+                  }}
+                >
+                  <X className="h-4 w-4" aria-hidden="true" />
+                </InputGroupButton>
+              ) : null}
+            </InputGroupAddon>
+          </InputGroup>
+        </ItemContent>
+      </Item>
+      <Item variant="muted">
+        <ItemContent>
+          <div className="flex flex-wrap items-center gap-3">
         <Select
           value={status}
           onValueChange={(value) => {
@@ -101,24 +134,30 @@ export function MessagesFilters({
             <SelectItem value="low">Low</SelectItem>
           </SelectContent>
         </Select>
-        <div className="flex items-center gap-2 px-3 py-2">
-          <ShieldAlert className="h-4 w-4 text-destructive" />
-          <Label htmlFor="flagged-only">
+        <Field orientation="horizontal" className="items-center gap-2 rounded-md border px-3 py-2">
+          <ShieldAlert className="h-4 w-4 text-destructive" aria-hidden="true" />
+          <FieldLabel htmlFor="flagged-only">
             Flagged only
-          </Label>
-          <Switch
-            id="flagged-only"
-            checked={flaggedOnly}
-            onCheckedChange={(value) => {
-              setFlaggedOnly(value)
-              onFlaggedChange(value)
-            }}
-          />
-        </div>
-        <Button variant="ghost" size="sm" onClick={clearFilters}>
-          Clear all filters
-        </Button>
-      </div>
-    </div>
+          </FieldLabel>
+          <FieldContent className="flex-none">
+            <Switch
+              id="flagged-only"
+              checked={flaggedOnly}
+              onCheckedChange={(value) => {
+                setFlaggedOnly(value)
+                onFlaggedChange(value)
+              }}
+            />
+          </FieldContent>
+        </Field>
+            <ButtonGroup>
+              <Button variant="ghost" size="sm" onClick={clearFilters}>
+                Clear all filters
+              </Button>
+            </ButtonGroup>
+          </div>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

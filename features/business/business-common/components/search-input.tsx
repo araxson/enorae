@@ -3,9 +3,19 @@
 import { useEffect, useId, useState } from 'react'
 import { Search, X } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+} from '@/components/ui/field'
+import { cn } from '@/lib/utils/index'
 
 interface SearchInputProps {
   value?: string
@@ -53,31 +63,35 @@ export function SearchInput({
   }
 
   return (
-    <div className={`relative ${className || ''}`}>
-      <Label htmlFor={resolvedId} className="sr-only">
-        {accessibleLabel}
-      </Label>
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-      <Input
-        id={resolvedId}
-        aria-label={accessibleLabel}
-        value={internalValue}
-        onChange={(e) => setInternalValue(e.target.value)}
-        placeholder={placeholder}
-        className="pl-9 pr-9"
-      />
-      {internalValue && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0"
-          onClick={handleClear}
-        >
-          <X className="h-4 w-4" />
-          <span className="sr-only">Clear search</span>
-        </Button>
-      )}
-    </div>
+    <Field className={cn('relative', className)}>
+      <FieldLabel htmlFor={resolvedId}>{accessibleLabel}</FieldLabel>
+      <FieldContent>
+        <InputGroup>
+          <InputGroupAddon>
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </InputGroupAddon>
+          <InputGroupInput
+            id={resolvedId}
+            aria-label={accessibleLabel}
+            value={internalValue}
+            onChange={(e) => setInternalValue(e.target.value)}
+            placeholder={placeholder}
+          />
+          {internalValue ? (
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                onClick={handleClear}
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </InputGroupButton>
+            </InputGroupAddon>
+          ) : null}
+        </InputGroup>
+      </FieldContent>
+    </Field>
   )
 }

@@ -1,10 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Item, ItemActions, ItemContent, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -13,6 +12,14 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Filter, X } from 'lucide-react'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 
 export interface AuditLogFilters {
   action: string
@@ -54,92 +61,110 @@ export function AuditLogsFilters({ onFilterChange }: AuditLogsFiltersProps) {
   }
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div className="flex items-center gap-2">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>
           <Filter className="h-4 w-4" />
-          <CardTitle>Filters</CardTitle>
-        </div>
-        <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-2">
-          <X className="h-4 w-4" />
-          Clear
-        </Button>
-      </CardHeader>
-      <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <div>
-          <Label htmlFor="action">Action</Label>
-          <Select value={filters.action} onValueChange={(value) => handleFilterChange('action', value)}>
-            <SelectTrigger id="action">
-              <SelectValue placeholder="All actions" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">All actions</SelectItem>
-              <SelectItem value="create">Create</SelectItem>
-              <SelectItem value="update">Update</SelectItem>
-              <SelectItem value="delete">Delete</SelectItem>
-              <SelectItem value="login">Login</SelectItem>
-              <SelectItem value="logout">Logout</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+          Filters
+        </ItemTitle>
+        <ItemActions>
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-2">
+            <X className="h-4 w-4" />
+            Clear
+          </Button>
+        </ItemActions>
+      </ItemHeader>
+      <ItemContent>
+        <FieldSet>
+          <FieldGroup className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
+            <Field>
+              <FieldLabel htmlFor="action">Action</FieldLabel>
+              <FieldContent>
+                <Select value={filters.action} onValueChange={(value) => handleFilterChange('action', value)}>
+                  <SelectTrigger id="action">
+                    <SelectValue placeholder="All actions" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">All actions</SelectItem>
+                    <SelectItem value="create">Create</SelectItem>
+                    <SelectItem value="update">Update</SelectItem>
+                    <SelectItem value="delete">Delete</SelectItem>
+                    <SelectItem value="login">Login</SelectItem>
+                    <SelectItem value="logout">Logout</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
 
-        <div>
-          <Label htmlFor="entityType">Entity Type</Label>
-          <Select
-            value={filters.entityType}
-            onValueChange={(value) => handleFilterChange('entityType', value)}
-          >
-            <SelectTrigger id="entityType">
-              <SelectValue placeholder="All types" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">All types</SelectItem>
-              <SelectItem value="appointment">Appointment</SelectItem>
-              <SelectItem value="service">Service</SelectItem>
-              <SelectItem value="staff">Staff</SelectItem>
-              <SelectItem value="customer">Customer</SelectItem>
-              <SelectItem value="settings">Settings</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+            <Field>
+              <FieldLabel htmlFor="entityType">Entity Type</FieldLabel>
+              <FieldContent>
+                <Select
+                  value={filters.entityType}
+                  onValueChange={(value) => handleFilterChange('entityType', value)}
+                >
+                  <SelectTrigger id="entityType">
+                    <SelectValue placeholder="All types" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">All types</SelectItem>
+                    <SelectItem value="appointment">Appointment</SelectItem>
+                    <SelectItem value="service">Service</SelectItem>
+                    <SelectItem value="staff">Staff</SelectItem>
+                    <SelectItem value="customer">Customer</SelectItem>
+                    <SelectItem value="settings">Settings</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
 
-        <div>
-          <Label htmlFor="startDate">Start Date</Label>
-          <Input
-            id="startDate"
-            type="date"
-            value={filters.startDate}
-            onChange={(event) => handleFilterChange('startDate', event.target.value)}
-          />
-        </div>
+            <Field>
+              <FieldLabel htmlFor="startDate">Start Date</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="startDate"
+                  type="date"
+                  value={filters.startDate}
+                  onChange={(event) => handleFilterChange('startDate', event.target.value)}
+                />
+              </FieldContent>
+              <FieldDescription>Filter logs from this date forward.</FieldDescription>
+            </Field>
 
-        <div>
-          <Label htmlFor="endDate">End Date</Label>
-          <Input
-            id="endDate"
-            type="date"
-            value={filters.endDate}
-            onChange={(event) => handleFilterChange('endDate', event.target.value)}
-          />
-        </div>
+            <Field>
+              <FieldLabel htmlFor="endDate">End Date</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="endDate"
+                  type="date"
+                  value={filters.endDate}
+                  onChange={(event) => handleFilterChange('endDate', event.target.value)}
+                />
+              </FieldContent>
+              <FieldDescription>Limit results up to this date.</FieldDescription>
+            </Field>
 
-        <div>
-          <Label htmlFor="isSuccess">Status</Label>
-          <Select
-            value={filters.isSuccess}
-            onValueChange={(value) => handleFilterChange('isSuccess', value)}
-          >
-            <SelectTrigger id="isSuccess">
-              <SelectValue placeholder="All statuses" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">All statuses</SelectItem>
-              <SelectItem value="true">Success</SelectItem>
-              <SelectItem value="false">Failed</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </CardContent>
-    </Card>
+            <Field>
+              <FieldLabel htmlFor="isSuccess">Status</FieldLabel>
+              <FieldContent>
+                <Select
+                  value={filters.isSuccess}
+                  onValueChange={(value) => handleFilterChange('isSuccess', value)}
+                >
+                  <SelectTrigger id="isSuccess">
+                    <SelectValue placeholder="All statuses" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">All statuses</SelectItem>
+                    <SelectItem value="true">Success</SelectItem>
+                    <SelectItem value="false">Failed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
+          </FieldGroup>
+        </FieldSet>
+      </ItemContent>
+    </Item>
   )
 }

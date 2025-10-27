@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { TrendingUp, TrendingDown, Users, UserPlus, Repeat, DollarSign } from 'lucide-react'
@@ -10,6 +9,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -45,14 +45,13 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
     : '0.0'
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Customer Insights</CardTitle>
-        <CardDescription>Customer behavior and lifetime value analysis</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-6">
+      <ItemHeader>
+        <ItemTitle>Customer Insights</ItemTitle>
+        <ItemDescription>Customer behavior and lifetime value analysis</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <div className="flex flex-col gap-6">
-          {/* Key Metrics */}
           <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
               {
@@ -88,8 +87,8 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
               >
                 <ItemContent className="flex flex-col items-center gap-2">
                   <div className="flex items-center justify-center">{metric.icon}</div>
-                  <CardTitle>{metric.title}</CardTitle>
-                  <CardDescription>{metric.description}</CardDescription>
+                  <ItemTitle>{metric.title}</ItemTitle>
+                  <ItemDescription>{metric.description}</ItemDescription>
                 </ItemContent>
               </Item>
             ))}
@@ -97,81 +96,65 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
 
           <Separator />
 
-          {/* Value Metrics */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item>
-                    <ItemContent>
-                      <CardTitle>Avg Lifetime Value</CardTitle>
-                    </ItemContent>
-                    <ItemActions className="flex-none">
-                      <DollarSign className="h-5 w-5 text-muted-foreground" />
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <CardTitle>{formatCurrency(data.averageLifetimeValue)}</CardTitle>
-                <CardDescription>Per customer</CardDescription>
-              </CardContent>
-            </Card>
+            <Item variant="outline" className="flex-col gap-3">
+              <ItemHeader className="items-center justify-between">
+                <ItemTitle>Avg Lifetime Value</ItemTitle>
+                <ItemActions className="flex-none">
+                  <DollarSign className="h-5 w-5 text-muted-foreground" />
+                </ItemActions>
+              </ItemHeader>
+              <ItemContent className="space-y-1">
+                <ItemTitle>{formatCurrency(data.averageLifetimeValue)}</ItemTitle>
+                <ItemDescription>Per customer</ItemDescription>
+              </ItemContent>
+            </Item>
 
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item>
-                    <ItemContent>
-                      <CardTitle>Avg Order Value</CardTitle>
-                    </ItemContent>
-                    <ItemActions className="flex-none">
-                      <DollarSign className="h-5 w-5 text-muted-foreground" />
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <CardTitle>{formatCurrency(data.averageOrderValue)}</CardTitle>
-                <CardDescription>Per appointment</CardDescription>
-              </CardContent>
-            </Card>
+            <Item variant="outline" className="flex-col gap-3">
+              <ItemHeader className="items-center justify-between">
+                <ItemTitle>Avg Order Value</ItemTitle>
+                <ItemActions className="flex-none">
+                  <DollarSign className="h-5 w-5 text-muted-foreground" />
+                </ItemActions>
+              </ItemHeader>
+              <ItemContent className="space-y-1">
+                <ItemTitle>{formatCurrency(data.averageOrderValue)}</ItemTitle>
+                <ItemDescription>Per appointment</ItemDescription>
+              </ItemContent>
+            </Item>
           </div>
 
-          {/* Top Customers */}
           {data.topCustomers.length > 0 && (
             <>
               <Separator />
-              <Card>
-                <CardHeader>
-                  <CardTitle>Top Customers</CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-3">
+              <Item variant="outline" className="flex-col gap-3">
+                <ItemHeader>
+                  <ItemTitle>Top Customers</ItemTitle>
+                </ItemHeader>
+                <ItemContent className="flex flex-col gap-3">
                   <ItemGroup className="gap-2">
                     {data.topCustomers.map((customer, index) => (
                       <Item key={customer.name} variant="outline" className="items-start">
                         <ItemContent>
                           <ItemTitle>{customer.name}</ItemTitle>
-                          {customer.email ? (
-                            <ItemDescription>{customer.email}</ItemDescription>
-                          ) : null}
+                          {customer.email ? <ItemDescription>{customer.email}</ItemDescription> : null}
                         </ItemContent>
                         <ItemActions className="flex-none items-center gap-4">
                           <div className="text-right">
-                            <CardDescription>{formatCurrency(customer.totalSpent)}</CardDescription>
-                            <CardDescription>{customer.visitCount} visits</CardDescription>
+                            <ItemDescription>{formatCurrency(customer.totalSpent)}</ItemDescription>
+                            <ItemDescription>{customer.visitCount} visits</ItemDescription>
                           </div>
                           <Badge variant="secondary">#{index + 1}</Badge>
                         </ItemActions>
                       </Item>
                     ))}
                   </ItemGroup>
-                </CardContent>
-              </Card>
+                </ItemContent>
+              </Item>
             </>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

@@ -23,7 +23,15 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MoreHorizontal, CheckCircle2, XCircle, Trash2, Power, PowerOff, CreditCard } from 'lucide-react'
 import { verifyChain, updateChainActiveStatus, updateChainSubscription, deleteChain } from '@/features/admin/chains/api/mutations'
 import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface ChainActionsProps {
   chainId: string
@@ -179,23 +187,36 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
             <AlertDialogDescription>{getActionText().description}</AlertDialogDescription>
             <AlertDialogDescription className="mt-2">Chain: {chainName}</AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="space-y-2">
-            <Label htmlFor="chain-reason">Reason (required)</Label>
-            <Textarea
-              id="chain-reason"
-              value={reason}
-              onChange={(event) => setReason(event.target.value)}
-              placeholder="Provide context for this action (minimum 10 characters)"
-              aria-invalid={Boolean(reasonError)}
-              autoFocus
-            />
-            {reasonError && <p className="text-sm text-destructive">{reasonError}</p>}
-          </div>
+          <Field data-invalid={Boolean(reasonError)}>
+            <FieldLabel htmlFor="chain-reason">Reason (required)</FieldLabel>
+            <FieldContent>
+              <Textarea
+                id="chain-reason"
+                value={reason}
+                onChange={(event) => setReason(event.target.value)}
+                placeholder="Provide context for this action (minimum 10 characters)"
+                aria-invalid={Boolean(reasonError)}
+                autoFocus
+                rows={4}
+              />
+              <FieldDescription>Provide at least 10 characters to explain the action.</FieldDescription>
+            </FieldContent>
+            {reasonError ? <FieldError>{reasonError}</FieldError> : null}
+          </Field>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleAction} disabled={isLoading}>
-              {isLoading ? 'Processing...' : 'Confirm'}
-            </AlertDialogAction>
+            <ButtonGroup>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleAction} disabled={isLoading} className="flex items-center gap-2">
+                {isLoading ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Processing…</span>
+                  </>
+                ) : (
+                  <span>Confirm</span>
+                )}
+              </AlertDialogAction>
+            </ButtonGroup>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

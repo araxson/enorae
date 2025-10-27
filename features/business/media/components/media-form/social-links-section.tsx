@@ -2,7 +2,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 type SocialLinks = {
   facebook: string
   instagram: string
@@ -30,22 +36,24 @@ export function SocialLinksSection({ socialLinks }: SocialLinksSectionProps) {
         <CardTitle>Social Media Links</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <FieldSet className="flex flex-col gap-6">
+          <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {SOCIAL_INPUTS.map(({ id, label, placeholder }) => (
-              <div key={id}>
-                <Label htmlFor={`social_${id}`}>{label}</Label>
-                <Input
-                  id={`social_${id}`}
-                  name={`social_${id}`}
-                  type="url"
-                  defaultValue={socialLinks[id] || ''}
-                  placeholder={placeholder}
-                />
-              </div>
+              <Field key={id}>
+                <FieldLabel htmlFor={`social_${id}`}>{label}</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id={`social_${id}`}
+                    name={`social_${id}`}
+                    type="url"
+                    defaultValue={socialLinks[id] || ''}
+                    placeholder={placeholder}
+                  />
+                </FieldContent>
+              </Field>
             ))}
-          </div>
-        </div>
+          </FieldGroup>
+        </FieldSet>
       </CardContent>
     </Card>
   )

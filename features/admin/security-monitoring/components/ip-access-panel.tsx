@@ -3,6 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import type { IpAccessEvent } from '@/features/admin/security-monitoring/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface IpAccessPanelProps {
   events: IpAccessEvent[]
@@ -12,10 +20,14 @@ export function IpAccessPanel({ events }: IpAccessPanelProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Network className="h-4 w-4" aria-hidden="true" />
-          <CardTitle>IP Access Control</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted" className="items-center gap-2">
+            <ItemContent className="flex items-center gap-2">
+              <Network className="h-4 w-4" aria-hidden="true" />
+              <CardTitle>IP Access Control</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         {events.length === 0 ? (
@@ -26,46 +38,44 @@ export function IpAccessPanel({ events }: IpAccessPanelProps) {
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="flex flex-col gap-2">
+          <ItemGroup className="flex flex-col gap-2">
             {events.slice(0, 8).map((event) => (
-              <Card key={event.id}>
-                <CardHeader>
+              <Item key={event.id} variant="outline" className="flex-col items-start gap-2">
+                <ItemContent className="w-full gap-2">
                   <div className="flex items-center justify-between gap-2">
-                    <CardTitle>{event.ipAddress ?? 'Unknown IP'}</CardTitle>
-                    <Badge variant={event.isGranted ? 'outline' : 'destructive'}>
-                      {event.isGranted ? (
-                        <>
-                          <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
-                          {' '}
-                          Allowed
-                        </>
-                      ) : (
-                        <>
-                          <XCircle className="h-3 w-3" aria-hidden="true" />
-                          {' '}
-                          Blocked
-                        </>
-                      )}
-                    </Badge>
+                    <ItemTitle>{event.ipAddress ?? 'Unknown IP'}</ItemTitle>
+                    <ItemActions className="flex-none">
+                      <Badge variant={event.isGranted ? 'outline' : 'destructive'}>
+                        {event.isGranted ? (
+                          <>
+                            <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
+                            {' '}
+                            Allowed
+                          </>
+                        ) : (
+                          <>
+                            <XCircle className="h-3 w-3" aria-hidden="true" />
+                            {' '}
+                            Blocked
+                          </>
+                        )}
+                      </Badge>
+                    </ItemActions>
                   </div>
-                  <CardDescription>
+                  <ItemDescription>
                     {event.action} · {event.resourceType}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col gap-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <CardDescription>User: {event.userId ?? 'Anonymous'}</CardDescription>
-                      <CardDescription>At {new Date(event.createdAt).toLocaleString()}</CardDescription>
-                    </div>
-                    {event.userAgent ? (
-                      <CardDescription>Agent: {event.userAgent}</CardDescription>
-                    ) : null}
-                  </div>
-                </CardContent>
-              </Card>
+                  </ItemDescription>
+                  <ItemDescription className="flex flex-wrap items-center gap-2">
+                    <span>User: {event.userId ?? 'Anonymous'}</span>
+                    <span>At {new Date(event.createdAt).toLocaleString()}</span>
+                  </ItemDescription>
+                  {event.userAgent ? (
+                    <ItemDescription>Agent: {event.userAgent}</ItemDescription>
+                  ) : null}
+                </ItemContent>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         )}
       </CardContent>
     </Card>

@@ -2,9 +2,16 @@ import { redirect } from 'next/navigation'
 import { verifySession } from '@/lib/auth'
 import { getThreadById, getMessagesBetweenUsers } from '@/features/shared/messaging/api/queries'
 import { MessageThread } from './message-thread'
-import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { ArrowLeft } from 'lucide-react'
 
 interface MessageThreadDetailProps {
   threadId: string
@@ -25,20 +32,28 @@ export async function MessageThreadDetail({ threadId }: MessageThreadDetailProps
 
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
-      <div className="flex flex-col gap-8">
-        <div>
-          <Link href="/customer/messages">
-            <Button variant="ghost" size="sm" className="mb-4">
-              ← Back to Messages
-            </Button>
-          </Link>
-          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">{thread['subject'] || 'Conversation'}</h1>
-          <p className="leading-7 text-muted-foreground">
-            Thread started {thread['created_at'] ? new Date(thread['created_at']).toLocaleDateString() : 'N/A'}
-          </p>
-        </div>
-
-        <Separator />
+      <div className="flex flex-col gap-6">
+        <ItemGroup>
+          <Item variant="muted" size="sm" className="flex-col gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/customer/messages" className="flex items-center gap-2">
+                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                  Back to Messages
+                </Link>
+              </Button>
+              <ItemTitle>{thread['subject'] || 'Conversation'}</ItemTitle>
+            </div>
+            <ItemContent>
+              <ItemDescription>
+                Thread started{' '}
+                {thread['created_at']
+                  ? new Date(thread['created_at']).toLocaleDateString()
+                  : 'N/A'}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
 
         <MessageThread threadId={threadId} messages={messages} currentUserId={session.user['id']} />
       </div>

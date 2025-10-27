@@ -52,7 +52,15 @@ export function AppointmentDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Appointment Details</DialogTitle>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Calendar className="h-4 w-4" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <DialogTitle>Appointment Details</DialogTitle>
+              <ItemDescription>Review timing, customer information, and status.</ItemDescription>
+            </ItemContent>
+          </Item>
         </DialogHeader>
 
         <div className="flex flex-col gap-6">
@@ -94,7 +102,13 @@ export function AppointmentDetailDialog({
           <Separator />
 
           <div>
-            <p className="font-semibold mb-3">Customer Information</p>
+            <ItemGroup className="mb-3">
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <ItemTitle>Customer Information</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
             <ItemGroup>
               <Item>
                 <ItemMedia variant="icon">
@@ -111,7 +125,13 @@ export function AppointmentDetailDialog({
           <Separator />
 
           <div>
-            <p className="font-semibold mb-3">Appointment Details</p>
+            <ItemGroup className="mb-3">
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <ItemTitle>Appointment Details</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
             <ItemGroup>
               {appointment.confirmation_code ? (
                 <Item>

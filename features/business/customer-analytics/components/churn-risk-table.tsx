@@ -1,8 +1,8 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 
 type ChurnRisk = {
   id: string
@@ -20,22 +20,22 @@ type ChurnRiskTableProps = {
 export function ChurnRiskTable({ customers }: ChurnRiskTableProps) {
   if (customers.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Churn Risk</CardTitle>
-          <CardDescription>No at-risk customers in the last 6 months.</CardDescription>
-        </CardHeader>
-      </Card>
+      <Item variant="outline" className="flex-col gap-2">
+        <ItemHeader>
+          <ItemTitle>Churn Risk</ItemTitle>
+          <ItemDescription>No at-risk customers in the last 6 months.</ItemDescription>
+        </ItemHeader>
+      </Item>
     )
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Churn Risk</CardTitle>
-        <CardDescription>Customers approaching churn thresholds</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemTitle>Churn Risk</ItemTitle>
+        <ItemDescription>Customers approaching churn thresholds</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <Table>
           <TableHeader>
             <TableRow>
@@ -66,7 +66,7 @@ export function ChurnRiskTable({ customers }: ChurnRiskTableProps) {
             ))}
           </TableBody>
         </Table>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

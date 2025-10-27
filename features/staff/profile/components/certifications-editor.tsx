@@ -12,6 +12,17 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface CertificationsEditorProps {
   initialCertifications?: string[]
@@ -62,8 +73,14 @@ export function CertificationsEditor({ initialCertifications = [] }: Certificati
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Certifications & Licenses</CardTitle>
-        <CardDescription>Keep your credentials current.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Certifications & Licenses</CardTitle>
+              <CardDescription>Keep your credentials current.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
@@ -105,7 +122,12 @@ export function CertificationsEditor({ initialCertifications = [] }: Certificati
               ))}
             </div>
           ) : (
-            <CardDescription>No certifications added yet</CardDescription>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No certifications yet</EmptyTitle>
+                <EmptyDescription>Add credentials to build trust with clients.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
 
           {error ? (

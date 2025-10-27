@@ -1,10 +1,16 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Calendar, CreditCard } from 'lucide-react'
 import type { Subscription } from '../types'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function PaymentMethodCard({
   subscription,
@@ -12,17 +18,17 @@ export function PaymentMethodCard({
   subscription: Subscription
 }) {
   return (
-    <Card>
-      <CardHeader className="flex items-center justify-between">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader className="flex items-center justify-between">
         <div>
-          <CardTitle>Payment Method</CardTitle>
-          <CardDescription>Manage your payment information</CardDescription>
+          <ItemTitle>Payment Method</ItemTitle>
+          <ItemDescription>Manage your payment information</ItemDescription>
         </div>
         <Button variant="outline" size="sm">
           Update
         </Button>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-6">
+      </ItemHeader>
+      <ItemContent className="flex flex-col gap-6">
         <Separator />
 
         <div className="flex items-center gap-6">
@@ -51,7 +57,7 @@ export function PaymentMethodCard({
             })}
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

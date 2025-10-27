@@ -4,8 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { requestPasswordReset } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import {
   Card,
   CardContent,
@@ -16,6 +15,16 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, CheckCircle2, Mail, ArrowLeft } from 'lucide-react'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldGroup,
+  FieldSet,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 export function ForgotPasswordForm() {
   const [error, setError] = useState<string | null>(null)
@@ -54,7 +63,7 @@ export function ForgotPasswordForm() {
           </CardHeader>
 
           <CardContent>
-            <div className="flex flex-col gap-6">
+            <FieldSet className="gap-6">
               <Alert>
                 <CheckCircle2 className="h-4 w-4 text-primary" />
                 <AlertTitle>Reset link sent</AlertTitle>
@@ -74,16 +83,18 @@ export function ForgotPasswordForm() {
                   try again
                 </Button>
               </p>
-            </div>
+            </FieldSet>
           </CardContent>
 
           <CardFooter>
-            <Button variant="outline" asChild className="w-full">
-              <Link href="/login">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to login
-              </Link>
-            </Button>
+            <ButtonGroup className="w-full">
+              <Button variant="outline" asChild className="w-full">
+                <Link href="/login">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to login
+                </Link>
+              </Button>
+            </ButtonGroup>
           </CardFooter>
         </Card>
       </div>
@@ -102,38 +113,49 @@ export function ForgotPasswordForm() {
 
         <form action={handleSubmit}>
           <CardContent>
-            <div className="flex flex-col gap-6">
-              {error && (
+            <FieldSet className="gap-6">
+              {error ? (
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertTitle>Reset failed</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
-              )}
+              ) : null}
 
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="email">Email address</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoFocus
-                />
-                <p className="text-sm font-medium text-muted-foreground">
-                  We&apos;ll send a password reset link to this email
-                </p>
-              </div>
-            </div>
+              <FieldGroup className="gap-6">
+                <Field>
+                  <FieldLabel htmlFor="email">Email address</FieldLabel>
+                  <FieldContent>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      autoFocus
+                    />
+                    <FieldDescription>
+                      We&apos;ll send a password reset link to this email
+                    </FieldDescription>
+                  </FieldContent>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
           </CardContent>
 
           <CardFooter>
-            <div className="flex w-full flex-col gap-4">
+            <ButtonGroup className="w-full flex-col gap-4">
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Sending...' : 'Send reset link'}
+                {loading ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <span>Send reset link</span>
+                )}
               </Button>
 
               <Button variant="ghost" asChild className="w-full">
@@ -142,7 +164,7 @@ export function ForgotPasswordForm() {
                   Back to login
                 </Link>
               </Button>
-            </div>
+            </ButtonGroup>
           </CardFooter>
         </form>
       </Card>

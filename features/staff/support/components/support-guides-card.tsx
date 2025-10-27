@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { CheckCircle2, Clock, FileText } from 'lucide-react'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
@@ -31,8 +32,14 @@ export function SupportGuidesCard({ sections }: SupportGuidesCardProps) {
   return (
     <Card id="release-notes">
       <CardHeader>
-        <CardTitle>Guides & updates</CardTitle>
-        <CardDescription>Training, release notes, and policy reminders curated for staff.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Guides & updates</CardTitle>
+              <CardDescription>Training, release notes, and policy reminders curated for staff.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue={firstSection} className="space-y-4">
@@ -49,13 +56,17 @@ export function SupportGuidesCard({ sections }: SupportGuidesCardProps) {
               <div className="space-y-4">
                 <Card>
                   <CardHeader>
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <CardTitle>{section.title}</CardTitle>
-                        <Badge variant="outline">Updated weekly</Badge>
-                      </div>
-                      <CardDescription>{section.description}</CardDescription>
-                    </div>
+                    <ItemGroup>
+                      <Item variant="muted" size="sm">
+                        <ItemContent>
+                          <CardTitle>{section.title}</CardTitle>
+                          <CardDescription>{section.description}</CardDescription>
+                        </ItemContent>
+                        <ItemActions>
+                          <Badge variant="outline">Updated weekly</Badge>
+                        </ItemActions>
+                      </Item>
+                    </ItemGroup>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">

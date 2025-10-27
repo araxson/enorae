@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Kbd } from '@/components/ui/kbd'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type NavigationItem = {
   label: string
@@ -40,11 +41,13 @@ export function DashboardCommandButton({ navigationItems, commandItems }: Dashbo
     <>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" className="gap-2" onClick={() => setOpen(true)}>
-            <Sparkles className="h-4 w-4" />
-            Command
-            <Kbd className="ml-1">⌘K</Kbd>
-          </Button>
+          <ButtonGroup>
+            <Button variant="outline" className="gap-2" onClick={() => setOpen(true)}>
+              <Sparkles className="h-4 w-4" />
+              Command
+              <Kbd className="ml-1">⌘K</Kbd>
+            </Button>
+          </ButtonGroup>
         </TooltipTrigger>
         <TooltipContent>Search commands and quick links</TooltipContent>
       </Tooltip>

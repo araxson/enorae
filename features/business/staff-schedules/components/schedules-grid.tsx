@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 import { deleteStaffSchedule, toggleScheduleActive } from '@/features/business/staff-schedules/api/mutations'
 import type { StaffScheduleWithDetails } from '@/features/business/staff-schedules/api/queries'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type SchedulesGridProps = {
   schedules: StaffScheduleWithDetails[]
@@ -173,7 +174,7 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex gap-2 justify-end">
+                        <ButtonGroup className="ml-auto justify-end">
                           <Button
                             size="sm"
                             variant="ghost"
@@ -193,7 +194,7 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
-                        </div>
+                        </ButtonGroup>
                       </TableCell>
                     </TableRow>
                   ))}

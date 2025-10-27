@@ -1,8 +1,14 @@
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 import { StaffRiskBadge } from './staff-risk-badge'
 import { formatDate, renderBackgroundBadge } from './staff-table-helpers'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type StaffTableMobileProps = {
   staff: StaffWithMetrics[]
@@ -10,24 +16,23 @@ type StaffTableMobileProps = {
 
 export function StaffTableMobile({ staff }: StaffTableMobileProps) {
   return (
-    <div className="space-y-4 md:hidden">
+    <ItemGroup className="space-y-4 md:hidden">
       {staff.map((member) => (
-        <Card key={member.id}>
-          <CardHeader className="pb-2">
+        <Item key={member.id} variant="outline" className="flex-col gap-3">
+          <ItemContent className="w-full gap-3">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <CardTitle>{member.fullName || member.title || 'Unnamed staff'}</CardTitle>
-                <CardDescription>Experience {member.experienceYears} yrs</CardDescription>
+                <ItemTitle>{member.fullName || member.title || 'Unnamed staff'}</ItemTitle>
+                <ItemDescription>Experience {member.experienceYears} yrs</ItemDescription>
                 {member.metrics.lastAppointmentAt ? (
-                  <CardDescription>
+                  <ItemDescription>
                     Last appointment {formatDate(member.metrics.lastAppointmentAt)}
-                  </CardDescription>
+                  </ItemDescription>
                 ) : null}
               </div>
               <StaffRiskBadge staff={member} />
             </div>
-          </CardHeader>
-          <CardContent className="space-y-3 pt-0">
+
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
                 <span className="block font-medium">Role</span>
@@ -80,9 +85,9 @@ export function StaffTableMobile({ staff }: StaffTableMobileProps) {
                 <span className="text-muted-foreground">{member.compliance.score}</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </ItemContent>
+        </Item>
       ))}
-    </div>
+    </ItemGroup>
   )
 }

@@ -22,6 +22,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup, ItemMedia } from '@/components/ui/item'
 
 interface SecurityEventsTableProps {
   events: SecurityEvent[]
@@ -90,10 +91,16 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
               {events.map((event) => (
                 <TableRow key={event.id}>
                   <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium">{event.event_type}</span>
-                    </div>
+                    <ItemGroup>
+                      <Item variant="muted" className="items-center gap-2">
+                        <ItemMedia variant="icon">
+                          <Shield className="h-4 w-4 text-muted-foreground" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <span className="font-medium">{event.event_type}</span>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
                   </TableCell>
                   <TableCell>{getSeverityBadge(event.severity)}</TableCell>
                   <TableCell>

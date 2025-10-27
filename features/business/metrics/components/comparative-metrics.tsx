@@ -1,10 +1,16 @@
 'use client'
 
 import { ArrowDownRight, ArrowUpRight, Equal } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import type { MetricsComparison } from '@/lib/utils/metrics'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type MetricKey = keyof MetricsComparison
 
@@ -42,12 +48,12 @@ function changeIndicator(change: number) {
 
 export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: ComparativeMetricsProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Period Comparison</CardTitle>
-        <CardDescription>{periodLabel} vs prior period</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemTitle>Period Comparison</ItemTitle>
+        <ItemDescription>{periodLabel} vs prior period</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <Table>
           <TableHeader>
             <TableRow>
@@ -86,7 +92,7 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
             })}
           </TableBody>
         </Table>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

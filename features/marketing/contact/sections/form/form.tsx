@@ -21,6 +21,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
+import { Spinner } from '@/components/ui/spinner'
 import { contactSchema, type ContactSchema } from '@/features/marketing/contact/schema'
 import { submitContactMessage } from '@/features/marketing/contact/api/mutations'
 
@@ -172,7 +173,14 @@ export function ContactForm() {
               className="w-full"
               disabled={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting ? 'Sending...' : 'Send Message'}
+              {form.formState.isSubmitting ? (
+                <>
+                  <Spinner className="mr-2 size-4" />
+                  Sending...
+                </>
+              ) : (
+                'Send Message'
+              )}
             </Button>
           </form>
         </Form>

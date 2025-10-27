@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown, Clock, Calendar } from 'lucide-react'
 import type { PricingRule } from '@/features/business/pricing/types'
@@ -12,6 +11,8 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
+  ItemTitle,
 } from '@/components/ui/item'
 
 interface PricingRulesTabProps {
@@ -20,14 +21,14 @@ interface PricingRulesTabProps {
 
 export function PricingRulesTab({ rules }: PricingRulesTabProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Active Pricing Rules</CardTitle>
-        <CardDescription>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemTitle>Active Pricing Rules</ItemTitle>
+        <ItemDescription>
           Time-based pricing adjustments for demand optimization
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         {rules.length === 0 ? (
           <Empty>
             <EmptyHeader>
@@ -44,11 +45,11 @@ export function PricingRulesTab({ rules }: PricingRulesTabProps) {
                 className="flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
               >
                 <ItemContent className="flex flex-wrap items-center gap-3">
-                  <ItemDescription className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <Badge variant="outline">{getDayName(rule.day_of_week)}</Badge>
-                  </ItemDescription>
-                  <ItemDescription className="flex items-center gap-2 text-sm text-muted-foreground">
+                  </div>
+                  <ItemDescription className="flex items-center gap-2 text-muted-foreground">
                     <Clock className="h-3 w-3" />
                     {formatTime(rule.hour_start)} - {formatTime(rule.hour_end)}
                   </ItemDescription>
@@ -74,7 +75,7 @@ export function PricingRulesTab({ rules }: PricingRulesTabProps) {
             ))}
           </ItemGroup>
         )}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

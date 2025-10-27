@@ -13,9 +13,11 @@ import { Mail, Star, Briefcase } from 'lucide-react'
 import type { StaffProfile } from '@/features/customer/staff-profiles/api/queries'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -45,40 +47,52 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
           </div>
         </CardHeader>
         <CardContent className="p-6 pt-0">
-          <div className="flex flex-col gap-4">
+          <ItemGroup className="gap-4">
             {profile['email'] ? (
-              <div className="flex items-center gap-3">
-                <Mail className="h-4 w-4" aria-hidden="true" />
-                <CardDescription>{profile['email']}</CardDescription>
-              </div>
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <Mail className="h-4 w-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemDescription>{profile['email']}</ItemDescription>
+                </ItemContent>
+              </Item>
             ) : null}
 
             {profile.specialties && profile.specialties.length > 0 ? (
-              <div className="space-y-2">
-                <CardDescription>Specialties</CardDescription>
-                <div className="flex flex-wrap gap-2">
-                  {(profile.specialties as string[]).map((specialty, index) => (
-                    <Badge key={index} variant="secondary">
-                      {specialty}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
+              <Item variant="muted">
+                <ItemContent className="space-y-2">
+                  <ItemDescription className="text-xs text-muted-foreground">
+                    Specialties
+                  </ItemDescription>
+                  <ItemActions className="flex-wrap gap-2">
+                    {(profile.specialties as string[]).map((specialty, index) => (
+                      <Badge key={index} variant="secondary">
+                        {specialty}
+                      </Badge>
+                    ))}
+                  </ItemActions>
+                </ItemContent>
+              </Item>
             ) : null}
 
             {profile.certifications && profile.certifications.length > 0 ? (
-              <div className="space-y-2">
-                <CardDescription>Certifications</CardDescription>
-                <div className="flex flex-wrap gap-2">
-                  {(profile.certifications as string[]).map((cert, index) => (
-                    <Badge key={index} variant="outline">
-                      {cert}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
+              <Item variant="muted">
+                <ItemContent className="space-y-2">
+                  <ItemDescription className="text-xs text-muted-foreground">
+                    Certifications
+                  </ItemDescription>
+                  <ItemActions className="flex-wrap gap-2">
+                    {(profile.certifications as string[]).map((cert, index) => (
+                      <Badge key={index} variant="outline">
+                        {cert}
+                      </Badge>
+                    ))}
+                  </ItemActions>
+                </ItemContent>
+              </Item>
             ) : null}
-          </div>
+          </ItemGroup>
         </CardContent>
       </Card>
 

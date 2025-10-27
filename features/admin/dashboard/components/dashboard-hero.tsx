@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { DataRefreshControls } from '@/features/shared/dashboard/components/data-refresh-controls'
 import {
   DropdownMenu,
@@ -33,6 +34,13 @@ import {
   ShieldAlert,
   ShieldCheck,
 } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+} from '@/components/ui/item'
 
 type PlatformMetrics = Awaited<ReturnType<typeof import('@/features/admin/dashboard/api/queries').getPlatformMetrics>>
 
@@ -43,11 +51,12 @@ export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
     <TooltipProvider delayDuration={150}>
       <Card>
         <CardHeader>
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-col gap-3">
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
+          <ItemGroup className="flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <Item variant="muted" className="flex-col gap-3">
+              <ItemContent>
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
                     <BreadcrumbLink href="/admin">Admin</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
@@ -55,53 +64,62 @@ export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
                     <BreadcrumbPage>Dashboard</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
-              </Breadcrumb>
+                </Breadcrumb>
 
-              <div className="flex flex-col gap-1">
-                <CardTitle>Platform control center</CardTitle>
-                <CardDescription>
-                  Monitor platform health, engagement, and operational signals in real time.
-                </CardDescription>
-              </div>
-            </div>
+                <div className="flex flex-col gap-1">
+                  <CardTitle>Platform control center</CardTitle>
+                  <CardDescription>
+                    Monitor platform health, engagement, and operational signals in real time.
+                  </CardDescription>
+                </div>
+              </ItemContent>
+            </Item>
 
-            <Badge variant="outline">
-              <Activity className="h-4 w-4" aria-hidden="true" />
-              {' '}
-              Live feed
-            </Badge>
-          </div>
+            <Item variant="muted">
+              <ItemActions>
+                <Badge variant="outline">
+                  <Activity className="h-4 w-4" aria-hidden="true" />
+                  {' '}
+                  Live feed
+                </Badge>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
 
         <CardContent>
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-wrap items-center gap-3">
-              <DataRefreshControls generatedAt={generatedAt} tooltip="Refresh dashboard data" />
-              <div className="flex items-center gap-2">
-                <CardDescription>
-                  {`Synced across ${metrics.totalSalons.toLocaleString()} ${
-                    metrics.totalSalons === 1 ? 'salon' : 'salons'
-                  }`}
-                </CardDescription>
-              </div>
-              {metrics.pendingVerifications > 0 ? (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link href="/admin/users">
-                      <Badge variant="secondary">
-                        <ShieldAlert className="h-4 w-4" aria-hidden="true" />
-                        {' '}
-                        {metrics.pendingVerifications}{' '}
-                        {metrics.pendingVerifications === 1 ? 'unverified user' : 'unverified users'}
-                      </Badge>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>Click to view users with unverified email addresses</TooltipContent>
-                </Tooltip>
-              ) : null}
-            </div>
+          <ItemGroup className="flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <Item variant="muted" className="flex-wrap items-center gap-3">
+              <ItemContent>
+                <div className="flex flex-wrap items-center gap-3">
+                  <DataRefreshControls generatedAt={generatedAt} tooltip="Refresh dashboard data" />
+                  <CardDescription>
+                    {`Synced across ${metrics.totalSalons.toLocaleString()} ${
+                      metrics.totalSalons === 1 ? 'salon' : 'salons'
+                    }`}
+                  </CardDescription>
+                  {metrics.pendingVerifications > 0 ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link href="/admin/users">
+                          <Badge variant="secondary">
+                            <ShieldAlert className="h-4 w-4" aria-hidden="true" />
+                            {' '}
+                            {metrics.pendingVerifications}{' '}
+                            {metrics.pendingVerifications === 1 ? 'unverified user' : 'unverified users'}
+                          </Badge>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>Click to view users with unverified email addresses</TooltipContent>
+                    </Tooltip>
+                  ) : null}
+                </div>
+              </ItemContent>
+            </Item>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <Item variant="muted">
+              <ItemContent>
+                <ButtonGroup className="flex flex-wrap items-center gap-2">
               <Button asChild size="sm">
                 <Link href="/admin/chains">Manage chains</Link>
               </Button>
@@ -135,8 +153,10 @@ export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
-          </div>
+                </ButtonGroup>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardContent>
       </Card>
     </TooltipProvider>

@@ -12,6 +12,7 @@ import type { RoleAuditEvent } from '@/features/admin/roles/api/queries'
 import { BulkAssignDialog } from './bulk-assign-dialog'
 import { RolePermissionMatrix } from './role-permission-matrix'
 import { RoleAuditTimeline } from './role-audit-timeline'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface RolesClientProps {
   roles: UserRole[]
@@ -57,7 +58,7 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
             Assign roles, manage permissions, and monitor historical changes.
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <ButtonGroup className="flex-wrap justify-end gap-4">
           <Button variant="outline" onClick={() => setIsBulkDialogOpen(true)}>
             <Upload className="mr-2 h-4 w-4" />
             Bulk Assign
@@ -66,7 +67,7 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
             <Plus className="mr-2 h-4 w-4" />
             Assign Role
           </Button>
-        </div>
+        </ButtonGroup>
       </div>
 
       <RolesStats stats={stats} />

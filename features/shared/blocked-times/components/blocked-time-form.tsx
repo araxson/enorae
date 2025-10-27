@@ -5,9 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { createBlockedTime } from '@/features/shared/blocked-times/api/mutations'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Spinner } from '@/components/ui/spinner'
 import {
   Select,
   SelectContent,
@@ -20,6 +18,14 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertCircle, Repeat } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 
 interface BlockedTimeFormProps {
   salonId: string
@@ -92,87 +98,99 @@ export function BlockedTimeForm({
             </Alert>
           )}
 
-          <div className="space-y-2">
-            <Label htmlFor="block_type">Block type</Label>
-            <Select name="block_type" value={blockType} onValueChange={setBlockType}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select block type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="other">Other</SelectItem>
-                <SelectItem value="maintenance">Maintenance</SelectItem>
-                <SelectItem value="holiday">Holiday</SelectItem>
-                <SelectItem value="vacation">Vacation</SelectItem>
-                <SelectItem value="personal">Personal</SelectItem>
-                <SelectItem value="break">Break</SelectItem>
-                <SelectItem value="lunch">Lunch</SelectItem>
-                <SelectItem value="sick_leave">Sick leave</SelectItem>
-                <SelectItem value="training">Training</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <Field>
+            <FieldLabel htmlFor="block_type">Block type</FieldLabel>
+            <FieldContent>
+              <Select name="block_type" value={blockType} onValueChange={setBlockType}>
+                <SelectTrigger id="block_type">
+                  <SelectValue placeholder="Select block type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="maintenance">Maintenance</SelectItem>
+                  <SelectItem value="holiday">Holiday</SelectItem>
+                  <SelectItem value="vacation">Vacation</SelectItem>
+                  <SelectItem value="personal">Personal</SelectItem>
+                  <SelectItem value="break">Break</SelectItem>
+                  <SelectItem value="lunch">Lunch</SelectItem>
+                  <SelectItem value="sick_leave">Sick leave</SelectItem>
+                  <SelectItem value="training">Training</SelectItem>
+                </SelectContent>
+              </Select>
+            </FieldContent>
+          </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="start_time">Start time</Label>
-            <Input id="start_time" name="start_time" type="datetime-local" required />
-          </div>
+          <Field>
+            <FieldLabel htmlFor="start_time">Start time</FieldLabel>
+            <FieldContent>
+              <Input id="start_time" name="start_time" type="datetime-local" required />
+            </FieldContent>
+          </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="end_time">End time</Label>
-            <Input id="end_time" name="end_time" type="datetime-local" required />
-          </div>
+          <Field>
+            <FieldLabel htmlFor="end_time">End time</FieldLabel>
+            <FieldContent>
+              <Input id="end_time" name="end_time" type="datetime-local" required />
+            </FieldContent>
+          </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="reason">Reason (optional)</Label>
-            <Textarea
-              id="reason"
-              name="reason"
-              placeholder="e.g., Salon closed for maintenance"
-              rows={3}
-            />
-          </div>
+          <Field>
+            <FieldLabel htmlFor="reason">Reason (optional)</FieldLabel>
+            <FieldContent>
+              <Textarea
+                id="reason"
+                name="reason"
+                placeholder="e.g., Salon closed for maintenance"
+                rows={3}
+              />
+            </FieldContent>
+          </Field>
 
           <Separator />
           <div className="space-y-4 pt-4">
-            <div className="flex items-center gap-3">
-              <Checkbox
-                id="is_recurring"
-                checked={isRecurring}
-                onCheckedChange={(checked) => setIsRecurring(!!checked)}
-              />
-              <Label htmlFor="is_recurring" className="flex items-center gap-2">
+            <Field orientation="horizontal" className="items-center gap-4">
+              <FieldLabel htmlFor="is_recurring" className="flex items-center gap-2">
                 <Repeat className="h-4 w-4" />
                 Make this a recurring block
-              </Label>
-            </div>
+              </FieldLabel>
+              <FieldContent className="flex-none">
+                <Checkbox
+                  id="is_recurring"
+                  checked={isRecurring}
+                  onCheckedChange={(checked) => setIsRecurring(!!checked)}
+                />
+              </FieldContent>
+            </Field>
 
             {isRecurring && (
-              <div className="space-y-2">
-                <Label htmlFor="recurrence_pattern">Recurrence pattern</Label>
-                <Select value={recurrencePattern} onValueChange={setRecurrencePattern}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select pattern" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="daily">Daily</SelectItem>
-                    <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="biweekly">Bi-weekly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="yearly">Yearly</SelectItem>
-                    <SelectItem value="weekdays">Weekdays only</SelectItem>
-                    <SelectItem value="weekends">Weekends only</SelectItem>
-                  </SelectContent>
-                </Select>
-                <CardDescription>
-                  {recurrencePattern === 'daily' && 'Repeats every day at the same time.'}
-                  {recurrencePattern === 'weekly' && 'Repeats every week on the same day.'}
-                  {recurrencePattern === 'biweekly' && 'Repeats every two weeks on the same day.'}
-                  {recurrencePattern === 'monthly' && 'Repeats every month on the same date.'}
-                  {recurrencePattern === 'yearly' && 'Repeats every year on the same date.'}
-                  {recurrencePattern === 'weekdays' && 'Repeats every weekday (Mon–Fri).'}
-                  {recurrencePattern === 'weekends' && 'Repeats every weekend (Sat–Sun).'}
-                </CardDescription>
-              </div>
+              <Field>
+                <FieldLabel htmlFor="recurrence_pattern">Recurrence pattern</FieldLabel>
+                <FieldContent>
+                  <Select value={recurrencePattern} onValueChange={setRecurrencePattern}>
+                    <SelectTrigger id="recurrence_pattern">
+                      <SelectValue placeholder="Select pattern" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                      <SelectItem value="biweekly">Bi-weekly</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                      <SelectItem value="yearly">Yearly</SelectItem>
+                      <SelectItem value="weekdays">Weekdays only</SelectItem>
+                      <SelectItem value="weekends">Weekends only</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FieldDescription>
+                    {recurrencePattern === 'daily' && 'Repeats every day at the same time.'}
+                    {recurrencePattern === 'weekly' && 'Repeats every week on the same day.'}
+                    {recurrencePattern === 'biweekly' && 'Repeats every two weeks on the same day.'}
+                    {recurrencePattern === 'monthly' && 'Repeats every month on the same date.'}
+                    {recurrencePattern === 'yearly' && 'Repeats every year on the same date.'}
+                    {recurrencePattern === 'weekdays' && 'Repeats every weekday (Mon–Fri).'}
+                    {recurrencePattern === 'weekends' && 'Repeats every weekend (Sat–Sun).'}
+                  </FieldDescription>
+                </FieldContent>
+              </Field>
             )}
           </div>
         </CardContent>
@@ -183,7 +201,14 @@ export function BlockedTimeForm({
             </Button>
           )}
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Creating...' : 'Block time'}
+            {isLoading ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Creating...</span>
+              </>
+            ) : (
+              <span>Block time</span>
+            )}
           </Button>
         </CardFooter>
       </form>

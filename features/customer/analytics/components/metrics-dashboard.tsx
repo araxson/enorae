@@ -10,6 +10,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
@@ -33,28 +34,24 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
       title: 'Total Spending',
       value: `$${metrics.totalSpending.toFixed(2)}`,
       icon: DollarSign,
-      color: 'text-primary',
       description: 'Total amount spent',
     },
     {
       title: 'Total Appointments',
       value: metrics.totalAppointments.toString(),
       icon: Calendar,
-      color: 'text-secondary',
       description: 'All appointments booked',
     },
     {
       title: 'Completed',
       value: metrics.completedAppointments.toString(),
       icon: CheckCircle2,
-      color: 'text-primary',
       description: 'Completed visits',
     },
     {
       title: 'Cancelled',
       value: metrics.cancelledAppointments.toString(),
       icon: XCircle,
-      color: 'text-destructive',
       description: 'Cancellations recorded',
     },
   ]
@@ -65,14 +62,21 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon
+
           return (
             <Card key={stat['title']}>
-              <CardHeader className="flex items-start justify-between space-y-0">
-                <div className="space-y-1">
-                  <CardTitle>{stat['title']}</CardTitle>
-                  <CardDescription>{stat['description']}</CardDescription>
-                </div>
-                <Icon className={`h-5 w-5 ${stat.color}`} aria-hidden="true" />
+              <CardHeader className="space-y-3">
+                <ItemGroup>
+                  <Item variant="muted" size="sm">
+                    <ItemMedia variant="icon">
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>{stat['title']}</ItemTitle>
+                    <ItemDescription>{stat['description']}</ItemDescription>
+                  </ItemContent>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent>
                 <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
@@ -84,10 +88,16 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
-            <CardTitle>Favorite services</CardTitle>
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemMedia variant="icon">
+                <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Favorite services</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           {metrics.favoriteServices.length === 0 ? (

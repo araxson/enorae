@@ -2,8 +2,14 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
 
 type Props = {
@@ -17,85 +23,97 @@ export function StreetAddressSection({ address }: Props) {
         <CardTitle>Street Address</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
+        <FieldGroup className="flex flex-col gap-6">
           <Separator />
 
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="street_address">
+          <Field>
+            <FieldLabel htmlFor="street_address">
               Street Address <span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="street_address"
-              name="street_address"
-              required
-              defaultValue={address?.street_address || ''}
-              placeholder="123 Main Street"
-            />
-          </div>
+            </FieldLabel>
+            <FieldContent>
+              <Input
+                id="street_address"
+                name="street_address"
+                required
+                defaultValue={address?.street_address || ''}
+                placeholder="123 Main Street"
+              />
+            </FieldContent>
+          </Field>
 
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="street_address_2">Apartment, Suite, etc.</Label>
-            <Input
-              id="street_address_2"
-              name="street_address_2"
-              defaultValue={address?.street_address_2 || ''}
-              placeholder="Suite 100"
-            />
-          </div>
+          <Field>
+            <FieldLabel htmlFor="street_address_2">Apartment, Suite, etc.</FieldLabel>
+            <FieldContent>
+              <Input
+                id="street_address_2"
+                name="street_address_2"
+                defaultValue={address?.street_address_2 || ''}
+                placeholder="Suite 100"
+              />
+            </FieldContent>
+          </Field>
 
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="city">
+          <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <Field>
+              <FieldLabel htmlFor="city">
                 City <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="city"
-                name="city"
-                required
-                defaultValue={address?.city || ''}
-                placeholder="San Francisco"
-              />
-            </div>
+              </FieldLabel>
+              <FieldContent>
+                <Input
+                  id="city"
+                  name="city"
+                  required
+                  defaultValue={address?.city || ''}
+                  placeholder="San Francisco"
+                />
+              </FieldContent>
+            </Field>
 
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="state_province">
+            <Field>
+              <FieldLabel htmlFor="state_province">
                 State/Province <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="state_province"
-                name="state_province"
-                required
-                defaultValue={address?.state_province || ''}
-                placeholder="CA"
-              />
-            </div>
+              </FieldLabel>
+              <FieldContent>
+                <Input
+                  id="state_province"
+                  name="state_province"
+                  required
+                  defaultValue={address?.state_province || ''}
+                  placeholder="CA"
+                />
+              </FieldContent>
+            </Field>
 
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="postal_code">
+            <Field>
+              <FieldLabel htmlFor="postal_code">
                 Postal Code <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="postal_code"
-                name="postal_code"
-                required
-                defaultValue={address?.postal_code || ''}
-                placeholder="94102"
-              />
-            </div>
-          </div>
+              </FieldLabel>
+              <FieldContent>
+                <Input
+                  id="postal_code"
+                  name="postal_code"
+                  required
+                  defaultValue={address?.postal_code || ''}
+                  placeholder="94102"
+                />
+              </FieldContent>
+            </Field>
+          </FieldGroup>
 
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="country_code">Country Code</Label>
-            <Input
-              id="country_code"
-              name="country_code"
-              defaultValue={address?.country_code || 'US'}
-              placeholder="US"
-              maxLength={2}
-            />
-            <p className="text-sm text-muted-foreground">2-letter country code (e.g., US, CA, UK)</p>
-          </div>
-        </div>
+          <Field>
+            <FieldLabel htmlFor="country_code">Country Code</FieldLabel>
+            <FieldContent>
+              <Input
+                id="country_code"
+                name="country_code"
+                defaultValue={address?.country_code || 'US'}
+                placeholder="US"
+                maxLength={2}
+              />
+            </FieldContent>
+            <FieldDescription>2-letter country code (e.g., US, CA, UK).</FieldDescription>
+          </Field>
+        </FieldGroup>
       </CardContent>
     </Card>
   )

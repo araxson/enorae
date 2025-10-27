@@ -58,7 +58,13 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <CardTitle>{title}</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -80,8 +86,18 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <p className="text-sm text-muted-foreground">{appointments.length} appointment{appointments.length !== 1 ? 's' : ''}</p>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>{title}</CardTitle>
+            </ItemContent>
+            <ItemActions>
+              <Badge variant="secondary">
+                {appointments.length} appointment{appointments.length !== 1 ? 's' : ''}
+              </Badge>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ItemGroup className="gap-3">

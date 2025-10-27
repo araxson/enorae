@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator'
-import { ItemGroup } from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 import type { SalonProfileViewProps } from './presentation/types'
 import { buildSalonLocation, groupServicesByCategory } from './presentation/utils'
 import { SalonHero } from './presentation/hero'
@@ -13,6 +13,11 @@ export function SalonProfileView({ salon, services = [] }: SalonProfileViewProps
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <ItemGroup className="gap-8">
+        <Item className="flex-col" variant="muted">
+          <ItemContent>
+            <ItemDescription>Overview of {salon['name'] || 'this salon'}, services, and booking details.</ItemDescription>
+          </ItemContent>
+        </Item>
         <SalonHero salon={salon} />
         <Separator />
         <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">

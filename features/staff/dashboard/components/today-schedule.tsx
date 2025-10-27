@@ -4,7 +4,6 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
-import { EmptyState } from '@/features/shared/ui-components'
 import type { AppointmentWithDetails } from '@/features/shared/appointments/types'
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
@@ -19,6 +18,13 @@ import {
   ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface TodayScheduleProps {
   appointments: AppointmentWithDetails[]
@@ -29,15 +35,25 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Today&apos;s Schedule</CardTitle>
-          <CardDescription>Your appointments for today will appear here</CardDescription>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <CardTitle>Today&apos;s Schedule</CardTitle>
+                <CardDescription>Your appointments for today will appear here</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
-          <EmptyState
-            icon={Clock}
-            title="No Appointments Today"
-            description="No appointments scheduled for today"
-          />
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Clock className="h-8 w-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No Appointments Today</EmptyTitle>
+              <EmptyDescription>No appointments scheduled for today</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -61,20 +77,20 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="pb-3">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
               <CardTitle>Today&apos;s Schedule</CardTitle>
               <CardDescription>{appointments.length} appointments</CardDescription>
-            </div>
-            <div className="flex items-center gap-2">
+            </ItemContent>
+            <ItemActions className="flex items-center gap-2">
               <CheckCircle className="h-3 w-3" />
               <Badge variant="secondary">
                 {completedCount}/{appointments.length}
               </Badge>
-            </div>
-          </div>
-        </div>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <Separator />
       <CardContent>

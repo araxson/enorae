@@ -32,7 +32,13 @@ export function HelpCategoryAccordion({ categories }: HelpCategoryAccordionProps
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Categories</CardTitle>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Categories</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <Accordion type="multiple" className="space-y-3">

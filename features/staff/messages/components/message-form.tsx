@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea'
 import { Send } from 'lucide-react'
 import { threadMessageSchema, type ThreadMessageFormData } from '@/features/staff/messages/schema'
@@ -12,6 +13,7 @@ import {
   FieldContent,
   FieldError,
   FieldLabel,
+  FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -54,6 +56,7 @@ export function MessageForm({ threadId, onSuccess }: MessageFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FieldSet className="gap-4">
+        <FieldLegend>Compose message</FieldLegend>
         <Field>
           <FieldLabel htmlFor="content">Message</FieldLabel>
           <FieldContent>
@@ -71,8 +74,17 @@ export function MessageForm({ threadId, onSuccess }: MessageFormProps) {
 
         <ButtonGroup className="w-full sm:w-auto">
           <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-            <Send className="h-4 w-4 mr-2" />
-            {isSubmitting ? 'Sending...' : 'Send Message'}
+            {isSubmitting ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Sending...</span>
+              </>
+            ) : (
+              <>
+                <Send className="h-4 w-4" />
+                <span>Send Message</span>
+              </>
+            )}
           </Button>
         </ButtonGroup>
       </FieldSet>

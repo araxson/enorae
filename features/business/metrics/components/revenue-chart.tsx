@@ -1,11 +1,17 @@
 'use client'
 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row'] & { metric_at: string }
 
@@ -39,30 +45,30 @@ export function RevenueChart({ data }: RevenueChartProps) {
 
   if (chartData.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Revenue Trend</CardTitle>
-          <CardDescription>No data available</CardDescription>
-        </CardHeader>
-        <CardContent className="flex h-72 items-center justify-center">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Revenue Trend</ItemTitle>
+          <ItemDescription>No data available</ItemDescription>
+        </ItemHeader>
+        <ItemContent className="flex h-72 items-center justify-center">
           <Empty>
             <EmptyHeader>
               <EmptyTitle>No revenue data to display</EmptyTitle>
               <EmptyDescription>Analytics will appear once transactions are recorded.</EmptyDescription>
             </EmptyHeader>
           </Empty>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
     )
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Revenue Trend</CardTitle>
-        <CardDescription>Last {data.length} days of revenue performance</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemTitle>Revenue Trend</ItemTitle>
+        <ItemDescription>Last {data.length} days of revenue performance</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <ChartContainer config={chartConfig} className="h-72 w-full">
           <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <defs>
@@ -113,7 +119,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
             />
           </AreaChart>
         </ChartContainer>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

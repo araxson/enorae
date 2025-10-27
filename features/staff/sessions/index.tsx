@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import { SessionList } from './components/session-list'
 import { getMySessions, getCurrentSessionId } from './api/queries'
 import type { Session } from './types'
@@ -14,14 +15,20 @@ export function SessionsFeature({ sessions, currentSessionId }: SessionsFeatureP
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between">
-            <CardTitle>Active Sessions</CardTitle>
-            {sessions.filter(s => s['is_active']).length > 1 && (
-              <Button variant="destructive" size="sm">
-                Revoke All Other Sessions
-              </Button>
-            )}
-          </div>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <CardTitle>Active Sessions</CardTitle>
+              </ItemContent>
+              {sessions.filter((s) => s['is_active']).length > 1 ? (
+                <ItemActions>
+                  <Button variant="destructive" size="sm">
+                    Revoke All Other Sessions
+                  </Button>
+                </ItemActions>
+              ) : null}
+            </Item>
+          </ItemGroup>
         </CardHeader>
       </Card>
 

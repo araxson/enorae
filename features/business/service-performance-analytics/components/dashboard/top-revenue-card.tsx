@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { DollarSign, Star } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
@@ -12,6 +11,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -21,15 +21,15 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
     .slice(0, 5)
 
   return (
-    <Card className="md:col-span-2">
-      <CardHeader>
+    <Item variant="outline" className="md:col-span-2 flex-col gap-4">
+      <ItemHeader className="items-start gap-2">
         <div className="flex items-center gap-2">
           <DollarSign className="h-5 w-5" />
-          <CardTitle>Top Revenue Generators</CardTitle>
+          <ItemTitle>Top Revenue Generators</ItemTitle>
         </div>
-        <CardDescription>Highest earning services ranked by total revenue.</CardDescription>
-      </CardHeader>
-      <CardContent>
+        <ItemDescription>Highest earning services ranked by total revenue.</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         {topServices.length === 0 ? (
           <Empty>
             <EmptyHeader>
@@ -47,10 +47,8 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
                     #{index + 1}
                   </Badge>
                   <div>
-                    <ItemTitle className="text-lg font-semibold">{service.service_name}</ItemTitle>
-                    <ItemDescription className="text-xs text-muted-foreground">
-                      {service.total_bookings} bookings
-                    </ItemDescription>
+                    <ItemTitle>{service.service_name}</ItemTitle>
+                    <ItemDescription>{service.total_bookings} bookings</ItemDescription>
                   </div>
                 </ItemContent>
                 <ItemActions className="flex-none text-right">
@@ -64,7 +62,7 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
             ))}
           </ItemGroup>
         )}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

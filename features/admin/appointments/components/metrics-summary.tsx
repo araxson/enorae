@@ -1,7 +1,15 @@
 import { Activity, CalendarCheck, CalendarX, Clock4, DollarSign, TrendingUp } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { AppointmentSnapshot } from '@/features/admin/appointments/types'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface MetricsSummaryProps {
   totals: AppointmentSnapshot['totals']
@@ -54,22 +62,24 @@ export function MetricsSummary({ totals, performance }: MetricsSummaryProps) {
   ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <ItemGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {items.map(({ title, icon: Icon, value, helper, badge }) => (
-        <Card key={title}>
-          <CardHeader className="flex items-start justify-between pb-2">
-            <div className="flex items-center gap-2">
-              <Icon className="h-4 w-4 text-muted-foreground" />
-              <CardTitle>{title}</CardTitle>
-            </div>
-            {badge && <Badge variant="destructive">{badge}</Badge>}
-          </CardHeader>
-          <CardContent className="space-y-1">
-            <div className="text-2xl font-semibold">{value}</div>
-            <p className="text-xs text-muted-foreground">{helper}</p>
-          </CardContent>
-        </Card>
+        <Item key={title} variant="outline" className="flex-col items-start gap-4">
+          <ItemMedia variant="icon">
+            <Icon className="h-4 w-4" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>{title}</ItemTitle>
+            <span className="text-2xl font-semibold">{value}</span>
+            <ItemDescription>{helper}</ItemDescription>
+          </ItemContent>
+          {badge ? (
+            <ItemActions>
+              <Badge variant="destructive">{badge}</Badge>
+            </ItemActions>
+          ) : null}
+        </Item>
       ))}
-    </div>
+    </ItemGroup>
   )
 }

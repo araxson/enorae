@@ -2,6 +2,7 @@
 
 import { MessageSquare, AlertTriangle, Clock, ShieldAlert } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 
@@ -63,8 +64,14 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
     <div className="grid gap-4 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Review Distribution</CardTitle>
-          <CardDescription>Counts across moderation states</CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Review Distribution</CardTitle>
+                <CardDescription>Counts across moderation states</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <ChartContainer
@@ -102,8 +109,14 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Quality Metrics</CardTitle>
-          <CardDescription>Average sentiment and quality scores</CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Quality Metrics</CardTitle>
+                <CardDescription>Average sentiment and quality scores</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <ChartContainer

@@ -1,7 +1,9 @@
+import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { getSalonChains, getSalonChainById } from './api/queries'
 import { ChainsList } from './components/chains-list'
 import { ChainDetail } from './components/chain-detail'
+import { Spinner } from '@/components/ui/spinner'
 
 export async function SalonChains() {
   const chains = await getSalonChains()
@@ -19,7 +21,15 @@ export function CustomerChainsPage() {
           </p>
         </div>
 
-        <SalonChains />
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-12">
+              <Spinner />
+            </div>
+          }
+        >
+          <SalonChains />
+        </Suspense>
       </div>
     </section>
   )

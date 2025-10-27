@@ -47,6 +47,11 @@ export function SalonGrid({ salons }: SalonGridProps) {
           </ItemDescription>
         </ItemContent>
       </Item>
+      <Item variant="muted">
+        <ItemContent>
+          <ItemDescription>Select a listing to view services, book, or share details with friends.</ItemDescription>
+        </ItemContent>
+      </Item>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {salons.map((salon) => {
           const location = [salon['city'], salon['state_province']]

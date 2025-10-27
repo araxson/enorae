@@ -1,13 +1,14 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ExportButton } from '@/features/business/business-common/components'
 import { Building2, TrendingUp } from 'lucide-react'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -35,13 +36,16 @@ type Props = {
 
 export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Props) {
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex gap-4 items-center items-center justify-between">
-          <div className="flex gap-2 items-center items-center">
+    <Item variant="outline" className="flex-col gap-6">
+      <ItemHeader className="items-start justify-between gap-4">
+        <div className="flex flex-1 flex-col gap-2">
+          <div className="flex items-center gap-2">
             <Building2 className="h-4 w-4" aria-hidden />
-            <CardTitle>Chain analytics</CardTitle>
+            <ItemTitle>Chain analytics</ItemTitle>
           </div>
+          <ItemDescription>Performance across all salons in your chain.</ItemDescription>
+        </div>
+        <ItemActions className="flex-none">
           <ExportButton
             data={breakdown.map((row) => ({
               salon_id: row.salonId,
@@ -51,11 +55,10 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
             }))}
             filename={`chain-analytics-${start}-to-${end}`}
           />
-        </div>
-        <CardDescription>Performance across all salons in your chain.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
+        </ItemActions>
+      </ItemHeader>
+      <ItemContent className="flex flex-col gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
           <Stat label="Total Revenue" value={`$${comparison.totalRevenue.toLocaleString()}`} />
           <Stat label="Prev Period" value={`$${comparison.previousRevenue.toLocaleString()}`} />
           <Stat
@@ -79,9 +82,9 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
           />
         </div>
 
-        <div className="mt-4 space-y-2">
-          <CardDescription>Top Salons by Revenue</CardDescription>
-          <ItemGroup className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+        <div className="space-y-2">
+          <ItemDescription>Top Salons by Revenue</ItemDescription>
+          <ItemGroup className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
             {breakdown.slice(0, 6).map((row) => (
               <Item key={row.salonId} variant="outline" className="flex-col gap-1">
                 <ItemContent>
@@ -94,15 +97,15 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
             ))}
           </ItemGroup>
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }
 
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <CardDescription>{label}</CardDescription>
+      <ItemDescription>{label}</ItemDescription>
       <div className="text-2xl font-bold">{value}</div>
     </div>
   )

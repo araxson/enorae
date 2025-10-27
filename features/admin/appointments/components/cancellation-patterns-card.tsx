@@ -3,6 +3,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import type { CancellationPattern } from '@/features/admin/appointments/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface CancellationPatternsCardProps {
   patterns: CancellationPattern[]
@@ -14,10 +23,16 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 text-accent" />
-          <CardTitle>Cancellation Patterns</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <AlertTriangle className="h-4 w-4" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Cancellation Patterns</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-3">
         {patterns.length === 0 ? (
@@ -28,21 +43,21 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="space-y-2">
+          <ItemGroup className="space-y-2">
             {patterns.slice(0, 6).map((pattern) => (
-              <Card key={pattern.label}>
-                <CardHeader className="pb-2">
-                  <CardTitle>{pattern.label}</CardTitle>
-                  <CardDescription>{pattern.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
+              <Item key={pattern.label} variant="outline" className="flex-col items-start gap-2">
+                <ItemContent>
+                  <ItemTitle>{pattern.label}</ItemTitle>
+                  <ItemDescription>{pattern.description}</ItemDescription>
+                </ItemContent>
+                <ItemActions>
                   <Badge variant="outline">
                     {pattern.count} · {formatPercent(pattern.share)}
                   </Badge>
-                </CardContent>
-              </Card>
+                </ItemActions>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         )}
       </CardContent>
     </Card>

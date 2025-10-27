@@ -2,10 +2,17 @@
 
 import { useMemo } from 'react'
 
-import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 import type { ServiceRow } from './types'
 
 type SingleAssignSectionProps = {
@@ -43,68 +50,80 @@ export function SingleAssignSection({
   )
 
   return (
-    <div className="space-y-4">
-      <div>
-        <Label htmlFor="service">Service</Label>
-        <Select value={selectedService} onValueChange={onSelectService}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select a service" />
-          </SelectTrigger>
-          <SelectContent>
-            {unassignedServices.map((service) => (
-              <SelectItem key={service.id} value={service.id!}>
-                {service.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <FieldSet className="space-y-4">
+      <Field>
+        <FieldLabel htmlFor="service">Service</FieldLabel>
+        <FieldContent>
+          <Select value={selectedService} onValueChange={onSelectService}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a service" />
+            </SelectTrigger>
+            <SelectContent>
+              {unassignedServices.map((service) => (
+                <SelectItem key={service.id} value={service.id!}>
+                  {service.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FieldContent>
+      </Field>
 
-      <div>
-        <Label htmlFor="proficiency">Proficiency Level</Label>
-        <Select value={proficiencyLevel} onValueChange={onSelectProficiency}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select level (optional)" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="beginner">Beginner</SelectItem>
-            <SelectItem value="intermediate">Intermediate</SelectItem>
-            <SelectItem value="advanced">Advanced</SelectItem>
-            <SelectItem value="expert">Expert</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <Field>
+        <FieldLabel htmlFor="proficiency">Proficiency Level</FieldLabel>
+        <FieldContent>
+          <Select value={proficiencyLevel} onValueChange={onSelectProficiency}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select level (optional)" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="beginner">Beginner</SelectItem>
+              <SelectItem value="intermediate">Intermediate</SelectItem>
+              <SelectItem value="advanced">Advanced</SelectItem>
+              <SelectItem value="expert">Expert</SelectItem>
+            </SelectContent>
+          </Select>
+        </FieldContent>
+      </Field>
 
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="price">Price Override (optional)</Label>
-          <Input
-            id="price"
-            placeholder="Enter custom price"
-            value={priceOverride}
-            onChange={(event) => onPriceChange(event.target.value)}
+      <FieldGroup className="grid gap-4 md:grid-cols-2">
+        <Field>
+          <FieldLabel htmlFor="price">Price Override (optional)</FieldLabel>
+          <FieldContent>
+            <Input
+              id="price"
+              placeholder="Enter custom price"
+              value={priceOverride}
+              onChange={(event) => onPriceChange(event.target.value)}
+            />
+          </FieldContent>
+          <FieldDescription>Leave blank to use the service default pricing.</FieldDescription>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="duration">Duration Override (optional)</FieldLabel>
+          <FieldContent>
+            <Input
+              id="duration"
+              placeholder="Enter custom duration"
+              value={durationOverride}
+              onChange={(event) => onDurationChange(event.target.value)}
+            />
+          </FieldContent>
+          <FieldDescription>Default duration applies when no override is provided.</FieldDescription>
+        </Field>
+      </FieldGroup>
+
+      <Field>
+        <FieldLabel htmlFor="notes">Notes (optional)</FieldLabel>
+        <FieldContent>
+          <Textarea
+            id="notes"
+            placeholder="Add notes about this assignment"
+            value={notes}
+            onChange={(event) => onNotesChange(event.target.value)}
           />
-        </div>
-        <div>
-          <Label htmlFor="duration">Duration Override (optional)</Label>
-          <Input
-            id="duration"
-            placeholder="Enter custom duration"
-            value={durationOverride}
-            onChange={(event) => onDurationChange(event.target.value)}
-          />
-        </div>
-      </div>
-
-      <div>
-        <Label htmlFor="notes">Notes (optional)</Label>
-        <Textarea
-          id="notes"
-          placeholder="Add notes about this assignment"
-          value={notes}
-          onChange={(event) => onNotesChange(event.target.value)}
-        />
-      </div>
-    </div>
+        </FieldContent>
+      </Field>
+    </FieldSet>
   )
 }

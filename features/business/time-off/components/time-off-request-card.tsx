@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type TimeOffRequest = Database['public']['Views']['time_off_requests_view']['Row']
 
@@ -134,7 +135,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
               <Separator />
               <div>
               {!showRejectForm ? (
-                <div className="flex gap-3">
+                <ButtonGroup>
                   <Button
                     size="sm"
                     onClick={handleApprove}
@@ -150,7 +151,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
                   >
                     Reject
                   </Button>
-                </div>
+                </ButtonGroup>
               ) : (
                 <div className="flex flex-col gap-3">
                   <Textarea
@@ -159,7 +160,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
                     onChange={(e) => setRejectNotes(e.target.value)}
                     rows={3}
                   />
-                  <div className="flex gap-3">
+                  <ButtonGroup>
                     <Button
                       size="sm"
                       variant="destructive"
@@ -179,7 +180,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
                     >
                       Cancel
                     </Button>
-                  </div>
+                  </ButtonGroup>
                 </div>
               )}
               </div>

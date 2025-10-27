@@ -1,10 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { CalendarX } from 'lucide-react'
+import { CalendarX, Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 import {
   Empty,
@@ -14,6 +13,17 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemFooter,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Appointment = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
@@ -41,76 +51,97 @@ const formatStatus = (status: AppointmentStatus | 'pending') =>
 export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <CalendarX className="h-6 w-6" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No appointments yet</EmptyTitle>
-              <EmptyDescription>
-                Book your first appointment at a salon
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button asChild>
-                <Link href="/customer/salons">Browse salons</Link>
-              </Button>
-            </EmptyContent>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <CalendarX className="h-6 w-6" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No appointments yet</EmptyTitle>
+          <EmptyDescription>
+            Book your first appointment at a salon
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button asChild>
+            <Link href="/customer/salons">Browse salons</Link>
+          </Button>
+        </EmptyContent>
+      </Empty>
     )
   }
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-      {appointments.map((appointment) => (
-        <Card key={appointment['id']}>
-          <CardHeader className="p-6 pb-4">
-            <CardTitle>{appointment['salon_name'] || 'Unnamed Salon'}</CardTitle>
-            <CardDescription>{appointment['service_name'] || 'Service'}</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6 pt-0 space-y-3">
-            <div className="space-y-1">
-              {appointment['start_time'] ? (
-                <>
-                  <CardDescription>
-                    {new Date(appointment['start_time']).toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </CardDescription>
-                  <CardDescription>
-                    <time dateTime={appointment['start_time']}>
-                      {new Date(appointment['start_time']).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </time>
-                  </CardDescription>
-                </>
-              ) : null}
-            </div>
+      {appointments.map((appointment) => {
+        const startTime = appointment['start_time'] ? new Date(appointment['start_time']) : null
+        const formattedDate = startTime
+          ? startTime.toLocaleDateString('en-US', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          : null
+        const formattedTime = startTime
+          ? startTime.toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
+            })
+          : null
 
-            <div>
-              <Badge variant={statusVariant(appointment['status'] ?? 'pending')}>
-                {formatStatus(appointment['status'] ?? 'pending')}
-              </Badge>
-            </div>
-          </CardContent>
-          <CardFooter className="p-6 pt-0">
-            <Button asChild variant="outline" className="w-full">
-              <Link href={`/customer/appointments/${appointment['id']}`}>
-                View details
-              </Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
+        const statusLabel = formatStatus(appointment['status'] ?? 'pending')
+        const statusVariantValue = statusVariant(appointment['status'] ?? 'pending')
+
+        return (
+          <Item key={appointment['id']} variant="outline" className="flex h-full flex-col gap-4 p-6">
+            <ItemHeader className="flex-col items-start gap-1 p-0">
+              <ItemTitle>{appointment['salon_name'] || 'Unnamed Salon'}</ItemTitle>
+              <ItemDescription>{appointment['service_name'] || 'Service'}</ItemDescription>
+            </ItemHeader>
+            <ItemContent className="gap-4 p-0">
+              <ItemGroup className="gap-3">
+                {startTime ? (
+                  <Item variant="muted" size="sm">
+                    <ItemMedia variant="icon">
+                      <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>Scheduled</ItemTitle>
+                      {formattedDate ? (
+                        <ItemDescription>
+                          <time dateTime={appointment['start_time'] ?? undefined}>{formattedDate}</time>
+                        </ItemDescription>
+                      ) : null}
+                      {formattedTime ? (
+                        <ItemDescription>
+                          <time dateTime={appointment['start_time'] ?? undefined}>{formattedTime}</time>
+                        </ItemDescription>
+                      ) : null}
+                    </ItemContent>
+                  </Item>
+                ) : null}
+
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <ItemTitle>Status</ItemTitle>
+                    <ItemDescription>{statusLabel}</ItemDescription>
+                  </ItemContent>
+                  <ItemActions className="flex-none">
+                    <Badge variant={statusVariantValue}>{statusLabel}</Badge>
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
+            </ItemContent>
+            <ItemFooter className="p-0">
+              <Button asChild variant="outline" className="w-full">
+                <Link href={`/customer/appointments/${appointment['id']}`}>
+                  View details
+                </Link>
+              </Button>
+            </ItemFooter>
+          </Item>
+        )
+      })}
     </div>
   )
 }

@@ -2,10 +2,16 @@
 
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ActionButton } from '@/features/shared/ui-components'
 import { updateSalonInfo } from '@/features/business/settings-salon/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 
 interface SalonInfoFormProps {
   salonId: string
@@ -45,47 +51,49 @@ export function SalonInfoForm({
       </CardHeader>
       <CardContent>
         <form ref={setFormRef}>
-          <div className="flex flex-col gap-6">
-            <div>
-              <Label htmlFor="business_name">Business Name</Label>
-              <Input
-                id="business_name"
-                name="business_name"
-                defaultValue={businessName || salonName || ''}
-                placeholder="e.g., Elite Hair & Beauty LLC"
-                maxLength={200}
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Your legal business name (if different from salon name)
-              </p>
-            </div>
+          <FieldSet className="flex flex-col gap-6">
+            <Field>
+              <FieldLabel htmlFor="business_name">Business Name</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="business_name"
+                  name="business_name"
+                  defaultValue={businessName || salonName || ''}
+                  placeholder="e.g., Elite Hair & Beauty LLC"
+                  maxLength={200}
+                />
+              </FieldContent>
+              <FieldDescription>
+                Your legal business name (if different from salon name).
+              </FieldDescription>
+            </Field>
 
-            <div>
-              <Label htmlFor="business_type">Business Type</Label>
-              <Input
-                id="business_type"
-                name="business_type"
-                defaultValue={businessType || ''}
-                placeholder="e.g., LLC, Corporation, Sole Proprietorship"
-                maxLength={100}
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Your business entity type
-              </p>
-            </div>
+            <Field>
+              <FieldLabel htmlFor="business_type">Business Type</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="business_type"
+                  name="business_type"
+                  defaultValue={businessType || ''}
+                  placeholder="e.g., LLC, Corporation, Sole Proprietorship"
+                  maxLength={100}
+                />
+              </FieldContent>
+              <FieldDescription>Your business entity type.</FieldDescription>
+            </Field>
 
-            <div>
-              <Label htmlFor="established_at">Established Date</Label>
-              <Input
-                id="established_at"
-                name="established_at"
-                type="date"
-                defaultValue={establishedAt || ''}
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                When your business was founded
-              </p>
-            </div>
+            <Field>
+              <FieldLabel htmlFor="established_at">Established Date</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="established_at"
+                  name="established_at"
+                  type="date"
+                  defaultValue={establishedAt || ''}
+                />
+              </FieldContent>
+              <FieldDescription>When your business was founded.</FieldDescription>
+            </Field>
 
             <div className="flex justify-end">
               <ActionButton
@@ -96,7 +104,7 @@ export function SalonInfoForm({
                 Save Changes
               </ActionButton>
             </div>
-          </div>
+          </FieldSet>
         </form>
       </CardContent>
     </Card>

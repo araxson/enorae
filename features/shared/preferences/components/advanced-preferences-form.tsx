@@ -3,12 +3,18 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Globe, DollarSign, Clock, AlertCircle } from 'lucide-react'
 import { updateAdvancedPreferences } from '@/features/shared/preferences/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
 
 interface AdvancedPreferences {
   timezone?: string | null
@@ -109,86 +115,92 @@ export function AdvancedPreferencesForm({
       <CardContent>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <Label htmlFor="timezone">Timezone</Label>
-              </div>
-              <Select
-                value={preferences.timezone || undefined}
-                onValueChange={(value) =>
-                  setPreferences((prev) => ({ ...prev, timezone: value }))
-                }
-              >
-                <SelectTrigger id="timezone">
-                  <SelectValue placeholder="Select timezone" />
-                </SelectTrigger>
-                <SelectContent>
-                  {TIMEZONES.map((tz) => (
-                    <SelectItem key={tz.value} value={tz.value}>
-                      {tz.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <CardDescription>
-                Appointments and times will be displayed in your selected timezone
-              </CardDescription>
-            </div>
+            <Field>
+              <FieldLabel htmlFor="timezone" className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                Timezone
+              </FieldLabel>
+              <FieldContent>
+                <Select
+                  value={preferences.timezone || undefined}
+                  onValueChange={(value) =>
+                    setPreferences((prev) => ({ ...prev, timezone: value }))
+                  }
+                >
+                  <SelectTrigger id="timezone">
+                    <SelectValue placeholder="Select timezone" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TIMEZONES.map((tz) => (
+                      <SelectItem key={tz.value} value={tz.value}>
+                        {tz.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FieldDescription>
+                  Appointments and times will be displayed in your selected timezone
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <Globe className="h-4 w-4 text-muted-foreground" />
-                <Label htmlFor="locale">Language & Region</Label>
-              </div>
-              <Select
-                value={preferences.locale || undefined}
-                onValueChange={(value) =>
-                  setPreferences((prev) => ({ ...prev, locale: value }))
-                }
-              >
-                <SelectTrigger id="locale">
-                  <SelectValue placeholder="Select language" />
-                </SelectTrigger>
-                <SelectContent>
-                  {LOCALES.map((locale) => (
-                    <SelectItem key={locale.value} value={locale.value}>
-                      {locale.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <CardDescription>
-                Affects date formats, number formats, and interface language
-              </CardDescription>
-            </div>
+            <Field>
+              <FieldLabel htmlFor="locale" className="flex items-center gap-2">
+                <Globe className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                Language &amp; Region
+              </FieldLabel>
+              <FieldContent>
+                <Select
+                  value={preferences.locale || undefined}
+                  onValueChange={(value) =>
+                    setPreferences((prev) => ({ ...prev, locale: value }))
+                  }
+                >
+                  <SelectTrigger id="locale">
+                    <SelectValue placeholder="Select language" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {LOCALES.map((locale) => (
+                      <SelectItem key={locale.value} value={locale.value}>
+                        {locale.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FieldDescription>
+                  Affects date formats, number formats, and interface language
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-                <Label htmlFor="currency">Currency</Label>
-              </div>
-              <Select
-                value={preferences.currency_code || undefined}
-                onValueChange={(value) =>
-                  setPreferences((prev) => ({ ...prev, currency_code: value }))
-                }
-              >
-                <SelectTrigger id="currency">
-                  <SelectValue placeholder="Select currency" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CURRENCIES.map((currency) => (
-                    <SelectItem key={currency.value} value={currency.value}>
-                      {currency.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <CardDescription>
-                Prices and amounts will be displayed in your selected currency
-              </CardDescription>
-            </div>
+            <Field>
+              <FieldLabel htmlFor="currency" className="flex items-center gap-2">
+                <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                Currency
+              </FieldLabel>
+              <FieldContent>
+                <Select
+                  value={preferences.currency_code || undefined}
+                  onValueChange={(value) =>
+                    setPreferences((prev) => ({ ...prev, currency_code: value }))
+                  }
+                >
+                  <SelectTrigger id="currency">
+                    <SelectValue placeholder="Select currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CURRENCIES.map((currency) => (
+                      <SelectItem key={currency.value} value={currency.value}>
+                        {currency.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FieldDescription>
+                  Prices and amounts will be displayed in your selected currency
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
             {error && (
               <Alert variant="destructive">
@@ -207,7 +219,14 @@ export function AdvancedPreferencesForm({
             )}
 
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Saving...' : 'Save Preferences'}
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <span>Save Preferences</span>
+              )}
             </Button>
           </div>
         </form>

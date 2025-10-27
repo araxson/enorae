@@ -11,6 +11,7 @@ import { ServiceSettingsSection } from './service-settings-section'
 import { ServiceTaxSection } from './service-tax-section'
 import type { ServiceFormHook } from './use-service-form'
 import type { Database } from '@/lib/types/database.types'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -113,13 +114,15 @@ export function ServiceFormContent({ service, state, actions, handlers }: Servic
         </div>
 
         <DialogFooter className="mt-6">
-          <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? <Spinner className="mr-2" /> : null}
-            {service ? 'Update Service' : 'Create Service'}
-          </Button>
+          <ButtonGroup>
+            <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? <Spinner className="mr-2" /> : null}
+              {service ? 'Update Service' : 'Create Service'}
+            </Button>
+          </ButtonGroup>
         </DialogFooter>
       </form>
     </DialogContent>

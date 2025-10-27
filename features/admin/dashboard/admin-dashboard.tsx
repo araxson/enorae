@@ -47,6 +47,7 @@ import {
   ShieldCheck,
   Settings,
 } from 'lucide-react'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 export async function AdminDashboardPage() {
   let platformMetrics
@@ -175,7 +176,7 @@ export async function AdminDashboardPage() {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <ButtonGroup className="flex flex-wrap items-center gap-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <RefreshButton />
@@ -217,7 +218,7 @@ export async function AdminDashboardPage() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
+          </ButtonGroup>
         </CardContent>
       </Card>
 

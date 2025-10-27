@@ -4,6 +4,13 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { FraudAlert } from '@/features/admin/appointments/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 
 interface FraudAlertsPanelProps {
   alerts: FraudAlert[]
@@ -26,10 +33,16 @@ export function FraudAlertsPanel({ alerts }: FraudAlertsPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <ShieldAlert className="h-4 w-4 text-destructive" />
-          <CardTitle>Fraud &amp; Abuse Signals</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <ShieldAlert className="h-4 w-4" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Fraud &amp; Abuse Signals</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-3">
         {alerts.length === 0 ? (
@@ -44,20 +57,24 @@ export function FraudAlertsPanel({ alerts }: FraudAlertsPanelProps) {
             {alerts.slice(0, 8).map((alert) => (
               <Alert key={alert.id} variant={alert.score >= 0.8 ? 'destructive' : 'default'}>
                 <ShieldAlert className="h-4 w-4" />
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1">
-                    <AlertTitle>{LABELS[alert.type]}</AlertTitle>
-                    <AlertDescription>{alert.summary}</AlertDescription>
-                    <AlertDescription className="mt-1">
-                      {alert.relatedAppointmentIds.length} linked appointment(s)
-                      {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
-                      {alert.salonId ? ` · Salon ${alert.salonId}` : ''}
-                    </AlertDescription>
-                  </div>
-                  <Badge variant={getVariant(alert.score)}>
-                    Risk {(alert.score * 100).toFixed(0)}%
-                  </Badge>
-                </div>
+                <ItemGroup>
+                  <Item className="items-start gap-2" variant="muted" size="sm">
+                    <ItemContent>
+                      <AlertTitle>{LABELS[alert.type]}</AlertTitle>
+                      <AlertDescription>{alert.summary}</AlertDescription>
+                      <AlertDescription className="mt-1">
+                        {alert.relatedAppointmentIds.length} linked appointment(s)
+                        {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
+                        {alert.salonId ? ` · Salon ${alert.salonId}` : ''}
+                      </AlertDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      <Badge variant={getVariant(alert.score)}>
+                        Risk {(alert.score * 100).toFixed(0)}%
+                      </Badge>
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </Alert>
             ))}
           </div>

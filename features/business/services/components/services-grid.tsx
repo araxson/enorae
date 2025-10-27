@@ -19,6 +19,7 @@ import {
   ItemContent,
   ItemGroup,
 } from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -95,15 +96,17 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
 
           {onEditService && (
             <CardFooter>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full"
-                onClick={() => onEditService(service)}
-              >
-                <Edit className="mr-2 h-4 w-4" />
-                Edit Service
-              </Button>
+              <ButtonGroup className="w-full">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => onEditService(service)}
+                >
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit Service
+                </Button>
+              </ButtonGroup>
             </CardFooter>
           )}
         </Card>

@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   ButtonGroupSeparator,
 } from '@/components/ui/button-group'
+import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
 import { MarketingHero, TrustBadge } from '@/features/marketing/common-components'
 
 import { heroContent } from './hero.data'
@@ -16,6 +17,11 @@ export function Hero() {
       subtitle={heroContent.subtitle}
       description={heroContent.description}
     >
+      <Item variant="muted">
+        <ItemContent>
+          <ItemDescription>Streamline bookings whether you run a salon or schedule services as a client.</ItemDescription>
+        </ItemContent>
+      </Item>
       <div className="flex w-full flex-col items-center gap-6">
         <ButtonGroup className="flex flex-wrap justify-center gap-2 px-2">
           <Button asChild size="lg">

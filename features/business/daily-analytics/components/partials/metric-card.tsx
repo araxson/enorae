@@ -1,10 +1,17 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { ComponentType } from 'react'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import { formatPercentage } from '@/features/business/business-common'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Props = {
   title: string
@@ -16,15 +23,15 @@ type Props = {
 
 export function MetricCard({ title, value, trend, icon: Icon, subtitle }: Props) {
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle>{title}</CardTitle>
+    <Item variant="outline" className="flex-col gap-2">
+      <ItemHeader className="items-center justify-between">
+        <ItemTitle>{title}</ItemTitle>
+        <ItemActions className="flex-none">
           <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-        </div>
-        {subtitle ? <CardDescription>{subtitle}</CardDescription> : null}
-      </CardHeader>
-      <CardContent className="flex items-end justify-between gap-3 pt-0">
+        </ItemActions>
+      </ItemHeader>
+      {subtitle ? <ItemDescription>{subtitle}</ItemDescription> : null}
+      <ItemContent className="flex items-end justify-between gap-3">
         <div className="text-2xl font-bold">{value}</div>
         {trend !== undefined ? (
           <div className="flex items-center gap-1">
@@ -32,7 +39,7 @@ export function MetricCard({ title, value, trend, icon: Icon, subtitle }: Props)
             <Badge variant={trend >= 0 ? 'default' : 'destructive'}>{formatPercentage(trend)}</Badge>
           </div>
         ) : null}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

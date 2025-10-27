@@ -1,6 +1,5 @@
 'use client'
 
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -11,6 +10,12 @@ import {
 import type { RoleTemplate } from './role-templates'
 import { ROLE_PERMISSION_TEMPLATES } from './role-templates'
 import type { RoleValue } from './types'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 
 interface RoleSelectorProps {
   role: RoleValue | ''
@@ -26,39 +31,43 @@ export function RoleSelector({ role, onRoleChange, templateId, onTemplateChange 
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <div className="space-y-2">
-        <Label htmlFor="role">Role *</Label>
-        <Select value={role} onValueChange={(value: RoleValue) => onRoleChange(value)} required>
-          <SelectTrigger id="role">
-            <SelectValue placeholder="Select a role" />
-          </SelectTrigger>
-          <SelectContent>
-            {ROLE_OPTIONS.map((value) => (
-              <SelectItem key={value} value={value}>
-                {value.replace(/_/g, ' ')}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <FieldGroup className="grid gap-4 md:grid-cols-2">
+      <Field>
+        <FieldLabel htmlFor="role">Role *</FieldLabel>
+        <FieldContent>
+          <Select value={role} onValueChange={(value: RoleValue) => onRoleChange(value)} required>
+            <SelectTrigger id="role">
+              <SelectValue placeholder="Select a role" />
+            </SelectTrigger>
+            <SelectContent>
+              {ROLE_OPTIONS.map((value) => (
+                <SelectItem key={value} value={value}>
+                  {value.replace(/_/g, ' ')}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FieldContent>
+      </Field>
 
-      <div className="space-y-2">
-        <Label htmlFor="template">Template</Label>
-        <Select value={templateId} onValueChange={handleTemplateChange}>
-          <SelectTrigger id="template">
-            <SelectValue placeholder="Optional template" />
-          </SelectTrigger>
-          <SelectContent>
-            {ROLE_PERMISSION_TEMPLATES.map((template) => (
-              <SelectItem key={template.id} value={template.id}>
-                {template.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
+      <Field>
+        <FieldLabel htmlFor="template">Template</FieldLabel>
+        <FieldContent>
+          <Select value={templateId} onValueChange={handleTemplateChange}>
+            <SelectTrigger id="template">
+              <SelectValue placeholder="Optional template" />
+            </SelectTrigger>
+            <SelectContent>
+              {ROLE_PERMISSION_TEMPLATES.map((template) => (
+                <SelectItem key={template.id} value={template.id}>
+                  {template.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FieldContent>
+      </Field>
+    </FieldGroup>
   )
 }
 

@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Combobox } from '@/components/ui/combobox'
+import { FieldDescription } from '@/components/ui/field'
+import { Kbd } from '@/components/ui/kbd'
 
 import type { BookingFormValues, Service, Staff } from '@/features/customer/booking/types'
 
@@ -59,6 +61,9 @@ export function FormFields({ services, staff, control }: FormFieldsProps) {
               disabled={!serviceOptions.length}
               emptyMessage="This salon is still setting up services."
             />
+            <FieldDescription>
+              Use <Kbd>Enter</Kbd> to add the selected service.
+            </FieldDescription>
           </FormControl>
             {!serviceOptions.length && (
               <FormMessage>Services will appear here once the salon publishes them.</FormMessage>
@@ -81,6 +86,9 @@ export function FormFields({ services, staff, control }: FormFieldsProps) {
               placeholder="Select staff member"
               options={staffOptions}
             />
+            <FieldDescription>
+              Press <Kbd>Tab</Kbd> to move through options quickly.
+            </FieldDescription>
           </FormControl>
             <FormMessage />
           </FormItem>

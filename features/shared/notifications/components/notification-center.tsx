@@ -3,15 +3,24 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '@/features/shared/notifications/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import type { Database } from '@/lib/types/database.types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Message = Database['communication']['Tables']['messages']['Row']
 
@@ -119,48 +128,45 @@ export function NotificationCenter({ notifications }: Props) {
             <TabsTrigger value="sms">SMS</TabsTrigger>
           </TabsList>
 
-          <TabsContent value={activeTab}>
-            <div className="flex flex-col gap-3 mt-4">
-              {filteredNotifications.length === 0 ? (
-                <Empty>
-                  <EmptyMedia variant="icon">
-                    <Bell className="h-6 w-6" />
-                  </EmptyMedia>
-                  <EmptyHeader>
-                    <EmptyTitle>No notifications</EmptyTitle>
-                    <EmptyDescription>New alerts will show up here as they arrive.</EmptyDescription>
-                  </EmptyHeader>
-                </Empty>
-              ) : (
-                filteredNotifications.map((notification) => (
-                  <Alert
+          <TabsContent value={activeTab} className="mt-4">
+            {filteredNotifications.length === 0 ? (
+              <Empty>
+                <EmptyMedia variant="icon">
+                  <Bell className="h-6 w-6" aria-hidden="true" />
+                </EmptyMedia>
+                <EmptyHeader>
+                  <EmptyTitle>No notifications</EmptyTitle>
+                  <EmptyDescription>New alerts will show up here as they arrive.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <ItemGroup className="gap-3">
+                {filteredNotifications.map((notification) => (
+                  <Item
                     key={notification.id}
-                    className={!notification.is_read ? 'border-primary bg-primary/5' : ''}
+                    variant={notification.is_read ? 'outline' : 'muted'}
+                    className="items-start gap-4"
                   >
-                    <div className="flex justify-between items-start gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          {getChannelIcon(notification.context_type)}
-                          <AlertDescription className="font-semibold text-foreground">
-                            {notification.content}
-                          </AlertDescription>
-                          {!notification.is_read && <Badge variant="secondary">New</Badge>}
-                        </div>
-                        <div className="space-y-1">
-                          {notification.context_type ? (
-                            <AlertDescription>
-                              Type: {notification.context_type}
-                            </AlertDescription>
-                          ) : null}
-                          <AlertDescription>
-                            <time dateTime={notification.created_at}>
-                              {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                            </time>
-                          </AlertDescription>
-                        </div>
-                      </div>
-                      <div className="flex gap-1">
-                        {!notification.is_read && (
+                    <ItemMedia variant="icon">
+                      {getChannelIcon(notification.context_type)}
+                    </ItemMedia>
+                    <ItemContent className="min-w-0 gap-2">
+                      <ItemTitle className="flex items-center gap-2">
+                        <span className="truncate">{notification.content}</span>
+                        {!notification.is_read ? <Badge variant="secondary">New</Badge> : null}
+                      </ItemTitle>
+                      {notification.context_type ? (
+                        <ItemDescription>Type: {notification.context_type}</ItemDescription>
+                      ) : null}
+                      <ItemDescription>
+                        <time dateTime={notification.created_at}>
+                          {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                        </time>
+                      </ItemDescription>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <ButtonGroup>
+                        {!notification.is_read ? (
                           <Button
                             variant="ghost"
                             size="icon"
@@ -169,7 +175,7 @@ export function NotificationCenter({ notifications }: Props) {
                           >
                             <Check className="h-4 w-4" />
                           </Button>
-                        )}
+                        ) : null}
                         <Button
                           variant="ghost"
                           size="icon"
@@ -178,12 +184,12 @@ export function NotificationCenter({ notifications }: Props) {
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
-                      </div>
-                    </div>
-                  </Alert>
-                ))
-              )}
-            </div>
+                      </ButtonGroup>
+                    </ItemActions>
+                  </Item>
+                ))}
+              </ItemGroup>
+            )}
           </TabsContent>
         </Tabs>
       </CardContent>

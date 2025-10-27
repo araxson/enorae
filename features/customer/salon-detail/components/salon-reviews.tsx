@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { markReviewAsHelpful } from '@/features/customer/reviews/api/helpful-mutations'
 import type { Database } from '@/lib/types/database.types'
+import { Spinner } from '@/components/ui/spinner'
 import {
   Empty,
   EmptyContent,
@@ -16,6 +17,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+} from '@/components/ui/item'
 
 type SalonReview = Database['public']['Views']['salon_reviews_view']['Row']
 
@@ -69,20 +77,43 @@ function ReviewCard({ review }: { review: SalonReview }) {
 
   return (
     <Card>
-      <CardHeader className="gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          <StarRating rating={review['rating']} />
-          {review['is_verified'] && <Badge variant="secondary">Verified</Badge>}
-        </div>
-        {reviewDate && <CardDescription>{reviewDate}</CardDescription>}
+      <CardHeader>
+        <ItemGroup className="sm:flex-row sm:items-center sm:justify-between">
+          <Item>
+            <ItemContent>
+              <StarRating rating={review['rating']} />
+            </ItemContent>
+            {review['is_verified'] ? (
+              <ItemActions className="flex-none">
+                <Badge variant="secondary">Verified</Badge>
+              </ItemActions>
+            ) : null}
+          </Item>
+          {reviewDate ? (
+            <Item>
+              <ItemContent>
+                <ItemDescription>{reviewDate}</ItemDescription>
+              </ItemContent>
+            </Item>
+          ) : null}
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <CardDescription>{review['comment']}</CardDescription>
       </CardContent>
       <CardFooter className="flex flex-wrap items-center justify-between gap-2">
         <Button variant="ghost" size="sm" onClick={handleMarkHelpful} disabled={isSubmitting}>
-          <ThumbsUp className="mr-2 h-4 w-4" />
-          Helpful {helpfulCount > 0 && `(${helpfulCount})`}
+          {isSubmitting ? (
+            <>
+              <Spinner className="size-4" />
+              <span>Marking</span>
+            </>
+          ) : (
+            <>
+              <ThumbsUp className="mr-2 h-4 w-4" />
+              <span>Helpful {helpfulCount > 0 ? `(${helpfulCount})` : ''}</span>
+            </>
+          )}
         </Button>
       </CardFooter>
     </Card>
@@ -118,13 +149,21 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle>Customer reviews ({reviews.length})</CardTitle>
-            <div className="flex items-center gap-2">
-              <StarRating rating={Math.round(avgRating)} />
-              <CardDescription>{avgRating.toFixed(1)} average</CardDescription>
-            </div>
-          </div>
+          <ItemGroup className="sm:flex-row sm:items-center sm:justify-between">
+            <Item>
+              <ItemContent>
+                <CardTitle>Customer reviews ({reviews.length})</CardTitle>
+              </ItemContent>
+            </Item>
+            <Item>
+              <ItemContent>
+                <StarRating rating={Math.round(avgRating)} />
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <CardDescription>{avgRating.toFixed(1)} average</CardDescription>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <CardDescription>

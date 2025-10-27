@@ -1,4 +1,3 @@
-import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -44,19 +43,19 @@ export function CouponServicesSection({
             <ItemGroup className="space-y-2 pr-2">
               {services.map((service) => {
                 const checkboxId = `coupon-service-${service.id}`
+                const isSelected = selectedServiceIds.has(service.id)
                 return (
-                  <Item key={service.id} className="rounded-md px-2 py-1">
+                  <Item key={service.id} variant={isSelected ? 'muted' : 'outline'}>
                     <ItemContent>
-                      <ItemTitle>
-                        <Label htmlFor={checkboxId}>{service.name}</Label>
-                      </ItemTitle>
+                      <ItemTitle>{service.name}</ItemTitle>
                     </ItemContent>
                     <ItemActions>
                       <div className="flex-none">
                         <Checkbox
                           id={checkboxId}
-                          checked={selectedServiceIds.has(service.id)}
+                          checked={isSelected}
                           onCheckedChange={(checked) => onToggleService(service.id, Boolean(checked))}
+                          aria-label={service.name}
                         />
                       </div>
                     </ItemActions>

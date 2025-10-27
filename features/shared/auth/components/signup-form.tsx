@@ -5,13 +5,22 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { signup } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldGroup,
+  FieldSet,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 export function SignupForm() {
   const router = useRouter()
@@ -72,86 +81,109 @@ export function SignupForm() {
 
       <form action={handleSubmit}>
         <CardContent>
-          <div className="flex flex-col gap-6">
-            {error && (
+          <FieldSet className="gap-6">
+            {error ? (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Sign up failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
-            )}
-            {success && (
+            ) : null}
+            {success ? (
               <Alert>
                 <AlertTitle>Account created</AlertTitle>
                 <AlertDescription>{success}</AlertDescription>
               </Alert>
-            )}
+            ) : null}
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                name="fullName"
-                type="text"
-                placeholder="John Doe"
-                required
-              />
-            </div>
+            <FieldGroup className="gap-6">
+              <Field>
+                <FieldLabel htmlFor="fullName">Full Name</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    placeholder="John Doe"
+                    required
+                  />
+                </FieldContent>
+              </Field>
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    required
+                  />
+                </FieldContent>
+              </Field>
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password">Password</Label>
-              <PasswordInput
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Create a strong password"
-                required
-              />
-              {password && (
-                <PasswordStrengthIndicator password={password} showRequirements />
-              )}
-            </div>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldContent>
+                  <PasswordInput
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Create a strong password"
+                    required
+                  />
+                  {password ? (
+                    <FieldDescription>
+                      <PasswordStrengthIndicator password={password} showRequirements />
+                    </FieldDescription>
+                  ) : null}
+                </FieldContent>
+              </Field>
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <PasswordInput
-                id="confirmPassword"
-                name="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm your password"
-                required
-              />
-              {confirmPassword && password !== confirmPassword && (
-                <p className="text-sm font-medium text-destructive">Passwords do not match</p>
-              )}
-              {confirmPassword && password === confirmPassword && (
-                <p className="text-sm font-medium text-primary">✓ Passwords match</p>
-              )}
-            </div>
-          </div>
+              <Field>
+                <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
+                <FieldContent>
+                  <PasswordInput
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm your password"
+                    required
+                  />
+                  {confirmPassword && password !== confirmPassword ? (
+                    <FieldDescription className="text-destructive font-medium">
+                      Passwords do not match
+                    </FieldDescription>
+                  ) : null}
+                  {confirmPassword && password === confirmPassword ? (
+                    <FieldDescription className="text-primary font-medium">
+                      ✓ Passwords match
+                    </FieldDescription>
+                  ) : null}
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
         </CardContent>
 
         <CardFooter>
-          <div className="flex w-full flex-col gap-4">
+          <ButtonGroup className="w-full flex-col gap-4">
             <Button
               type="submit"
               className="w-full"
               disabled={loading || !isPasswordValid || password !== confirmPassword}
             >
-              {loading ? 'Creating account...' : 'Sign Up'}
+              {loading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Creating account...</span>
+                </>
+              ) : (
+                <span>Sign Up</span>
+              )}
             </Button>
             <p className="text-sm font-medium text-center text-muted-foreground">
               Already have an account?{' '}
@@ -159,7 +191,7 @@ export function SignupForm() {
                 Sign in
               </Link>
             </p>
-          </div>
+          </ButtonGroup>
         </CardFooter>
       </form>
       </Card>

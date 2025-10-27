@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,6 +15,11 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 type StaffInfoFormProps = {
   profile: {
@@ -66,8 +72,14 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Professional information</CardTitle>
-          <CardDescription>Share your role, experience, and story with clients.</CardDescription>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <CardTitle>Professional information</CardTitle>
+                <CardDescription>Share your role, experience, and story with clients.</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <FieldSet className="space-y-6">
@@ -121,7 +133,14 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
       </Card>
 
       <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Saving...' : 'Save changes'}
+        {isSubmitting ? (
+          <>
+            <Spinner className="size-4" />
+            <span>Saving...</span>
+          </>
+        ) : (
+          <span>Save changes</span>
+        )}
       </Button>
     </form>
   )

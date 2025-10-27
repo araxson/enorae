@@ -1,10 +1,18 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { PaymentMethodStats } from '@/features/admin/finance/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface PaymentMethodStatsProps {
   stats: PaymentMethodStats[]
@@ -38,60 +46,50 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Payment Method Statistics</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Payment Method Statistics</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4 p-0">
         <ScrollArea className="px-6 pt-6">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Method</TableHead>
-                <TableHead className="text-right">Count</TableHead>
-                <TableHead className="text-right">Percentage</TableHead>
-                <TableHead>Distribution</TableHead>
-                <TableHead className="text-right">Last Used</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {stats.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5}>
-                    <Empty>
-                      <EmptyHeader>
-                        <EmptyTitle>No payment method data available</EmptyTitle>
-                        <EmptyDescription>Connect a processor or import transactions to analyze usage.</EmptyDescription>
-                      </EmptyHeader>
-                    </Empty>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                stats.map((stat) => (
-                  <TableRow key={stat.method}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">{getMethodIcon(stat.method)}</span>
-                        <span className="font-medium">{formatMethodName(stat.method)}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right font-medium">
-                      {stat.count.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Badge variant="outline">{stat.percentage.toFixed(1)}%</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Progress value={stat.percentage} className="h-2" />
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right text-sm text-muted-foreground">
-                      {formatDate(stat.lastUsed)}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+          {stats.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No payment method data available</EmptyTitle>
+                <EmptyDescription>Connect a processor or import transactions to analyze usage.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            <ItemGroup className="space-y-3">
+              {stats.map((stat) => (
+                <Item key={stat.method} variant="outline" className="flex-col gap-3">
+                  <ItemMedia variant="icon">
+                    <span className="text-lg">{getMethodIcon(stat.method)}</span>
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemGroup className="gap-2">
+                      <Item variant="muted">
+                        <ItemContent>
+                          <ItemTitle>{formatMethodName(stat.method)}</ItemTitle>
+                          <ItemDescription>
+                            {stat.count.toLocaleString()} transactions · Last used {formatDate(stat.lastUsed)}
+                          </ItemDescription>
+                        </ItemContent>
+                        <ItemActions>
+                          <Badge variant="outline">{stat.percentage.toFixed(1)}%</Badge>
+                        </ItemActions>
+                      </Item>
+                    </ItemGroup>
+                    <Progress value={stat.percentage} className="mt-2 h-2" />
+                  </ItemContent>
+                </Item>
+              ))}
+            </ItemGroup>
+          )}
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </CardContent>

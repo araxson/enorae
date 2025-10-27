@@ -1,9 +1,17 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, DollarSign, Zap } from 'lucide-react'
 import type { PricingRule } from '@/features/business/pricing/types'
 import { formatCurrency } from './pricing-utils'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface PricingSummaryCardsProps {
   rules: PricingRule[]
@@ -17,48 +25,50 @@ export function PricingSummaryCards({
   servicesCount,
 }: PricingSummaryCardsProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-3">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Active Rules</CardTitle>
-          <Zap className="h-4 w-4 text-accent" />
-        </CardHeader>
-        <CardContent>
+    <ItemGroup className="grid gap-4 md:grid-cols-3">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader className="items-center justify-between">
+          <ItemTitle>Active Rules</ItemTitle>
+          <ItemActions className="flex-none">
+            <Zap className="h-4 w-4 text-accent" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
           <div className="text-2xl font-bold">{rules.length}</div>
-          <p className="text-xs text-muted-foreground">
+          <ItemDescription>
             {rules.filter(r => r.adjustment_type === 'surge').length} surges,{' '}
             {rules.filter(r => r.adjustment_type === 'discount').length} discounts
-          </p>
-        </CardContent>
-      </Card>
+          </ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Revenue Potential</CardTitle>
-          <TrendingUp className="h-4 w-4 text-primary" />
-        </CardHeader>
-        <CardContent>
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader className="items-center justify-between">
+          <ItemTitle>Revenue Potential</ItemTitle>
+          <ItemActions className="flex-none">
+            <TrendingUp className="h-4 w-4 text-primary" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
           <div className="text-2xl font-bold">
             {formatCurrency(totalPotentialRevenue)}
           </div>
-          <p className="text-xs text-muted-foreground">
-            Estimated monthly increase
-          </p>
-        </CardContent>
-      </Card>
+          <ItemDescription>Estimated monthly increase</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Services Optimized</CardTitle>
-          <DollarSign className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader className="items-center justify-between">
+          <ItemTitle>Services Optimized</ItemTitle>
+          <ItemActions className="flex-none">
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
           <div className="text-2xl font-bold">{servicesCount}</div>
-          <p className="text-xs text-muted-foreground">
-            Dynamic pricing enabled
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+          <ItemDescription>Dynamic pricing enabled</ItemDescription>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

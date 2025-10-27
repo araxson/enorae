@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { ChainAnalytics } from '@/features/admin/chains/api/queries'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface ChainAnalyticsTableProps {
   analytics: ChainAnalytics[]
@@ -25,7 +26,13 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Chain Analytics</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Chain Analytics</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="p-0">
         <Table>

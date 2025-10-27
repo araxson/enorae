@@ -4,7 +4,9 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
+  ItemTitle,
 } from '@/components/ui/item'
 import { Tag, Users, Calendar } from 'lucide-react'
 import type { Salon } from '../types'
@@ -31,9 +33,12 @@ export function QuickStatsCard({ salon }: QuickStatsCardProps) {
         <ItemGroup className="gap-3">
           {salon.services_count !== null && (
             <Item variant="muted">
-              <ItemMedia variant="icon">
-                <Tag className="size-4" />
-              </ItemMedia>
+              <ItemHeader className="gap-3">
+                <ItemMedia variant="icon">
+                  <Tag className="size-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemTitle>Service count</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>{salon.services_count} Services</ItemDescription>
               </ItemContent>
@@ -41,9 +46,12 @@ export function QuickStatsCard({ salon }: QuickStatsCardProps) {
           )}
           {salon.staff_count !== null && (
             <Item variant="muted">
-              <ItemMedia variant="icon">
-                <Users className="size-4" />
-              </ItemMedia>
+              <ItemHeader className="gap-3">
+                <ItemMedia variant="icon">
+                  <Users className="size-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemTitle>Team size</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>{salon.staff_count} Staff Members</ItemDescription>
               </ItemContent>
@@ -51,9 +59,12 @@ export function QuickStatsCard({ salon }: QuickStatsCardProps) {
           )}
           {salon.established_at && (
             <Item variant="muted">
-              <ItemMedia variant="icon">
-                <Calendar className="size-4" />
-              </ItemMedia>
+              <ItemHeader className="gap-3">
+                <ItemMedia variant="icon">
+                  <Calendar className="size-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemTitle>Years active</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>
                   Established {new Date(salon.established_at).getFullYear()}

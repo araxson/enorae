@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia } from '@/components/ui/item'
 
 import type { CustomerVipStatus } from '@/features/customer/dashboard/api/queries'
 
@@ -46,13 +46,17 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
-          <span className="flex items-center gap-2">
-            <Crown className="h-5 w-5" />
-            VIP status
-          </span>
-        </CardTitle>
-        <CardDescription>Exclusive benefits and rewards</CardDescription>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Crown className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>VIP status</CardTitle>
+              <CardDescription>Exclusive benefits and rewards</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -65,6 +69,9 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
               <CardContent>
                 <ItemGroup>
                   <Item>
+                    <ItemMedia variant="icon">
+                      <Crown className="h-4 w-4" aria-hidden="true" />
+                    </ItemMedia>
                     <ItemContent>
                       <span className="text-2xl font-semibold text-foreground">{value}</span>
                     </ItemContent>
@@ -88,8 +95,10 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
               <CardContent>
                 <ItemGroup>
                   <Item>
-                    <ItemContent className="flex items-center gap-2">
+                    <ItemMedia variant="icon">
                       <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
                       <span className="text-2xl font-semibold text-foreground">
                         ${vipStatus.monthlySpend.toLocaleString()}
                       </span>

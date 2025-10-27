@@ -1,13 +1,13 @@
 'use client'
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import {
   Item,
   ItemContent,
+  ItemDescription,
   ItemGroup,
   ItemHeader,
   ItemTitle,
@@ -22,12 +22,12 @@ type RevenueForecastCardProps = {
 export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
   if (forecast.points.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Revenue Forecast</CardTitle>
-          <CardDescription>Not enough historical data to forecast</CardDescription>
-        </CardHeader>
-      </Card>
+      <Item variant="outline" className="flex-col gap-2">
+        <ItemHeader>
+          <ItemTitle>Revenue Forecast</ItemTitle>
+          <ItemDescription>Not enough historical data to forecast</ItemDescription>
+        </ItemHeader>
+      </Item>
     )
   }
 
@@ -44,11 +44,11 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
   const growthColor = forecast.projectedGrowth >= 0 ? 'text-primary' : 'text-destructive'
 
   return (
-    <Card>
-      <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
-          <CardTitle>Revenue Forecast</CardTitle>
-          <CardDescription>Projected revenue using trend analysis</CardDescription>
+          <ItemTitle>Revenue Forecast</ItemTitle>
+          <ItemDescription>Projected revenue using trend analysis</ItemDescription>
         </div>
         {nextForecast ? (
           <Badge variant={forecast.projectedGrowth >= 0 ? 'default' : 'destructive'}>
@@ -56,8 +56,8 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
             {forecast.projectedGrowth.toFixed(1)}%
           </Badge>
         ) : null}
-      </CardHeader>
-      <CardContent>
+      </ItemHeader>
+      <ItemContent>
         <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
           <ChartContainer
             config={{
@@ -151,7 +151,7 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
             </Item>
           </ItemGroup>
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

@@ -59,9 +59,14 @@ export function SuspiciousActivityPanel({ sessions, blockedSessions }: Suspiciou
                 <CardHeader>
                   <ItemGroup>
                     <Item className="flex-wrap items-center justify-between gap-2">
-                      <ItemContent className="flex items-center gap-2">
-                        {riskBadge(session.suspiciousScore ?? 0)}
-                        <CardTitle>Suspicious score {session.suspiciousScore ?? 'n/a'}</CardTitle>
+                      <ItemContent>
+                        <div className="flex items-center gap-2">
+                          {riskBadge(session.suspiciousScore ?? 0)}
+                          <CardTitle>Suspicious score {session.suspiciousScore ?? 'n/a'}</CardTitle>
+                        </div>
+                        <CardDescription>
+                          IP {session.ipAddress ?? 'Unknown'} · User {session.userId ?? 'Anonymous'}
+                        </CardDescription>
                       </ItemContent>
                       {session.isBlocked ? (
                         <ItemActions className="flex-none items-center gap-1">
@@ -74,9 +79,6 @@ export function SuspiciousActivityPanel({ sessions, blockedSessions }: Suspiciou
                       ) : null}
                     </Item>
                   </ItemGroup>
-                  <CardDescription>
-                    IP {session.ipAddress ?? 'Unknown'} · User {session.userId ?? 'Anonymous'}
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col gap-2">

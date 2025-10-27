@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { MapPin, Star, Shield, Sparkles, TrendingUp, Search } from 'lucide-react'
-import { Item, ItemActions, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item'
 import type { SalonSearchResult } from '@/features/customer/salon-search/api/queries'
 import {
   Empty,
@@ -61,8 +61,10 @@ function SalonCard({ salon, featured = false }: SalonCardProps) {
         <CardContent>
           <ItemGroup>
             <Item>
-              <ItemContent className="flex items-center gap-2">
-                <Star className="h-4 w-4 fill-accent text-accent" />
+              <ItemMedia variant="icon">
+                <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
                 <ItemTitle>{formatRating(salon.rating_average)}</ItemTitle>
               </ItemContent>
               <ItemActions className="flex-none gap-2">
@@ -95,6 +97,16 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
             <Sparkles className="h-5 w-5 text-accent" />
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Featured Salons</h2>
           </div>
+          <ItemGroup className="mb-4">
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <ItemDescription>
+                  {featuredSalons.length}{' '}
+                  {featuredSalons.length === 1 ? 'featured salon' : 'featured salons'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {featuredSalons.map((salon) => (
               <SalonCard key={salon.id} salon={salon} featured />
@@ -110,6 +122,16 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
             <TrendingUp className="h-5 w-5" />
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Search Results ({results.length})</h2>
           </div>
+          <ItemGroup className="mb-4">
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <ItemDescription>
+                  {results.length}{' '}
+                  {results.length === 1 ? 'matching salon' : 'matching salons'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {results.map((salon) => (
               <SalonCard key={salon.id} salon={salon} />

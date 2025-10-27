@@ -8,7 +8,6 @@ import {
   ROLE_GROUPS,
 } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -17,6 +16,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
 
 type SalonOption = Pick<Database['public']['Views']['salons_view']['Row'], 'id' | 'name'>
 
@@ -87,25 +92,34 @@ function BusinessSalonSwitcherClient({ salons, activeSalonId, setActiveSalon }: 
   }
 
   return (
-    <div className="mb-6 flex flex-col gap-2">
-      <Label htmlFor="business-salon-switcher">Active Salon</Label>
-      <div className="flex items-center gap-2">
-        <Select value={value} onValueChange={setValue}>
-          <SelectTrigger id="business-salon-switcher" className="w-64">
-            <SelectValue placeholder="Select salon" />
-          </SelectTrigger>
-          <SelectContent>
-            {salons.map(salon => (
-              <SelectItem key={salon.id || 'unknown'} value={salon.id || ''}>
-                {salon.name || 'Untitled Salon'}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Button type="button" variant="outline" onClick={handleSubmit} disabled={isPending}>
-          {isPending ? 'Switching...' : 'Switch'}
-        </Button>
-      </div>
-    </div>
+    <Field className="mb-6">
+      <FieldLabel htmlFor="business-salon-switcher">Active Salon</FieldLabel>
+      <FieldContent>
+        <div className="flex items-center gap-2">
+          <Select value={value} onValueChange={setValue}>
+            <SelectTrigger id="business-salon-switcher" className="w-64">
+              <SelectValue placeholder="Select salon" />
+            </SelectTrigger>
+            <SelectContent>
+              {salons.map(salon => (
+                <SelectItem key={salon.id || 'unknown'} value={salon.id || ''}>
+                  {salon.name || 'Untitled Salon'}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Button type="button" variant="outline" onClick={handleSubmit} disabled={isPending}>
+            {isPending ? (
+              <>
+                <Spinner />
+                Switching
+              </>
+            ) : (
+              'Switch'
+            )}
+          </Button>
+        </div>
+      </FieldContent>
+    </Field>
   )
 }

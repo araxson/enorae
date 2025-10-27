@@ -1,10 +1,21 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Search } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { Search, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 declare global {
   interface WindowEventMap {
@@ -42,51 +53,80 @@ export function RolesFilters({
   }, [onSearchChange, onRoleFilterChange, onStatusFilterChange])
 
   return (
-    <div className="flex flex-wrap items-center gap-6">
-      <div className="relative flex-1 min-w-0">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search by user or salon ID..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-8"
-        />
-      </div>
+    <FieldGroup className="flex flex-wrap items-center gap-6">
+      <Field className="flex-1 min-w-0">
+        <FieldLabel htmlFor="roles-search">Search directory</FieldLabel>
+        <FieldContent>
+          <InputGroup>
+            <InputGroupAddon>
+              <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            </InputGroupAddon>
+            <InputGroupInput
+              id="roles-search"
+              placeholder="Search by user or salon ID..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+            <InputGroupAddon align="inline-end">
+              {searchQuery ? (
+                <InputGroupButton
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Clear search"
+                  onClick={() => onSearchChange('')}
+                >
+                  <X className="h-4 w-4" aria-hidden="true" />
+                </InputGroupButton>
+              ) : null}
+            </InputGroupAddon>
+          </InputGroup>
+        </FieldContent>
+      </Field>
 
-      <Select value={roleFilter} onValueChange={onRoleFilterChange}>
-        <SelectTrigger className="w-44">
-          <SelectValue placeholder="All Roles" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Roles</SelectItem>
-          <SelectItem value="super_admin">Super Admin</SelectItem>
-          <SelectItem value="platform_admin">Platform Admin</SelectItem>
-          <SelectItem value="tenant_owner">Tenant Owner</SelectItem>
-          <SelectItem value="salon_owner">Salon Owner</SelectItem>
-          <SelectItem value="salon_manager">Salon Manager</SelectItem>
-          <SelectItem value="senior_staff">Senior Staff</SelectItem>
-          <SelectItem value="staff">Staff</SelectItem>
-          <SelectItem value="junior_staff">Junior Staff</SelectItem>
-          <SelectItem value="customer">Customer</SelectItem>
-          <SelectItem value="vip_customer">VIP Customer</SelectItem>
-          <SelectItem value="guest">Guest</SelectItem>
-        </SelectContent>
-      </Select>
+      <Field className="w-44">
+        <FieldLabel>Role</FieldLabel>
+        <FieldContent>
+          <Select value={roleFilter} onValueChange={onRoleFilterChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="All Roles" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Roles</SelectItem>
+              <SelectItem value="super_admin">Super Admin</SelectItem>
+              <SelectItem value="platform_admin">Platform Admin</SelectItem>
+              <SelectItem value="tenant_owner">Tenant Owner</SelectItem>
+              <SelectItem value="salon_owner">Salon Owner</SelectItem>
+              <SelectItem value="salon_manager">Salon Manager</SelectItem>
+              <SelectItem value="senior_staff">Senior Staff</SelectItem>
+              <SelectItem value="staff">Staff</SelectItem>
+              <SelectItem value="junior_staff">Junior Staff</SelectItem>
+              <SelectItem value="customer">Customer</SelectItem>
+              <SelectItem value="vip_customer">VIP Customer</SelectItem>
+              <SelectItem value="guest">Guest</SelectItem>
+            </SelectContent>
+          </Select>
+        </FieldContent>
+      </Field>
 
-      <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-        <SelectTrigger className="w-36">
-          <SelectValue placeholder="All Status" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Status</SelectItem>
-          <SelectItem value="active">Active</SelectItem>
-          <SelectItem value="inactive">Inactive</SelectItem>
-        </SelectContent>
-      </Select>
+      <Field className="w-36">
+        <FieldLabel>Status</FieldLabel>
+        <FieldContent>
+          <Select value={statusFilter} onValueChange={onStatusFilterChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="All Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="inactive">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
+        </FieldContent>
+      </Field>
 
       <Button variant="ghost" size="sm" onClick={clearFilters}>
         Clear all filters
       </Button>
-    </div>
+    </FieldGroup>
   )
 }

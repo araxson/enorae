@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
+import { Spinner } from '@/components/ui/spinner'
 
 type TemplateFormData = {
   name: string
@@ -161,7 +162,14 @@ export function TemplateFormDialog({
                 onClick={onSave}
                 disabled={isPending || formData.name.trim().length === 0}
               >
-                {isPending ? 'Saving...' : 'Save Template'}
+                {isPending ? (
+                  <>
+                    <Spinner />
+                    Saving
+                  </>
+                ) : (
+                  'Save Template'
+                )}
               </Button>
             </ButtonGroup>
           </DialogFooter>

@@ -16,6 +16,13 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface BlockedTimesListProps {
   blockedTimes: BlockedTime[]
@@ -62,8 +69,14 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Blocked Times</CardTitle>
-        <CardDescription>Periods when you&apos;re unavailable for appointments</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Blocked Times</CardTitle>
+              <CardDescription>Periods when you&apos;re unavailable for appointments</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <Table>
@@ -81,10 +94,16 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
             {blockedTimes.map((blockedTime) => (
               <TableRow key={blockedTime['id']}>
                 <TableCell>
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium">{blockedTime['reason'] || 'Blocked time'}</span>
-                    {blockedTime['is_recurring'] && <Badge variant="secondary" className="w-fit">Recurring</Badge>}
-                  </div>
+                  <Item variant="muted" size="sm">
+                    <ItemContent>
+                      <ItemTitle>{blockedTime['reason'] || 'Blocked time'}</ItemTitle>
+                    </ItemContent>
+                    {blockedTime['is_recurring'] ? (
+                      <ItemActions>
+                        <Badge variant="secondary">Recurring</Badge>
+                      </ItemActions>
+                    ) : null}
+                  </Item>
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline">{blockedTime['block_type']}</Badge>

@@ -24,6 +24,7 @@ import { MoreHorizontal } from 'lucide-react'
 import type { RateLimitRule } from '@/features/admin/rate-limit-rules/api/queries'
 import { toggleRateLimitRule, deleteRateLimitRule } from '@/features/admin/rate-limit-rules/api/mutations'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Spinner } from '@/components/ui/spinner'
 
 interface RateLimitRulesTableProps {
   rules: RateLimitRule[]
@@ -74,7 +75,8 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
   }
 
   return (
-    <ScrollArea className="w-full">
+    <div className="relative" aria-busy={isLoading}>
+      <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -146,6 +148,12 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
         </TableBody>
       </Table>
       <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+      </ScrollArea>
+      {isLoading ? (
+        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+          <Spinner className="size-6" />
+        </div>
+      ) : null}
+    </div>
   )
 }

@@ -1,4 +1,10 @@
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { TimeOffRequestsClient } from './components/time-off-requests-client'
 import {
   getTimeOffRequests,
@@ -14,27 +20,39 @@ export async function TimeOffRequests() {
     staffProfile = await getStaffProfile()
   } catch (error) {
     return (
-      <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Alert>
-          <AlertTitle>Time-off unavailable</AlertTitle>
-          <AlertDescription>
-            {error instanceof Error
-              ? error.message
-              : 'Please log in to view time-off requests'}
-          </AlertDescription>
-        </Alert>
-      </div>
+      <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
+        <Card>
+          <CardContent>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>Time-off unavailable</EmptyTitle>
+                <EmptyDescription>
+                  {error instanceof Error
+                    ? error.message
+                    : 'Please log in to view time-off requests'}
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </CardContent>
+        </Card>
+      </section>
     )
   }
 
   if (!staffProfile || !staffProfile['id']) {
     return (
-      <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Alert>
-          <AlertTitle>Profile not found</AlertTitle>
-          <AlertDescription>Staff profile not found</AlertDescription>
-        </Alert>
-      </div>
+      <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
+        <Card>
+          <CardContent>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>Profile not found</EmptyTitle>
+                <EmptyDescription>Staff profile not found</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </CardContent>
+        </Card>
+      </section>
     )
   }
 

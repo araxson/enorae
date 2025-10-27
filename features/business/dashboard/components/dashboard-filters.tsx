@@ -5,8 +5,8 @@ import { CalendarIcon, Filter, Users } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   InputGroup,
   InputGroupAddon,
@@ -40,6 +40,8 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
+  ItemTitle,
 } from '@/components/ui/item'
 import {
   Field,
@@ -47,6 +49,7 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
+  FieldSet,
 } from '@/components/ui/field'
 const stylistOptions = ['Any stylist', 'Color specialists', 'Front desk', 'Senior stylists']
 
@@ -66,12 +69,12 @@ export function DashboardFilters() {
   }, [dateRange])
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Smart filters</CardTitle>
-        <CardDescription>Fine tune the data you see today.</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Smart filters</ItemTitle>
+        <ItemDescription>Fine tune the data you see today.</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <div className="flex flex-col gap-4">
           <ItemGroup>
             <Item className="items-stretch gap-4">
@@ -132,7 +135,7 @@ export function DashboardFilters() {
 
           <Separator />
 
-          <div className="flex flex-col gap-4">
+          <FieldSet className="flex flex-col gap-4">
             <Field>
               <FieldLabel>Team focus</FieldLabel>
               <FieldContent>
@@ -216,21 +219,23 @@ export function DashboardFilters() {
                     <FieldLabel htmlFor="include-cancellations">Include cancellations</FieldLabel>
                   </Field>
                 </ItemContent>
-                <ItemActions className="flex items-center gap-2">
-                  <Button variant="ghost" size="sm" onClick={() => {
-                    setDateRange({})
-                    setSelectedStylist(stylistOptions[0])
-                    setServiceTier('all')
-                  }}>
-                    Reset
-                  </Button>
-                  <Button size="sm">Apply filters</Button>
+                <ItemActions>
+                  <ButtonGroup>
+                    <Button variant="ghost" size="sm" onClick={() => {
+                      setDateRange({})
+                      setSelectedStylist(stylistOptions[0])
+                      setServiceTier('all')
+                    }}>
+                      Reset
+                    </Button>
+                    <Button size="sm">Apply filters</Button>
+                  </ButtonGroup>
                 </ItemActions>
               </Item>
             </ItemGroup>
-          </div>
+          </FieldSet>
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

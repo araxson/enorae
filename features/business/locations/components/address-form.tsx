@@ -7,6 +7,7 @@ import { AdditionalInfoSection, CoordinatesSection, LocationDetailsSection, MapI
 import { AddressValidation } from './address-validation'
 import type { LocationAddress } from './address-form/types'
 import { updateLocationAddress, type AddressInput } from '@/features/business/locations/api/address.mutations'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type Props = {
   locationId: string
@@ -83,11 +84,11 @@ export function AddressForm({ locationId, address, onSuccess }: Props) {
         <AdditionalInfoSection address={address} />
         <AddressValidation address={address} />
 
-        <div className="flex gap-3 justify-end">
+        <ButtonGroup className="justify-end">
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Saving...' : 'Save Address'}
           </Button>
-        </div>
+        </ButtonGroup>
       </div>
     </form>
   )

@@ -9,6 +9,14 @@ import { SalonsTable } from './salons-table'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface SalonsClientProps {
   salons: AdminSalon[]
@@ -105,8 +113,14 @@ function InsightCard({ title, subtitle, items, renderBadge }: InsightCardProps) 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <p className="text-xs text-muted-foreground">{subtitle}</p>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>{title}</CardTitle>
+              <ItemDescription>{subtitle}</ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
@@ -118,13 +132,15 @@ function InsightCard({ title, subtitle, items, renderBadge }: InsightCardProps) 
           </Empty>
         ) : (
           items.slice(0, 5).map((salon) => (
-            <div key={salon['id']} className="flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <p className="truncate text-sm font-medium">{salon['name'] || 'Unnamed salon'}</p>
-                <p className="truncate text-xs text-muted-foreground">{salon.business_name || '—'}</p>
-              </div>
-              {renderBadge(salon)}
-            </div>
+            <Item key={salon['id']} variant="outline" className="items-start gap-3">
+              <ItemContent>
+                <div className="min-w-0">
+                  <ItemTitle>{salon['name'] || 'Unnamed salon'}</ItemTitle>
+                  <ItemDescription>{salon.business_name || '—'}</ItemDescription>
+                </div>
+              </ItemContent>
+              <ItemActions>{renderBadge(salon)}</ItemActions>
+            </Item>
           ))
         )}
       </CardContent>

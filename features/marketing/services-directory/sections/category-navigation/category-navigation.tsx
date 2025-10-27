@@ -1,10 +1,15 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Item,
   ItemActions,
@@ -14,7 +19,6 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import { cn } from '@/lib/utils'
 import { Tag, TrendingUp } from 'lucide-react'
 
 interface Category {
@@ -29,48 +33,76 @@ interface CategoryNavigationProps {
 }
 
 export function CategoryNavigation({ categories, currentCategory }: CategoryNavigationProps) {
-  const pathname = usePathname()
+  if (categories.length === 0) {
+    return (
+      <Card>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No categories available yet</EmptyTitle>
+              <EmptyDescription>
+                New service categories will appear once salons publish their offerings.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Badge variant="secondary">Check back soon</Badge>
+            </EmptyContent>
+          </Empty>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card>
       <CardHeader>
-        <div className="flex gap-3 items-center items-center justify-between">
-          <div className="flex gap-3 items-center">
-            <Tag className="h-5 w-5 text-primary" />
+        <Item variant="muted">
+          <ItemMedia variant="icon">
+            <Tag className="size-4 text-primary" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
             <CardTitle>Service Categories</CardTitle>
-          </div>
-          <Badge variant="secondary">{categories.length} categories</Badge>
-        </div>
+          </ItemContent>
+          <ItemActions>
+            <Badge variant="secondary" aria-label={`${categories.length} categories available`}>
+              {categories.length} categories
+            </Badge>
+          </ItemActions>
+        </Item>
       </CardHeader>
       <CardContent>
         <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          <Button
+          <Item
             asChild
-            variant={!currentCategory ? 'default' : 'outline'}
-            className={cn('h-auto flex-col gap-1 py-3', !currentCategory && 'ring-2 ring-primary')}
+            className="flex-col gap-1"
+            variant={!currentCategory ? 'muted' : 'outline'}
           >
-            <Link href="/services" passHref>
-              <span>All Services</span>
-              <p className="text-muted-foreground">
-                {categories.reduce((sum, cat) => sum + cat.count, 0)} services
-              </p>
+            <Link href="/services" className="no-underline">
+              <ItemContent>
+                <ItemTitle>All Services</ItemTitle>
+                <ItemDescription>
+                  {categories.reduce((sum, cat) => sum + cat.count, 0)} services
+                </ItemDescription>
+              </ItemContent>
             </Link>
-          </Button>
+          </Item>
 
           {categories.map((category) => {
             const isActive = currentCategory === category.slug
             return (
-              <Button
+              <Item
                 key={category.slug}
                 asChild
-                variant={isActive ? 'default' : 'outline'}
-                className={cn('h-auto flex-col gap-1 py-3', isActive && 'ring-2 ring-primary')}
+                className="flex-col gap-1"
+                variant={isActive ? 'muted' : 'outline'}
               >
-                <Link href={`/services/${category.slug}`} passHref>
-                  <span>{category.name}</span>
-                  <p className="text-muted-foreground">{category.count} services</p>
+                <Link href={`/services/${category.slug}`} className="no-underline">
+                  <ItemContent>
+                    <ItemTitle>{category.name}</ItemTitle>
+                    <ItemDescription>{category.count} services</ItemDescription>
+                  </ItemContent>
                 </Link>
-              </Button>
+              </Item>
             )
           })}
         </div>
@@ -95,10 +127,14 @@ export function PopularServicesWidget({ services }: PopularServicesProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex gap-3 items-center">
-          <TrendingUp className="h-5 w-5 text-primary" />
-          <CardTitle>Popular Services</CardTitle>
-        </div>
+        <Item variant="muted">
+          <ItemMedia variant="icon">
+            <TrendingUp className="size-4 text-primary" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <CardTitle>Popular Services</CardTitle>
+          </ItemContent>
+        </Item>
       </CardHeader>
       <CardContent>
         <ItemGroup className="gap-2">

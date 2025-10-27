@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import {
   Item,
   ItemContent,
+  ItemDescription,
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
@@ -38,6 +39,11 @@ export function MobileNav({ navigationItems, user, role }: MobileNavProps) {
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:w-80">
         <nav className="mt-8 flex flex-col gap-4">
+          <Item variant="muted">
+            <ItemContent>
+              <ItemDescription>Browse Enorae sections and manage your account.</ItemDescription>
+            </ItemContent>
+          </Item>
           {/* Navigation Links */}
           <ItemGroup className="gap-2">
             {navigationItems.map((item) => (

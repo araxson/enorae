@@ -4,6 +4,13 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { DisputeCandidate } from '@/features/admin/appointments/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 
 interface DisputesPanelProps {
   disputes: DisputeCandidate[]
@@ -18,10 +25,16 @@ export function DisputesPanel({ disputes }: DisputesPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <Scale className="h-4 w-4 text-muted-foreground" />
-          <CardTitle>Dispute Queue</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <Scale className="h-4 w-4" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Dispute Queue</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-3">
         {disputes.length === 0 ? (
@@ -36,21 +49,25 @@ export function DisputesPanel({ disputes }: DisputesPanelProps) {
             {disputes.slice(0, 6).map((item) => (
               <Alert key={item.appointmentId} variant="default">
                 <Scale className="h-4 w-4" />
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1">
-                    <AlertTitle>{item.customerName || 'Unknown customer'}</AlertTitle>
-                    <AlertDescription>
-                      {item.salonName || 'Unknown salon'} · {formatCurrency(item.amount)}
-                    </AlertDescription>
-                    <AlertDescription className="mt-1">{item.reason}</AlertDescription>
-                    <AlertDescription className="mt-1 font-medium">
-                      Recommended: {item.recommendedAction}
-                    </AlertDescription>
-                  </div>
-                  <Badge variant="secondary">
-                    {(item.status || '').replace(/_/g, ' ').replace(/\b\w/g, (char: string) => char.toUpperCase())}
-                  </Badge>
-                </div>
+                <ItemGroup>
+                  <Item className="items-start gap-2" variant="muted" size="sm">
+                    <ItemContent>
+                      <AlertTitle>{item.customerName || 'Unknown customer'}</AlertTitle>
+                      <AlertDescription>
+                        {item.salonName || 'Unknown salon'} · {formatCurrency(item.amount)}
+                      </AlertDescription>
+                      <AlertDescription className="mt-1">{item.reason}</AlertDescription>
+                      <AlertDescription className="mt-1 font-medium">
+                        Recommended: {item.recommendedAction}
+                      </AlertDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      <Badge variant="secondary">
+                        {(item.status || '').replace(/_/g, ' ').replace(/\b\w/g, (char: string) => char.toUpperCase())}
+                      </Badge>
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </Alert>
             ))}
           </div>

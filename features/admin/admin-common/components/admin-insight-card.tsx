@@ -2,6 +2,8 @@
 
 import type { ReactNode } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface AdminInsightCardProps<T> {
   title: string
@@ -20,12 +22,25 @@ export const AdminInsightCard = <T,>({
 }: AdminInsightCardProps<T>) => (
   <Card>
     <CardHeader>
-      <CardTitle>{title}</CardTitle>
-      {description ? <CardDescription>{description}</CardDescription> : null}
+      <ItemGroup>
+        <Item variant="muted" size="sm">
+          <ItemContent>
+            <CardTitle>{title}</CardTitle>
+            {description ? <CardDescription>{description}</CardDescription> : null}
+          </ItemContent>
+        </Item>
+      </ItemGroup>
     </CardHeader>
     <CardContent className="space-y-3">
       {items.length === 0 ? (
-        <p className="text-muted-foreground">{emptyLabel}</p>
+        <Empty>
+          <EmptyHeader>
+            <EmptyTitle>{emptyLabel}</EmptyTitle>
+          </EmptyHeader>
+          <EmptyContent>
+            <EmptyDescription>No data available yet.</EmptyDescription>
+          </EmptyContent>
+        </Empty>
       ) : (
         items.map((item, index) => renderItem(item, index))
       )}

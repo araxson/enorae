@@ -2,8 +2,25 @@
 
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
+import { MessageSquare } from 'lucide-react'
 
 interface MessageThread {
   id: string
@@ -29,12 +46,16 @@ export function ThreadList({
 }: ThreadListProps) {
   if (threads.length === 0) {
     return (
-      <Card>
-        <CardHeader className="items-center">
-          <CardTitle>No messages yet</CardTitle>
-          <CardDescription>Messages will appear once you start a conversation.</CardDescription>
-        </CardHeader>
-      </Card>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <MessageSquare className="h-6 w-6" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No messages yet</EmptyTitle>
+          <EmptyDescription>Messages will appear once you start a conversation.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Start a new thread to connect with salons and staff.</EmptyContent>
+      </Empty>
     )
   }
 
@@ -59,38 +80,34 @@ export function ThreadList({
       : thread.unread_count_staff || 0
 
   return (
-    <div className="space-y-3">
+    <ItemGroup className="gap-3">
       {threads.map((thread) => {
         const unreadCount = getUnreadCount(thread)
 
         return (
-          <Link
-            key={thread.id}
-            href={`${basePath}/${thread.id}`}
-            className="block transition-opacity hover:opacity-95"
-          >
-            <Card className={`${unreadCount > 0 ? 'border-primary' : ''}`.trim()}>
-              <CardHeader className="space-y-2 p-5 pb-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <CardTitle>{thread.subject || 'No subject'}</CardTitle>
-                  {unreadCount > 0 && <Badge variant="destructive">{unreadCount}</Badge>}
-                </div>
-                <CardDescription>
+          <Link key={thread.id} href={`${basePath}/${thread.id}`} className="block">
+            <Item variant={unreadCount > 0 ? 'muted' : 'outline'} className="flex-col gap-3">
+              <ItemHeader>
+                <ItemTitle>{thread.subject || 'No subject'}</ItemTitle>
+                {unreadCount > 0 ? <Badge variant="destructive">{unreadCount}</Badge> : null}
+              </ItemHeader>
+              <ItemContent>
+                <ItemDescription>
                   Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-wrap items-center gap-2 p-5 pt-4">
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
                 <Badge variant={getPriorityVariant(thread.priority)}>
                   {thread.priority.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                 </Badge>
                 <Badge variant={thread.status === 'active' ? 'default' : 'secondary'}>
                   {thread.status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                 </Badge>
-              </CardContent>
-            </Card>
+              </ItemActions>
+            </Item>
           </Link>
         )
       })}
-    </div>
+    </ItemGroup>
   )
 }

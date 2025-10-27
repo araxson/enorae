@@ -13,7 +13,7 @@ import { infoData } from './info.data'
 
 export function Info() {
   return (
-    <div className="space-y-6">
+    <ItemGroup className="gap-6">
       <Card>
         <CardHeader>
           <CardTitle>{infoData.title}</CardTitle>
@@ -65,17 +65,15 @@ export function Info() {
           <ItemGroup className="gap-2">
             {infoData.supportHours.map(({ label, value }) => (
               <Item key={label} variant="muted">
-                <ItemContent>
-                  <ItemHeader>
-                    <ItemTitle>{label}</ItemTitle>
-                    <ItemDescription>{value}</ItemDescription>
-                  </ItemHeader>
-                </ItemContent>
+                <ItemHeader>
+                  <ItemTitle>{label}</ItemTitle>
+                  <ItemDescription>{value}</ItemDescription>
+                </ItemHeader>
               </Item>
             ))}
           </ItemGroup>
         </CardContent>
       </Card>
-    </div>
+    </ItemGroup>
   )
 }

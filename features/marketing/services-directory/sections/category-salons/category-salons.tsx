@@ -46,6 +46,11 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
           </ItemDescription>
         </ItemContent>
       </Item>
+      <Item variant="muted">
+        <ItemContent>
+          <ItemDescription>Select a salon to review services in this category and start booking.</ItemDescription>
+        </ItemContent>
+      </Item>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {salons.map((salon) => {
           const location = [salon['city'], salon['state_province']].filter(Boolean).join(', ') ||

@@ -5,6 +5,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import type { ServicesByCategory, Service } from '../types'
@@ -27,14 +28,16 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
         <ItemGroup className="gap-6">
           {(Object.entries(servicesByCategory) as Array<[string, Service[]]>).map(
             ([category, categoryServices]) => (
-              <div key={category} className="flex flex-col gap-4">
-                <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">{category}</h3>
+              <Item key={category} className="flex-col gap-4" variant="outline">
+                <ItemHeader>
+                  <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">{category}</h3>
+                </ItemHeader>
                 <ItemGroup className="gap-2">
                   {categoryServices.map((service) => (
                     <ServiceRow key={service['id']} service={service} />
                   ))}
                 </ItemGroup>
-              </div>
+              </Item>
             ),
           )}
         </ItemGroup>

@@ -22,7 +22,15 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Progress } from '@/components/ui/progress'
 import { AlertCircle, Calendar, Clock } from 'lucide-react'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
 import { AvailabilityIndicator } from './form/availability-indicator'
 import type { BookingFormProps, Service, Staff } from '@/features/customer/booking/types'
@@ -39,6 +47,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group'
+import { Spinner } from '@/components/ui/spinner'
 
 export function BookingForm({ salonId, salonName, services, staff }: BookingFormProps) {
   const [error, setError] = useState<string | null>(null)
@@ -157,19 +166,25 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
   return (
     <Card>
       <CardHeader className="space-y-4">
-        <div className="space-y-1">
-          <CardTitle>Book an appointment</CardTitle>
-          <CardDescription>{salonName}</CardDescription>
-        </div>
-
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Calendar className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Book an appointment</CardTitle>
+              <CardDescription>{salonName}</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
         <div className="space-y-2">
           <ItemGroup>
             <Item>
               <ItemContent>
-                <ItemDescription>Progress</ItemDescription>
+                <ItemTitle>Progress</ItemTitle>
               </ItemContent>
               <ItemActions className="flex-none">
-                <ItemDescription>{progress}%</ItemDescription>
+                <ItemDescription>{progress}% complete</ItemDescription>
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -292,10 +307,22 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
             type="submit"
             className="w-full"
             disabled={
-              loading || !selectedService || !selectedStaff || !dateValue || !timeValue || availabilityStatus === 'unavailable'
+              loading ||
+              !selectedService ||
+              !selectedStaff ||
+              !dateValue ||
+              !timeValue ||
+              availabilityStatus === 'unavailable'
             }
           >
-            {loading ? 'Booking...' : 'Book appointment'}
+            {loading ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Booking</span>
+              </>
+            ) : (
+              <span>Book appointment</span>
+            )}
           </Button>
         </CardFooter>
       </form>

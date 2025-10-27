@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { updateNotificationPreferences } from '@/features/business/notifications/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import {
@@ -14,6 +15,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type ChannelPreferences = Record<string, boolean>
 
@@ -98,11 +100,18 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
               </ItemDescription>
             </ItemContent>
             <ItemActions>
-              <div className="flex-none">
+              <ButtonGroup>
                 <Button onClick={handleSave} disabled={isPending}>
-                  {isPending ? 'Saving...' : 'Save Preferences'}
+                  {isPending ? (
+                    <>
+                      <Spinner />
+                      Saving
+                    </>
+                  ) : (
+                    'Save Preferences'
+                  )}
                 </Button>
-              </div>
+              </ButtonGroup>
             </ItemActions>
           </Item>
         </ItemGroup>

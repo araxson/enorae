@@ -11,6 +11,13 @@ import {
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 
 interface RetentionPanelProps {
   retention: PlatformAnalyticsSnapshot['retention']
@@ -24,31 +31,43 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="h-4 w-4 text-muted-foreground" />
-          <CardTitle>Retention &amp; Churn</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <ShieldCheck className="h-4 w-4" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Retention &amp; Churn</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <CardDescription>Retention rate</CardDescription>
-            <p className="text-2xl font-semibold">{formatPercent(retention.retentionRate)}</p>
-            <CardDescription>
-              {retention.returningCustomers.toLocaleString('en-US')} returning customers
-            </CardDescription>
-          </div>
-          <div>
-            <div className="flex items-center gap-1">
-              <AlertTriangle className="h-3 w-3" />
-              <CardDescription>Churn rate</CardDescription>
-            </div>
-            <p className="text-2xl font-semibold">{formatPercent(retention.churnRate)}</p>
-            <CardDescription>
-              Based on cancelled appointments
-            </CardDescription>
-          </div>
-        </div>
+        <ItemGroup className="grid gap-4 text-sm sm:grid-cols-2">
+          <Item variant="muted" size="sm" className="flex-col items-start gap-2">
+            <ItemContent>
+              <ItemDescription>Retention rate</ItemDescription>
+              <span className="text-2xl font-semibold">
+                {formatPercent(retention.retentionRate)}
+              </span>
+              <ItemDescription>
+                {retention.returningCustomers.toLocaleString('en-US')} returning customers
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+          <Item variant="muted" size="sm" className="flex-col items-start gap-2">
+            <ItemContent>
+              <span className="flex items-center gap-1">
+                <AlertTriangle className="h-3 w-3" />
+                <CardDescription>Churn rate</CardDescription>
+              </span>
+              <span className="text-2xl font-semibold">
+                {formatPercent(retention.churnRate)}
+              </span>
+              <ItemDescription>Based on cancelled appointments</ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
 
         <ScrollArea className="w-full">
           {series.length === 0 ? (

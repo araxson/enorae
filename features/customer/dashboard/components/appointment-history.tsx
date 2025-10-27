@@ -16,6 +16,16 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import type { DashboardAppointment } from '@/features/customer/dashboard/api/queries/appointments'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Badge } from '@/components/ui/badge'
 
 type AppointmentHistoryProps = {
   appointments: DashboardAppointment[]
@@ -25,13 +35,22 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Past appointments</CardTitle>
-        <CardDescription>
-          Review your booking history and salon visits.
-        </CardDescription>
-        <CardDescription>
-          {appointments?.length ?? 0} completed
-        </CardDescription>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <History className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Past appointments</CardTitle>
+              <CardDescription>
+                Review your booking history and salon visits.
+              </CardDescription>
+            </ItemContent>
+            <ItemActions className="flex-none">
+              <ItemDescription>{appointments?.length ?? 0} completed</ItemDescription>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         {!appointments || appointments.length === 0 ? (
@@ -45,7 +64,7 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="space-y-3">
+          <ItemGroup className="gap-3">
             {appointments.map((appointment) => {
               if (!appointment?.['id']) return null
 
@@ -56,31 +75,36 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
                     day: 'numeric',
                     year: 'numeric',
                   })
-                : 'Date not available'
+                : null
 
               const serviceLabel = appointment['service_names'] || 'Service'
               const salonLabel = appointment['salon_name']
                 ? `at ${appointment['salon_name']}`
                 : 'Salon not specified'
+              const statusLabel = (appointment['status'] ?? 'pending')
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, (char) => char.toUpperCase())
 
               return (
-                <Card key={appointment['id']}>
-                  <CardHeader>
-                    <CardTitle>{serviceLabel}</CardTitle>
-                    <CardDescription>{salonLabel}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
-                      <span className="text-sm text-muted-foreground">{appointmentDate}</span>
-                      <span className="text-sm text-muted-foreground capitalize">
-                        {appointment['status'] ?? 'pending'}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Item key={appointment['id']} variant="muted" size="sm">
+                  <ItemContent>
+                    <ItemTitle>{serviceLabel}</ItemTitle>
+                    <ItemDescription>{salonLabel}</ItemDescription>
+                  </ItemContent>
+                  <ItemActions className="flex-none flex-col items-end gap-1">
+                    {appointmentDate ? (
+                      <ItemDescription>
+                        <time dateTime={appointment['start_time'] || undefined}>{appointmentDate}</time>
+                      </ItemDescription>
+                    ) : null}
+                    <Badge variant="outline">
+                      {statusLabel}
+                    </Badge>
+                  </ItemActions>
+                </Item>
               )
             })}
-          </div>
+          </ItemGroup>
         )}
       </CardContent>
       <CardFooter className="pt-0">

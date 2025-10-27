@@ -1,6 +1,11 @@
 import type React from 'react'
-import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
 
 export function TimeInput({
   id,
@@ -16,10 +21,12 @@ export function TimeInput({
   disabled: boolean
 }) {
   return (
-    <div className="flex flex-col gap-3">
-      <Label htmlFor={id}>{label}</Label>
-      <Input id={id} type="time" value={value} onChange={onChange} disabled={disabled} required />
-    </div>
+    <Field>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <FieldContent>
+        <Input id={id} type="time" value={value} onChange={onChange} disabled={disabled} required />
+      </FieldContent>
+    </Field>
   )
 }
 
@@ -41,10 +48,12 @@ export function DateInput({
   disabled: boolean
 }) {
   return (
-    <div className="flex flex-col gap-3">
-      <Label htmlFor={id}>{label}</Label>
-      <Input id={id} type="date" value={value} onChange={onChange} min={min} disabled={disabled} />
-      <p className="text-xs text-muted-foreground">{helper}</p>
-    </div>
+    <Field>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <FieldContent>
+        <Input id={id} type="date" value={value} onChange={onChange} min={min} disabled={disabled} />
+      </FieldContent>
+      <FieldDescription>{helper}</FieldDescription>
+    </Field>
   )
 }

@@ -13,6 +13,8 @@ import { PermissionsEditor } from './permissions-editor'
 import { updateRolePermissions } from '@/features/admin/roles/api/mutations'
 import { toast } from 'sonner'
 import type { UserRole } from '@/lib/types'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
 
 interface EditPermissionsDialogProps {
   role: UserRole | null
@@ -82,13 +84,22 @@ export function EditPermissionsDialog({ role, open, onOpenChange }: EditPermissi
           onRemove={handleRemovePermission}
         />
 
-        <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-            Cancel
-          </Button>
-          <Button type="button" onClick={handleSubmit} disabled={isLoading}>
-            {isLoading ? 'Saving...' : 'Save changes'}
-          </Button>
+        <div className="flex justify-end">
+          <ButtonGroup>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
+              Cancel
+            </Button>
+            <Button type="button" onClick={handleSubmit} disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving…</span>
+                </>
+              ) : (
+                <span>Save changes</span>
+              )}
+            </Button>
+          </ButtonGroup>
         </div>
       </DialogContent>
     </Dialog>

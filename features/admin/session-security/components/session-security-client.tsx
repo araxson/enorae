@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { SessionSecurityTable } from './session-security-table'
 import type { SessionSecuritySnapshot } from '@/features/admin/session-security/api/queries'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface SessionSecurityClientProps {
   snapshot: SessionSecuritySnapshot
@@ -72,7 +73,7 @@ export function SessionSecurityClient({ snapshot }: SessionSecurityClientProps) 
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="mb-4 flex gap-2">
+          <ButtonGroup className="mb-4">
             <Button
               onClick={() => setSelectedRisk(null)}
               size="sm"
@@ -94,7 +95,7 @@ export function SessionSecurityClient({ snapshot }: SessionSecurityClientProps) 
             >
               High
             </Button>
-          </div>
+          </ButtonGroup>
           <SessionSecurityTable records={filteredRecords} />
         </CardContent>
       </Card>

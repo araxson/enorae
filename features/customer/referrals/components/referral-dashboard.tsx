@@ -12,6 +12,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
@@ -74,11 +75,17 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
           const Icon = metric.icon
           return (
             <Card key={metric.key}>
-              <CardHeader className="gap-2">
-                <div className="flex items-center justify-between gap-3">
-                  <CardDescription>{metric.title}</CardDescription>
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </div>
+              <CardHeader className="gap-3">
+                <ItemGroup>
+                  <Item variant="muted" size="sm">
+                    <ItemMedia variant="icon">
+                      <Icon className="h-5 w-5" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <CardDescription>{metric.title}</CardDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
                 <CardTitle>{stats[metric.key]}</CardTitle>
               </CardHeader>
               <CardContent />
@@ -101,10 +108,16 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
 
       <Card>
         <CardHeader>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <CardTitle>Referral history</CardTitle>
-            <History className="h-5 w-5" aria-hidden="true" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Referral history</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <History className="h-5 w-5" aria-hidden="true" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           {history.length === 0 ? (

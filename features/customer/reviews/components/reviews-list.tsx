@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Star } from 'lucide-react'
@@ -16,6 +15,18 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+  ItemSeparator,
+} from '@/components/ui/item'
 
 function StarRating({ rating }: { rating: number | null }) {
   const validRating = rating ?? 0
@@ -32,65 +43,79 @@ function StarRating({ rating }: { rating: number | null }) {
 export function ReviewsList({ reviews }: ReviewsListProps) {
   if (reviews.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Star className="h-6 w-6" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No reviews yet</EmptyTitle>
-              <EmptyDescription>
-                Share feedback after your next appointment to help others discover great salons.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button asChild>
-                <Link href="/customer/appointments">View upcoming appointments</Link>
-              </Button>
-            </EmptyContent>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Star className="h-6 w-6" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No reviews yet</EmptyTitle>
+          <EmptyDescription>
+            Share feedback after your next appointment to help others discover great salons.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button asChild>
+            <Link href="/customer/appointments">View upcoming appointments</Link>
+          </Button>
+        </EmptyContent>
+      </Empty>
     )
   }
 
   return (
     <div className="grid gap-6">
       {reviews.map((review) => (
-        <Card key={review['id']}>
-          <CardHeader>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-              <div className="space-y-1">
-                <CardTitle>Salon review</CardTitle>
-                {review['salon_name'] && <CardDescription>{review['salon_name']}</CardDescription>}
-              </div>
+        <Item key={review['id']} variant="outline" className="flex flex-col gap-4 p-6">
+          <ItemHeader className="items-start gap-3 p-0">
+            <ItemContent>
+              <ItemTitle>Salon review</ItemTitle>
+              {review['salon_name'] ? <ItemDescription>{review['salon_name']}</ItemDescription> : null}
+            </ItemContent>
+            <ItemActions>
               <StarRating rating={review['rating']} />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <CardDescription>{review['comment']}</CardDescription>
+            </ItemActions>
+          </ItemHeader>
+          <ItemContent className="gap-4 p-0">
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <ItemDescription>{review['comment']}</ItemDescription>
+                </ItemContent>
+              </Item>
+              {review['created_at'] ? <ItemSeparator /> : null}
               {review['created_at'] ? (
-                <CardDescription>
-                  <time dateTime={review['created_at']}>
-                    {new Date(review['created_at']).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </time>
-                </CardDescription>
+                <Item size="sm" variant="muted">
+                  <ItemContent>
+                    <ItemDescription>
+                      <time dateTime={review['created_at']}>
+                        {new Date(review['created_at']).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </time>
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
               ) : null}
-            </div>
-          </CardContent>
-          <CardFooter>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <EditReviewDialog review={review} />
-              <DeleteReviewDialog review={review} />
-            </div>
-          </CardFooter>
-        </Card>
+            </ItemGroup>
+          </ItemContent>
+          <ItemFooter className="p-0">
+            <ButtonGroup className="w-full flex-col gap-2 sm:flex-row" orientation="horizontal">
+              <EditReviewDialog review={review}>
+                <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
+                  <Star className="mr-2 h-4 w-4" aria-hidden="true" />
+                  Edit review
+                </Button>
+              </EditReviewDialog>
+              <DeleteReviewDialog review={review}>
+                <Button variant="destructive" size="sm" className="flex-1 sm:flex-none">
+                  Delete review
+                </Button>
+              </DeleteReviewDialog>
+            </ButtonGroup>
+          </ItemFooter>
+        </Item>
       ))}
     </div>
   )

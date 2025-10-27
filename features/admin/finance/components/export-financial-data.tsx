@@ -5,11 +5,18 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Download, CheckCircle2, XCircle } from 'lucide-react'
 import { exportFinancialDataToCSV } from '@/features/admin/finance/api/mutations'
 import { Spinner } from '@/components/ui/spinner'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 export function ExportFinancialData() {
   const [isLoading, setIsLoading] = useState(false)
@@ -49,10 +56,16 @@ export function ExportFinancialData() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Export Financial Data</CardTitle>
-        <CardDescription>
-          Download financial reports for accounting and analysis
-        </CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Export Financial Data</CardTitle>
+              <CardDescription>
+                Download financial reports for accounting and analysis
+              </CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-8">
@@ -68,74 +81,80 @@ export function ExportFinancialData() {
             </Alert>
           )}
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="start-date">Start Date</Label>
-              <Input
-                id="start-date"
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="end-date">End Date</Label>
-              <Input
-                id="end-date"
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </div>
-          </div>
+          <FieldGroup className="grid gap-4 md:grid-cols-2">
+            <Field>
+              <FieldLabel htmlFor="start-date">Start Date</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="start-date"
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+              </FieldContent>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="end-date">End Date</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="end-date"
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </FieldContent>
+            </Field>
+          </FieldGroup>
 
-          <div className="space-y-3">
-            <Label>Include in Export</Label>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="include-transactions"
-                checked={includeTransactions}
-                onCheckedChange={(checked) => setIncludeTransactions(checked as boolean)}
-              />
-              <Label
-                htmlFor="include-transactions"
-                className="text-sm font-normal cursor-pointer"
-              >
-                Transaction details
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="include-summary"
-                checked={includeRevenueSummary}
-                onCheckedChange={(checked) => setIncludeRevenueSummary(checked as boolean)}
-              />
-              <Label
-                htmlFor="include-summary"
-                className="text-sm font-normal cursor-pointer"
-              >
-                Revenue summary
-              </Label>
-            </div>
-          </div>
+          <ItemGroup className="space-y-3">
+            <Item variant="muted">
+              <ItemContent>
+                <ItemTitle>Include in Export</ItemTitle>
+              </ItemContent>
+            </Item>
+            <FieldGroup className="space-y-2">
+              <Field orientation="horizontal" className="flex-row-reverse items-center justify-end gap-2">
+                <FieldLabel htmlFor="include-transactions">Transaction details</FieldLabel>
+                <FieldContent className="flex-none">
+                  <Checkbox
+                    id="include-transactions"
+                    checked={includeTransactions}
+                    onCheckedChange={(checked) => setIncludeTransactions(checked as boolean)}
+                  />
+                </FieldContent>
+              </Field>
+              <Field orientation="horizontal" className="flex-row-reverse items-center justify-end gap-2">
+                <FieldLabel htmlFor="include-summary">Revenue summary</FieldLabel>
+                <FieldContent className="flex-none">
+                  <Checkbox
+                    id="include-summary"
+                    checked={includeRevenueSummary}
+                    onCheckedChange={(checked) => setIncludeRevenueSummary(checked as boolean)}
+                  />
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </ItemGroup>
 
-          <Button
-            onClick={handleExport}
-            disabled={isLoading || !startDate || !endDate}
-            className="w-full md:w-auto"
-          >
-            {isLoading ? (
-              <>
-                <Spinner className="mr-2 h-4 w-4" />
-                Exporting...
-              </>
-            ) : (
-              <>
-                <Download className="mr-2 h-4 w-4" />
-                Export to CSV
-              </>
-            )}
-          </Button>
+          <ButtonGroup className="w-full md:w-auto">
+            <Button
+              onClick={handleExport}
+              disabled={isLoading || !startDate || !endDate}
+              className="w-full md:w-auto"
+            >
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Exporting...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4" />
+                  <span>Export to CSV</span>
+                </>
+              )}
+            </Button>
+          </ButtonGroup>
         </div>
       </CardContent>
     </Card>

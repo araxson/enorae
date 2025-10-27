@@ -2,7 +2,6 @@
 
 import { Building2, Users, CalendarDays, CheckCircle2, ClipboardList, Store } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -10,6 +9,15 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import type { BusinessMultiLocationMetrics } from '@/features/business/dashboard/types'
 import { getAccentStripeClass, type MetricAccent } from './metric-card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+  ItemActions,
+} from '@/components/ui/item'
 
 type DashboardChainOverviewProps = {
   metrics: BusinessMultiLocationMetrics
@@ -64,39 +72,39 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
   const appointmentFill = metrics.totalAppointments === 0 ? 0 : Math.round((metrics.confirmedAppointments / metrics.totalAppointments) * 100)
 
   return (
-    <Card id="overview">
-      <CardHeader>
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <Building2 className="h-5 w-5" aria-hidden="true" />
-            <CardTitle>Chain overview</CardTitle>
-          </div>
-          <Badge variant="outline">Multi-location</Badge>
+    <Item id="overview" variant="outline" className="flex-col gap-4">
+      <ItemHeader className="items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <Building2 className="h-5 w-5" aria-hidden="true" />
+          <ItemTitle>Chain overview</ItemTitle>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+        <ItemActions className="flex-none">
+          <Badge variant="outline">Multi-location</Badge>
+        </ItemActions>
+      </ItemHeader>
+      <ItemContent className="space-y-4">
+        <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {overviewItems.map((item) => {
             const Icon = item.icon
             return (
               <Tooltip key={item.label}>
                 <TooltipTrigger asChild>
-                  <Card className="relative overflow-hidden">
+                  <Item variant="outline" className="relative flex-col gap-3 overflow-hidden">
                     <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(item.accent))} aria-hidden="true" />
-                    <CardHeader className="pb-2">
-                      <CardDescription>{item.label}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex items-center justify-between gap-4 pt-0">
+                    <ItemHeader className="pb-0">
+                      <ItemDescription>{item.label}</ItemDescription>
+                    </ItemHeader>
+                    <ItemContent className="flex items-center justify-between gap-4">
                       <div className="text-2xl font-semibold">{item.value(metrics)}</div>
                       <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                    </CardContent>
-                  </Card>
+                    </ItemContent>
+                  </Item>
                 </TooltipTrigger>
                 <TooltipContent>{item.tooltip}</TooltipContent>
               </Tooltip>
             )
           })}
-        </div>
+        </ItemGroup>
 
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="chain-health">
@@ -125,7 +133,7 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

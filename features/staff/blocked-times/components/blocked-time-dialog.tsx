@@ -1,7 +1,13 @@
 'use client'
+import { Clock } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { BlockedTimeForm } from './blocked-time-form'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import {
+  Item,
+  ItemContent,
+  ItemMedia,
+} from '@/components/ui/item'
 
 interface BlockedTimeDialogProps {
   open: boolean
@@ -14,12 +20,19 @@ export function BlockedTimeDialog({ open, onOpenChange, blockedTime }: BlockedTi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {blockedTime ? 'Edit Blocked Time' : 'Create Blocked Time'}
-          </DialogTitle>
-          <DialogDescription>
-            {blockedTime ? 'Update the blocked time details' : 'Create a new blocked time period'}
-          </DialogDescription>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Clock className="h-4 w-4" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <DialogTitle>
+                {blockedTime ? 'Edit Blocked Time' : 'Create Blocked Time'}
+              </DialogTitle>
+              <DialogDescription>
+                {blockedTime ? 'Update the blocked time details' : 'Create a new blocked time period'}
+              </DialogDescription>
+            </ItemContent>
+          </Item>
         </DialogHeader>
         <BlockedTimeForm
           blockedTime={blockedTime}

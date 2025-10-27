@@ -11,6 +11,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import type { Database } from '@/lib/types/database.types'
@@ -29,19 +30,23 @@ export function ProfileHeader({ profile, metadata }: ProfileHeaderProps) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <Avatar className="h-16 w-16">
-            {metadata?.avatar_url ? <AvatarImage src={metadata.avatar_url} /> : null}
-            <AvatarFallback className="text-xl">{initials}</AvatarFallback>
-          </Avatar>
-          <div className="space-y-1">
-            <CardTitle>{profile.username || 'User'}</CardTitle>
-            <CardDescription>
-              {displayHandle ?? `ID: ${profile.id ?? 'unknown'}`}
-            </CardDescription>
-          </div>
-        </div>
+      <CardHeader>
+        <ItemGroup>
+          <Item>
+            <ItemMedia>
+              <Avatar className="h-16 w-16">
+                {metadata?.avatar_url ? <AvatarImage src={metadata.avatar_url} /> : null}
+                <AvatarFallback className="text-xl">{initials}</AvatarFallback>
+              </Avatar>
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>{profile.username || 'User'}</CardTitle>
+              <CardDescription>
+                {displayHandle ?? `ID: ${profile.id ?? 'unknown'}`}
+              </CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
         <CardDescription>
@@ -51,18 +56,20 @@ export function ProfileHeader({ profile, metadata }: ProfileHeaderProps) {
           <Item variant="muted">
             <ItemContent>
               <ItemTitle>Email</ItemTitle>
-              <ItemDescription className="text-foreground">
-                {profile.email ?? 'Not provided'}
+              <ItemDescription>
+                <span className="text-foreground">{profile.email ?? 'Not provided'}</span>
               </ItemDescription>
             </ItemContent>
           </Item>
           <Item variant="muted">
             <ItemContent>
               <ItemTitle>Last updated</ItemTitle>
-              <ItemDescription className="text-foreground">
-                {profile.updated_at
-                  ? new Date(profile.updated_at).toLocaleDateString()
-                  : 'Not available'}
+              <ItemDescription>
+                <span className="text-foreground">
+                  {profile.updated_at
+                    ? new Date(profile.updated_at).toLocaleDateString()
+                    : 'Not available'}
+                </span>
               </ItemDescription>
             </ItemContent>
           </Item>

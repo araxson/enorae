@@ -10,6 +10,7 @@ import {
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 interface PerformanceBenchmarksTableProps {
   performance: PlatformAnalyticsSnapshot['performance']
@@ -25,23 +26,35 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle>Performance Benchmarks</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Performance Benchmarks</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid gap-4 text-sm md:grid-cols-3">
-          <div>
-            <CardDescription>Avg. utilization</CardDescription>
-            <p className="text-xl font-semibold">{formatPercent(performance.avgUtilization)}</p>
-          </div>
-          <div>
-            <CardDescription>Revenue per salon (30d)</CardDescription>
-            <p className="text-xl font-semibold">{formatCurrencyCompact(performance.revenuePerSalon)}</p>
-          </div>
-          <div>
-            <CardDescription>Appointments per salon</CardDescription>
-            <p className="text-xl font-semibold">{performance.appointmentsPerSalon.toFixed(1)}</p>
-          </div>
-        </div>
+        <ItemGroup className="grid gap-4 md:grid-cols-3">
+          <Item variant="outline" className="flex-col items-start gap-2 text-sm">
+            <ItemContent>
+              <ItemDescription>Avg. utilization</ItemDescription>
+              <span className="text-xl font-semibold">{formatPercent(performance.avgUtilization)}</span>
+            </ItemContent>
+          </Item>
+          <Item variant="outline" className="flex-col items-start gap-2 text-sm">
+            <ItemContent>
+              <ItemDescription>Revenue per salon (30d)</ItemDescription>
+              <span className="text-xl font-semibold">{formatCurrencyCompact(performance.revenuePerSalon)}</span>
+            </ItemContent>
+          </Item>
+          <Item variant="outline" className="flex-col items-start gap-2 text-sm">
+            <ItemContent>
+              <ItemDescription>Appointments per salon</ItemDescription>
+              <span className="text-xl font-semibold">{performance.appointmentsPerSalon.toFixed(1)}</span>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
 
         <ScrollArea className="w-full">
           {hasTopSalons ? (

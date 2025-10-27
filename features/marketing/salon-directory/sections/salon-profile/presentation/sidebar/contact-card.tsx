@@ -4,6 +4,8 @@ import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemHeader,
+  ItemTitle,
   ItemGroup,
   ItemMedia,
 } from '@/components/ui/item'
@@ -29,9 +31,12 @@ export function ContactCard({ salon, location }: ContactCardProps) {
         <ItemGroup className="gap-3">
           {location && (
             <Item variant="muted">
-              <ItemMedia variant="icon">
-                <MapPin className="size-4" />
-              </ItemMedia>
+              <ItemHeader className="gap-3">
+                <ItemMedia variant="icon">
+                  <MapPin className="size-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemTitle>Location</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>{location}</ItemDescription>
               </ItemContent>
@@ -39,9 +44,12 @@ export function ContactCard({ salon, location }: ContactCardProps) {
           )}
           {salon['primary_phone'] && (
             <Item variant="muted">
-              <ItemMedia variant="icon">
-                <Phone className="size-4" />
-              </ItemMedia>
+              <ItemHeader className="gap-3">
+                <ItemMedia variant="icon">
+                  <Phone className="size-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemTitle>Phone</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>
                   <a href={`tel:${salon['primary_phone']}`}>{salon['primary_phone']}</a>
@@ -51,9 +59,12 @@ export function ContactCard({ salon, location }: ContactCardProps) {
           )}
           {salon['primary_email'] && (
             <Item variant="muted">
-              <ItemMedia variant="icon">
-                <Mail className="size-4" />
-              </ItemMedia>
+              <ItemHeader className="gap-3">
+                <ItemMedia variant="icon">
+                  <Mail className="size-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemTitle>Email</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>
                   <a href={`mailto:${salon['primary_email']}`}>{salon['primary_email']}</a>
@@ -63,13 +74,16 @@ export function ContactCard({ salon, location }: ContactCardProps) {
           )}
           {salon['website_url'] && (
             <Item variant="muted">
-              <ItemMedia variant="icon">
-                <Globe className="size-4" />
-              </ItemMedia>
+              <ItemHeader className="gap-3">
+                <ItemMedia variant="icon">
+                  <Globe className="size-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemTitle>Website</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>
                   <Link href={salon['website_url']} target="_blank" rel="noopener noreferrer">
-                    Website
+                    Visit site
                   </Link>
                 </ItemDescription>
               </ItemContent>

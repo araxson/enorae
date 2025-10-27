@@ -1,10 +1,22 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 declare global {
   interface WindowEventMap {
@@ -68,7 +80,7 @@ export function SalonsFilters({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-6">
+      <ButtonGroup className="justify-between gap-2 md:justify-end">
         <Button
           variant="outline"
           size="sm"
@@ -81,57 +93,91 @@ export function SalonsFilters({
         <Button variant="ghost" size="sm" onClick={handleClearFilters}>
           Clear all filters
         </Button>
-      </div>
+      </ButtonGroup>
 
-      <div className={`flex flex-col gap-6 lg:flex-row ${collapsed ? 'hidden md:flex' : ''}`}>
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search salons by name, business name, or slug..."
-            value={search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="pl-10"
-          />
-        </div>
+      <FieldGroup className={`gap-6 lg:flex lg:items-end ${collapsed ? 'hidden md:flex' : ''}`}>
+        <Field className="flex-1">
+          <FieldLabel htmlFor="salons-search">Search salons</FieldLabel>
+          <FieldContent>
+            <InputGroup>
+              <InputGroupAddon>
+                <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              </InputGroupAddon>
+              <InputGroupInput
+                id="salons-search"
+                placeholder="Search salons by name, business name, or slug..."
+                value={search}
+                onChange={(e) => handleSearchChange(e.target.value)}
+              />
+              <InputGroupAddon align="inline-end">
+                {search ? (
+                  <InputGroupButton
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Clear search"
+                    onClick={() => handleSearchChange('')}
+                  >
+                    <X className="h-4 w-4" aria-hidden="true" />
+                  </InputGroupButton>
+                ) : null}
+              </InputGroupAddon>
+            </InputGroup>
+          </FieldContent>
+        </Field>
 
-        <Select value={tierFilter} onValueChange={onTierChange}>
-          <SelectTrigger className="w-full lg:w-40">
-            <SelectValue placeholder="Tier" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All tiers</SelectItem>
-            <SelectItem value="free">Free</SelectItem>
-            <SelectItem value="basic">Basic</SelectItem>
-            <SelectItem value="premium">Premium</SelectItem>
-            <SelectItem value="enterprise">Enterprise</SelectItem>
-          </SelectContent>
-        </Select>
+        <Field className="w-full lg:w-40">
+          <FieldLabel>Tier</FieldLabel>
+          <FieldContent>
+            <Select value={tierFilter} onValueChange={onTierChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Tier" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All tiers</SelectItem>
+                <SelectItem value="free">Free</SelectItem>
+                <SelectItem value="basic">Basic</SelectItem>
+                <SelectItem value="premium">Premium</SelectItem>
+                <SelectItem value="enterprise">Enterprise</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+        </Field>
 
-        <Select value={licenseFilter} onValueChange={(value) => onLicenseChange(value as LicenseValue)}>
-          <SelectTrigger className="w-full lg:w-40">
-            <SelectValue placeholder="License" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Any license</SelectItem>
-            <SelectItem value="valid">Valid</SelectItem>
-            <SelectItem value="expiring">Expiring soon</SelectItem>
-            <SelectItem value="expired">Expired</SelectItem>
-            <SelectItem value="unknown">Unknown</SelectItem>
-          </SelectContent>
-        </Select>
+        <Field className="w-full lg:w-40">
+          <FieldLabel>License status</FieldLabel>
+          <FieldContent>
+            <Select value={licenseFilter} onValueChange={(value) => onLicenseChange(value as LicenseValue)}>
+              <SelectTrigger>
+                <SelectValue placeholder="License" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Any license</SelectItem>
+                <SelectItem value="valid">Valid</SelectItem>
+                <SelectItem value="expiring">Expiring soon</SelectItem>
+                <SelectItem value="expired">Expired</SelectItem>
+                <SelectItem value="unknown">Unknown</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+        </Field>
 
-        <Select value={complianceFilter} onValueChange={(value) => onComplianceChange(value as ComplianceValue)}>
-          <SelectTrigger className="w-full lg:w-44">
-            <SelectValue placeholder="Compliance" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All levels</SelectItem>
-            <SelectItem value="low">Low risk</SelectItem>
-            <SelectItem value="medium">Monitor</SelectItem>
-            <SelectItem value="high">High risk</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        <Field className="w-full lg:w-44">
+          <FieldLabel>Compliance risk</FieldLabel>
+          <FieldContent>
+            <Select value={complianceFilter} onValueChange={(value) => onComplianceChange(value as ComplianceValue)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Compliance" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All levels</SelectItem>
+                <SelectItem value="low">Low risk</SelectItem>
+                <SelectItem value="medium">Monitor</SelectItem>
+                <SelectItem value="high">High risk</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+        </Field>
+      </FieldGroup>
     </div>
   )
 }

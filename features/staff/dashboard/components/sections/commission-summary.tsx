@@ -23,14 +23,16 @@ export function CommissionSummary({ commission }: Props) {
   return (
     <Card>
       <CardHeader>
-        <Item variant="muted" size="sm">
-          <ItemMedia variant="icon">
-            <DollarSign className="h-5 w-5" />
-          </ItemMedia>
-          <ItemContent>
-            <CardTitle>Commission Summary</CardTitle>
-          </ItemContent>
-        </Item>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <DollarSign className="h-5 w-5" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Commission Summary</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ItemGroup className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">

@@ -70,32 +70,37 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
 
   if (contactMethods.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Phone className="h-6 w-6" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No contact information available</EmptyTitle>
-              <EmptyDescription>
-                The salon has not shared contact details yet. Check back later for updates.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              Follow the salon to receive updates as soon as contact options are added.
-            </EmptyContent>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Phone className="h-6 w-6" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No contact information available</EmptyTitle>
+          <EmptyDescription>
+            The salon has not shared contact details yet. Check back later for updates.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          Follow the salon to receive updates as soon as contact options are added.
+        </EmptyContent>
+      </Empty>
     )
   }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Contact information</CardTitle>
-        <CardDescription>Reach the salon using the channels below.</CardDescription>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Phone className="h-4 w-4" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Contact information</ItemTitle>
+              <ItemDescription>Reach the salon using the channels below.</ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ItemGroup className="gap-3">
@@ -108,8 +113,8 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>{method.label}</ItemTitle>
-                  <ItemDescription className="text-foreground break-all">
-                    {method.value}
+                  <ItemDescription>
+                    <span className="break-all text-foreground">{method.value}</span>
                   </ItemDescription>
                 </ItemContent>
                 {method.action ? <ItemActions className="flex-none">{method.action}</ItemActions> : null}

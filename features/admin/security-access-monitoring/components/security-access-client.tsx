@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { SecurityAccessTable } from './security-access-table'
 import type { SecurityAccessSnapshot } from '@/features/admin/security-access-monitoring/api/queries'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface SecurityAccessClientProps {
   snapshot: SecurityAccessSnapshot
@@ -72,7 +73,7 @@ export function SecurityAccessClient({ snapshot }: SecurityAccessClientProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="mb-4 flex gap-2">
+          <ButtonGroup className="mb-4">
             <Button
               onClick={() => setSelectedStatus(null)}
               size="sm"
@@ -94,7 +95,7 @@ export function SecurityAccessClient({ snapshot }: SecurityAccessClientProps) {
             >
               Flagged
             </Button>
-          </div>
+          </ButtonGroup>
           <SecurityAccessTable records={filteredRecords} />
         </CardContent>
       </Card>

@@ -10,6 +10,7 @@ import {
 import type { MessageActivityPoint } from '@/features/admin/messages/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface MessagesActivityTableProps {
   activity: MessageActivityPoint[]
@@ -32,8 +33,14 @@ export function MessagesActivityTable({ activity }: MessagesActivityTableProps) 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>30-Day Activity</CardTitle>
-        <CardDescription>Inbound vs outbound volume and average response time</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>30-Day Activity</CardTitle>
+              <CardDescription>Inbound vs outbound volume and average response time</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
         <ScrollArea className="w-full">

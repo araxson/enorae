@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatDateSimple as formatDate } from '@/lib/utils/date-time'
 import type { TeamTimeOffCalendar } from '@/features/staff/time-off/api/queries'
@@ -26,7 +26,14 @@ interface TeamTimeOffCalendarProps {
 export function TeamTimeOffCalendarSection({ entries }: TeamTimeOffCalendarProps) {
   return (
     <div className="flex flex-col gap-6">
-      <span className="text-2xl font-semibold text-foreground">Team Time Off Calendar</span>
+      <ItemGroup>
+        <Item variant="muted">
+          <ItemContent>
+            <CardTitle>Team Time Off Calendar</CardTitle>
+            <ItemDescription>Track upcoming leave for everyone on the team.</ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
       {entries.length === 0 ? (
         <Card>
           <CardContent>
@@ -47,7 +54,7 @@ export function TeamTimeOffCalendarSection({ entries }: TeamTimeOffCalendarProps
               .join(' ')
             return (
               <Card key={`${entry.staff_id}-${entry.start_at}`}>
-                <CardContent className="space-y-3">
+                <CardHeader>
                   <ItemGroup>
                     <Item>
                       <ItemContent>
@@ -63,12 +70,14 @@ export function TeamTimeOffCalendarSection({ entries }: TeamTimeOffCalendarProps
                       </ItemActions>
                     </Item>
                   </ItemGroup>
+                </CardHeader>
+                <CardContent className="space-y-3">
                   <ItemGroup>
                     <Item>
                       <ItemContent>
-                        <span className="text-base font-medium text-foreground">
-                          {formatDate(entry.start_at)} - {formatDate(entry.end_at)}
-                        </span>
+                        <ItemTitle>
+                          {formatDate(entry.start_at)} – {formatDate(entry.end_at)}
+                        </ItemTitle>
                         <ItemDescription>{requestLabel}</ItemDescription>
                       </ItemContent>
                     </Item>

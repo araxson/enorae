@@ -12,6 +12,17 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface SpecialtiesEditorProps {
   initialSpecialties?: string[]
@@ -62,8 +73,14 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Specialties & Skills</CardTitle>
-        <CardDescription>Highlight the services you excel at.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Specialties & Skills</CardTitle>
+              <CardDescription>Highlight the services you excel at.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
@@ -105,7 +122,12 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
               ))}
             </div>
           ) : (
-            <CardDescription>No specialties added yet</CardDescription>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No specialties added</EmptyTitle>
+                <EmptyDescription>Share skills to help teammates route clients to you.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
 
           {error ? (

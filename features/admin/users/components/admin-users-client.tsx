@@ -11,6 +11,7 @@ import {
 } from '@/features/admin/users/api/mutations'
 import { UsersTable } from './users-table'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 
 export async function AdminUsersClient() {
   const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
@@ -40,11 +41,17 @@ export async function AdminUsersClient() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader>
-                <div className="flex items-start justify-between">
-                  <CardTitle>Total Users</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                </div>
-                <CardDescription>All accounts created within the platform.</CardDescription>
+                <ItemGroup>
+                  <Item variant="muted" className="items-start justify-between gap-2">
+                    <ItemContent>
+                      <CardTitle>Total Users</CardTitle>
+                      <CardDescription>All accounts created within the platform.</CardDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent>
                 <p className="text-3xl font-semibold">{overview.totalUsers}</p>
@@ -53,11 +60,17 @@ export async function AdminUsersClient() {
 
             <Card>
               <CardHeader>
-                <div className="flex items-start justify-between">
-                  <CardTitle>Active Users</CardTitle>
-                  <UserCheck className="h-4 w-4 text-primary" />
-                </div>
-                <CardDescription>Users with an active login status.</CardDescription>
+                <ItemGroup>
+                  <Item variant="muted" className="items-start justify-between gap-2">
+                    <ItemContent>
+                      <CardTitle>Active Users</CardTitle>
+                      <CardDescription>Users with an active login status.</CardDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      <UserCheck className="h-4 w-4 text-primary" />
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent>
                 <p className="text-3xl font-semibold">{overview.activeUsers}</p>
@@ -66,11 +79,17 @@ export async function AdminUsersClient() {
 
             <Card>
               <CardHeader>
-                <div className="flex items-start justify-between">
-                  <CardTitle>Suspended</CardTitle>
-                  <UserX className="h-4 w-4 text-destructive" />
-                </div>
-                <CardDescription>Accounts currently disabled by admins.</CardDescription>
+                <ItemGroup>
+                  <Item variant="muted" className="items-start justify-between gap-2">
+                    <ItemContent>
+                      <CardTitle>Suspended</CardTitle>
+                      <CardDescription>Accounts currently disabled by admins.</CardDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      <UserX className="h-4 w-4 text-destructive" />
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent>
                 <p className="text-3xl font-semibold">{overview.suspendedUsers}</p>
@@ -79,11 +98,17 @@ export async function AdminUsersClient() {
 
             <Card>
               <CardHeader>
-                <div className="flex items-start justify-between">
-                  <CardTitle>With Roles</CardTitle>
-                  <Shield className="h-4 w-4 text-secondary" />
-                </div>
-                <CardDescription>Users assigned to one or more roles.</CardDescription>
+                <ItemGroup>
+                  <Item variant="muted" className="items-start justify-between gap-2">
+                    <ItemContent>
+                      <CardTitle>With Roles</CardTitle>
+                      <CardDescription>Users assigned to one or more roles.</CardDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      <Shield className="h-4 w-4 text-secondary" />
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent>
                 <p className="text-3xl font-semibold">{overview.usersWithRoles}</p>
@@ -93,8 +118,14 @@ export async function AdminUsersClient() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Role Distribution</CardTitle>
-              <CardDescription>User counts by platform role.</CardDescription>
+              <ItemGroup>
+                <Item variant="muted">
+                  <ItemContent>
+                    <CardTitle>Role Distribution</CardTitle>
+                    <CardDescription>User counts by platform role.</CardDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-4">
               {overview.roleBreakdown.map((role) => (

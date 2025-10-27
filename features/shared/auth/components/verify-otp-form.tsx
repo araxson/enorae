@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { verifyOTP, resendOTP } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import {
   Card,
   CardContent,
@@ -15,6 +16,15 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, CheckCircle2, Shield } from 'lucide-react'
 import { OTPInput, ResendOTP } from './otp-input'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldGroup,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface VerifyOTPFormProps {
   email?: string
@@ -83,53 +93,66 @@ export function VerifyOTPForm({
         </CardHeader>
 
       <CardContent>
-        <div className="flex flex-col gap-6">
-          {error && (
+        <FieldSet className="gap-6">
+          {error ? (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Verification failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
-          )}
+          ) : null}
 
-          <div className="flex flex-col gap-6">
-            <OTPInput
-              length={6}
-              onChange={setOtp}
-              onComplete={setOtp}
-              disabled={loading}
-            />
+          <FieldGroup className="gap-6">
+            <Field>
+              <FieldLabel>Verification code</FieldLabel>
+              <FieldContent className="items-center gap-4">
+                <OTPInput
+                  length={6}
+                  onChange={setOtp}
+                  onComplete={setOtp}
+                  disabled={loading}
+                />
+                <FieldDescription className="flex items-center justify-center gap-2 text-center">
+                  <span className="font-medium text-muted-foreground">
+                    Didn&apos;t receive the code?
+                  </span>
+                  <ResendOTP onResend={handleResend} cooldownSeconds={60} />
+                </FieldDescription>
+              </FieldContent>
+            </Field>
+          </FieldGroup>
 
-            <div className="flex items-center justify-center gap-2">
-              <p className="text-sm font-medium text-muted-foreground">Didn&apos;t receive the code?</p>
-              <ResendOTP onResend={handleResend} cooldownSeconds={60} />
-            </div>
-          </div>
-
-          {otp.length === 6 && (
+          {otp.length === 6 ? (
             <Alert>
               <CheckCircle2 className="h-4 w-4 text-primary" />
               <AlertTitle>Ready to verify</AlertTitle>
               <AlertDescription>Code entered. Click verify to continue.</AlertDescription>
             </Alert>
-          )}
-        </div>
+          ) : null}
+        </FieldSet>
       </CardContent>
 
         <CardFooter>
-          <div className="flex w-full flex-col gap-4">
+          <ButtonGroup className="w-full flex-col gap-4">
             <Button
               onClick={handleVerify}
               className="w-full"
               disabled={loading || otp.length !== 6}
             >
-              {loading ? 'Verifying...' : 'Verify code'}
+              {loading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Verifying...</span>
+                </>
+              ) : (
+                <span>Verify code</span>
+              )}
             </Button>
 
             <p className="text-sm font-medium text-center text-muted-foreground">
               Check your spam folder if you don&apos;t see the email
             </p>
-          </div>
+          </ButtonGroup>
         </CardFooter>
       </Card>
     </div>

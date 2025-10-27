@@ -1,11 +1,17 @@
 'use client'
 
 import type { ReactNode, ComponentType } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import { formatPercentage } from '@/features/business/business-common/components/value-formatters'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export type MetricCardVariant = 'default' | 'progress' | 'trend' | 'highlight'
 
@@ -132,14 +138,16 @@ export function MetricCard(props: MetricCardProps) {
     .join(' ')
 
   return (
-    <Card role="article" aria-label={`${title} metric`} className={cardClasses}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle>{title}</CardTitle>
+    <Item role="article" aria-label={`${title} metric`} variant="outline" className={`flex-col gap-3 ${cardClasses}`}>
+      <ItemHeader className="items-center justify-between">
+        <ItemTitle>{title}</ItemTitle>
         {IconComponent && (
-          <IconComponent className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          <ItemActions className="flex-none">
+            <IconComponent className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          </ItemActions>
         )}
-      </CardHeader>
-      <CardContent>
+      </ItemHeader>
+      <ItemContent>
         {props.variant === 'progress' && (
           <div className="flex flex-col gap-2">
             <div className="text-2xl font-bold">{value}</div>
@@ -186,7 +194,7 @@ export function MetricCard(props: MetricCardProps) {
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
         )}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

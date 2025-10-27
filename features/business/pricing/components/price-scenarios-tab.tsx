@@ -1,11 +1,18 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import type { PricingScenario } from '@/features/business/pricing/types'
 import { formatCurrency, formatTime, getDayName } from './pricing-utils'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface PriceScenariosTabProps {
   scenarios: PricingScenario[]
@@ -23,33 +30,29 @@ export function PriceScenariosTab({
     : scenarios.filter(s => s.day === selectedDay)
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>Price Scenarios</CardTitle>
-            <CardDescription>
-              See how pricing changes throughout the week
-            </CardDescription>
-          </div>
-          <Select value={selectedDay} onValueChange={onDayChange}>
-            <SelectTrigger className="w-44">
-              <SelectValue placeholder="Filter by day" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Days</SelectItem>
-              <SelectItem value="monday">Monday</SelectItem>
-              <SelectItem value="tuesday">Tuesday</SelectItem>
-              <SelectItem value="wednesday">Wednesday</SelectItem>
-              <SelectItem value="thursday">Thursday</SelectItem>
-              <SelectItem value="friday">Friday</SelectItem>
-              <SelectItem value="saturday">Saturday</SelectItem>
-              <SelectItem value="sunday">Sunday</SelectItem>
-            </SelectContent>
-          </Select>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader className="items-start justify-between gap-4">
+        <div>
+          <ItemTitle>Price Scenarios</ItemTitle>
+          <ItemDescription>See how pricing changes throughout the week</ItemDescription>
         </div>
-      </CardHeader>
-      <CardContent>
+        <Select value={selectedDay} onValueChange={onDayChange}>
+          <SelectTrigger className="w-44">
+            <SelectValue placeholder="Filter by day" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Days</SelectItem>
+            <SelectItem value="monday">Monday</SelectItem>
+            <SelectItem value="tuesday">Tuesday</SelectItem>
+            <SelectItem value="wednesday">Wednesday</SelectItem>
+            <SelectItem value="thursday">Thursday</SelectItem>
+            <SelectItem value="friday">Friday</SelectItem>
+            <SelectItem value="saturday">Saturday</SelectItem>
+            <SelectItem value="sunday">Sunday</SelectItem>
+          </SelectContent>
+        </Select>
+      </ItemHeader>
+      <ItemContent>
         {filteredScenarios.length === 0 ? (
           <Empty>
             <EmptyHeader>
@@ -60,8 +63,12 @@ export function PriceScenariosTab({
         ) : (
           <div className="space-y-3">
             {filteredScenarios.map((scenario, index) => (
-              <Card key={`${scenario.day}-${scenario.hour}-${index}`}>
-                <CardContent className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <Item
+                key={`${scenario.day}-${scenario.hour}-${index}`}
+                variant="outline"
+                className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <ItemContent className="flex items-center gap-3">
                   <div className="flex items-center gap-3">
                     <span className="w-24 font-medium">{getDayName(scenario.day)}</span>
                     <span className="text-sm text-muted-foreground">
@@ -85,12 +92,12 @@ export function PriceScenariosTab({
                       </Badge>
                     )}
                   </div>
-                </CardContent>
-              </Card>
+                </ItemContent>
+              </Item>
             ))}
           </div>
         )}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

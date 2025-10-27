@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { deleteBlockedTime } from '@/features/shared/blocked-times/api/mutations'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ConfirmDialog } from '@/features/shared/ui-components'
@@ -105,7 +106,14 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
                   size="sm"
                   disabled={deletingId === blockedTime.id}
                 >
-                  {deletingId === blockedTime.id ? 'Deleting...' : 'Delete'}
+                  {deletingId === blockedTime.id ? (
+                    <>
+                      <Spinner className="size-3" />
+                      <span>Deleting...</span>
+                    </>
+                  ) : (
+                    <span>Delete</span>
+                  )}
                 </Button>
               </ConfirmDialog>
             </div>

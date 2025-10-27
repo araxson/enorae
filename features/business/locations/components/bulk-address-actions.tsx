@@ -5,10 +5,18 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Label } from '@/components/ui/label'
 import { MapPin, Globe, CheckCircle } from 'lucide-react'
 import { bulkUpdateAddresses, geocodeAllAddresses } from '@/features/business/locations/api/bulk-address.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type Props = {
   salonId: string
@@ -75,7 +83,7 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
         <CardTitle>Bulk Address Actions</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
+        <FieldSet className="flex flex-col gap-6">
           <Alert>
             <CheckCircle className="h-4 w-4" />
             <AlertTitle>Selection status</AlertTitle>
@@ -86,9 +94,9 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
             </AlertDescription>
           </Alert>
 
-          <div className="flex flex-col gap-3">
-            <Label>Update Country for Selected Locations</Label>
-            <div className="flex gap-3">
+          <Field>
+            <FieldLabel>Update Country for Selected Locations</FieldLabel>
+            <FieldContent className="flex items-center gap-3">
               <Select value={countryCode} onValueChange={setCountryCode}>
                 <SelectTrigger className="flex-1">
                   <SelectValue />
@@ -101,32 +109,40 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
                   <SelectItem value="NZ">New Zealand</SelectItem>
                 </SelectContent>
               </Select>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleBulkCountryUpdate}
-                disabled={isUpdating || selectedIds.length === 0}
-              >
-                <Globe className="h-4 w-4 mr-2" />
-                Update
-              </Button>
-            </div>
-          </div>
+              <ButtonGroup>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleBulkCountryUpdate}
+                  disabled={isUpdating || selectedIds.length === 0}
+                  className="gap-2"
+                >
+                  {isUpdating ? <Spinner /> : <Globe className="h-4 w-4" />}
+                  Update
+                </Button>
+              </ButtonGroup>
+            </FieldContent>
+            <FieldDescription>Applies the selected country to every chosen location.</FieldDescription>
+          </Field>
 
-          <div className="flex flex-col gap-3">
-            <Label>Geocode Missing Coordinates</Label>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleGeocodeAll}
-              disabled={isUpdating}
-              className="w-full"
-            >
-              <MapPin className="h-4 w-4 mr-2" />
-              {isUpdating ? 'Processing...' : 'Geocode All Addresses Without Coordinates'}
-            </Button>
-          </div>
-        </div>
+          <Field>
+            <FieldLabel>Geocode Missing Coordinates</FieldLabel>
+            <FieldContent>
+              <ButtonGroup className="w-full">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleGeocodeAll}
+                  disabled={isUpdating}
+                  className="flex w-full items-center gap-2"
+                >
+                  {isUpdating ? <Spinner /> : <MapPin className="h-4 w-4" />}
+                  {isUpdating ? 'Processing...' : 'Geocode All Addresses Without Coordinates'}
+                </Button>
+              </ButtonGroup>
+            </FieldContent>
+          </Field>
+        </FieldSet>
       </CardContent>
     </Card>
   )

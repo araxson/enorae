@@ -1,12 +1,18 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
 import { MarketingHero } from '@/features/marketing/common-components'
 import { heroData } from './hero.data'
 
 export function Hero() {
   return (
     <MarketingHero {...heroData} variant="simple">
+      <Item variant="muted">
+        <ItemContent>
+          <ItemDescription>We respond within one business day—reach out however you prefer.</ItemDescription>
+        </ItemContent>
+      </Item>
       <ButtonGroup className="flex flex-wrap justify-center gap-2">
         <Button asChild size="lg">
           <Link href="/faq">View FAQ</Link>

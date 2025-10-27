@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
@@ -66,12 +66,12 @@ export function PasswordForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Change Password</CardTitle>
-        <CardDescription>Update your password to keep your account secure</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Change Password</ItemTitle>
+        <ItemDescription>Update your password to keep your account secure</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <form onSubmit={handleSubmit}>
           <FieldSet>
             <FieldGroup className="gap-6">
@@ -173,13 +173,19 @@ export function PasswordForm() {
               </Field>
 
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? <Spinner className="mr-2" /> : null}
-                Update Password
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Updating...</span>
+                  </>
+                ) : (
+                  <span>Update Password</span>
+                )}
               </Button>
             </FieldGroup>
           </FieldSet>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

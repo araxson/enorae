@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { AlertCircle } from 'lucide-react'
 import type { UsageQuota } from '../types'
 import { Progress } from '@/components/ui/progress'
@@ -7,12 +7,12 @@ import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 
 export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Usage & Quotas</CardTitle>
-        <CardDescription>Current usage against your plan limits</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-6">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Usage & Quotas</ItemTitle>
+        <ItemDescription>Current usage against your plan limits</ItemDescription>
+      </ItemHeader>
+      <ItemContent className="flex flex-col gap-6">
         {quotas.map((quota) => {
           const percentage = (quota.used / quota.limit) * 100
           const isNearLimit = percentage >= 80
@@ -43,7 +43,7 @@ export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
             </Field>
           )
         })}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

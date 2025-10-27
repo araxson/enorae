@@ -5,6 +5,14 @@ import { Separator } from '@/components/ui/separator'
 import { Star } from 'lucide-react'
 import type { ReviewsOverview } from './admin-overview-types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ReviewsTabProps = {
   reviews: ReviewsOverview[]
@@ -15,10 +23,16 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Recent reviews</CardTitle>
-          <CardDescription>
-            Monitor sentiment and identify moderation needs quickly.
-          </CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Recent reviews</CardTitle>
+                <CardDescription>
+                  Monitor sentiment and identify moderation needs quickly.
+                </CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -37,41 +51,47 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent reviews</CardTitle>
-        <CardDescription>
-          Monitor sentiment and identify moderation needs quickly.
-        </CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Recent reviews</CardTitle>
+              <CardDescription>
+                Monitor sentiment and identify moderation needs quickly.
+              </CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-80 pr-4">
-          <div className="space-y-3">
+          <ItemGroup className="space-y-3">
             {rows.map((review) => (
-              <Card key={review['id']}>
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between gap-3">
-                    <CardTitle>{review['salon_name'] || 'Unknown salon'}</CardTitle>
-                    <Badge variant="outline" className="gap-1">
-                      <Star className="h-3 w-3 text-accent" fill="currentColor" />
-                      {review['rating'] || 0}/5
-                    </Badge>
-                  </div>
-                  <CardDescription>By {review['customer_name'] || 'Anonymous'}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3 pt-0">
+              <Item key={review['id']} variant="outline" className="flex-col gap-3">
+                <ItemContent>
+                  <ItemGroup>
+                    <Item variant="muted">
+                      <ItemContent>
+                        <ItemTitle>{review['salon_name'] || 'Unknown salon'}</ItemTitle>
+                        <ItemDescription>By {review['customer_name'] || 'Anonymous'}</ItemDescription>
+                      </ItemContent>
+                      <ItemActions>
+                        <Badge variant="outline">
+                          <Star className="mr-1 h-3 w-3 text-accent" fill="currentColor" />
+                          {review['rating'] || 0}/5
+                        </Badge>
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
                   <Separator />
                   {review['comment'] ? (
-                    <p className="line-clamp-3 text-sm text-muted-foreground">
-                      {review['comment']}
-                    </p>
+                    <p className="line-clamp-3 text-sm text-muted-foreground">{review['comment']}</p>
                   ) : (
-                    <Badge variant="outline" className="w-fit">
-                      No comment provided
-                    </Badge>
+                    <Badge variant="outline">No comment provided</Badge>
                   )}
-                </CardContent>
-              </Card>
+                </ItemContent>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         </ScrollArea>
       </CardContent>
     </Card>

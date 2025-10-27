@@ -1,7 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { ChainRevenueData } from '@/features/admin/finance/types'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface RevenueByChainProps {
   data: ChainRevenueData[]
@@ -22,50 +28,50 @@ export function RevenueByChain({ data }: RevenueByChainProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Revenue by Chain</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Revenue by Chain</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="p-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Chain Name</TableHead>
-              <TableHead className="text-right">Salons</TableHead>
-              <TableHead className="text-right">Total Revenue</TableHead>
-              <TableHead className="text-right">% of Total</TableHead>
-              <TableHead className="text-right">Avg per Salon</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <Empty>
-                    <EmptyHeader>
-                      <EmptyTitle>No chain revenue data available</EmptyTitle>
-                      <EmptyDescription>Revenue metrics populate after chains process transactions.</EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                </TableCell>
-              </TableRow>
-            ) : (
-              data.map((row) => (
-                <TableRow key={row.chainName}>
-                  <TableCell className="font-medium">{row.chainName}</TableCell>
-                  <TableCell className="text-right">{row.salonCount}</TableCell>
-                  <TableCell className="text-right font-medium">
-                    {formatCurrency(row.totalRevenue)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {((row.totalRevenue / totalRevenue) * 100).toFixed(1)}%
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {formatCurrency(row.totalRevenue / row.salonCount)}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+        {data.length === 0 ? (
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No chain revenue data available</EmptyTitle>
+              <EmptyDescription>Revenue metrics populate after chains process transactions.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        ) : (
+          <ItemGroup className="divide-y">
+            {data.map((row) => (
+              <Item key={row.chainName} className="grid gap-3 p-4 md:grid-cols-2">
+                <ItemContent>
+                  <ItemTitle>{row.chainName}</ItemTitle>
+                  <ItemDescription className="text-xs text-muted-foreground">
+                    {row.salonCount} salons
+                  </ItemDescription>
+                </ItemContent>
+                <ItemContent>
+                  <div className="flex flex-wrap justify-between gap-2">
+                    <span>Total revenue</span>
+                    <span className="font-semibold">{formatCurrency(row.totalRevenue)}</span>
+                  </div>
+                  <div className="flex flex-wrap justify-between gap-2">
+                    <span>% of platform</span>
+                    <span>{((row.totalRevenue / totalRevenue) * 100).toFixed(1)}%</span>
+                  </div>
+                  <div className="flex flex-wrap justify-between gap-2">
+                    <span>Avg per salon</span>
+                    <span>{formatCurrency(row.totalRevenue / row.salonCount)}</span>
+                  </div>
+                </ItemContent>
+              </Item>
+            ))}
+          </ItemGroup>
+        )}
       </CardContent>
     </Card>
   )

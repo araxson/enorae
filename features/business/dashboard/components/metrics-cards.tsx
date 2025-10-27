@@ -4,7 +4,6 @@ import { useMemo, type ReactNode } from 'react'
 import { Calendar, CheckCircle, Clock, Users, Scissors, DollarSign, TrendingUp, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { BusinessDashboardMetrics } from '@/features/business/dashboard/types'
@@ -13,7 +12,9 @@ import {
   Item,
   ItemActions,
   ItemContent,
+  ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
@@ -175,22 +176,16 @@ type AppointmentResourceProps = {
 
 function AppointmentResource({ title, icon, value, description, accent }: AppointmentResourceProps) {
   return (
-    <Card className="relative overflow-hidden">
+    <Item variant="outline" className="relative flex-col gap-3 overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
-      <CardHeader className="pb-0">
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <CardTitle>{title}</CardTitle>
-            </ItemContent>
-            <ItemActions className="flex-none">{icon}</ItemActions>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent className="space-y-2">
+      <ItemHeader className="items-start justify-between gap-2">
+        <ItemTitle>{title}</ItemTitle>
+        <ItemActions className="flex-none">{icon}</ItemActions>
+      </ItemHeader>
+      <ItemContent className="space-y-2">
         <div className="text-2xl font-bold">{value}</div>
-        <CardDescription>{description}</CardDescription>
-      </CardContent>
-    </Card>
+        <ItemDescription>{description}</ItemDescription>
+      </ItemContent>
+    </Item>
   )
 }

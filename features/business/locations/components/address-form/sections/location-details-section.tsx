@@ -2,8 +2,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
 
 type Props = {
@@ -17,29 +22,33 @@ export function LocationDetailsSection({ address }: Props) {
         <CardTitle>Location Details</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
+        <FieldGroup className="flex flex-col gap-6">
           <Separator />
 
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="neighborhood">Neighborhood</Label>
-            <Input
-              id="neighborhood"
-              name="neighborhood"
-              defaultValue={address?.neighborhood || ''}
-              placeholder="Financial District"
-            />
-          </div>
+          <Field>
+            <FieldLabel htmlFor="neighborhood">Neighborhood</FieldLabel>
+            <FieldContent>
+              <Input
+                id="neighborhood"
+                name="neighborhood"
+                defaultValue={address?.neighborhood || ''}
+                placeholder="Financial District"
+              />
+            </FieldContent>
+          </Field>
 
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="landmark">Nearby Landmark</Label>
-            <Input
-              id="landmark"
-              name="landmark"
-              defaultValue={address?.landmark || ''}
-              placeholder="Near City Hall"
-            />
-          </div>
-        </div>
+          <Field>
+            <FieldLabel htmlFor="landmark">Nearby Landmark</FieldLabel>
+            <FieldContent>
+              <Input
+                id="landmark"
+                name="landmark"
+                defaultValue={address?.landmark || ''}
+                placeholder="Near City Hall"
+              />
+            </FieldContent>
+          </Field>
+        </FieldGroup>
       </CardContent>
     </Card>
   )

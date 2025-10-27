@@ -1,4 +1,10 @@
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import {
   getStaffCommission,
@@ -16,25 +22,37 @@ export async function StaffCommission() {
     staffProfile = await getStaffProfile()
   } catch (error) {
     return (
-      <div className="p-4">
-        <Alert>
-          <AlertTitle>Commission unavailable</AlertTitle>
-          <AlertDescription>
-            {error instanceof Error ? error.message : 'Please log in to view commission data'}
-          </AlertDescription>
-        </Alert>
-      </div>
+      <section className="p-4">
+        <Card>
+          <CardContent>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>Commission unavailable</EmptyTitle>
+                <EmptyDescription>
+                  {error instanceof Error ? error.message : 'Please log in to view commission data'}
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </CardContent>
+        </Card>
+      </section>
     )
   }
 
   if (!staffProfile) {
     return (
-      <div className="p-4">
-        <Alert>
-          <AlertTitle>Profile not found</AlertTitle>
-          <AlertDescription>Staff profile not found</AlertDescription>
-        </Alert>
-      </div>
+      <section className="p-4">
+        <Card>
+          <CardContent>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>Profile not found</EmptyTitle>
+                <EmptyDescription>Staff profile not found</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </CardContent>
+        </Card>
+      </section>
     )
   }
 

@@ -3,6 +3,7 @@ import { verifySession } from '@/lib/auth'
 import { getCustomerReviews } from './api/queries'
 import { ReviewsList } from './components/reviews-list'
 import { Separator } from '@/components/ui/separator'
+import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 export async function CustomerReviews() {
   const session = await verifySession()
@@ -21,6 +22,17 @@ export async function CustomerReviews() {
         </p>
 
         <Separator />
+
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <ItemDescription>
+                {reviews.length}{' '}
+                {reviews.length === 1 ? 'review submitted' : 'reviews submitted'}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
 
         <ReviewsList reviews={reviews} />
       </div>

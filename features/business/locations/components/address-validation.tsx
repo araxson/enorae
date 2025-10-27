@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { LocationAddress } from './address-form/types'
 import { Spinner } from '@/components/ui/spinner'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type ValidationResult = {
   isValid: boolean
@@ -132,20 +133,22 @@ export function AddressValidation({ address }: Props) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={validateAddress}
-            disabled={isValidating || !address}
-            className="w-full"
-          >
-            {isValidating ? (
-              <Spinner className="mr-2" />
-            ) : (
-              <RefreshCw className="h-4 w-4 mr-2" />
-            )}
-            {isValidating ? 'Validating...' : 'Validate Address'}
-          </Button>
+          <ButtonGroup className="w-full">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={validateAddress}
+              disabled={isValidating || !address}
+              className="w-full"
+            >
+              {isValidating ? (
+                <Spinner className="mr-2" />
+              ) : (
+                <RefreshCw className="h-4 w-4 mr-2" />
+              )}
+              {isValidating ? 'Validating...' : 'Validate Address'}
+            </Button>
+          </ButtonGroup>
 
           {result && result.issues.length > 0 && (
             <Alert variant="destructive">

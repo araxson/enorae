@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -25,6 +24,13 @@ import { CheckCircle2, XCircle, Eye, Download } from 'lucide-react'
 import type { AuditLog } from '@/features/business/settings-audit-logs/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldSet } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -75,19 +81,19 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
 
   return (
     <>
-      <Card>
-        <CardHeader className="flex flex-wrap items-center justify-between gap-4">
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">
-            <CardTitle>Audit log entries</CardTitle>
-            <CardDescription>Showing {logs.length} entries</CardDescription>
+            <ItemTitle>Audit log entries</ItemTitle>
+            <ItemDescription>Showing {logs.length} entries</ItemDescription>
           </div>
           <Button variant="outline" size="sm" onClick={exportLogs} className="gap-2">
             <Download className="h-4 w-4" />
             Export CSV
           </Button>
-        </CardHeader>
+        </ItemHeader>
 
-        <CardContent className="p-0">
+        <ItemContent className="p-0">
           <ScrollArea className="w-full">
             <Table>
               <TableHeader>
@@ -161,8 +167,8 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
             </Table>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
 
       <Dialog open={!!selectedLog} onOpenChange={(open) => !open && setSelectedLog(null)}>
         <DialogContent className="max-w-2xl">

@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import {
@@ -9,6 +8,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
@@ -28,14 +28,14 @@ type ReactivationOpportunitiesProps = {
 
 export function ReactivationOpportunities({ total, customers }: ReactivationOpportunitiesProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Reactivation Opportunities</CardTitle>
-        <CardDescription>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemTitle>Reactivation Opportunities</ItemTitle>
+        <ItemDescription>
           Customers who have not visited recently but are likely to return with the right incentive.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-3">
+        </ItemDescription>
+      </ItemHeader>
+      <ItemContent className="space-y-3">
         <Badge variant="secondary">{total} customers to re-engage</Badge>
         {customers.length === 0 ? (
           <Empty>
@@ -49,7 +49,7 @@ export function ReactivationOpportunities({ total, customers }: ReactivationOppo
             {customers.slice(0, 5).map((customer) => (
               <Item key={customer.id} variant="outline" className="flex-col gap-2">
                 <ItemContent>
-                  <ItemTitle className="text-lg font-semibold">{customer.name}</ItemTitle>
+                  <ItemTitle>{customer.name}</ItemTitle>
                   <ItemDescription>{customer.email}</ItemDescription>
                 </ItemContent>
                 <ItemContent>
@@ -64,7 +64,7 @@ export function ReactivationOpportunities({ total, customers }: ReactivationOppo
             ))}
           </ItemGroup>
         )}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

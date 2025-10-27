@@ -12,6 +12,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
+import { Spinner } from '@/components/ui/spinner'
 
 interface SessionCardProps {
   session: SessionWithDevice
@@ -95,7 +96,14 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
             onClick={handleRevoke}
             disabled={isRevoking}
           >
-            {isRevoking ? 'Revoking...' : 'Revoke'}
+            {isRevoking ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Revoking</span>
+              </>
+            ) : (
+              <span>Revoke</span>
+            )}
           </Button>
         </CardFooter>
       ) : null}

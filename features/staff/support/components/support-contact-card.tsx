@@ -23,8 +23,14 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
   return (
     <Card id="contact-options">
       <CardHeader>
-        <CardTitle>Contact options</CardTitle>
-        <CardDescription>Select the channel that matches the urgency of your request.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Contact options</CardTitle>
+              <CardDescription>Select the channel that matches the urgency of your request.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -77,19 +83,23 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
 
           <Card>
             <CardContent className="flex flex-col gap-3">
-              <div className="space-y-1">
-                <h3 className="font-semibold" id="status-alerts-title">Status alerts</h3>
-                <CardDescription id="status-alerts-description">
-                  Receive mobile and email alerts when ticket status changes or a fix is shipped.
-                </CardDescription>
-              </div>
-              <div className="flex justify-end">
-                <Switch
-                  defaultChecked
-                  aria-labelledby="status-alerts-title"
-                  aria-describedby="status-alerts-description"
-                />
-              </div>
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <ItemTitle id="status-alerts-title">Status alerts</ItemTitle>
+                    <CardDescription id="status-alerts-description">
+                      Receive mobile and email alerts when ticket status changes or a fix is shipped.
+                    </CardDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Switch
+                      defaultChecked
+                      aria-labelledby="status-alerts-title"
+                      aria-describedby="status-alerts-description"
+                    />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
             </CardContent>
           </Card>
         </div>

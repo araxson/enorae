@@ -11,7 +11,9 @@ import {
   Item,
   ItemActions,
   ItemContent,
+  ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import {
@@ -28,6 +30,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group'
+import { Spinner } from '@/components/ui/spinner'
 
 type ProfileMetadata = Database['public']['Views']['profiles_metadata_view']['Row']
 
@@ -95,10 +98,18 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
           {/* Interests */}
           <div>
             <Card>
-              <CardHeader className="flex items-center gap-2">
-                <Heart className="h-4 w-4" />
-                <CardTitle>Interests</CardTitle>
-                <CardDescription>Personal topics you care about</CardDescription>
+              <CardHeader>
+                <ItemGroup>
+                  <Item>
+                    <ItemMedia variant="icon">
+                      <Heart className="h-4 w-4" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>Interests</ItemTitle>
+                      <ItemDescription>Personal topics you care about</ItemDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent className="space-y-2">
                 {interests.length === 0 ? (
@@ -161,10 +172,18 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
           {/* Tags */}
           <div>
             <Card>
-              <CardHeader className="flex items-center gap-2">
-                <Tag className="h-4 w-4" />
-                <CardTitle>Tags</CardTitle>
-                <CardDescription>Quick labels for your profile</CardDescription>
+              <CardHeader>
+                <ItemGroup>
+                  <Item>
+                    <ItemMedia variant="icon">
+                      <Tag className="h-4 w-4" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>Tags</ItemTitle>
+                      <ItemDescription>Quick labels for your profile</ItemDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent className="space-y-2">
                 {tags.length === 0 ? (
@@ -226,7 +245,14 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
 
           {/* Save Button */}
           <Button onClick={handleSave} disabled={isSaving} className="w-full">
-            {isSaving ? 'Saving...' : 'Save Preferences'}
+            {isSaving ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Saving</span>
+              </>
+            ) : (
+              <span>Save Preferences</span>
+            )}
           </Button>
 
           <p className="text-xs text-center text-muted-foreground">

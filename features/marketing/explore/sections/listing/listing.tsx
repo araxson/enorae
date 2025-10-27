@@ -31,11 +31,13 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import { MapPin, Search, Sparkles, Star, X } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { Kbd } from '@/components/ui/kbd'
 import { listingCopy } from './listing.data'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
@@ -80,15 +82,19 @@ export function ExploreListing({ salons }: ExploreListingProps) {
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
       <header>
-        <ItemGroup className="gap-4 text-center sm:text-left">
-          <div className="flex justify-center sm:justify-start">
-            <Badge variant="outline">
-              <Sparkles className="mr-2 h-4 w-4" />
-              {listingCopy.badge}
-            </Badge>
-          </div>
-          <h2 className="scroll-m-20">{listingCopy.title}</h2>
-          <p className="leading-7 text-muted-foreground">{listingCopy.description}</p>
+        <ItemGroup className="gap-4">
+          <Item className="flex-col items-center text-center sm:items-start sm:text-left" variant="muted">
+            <ItemHeader>
+              <Badge variant="outline">
+                <Sparkles className="mr-2 h-4 w-4" />
+                {listingCopy.badge}
+              </Badge>
+            </ItemHeader>
+            <ItemContent>
+              <h2 className="scroll-m-20">{listingCopy.title}</h2>
+              <ItemDescription>{listingCopy.description}</ItemDescription>
+            </ItemContent>
+          </Item>
         </ItemGroup>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <InputGroup className="flex-1">
@@ -118,6 +124,13 @@ export function ExploreListing({ salons }: ExploreListingProps) {
             {listingCopy.searchButton}
           </Button>
         </div>
+        <Item className="w-full flex-col items-center text-center sm:w-auto sm:items-start sm:text-left" variant="muted">
+          <ItemContent>
+            <ItemDescription>
+              Press <Kbd>Enter</Kbd> to search instantly or refine your filters first.
+            </ItemDescription>
+          </ItemContent>
+        </Item>
       </header>
 
       {filteredSalons.length === 0 ? (

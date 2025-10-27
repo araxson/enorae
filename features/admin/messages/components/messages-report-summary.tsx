@@ -19,8 +19,14 @@ export function MessagesReportSummary({ summary }: MessagesReportSummaryProps) {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Report Resolution</CardTitle>
-        <CardDescription>Escalations and user reports across all threads</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Report Resolution</CardTitle>
+              <CardDescription>Escalations and user reports across all threads</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
         <ItemGroup className="space-y-3">

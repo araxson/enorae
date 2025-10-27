@@ -8,10 +8,17 @@ import { Calendar, Clock, Ban } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
 import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from '@/components/ui/empty'
+import {
   Item,
   ItemContent,
   ItemGroup,
   ItemMedia,
+  ItemDescription,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -50,13 +57,20 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Calendar className="h-5 w-5" />
-          <CardTitle>Weekly Schedule</CardTitle>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          Week of {weekDays[0] ? format(weekDays[0], 'MMM d') : 'N/A'} - {weekDays[6] ? format(weekDays[6], 'MMM d, yyyy') : 'N/A'}
-        </p>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Calendar className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Weekly Schedule</CardTitle>
+              <ItemDescription>
+                Week of {weekDays[0] ? format(weekDays[0], 'MMM d') : 'N/A'} –{' '}
+                {weekDays[6] ? format(weekDays[6], 'MMM d, yyyy') : 'N/A'}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-7">
@@ -132,7 +146,14 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
 
                     {/* Empty state */}
                     {blocked.length === 0 && dayApts.length === 0 && (
-                      <p className="py-2 text-center text-xs text-muted-foreground">No events</p>
+                      <Empty>
+                        <EmptyHeader>
+                          <EmptyTitle>No events</EmptyTitle>
+                          <EmptyDescription>
+                            Nothing scheduled for this day.
+                          </EmptyDescription>
+                        </EmptyHeader>
+                      </Empty>
                     )}
 
                     {/* Day summary */}

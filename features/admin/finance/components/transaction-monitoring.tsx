@@ -5,6 +5,7 @@ import { StatCard } from '@/features/shared/ui-components'
 import { Activity, CreditCard, Users, Building2 } from 'lucide-react'
 import type { TransactionMetrics, ManualTransactionRow } from '@/features/admin/finance/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface TransactionMonitoringProps {
   metrics: TransactionMetrics
@@ -57,7 +58,13 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Transactions</CardTitle>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Recent Transactions</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="p-0">
           <Table>

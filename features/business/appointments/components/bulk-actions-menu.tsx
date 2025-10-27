@@ -3,6 +3,12 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -18,7 +24,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import { ChevronDown, CheckCircle, XCircle, Clock, Ban } from 'lucide-react'
 import { useToast } from '@/lib/hooks/use-toast'
 import {
@@ -137,17 +143,22 @@ export function BulkActionsMenu({ selectedIds, onClearSelection }: BulkActionsMe
               You are about to cancel {selectedIds.length} appointment(s). Please provide a reason.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="reason">Reason for cancellation</Label>
-              <Textarea
-                id="reason"
-                placeholder="Enter reason..."
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                rows={4}
-              />
-            </div>
+          <div className="py-4">
+            <Field>
+              <FieldLabel htmlFor="reason">Reason for cancellation</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="reason"
+                  placeholder="Enter reason..."
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  rows={4}
+                />
+              </FieldContent>
+              <FieldDescription>
+                We&apos;ll share this with customers so they understand the update.
+              </FieldDescription>
+            </Field>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isLoading}>
@@ -158,7 +169,14 @@ export function BulkActionsMenu({ selectedIds, onClearSelection }: BulkActionsMe
               onClick={() => executeAction('cancel')}
               disabled={isLoading || !reason.trim()}
             >
-              {isLoading ? 'Cancelling...' : 'Confirm Cancellation'}
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Cancelling</span>
+                </>
+              ) : (
+                <span>Confirm Cancellation</span>
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>

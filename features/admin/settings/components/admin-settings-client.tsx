@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Settings, Shield, Mail, Bell, Database, Info } from 'lucide-react'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface SettingSection {
   id: string
@@ -125,14 +126,16 @@ export function AdminSettingsClient() {
                       ))}
                     </ul>
                     <Separator />
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={!section.available}
-                      className="w-full"
-                    >
-                      Configure
-                    </Button>
+                    <ButtonGroup className="w-full">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={!section.available}
+                        className="w-full"
+                      >
+                        Configure
+                      </Button>
+                    </ButtonGroup>
                   </CardContent>
                 </Card>
               )

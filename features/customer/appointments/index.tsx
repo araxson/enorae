@@ -5,6 +5,7 @@ import { verifySession } from '@/lib/auth'
 
 import { getCustomerAppointments } from './api/queries'
 import { AppointmentsList } from './components/appointments-list'
+import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 export async function CustomerAppointments() {
   const session = await verifySession()
@@ -23,6 +24,17 @@ export async function CustomerAppointments() {
         </p>
 
         <Separator />
+
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <ItemDescription>
+                {appointments.length}{' '}
+                {appointments.length === 1 ? 'appointment scheduled' : 'appointments scheduled'}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
 
         <AppointmentsList appointments={appointments} />
       </div>

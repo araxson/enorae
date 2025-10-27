@@ -6,6 +6,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
 import type { Salon } from '../types'
 
 interface PaymentMethodsCardProps {
@@ -27,9 +28,13 @@ export function PaymentMethodsCard({ salon }: PaymentMethodsCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <span className="text-sm text-muted-foreground">
-              Reach out to confirm how you can pay before your appointment.
-            </span>
+            <Item variant="muted">
+              <ItemContent>
+                <ItemDescription>
+                  Reach out to confirm how you can pay before your appointment.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
           </EmptyContent>
         </Empty>
       </CardContent>

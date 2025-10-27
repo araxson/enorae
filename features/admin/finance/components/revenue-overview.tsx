@@ -1,7 +1,7 @@
-import { Card } from '@/components/ui/card'
 import { StatCard } from '@/features/shared/ui-components'
 import { DollarSign, TrendingUp, Calendar, Users } from 'lucide-react'
 import type { RevenueMetrics } from '@/features/admin/finance/types'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 interface RevenueOverviewProps {
   metrics: RevenueMetrics
@@ -31,14 +31,18 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <h3 className="scroll-m-20 text-2xl font-semibold">Revenue Overview</h3>
-        <p className="text-sm text-muted-foreground">
-          {metrics.period.start && metrics.period.end
-            ? `${metrics.period.start} to ${metrics.period.end}`
-            : 'All time'}
-        </p>
-      </div>
+      <ItemGroup>
+        <Item variant="muted" className="flex-col gap-1">
+          <ItemContent>
+            <ItemTitle>Revenue Overview</ItemTitle>
+            <ItemDescription>
+              {metrics.period.start && metrics.period.end
+                ? `${metrics.period.start} to ${metrics.period.end}`
+                : 'All time'}
+            </ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
         <StatCard

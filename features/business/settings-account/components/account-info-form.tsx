@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle, AlertCircle } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
@@ -51,12 +51,12 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Account Information</CardTitle>
-        <CardDescription>Update your personal information</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Account Information</ItemTitle>
+        <ItemDescription>Update your personal information</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <form onSubmit={handleSubmit}>
           <FieldSet>
             <FieldGroup className="gap-6">
@@ -121,13 +121,19 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
               </Field>
 
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? <Spinner className="mr-2" /> : null}
-                Save Changes
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Saving...</span>
+                  </>
+                ) : (
+                  <span>Save Changes</span>
+                )}
               </Button>
             </FieldGroup>
           </FieldSet>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

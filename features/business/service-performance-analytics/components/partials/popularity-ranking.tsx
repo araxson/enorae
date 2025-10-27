@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp } from 'lucide-react'
 import {
@@ -7,6 +6,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -29,23 +29,19 @@ export function PopularityRanking({ services, formatCurrency }: PopularityRankin
     .slice(0, 5)
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <TrendingUp className="h-5 w-5" />
-          <CardTitle>Most Popular Services</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader className="items-center gap-2">
+        <TrendingUp className="h-5 w-5" />
+        <ItemTitle>Most Popular Services</ItemTitle>
+      </ItemHeader>
+      <ItemContent>
         <ItemGroup className="flex flex-col gap-4">
           {trendingServices.map((service, index) => (
             <Item key={service.service_id}>
               <ItemContent className="flex items-center gap-3">
                 <Badge variant={index === 0 ? 'default' : 'outline'}>#{index + 1}</Badge>
                 <div>
-                  <ItemTitle className="text-lg font-semibold">
-                    {service.service_name}
-                  </ItemTitle>
+                  <ItemTitle>{service.service_name}</ItemTitle>
                   <ItemDescription>
                     Popularity: {service.popularity_score?.toFixed(0) || 0}
                   </ItemDescription>
@@ -58,7 +54,7 @@ export function PopularityRanking({ services, formatCurrency }: PopularityRankin
             </Item>
           ))}
         </ItemGroup>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

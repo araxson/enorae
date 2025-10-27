@@ -2,8 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Search, X } from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import { Kbd, KbdGroup } from '@/components/ui/kbd'
+import { Spinner } from '@/components/ui/spinner'
+import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 interface SearchBarProps {
   placeholder?: string
@@ -67,31 +74,65 @@ export function SearchBar({ placeholder = 'Search...', onSearch, defaultValue = 
   }, [])
 
   return (
-    <div className="relative w-full max-w-sm pb-6" data-search-shortcut="cmd+k">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-      <Input
-        ref={inputRef}
-        type="text"
-        placeholder={placeholder}
-        value={query}
-        onChange={(event) => handleChange(event.target.value)}
-        className="pl-9 pr-9"
-        aria-label={placeholder}
-      />
-      {query && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleClear}
-          className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
-          aria-label="Clear search"
-        >
-          <X className="h-4 w-4" aria-hidden="true" />
-        </Button>
-      )}
-      <span className="absolute -bottom-6 left-0 text-xs text-muted-foreground" aria-live="polite">
-        {isSearching ? 'Searching…' : 'Press ⌘K / Ctrl+K to focus search'}
-      </span>
+    <div className="w-full max-w-sm pb-6" data-search-shortcut="cmd+k">
+      <InputGroup aria-label={placeholder}>
+        <InputGroupAddon>
+          <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        </InputGroupAddon>
+        <InputGroupInput
+          ref={inputRef}
+          type="text"
+          placeholder={placeholder}
+          value={query}
+          onChange={(event) => handleChange(event.target.value)}
+          aria-describedby="admin-search-shortcut"
+        />
+        <InputGroupAddon align="inline-end" className="gap-2">
+          {isSearching ? <Spinner className="text-muted-foreground" /> : null}
+          {query ? (
+            <InputGroupButton
+              aria-label="Clear search"
+              onClick={handleClear}
+              variant="ghost"
+              size="icon-sm"
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </InputGroupButton>
+          ) : null}
+        </InputGroupAddon>
+      </InputGroup>
+      <ItemGroup
+        id="admin-search-shortcut"
+        className="mt-2 flex-wrap gap-2 text-xs text-muted-foreground"
+        aria-live="polite"
+      >
+        <Item variant="muted" className="flex-wrap items-center gap-2">
+          <ItemContent>
+            {isSearching ? (
+              <span className="flex items-center gap-1">
+                <Spinner className="size-3" />
+                Searching…
+              </span>
+            ) : (
+              <ItemDescription>
+                <span className="inline-flex items-center gap-2">
+                  <span>Press</span>
+                  <KbdGroup>
+                    <Kbd>⌘</Kbd>
+                    <Kbd>K</Kbd>
+                  </KbdGroup>
+                  <span className="text-muted-foreground/70">or</span>
+                  <KbdGroup>
+                    <Kbd>Ctrl</Kbd>
+                    <Kbd>K</Kbd>
+                  </KbdGroup>
+                  <span>to focus search</span>
+                </span>
+              </ItemDescription>
+            )}
+          </ItemContent>
+        </Item>
+      </ItemGroup>
     </div>
   )
 }

@@ -5,7 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import {
   Item,
   ItemContent,
@@ -14,6 +13,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
+import { Separator } from '@/components/ui/separator'
 import { MapPin, Navigation, ParkingCircle, Accessibility } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
@@ -39,10 +39,16 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <MapPin className="h-5 w-5" aria-hidden="true" />
-          <CardTitle>Location</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <MapPin className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Location</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <ItemGroup className="gap-3">
@@ -50,8 +56,10 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
             <Item variant="outline">
               <ItemContent>
                 <ItemTitle>Address</ItemTitle>
-                <ItemDescription className="whitespace-pre-line text-foreground">
-                  {locationAddress['formatted_address']}
+                <ItemDescription>
+                  <span className="whitespace-pre-line text-foreground">
+                    {locationAddress['formatted_address']}
+                  </span>
                 </ItemDescription>
               </ItemContent>
             </Item>
@@ -59,21 +67,23 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
             <Item variant="outline">
               <ItemContent>
                 <ItemTitle>Address</ItemTitle>
-                <ItemDescription className="flex flex-col text-foreground">
-                  {locationAddress['street_address'] ? (
-                    <span>{locationAddress['street_address']}</span>
-                  ) : null}
-                  {locationAddress['street_address_2'] ? (
-                    <span>{locationAddress['street_address_2']}</span>
-                  ) : null}
-                  <span>
-                    {locationAddress['city']}
-                    {locationAddress['state_province'] ? `, ${locationAddress['state_province']}` : ''}
-                    {locationAddress['postal_code'] ? ` ${locationAddress['postal_code']}` : ''}
-                  </span>
-                  {locationAddress['country_code'] ? (
-                    <span>{locationAddress['country_code']}</span>
-                  ) : null}
+                <ItemDescription>
+                  <div className="flex flex-col text-foreground">
+                    {locationAddress['street_address'] ? (
+                      <span>{locationAddress['street_address']}</span>
+                    ) : null}
+                    {locationAddress['street_address_2'] ? (
+                      <span>{locationAddress['street_address_2']}</span>
+                    ) : null}
+                    <span>
+                      {locationAddress['city']}
+                      {locationAddress['state_province'] ? `, ${locationAddress['state_province']}` : ''}
+                      {locationAddress['postal_code'] ? ` ${locationAddress['postal_code']}` : ''}
+                    </span>
+                    {locationAddress['country_code'] ? (
+                      <span>{locationAddress['country_code']}</span>
+                    ) : null}
+                  </div>
                 </ItemDescription>
               </ItemContent>
             </Item>
@@ -83,8 +93,8 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
             <Item variant="muted">
               <ItemContent>
                 <ItemTitle>Neighborhood</ItemTitle>
-                <ItemDescription className="text-foreground">
-                  {locationAddress['neighborhood']}
+                <ItemDescription>
+                  <span className="text-foreground">{locationAddress['neighborhood']}</span>
                 </ItemDescription>
               </ItemContent>
             </Item>
@@ -94,8 +104,8 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
             <Item variant="muted">
               <ItemContent>
                 <ItemTitle>Nearby landmark</ItemTitle>
-                <ItemDescription className="text-foreground">
-                  {locationAddress['landmark']}
+                <ItemDescription>
+                  <span className="text-foreground">{locationAddress['landmark']}</span>
                 </ItemDescription>
               </ItemContent>
             </Item>
@@ -108,8 +118,10 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Parking information</ItemTitle>
-                <ItemDescription className="whitespace-pre-line text-foreground">
-                  {locationAddress['parking_instructions']}
+                <ItemDescription>
+                  <span className="whitespace-pre-line text-foreground">
+                    {locationAddress['parking_instructions']}
+                  </span>
                 </ItemDescription>
               </ItemContent>
             </Item>
@@ -122,8 +134,10 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Accessibility</ItemTitle>
-                <ItemDescription className="whitespace-pre-line text-foreground">
-                  {locationAddress['accessibility_notes']}
+                <ItemDescription>
+                  <span className="whitespace-pre-line text-foreground">
+                    {locationAddress['accessibility_notes']}
+                  </span>
                 </ItemDescription>
               </ItemContent>
             </Item>

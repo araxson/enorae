@@ -3,6 +3,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Store, Users, MapPin } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { SalonChainWithLocations } from '@/features/customer/chains/api/queries'
 import {
   Empty,
@@ -22,41 +31,61 @@ export function ChainDetail({ chain }: ChainDetailProps) {
     <div className="flex flex-col gap-8">
       {/* Chain Header */}
       <Card>
-        <CardHeader className="space-y-2">
-          <div className="flex gap-4 items-center">
-            <CardTitle>{chain['name']}</CardTitle>
-            {chain['is_verified'] ? <Badge variant="default">Verified</Badge> : null}
-          </div>
-          {chain['legal_name'] && chain['legal_name'] !== chain['name'] ? (
-            <CardDescription>Legal name: {chain['legal_name']}</CardDescription>
-          ) : null}
+        <CardHeader>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>{chain['name']}</CardTitle>
+                {chain['legal_name'] && chain['legal_name'] !== chain['name'] ? (
+                  <CardDescription>Legal name: {chain['legal_name']}</CardDescription>
+                ) : null}
+              </ItemContent>
+              {chain['is_verified'] ? (
+                <ItemActions className="flex-none">
+                  <Badge variant="default">Verified</Badge>
+                </ItemActions>
+              ) : null}
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div className="flex gap-3 items-start">
-              <Store className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              <div>
-                <p className="text-xs text-muted-foreground">Locations</p>
-                <p className="text-sm text-foreground">{chain['salon_count'] || 0} {chain['salon_count'] === 1 ? 'salon' : 'salons'}</p>
-              </div>
-            </div>
-
-            <div className="flex gap-3 items-start">
-              <Users className="mt-1 h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              <div>
-                <p className="text-xs text-muted-foreground">Staff members</p>
-                <p className="text-sm text-foreground">{chain['staff_count'] || 0}</p>
-              </div>
-            </div>
-          </div>
+          <ItemGroup className="gap-4 md:grid md:grid-cols-2">
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Store className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Locations</ItemTitle>
+                <ItemDescription>
+                  {chain['salon_count'] || 0} {chain['salon_count'] === 1 ? 'salon' : 'salons'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Users className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Staff members</ItemTitle>
+                <ItemDescription>{chain['staff_count'] || 0}</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardContent>
         <CardFooter>
-          <div className="flex gap-3 items-center">
-            <Store className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-            <p className="text-sm text-muted-foreground">
-              {chain['salon_count'] || 0} {chain['salon_count'] === 1 ? 'Location' : 'Locations'}
-            </p>
-          </div>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Store className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Footprint</ItemTitle>
+                <ItemDescription>
+                  {chain['salon_count'] || 0} {chain['salon_count'] === 1 ? 'Location' : 'Locations'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardFooter>
       </Card>
 
@@ -67,30 +96,51 @@ export function ChainDetail({ chain }: ChainDetailProps) {
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             {chain.locations.map((salon) => (
               <Card key={salon['id']}>
-                <CardHeader className="flex items-start justify-between">
-                  <CardTitle>{salon['name']}</CardTitle>
-                  {salon['is_verified'] ? <Badge variant="secondary">Verified</Badge> : null}
+                <CardHeader>
+                  <ItemGroup>
+                    <Item>
+                      <ItemContent>
+                        <CardTitle>{salon['name']}</CardTitle>
+                      </ItemContent>
+                      {salon['is_verified'] ? (
+                        <ItemActions className="flex-none">
+                          <Badge variant="secondary">Verified</Badge>
+                        </ItemActions>
+                      ) : null}
+                    </Item>
+                  </ItemGroup>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  {salon['formatted_address'] ? (
-                    <div className="flex gap-2 items-start">
-                      <MapPin className="mt-1 h-3 w-3 text-muted-foreground" aria-hidden="true" />
-                      <p className="text-sm text-muted-foreground">{salon['formatted_address']}</p>
-                    </div>
-                  ) : null}
+                <CardContent className="space-y-3">
+                  <ItemGroup className="gap-2">
+                    {salon['formatted_address'] ? (
+                      <Item variant="muted" size="sm">
+                        <ItemMedia variant="icon">
+                          <MapPin className="h-3 w-3" aria-hidden="true" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemDescription>{salon['formatted_address']}</ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    ) : null}
 
-                  {typeof salon['rating_average'] === 'number' ? (
-                    <p className="text-sm text-muted-foreground">
-                      ⭐ {salon['rating_average'].toFixed(1)} ({salon['rating_count'] || 0} reviews)
-                    </p>
-                  ) : null}
+                    {typeof salon['rating_average'] === 'number' ? (
+                      <Item variant="muted" size="sm">
+                        <ItemContent>
+                          <ItemTitle>Rating</ItemTitle>
+                          <ItemDescription>
+                            ⭐ {salon['rating_average'].toFixed(1)} ({salon['rating_count'] || 0} reviews)
+                          </ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    ) : null}
+                  </ItemGroup>
                 </CardContent>
                 <CardFooter>
-                  <Link href={`/customer/book/${salon['id']}`} className="w-full">
-                    <Button variant="outline" size="sm" className="w-full">
+                  <Button asChild variant="outline" size="sm" className="w-full">
+                    <Link href={`/customer/book/${salon['id']}`}>
                       View salon
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </CardFooter>
               </Card>
             ))}

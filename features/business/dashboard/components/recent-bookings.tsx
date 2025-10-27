@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -32,6 +31,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -54,15 +54,15 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
   }
 
   return (
-    <Card>
-      <CardHeader className="gap-4 pb-4">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader className="gap-4 pb-4">
         <ButtonGroup className="w-full items-center justify-between">
           <ButtonGroupText>
             <div className="space-y-1">
-              <CardTitle>Recent Bookings</CardTitle>
-              <CardDescription>
+              <ItemTitle>Recent Bookings</ItemTitle>
+              <ItemDescription>
                 {isEmpty ? 'No appointments yet' : `${appointments.length} appointments`}
-              </CardDescription>
+              </ItemDescription>
             </div>
           </ButtonGroupText>
           <ButtonGroupSeparator />
@@ -78,9 +78,9 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
             <TooltipContent>Open appointment schedule</TooltipContent>
           </Tooltip>
         </ButtonGroup>
-      </CardHeader>
+      </ItemHeader>
       {!isEmpty && <Separator />}
-      <CardContent className={isEmpty ? '' : 'p-0'}>
+      <ItemContent className={isEmpty ? '' : 'p-0'}>
         {isEmpty ? (
           <Empty>
             <EmptyMedia variant="icon">
@@ -165,7 +165,7 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
             </div>
           </ScrollArea>
         )}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

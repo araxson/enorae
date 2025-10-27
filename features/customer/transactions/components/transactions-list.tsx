@@ -16,6 +16,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 interface TransactionsListProps {
   transactions: CustomerTransactionWithDetails[]
@@ -38,32 +39,38 @@ const getTypeColor = (type: string | null): "default" | "destructive" | "seconda
 export function TransactionsList({ transactions }: TransactionsListProps) {
   if (transactions.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Receipt className="h-6 w-6" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No transactions yet</EmptyTitle>
-              <EmptyDescription>
-                Your completed appointments will appear here once you make a booking.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button asChild>
-                <Link href="/customer/salons">Book an appointment</Link>
-              </Button>
-            </EmptyContent>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Receipt className="h-6 w-6" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No transactions yet</EmptyTitle>
+          <EmptyDescription>
+            Your completed appointments will appear here once you make a booking.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button asChild>
+            <Link href="/customer/salons">Book an appointment</Link>
+          </Button>
+        </EmptyContent>
+      </Empty>
     )
   }
 
   return (
     <Card>
       <CardContent>
+        <ItemGroup className="mb-4">
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <ItemDescription>
+                {transactions.length}{' '}
+                {transactions.length === 1 ? 'transaction recorded' : 'transactions recorded'}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
         <Table>
           <TableHeader>
             <TableRow>

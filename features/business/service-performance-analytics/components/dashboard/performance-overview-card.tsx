@@ -1,25 +1,33 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Star } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 import { getPerformanceIcon, formatCurrency } from './utils'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function PerformanceOverviewCard({ services }: { services: ServicePerformance[] }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Service Performance Overview</CardTitle>
-        <CardDescription>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Service Performance Overview</ItemTitle>
+        <ItemDescription>
           Key health metrics for each service across booking, revenue, and satisfaction.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
+        </ItemDescription>
+      </ItemHeader>
+      <ItemContent>
+        <ItemGroup className="space-y-4">
           {services.map((service) => (
-            <Card key={service.service_id}>
-              <CardContent className="space-y-4 py-4">
+            <Item key={service.service_id} variant="outline" className="flex-col gap-4 py-4">
+              <ItemContent className="space-y-4">
                 <div className="flex items-start justify-between">
                   <div>
                     <h4 className="font-semibold">{service.service_name}</h4>
@@ -56,11 +64,11 @@ export function PerformanceOverviewCard({ services }: { services: ServicePerform
                     <p className="font-semibold">{service.popularity_score?.toFixed(0) || 0}</p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </ItemContent>
+            </Item>
           ))}
-        </div>
-      </CardContent>
-    </Card>
+        </ItemGroup>
+      </ItemContent>
+    </Item>
   )
 }

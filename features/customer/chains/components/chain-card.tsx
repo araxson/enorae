@@ -1,7 +1,16 @@
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { MapPin, Store } from 'lucide-react'
+import { Store } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { Database } from '@/lib/types/database.types'
 
 type SalonChain = Database['public']['Views']['salon_chains_view']['Row']
@@ -14,23 +23,38 @@ export function ChainCard({ chain }: ChainCardProps) {
   return (
     <Link href={`/customer/chains/${chain['slug']}`} className="block">
       <Card>
-        <CardHeader className="flex items-start justify-between">
-          <div className="space-y-1">
-            <CardTitle>{chain['name']}</CardTitle>
-            {chain['legal_name'] && chain['legal_name'] !== chain['name'] ? (
-              <CardDescription>{chain['legal_name']}</CardDescription>
-            ) : null}
-          </div>
-          {chain['is_verified'] ? <Badge variant="default">Verified</Badge> : null}
+        <CardHeader>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>{chain['name']}</CardTitle>
+                {chain['legal_name'] && chain['legal_name'] !== chain['name'] ? (
+                  <CardDescription>{chain['legal_name']}</CardDescription>
+                ) : null}
+              </ItemContent>
+              {chain['is_verified'] ? (
+                <ItemActions className="flex-none">
+                  <Badge variant="default">Verified</Badge>
+                </ItemActions>
+              ) : null}
+            </Item>
+          </ItemGroup>
         </CardHeader>
 
         <CardContent>
-          <div className="flex gap-3 items-center">
-            <Store className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-            <p className="text-sm text-muted-foreground">
-              {chain['salon_count'] || 0} {chain['salon_count'] === 1 ? 'Location' : 'Locations'}
-            </p>
-          </div>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Store className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Locations</ItemTitle>
+                <ItemDescription>
+                  {chain['salon_count'] || 0} {chain['salon_count'] === 1 ? 'Location' : 'Locations'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardContent>
       </Card>
     </Link>

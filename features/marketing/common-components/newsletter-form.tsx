@@ -11,6 +11,7 @@ import { Mail, CheckCircle, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { subscribeToNewsletter } from '@/features/marketing/newsletter/api/mutations'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Spinner } from '@/components/ui/spinner'
 
 interface NewsletterFormProps {
   title?: string
@@ -92,7 +93,7 @@ export function NewsletterForm({
           ) : null}
           <InputGroupAddon align="inline-end">
             <InputGroupButton type="submit" size="sm" disabled={isPending}>
-              {buttonText}
+              {isPending ? <Spinner className="size-3" /> : buttonText}
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
@@ -134,7 +135,7 @@ export function NewsletterForm({
             ) : null}
             <InputGroupAddon align="inline-end">
               <InputGroupButton type="submit" size="sm" disabled={isPending}>
-                {buttonText}
+                {isPending ? <Spinner className="size-3" /> : buttonText}
               </InputGroupButton>
             </InputGroupAddon>
           </InputGroup>

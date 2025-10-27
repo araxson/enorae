@@ -9,6 +9,7 @@ import { CheckCircle2, Circle, Clock, XCircle } from 'lucide-react'
 import { updateServiceStatus } from '@/features/business/appointments/api/mutations'
 import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import { useToast } from '@/lib/hooks/use-toast'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface AppointmentServiceProgressProps {
   appointmentId: string
@@ -153,8 +154,8 @@ export function AppointmentServiceProgress({
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      {!isCancelled && (
+                    <ButtonGroup className="flex-1 justify-end md:flex-none">
+                      {!isCancelled ? (
                         <Button
                           variant="outline"
                           size="sm"
@@ -167,8 +168,8 @@ export function AppointmentServiceProgress({
                             ? 'Reset'
                             : 'Mark ' + getStatusLabel(nextStatus)}
                         </Button>
-                      )}
-                      {service['status'] !== 'cancelled' && service['status'] !== 'completed' && (
+                      ) : null}
+                      {service['status'] !== 'cancelled' && service['status'] !== 'completed' ? (
                         <Button
                           variant="ghost"
                           size="sm"
@@ -177,8 +178,8 @@ export function AppointmentServiceProgress({
                         >
                           Cancel
                         </Button>
-                      )}
-                    </div>
+                      ) : null}
+                    </ButtonGroup>
                   </CardContent>
                 </Card>
               )

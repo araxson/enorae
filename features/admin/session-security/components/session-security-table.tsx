@@ -29,6 +29,7 @@ import {
   overrideSeverity,
 } from '@/features/admin/session-security/api/mutations'
 import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Spinner } from '@/components/ui/spinner'
 
 interface SessionSecurityTableProps {
   records: SessionSecurityRecord[]
@@ -112,7 +113,8 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
   }
 
   return (
-    <ScrollArea className="w-full">
+    <div className="relative" aria-busy={isLoading}>
+      <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -206,6 +208,12 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
         </TableBody>
       </Table>
       <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+      </ScrollArea>
+      {isLoading ? (
+        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+          <Spinner className="size-6" />
+        </div>
+      ) : null}
+    </div>
   )
 }

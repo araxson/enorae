@@ -48,24 +48,26 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
 
             <Card>
               <CardHeader>
-                <CardTitle>Notify me when</CardTitle>
-                <CardDescription>Select the updates you would like to keep.</CardDescription>
+                <ItemGroup>
+                  <Item variant="muted" size="sm">
+                    <ItemContent>
+                      <CardTitle>Notify me when</CardTitle>
+                      <CardDescription>Select the updates you would like to keep.</CardDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent className="space-y-2">
-                <Field>
+                <Field orientation="horizontal">
+                  <FieldLabel htmlFor="notify-added">New resources are added</FieldLabel>
                   <FieldContent>
-                    <div className="flex items-center gap-2">
-                      <Checkbox defaultChecked id="notify-added" />
-                      <span>New resources are added</span>
-                    </div>
+                    <Checkbox defaultChecked id="notify-added" />
                   </FieldContent>
                 </Field>
-                <Field>
+                <Field orientation="horizontal">
+                  <FieldLabel htmlFor="notify-updated">Content is updated</FieldLabel>
                   <FieldContent>
-                    <div className="flex items-center gap-2">
-                      <Checkbox id="notify-updated" />
-                      <span>Content is updated</span>
-                    </div>
+                    <Checkbox id="notify-updated" />
                   </FieldContent>
                 </Field>
               </CardContent>

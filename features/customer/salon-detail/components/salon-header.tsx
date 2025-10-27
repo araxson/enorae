@@ -18,6 +18,7 @@ import {
 import type { Database } from '@/lib/types/database.types'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
@@ -91,20 +92,28 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           ) : null}
         </div>
       </CardContent>
-      <CardHeader className="gap-3">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 space-y-2">
-            <CardTitle>{salon.name}</CardTitle>
-            {salon.short_description && <CardDescription>{salon.short_description}</CardDescription>}
-          </div>
-          {salon.id && (
-            <FavoriteButton
-              salonId={salon.id}
-              initialFavorited={isFavorited}
-              variant="default"
-            />
-          )}
-        </div>
+      <CardHeader>
+        <ItemGroup className="gap-4">
+          <Item className="flex-1" variant="muted">
+            <ItemContent>
+              <CardTitle>{salon.name}</CardTitle>
+              {salon.short_description ? (
+                <CardDescription>{salon.short_description}</CardDescription>
+              ) : null}
+            </ItemContent>
+          </Item>
+          {salon.id ? (
+            <Item>
+              <ItemActions className="flex-none">
+                <FavoriteButton
+                  salonId={salon.id}
+                  initialFavorited={isFavorited}
+                  variant="default"
+                />
+              </ItemActions>
+            </Item>
+          ) : null}
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-6 px-6 pb-6">
         <ItemGroup className="flex flex-wrap gap-4">
@@ -131,8 +140,10 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
                 <MapPin className="h-4 w-4" />
               </ItemMedia>
               <ItemContent>
-                <ItemDescription className="text-sm text-foreground">
-                  {salon['formatted_address']}
+                <ItemDescription>
+                  <span className="text-sm text-foreground">
+                    {salon['formatted_address']}
+                  </span>
                 </ItemDescription>
               </ItemContent>
             </Item>

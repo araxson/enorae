@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 import { NotificationPreferences } from './components/notification-preferences'
 import { PrivacySettings } from './components/privacy-settings'
 import { DisplayPreferences } from './components/display-preferences'
@@ -15,7 +16,13 @@ export function SettingsFeature({ preferences }: SettingsFeatureProps) {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Settings & Preferences</CardTitle>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <CardTitle>Settings & Preferences</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
       </Card>
 

@@ -31,6 +31,15 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Spinner } from '@/components/ui/spinner'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface SessionListProps {
   sessions: SessionWithDevice[]
@@ -111,70 +120,86 @@ export function SessionList({ sessions }: SessionListProps) {
 
   if (sessions.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Info className="h-6 w-6" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No active sessions</EmptyTitle>
-              <EmptyDescription>
-                You&apos;re not signed in on any other devices right now.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              Keep this page open to monitor new sign-ins in real time.
-            </EmptyContent>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Info className="h-6 w-6" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No active sessions</EmptyTitle>
+          <EmptyDescription>
+            You&apos;re not signed in on any other devices right now.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          Keep this page open to monitor new sign-ins in real time.
+        </EmptyContent>
+      </Empty>
     )
   }
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col gap-1">
-          <div className="text-2xl text-foreground">Active Sessions</div>
-          <div className="text-muted-foreground">
-            You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
-          </div>
-        </div>
+      <ItemGroup className="gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Item className="flex-1" variant="muted">
+          <ItemContent>
+            <ItemTitle>Active Sessions</ItemTitle>
+            <ItemDescription>
+              You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
+            </ItemDescription>
+          </ItemContent>
+        </Item>
 
-        {otherSessions.length > 0 && (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="outline" disabled={revokingAll}>
-                {revokingAll ? 'Revoking All...' : `Revoke All Other Sessions (${otherSessions.length})`}
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Revoke All Other Sessions?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure you want to revoke all {otherSessions.length} other session(s)? This will sign you out from all other devices.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel disabled={revokingAll}>Cancel</AlertDialogCancel>
-                <AlertDialogAction asChild>
-                  <Button
-                    variant="destructive"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      void handleRevokeAll()
-                    }}
-                    disabled={revokingAll}
-                  >
-                    {revokingAll ? 'Revoking All...' : 'Revoke All'}
+        {otherSessions.length > 0 ? (
+          <Item>
+            <ItemActions className="flex-none">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline" disabled={revokingAll}>
+                    {revokingAll ? (
+                      <>
+                        <Spinner className="size-4" />
+                        <span>Revoking all</span>
+                      </>
+                    ) : (
+                      <span>{`Revoke All Other Sessions (${otherSessions.length})`}</span>
+                    )}
                   </Button>
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
-      </div>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Revoke All Other Sessions?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to revoke all {otherSessions.length} other session(s)? This will sign you out from all other devices.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel disabled={revokingAll}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Button
+                        variant="destructive"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          void handleRevokeAll()
+                        }}
+                        disabled={revokingAll}
+                      >
+                        {revokingAll ? (
+                          <>
+                            <Spinner className="size-4" />
+                            <span>Revoking</span>
+                          </>
+                        ) : (
+                          <span>Revoke All</span>
+                        )}
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </ItemActions>
+          </Item>
+        ) : null}
+      </ItemGroup>
 
       {error && (
         <Alert variant="destructive">
@@ -239,7 +264,14 @@ export function SessionList({ sessions }: SessionListProps) {
                       onClick={() => void handleRevokeSession(session['id'] as string)}
                       disabled={revokingId === session['id']}
                     >
-                      {revokingId === session['id'] ? 'Revoking...' : 'Revoke'}
+                      {revokingId === session['id'] ? (
+                        <>
+                          <Spinner className="size-4" />
+                          <span>Revoking</span>
+                        </>
+                      ) : (
+                        <span>Revoke</span>
+                      )}
                     </Button>
                   ) : (
                     <span className="text-sm text-muted-foreground">-</span>

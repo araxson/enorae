@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Clock } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
 
 export function LastUpdated() {
   const [time, setTime] = useState(new Date())
@@ -16,9 +17,17 @@ export function LastUpdated() {
   }, [])
 
   return (
-    <p className="text-xs text-muted-foreground flex items-center gap-1">
-      <Clock className="h-3 w-3" />
-      Updated {formatDistanceToNow(time, { addSuffix: true })}
-    </p>
+    <ItemGroup>
+      <Item variant="muted" size="sm" className="items-center gap-2">
+        <ItemMedia variant="icon">
+          <Clock className="h-3 w-3" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemDescription>
+            Updated {formatDistanceToNow(time, { addSuffix: true })}
+          </ItemDescription>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

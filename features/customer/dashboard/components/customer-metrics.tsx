@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Calendar, CheckCircle, Heart, TrendingUp } from 'lucide-react'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
 import {
   Empty,
   EmptyContent,
@@ -84,24 +84,33 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
             <CardContent>
               <ItemGroup>
                 <Item>
+                  <ItemMedia variant="icon">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </ItemMedia>
                   <ItemContent>
                     <span className="text-2xl font-semibold text-foreground">{value}</span>
                   </ItemContent>
-                  <ItemActions className="flex-none">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                  </ItemActions>
                 </Item>
               </ItemGroup>
 
               {typeof showHearts === 'number' && showHearts > 0 ? (
-                <div className="flex flex-wrap items-center gap-1 pt-3">
-                  {Array.from({ length: Math.min(showHearts, 5) }).map((_, index) => (
-                    <Heart key={index} className="h-3.5 w-3.5" aria-hidden="true" />
-                  ))}
-                  {showHearts > 5 && (
-                    <p className="text-xs text-muted-foreground">+{showHearts - 5}</p>
-                  )}
-                </div>
+                <ItemGroup className="pt-3">
+                  <Item variant="muted" size="sm">
+                    <ItemMedia variant="icon">
+                      <Heart className="h-4 w-4" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <div className="flex flex-wrap items-center gap-1">
+                        {Array.from({ length: Math.min(showHearts, 5) }).map((_, index) => (
+                          <Heart key={index} className="h-3.5 w-3.5" aria-hidden="true" />
+                        ))}
+                        {showHearts > 5 ? (
+                          <ItemDescription>+{showHearts - 5}</ItemDescription>
+                        ) : null}
+                      </div>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               ) : (
                 <div className="pt-3">
                   <Progress value={progress ?? 0} />

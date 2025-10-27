@@ -2,6 +2,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { ProfileDetail } from '@/features/admin/profile/types'
 
 interface ProfileActivityCardProps {
@@ -40,7 +50,13 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
     return (
       <Card>
         <CardHeader className="pb-4">
-          <CardTitle>Recent activity</CardTitle>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Recent activity</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="space-y-3">
           <Skeleton className="h-4 w-full" />
@@ -55,7 +71,13 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
     return (
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle>Recent activity</CardTitle>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Recent activity</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -73,7 +95,13 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
     return (
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle>Recent activity</CardTitle>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Recent activity</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -90,38 +118,44 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle>Recent activity</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Recent activity</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="flex flex-col gap-3">
+        <ItemGroup className="space-y-2">
           {profile.activity.map((event) => (
-            <Card key={`${event.id}-${event.createdAt ?? ''}`}>
-              <CardHeader className="pb-2">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <CardTitle>{event.eventType?.replace(/_/g, ' ') ?? 'Unknown event'}</CardTitle>
+            <Item key={`${event.id}-${event.createdAt ?? ''}`} variant="outline">
+              <ItemHeader>
+                <ItemTitle>{event.eventType?.replace(/_/g, ' ') ?? 'Unknown event'}</ItemTitle>
+                <ItemActions className="flex-none">
                   <Badge variant={severityVariant(event.severity)}>
-                    {(event.severity ?? 'info').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                    {(event.severity ?? 'info')
+                      .replace(/_/g, ' ')
+                      .replace(/\b\w/g, (char) => char.toUpperCase())}
                   </Badge>
-                </div>
-                <CardDescription>
+                </ItemActions>
+              </ItemHeader>
+              <ItemContent>
+                <ItemDescription>
                   {event.entityType ? `${event.entityType} · ` : ''}
                   {event.entityId ?? 'No entity id'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-wrap items-center justify-between gap-3 pt-0">
-                <span className="text-xs text-muted-foreground">{formatDate(event.createdAt)}</span>
-                {event.ipAddress ? (
-                  <span className="text-xs text-muted-foreground">IP {event.ipAddress}</span>
-                ) : null}
+                </ItemDescription>
+              </ItemContent>
+              <ItemFooter className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                <span>{formatDate(event.createdAt)}</span>
+                {event.ipAddress ? <span>IP {event.ipAddress}</span> : null}
                 {event.userAgent ? (
-                  <span className="truncate text-xs text-muted-foreground md:max-w-md">
-                    {event.userAgent}
-                  </span>
+                  <span className="truncate md:max-w-md">{event.userAgent}</span>
                 ) : null}
-              </CardContent>
-            </Card>
+              </ItemFooter>
+            </Item>
           ))}
-        </div>
+        </ItemGroup>
       </CardContent>
     </Card>
   )

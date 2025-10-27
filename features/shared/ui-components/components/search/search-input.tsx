@@ -1,9 +1,13 @@
 'use client'
 
-import { Search, X } from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { useState, useEffect } from 'react'
+import { Search, X } from 'lucide-react'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 interface SearchInputProps {
   value?: string
@@ -44,26 +48,29 @@ export function SearchInput({
   }
 
   return (
-    <div className={`relative ${className || ''}`}>
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input
+    <InputGroup className={className}>
+      <InputGroupAddon>
+        <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+      </InputGroupAddon>
+      <InputGroupInput
+        type="search"
         value={internalValue}
-        onChange={(e) => setInternalValue(e.target.value)}
+        onChange={(event) => setInternalValue(event.target.value)}
         placeholder={placeholder}
-        className="pl-9 pr-9"
+        aria-label={placeholder}
       />
-      {internalValue && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0"
-          onClick={handleClear}
-        >
-          <X className="h-4 w-4" />
-          <span className="sr-only">Clear search</span>
-        </Button>
-      )}
-    </div>
+      {internalValue ? (
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            variant="ghost"
+            size="icon-sm"
+            onClick={handleClear}
+            aria-label="Clear search"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </InputGroupButton>
+        </InputGroupAddon>
+      ) : null}
+    </InputGroup>
   )
 }

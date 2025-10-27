@@ -8,6 +8,11 @@ import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
 import type { NotificationPreferences, NotificationChannel } from '@/features/staff/settings/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface NotificationPreferencesProps {
   initialPreferences: NotificationPreferences
@@ -55,8 +60,14 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Notification Preferences</CardTitle>
-        <CardDescription>Choose how you want to be notified.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Notification Preferences</CardTitle>
+              <CardDescription>Choose how you want to be notified.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <div className="px-6">
         <ScrollArea className="w-full">

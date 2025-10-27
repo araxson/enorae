@@ -5,6 +5,14 @@ import { Separator } from '@/components/ui/separator'
 import type { AppointmentsOverview } from './admin-overview-types'
 import { appointmentStatusVariant, safeFormatDate } from './admin-overview-utils'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type AppointmentsTabProps = {
   appointments: AppointmentsOverview[]
@@ -15,10 +23,16 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Recent appointments</CardTitle>
-          <CardDescription>
-            Latest bookings created across the platform.
-          </CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Recent appointments</CardTitle>
+                <CardDescription>
+                  Latest bookings created across the platform.
+                </CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -37,31 +51,38 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent appointments</CardTitle>
-        <CardDescription>
-          Latest bookings created across the platform.
-        </CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Recent appointments</CardTitle>
+              <CardDescription>
+                Latest bookings created across the platform.
+              </CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-80 pr-4">
-          <div className="space-y-3">
+          <ItemGroup className="space-y-3">
             {rows.map((apt) => (
-              <Card key={apt['id']}>
-                <CardHeader className="pb-2">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <CardTitle>{apt['salon_name'] || 'Unknown salon'}</CardTitle>
-                    <Badge
-                      variant={appointmentStatusVariant[apt['status'] ?? ''] ?? 'secondary'}
-                      className="capitalize"
-                    >
-                      {apt['status'] || 'pending'}
-                    </Badge>
-                  </div>
-                  <CardDescription>
-                    {apt['customer_name'] || 'Unknown customer'} • {apt['service_name'] || 'Service pending'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3 pt-0">
+              <Item key={apt['id']} variant="outline" className="flex-col gap-3">
+                <ItemContent>
+                  <ItemGroup>
+                    <Item variant="muted">
+                      <ItemContent>
+                        <ItemTitle>{apt['salon_name'] || 'Unknown salon'}</ItemTitle>
+                        <ItemDescription>
+                          {apt['customer_name'] || 'Unknown customer'} · {apt['service_name'] || 'Service pending'}
+                        </ItemDescription>
+                      </ItemContent>
+                      <ItemActions>
+                        <Badge variant={appointmentStatusVariant[apt['status'] ?? ''] ?? 'secondary'}>
+                          {apt['status'] || 'pending'}
+                        </Badge>
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
                   <Separator />
                   <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
                     <span>
@@ -71,10 +92,10 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
                       Scheduled {safeFormatDate(apt['start_time'], 'MMM d, yyyy p', 'TBD')}
                     </span>
                   </div>
-                </CardContent>
-              </Card>
+                </ItemContent>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         </ScrollArea>
       </CardContent>
     </Card>

@@ -1,6 +1,12 @@
 import { getUserSalonMedia } from './api/queries'
 import { MediaForm } from './components/media-form'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 export async function SalonMedia() {
   let salon: Awaited<ReturnType<typeof getUserSalon>> | null = null
@@ -15,10 +21,12 @@ export async function SalonMedia() {
     return (
       <section className="py-16 md:py-24 lg:py-32">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4">
-            <p>Salon Media</p>
-            <p className="text-muted-foreground">No salon found. Please create a salon first.</p>
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>Salon media unavailable</EmptyTitle>
+              <EmptyDescription>No salon found. Please create a salon first.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </div>
       </section>
     )

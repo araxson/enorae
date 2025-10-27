@@ -6,6 +6,18 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import type { ProfileDetail } from '@/features/admin/profile/types'
 import { updateProfilePreferencesAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
@@ -67,79 +79,113 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle>Preferences</CardTitle>
-        <CardDescription>Adjust locale, timezone, and notification preferences.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Preferences</CardTitle>
+              <CardDescription>Adjust locale, timezone, and notification preferences.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="space-y-2">
-              <label htmlFor="admin-profile-timezone" className="text-sm font-medium">
-                Timezone
-              </label>
-              <Input
-                id="admin-profile-timezone"
-                value={timezone}
-                onChange={(event) => setTimezone(event.target.value)}
-                placeholder="America/Los_Angeles"
-                disabled={isPending}
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="admin-profile-locale" className="text-sm font-medium">
-                Locale
-              </label>
-              <Input
-                id="admin-profile-locale"
-                value={locale}
-                onChange={(event) => setLocale(event.target.value)}
-                placeholder="en-US"
-                disabled={isPending}
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="admin-profile-country" className="text-sm font-medium">
-                Country code
-              </label>
-              <Input
-                id="admin-profile-country"
-                value={countryCode}
-                onChange={(event) => setCountryCode(event.target.value.toUpperCase())}
-                placeholder="US"
-                maxLength={2}
-                disabled={isPending}
-              />
-            </div>
-          </div>
+          <FieldSet>
+            <FieldLegend variant="label">Regional settings</FieldLegend>
+            <FieldGroup className="gap-4 sm:grid sm:grid-cols-3">
+              <Field>
+                <FieldLabel htmlFor="admin-profile-timezone">Timezone</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="admin-profile-timezone"
+                    value={timezone}
+                    onChange={(event) => setTimezone(event.target.value)}
+                    placeholder="America/Los_Angeles"
+                    disabled={isPending}
+                  />
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="admin-profile-locale">Locale</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="admin-profile-locale"
+                    value={locale}
+                    onChange={(event) => setLocale(event.target.value)}
+                    placeholder="en-US"
+                    disabled={isPending}
+                  />
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="admin-profile-country">Country code</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="admin-profile-country"
+                    value={countryCode}
+                    onChange={(event) => setCountryCode(event.target.value.toUpperCase())}
+                    placeholder="US"
+                    maxLength={2}
+                    disabled={isPending}
+                  />
+                  <FieldDescription>Use ISO-3166 alpha-2.</FieldDescription>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
           <div className="flex flex-col gap-3">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle>Marketing emails</CardTitle>
-                <CardDescription>Send product updates and promotional campaigns.</CardDescription>
+                <ItemGroup>
+                  <Item variant="muted">
+                    <ItemContent>
+                      <CardTitle>Marketing emails</CardTitle>
+                      <CardDescription>Send product updates and promotional campaigns.</CardDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
-              <CardContent className="flex items-center justify-between gap-4 pt-0">
-                <Switch
-                  checked={marketingEmails}
-                  onCheckedChange={setMarketingEmails}
-                  disabled={isPending}
-                  aria-label="Toggle marketing emails"
-                />
+              <CardContent className="pt-0">
+                <ItemGroup className="items-center justify-between gap-4">
+                  <Item variant="muted">
+                    <ItemActions>
+                      <Switch
+                        checked={marketingEmails}
+                        onCheckedChange={setMarketingEmails}
+                        disabled={isPending}
+                        aria-label="Toggle marketing emails"
+                      />
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle>SMS alerts</CardTitle>
-                <CardDescription>Enable SMS notifications where available.</CardDescription>
+                <ItemGroup>
+                  <Item variant="muted">
+                    <ItemContent>
+                      <CardTitle>SMS alerts</CardTitle>
+                      <CardDescription>Enable SMS notifications where available.</CardDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
-              <CardContent className="flex items-center justify-between gap-4 pt-0">
-                <Switch
-                  checked={smsAlerts}
-                  onCheckedChange={setSmsAlerts}
-                  disabled={isPending}
-                  aria-label="Toggle SMS alerts"
-                />
+              <CardContent className="pt-0">
+                <ItemGroup className="items-center justify-between gap-4">
+                  <Item variant="muted">
+                    <ItemActions>
+                      <Switch
+                        checked={smsAlerts}
+                        onCheckedChange={setSmsAlerts}
+                        disabled={isPending}
+                        aria-label="Toggle SMS alerts"
+                      />
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardContent>
             </Card>
           </div>
@@ -151,9 +197,24 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
             </Alert>
           )}
 
-          <Button type="submit" disabled={isPending}>
-            {isPending ? 'Saving…' : 'Save preferences'}
-          </Button>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemActions>
+                <ButtonGroup>
+                  <Button type="submit" disabled={isPending}>
+                    {isPending ? (
+                      <>
+                        <Spinner className="mr-2" />
+                        Saving…
+                      </>
+                    ) : (
+                      'Save preferences'
+                    )}
+                  </Button>
+                </ButtonGroup>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </form>
       </CardContent>
     </Card>

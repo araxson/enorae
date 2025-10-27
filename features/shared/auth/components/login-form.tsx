@@ -5,12 +5,21 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { login } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldGroup,
+  FieldSet,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 export function LoginForm() {
   const router = useRouter()
@@ -54,50 +63,63 @@ export function LoginForm() {
 
       <form action={handleSubmit}>
         <CardContent>
-          <div className="flex flex-col gap-6">
-            {error && (
+          <FieldSet className="gap-6">
+            {error ? (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Login failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
-            )}
+            ) : null}
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+            <FieldGroup className="gap-6">
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    required
+                  />
+                </FieldContent>
+              </Field>
 
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </div>
-              <PasswordInput
-                id="password"
-                name="password"
-                required
-                placeholder="Enter your password"
-              />
-            </div>
-          </div>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldContent>
+                  <PasswordInput
+                    id="password"
+                    name="password"
+                    required
+                    placeholder="Enter your password"
+                  />
+                  <FieldDescription className="flex justify-end">
+                    <Link
+                      href="/auth/forgot-password"
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Forgot password?
+                    </Link>
+                  </FieldDescription>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
         </CardContent>
 
         <CardFooter>
-          <div className="flex w-full flex-col gap-4">
+          <ButtonGroup className="w-full flex-col gap-4">
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Signing in...</span>
+                </>
+              ) : (
+                <span>Sign In</span>
+              )}
             </Button>
             <p className="text-sm font-medium text-center text-muted-foreground">
               Don&apos;t have an account?{' '}
@@ -105,7 +127,7 @@ export function LoginForm() {
                 Sign up
               </Link>
             </p>
-          </div>
+          </ButtonGroup>
         </CardFooter>
       </form>
       </Card>

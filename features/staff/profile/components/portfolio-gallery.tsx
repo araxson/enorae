@@ -20,6 +20,11 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface PortfolioGalleryProps {
   portfolioImages?: string[]
@@ -55,8 +60,14 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Portfolio Gallery</CardTitle>
-        <CardDescription>Upload images to showcase your work.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Portfolio Gallery</CardTitle>
+              <CardDescription>Upload images to showcase your work.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <FieldSet className="flex flex-col gap-4">

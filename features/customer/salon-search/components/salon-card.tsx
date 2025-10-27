@@ -3,7 +3,15 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { MapPin, Star, Shield, Sparkles } from 'lucide-react'
-import { Item, ItemActions, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type SalonCardProps = {
   salon: {
@@ -40,23 +48,39 @@ function SalonCardComponent({ salon, variant = 'default' }: SalonCardProps) {
     <Link href={`/customer/salons/${salon.slug}`}>
       <Card className="h-full">
         <CardHeader>
-          <div className="flex items-start justify-between gap-2">
-            <CardTitle>{salon.name}</CardTitle>
-            <div className="flex gap-1">
-              {salon.is_verified && <Shield className="h-4 w-4 text-secondary" aria-label="Verified salon" />}
-              {salon.is_featured && <Sparkles className="h-4 w-4 text-accent" aria-label="Featured salon" />}
-            </div>
-          </div>
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <MapPin className="h-3 w-3" aria-hidden="true" />
-            <CardDescription>{formatAddress(salon.address)}</CardDescription>
-          </div>
+          <ItemGroup className="gap-2">
+            <Item>
+              <ItemContent>
+                <CardTitle>{salon.name}</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none gap-1">
+                {salon.is_verified ? (
+                  <Shield className="h-4 w-4 text-secondary" aria-label="Verified salon" />
+                ) : null}
+                {salon.is_featured ? (
+                  <Sparkles className="h-4 w-4 text-accent" aria-label="Featured salon" />
+                ) : null}
+              </ItemActions>
+            </Item>
+            <Item>
+              <ItemContent>
+                <ItemDescription>
+                  <span className="inline-flex items-center gap-1 text-muted-foreground">
+                    <MapPin className="h-3 w-3" aria-hidden="true" />
+                    <CardDescription>{formatAddress(salon.address)}</CardDescription>
+                  </span>
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <ItemGroup>
             <Item>
-              <ItemContent className="flex items-center gap-2">
+              <ItemMedia variant="icon">
                 <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
                 <ItemTitle>{formatRating(salon.rating_average)} stars</ItemTitle>
               </ItemContent>
               <ItemActions className="flex-none gap-2">

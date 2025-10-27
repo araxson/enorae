@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 import { AssignedServicesList } from './assigned-services-list'
 import { BulkAssignSection } from './bulk-assign-section'
@@ -64,7 +65,7 @@ export function AssignServicesDialogContent({
       </DialogHeader>
 
       <div className="space-y-6">
-        <div className="flex gap-2">
+        <ButtonGroup>
           <Button
             variant={mode === 'bulk' ? 'default' : 'outline'}
             size="sm"
@@ -79,7 +80,7 @@ export function AssignServicesDialogContent({
           >
             Single Assign
           </Button>
-        </div>
+        </ButtonGroup>
 
         {mode === 'bulk' ? (
           <BulkAssignSection
@@ -110,18 +111,20 @@ export function AssignServicesDialogContent({
       </div>
 
       <DialogFooter className="gap-2 sm:gap-2">
-        <Button variant="outline" onClick={onClose}>
-          Cancel
-        </Button>
-        {mode === 'bulk' ? (
-          <Button onClick={handleBulkAssign} disabled={selectedServices.size === 0 || isSubmitting}>
-            {isSubmitting ? 'Assigning...' : 'Assign Selected Services'}
+        <ButtonGroup className="w-full sm:w-auto">
+          <Button variant="outline" onClick={onClose}>
+            Cancel
           </Button>
-        ) : (
-          <Button onClick={handleSingleAssign} disabled={!selectedService || isSubmitting}>
-            {isSubmitting ? 'Assigning...' : 'Assign Service'}
-          </Button>
-        )}
+          {mode === 'bulk' ? (
+            <Button onClick={handleBulkAssign} disabled={selectedServices.size === 0 || isSubmitting}>
+              {isSubmitting ? 'Assigning...' : 'Assign Selected Services'}
+            </Button>
+          ) : (
+            <Button onClick={handleSingleAssign} disabled={!selectedService || isSubmitting}>
+              {isSubmitting ? 'Assigning...' : 'Assign Service'}
+            </Button>
+          )}
+        </ButtonGroup>
       </DialogFooter>
     </DialogContent>
   )

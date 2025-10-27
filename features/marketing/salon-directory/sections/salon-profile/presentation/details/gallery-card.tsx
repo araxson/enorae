@@ -6,6 +6,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
 import type { Salon } from '../types'
 
 interface GalleryCardProps {
@@ -27,9 +28,13 @@ export function GalleryCard({ salon }: GalleryCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <span className="text-sm text-muted-foreground">
-              Check back later for visual highlights.
-            </span>
+            <Item variant="muted">
+              <ItemContent>
+                <ItemDescription>
+                  Check back later for visual highlights.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
           </EmptyContent>
         </Empty>
       </CardContent>

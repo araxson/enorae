@@ -3,7 +3,13 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 import type { PricingFormState } from './use-pricing-form'
 
 type TaxCommissionSectionProps = {
@@ -19,11 +25,10 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
         <CardDescription>Set taxation and staff commission details.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="taxRate">Tax Rate (%)</Label>
+        <FieldGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Field>
+            <FieldLabel htmlFor="taxRate">Tax Rate (%)</FieldLabel>
+            <FieldContent>
               <Input
                 id="taxRate"
                 type="number"
@@ -34,11 +39,13 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
                 onChange={(event) => onChange('taxRate', event.target.value)}
                 placeholder="0.00"
               />
-              <p className="text-xs text-muted-foreground">Sales tax percentage</p>
-            </div>
+            </FieldContent>
+            <FieldDescription>Sales tax percentage.</FieldDescription>
+          </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="commissionRate">Commission Rate (%)</Label>
+          <Field>
+            <FieldLabel htmlFor="commissionRate">Commission Rate (%)</FieldLabel>
+            <FieldContent>
               <Input
                 id="commissionRate"
                 type="number"
@@ -49,23 +56,25 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
                 onChange={(event) => onChange('commissionRate', event.target.value)}
                 placeholder="0.00"
               />
-              <p className="text-xs text-muted-foreground">Staff commission percentage</p>
-            </div>
-          </div>
+            </FieldContent>
+            <FieldDescription>Staff commission percentage.</FieldDescription>
+          </Field>
+        </FieldGroup>
 
-          <div className="flex items-center space-x-2">
+        <Field orientation="horizontal">
+          <FieldLabel htmlFor="isTaxable">This service is taxable</FieldLabel>
+          <FieldContent>
             <Checkbox
               id="isTaxable"
               checked={state.isTaxable}
               onCheckedChange={(checked) => onChange('isTaxable', Boolean(checked))}
             />
-            <Label htmlFor="isTaxable" className="cursor-pointer">
-              This service is taxable
-            </Label>
-          </div>
+          </FieldContent>
+        </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="currencyCode">Currency Code</Label>
+        <Field>
+          <FieldLabel htmlFor="currencyCode">Currency Code</FieldLabel>
+          <FieldContent>
             <Input
               id="currencyCode"
               name="currencyCode"
@@ -74,9 +83,9 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
               placeholder="USD"
               maxLength={3}
             />
-            <p className="text-xs text-muted-foreground">ISO currency code (e.g., USD, EUR)</p>
-          </div>
-        </div>
+          </FieldContent>
+          <FieldDescription>ISO currency code (e.g., USD, EUR).</FieldDescription>
+        </Field>
       </CardContent>
     </Card>
   )

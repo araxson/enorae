@@ -73,8 +73,14 @@ export function ActionButton({
       disabled={disabled || loading}
       onClick={handleClick}
     >
-      {loading && <Spinner className="mr-2 h-4 w-4" aria-hidden="true" />}
-      {loading && loadingText ? loadingText : children}
+      {loading ? (
+        <>
+          <Spinner className="size-4" aria-hidden="true" />
+          <span>{loadingText ?? children}</span>
+        </>
+      ) : (
+        children
+      )}
     </Button>
   )
 }

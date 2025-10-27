@@ -13,6 +13,12 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface PrivacySettingsProps {
   initialSettings: PrivacySettings
@@ -40,64 +46,94 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Privacy Settings</CardTitle>
-        <CardDescription>Control who can see your information.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Privacy Settings</CardTitle>
+              <CardDescription>Control who can see your information.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <FieldSet>
           <Field orientation="horizontal">
             <FieldLabel htmlFor="profile_visible">Profile visible to clients</FieldLabel>
             <FieldContent>
-              <FieldDescription>Allow clients to view your profile</FieldDescription>
-              <div className="flex justify-end">
-                <Switch
-                  id="profile_visible"
-                  checked={settings.profile_visible_to_clients}
-                  onCheckedChange={() => handleToggle('profile_visible_to_clients')}
-                />
-              </div>
+              <ItemGroup>
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <FieldDescription>Allow clients to view your profile</FieldDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Switch
+                      id="profile_visible"
+                      checked={settings.profile_visible_to_clients}
+                      onCheckedChange={() => handleToggle('profile_visible_to_clients')}
+                    />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
             </FieldContent>
           </Field>
 
           <Field orientation="horizontal">
             <FieldLabel htmlFor="show_ratings">Show ratings</FieldLabel>
             <FieldContent>
-              <FieldDescription>Display your ratings publicly</FieldDescription>
-              <div className="flex justify-end">
-                <Switch
-                  id="show_ratings"
-                  checked={settings.show_ratings}
-                  onCheckedChange={() => handleToggle('show_ratings')}
-                />
-              </div>
+              <ItemGroup>
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <FieldDescription>Display your ratings publicly</FieldDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Switch
+                      id="show_ratings"
+                      checked={settings.show_ratings}
+                      onCheckedChange={() => handleToggle('show_ratings')}
+                    />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
             </FieldContent>
           </Field>
 
           <Field orientation="horizontal">
             <FieldLabel htmlFor="show_appointments">Show completed appointments</FieldLabel>
             <FieldContent>
-              <FieldDescription>Display appointment count</FieldDescription>
-              <div className="flex justify-end">
-                <Switch
-                  id="show_appointments"
-                  checked={settings.show_completed_appointments}
-                  onCheckedChange={() => handleToggle('show_completed_appointments')}
-                />
-              </div>
+              <ItemGroup>
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <FieldDescription>Display appointment count</FieldDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Switch
+                      id="show_appointments"
+                      checked={settings.show_completed_appointments}
+                      onCheckedChange={() => handleToggle('show_completed_appointments')}
+                    />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
             </FieldContent>
           </Field>
 
           <Field orientation="horizontal">
             <FieldLabel htmlFor="allow_search">Allow profile search</FieldLabel>
             <FieldContent>
-              <FieldDescription>Let clients find you in search</FieldDescription>
-              <div className="flex justify-end">
-                <Switch
-                  id="allow_search"
-                  checked={settings.allow_profile_search}
-                  onCheckedChange={() => handleToggle('allow_profile_search')}
-                />
-              </div>
+              <ItemGroup>
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <FieldDescription>Let clients find you in search</FieldDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Switch
+                      id="allow_search"
+                      checked={settings.allow_profile_search}
+                      onCheckedChange={() => handleToggle('allow_profile_search')}
+                    />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
             </FieldContent>
           </Field>
         </FieldSet>

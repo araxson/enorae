@@ -1,10 +1,17 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ExportButton } from '@/features/business/business-common/components'
 import type { getCustomerCohorts } from '@/features/business/analytics/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type CustomerCohort = Awaited<ReturnType<typeof getCustomerCohorts>>[number]
 
@@ -16,10 +23,10 @@ type Props = {
 
 export function CohortsTable({ cohorts, start, end }: Props) {
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex gap-4 items-center items-center justify-between">
-          <CardTitle>Customer cohorts</CardTitle>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader className="items-start justify-between gap-4">
+        <ItemTitle>Customer cohorts</ItemTitle>
+        <ItemActions className="flex-none">
           <ExportButton
             data={cohorts.map((cohort) => ({
               cohort: cohort.cohort,
@@ -30,10 +37,10 @@ export function CohortsTable({ cohorts, start, end }: Props) {
             }))}
             filename={`cohorts-${start}-to-${end}`}
           />
-        </div>
-        <CardDescription>Monthly retention for the last 6 cohorts.</CardDescription>
-      </CardHeader>
-      <CardContent>
+        </ItemActions>
+      </ItemHeader>
+      <ItemDescription>Monthly retention for the last 6 cohorts.</ItemDescription>
+      <ItemContent>
         <ScrollArea className="w-full">
           <Table>
             <TableHeader>
@@ -59,7 +66,7 @@ export function CohortsTable({ cohorts, start, end }: Props) {
           </Table>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

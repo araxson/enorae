@@ -16,6 +16,14 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -47,37 +55,55 @@ export function ServiceList({ services }: ServiceListProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Services</CardTitle>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <CardTitle>Services</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <Accordion type="multiple" className="w-full space-y-2">
           {services.map((service, index) => (
             <AccordionItem key={service['id'] || ''} value={`service-${index}`}>
               <AccordionTrigger>
-                <div className="flex w-full flex-col gap-2 px-4 py-3 text-left sm:flex-row sm:items-center sm:justify-between">
-                  <h6 className="text-base">{service['name'] || 'Service'}</h6>
-                  {service['category_name'] && (
-                    <div className="sm:ml-auto">
-                      <Badge variant="secondary">{service['category_name']}</Badge>
-                    </div>
-                  )}
-                </div>
+                <ItemGroup className="w-full px-4 py-3">
+                  <Item variant="muted" size="sm" className="w-full flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <ItemContent>
+                      <ItemTitle>{service['name'] || 'Service'}</ItemTitle>
+                    </ItemContent>
+                    {service['category_name'] ? (
+                      <ItemActions className="flex-none">
+                        <Badge variant="secondary">{service['category_name']}</Badge>
+                      </ItemActions>
+                    ) : null}
+                  </Item>
+                </ItemGroup>
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4 pt-2">
-                <div className="space-y-4">
-                  {service['description'] && (
-                    <CardDescription>{service['description']}</CardDescription>
-                  )}
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    {service['duration_minutes'] && (
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        <Badge variant="outline">{service['duration_minutes']} min</Badge>
+                <ItemGroup className="gap-4">
+                  {service['description'] ? (
+                    <Item>
+                      <ItemContent>
+                        <ItemDescription>{service['description']}</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  ) : null}
+                  <Item>
+                    <ItemContent>
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        {service['duration_minutes'] ? (
+                          <div className="flex items-center gap-2 text-muted-foreground">
+                            <Clock className="h-4 w-4" aria-hidden="true" />
+                            <Badge variant="outline">{service['duration_minutes']} min</Badge>
+                          </div>
+                        ) : null}
+                        <Button size="sm">Book now</Button>
                       </div>
-                    )}
-                    <Button size="sm">Book now</Button>
-                  </div>
-                </div>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               </AccordionContent>
             </AccordionItem>
           ))}

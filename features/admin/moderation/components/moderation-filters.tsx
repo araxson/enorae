@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Search } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { Search, X } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -11,6 +10,24 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
+import {
+  Item,
+  ItemActions,
+  ItemGroup,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 declare global {
   interface WindowEventMap {
@@ -64,71 +81,118 @@ export function ModerationFilters({
   ])
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <div className="flex w-full justify-end">
-        <Button variant="ghost" size="sm" onClick={clearFilters}>
-          Clear all filters
-        </Button>
-      </div>
-      <div className="relative min-w-56 flex-1">
-        <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search reviews..."
-          value={searchQuery}
-          onChange={(event) => onSearchChange(event.target.value)}
-          className="pl-9"
-        />
-      </div>
+    <div className="flex flex-col gap-3">
+      <ItemGroup className="justify-end">
+        <Item variant="muted">
+          <ItemActions>
+            <ButtonGroup>
+              <Button variant="ghost" size="sm" onClick={clearFilters}>
+                Clear all filters
+              </Button>
+            </ButtonGroup>
+          </ItemActions>
+        </Item>
+      </ItemGroup>
+      <FieldGroup className="flex flex-wrap items-center gap-3">
+        <Field className="min-w-56 flex-1">
+          <FieldLabel htmlFor="moderation-search">Search</FieldLabel>
+          <FieldContent>
+            <InputGroup>
+              <InputGroupAddon>
+                <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              </InputGroupAddon>
+              <InputGroupInput
+                id="moderation-search"
+                placeholder="Search reviews..."
+                value={searchQuery}
+                onChange={(event) => onSearchChange(event.target.value)}
+              />
+              <InputGroupAddon align="inline-end">
+                {searchQuery ? (
+                  <InputGroupButton
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Clear search"
+                    onClick={() => onSearchChange('')}
+                  >
+                    <X className="h-4 w-4" aria-hidden="true" />
+                  </InputGroupButton>
+                ) : null}
+              </InputGroupAddon>
+            </InputGroup>
+          </FieldContent>
+        </Field>
 
-      <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-        <SelectTrigger className="w-52">
-          <SelectValue placeholder="All reviews" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All reviews</SelectItem>
-          <SelectItem value="flagged">Flagged only</SelectItem>
-          <SelectItem value="unflagged">Not flagged</SelectItem>
-          <SelectItem value="pending">Pending response</SelectItem>
-          <SelectItem value="responded">Has response</SelectItem>
-          <SelectItem value="featured">Featured</SelectItem>
-        </SelectContent>
-      </Select>
+        <Field className="min-w-48">
+          <FieldLabel>Status</FieldLabel>
+          <FieldContent>
+            <Select value={statusFilter} onValueChange={onStatusFilterChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="All reviews" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All reviews</SelectItem>
+                <SelectItem value="flagged">Flagged only</SelectItem>
+                <SelectItem value="unflagged">Not flagged</SelectItem>
+                <SelectItem value="pending">Pending response</SelectItem>
+                <SelectItem value="responded">Has response</SelectItem>
+                <SelectItem value="featured">Featured</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+        </Field>
 
-      <Select value={riskFilter} onValueChange={onRiskFilterChange}>
-        <SelectTrigger className="w-40">
-          <SelectValue placeholder="Risk level" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All risk levels</SelectItem>
-          <SelectItem value="high">High risk</SelectItem>
-          <SelectItem value="medium">Medium</SelectItem>
-          <SelectItem value="low">Low</SelectItem>
-        </SelectContent>
-      </Select>
+        <Field className="min-w-40">
+          <FieldLabel>Risk level</FieldLabel>
+          <FieldContent>
+            <Select value={riskFilter} onValueChange={onRiskFilterChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="All risk levels" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All risk levels</SelectItem>
+                <SelectItem value="high">High risk</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="low">Low</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+        </Field>
 
-      <Select value={sentimentFilter} onValueChange={onSentimentFilterChange}>
-        <SelectTrigger className="w-40">
-          <SelectValue placeholder="Sentiment" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All sentiments</SelectItem>
-          <SelectItem value="positive">Positive</SelectItem>
-          <SelectItem value="neutral">Neutral</SelectItem>
-          <SelectItem value="negative">Negative</SelectItem>
-        </SelectContent>
-      </Select>
+        <Field className="min-w-40">
+          <FieldLabel>Sentiment</FieldLabel>
+          <FieldContent>
+            <Select value={sentimentFilter} onValueChange={onSentimentFilterChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="All sentiments" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All sentiments</SelectItem>
+                <SelectItem value="positive">Positive</SelectItem>
+                <SelectItem value="neutral">Neutral</SelectItem>
+                <SelectItem value="negative">Negative</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+        </Field>
 
-      <Select value={reputationFilter} onValueChange={onReputationFilterChange}>
-        <SelectTrigger className="w-44">
-          <SelectValue placeholder="Reviewer reputation" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All reputation tiers</SelectItem>
-          <SelectItem value="trusted">Trusted</SelectItem>
-          <SelectItem value="neutral">Neutral</SelectItem>
-          <SelectItem value="risky">Risky</SelectItem>
-        </SelectContent>
-      </Select>
+        <Field className="min-w-44">
+          <FieldLabel>Reviewer reputation</FieldLabel>
+          <FieldContent>
+            <Select value={reputationFilter} onValueChange={onReputationFilterChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="All reputation tiers" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All reputation tiers</SelectItem>
+                <SelectItem value="trusted">Trusted</SelectItem>
+                <SelectItem value="neutral">Neutral</SelectItem>
+                <SelectItem value="risky">Risky</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+        </Field>
+      </FieldGroup>
     </div>
   )
 }

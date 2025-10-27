@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Input } from '@/components/ui/input'
 
 import {
@@ -190,7 +191,14 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Saving...' : category ? 'Update' : 'Create'}
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Saving...</span>
+                  </>
+                ) : (
+                  <span>{category ? 'Update' : 'Create'}</span>
+                )}
               </Button>
             </ButtonGroup>
           </DialogFooter>

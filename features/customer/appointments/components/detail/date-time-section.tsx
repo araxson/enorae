@@ -32,29 +32,41 @@ export function DateTimeSection({
           <ItemContent>
             <ItemTitle>Date &amp; time</ItemTitle>
             <ItemDescription>
-              {start
-                ? start.toLocaleDateString('en-US', {
+              {start ? (
+                <time dateTime={appointment['start_time'] ?? undefined}>
+                  {start.toLocaleDateString('en-US', {
                     weekday: 'long',
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
-                  })
-                : 'Date to be determined'}
+                  })}
+                </time>
+              ) : (
+                'Date to be determined'
+              )}
             </ItemDescription>
             <ItemDescription className="text-muted-foreground">
-              {start
-                ? start.toLocaleTimeString('en-US', {
+              {start ? (
+                <time dateTime={appointment['start_time'] ?? undefined}>
+                  {start.toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
-                  })
-                : '—'}
+                  })}
+                </time>
+              ) : (
+                '—'
+              )}
               {' — '}
-              {end
-                ? end.toLocaleTimeString('en-US', {
+              {end ? (
+                <time dateTime={appointment['end_time'] ?? undefined}>
+                  {end.toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
-                  })
-                : '—'}
+                  })}
+                </time>
+              ) : (
+                '—'
+              )}
             </ItemDescription>
           </ItemContent>
           <ItemMedia variant="icon">
@@ -63,10 +75,17 @@ export function DateTimeSection({
         </Item>
       </ItemGroup>
 
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Clock className="h-4 w-4" aria-hidden="true" />
-        <span>{appointment['duration_minutes'] || 0} minutes total</span>
-      </div>
+      <ItemGroup>
+        <Item variant="muted" size="sm">
+          <ItemMedia variant="icon">
+            <Clock className="h-4 w-4" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>Duration</ItemTitle>
+            <ItemDescription>{appointment['duration_minutes'] || 0} minutes total</ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       {appointment['staff_name'] ? (
         <>

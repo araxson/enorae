@@ -28,8 +28,14 @@ export function SupportFaqCard({ items }: SupportFaqCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>FAQ & best practices</CardTitle>
-        <CardDescription>Answers curated from our support specialists.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>FAQ & best practices</CardTitle>
+              <CardDescription>Answers curated from our support specialists.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

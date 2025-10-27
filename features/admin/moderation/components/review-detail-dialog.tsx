@@ -18,6 +18,7 @@ import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import { DetailCard, InfoBlock, Panel, StatusBadges } from './review-detail-helpers'
 import { ReviewResponseForm } from './review-response-form'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type ReviewDetailDialogProps = {
   review: ModerationReview | null
@@ -179,10 +180,12 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
           )}
 
           {!review['has_response'] && !isResponding && (
-            <Button onClick={() => setIsResponding(true)} variant="outline" className="gap-2">
-              <MessageSquare className="h-4 w-4" />
-              Add response
-            </Button>
+            <ButtonGroup className="w-fit">
+              <Button onClick={() => setIsResponding(true)} variant="outline" className="gap-2">
+                <MessageSquare className="h-4 w-4" />
+                Add response
+              </Button>
+            </ButtonGroup>
           )}
 
           {isResponding && (

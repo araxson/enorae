@@ -33,6 +33,8 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { Spinner } from '@/components/ui/spinner'
+import { Kbd } from '@/components/ui/kbd'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
 
 interface AdvancedSearchClientProps {
   initialResults: SalonSearchResult[]
@@ -88,13 +90,19 @@ export function AdvancedSearchClient({
       {/* Search Bar with Advanced Filters */}
       <Card>
         <CardHeader>
-          <div className="flex items-center gap-2">
-            <Search className="h-5 w-5" />
-            <CardTitle>Advanced Salon Search</CardTitle>
-          </div>
-          <CardDescription>
-            Find the perfect salon with advanced filters and fuzzy matching
-          </CardDescription>
+          <ItemGroup>
+            <Item>
+              <ItemMedia variant="icon">
+                <Search className="h-5 w-5" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <CardTitle>Advanced Salon Search</CardTitle>
+                <CardDescription>
+                  Find the perfect salon with advanced filters and fuzzy matching
+                </CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">
@@ -147,6 +155,22 @@ export function AdvancedSearchClient({
                 </Command>
               </PopoverContent>
             </Popover>
+            <ItemGroup>
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <ItemDescription>
+                    <span className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                      <span>Tip:</span>
+                      <Kbd>↑</Kbd>
+                      <Kbd>↓</Kbd>
+                      <span>to navigate suggestions,</span>
+                      <Kbd>Esc</Kbd>
+                      <span>to close.</span>
+                    </span>
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
 
             <SearchFilters
               searchTerm={searchTerm}
@@ -180,6 +204,17 @@ export function AdvancedSearchClient({
                 'Search Salons'
               )}
             </Button>
+
+            <ItemGroup>
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <ItemDescription>
+                    {results.length}{' '}
+                    {results.length === 1 ? 'matching salon' : 'matching salons'}
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
         </CardContent>
       </Card>

@@ -1,6 +1,5 @@
 'use client'
 
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -22,108 +21,125 @@ interface FormFieldsProps {
 }
 
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 
 export function FormFields({ service, formData, setFormData, isLoadingStaff, staff }: FormFieldsProps) {
   return (
-    <>
+    <FieldSet className="space-y-4">
       <Alert>
         <AlertDescription>
           Service ID: <span className="font-medium">{service['service_id']}</span>
         </AlertDescription>
       </Alert>
 
-      <div className="space-y-2">
-        <Label htmlFor="staff">Staff</Label>
-        <Select
-          value={formData.staffId}
-          onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, staffId: value }))
-          }
-          disabled={isLoadingStaff}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder={isLoadingStaff ? 'Loading staff...' : 'Select staff member'} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="">Any available</SelectItem>
-              {staff.length > 0 ? (
-                staff.map((member) => (
-                  <SelectItem key={member['id']} value={member['id']}>
-                    {member['name']}
+      <Field>
+        <FieldLabel htmlFor="staff">Staff</FieldLabel>
+        <FieldContent>
+          <Select
+            value={formData.staffId}
+            onValueChange={(value) =>
+              setFormData((prev) => ({ ...prev, staffId: value }))
+            }
+            disabled={isLoadingStaff}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={isLoadingStaff ? 'Loading staff...' : 'Select staff member'} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="">Any available</SelectItem>
+                {staff.length > 0 ? (
+                  staff.map((member) => (
+                    <SelectItem key={member['id']} value={member['id']}>
+                      {member['name']}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="no-staff" disabled>
+                    {isLoadingStaff ? 'Loading staff...' : 'No staff available'}
                   </SelectItem>
-                ))
-              ) : (
-                <SelectItem value="no-staff" disabled>
-                  {isLoadingStaff ? 'Loading staff...' : 'No staff available'}
-                </SelectItem>
-              )}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
+                )}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </FieldContent>
+      </Field>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="startTime">Start Time</Label>
+      <FieldGroup className="grid grid-cols-2 gap-4">
+        <Field>
+          <FieldLabel htmlFor="startTime">Start Time</FieldLabel>
+          <FieldContent>
+            <Input
+              id="startTime"
+              type="time"
+              value={formData.startTime}
+              onChange={(event) =>
+                setFormData((prev) => ({ ...prev, startTime: event.target.value }))
+              }
+            />
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor="endTime">End Time</FieldLabel>
+          <FieldContent>
+            <Input
+              id="endTime"
+              type="time"
+              value={formData.endTime}
+              onChange={(event) =>
+                setFormData((prev) => ({ ...prev, endTime: event.target.value }))
+              }
+            />
+          </FieldContent>
+        </Field>
+      </FieldGroup>
+
+      <Field>
+        <FieldLabel htmlFor="duration">Duration (minutes)</FieldLabel>
+        <FieldContent>
           <Input
-            id="startTime"
-            type="time"
-            value={formData.startTime}
+            id="duration"
+            type="number"
+            min="1"
+            value={formData.durationMinutes}
             onChange={(event) =>
-              setFormData((prev) => ({ ...prev, startTime: event.target.value }))
+              setFormData((prev) => ({ ...prev, durationMinutes: event.target.value }))
             }
           />
-        </div>
+        </FieldContent>
+      </Field>
 
-        <div className="space-y-2">
-          <Label htmlFor="endTime">End Time</Label>
-          <Input
-            id="endTime"
-            type="time"
-            value={formData.endTime}
-            onChange={(event) =>
-              setFormData((prev) => ({ ...prev, endTime: event.target.value }))
+      <Field>
+        <FieldLabel htmlFor="status">Status</FieldLabel>
+        <FieldContent>
+          <Select
+            value={formData['status']}
+            onValueChange={(value) =>
+              setFormData((prev) => ({ ...prev, status: value }))
             }
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="duration">Duration (minutes)</Label>
-        <Input
-          id="duration"
-          type="number"
-          min="1"
-          value={formData.durationMinutes}
-          onChange={(event) =>
-            setFormData((prev) => ({ ...prev, durationMinutes: event.target.value }))
-          }
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="status">Status</Label>
-        <Select
-          value={formData['status']}
-          onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, status: value }))
-          }
-        >
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="confirmed">Confirmed</SelectItem>
-              <SelectItem value="in_progress">In Progress</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-    </>
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="confirmed">Confirmed</SelectItem>
+                <SelectItem value="in_progress">In Progress</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </FieldContent>
+      </Field>
+    </FieldSet>
   )
 }

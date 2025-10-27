@@ -3,12 +3,20 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Bell, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { updateNotificationPreferences } from '@/features/shared/preferences/api/mutations'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface NotificationPreferences {
   email_appointments?: boolean
@@ -35,6 +43,10 @@ export function NotificationPreferencesForm({
     sms_reminders: initialPreferences.sms_reminders ?? true,
     push_enabled: initialPreferences.push_enabled ?? true,
   })
+  const emailAppointmentsLabelId = 'notification-email-appointments-label'
+  const emailPromotionsLabelId = 'notification-email-promotions-label'
+  const smsRemindersLabelId = 'notification-sms-reminders-label'
+  const pushEnabledLabelId = 'notification-push-enabled-label'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -76,39 +88,45 @@ export function NotificationPreferencesForm({
               <h3 className="text-sm font-medium">Email notifications</h3>
             </div>
 
-            <div className="space-y-4 pl-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="email_appointments">Appointment updates</Label>
-                  <CardDescription>
+            <ItemGroup className="space-y-4 pl-6">
+              <Item>
+                <ItemContent>
+                  <ItemTitle id={emailAppointmentsLabelId}>Appointment updates</ItemTitle>
+                  <ItemDescription>
                     Confirmations, reminders, and cancellations
-                  </CardDescription>
-                </div>
-                <Switch
-                  id="email_appointments"
-                  checked={preferences.email_appointments}
-                  onCheckedChange={(checked) =>
-                    setPreferences((prev) => ({ ...prev, email_appointments: checked }))
-                  }
-                />
-              </div>
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Switch
+                    id="email_appointments"
+                    aria-labelledby={emailAppointmentsLabelId}
+                    checked={preferences.email_appointments}
+                    onCheckedChange={(checked) =>
+                      setPreferences((prev) => ({ ...prev, email_appointments: checked }))
+                    }
+                  />
+                </ItemActions>
+              </Item>
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="email_promotions">Promotions and offers</Label>
-                  <CardDescription>
+              <Item>
+                <ItemContent>
+                  <ItemTitle id={emailPromotionsLabelId}>Promotions and offers</ItemTitle>
+                  <ItemDescription>
                     Special deals and salon updates
-                  </CardDescription>
-                </div>
-                <Switch
-                  id="email_promotions"
-                  checked={preferences.email_promotions}
-                  onCheckedChange={(checked) =>
-                    setPreferences((prev) => ({ ...prev, email_promotions: checked }))
-                  }
-                />
-              </div>
-            </div>
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Switch
+                    id="email_promotions"
+                    aria-labelledby={emailPromotionsLabelId}
+                    checked={preferences.email_promotions}
+                    onCheckedChange={(checked) =>
+                      setPreferences((prev) => ({ ...prev, email_promotions: checked }))
+                    }
+                  />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </div>
 
           {/* SMS Notifications */}
@@ -118,23 +136,26 @@ export function NotificationPreferencesForm({
               <h3 className="text-sm font-medium">SMS notifications</h3>
             </div>
 
-            <div className="space-y-4 pl-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="sms_reminders">Appointment reminders</Label>
-                  <CardDescription>
+            <ItemGroup className="space-y-4 pl-6">
+              <Item>
+                <ItemContent>
+                  <ItemTitle id={smsRemindersLabelId}>Appointment reminders</ItemTitle>
+                  <ItemDescription>
                     Get SMS reminders before your appointments
-                  </CardDescription>
-                </div>
-                <Switch
-                  id="sms_reminders"
-                  checked={preferences.sms_reminders}
-                  onCheckedChange={(checked) =>
-                    setPreferences((prev) => ({ ...prev, sms_reminders: checked }))
-                  }
-                />
-              </div>
-            </div>
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Switch
+                    id="sms_reminders"
+                    aria-labelledby={smsRemindersLabelId}
+                    checked={preferences.sms_reminders}
+                    onCheckedChange={(checked) =>
+                      setPreferences((prev) => ({ ...prev, sms_reminders: checked }))
+                    }
+                  />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </div>
 
           {/* Push Notifications */}
@@ -144,23 +165,26 @@ export function NotificationPreferencesForm({
               <h3 className="text-sm font-medium">Push notifications</h3>
             </div>
 
-            <div className="space-y-4 pl-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="push_enabled">Enable push notifications</Label>
-                  <CardDescription>
+            <ItemGroup className="space-y-4 pl-6">
+              <Item>
+                <ItemContent>
+                  <ItemTitle id={pushEnabledLabelId}>Enable push notifications</ItemTitle>
+                  <ItemDescription>
                     Receive real-time updates on your device
-                  </CardDescription>
-                </div>
-                <Switch
-                  id="push_enabled"
-                  checked={preferences.push_enabled}
-                  onCheckedChange={(checked) =>
-                    setPreferences((prev) => ({ ...prev, push_enabled: checked }))
-                  }
-                />
-              </div>
-            </div>
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Switch
+                    id="push_enabled"
+                    aria-labelledby={pushEnabledLabelId}
+                    checked={preferences.push_enabled}
+                    onCheckedChange={(checked) =>
+                      setPreferences((prev) => ({ ...prev, push_enabled: checked }))
+                    }
+                  />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </div>
 
           {error && (
@@ -180,7 +204,14 @@ export function NotificationPreferencesForm({
           )}
 
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Saving...' : 'Save preferences'}
+            {isLoading ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Saving...</span>
+              </>
+            ) : (
+              <span>Save preferences</span>
+            )}
           </Button>
         </form>
       </CardContent>

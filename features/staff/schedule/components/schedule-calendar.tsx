@@ -87,7 +87,13 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
             return (
               <Card key={day}>
                 <CardHeader>
-                  <CardTitle>{formatDayName(day)}</CardTitle>
+                  <ItemGroup>
+                    <Item variant="muted" size="sm">
+                      <ItemContent>
+                        <CardTitle>{formatDayName(day)}</CardTitle>
+                      </ItemContent>
+                    </Item>
+                  </ItemGroup>
                 </CardHeader>
                 <CardContent>
                   <ItemGroup className="gap-3">

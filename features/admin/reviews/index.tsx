@@ -3,6 +3,13 @@ import { ReviewsClient } from './components/reviews-client'
 import { getAllReviews } from './api/queries'
 import { LastUpdated } from '@/features/admin/admin-common/components'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export async function AdminReviews() {
   let reviews
@@ -33,12 +40,16 @@ export async function AdminReviews() {
     <section className="py-16 md:py-24 lg:py-32">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10">
-        <div className="flex justify-end">
-          <LastUpdated />
-        </div>
+        <ItemGroup className="justify-end">
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <LastUpdated />
+            </ItemContent>
+          </Item>
+        </ItemGroup>
 
         {/* Moderation Stats */}
-        <div className="flex flex-wrap gap-6">
+        <ItemGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[{
             label: 'Total reviews',
             value: reviews.length,
@@ -55,16 +66,14 @@ export async function AdminReviews() {
             label: 'Needs response',
             value: needsResponseCount,
           }].map((stat) => (
-            <Card key={stat.label} className="min-w-40">
-              <CardHeader className="gap-1">
-                <CardDescription>
-                  {stat.label}
-                </CardDescription>
-                <CardTitle>{stat.value}</CardTitle>
-              </CardHeader>
-            </Card>
+            <Item key={stat.label} variant="outline" className="items-start">
+              <ItemContent className="gap-1">
+                <ItemDescription>{stat.label}</ItemDescription>
+                <ItemTitle className="text-2xl font-semibold">{stat.value}</ItemTitle>
+              </ItemContent>
+            </Item>
           ))}
-        </div>
+        </ItemGroup>
 
         <ReviewsClient reviews={reviews} />
         </div>

@@ -1,5 +1,7 @@
+import { Suspense } from 'react'
 import { getCustomerTransactions } from './api/queries'
 import { TransactionsList } from './components/transactions-list'
+import { Spinner } from '@/components/ui/spinner'
 
 export async function CustomerTransactions() {
   const transactions = await getCustomerTransactions()
@@ -18,7 +20,15 @@ export function CustomerTransactionsPage() {
           </p>
         </div>
 
-        <CustomerTransactions />
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-12">
+              <Spinner />
+            </div>
+          }
+        >
+          <CustomerTransactions />
+        </Suspense>
       </div>
     </section>
   )

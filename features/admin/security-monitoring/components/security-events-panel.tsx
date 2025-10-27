@@ -14,6 +14,7 @@ import { formatDistanceToNow } from 'date-fns'
 import type { SecurityEvent } from '@/features/admin/security-monitoring/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface SecurityEventsPanelProps {
   events: SecurityEvent[]
@@ -48,10 +49,14 @@ export function SecurityEventsPanel({ events }: SecurityEventsPanelProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Shield className="h-4 w-4" aria-hidden="true" />
-          <CardTitle>Security Event Stream</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted" className="items-center gap-2">
+            <ItemContent className="flex items-center gap-2">
+              <Shield className="h-4 w-4" aria-hidden="true" />
+              <CardTitle>Security Event Stream</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         {events.length === 0 ? (

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { bulkUpdateOperatingHours } from '@/features/business/operating-hours/api/mutations'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -25,6 +26,7 @@ import {
   FieldLabel,
   FieldGroup,
 } from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface OperatingHour {
   id: string
@@ -189,11 +191,18 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
           </div>
         </CardContent>
         <CardFooter>
-          <div className="flex gap-4 justify-end">
+          <ButtonGroup className="justify-end">
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Saving...' : 'Save Operating Hours'}
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <span>Save Operating Hours</span>
+              )}
             </Button>
-          </div>
+          </ButtonGroup>
         </CardFooter>
       </form>
     </Card>

@@ -5,6 +5,7 @@ import { Progress } from '@/components/ui/progress'
 import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { AlertCircle } from 'lucide-react'
 import type { ChainCompliance } from '@/features/admin/chains/api/queries'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface ChainComplianceTableProps {
   compliance: ChainCompliance[]
@@ -26,7 +27,13 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Chain Compliance Monitoring</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Chain Compliance Monitoring</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
@@ -59,14 +66,20 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
                   <TableCell className="text-right text-primary">{chain.verifiedSalons}</TableCell>
                   <TableCell className="text-right text-destructive">{chain.unverifiedSalons}</TableCell>
                   <TableCell>
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className={`text-sm font-medium ${getComplianceColor(chain.complianceRate)}`}>
-                          {chain.complianceRate.toFixed(1)}%
-                        </span>
-                      </div>
-                      <Progress value={chain.complianceRate} className="h-2" />
-                    </div>
+                    <ItemGroup className="gap-2">
+                      <Item variant="muted">
+                        <ItemContent>
+                          <span className={`text-sm font-medium ${getComplianceColor(chain.complianceRate)}`}>
+                            {chain.complianceRate.toFixed(1)}%
+                          </span>
+                        </ItemContent>
+                      </Item>
+                      <Item variant="muted">
+                        <ItemContent>
+                          <Progress value={chain.complianceRate} className="h-2" />
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
                   </TableCell>
                   <TableCell>
                     {chain.issues.length > 0 ? (

@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -188,7 +189,14 @@ export function CreateTransactionDialog({
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Recording...' : 'Record Transaction'}
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Recording...</span>
+                  </>
+                ) : (
+                  <span>Record Transaction</span>
+                )}
               </Button>
             </ButtonGroup>
           </DialogFooter>

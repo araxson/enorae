@@ -12,6 +12,7 @@ import { formatDistanceToNow } from 'date-fns'
 import type { ModerationQueueItem } from '@/features/admin/messages/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface MessagesModerationTableProps {
   items: ModerationQueueItem[]
@@ -32,8 +33,14 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Moderation Queue</CardTitle>
-        <CardDescription>Recently flagged messages requiring review</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Moderation Queue</CardTitle>
+              <CardDescription>Recently flagged messages requiring review</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
         <ScrollArea className="w-full">

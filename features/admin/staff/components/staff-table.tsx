@@ -21,6 +21,7 @@ import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 import { StaffRiskBadge } from './staff-risk-badge'
 import { formatDate } from '@/lib/utils/date-time'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 function renderBackgroundBadge(status: StaffWithMetrics['background']['status']) {
   switch (status) {
@@ -61,8 +62,14 @@ export function StaffTable({ staff }: StaffTableProps) {
     <>
       <Card className="hidden md:block">
         <CardHeader>
-          <CardTitle>Staff Directory</CardTitle>
-          <CardDescription>Staff profiles with verification and performance metrics.</CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Staff Directory</CardTitle>
+                <CardDescription>Staff profiles with verification and performance metrics.</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="p-0">
           <ScrollArea className="w-full">
@@ -184,18 +191,24 @@ export function StaffTable({ staff }: StaffTableProps) {
         {staff.map((member) => (
           <Card key={member.id}>
             <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <CardTitle>{member.fullName || member.title || 'Unnamed staff'}</CardTitle>
-                  <CardDescription>Experience {member.experienceYears} yrs</CardDescription>
-                  {member.metrics.lastAppointmentAt ? (
-                    <CardDescription>
-                      Last appointment {formatDate(member.metrics.lastAppointmentAt)}
-                    </CardDescription>
-                  ) : null}
-                </div>
-                <StaffRiskBadge staff={member} />
-              </div>
+              <ItemGroup className="items-start justify-between gap-3">
+                <Item variant="muted" className="items-start gap-2">
+                  <ItemContent>
+                    <CardTitle>{member.fullName || member.title || 'Unnamed staff'}</CardTitle>
+                    <CardDescription>Experience {member.experienceYears} yrs</CardDescription>
+                    {member.metrics.lastAppointmentAt ? (
+                      <CardDescription>
+                        Last appointment {formatDate(member.metrics.lastAppointmentAt)}
+                      </CardDescription>
+                    ) : null}
+                  </ItemContent>
+                </Item>
+                <Item variant="muted">
+                  <ItemContent>
+                    <StaffRiskBadge staff={member} />
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardHeader>
             <CardContent className="space-y-3 pt-0">
               <div className="grid grid-cols-2 gap-3">

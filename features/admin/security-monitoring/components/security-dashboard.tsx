@@ -14,6 +14,7 @@ import { RateLimitPanel } from './rate-limit-panel'
 import { IpAccessPanel } from './ip-access-panel'
 import { IncidentResponsePanel } from './incident-response-panel'
 import { Spinner } from '@/components/ui/spinner'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface SecurityDashboardProps {
   snapshot: SecurityMonitoringSnapshot
@@ -69,24 +70,28 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold">Real-Time Security Overview</h2>
-          <p className="text-sm text-muted-foreground">
-            Streaming telemetry from Supabase security logs. Last updated {lastUpdatedLabel}.
-          </p>
-        </div>
+      <ItemGroup className="flex-wrap items-center justify-between gap-3">
+        <Item variant="muted">
+          <ItemContent>
+            <h2 className="scroll-m-20 text-3xl font-semibold">Real-Time Security Overview</h2>
+            <p className="text-sm text-muted-foreground">
+              Streaming telemetry from Supabase security logs. Last updated {lastUpdatedLabel}.
+            </p>
+          </ItemContent>
+        </Item>
 
-        <div className="flex items-center gap-3">
-          <p className="text-xs text-muted-foreground">
-            Auto-refresh 15s
-          </p>
-          <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
-            {isRefreshing ? <Spinner className="mr-2 h-4 w-4" /> : <RefreshCw className="mr-2 h-4 w-4" />}
-            Refresh
-          </Button>
-        </div>
-      </div>
+        <Item variant="muted" className="items-center gap-3">
+          <ItemContent className="flex items-center gap-3">
+            <p className="text-xs text-muted-foreground">Auto-refresh 15s</p>
+          </ItemContent>
+          <ItemActions>
+            <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
+              {isRefreshing ? <Spinner className="mr-2 h-4 w-4" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+              Refresh
+            </Button>
+          </ItemActions>
+        </Item>
+      </ItemGroup>
 
       {error && (
         <Alert variant="destructive">

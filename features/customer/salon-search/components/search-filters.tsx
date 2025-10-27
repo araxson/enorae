@@ -25,6 +25,7 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group'
 import { Spinner } from '@/components/ui/spinner'
+import { Kbd } from '@/components/ui/kbd'
 
 interface SearchFiltersProps {
   searchTerm: string
@@ -122,6 +123,14 @@ export function SearchFilters({
                     <Search className="h-4 w-4" aria-hidden="true" />
                   </InputGroupButton>
                 </InputGroup>
+                <FieldDescription className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                  <span>Keyboard navigation:</span>
+                  <Kbd>↑</Kbd>
+                  <Kbd>↓</Kbd>
+                  <span>to browse suggestions,</span>
+                  <Kbd>Enter</Kbd>
+                  <span>to select.</span>
+                </FieldDescription>
               </FieldContent>
             </Field>
 

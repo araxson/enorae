@@ -10,6 +10,12 @@ import { BlockedTimesList } from './blocked-times-list'
 import { BlockedTimesCalendar } from './blocked-times-calendar'
 import { BlockedTimeDialog } from './blocked-time-dialog'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface BlockedTimesFeatureProps {
   blockedTimes: BlockedTime[]
@@ -34,15 +40,21 @@ export function BlockedTimesFeature({ blockedTimes }: BlockedTimesFeatureProps) 
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between">
-            <CardTitle>Blocked Times</CardTitle>
-            <ButtonGroup>
-              <Button onClick={handleCreate}>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Blocked Time
-              </Button>
-            </ButtonGroup>
-          </div>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <CardTitle>Blocked Times</CardTitle>
+              </ItemContent>
+              <ItemActions>
+                <ButtonGroup>
+                  <Button onClick={handleCreate}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Blocked Time
+                  </Button>
+                </ButtonGroup>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
       </Card>
 

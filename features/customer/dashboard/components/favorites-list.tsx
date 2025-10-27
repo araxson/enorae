@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -55,7 +56,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
       <CardContent className="space-y-4">
         <ItemGroup>
           {favorites.map((favorite, index) => (
-            <div key={favorite['id']}>
+            <Fragment key={favorite['id']}>
               <Item variant="outline" size="sm">
                 <ItemMedia variant="icon">
                   <Heart className="h-4 w-4 fill-primary text-primary" />
@@ -69,8 +70,8 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
                   </ItemDescription>
                 </ItemContent>
               </Item>
-              {index < favorites.length - 1 && <ItemSeparator />}
-            </div>
+              {index < favorites.length - 1 ? <ItemSeparator /> : null}
+            </Fragment>
           ))}
         </ItemGroup>
         <Button variant="outline" asChild className="w-full">

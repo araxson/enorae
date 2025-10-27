@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import type { PricingInsight } from '@/features/business/pricing/types'
@@ -12,6 +11,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -21,14 +21,14 @@ interface RevenueInsightsTabProps {
 
 export function RevenueInsightsTab({ insights }: RevenueInsightsTabProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Revenue Optimization Insights</CardTitle>
-        <CardDescription>
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemTitle>Revenue Optimization Insights</ItemTitle>
+        <ItemDescription>
           Potential revenue impact from dynamic pricing
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         {insights.length === 0 ? (
           <Empty>
             <EmptyHeader>
@@ -42,9 +42,7 @@ export function RevenueInsightsTab({ insights }: RevenueInsightsTabProps) {
               <Item key={insight.service_id} variant="outline" className="flex-col gap-4 py-4">
                 <ItemContent className="flex items-start justify-between gap-4">
                   <div>
-                    <ItemTitle className="text-lg font-semibold">
-                      {insight.service_name}
-                    </ItemTitle>
+                    <ItemTitle>{insight.service_name}</ItemTitle>
                     <ItemDescription>
                       Base price: {formatCurrency(insight.base_price)}
                     </ItemDescription>
@@ -79,7 +77,7 @@ export function RevenueInsightsTab({ insights }: RevenueInsightsTabProps) {
             ))}
           </ItemGroup>
         )}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

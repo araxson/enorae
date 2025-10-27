@@ -23,6 +23,7 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
 
 interface TemplateDialogProps {
   open: boolean
@@ -175,7 +176,14 @@ export function TemplateDialog({
                 onClick={onSave}
                 disabled={isPending || draft.name.trim().length === 0}
               >
-                {isPending ? 'Saving...' : 'Save Template'}
+                {isPending ? (
+                  <>
+                    <Spinner />
+                    Saving
+                  </>
+                ) : (
+                  'Save Template'
+                )}
               </Button>
             </ButtonGroup>
           </DialogFooter>

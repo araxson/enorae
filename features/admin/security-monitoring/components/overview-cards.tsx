@@ -78,16 +78,16 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
           <Card key={key}>
             <CardHeader>
               <ItemGroup>
-                <Item>
+                <Item className="items-start justify-between gap-2">
                   <ItemContent>
                     <CardTitle>{label}</CardTitle>
+                    <CardDescription>{description}</CardDescription>
                   </ItemContent>
                   <ItemActions className="flex-none">
                     <Icon className="h-4 w-4" aria-hidden="true" />
                   </ItemActions>
                 </Item>
               </ItemGroup>
-              <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
               <strong>{formatNumber(overview[key as OverviewKey] ?? 0)}</strong>
@@ -102,10 +102,10 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
             <Card key={metric.key}>
               <CardHeader>
                 <ItemGroup>
-                  <Item>
-                    <ItemContent>
-                      <CardTitle>{metric.label}</CardTitle>
-                    </ItemContent>
+                <Item className="items-start justify-between gap-2">
+                  <ItemContent>
+                    <CardTitle>{metric.label}</CardTitle>
+                  </ItemContent>
                     <ItemActions className="flex-none">
                       <Badge variant={STATUS_VARIANT[metric.status] ?? 'outline'}>
                         {statusLabel(metric.status)}

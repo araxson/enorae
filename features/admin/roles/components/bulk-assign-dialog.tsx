@@ -12,7 +12,6 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { bulkAssignRoles } from '@/features/admin/roles/api/mutations'
 import { RoleSelector } from './role-selector'
@@ -20,6 +19,13 @@ import { SalonSelector } from './salon-selector'
 import type { RoleTemplate } from './role-templates'
 import { ROLE_PERMISSION_TEMPLATES } from './role-templates'
 import type { RoleValue } from './types'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
 
 interface BulkAssignDialogProps {
   open: boolean
@@ -144,15 +150,17 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
               </CardHeader>
               <CardContent className="space-y-4 pt-0">
                 <div className="flex flex-col gap-6 md:flex-row md:items-center">
-                  <div className="flex-1 space-y-2">
-                    <Label htmlFor={`user-${index}`}>User ID *</Label>
-                    <Input
-                      id={`user-${index}`}
-                      value={row.userId}
-                      onChange={(event) => handleRowChange(index, { userId: event.target.value })}
-                      placeholder="User UUID"
-                    />
-                  </div>
+                  <Field className="flex-1">
+                    <FieldLabel htmlFor={`user-${index}`}>User ID *</FieldLabel>
+                    <FieldContent>
+                      <Input
+                        id={`user-${index}`}
+                        value={row.userId}
+                        onChange={(event) => handleRowChange(index, { userId: event.target.value })}
+                        placeholder="User UUID"
+                      />
+                    </FieldContent>
+                  </Field>
                   <Button variant="ghost" size="sm" onClick={() => handleRemoveRow(index)} disabled={rows.length === 1}>
                     Remove
                   </Button>
@@ -176,9 +184,18 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
             <Button type="button" variant="outline" onClick={handleAddRow}>
               Add another
             </Button>
-            <Button type="button" onClick={handleSubmit} disabled={isSubmitting}>
-              {isSubmitting ? 'Assigning...' : 'Assign roles'}
-            </Button>
+            <ButtonGroup>
+              <Button type="button" onClick={handleSubmit} disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Assigning…</span>
+                  </>
+                ) : (
+                  <span>Assign roles</span>
+                )}
+              </Button>
+            </ButtonGroup>
           </div>
         </div>
       </DialogContent>

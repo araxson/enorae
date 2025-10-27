@@ -9,6 +9,13 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface RegionalSettingsProps {
   timezone: string
@@ -28,14 +35,22 @@ export function RegionalSettings({
   onCurrencyCodeChange,
 }: RegionalSettingsProps) {
   return (
-    <FieldSet className="flex flex-col gap-4">
-      <FieldLegend className="flex items-center gap-2 text-base font-medium">
-        <Globe className="h-4 w-4" aria-hidden="true" />
-        Regional settings
-      </FieldLegend>
-      <FieldGroup className="gap-4">
-        <Field>
-          <FieldLabel htmlFor="timezone">Timezone</FieldLabel>
+    <div className="flex flex-col gap-4">
+      <ItemGroup>
+        <Item variant="muted" size="sm">
+          <ItemMedia variant="icon">
+            <Globe className="h-4 w-4" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>Regional settings</ItemTitle>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
+      <FieldSet className="flex flex-col gap-4">
+        <FieldLegend className="sr-only">Regional settings</FieldLegend>
+        <FieldGroup className="gap-4">
+          <Field>
+            <FieldLabel htmlFor="timezone">Timezone</FieldLabel>
           <FieldContent>
             <Select value={timezone} onValueChange={onTimezoneChange}>
               <SelectTrigger id="timezone">
@@ -76,9 +91,11 @@ export function RegionalSettings({
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="currency" className="flex items-center gap-2">
-            <DollarSign className="h-4 w-4" aria-hidden="true" />
-            Currency
+          <FieldLabel htmlFor="currency">
+            <span className="inline-flex items-center gap-2">
+              <DollarSign className="h-4 w-4" aria-hidden="true" />
+              Currency
+            </span>
           </FieldLabel>
           <FieldContent>
             <Select value={currencyCode} onValueChange={onCurrencyCodeChange}>
@@ -97,6 +114,7 @@ export function RegionalSettings({
           <FieldDescription>Displayed in pricing and receipts across the app.</FieldDescription>
         </Field>
       </FieldGroup>
-    </FieldSet>
+      </FieldSet>
+    </div>
   )
 }

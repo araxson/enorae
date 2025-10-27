@@ -16,6 +16,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+} from '@/components/ui/item'
 import { Search, X, MapPin, Filter } from 'lucide-react'
 import {
   Card,
@@ -25,6 +37,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Kbd } from '@/components/ui/kbd'
 
 interface SalonFiltersProps {
   cities?: { city: string; state: string; count: number }[]
@@ -70,65 +83,94 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
           Refine results by search term, location, and category.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <InputGroup>
-          <InputGroupAddon>
-            <Search className="size-4" aria-hidden="true" />
-          </InputGroupAddon>
-          <InputGroupInput
-            placeholder="Search salons by name, description..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          />
-          {searchTerm ? (
-            <InputGroupAddon align="inline-end">
-              <InputGroupButton
-                size="icon-sm"
-                variant="ghost"
-                onClick={() => setSearchTerm('')}
-                aria-label="Clear search"
-              >
-                <X className="size-4" aria-hidden="true" />
-              </InputGroupButton>
-            </InputGroupAddon>
-          ) : null}
-        </InputGroup>
-        <div className="flex flex-wrap items-center gap-3">
-          {cities.length > 0 && (
-            <Select value={selectedCity} onValueChange={setSelectedCity}>
-              <SelectTrigger className="w-52">
-                <MapPin className="mr-2 h-4 w-4" />
-                <SelectValue placeholder="Select city" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__all__">All cities</SelectItem>
-                {cities.map(({ city, state, count }) => (
-                  <SelectItem key={`${city}-${state}`} value={city}>
-                    {city}, {state} ({count})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
+      <CardContent>
+        <FieldSet>
+          <Field>
+            <FieldLabel>Search salons</FieldLabel>
+            <FieldContent>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Search className="size-4" aria-hidden="true" />
+                </InputGroupAddon>
+                <InputGroupInput
+                  placeholder="Search salons by name, description..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                />
+                {searchTerm ? (
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={() => setSearchTerm('')}
+                      aria-label="Clear search"
+                    >
+                      <X className="size-4" aria-hidden="true" />
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                ) : null}
+              </InputGroup>
+            </FieldContent>
+          </Field>
 
-          {categories.length > 0 && (
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-52">
-                <Filter className="mr-2 h-4 w-4" />
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__all__">All categories</SelectItem>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        </div>
+          {cities.length > 0 || categories.length > 0 ? (
+            <FieldLegend variant="legend">Filter by</FieldLegend>
+          ) : null}
+
+          <div className="flex flex-wrap items-center gap-3">
+            {cities.length > 0 && (
+              <Field orientation="responsive" className="w-full sm:w-auto">
+                <FieldLabel>City</FieldLabel>
+                <FieldContent>
+                  <Select value={selectedCity} onValueChange={setSelectedCity}>
+                    <SelectTrigger className="w-52">
+                      <MapPin className="mr-2 h-4 w-4" />
+                      <SelectValue placeholder="Select city" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__all__">All cities</SelectItem>
+                      {cities.map(({ city, state, count }) => (
+                        <SelectItem key={`${city}-${state}`} value={city}>
+                          {city}, {state} ({count})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
+            )}
+
+            {categories.length > 0 && (
+              <Field orientation="responsive" className="w-full sm:w-auto">
+                <FieldLabel>Category</FieldLabel>
+                <FieldContent>
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger className="w-52">
+                      <Filter className="mr-2 h-4 w-4" />
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__all__">All categories</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
+            )}
+          </div>
+          <Item variant="muted">
+            <ItemContent>
+              <ItemDescription>
+                Press <Kbd>Enter</Kbd> inside the search field to apply filters instantly.
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </FieldSet>
       </CardContent>
       <CardFooter className="flex flex-wrap items-center justify-end gap-3">
         {hasActiveFilters && (

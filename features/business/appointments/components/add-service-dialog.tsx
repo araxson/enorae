@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -25,6 +24,12 @@ import {
   TimeRangeFields,
   DurationField,
 } from './shared/service-form-fields'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
 
 interface AddServiceDialogProps {
   appointmentId: string
@@ -124,37 +129,39 @@ export function AddServiceDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="service">Service *</Label>
-            <Select
-              value={formData.serviceId}
-              onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, serviceId: value }))
-              }
-              disabled={isLoadingOptions}
-            >
-              <SelectTrigger>
-                <SelectValue
-                  placeholder={
-                    isLoadingOptions ? 'Loading services...' : 'Select a service'
-                  }
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {options.services.length > 0 ? (
-                  options.services.map((service) => (
-                    <SelectItem key={service.id} value={service.id}>
-                      {service.name}
+          <Field>
+            <FieldLabel htmlFor="service">Service *</FieldLabel>
+            <FieldContent>
+              <Select
+                value={formData.serviceId}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, serviceId: value }))
+                }
+                disabled={isLoadingOptions}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      isLoadingOptions ? 'Loading services...' : 'Select a service'
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {options.services.length > 0 ? (
+                    options.services.map((service) => (
+                      <SelectItem key={service.id} value={service.id}>
+                        {service.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="no-services" disabled>
+                      {isLoadingOptions ? 'Loading services...' : 'No services available'}
                     </SelectItem>
-                  ))
-                ) : (
-                  <SelectItem value="no-services" disabled>
-                    {isLoadingOptions ? 'Loading services...' : 'No services available'}
-                  </SelectItem>
-                )}
-              </SelectContent>
-            </Select>
-          </div>
+                  )}
+                </SelectContent>
+              </Select>
+            </FieldContent>
+          </Field>
 
           <StaffSelector
             value={formData.staffId}
@@ -184,7 +191,14 @@ export function AddServiceDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting || isLoadingOptions}>
-              {isSubmitting ? 'Adding...' : 'Add Service'}
+              {isSubmitting ? (
+                <>
+                  <Spinner />
+                  Adding
+                </>
+              ) : (
+                'Add Service'
+              )}
             </Button>
           </DialogFooter>
         </form>

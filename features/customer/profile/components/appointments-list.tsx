@@ -16,6 +16,14 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { Calendar } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed'
@@ -36,29 +44,40 @@ function isValidStatus(status: string | null): status is AppointmentStatus {
 export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Calendar className="h-6 w-6" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No appointments yet</EmptyTitle>
-              <EmptyDescription>
-                Schedule your next visit to see appointments listed here.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              Book through the salon search to get started.
-            </EmptyContent>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Calendar className="h-6 w-6" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No appointments yet</EmptyTitle>
+          <EmptyDescription>
+            Schedule your next visit to see appointments listed here.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          Book through the salon search to get started.
+        </EmptyContent>
+      </Empty>
     )
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2">
+    <div className="space-y-4">
+      <ItemGroup>
+        <Item variant="muted" size="sm">
+          <ItemMedia variant="icon">
+            <Calendar className="h-4 w-4" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>Appointments</ItemTitle>
+            <ItemDescription>
+              {appointments.length}{' '}
+              {appointments.length === 1 ? 'scheduled appointment' : 'scheduled appointments'}
+            </ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
+      <div className="grid gap-6 sm:grid-cols-2">
       {appointments.map((appointment) => {
         const appointmentDate = appointment.start_time ? new Date(appointment.start_time) : null
         const status = isValidStatus(appointment.status) ? appointment.status : 'pending'
@@ -76,6 +95,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
           />
         )
       })}
+      </div>
     </div>
   )
 }

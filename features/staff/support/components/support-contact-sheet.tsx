@@ -21,9 +21,16 @@ import {
   Field,
   FieldContent,
   FieldLabel,
+  FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface SupportContactSheetProps {
   open: boolean
@@ -35,12 +42,19 @@ export function SupportContactSheet({ open, onOpenChange }: SupportContactSheetP
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="flex flex-col">
         <SheetHeader>
-          <SheetTitle>Schedule a callback</SheetTitle>
-          <SheetDescription>Select availability and preferred channel.</SheetDescription>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <SheetTitle>Schedule a callback</SheetTitle>
+                <ItemDescription>Select availability and preferred channel.</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </SheetHeader>
 
         <ScrollArea className="flex-1">
           <FieldSet className="space-y-4 pr-2 pt-4">
+            <FieldLegend>Callback preferences</FieldLegend>
             <Field>
               <FieldLabel htmlFor="callback-day">Preferred day</FieldLabel>
               <FieldContent>

@@ -24,7 +24,7 @@ export function HelpResourceBrowser() {
     <Card id="resource-browser">
       <CardHeader>
         <ItemGroup>
-          <Item>
+          <Item variant="muted" size="sm">
             <ItemContent>
               <CardTitle>Resource browser</CardTitle>
               <CardDescription>Browse top resources and save them for easy access.</CardDescription>

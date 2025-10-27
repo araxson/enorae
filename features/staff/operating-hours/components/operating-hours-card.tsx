@@ -10,6 +10,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -29,14 +30,16 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
   return (
     <Card>
       <CardHeader>
-        <Item variant="muted" size="sm">
-          <ItemMedia variant="icon">
-            <Clock className="h-5 w-5" aria-hidden="true" />
-          </ItemMedia>
-          <ItemContent>
-            <CardTitle>Operating Hours</CardTitle>
-          </ItemContent>
-        </Item>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Clock className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Operating Hours</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ItemGroup className="flex flex-col gap-3">

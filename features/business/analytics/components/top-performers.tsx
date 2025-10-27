@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import { Award, Star } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
@@ -9,6 +8,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemSeparator,
   ItemTitle,
@@ -28,21 +28,22 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Top Services */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
+    <ItemGroup className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader className="items-center gap-2">
+          <ItemMedia variant="icon">
             <Star className="h-5 w-5 text-accent" />
-            <CardTitle>Top Services</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
+          </ItemMedia>
+          <ItemTitle>Top Services</ItemTitle>
+        </ItemHeader>
+        <ItemContent>
           {services.length === 0 ? (
             <Empty>
               <EmptyHeader>
                 <EmptyTitle>No service data available</EmptyTitle>
-                <EmptyDescription>Bookings will populate this list once activity begins.</EmptyDescription>
+                <EmptyDescription>
+                  Bookings will populate this list once activity begins.
+                </EmptyDescription>
               </EmptyHeader>
             </Empty>
           ) : (
@@ -51,9 +52,7 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
                 <Fragment key={service.name}>
                   <Item variant="outline" size="sm">
                     <ItemMedia>
-                      <Badge variant={index === 0 ? 'default' : 'outline'}>
-                        #{index + 1}
-                      </Badge>
+                      <Badge variant={index === 0 ? 'default' : 'outline'}>#{index + 1}</Badge>
                     </ItemMedia>
                     <ItemContent>
                       <ItemTitle>{service.name}</ItemTitle>
@@ -68,23 +67,24 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
               ))}
             </ItemGroup>
           )}
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
 
-      {/* Top Staff */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader className="items-center gap-2">
+          <ItemMedia variant="icon">
             <Award className="h-5 w-5 text-secondary" />
-            <CardTitle>Top Performers</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
+          </ItemMedia>
+          <ItemTitle>Top Performers</ItemTitle>
+        </ItemHeader>
+        <ItemContent>
           {staff.length === 0 ? (
             <Empty>
               <EmptyHeader>
                 <EmptyTitle>No staff performance data</EmptyTitle>
-                <EmptyDescription>Staff metrics appear after appointments are completed.</EmptyDescription>
+                <EmptyDescription>
+                  Staff metrics appear after appointments are completed.
+                </EmptyDescription>
               </EmptyHeader>
             </Empty>
           ) : (
@@ -93,9 +93,7 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
                 <Fragment key={member.name}>
                   <Item variant="outline" size="sm">
                     <ItemMedia>
-                      <Badge variant={index === 0 ? 'default' : 'outline'}>
-                        #{index + 1}
-                      </Badge>
+                      <Badge variant={index === 0 ? 'default' : 'outline'}>#{index + 1}</Badge>
                     </ItemMedia>
                     <ItemContent>
                       <ItemTitle>{member.name}</ItemTitle>
@@ -112,8 +110,8 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
               ))}
             </ItemGroup>
           )}
-        </CardContent>
-      </Card>
-    </div>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

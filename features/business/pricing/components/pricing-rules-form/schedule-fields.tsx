@@ -1,6 +1,14 @@
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
 
 import { dayOptions } from './constants'
 
@@ -21,57 +29,64 @@ export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFiel
   const selectedDays = formData.days_of_week.map((day) => day.toString())
 
   return (
-    <div className="flex flex-col gap-6">
-      <Label>Schedule</Label>
+    <FieldSet className="flex flex-col gap-6">
+      <FieldLegend>Schedule</FieldLegend>
 
       {shouldShowTime ? (
-        <div className="grid gap-6 md:grid-cols-2">
-          <div>
-            <Label htmlFor="start_time">Start Time</Label>
-            <Input
-              id="start_time"
-              type="time"
-              value={formData.start_time}
-              onChange={(event) =>
-                setFormData((current) => ({ ...current, start_time: event.target.value }))
-              }
-            />
-          </div>
-          <div>
-            <Label htmlFor="end_time">End Time</Label>
-            <Input
-              id="end_time"
-              type="time"
-              value={formData.end_time}
-              onChange={(event) =>
-                setFormData((current) => ({ ...current, end_time: event.target.value }))
-              }
-            />
-          </div>
-        </div>
+        <FieldGroup className="grid gap-6 md:grid-cols-2">
+          <Field>
+            <FieldLabel htmlFor="start_time">Start Time</FieldLabel>
+            <FieldContent>
+              <Input
+                id="start_time"
+                type="time"
+                value={formData.start_time}
+                onChange={(event) =>
+                  setFormData((current) => ({ ...current, start_time: event.target.value }))
+                }
+              />
+            </FieldContent>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="end_time">End Time</FieldLabel>
+            <FieldContent>
+              <Input
+                id="end_time"
+                type="time"
+                value={formData.end_time}
+                onChange={(event) =>
+                  setFormData((current) => ({ ...current, end_time: event.target.value }))
+                }
+              />
+            </FieldContent>
+          </Field>
+        </FieldGroup>
       ) : null}
 
-      <div>
-        <Label>Days of Week</Label>
-        <ToggleGroup
-          type="multiple"
-          value={selectedDays}
-          onValueChange={(values) =>
-            setFormData((current) => ({
-              ...current,
-              days_of_week: values.map((value) => Number(value)),
-            }))
-          }
-          aria-label="Select days of the week for this rule"
-          className="flex flex-wrap gap-2 pt-2"
-        >
-          {dayOptions.map((day) => (
-            <ToggleGroupItem key={day.value} value={day.value.toString()} className="w-10">
-              {day.label}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
-      </div>
-    </div>
+      <Field>
+        <FieldLabel>Days of Week</FieldLabel>
+        <FieldContent>
+          <ToggleGroup
+            type="multiple"
+            value={selectedDays}
+            onValueChange={(values) =>
+              setFormData((current) => ({
+                ...current,
+                days_of_week: values.map((value) => Number(value)),
+              }))
+            }
+            aria-label="Select days of the week for this rule"
+            className="flex flex-wrap gap-2 pt-2"
+          >
+            {dayOptions.map((day) => (
+              <ToggleGroupItem key={day.value} value={day.value.toString()} className="w-10">
+                {day.label}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </FieldContent>
+        <FieldDescription>Combine time and day settings to refine when rules apply.</FieldDescription>
+      </Field>
+    </FieldSet>
   )
 }

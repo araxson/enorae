@@ -12,14 +12,29 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Toggle } from '@/components/ui/toggle'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle, Pencil, Star } from 'lucide-react'
+import { AlertCircle, History, Pencil, Star } from 'lucide-react'
 import { updateReview } from '@/features/customer/reviews/api/mutations'
 import type { Review } from '@/features/customer/reviews/types'
+import { Spinner } from '@/components/ui/spinner'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
 
 interface EditReviewDialogProps {
   review: Review
@@ -89,59 +104,80 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
             <AlertDescription>
               Reviews can only be edited within 7 days of creation. This review was posted{' '}
               {Math.floor(daysSince)} days ago.
+              <ItemGroup className="mt-3 gap-2">
+                <Item variant="muted" size="sm">
+                  <ItemMedia variant="icon">
+                    <History className="h-4 w-4" aria-hidden="true" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>Original post</ItemTitle>
+                    <ItemDescription>{Math.floor(daysSince)} days ago</ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </AlertDescription>
           </Alert>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <input type="hidden" name="salonId" value={review['salon_id'] || ''} />
 
-            <div className="space-y-2">
-              <Label htmlFor="rating">Overall rating *</Label>
-              <div className="flex items-center gap-2">
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <Toggle
-                    key={value}
-                    pressed={value <= rating}
-                    onPressedChange={(pressed) =>
-                      setRating(pressed ? value : Math.max(1, value - 1))
-                    }
-                    aria-label={`Rate ${value} star${value === 1 ? '' : 's'}`}
-                    className="h-10 w-10"
-                    type="button"
-                  >
-                    <Star className="h-5 w-5" aria-hidden="true" />
-                  </Toggle>
-                ))}
-                <span>{rating} out of 5</span>
-              </div>
-              <input type="hidden" name="rating" value={rating} />
-            </div>
+            <Field>
+              <FieldLabel>Overall rating *</FieldLabel>
+              <FieldContent className="gap-2">
+                <div className="flex items-center gap-2">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <Toggle
+                      key={value}
+                      pressed={value <= rating}
+                      onPressedChange={(pressed) =>
+                        setRating(pressed ? value : Math.max(1, value - 1))
+                      }
+                      aria-label={`Rate ${value} star${value === 1 ? '' : 's'}`}
+                      className="h-10 w-10"
+                      type="button"
+                    >
+                      <Star className="h-5 w-5" aria-hidden="true" />
+                    </Toggle>
+                  ))}
+                </div>
+                <FieldDescription className="font-medium">
+                  {rating} out of 5
+                </FieldDescription>
+                <input type="hidden" name="rating" value={rating} />
+              </FieldContent>
+            </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="title">Title (optional)</Label>
-              <Input
-                id="title"
-                name="title"
-                defaultValue=""
-                placeholder="Summarize your experience"
-                maxLength={200}
-              />
-            </div>
+            <Field>
+              <FieldLabel htmlFor="title">Title (optional)</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="title"
+                  name="title"
+                  defaultValue=""
+                  placeholder="Summarize your experience"
+                  maxLength={200}
+                />
+              </FieldContent>
+            </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="comment">Your review *</Label>
-              <Textarea
-                id="comment"
-                name="comment"
-                defaultValue={review['comment'] || ''}
-                placeholder="Share your experience..."
-                rows={5}
-                required
-                minLength={10}
-                maxLength={2000}
-              />
-              <span>Minimum 10 characters, maximum 2000</span>
-            </div>
+            <Field>
+              <FieldLabel htmlFor="comment">Your review *</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="comment"
+                  name="comment"
+                  defaultValue={review['comment'] || ''}
+                  placeholder="Share your experience..."
+                  rows={5}
+                  required
+                  minLength={10}
+                  maxLength={2000}
+                />
+                <FieldDescription>
+                  Minimum 10 characters, maximum 2000
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
 
             {error && (
@@ -153,17 +189,26 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
             )}
 
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpen(false)}
-                disabled={isLoading}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? 'Updating...' : 'Update review'}
-              </Button>
+              <ButtonGroup className="w-full justify-end gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setOpen(false)}
+                  disabled={isLoading}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Spinner className="size-4" />
+                      <span>Updating</span>
+                    </>
+                  ) : (
+                    <span>Update review</span>
+                  )}
+                </Button>
+              </ButtonGroup>
             </DialogFooter>
           </form>
         )}

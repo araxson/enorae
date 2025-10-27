@@ -3,6 +3,13 @@
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { format } from 'date-fns'
+import {
+  Item,
+  ItemContent,
+  ItemFooter,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface MessageBubbleProps {
   content: string
@@ -27,38 +34,32 @@ export function MessageBubble({
     .slice(0, 2) || '??'
 
   return (
-    <div className={cn('flex w-full gap-3', isOwn ? 'justify-end' : 'justify-start')}>
-      {!isOwn && (
+    <Item
+      variant={isOwn ? 'muted' : 'outline'}
+      size="sm"
+      className={cn('items-start gap-3', isOwn && 'ml-auto flex-row-reverse text-right')}
+    >
+      <ItemMedia className={cn('flex-none', isOwn && 'order-last')}>
         <Avatar className="h-8 w-8">
-          <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+          <AvatarFallback className="text-xs">{isOwn ? 'You' : initials}</AvatarFallback>
         </Avatar>
-      )}
+      </ItemMedia>
 
-      <div className={cn('flex max-w-xl flex-col space-y-1', isOwn && 'items-end text-right')}>
-        {!isOwn && senderName && (
-          <p className="text-sm font-medium px-2 text-muted-foreground">{senderName}</p>
-        )}
+      <ItemContent className={cn('max-w-xl gap-2', isOwn && 'items-end text-right')}>
+        {!isOwn && senderName ? <ItemTitle>{senderName}</ItemTitle> : null}
+        <p className="mb-0 whitespace-pre-wrap break-words text-sm leading-6">{content}</p>
+      </ItemContent>
 
-        <div
-          className={cn(
-            'rounded-lg px-4 py-2 text-left',
-            isOwn ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
-          )}
-        >
-          <p className="leading-7 mb-0 whitespace-pre-wrap break-words">{content}</p>
-        </div>
-
-        <div className="flex items-center gap-2 px-2 text-xs text-muted-foreground">
-          <p className="text-sm font-medium">{format(new Date(timestamp), 'MMM dd, HH:mm')}</p>
-          {isOwn && <p className="text-sm font-medium">{isRead ? '✓✓' : '✓'}</p>}
-        </div>
-      </div>
-
-      {isOwn && (
-        <Avatar className="h-8 w-8">
-          <AvatarFallback className="text-xs">You</AvatarFallback>
-        </Avatar>
-      )}
-    </div>
+      <ItemFooter className={cn('gap-2 text-xs text-muted-foreground', isOwn ? 'justify-end' : 'justify-start')}>
+        <time dateTime={timestamp} className="font-medium">
+          {format(new Date(timestamp), 'MMM dd, HH:mm')}
+        </time>
+        {isOwn ? (
+          <span aria-label={isRead ? 'Message delivered and read' : 'Message sent'} aria-hidden="true">
+            {isRead ? '✓✓' : '✓'}
+          </span>
+        ) : null}
+      </ItemFooter>
+    </Item>
   )
 }

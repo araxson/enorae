@@ -3,11 +3,16 @@
 import { useState } from 'react'
 import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { updateUsername } from '@/features/shared/profile/api/mutations'
 import { toast } from 'sonner'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
 
 interface UsernameFormProps {
   currentUsername: string | null
@@ -49,29 +54,37 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
       <CardContent>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
-            <div>
-              <Label htmlFor="username">Username</Label>
-              <Input
-                id="username"
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="e.g., john_doe"
-                minLength={3}
-                maxLength={50}
-                pattern="[a-zA-Z0-9_-]+"
-                title="Username can only contain letters, numbers, hyphens, and underscores"
-                required
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                3-50 characters. Letters, numbers, hyphens, and underscores only.
-              </p>
-            </div>
+            <Field>
+              <FieldLabel htmlFor="username">Username</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="username"
+                  name="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="e.g., john_doe"
+                  minLength={3}
+                  maxLength={50}
+                  pattern="[a-zA-Z0-9_-]+"
+                  title="Username can only contain letters, numbers, hyphens, and underscores"
+                  required
+                />
+                <FieldDescription>
+                  3-50 characters. Letters, numbers, hyphens, and underscores only.
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
             <div className="flex justify-end">
               <Button type="submit" disabled={isSubmitting || username === currentUsername}>
-                {isSubmitting && <Spinner className="mr-2 h-4 w-4" />}
-                Update Username
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Updating...</span>
+                  </>
+                ) : (
+                  <span>Update Username</span>
+                )}
               </Button>
             </div>
           </div>

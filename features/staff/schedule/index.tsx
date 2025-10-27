@@ -1,5 +1,11 @@
 import { requireAuth } from '@/lib/auth'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import { getStaffMemberSchedule } from './api/queries'
 import { getBlockedTimesByStaff } from '@/features/shared/blocked-times/api/queries'
@@ -12,25 +18,37 @@ export async function StaffSchedule() {
     staffProfile = await getStaffProfile()
   } catch (error) {
     return (
-      <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Alert>
-          <AlertTitle>Schedule unavailable</AlertTitle>
-          <AlertDescription>
-            {error instanceof Error ? error.message : 'Please log in to view your schedule'}
-          </AlertDescription>
-        </Alert>
-      </div>
+      <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
+        <Card>
+          <CardContent>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>Schedule unavailable</EmptyTitle>
+                <EmptyDescription>
+                  {error instanceof Error ? error.message : 'Please log in to view your schedule'}
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </CardContent>
+        </Card>
+      </section>
     )
   }
 
   if (!staffProfile || !staffProfile['id'] || !staffProfile['salon_id']) {
     return (
-      <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Alert>
-          <AlertTitle>Profile not found</AlertTitle>
-          <AlertDescription>Staff profile not found</AlertDescription>
-        </Alert>
-      </div>
+      <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
+        <Card>
+          <CardContent>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>Profile not found</EmptyTitle>
+                <EmptyDescription>Staff profile not found</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </CardContent>
+        </Card>
+      </section>
     )
   }
 

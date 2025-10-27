@@ -2,7 +2,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 import type { PricingFormState } from './use-pricing-form'
 
 type CostProfitSectionProps = {
@@ -19,11 +25,10 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
         <CardDescription>Track service costs and resulting margins.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="cost">Cost</Label>
+        <FieldGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Field>
+            <FieldLabel htmlFor="cost">Cost</FieldLabel>
+            <FieldContent>
               <Input
                 id="cost"
                 type="number"
@@ -33,16 +38,18 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
                 onChange={(event) => onChange('cost', event.target.value)}
                 placeholder="0.00"
               />
-              <p className="text-xs text-muted-foreground">Cost to provide this service</p>
-            </div>
+            </FieldContent>
+            <FieldDescription>Cost to provide this service.</FieldDescription>
+          </Field>
 
-            <div className="space-y-2">
-              <Label>Estimated Profit Margin</Label>
+          <Field>
+            <FieldLabel>Estimated Profit Margin</FieldLabel>
+            <FieldContent>
               <Input id="profit-margin" value={`${profitMargin}%`} readOnly />
-              <p className="text-xs text-muted-foreground">Auto-calculated from price & cost</p>
-            </div>
-          </div>
-        </div>
+            </FieldContent>
+            <FieldDescription>Auto-calculated from price and cost.</FieldDescription>
+          </Field>
+        </FieldGroup>
       </CardContent>
     </Card>
   )

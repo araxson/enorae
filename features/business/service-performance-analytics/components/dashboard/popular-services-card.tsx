@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
@@ -12,6 +11,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -21,15 +21,17 @@ export function PopularServicesCard({ services }: { services: ServicePerformance
     .slice(0, 5)
 
   return (
-    <Card>
-      <CardHeader>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader className="items-start gap-2">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5" />
-          <CardTitle>Most Popular Services</CardTitle>
+          <ItemTitle>Most Popular Services</ItemTitle>
         </div>
-        <CardDescription>Services with the highest booking volume during the selected period.</CardDescription>
-      </CardHeader>
-      <CardContent>
+        <ItemDescription>
+          Services with the highest booking volume during the selected period.
+        </ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         {trendingServices.length === 0 ? (
           <Empty>
             <EmptyHeader>
@@ -47,23 +49,21 @@ export function PopularServicesCard({ services }: { services: ServicePerformance
                     #{index + 1}
                   </Badge>
                   <div>
-                    <ItemTitle className="text-lg font-semibold">{service.service_name}</ItemTitle>
-                    <ItemDescription className="text-xs text-muted-foreground">
+                    <ItemTitle>{service.service_name}</ItemTitle>
+                    <ItemDescription>
                       Popularity: {service.popularity_score?.toFixed(0) || 0}
                     </ItemDescription>
                   </div>
                 </ItemContent>
                 <ItemActions className="flex-none text-right">
                   <p className="text-base font-semibold">{service.total_bookings} bookings</p>
-                  <ItemDescription className="text-xs text-muted-foreground">
-                    {formatCurrency(service.total_revenue)}
-                  </ItemDescription>
+                  <ItemDescription>{formatCurrency(service.total_revenue)}</ItemDescription>
                 </ItemActions>
               </Item>
             ))}
           </ItemGroup>
         )}
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

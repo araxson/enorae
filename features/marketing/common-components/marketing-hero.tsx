@@ -5,6 +5,7 @@ import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemHeader,
   ItemGroup,
 } from '@/components/ui/item'
 import { cn } from '@/lib/utils'
@@ -53,9 +54,9 @@ export function MarketingHero({
           <CardContent className={cn('flex w-full flex-col gap-6', contentAlignment)}>
             <ItemGroup>
               <Item variant="muted">
-                <ItemContent>
+                <ItemHeader className="flex flex-col gap-1">
                   <ItemDescription>{description}</ItemDescription>
-                </ItemContent>
+                </ItemHeader>
               </Item>
             </ItemGroup>
             {children}

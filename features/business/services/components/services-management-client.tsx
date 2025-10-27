@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { Service, ServicesManagementClientProps } from '@/features/business/services/types'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 export function ServicesManagementClient({ salon, services }: ServicesManagementClientProps) {
   const router = useRouter()
@@ -66,10 +67,12 @@ export function ServicesManagementClient({ salon, services }: ServicesManagement
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
         <div className="flex gap-4 items-start justify-end">
-          <Button onClick={handleAddClick}>
-            <Plus className="mr-2 h-4 w-4" />
-            Add Service
-          </Button>
+          <ButtonGroup>
+            <Button onClick={handleAddClick}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Service
+            </Button>
+          </ButtonGroup>
         </div>
 
         <div>

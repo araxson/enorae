@@ -13,6 +13,15 @@ import { RetentionPanel } from './retention-panel'
 import { FeatureUsagePanel } from './feature-usage-panel'
 import { PerformanceBenchmarksTable } from './performance-benchmarks-table'
 import { Spinner } from '@/components/ui/spinner'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface PlatformAnalyticsDashboardProps {
   snapshot: PlatformAnalyticsSnapshot
@@ -66,23 +75,29 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="space-y-1">
-          <h2 className="mb-1">Platform Analytics Overview</h2>
-          <p className="text-muted-foreground">
-            Aggregated growth and retention metrics across the platform. Last updated {lastUpdatedLabel}.
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <p className="text-muted-foreground">
-            Auto-refresh 60s
-          </p>
-          <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
-            {isRefreshing ? <Spinner className="mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
-            Refresh
-          </Button>
-        </div>
-      </div>
+      <ItemGroup className="flex-wrap gap-3">
+        <Item className="flex-col items-start gap-1">
+          <ItemContent>
+            <ItemTitle>Platform Analytics Overview</ItemTitle>
+            <ItemDescription>
+              Aggregated growth and retention metrics across the platform. Last updated {lastUpdatedLabel}.
+            </ItemDescription>
+          </ItemContent>
+        </Item>
+        <Item className="items-center gap-3" variant="muted" size="sm">
+          <ItemContent>
+            <ItemDescription>Auto-refresh 60s</ItemDescription>
+          </ItemContent>
+          <ItemActions>
+            <ButtonGroup>
+              <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
+                {isRefreshing ? <Spinner className="mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+                Refresh
+              </Button>
+            </ButtonGroup>
+          </ItemActions>
+        </Item>
+      </ItemGroup>
 
       {error && (
         <Alert variant="destructive">

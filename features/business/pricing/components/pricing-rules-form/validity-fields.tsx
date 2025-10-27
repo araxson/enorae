@@ -17,6 +17,7 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
+  FieldSet,
 } from '@/components/ui/field'
 
 type FormStateSetter = Dispatch<SetStateAction<PricingRuleFormState>>
@@ -33,7 +34,7 @@ export function ValidityFields({
   selectedServiceName,
 }: ValidityFieldsProps) {
   return (
-    <FieldGroup className="flex flex-col gap-8">
+    <FieldSet className="flex flex-col gap-8">
       <FieldGroup className="grid gap-6 md:grid-cols-2">
         <Field>
           <FieldLabel htmlFor="valid_from">Valid From</FieldLabel>
@@ -100,27 +101,29 @@ export function ValidityFields({
                 setFormData((current) => ({ ...current, priority: Number(event.target.value) }))
               }
             />
-            <FieldDescription>
-              Lower numbers execute first when multiple rules apply (current target: {selectedServiceName}).
-            </FieldDescription>
           </FieldContent>
+          <FieldDescription>
+            Lower numbers execute first when multiple rules apply (current target: {selectedServiceName}).
+          </FieldDescription>
         </Field>
         <Card>
-          <CardContent className="flex items-center justify-between gap-4">
-            <div>
-              <FieldLabel htmlFor="is_active">Active Rule</FieldLabel>
-              <CardDescription>Deactivate to save rule for later use.</CardDescription>
-            </div>
-            <Switch
-              id="is_active"
-              checked={formData.is_active}
-              onCheckedChange={(checked) =>
-                setFormData((current) => ({ ...current, is_active: checked }))
-              }
-            />
+          <CardContent>
+            <Field orientation="horizontal">
+              <FieldContent>
+                <FieldLabel htmlFor="is_active">Active Rule</FieldLabel>
+                <CardDescription>Deactivate to save rule for later use.</CardDescription>
+              </FieldContent>
+              <Switch
+                id="is_active"
+                checked={formData.is_active}
+                onCheckedChange={(checked) =>
+                  setFormData((current) => ({ ...current, is_active: checked }))
+                }
+              />
+            </Field>
           </CardContent>
         </Card>
       </FieldGroup>
-    </FieldGroup>
+    </FieldSet>
   )
 }

@@ -4,6 +4,14 @@ import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Users } from 'lucide-react'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface UserRoleStatsProps {
   stats: {
@@ -65,8 +73,16 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
       <div className="h-full">
         <Card>
           <CardHeader className="space-y-3">
-            <CardTitle>User distribution</CardTitle>
-            <CardDescription>Role analytics will appear when users are assigned roles.</CardDescription>
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemContent>
+                  <CardTitle>User distribution</CardTitle>
+                  <CardDescription>
+                    Role analytics will appear when users are assigned roles.
+                  </CardDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <Empty>
@@ -85,23 +101,29 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
     <div className="h-full">
       <Card>
         <CardHeader className="space-y-3">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <CardTitle>User distribution</CardTitle>
-              <CardDescription>
-                Breakdown by platform role with relative share.
-              </CardDescription>
-            </div>
-            <Badge variant="outline" className="gap-1">
-              <Users className="h-3 w-3" />
-              {stats.totalUsers.toLocaleString()} users
-            </Badge>
-          </div>
-          {topRoleLabel && (
-            <Badge variant="secondary" className="w-fit">
-              Most common: {topRoleLabel}
-            </Badge>
-          )}
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>User distribution</CardTitle>
+                <CardDescription>
+                  Breakdown by platform role with relative share.
+                </CardDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge variant="outline">
+                  <Users className="mr-1 h-3 w-3" />
+                  {stats.totalUsers.toLocaleString()} users
+                </Badge>
+              </ItemActions>
+            </Item>
+            {topRoleLabel ? (
+              <Item variant="muted">
+                <ItemContent>
+                  <Badge variant="secondary">Most common: {topRoleLabel}</Badge>
+                </ItemContent>
+              </Item>
+            ) : null}
+          </ItemGroup>
         </CardHeader>
 
         <CardContent className="space-y-4">
@@ -113,13 +135,19 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
                 return (
                   <Card key={role}>
                     <CardHeader className="pb-2">
-                      <div className="flex items-center justify-between gap-3">
-                        <CardTitle>{label}</CardTitle>
-                        <Badge variant="outline" className="gap-1">
-                          {count.toLocaleString()}
-                        </Badge>
-                      </div>
-                      <CardDescription>{roleDescriptions[role] || 'No description available'}</CardDescription>
+                      <ItemGroup>
+                        <Item>
+                          <ItemContent>
+                            <CardTitle>{label}</CardTitle>
+                            <CardDescription>
+                              {roleDescriptions[role] || 'No description available'}
+                            </CardDescription>
+                          </ItemContent>
+                          <ItemActions>
+                            <Badge variant="outline">{count.toLocaleString()}</Badge>
+                          </ItemActions>
+                        </Item>
+                      </ItemGroup>
                     </CardHeader>
                     <CardContent className="flex items-center gap-3 pt-0">
                       <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-muted'}`} />

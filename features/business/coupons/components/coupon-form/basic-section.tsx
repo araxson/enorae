@@ -1,7 +1,18 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  InputGroup,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 import type { CouponFormState } from '@/features/business/coupons/components/coupon-form.types'
 
 interface CouponBasicSectionProps {
@@ -16,36 +27,43 @@ export function CouponBasicSection({ formData, onChange, onGenerateCode }: Coupo
   const setFormData = onChange
 
   return (
-    <div>
-      <Label htmlFor="code">Coupon Code</Label>
-      <div className="flex gap-2">
-        <Input
-          id="code"
-          value={formData.code}
-          onChange={(event) =>
-            setFormData({ ...formData, code: event.target.value.toUpperCase() })
-          }
-          placeholder="e.g., SAVE20"
-          required
-        />
-        <Button type="button" variant="outline" onClick={onGenerateCode}>
-          Generate
-        </Button>
-      </div>
+    <FieldSet className="space-y-4">
+      <Field>
+        <FieldLabel htmlFor="code">Coupon Code</FieldLabel>
+        <FieldContent>
+          <InputGroup>
+            <InputGroupInput
+              id="code"
+              value={formData.code}
+              onChange={(event) =>
+                setFormData({ ...formData, code: event.target.value.toUpperCase() })
+              }
+              placeholder="e.g., SAVE20"
+              required
+            />
+            <InputGroupButton type="button" variant="outline" onClick={onGenerateCode}>
+              Generate
+            </InputGroupButton>
+          </InputGroup>
+        </FieldContent>
+        <FieldDescription>Codes are automatically uppercased for consistency.</FieldDescription>
+      </Field>
 
-      <div className="mt-4">
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          value={formData.description}
-          onChange={(event) =>
-            setFormData({ ...formData, description: event.target.value })
-          }
-          placeholder="Describe this promotion..."
-          rows={3}
-          required
-        />
-      </div>
-    </div>
+      <Field>
+        <FieldLabel htmlFor="description">Description</FieldLabel>
+        <FieldContent>
+          <Textarea
+            id="description"
+            value={formData.description}
+            onChange={(event) =>
+              setFormData({ ...formData, description: event.target.value })
+            }
+            placeholder="Describe this promotion..."
+            rows={3}
+            required
+          />
+        </FieldContent>
+      </Field>
+    </FieldSet>
   )
 }

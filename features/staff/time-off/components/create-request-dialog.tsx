@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { CalendarCheck2 } from 'lucide-react'
 
 import {
   Dialog,
@@ -11,6 +12,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import {
@@ -26,11 +28,17 @@ import { createTimeOffRequest } from '@/features/staff/time-off/api/mutations'
 import {
   Field,
   FieldContent,
-  FieldDescription,
+  FieldGroup,
   FieldLabel,
+  FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemMedia,
+} from '@/components/ui/item'
 
 interface CreateRequestDialogProps {
   open: boolean
@@ -79,10 +87,17 @@ export function CreateRequestDialog({
       <DialogContent className="sm:max-w-xl">
         <form onSubmit={handleSubmit} className="space-y-6">
           <DialogHeader>
-            <DialogTitle>Request time off</DialogTitle>
-            <DialogDescription>
-              Submit a time-off request for manager approval.
-            </DialogDescription>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <CalendarCheck2 className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <DialogTitle>Request time off</DialogTitle>
+                <DialogDescription>
+                  Submit a time-off request for manager approval.
+                </DialogDescription>
+              </ItemContent>
+            </Item>
           </DialogHeader>
 
           <FieldSet className="space-y-4">
@@ -142,29 +157,33 @@ export function CreateRequestDialog({
               </FieldContent>
             </Field>
 
-            <Field>
-              <FieldDescription>Notifications</FieldDescription>
-              <FieldContent>
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-3">
-                    <Checkbox
-                      id="isAutoReschedule"
-                      checked={isAutoReschedule}
-                      onCheckedChange={(checked) => setIsAutoReschedule(!!checked)}
-                    />
-                    <span>Automatically reschedule affected appointments</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Checkbox
-                      id="isNotifyCustomers"
-                      checked={isNotifyCustomers}
-                      onCheckedChange={(checked) => setIsNotifyCustomers(!!checked)}
-                    />
-                    <span>Notify customers about affected appointments</span>
-                  </div>
-                </div>
-              </FieldContent>
-            </Field>
+        <FieldLegend>Notifications</FieldLegend>
+        <FieldGroup className="space-y-2">
+          <Field orientation="horizontal">
+            <FieldLabel htmlFor="isAutoReschedule">
+              Automatically reschedule affected appointments
+            </FieldLabel>
+            <FieldContent>
+              <Checkbox
+                id="isAutoReschedule"
+                checked={isAutoReschedule}
+                onCheckedChange={(checked) => setIsAutoReschedule(!!checked)}
+              />
+            </FieldContent>
+          </Field>
+          <Field orientation="horizontal">
+            <FieldLabel htmlFor="isNotifyCustomers">
+              Notify customers about affected appointments
+            </FieldLabel>
+            <FieldContent>
+              <Checkbox
+                id="isNotifyCustomers"
+                checked={isNotifyCustomers}
+                onCheckedChange={(checked) => setIsNotifyCustomers(!!checked)}
+              />
+            </FieldContent>
+          </Field>
+        </FieldGroup>
           </FieldSet>
 
           <DialogFooter>
@@ -178,7 +197,14 @@ export function CreateRequestDialog({
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Submit request'}
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  <span>Submit request</span>
+                )}
               </Button>
             </ButtonGroup>
           </DialogFooter>

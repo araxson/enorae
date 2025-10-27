@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useToast } from '@/lib/hooks/use-toast'
 import { createPricingRule } from '@/features/business/pricing/api/pricing-rules.mutations'
@@ -115,7 +116,14 @@ export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesF
                 </p>
               </div>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? 'Saving…' : 'Create Pricing Rule'}
+                {isLoading ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Saving…</span>
+                  </>
+                ) : (
+                  <span>Create Pricing Rule</span>
+                )}
               </Button>
             </CardContent>
           </Card>

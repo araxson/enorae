@@ -2,12 +2,17 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { X, Upload, Image as ImageIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
 
 type PortfolioImage = {
   url: string
@@ -61,38 +66,47 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-3">
-        <Label htmlFor="portfolio-upload">Upload Image</Label>
-        <Input
-          id="portfolio-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleFileUpload}
-          disabled={isUploading}
-        />
-      </div>
+      <Field>
+        <FieldLabel htmlFor="portfolio-upload">Upload Image</FieldLabel>
+        <FieldContent>
+          <Input
+            id="portfolio-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleFileUpload}
+            disabled={isUploading}
+          />
+          <FieldDescription>
+            Supports JPG, PNG, GIF, and WebP formats.
+          </FieldDescription>
+        </FieldContent>
+      </Field>
 
       <div className="text-center text-sm text-muted-foreground">or</div>
 
-      <div className="flex flex-col gap-3">
-        <Label htmlFor="image-url">Image URL</Label>
-        <Input
-          id="image-url"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          placeholder="https://example.com/image.jpg"
-        />
-      </div>
+      <Field>
+        <FieldLabel htmlFor="image-url">Image URL</FieldLabel>
+        <FieldContent>
+          <Input
+            id="image-url"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="https://example.com/image.jpg"
+          />
+        </FieldContent>
+      </Field>
 
-      <div className="flex flex-col gap-3">
-        <Label htmlFor="image-caption">Caption (Optional)</Label>
-        <Input
-          id="image-caption"
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          placeholder="Describe this image..."
-        />
-      </div>
+      <Field>
+        <FieldLabel htmlFor="image-caption">Caption (Optional)</FieldLabel>
+        <FieldContent>
+          <Input
+            id="image-caption"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            placeholder="Describe this image..."
+          />
+        </FieldContent>
+      </Field>
 
       <Button
         type="button"

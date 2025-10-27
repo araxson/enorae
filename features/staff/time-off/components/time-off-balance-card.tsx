@@ -24,8 +24,14 @@ export function TimeOffBalanceCard({ balance }: TimeOffBalanceCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Time Off Balance ({balance.year})</CardTitle>
-        <CardDescription>Your annual time off allocation and usage</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Time Off Balance ({balance.year})</CardTitle>
+              <CardDescription>Your annual time off allocation and usage</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">

@@ -14,6 +14,14 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type SalonChain = Database['public']['Views']['salon_chains_view']['Row']
 
@@ -48,10 +56,26 @@ export function ChainsList({ chains }: ChainsListProps) {
   }
 
   return (
-    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div className="space-y-4">
+      <ItemGroup>
+        <Item variant="muted" size="sm">
+          <ItemMedia variant="icon">
+            <Building2 className="h-4 w-4" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>Salon chains</ItemTitle>
+            <ItemDescription>
+              {chains.length}{' '}
+              {chains.length === 1 ? 'chain available' : 'chains available'}
+            </ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {chains.map((chain) => (
         <ChainCard key={chain['id']} chain={chain} />
       ))}
+      </div>
     </div>
   )
 }

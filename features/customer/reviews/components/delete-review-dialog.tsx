@@ -16,6 +16,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Trash2 } from 'lucide-react'
 import { deleteReview } from '@/features/customer/reviews/api/mutations'
 import type { Review } from '@/features/customer/reviews/types'
+import { Spinner } from '@/components/ui/spinner'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface DeleteReviewDialogProps {
   review: Review
@@ -83,12 +85,21 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
         )}
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
-            Cancel
-          </Button>
-          <Button variant="destructive" onClick={handleDelete} disabled={isLoading}>
-            {isLoading ? 'Deleting...' : 'Delete review'}
-          </Button>
+          <ButtonGroup className="w-full justify-end gap-2">
+            <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete} disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Deleting</span>
+                </>
+              ) : (
+                <span>Delete review</span>
+              )}
+            </Button>
+          </ButtonGroup>
         </DialogFooter>
       </DialogContent>
     </Dialog>

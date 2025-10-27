@@ -10,6 +10,7 @@ import {
 import type { AppointmentTrendPoint } from '@/features/admin/appointments/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface TrendTableProps {
   trend: AppointmentTrendPoint[]
@@ -23,7 +24,13 @@ export function TrendTable({ trend }: TrendTableProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle>14-day Trend</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>14-day Trend</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ScrollArea className="w-full">

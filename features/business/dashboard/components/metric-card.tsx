@@ -2,8 +2,15 @@
 
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 const accentIndicatorClasses = {
   primary: 'bg-primary',
@@ -38,18 +45,18 @@ export function AppointmentMetricCard({
   accent = 'primary',
 }: AppointmentMetricCardProps) {
   return (
-    <Card role="article" aria-label={`${title} metric`} className="relative overflow-hidden">
+    <Item role="article" aria-label={`${title} metric`} variant="outline" className="relative flex-col gap-3 overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle>{title}</CardTitle>
-        {icon}
-      </CardHeader>
-      <CardContent className="space-y-2">
+      <ItemHeader className="items-center justify-between">
+        <ItemTitle>{title}</ItemTitle>
+        <ItemActions className="flex-none">{icon}</ItemActions>
+      </ItemHeader>
+      <ItemContent className="space-y-2">
         <div className="text-2xl font-bold">{value}</div>
         <Progress value={progress} className="mt-2" aria-label={`${progress}% progress`} />
-        <CardDescription>{description}</CardDescription>
-      </CardContent>
-    </Card>
+        <ItemDescription>{description}</ItemDescription>
+      </ItemContent>
+    </Item>
   )
 }
 
@@ -71,17 +78,17 @@ export function RevenueMetricCard({
   highlight,
 }: RevenueMetricCardProps) {
   return (
-    <Card role="article" aria-label={`${title} metric`} className="relative overflow-hidden">
+    <Item role="article" aria-label={`${title} metric`} variant="outline" className="relative flex-col gap-3 overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle>{title}</CardTitle>
-        {icon}
-      </CardHeader>
-      <CardContent className="space-y-2">
+      <ItemHeader className="items-center justify-between">
+        <ItemTitle>{title}</ItemTitle>
+        <ItemActions className="flex-none">{icon}</ItemActions>
+      </ItemHeader>
+      <ItemContent className="space-y-2">
         <div className="text-3xl font-bold">{amountLabel}</div>
         {highlight}
-        <CardDescription>{description}</CardDescription>
-      </CardContent>
-    </Card>
+        <ItemDescription>{description}</ItemDescription>
+      </ItemContent>
+    </Item>
   )
 }

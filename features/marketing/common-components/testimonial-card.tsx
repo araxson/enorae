@@ -5,6 +5,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -40,13 +41,15 @@ export function TestimonialCard({ author, role, content, rating, avatar }: Testi
       </CardHeader>
       <CardContent className="flex h-full flex-col gap-4 pt-2">
         <ItemGroup className="gap-3">
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <Star className="size-4 text-primary" />
-            </ItemMedia>
-            <ItemContent>
+          <Item variant="muted" aria-label={`Rating ${rating} out of 5`}>
+            <ItemHeader className="flex items-center gap-2">
+              <ItemMedia variant="icon">
+                <Star className="size-4 text-primary" aria-hidden="true" />
+              </ItemMedia>
               <ItemTitle>{rating} out of 5</ItemTitle>
-              <div className="flex items-center gap-1">
+            </ItemHeader>
+            <ItemContent>
+              <div className="flex items-center gap-1" aria-hidden="true">
                 {Array.from({ length: 5 }).map((_, index) => (
                   <Star
                     key={index}
@@ -56,10 +59,17 @@ export function TestimonialCard({ author, role, content, rating, avatar }: Testi
                   />
                 ))}
               </div>
+              <ItemDescription>
+                Verified customer satisfaction score based on recent appointments.
+              </ItemDescription>
             </ItemContent>
           </Item>
         </ItemGroup>
-        <CardDescription>&ldquo;{content}&rdquo;</CardDescription>
+        <Item variant="outline">
+          <ItemContent>
+            <ItemDescription>&ldquo;{content}&rdquo;</ItemDescription>
+          </ItemContent>
+        </Item>
       </CardContent>
     </Card>
   )

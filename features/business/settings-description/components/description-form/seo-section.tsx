@@ -2,7 +2,13 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 
 type SeoSectionProps = {
   metaTitle: string | null
@@ -16,27 +22,33 @@ export function SeoSection({ metaTitle, metaDescription }: SeoSectionProps) {
         <CardTitle>SEO metadata</CardTitle>
         <CardDescription>Help search engines and social previews describe your business.</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="meta_title">Meta title</Label>
-          <Input
-            id="meta_title"
-            name="meta_title"
-            defaultValue={metaTitle ?? ''}
-            placeholder="Salon name and key service keywords"
-          />
-          <p className="text-muted-foreground">Used for search engines and social sharing.</p>
-        </div>
+      <CardContent>
+        <FieldSet className="flex flex-col gap-6">
+          <Field>
+            <FieldLabel htmlFor="meta_title">Meta title</FieldLabel>
+            <FieldContent>
+              <Input
+                id="meta_title"
+                name="meta_title"
+                defaultValue={metaTitle ?? ''}
+                placeholder="Salon name and key service keywords"
+              />
+            </FieldContent>
+            <FieldDescription>Used for search engines and social sharing.</FieldDescription>
+          </Field>
 
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="meta_description">Meta description</Label>
-          <Input
-            id="meta_description"
-            name="meta_description"
-            defaultValue={metaDescription ?? ''}
-            placeholder="Short summary that appears in search results"
-          />
-        </div>
+          <Field>
+            <FieldLabel htmlFor="meta_description">Meta description</FieldLabel>
+            <FieldContent>
+              <Input
+                id="meta_description"
+                name="meta_description"
+                defaultValue={metaDescription ?? ''}
+                placeholder="Short summary that appears in search results"
+              />
+            </FieldContent>
+          </Field>
+        </FieldSet>
       </CardContent>
     </Card>
   )

@@ -29,6 +29,7 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface FavoriteNotesButtonProps {
   salonId: string
@@ -94,20 +95,28 @@ export function FavoriteNotesButton({ salonId, salonName, initialNotes }: Favori
                 rows={6}
               />
             </FieldContent>
-            <FieldDescription className="text-xs">
-              {notes.length}/500 characters
+            <FieldDescription>
+              <span className="text-xs">{notes.length}/500 characters</span>
             </FieldDescription>
           </Field>
         </FieldSet>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave} disabled={loading}>
-            {loading && <Spinner className="mr-2 h-4 w-4" />}
-            Save Notes
-          </Button>
+          <ButtonGroup className="w-full justify-end gap-2">
+            <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave} disabled={loading}>
+              {loading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <span>Save Notes</span>
+              )}
+            </Button>
+          </ButtonGroup>
         </DialogFooter>
       </DialogContent>
     </Dialog>

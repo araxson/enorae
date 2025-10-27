@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -89,7 +90,7 @@ export function AppointmentCard({
 
       {(onReschedule || onViewDetails || onCancel) && (
         <CardFooter>
-          <div className="flex items-center gap-3 w-full">
+          <ButtonGroup className="w-full flex-wrap">
             {onViewDetails && (
               <Button variant="outline" size="sm" onClick={onViewDetails}>
                 View Details
@@ -125,7 +126,7 @@ export function AppointmentCard({
                 </AlertDialogContent>
               </AlertDialog>
             )}
-          </div>
+          </ButtonGroup>
         </CardFooter>
       )}
     </Card>

@@ -24,6 +24,13 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface SearchFiltersProps {
   onSearch: (query: string, priceRange?: [number, number]) => void
@@ -42,7 +49,16 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Search &amp; filter</CardTitle>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Search className="h-4 w-4" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Search &amp; filter</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

@@ -1,10 +1,18 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { DollarSign, Calendar, TrendingUp, Star, Users } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface CustomerInsightsDashboardProps {
   metrics: {
@@ -34,94 +42,102 @@ export function CustomerInsightsDashboard({
   favoriteStaff,
 }: CustomerInsightsDashboardProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader className="flex flex-row items-start justify-between">
+    <ItemGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader className="items-start justify-between">
           <div className="space-y-1">
-            <CardDescription>Lifetime value</CardDescription>
-            <CardTitle>${metrics.lifetime_value.toFixed(2)}</CardTitle>
+            <ItemDescription>Lifetime value</ItemDescription>
+            <ItemTitle>${metrics.lifetime_value.toFixed(2)}</ItemTitle>
           </div>
-          <DollarSign className="h-8 w-8 text-primary" />
-        </CardHeader>
-        <CardContent className="pt-0">
-          <CardDescription>{metrics.total_visits} visits recorded</CardDescription>
-        </CardContent>
-      </Card>
+          <ItemActions className="flex-none">
+            <DollarSign className="h-8 w-8 text-primary" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
+          <ItemDescription>{metrics.total_visits} visits recorded</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-start justify-between">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader className="items-start justify-between">
           <div className="space-y-1">
-            <CardDescription>Average ticket</CardDescription>
-            <CardTitle>${metrics.avg_ticket.toFixed(2)}</CardTitle>
+            <ItemDescription>Average ticket</ItemDescription>
+            <ItemTitle>${metrics.avg_ticket.toFixed(2)}</ItemTitle>
           </div>
-          <TrendingUp className="h-8 w-8 text-secondary" />
-        </CardHeader>
-        <CardContent className="pt-0">
-          <CardDescription>${metrics.total_spent.toFixed(2)} spent to date</CardDescription>
-        </CardContent>
-      </Card>
+          <ItemActions className="flex-none">
+            <TrendingUp className="h-8 w-8 text-secondary" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
+          <ItemDescription>${metrics.total_spent.toFixed(2)} spent to date</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-start justify-between">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader className="items-start justify-between">
           <div className="space-y-1">
-            <CardDescription>Visit frequency</CardDescription>
-            <CardTitle>{visitStats.avg_days_between_visits}d</CardTitle>
+            <ItemDescription>Visit frequency</ItemDescription>
+            <ItemTitle>{visitStats.avg_days_between_visits}d</ItemTitle>
           </div>
-          <Calendar className="h-8 w-8 text-primary" />
-        </CardHeader>
-        <CardContent className="pt-0">
-          <CardDescription>{visitStats.visit_frequency}</CardDescription>
-        </CardContent>
-      </Card>
+          <ItemActions className="flex-none">
+            <Calendar className="h-8 w-8 text-primary" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
+          <ItemDescription>{visitStats.visit_frequency}</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-start justify-between">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader className="items-start justify-between">
           <div className="space-y-1">
-            <CardTitle>Reliability</CardTitle>
-            <CardDescription>Cancellation and no-show trends</CardDescription>
+            <ItemTitle>Reliability</ItemTitle>
+            <ItemDescription>Cancellation and no-show trends</ItemDescription>
           </div>
-          <Star className="h-8 w-8 text-accent" />
-        </CardHeader>
-        <CardContent className="flex gap-2 pt-0">
+          <ItemActions className="flex-none">
+            <Star className="h-8 w-8 text-accent" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent className="flex gap-2">
           <Badge variant={metrics.cancellation_rate < 10 ? 'default' : 'destructive'}>
             {metrics.cancellation_rate.toFixed(0)}% cancel
           </Badge>
           <Badge variant={metrics.no_show_rate < 5 ? 'default' : 'destructive'}>
             {metrics.no_show_rate.toFixed(0)}% no-show
           </Badge>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
 
-      <Card className="col-span-full md:col-span-2">
-        <CardHeader>
-          <CardTitle>Last Visit</CardTitle>
-          <CardDescription>
+      <Item variant="outline" className="col-span-full flex-col gap-4 md:col-span-2">
+        <ItemHeader className="items-start">
+          <ItemTitle>Last Visit</ItemTitle>
+          <ItemDescription>
             {metrics.last_visit_date
               ? formatDistanceToNow(new Date(metrics.last_visit_date), { addSuffix: true })
               : 'No visits recorded'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-between">
+          </ItemDescription>
+        </ItemHeader>
+        <ItemContent className="flex items-center justify-between">
           <div className="space-y-1">
-            <CardDescription>First visit</CardDescription>
-            <CardTitle>
+            <ItemDescription>First visit</ItemDescription>
+            <ItemTitle>
               {metrics.first_visit_date
                 ? formatDistanceToNow(new Date(metrics.first_visit_date), { addSuffix: true })
                 : 'Unavailable'}
-            </CardTitle>
+            </ItemTitle>
           </div>
           {favoriteStaff ? (
             <div className="flex items-center gap-2">
               <Separator orientation="vertical" className="h-12" decorative />
               <Users className="h-5 w-5 text-muted-foreground" />
               <div className="space-y-1">
-                <CardDescription>Favorite staff</CardDescription>
-                <CardTitle>{favoriteStaff.name}</CardTitle>
+                <ItemDescription>Favorite staff</ItemDescription>
+                <ItemTitle>{favoriteStaff.name}</ItemTitle>
               </div>
             </div>
           ) : null}
-        </CardContent>
-      </Card>
-    </div>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

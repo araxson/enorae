@@ -3,13 +3,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { LayoutDashboard, Target } from 'lucide-react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -24,9 +17,18 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { DashboardCommandButton } from './dashboard-command-button'
 import { DashboardPreferencesSheet } from './dashboard-preferences-sheet'
 import { DashboardQuickFiltersDrawer } from './dashboard-quick-filters-drawer'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 const NAVIGATION_ITEMS = [
   { label: 'Overview', href: '#overview' },
@@ -58,17 +60,17 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
   const [timeframe, setTimeframe] = useState<'7' | '30' | '90'>('30')
 
   return (
-    <Card>
-      <CardHeader className="flex flex-wrap items-center justify-between gap-4">
+    <Item variant="outline" className="flex-col gap-6">
+      <ItemHeader className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <Avatar className="h-9 w-9">
             <AvatarFallback>{salonName.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <div className="min-w-0 space-y-1">
-            <CardTitle>{salonName}</CardTitle>
-            <CardDescription>
+            <div className="min-w-0 space-y-1">
+            <ItemTitle>{salonName}</ItemTitle>
+            <ItemDescription>
               Review bookings, revenue, and reputation signals at a glance.
-            </CardDescription>
+            </ItemDescription>
           </div>
           {isTenantOwner && totalLocations ? (
             <Badge variant="secondary" className="flex items-center gap-1">
@@ -78,22 +80,24 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
           ) : null}
         </div>
 
-        <div className="flex items-center gap-3">
-          <DashboardCommandButton navigationItems={NAVIGATION_ITEMS} commandItems={COMMAND_ITEMS} />
-          <DashboardPreferencesSheet />
-          <DashboardQuickFiltersDrawer />
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button asChild variant="outline" className="hidden md:inline-flex">
-                <Link href="/business/support">Support</Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Contact support or browse help center</TooltipContent>
-          </Tooltip>
-        </div>
-      </CardHeader>
+        <ItemActions className="flex items-center gap-3">
+          <ButtonGroup className="flex items-center gap-3">
+            <DashboardCommandButton navigationItems={NAVIGATION_ITEMS} commandItems={COMMAND_ITEMS} />
+            <DashboardPreferencesSheet />
+            <DashboardQuickFiltersDrawer />
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button asChild variant="outline" className="hidden md:inline-flex">
+                  <Link href="/business/support">Support</Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Contact support or browse help center</TooltipContent>
+            </Tooltip>
+          </ButtonGroup>
+        </ItemActions>
+      </ItemHeader>
 
-      <CardContent className="space-y-4">
+      <ItemContent className="space-y-4">
         <Field orientation="responsive" className="items-center justify-between gap-3">
           <FieldLabel>Timeframe</FieldLabel>
           <FieldContent className="flex items-center gap-3">
@@ -129,7 +133,7 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
             Confirmation rate is holding steady. Encourage stylists to respond to pending bookings to keep the momentum.
           </AlertDescription>
         </Alert>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

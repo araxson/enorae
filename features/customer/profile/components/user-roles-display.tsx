@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Shield, Building2 } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
-import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
 
 type UserRole = Database['identity']['Tables']['user_roles']['Row']
 
@@ -40,10 +40,16 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Shield className="h-5 w-5" />
-          <CardTitle>Active Roles</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Shield className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Active Roles</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
@@ -65,28 +71,42 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
                   </ItemGroup>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {userRole.salon_id && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Building2 className="h-3 w-3" />
-                      <span>Salon-specific role</span>
-                    </div>
-                  )}
+                  {userRole.salon_id ? (
+                    <ItemGroup>
+                      <Item variant="muted" size="sm">
+                        <ItemMedia variant="icon">
+                          <Building2 className="h-3 w-3" aria-hidden="true" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemDescription>Salon-specific role</ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  ) : null}
 
-                  {userRole.permissions && Array.isArray(userRole.permissions) && userRole.permissions.length > 0 && (
-                    <div className="space-y-2">
-                      <span className="text-xs text-muted-foreground">Permissions</span>
-                      <div className="flex flex-wrap gap-1 text-xs">
-                        {userRole.permissions.slice(0, 5).map((permission: string, idx: number) => (
-                          <Badge key={idx} variant="outline">
-                            {String(permission)}
-                          </Badge>
-                        ))}
-                        {userRole.permissions.length > 5 && (
-                          <Badge variant="outline">+{userRole.permissions.length - 5} more</Badge>
-                        )}
-                      </div>
-                    </div>
-                  )}
+                  {userRole.permissions && Array.isArray(userRole.permissions) && userRole.permissions.length > 0 ? (
+                    <ItemGroup>
+                      <Item variant="muted" size="sm">
+                        <ItemContent>
+                          <ItemDescription>
+                            <span className="text-xs text-muted-foreground">Permissions</span>
+                          </ItemDescription>
+                          <ItemDescription>
+                            <div className="flex flex-wrap gap-1 text-xs">
+                              {userRole.permissions.slice(0, 5).map((permission: string, idx: number) => (
+                                <Badge key={idx} variant="outline">
+                                  {String(permission)}
+                                </Badge>
+                              ))}
+                              {userRole.permissions.length > 5 && (
+                                <Badge variant="outline">+{userRole.permissions.length - 5} more</Badge>
+                              )}
+                            </div>
+                          </ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  ) : null}
                 </CardContent>
               </Card>
             )

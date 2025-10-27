@@ -1,15 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import type { StaffOverview } from './admin-overview-types'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type StaffTabProps = {
   staff: StaffOverview[]
@@ -20,10 +19,16 @@ export function AdminOverviewStaffTab({ staff }: StaffTabProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Staff performance</CardTitle>
-          <CardDescription>
-            Experience levels and primary roles across salons.
-          </CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Staff performance</CardTitle>
+                <CardDescription>
+                  Experience levels and primary roles across salons.
+                </CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -43,41 +48,47 @@ export function AdminOverviewStaffTab({ staff }: StaffTabProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Staff performance</CardTitle>
-        <CardDescription>
-          Experience levels and primary roles across salons.
-        </CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Staff performance</CardTitle>
+              <CardDescription>
+                Experience levels and primary roles across salons.
+              </CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-80 pr-4">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead className="hidden xl:table-cell">Salon</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead className="text-right">Experience</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((member) => (
-                <TableRow key={member['id']}>
-                  <TableCell className="font-medium">
-                    {member['full_name'] || 'Unknown staff'}
-                  </TableCell>
-                  <TableCell className="hidden text-sm text-muted-foreground xl:table-cell">
-                    {member['salon_name'] || 'Unknown salon'}
-                  </TableCell>
-                  <TableCell className="capitalize text-sm text-muted-foreground">
-                    {member['title'] || member['staff_role'] || 'Staff'}
-                  </TableCell>
-                  <TableCell className="text-right text-sm font-semibold">
-                    {member['experience_years'] ?? 0} yrs
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ItemGroup className="space-y-3">
+            {rows.map((member) => (
+              <Item key={member['id']} variant="outline" className="flex-col gap-3">
+                <ItemContent>
+                  <ItemGroup>
+                    <Item variant="muted">
+                      <ItemContent>
+                        <ItemTitle>{member['full_name'] || 'Unknown staff'}</ItemTitle>
+                        <ItemDescription>
+                          {member['salon_name'] || 'Unknown salon'}
+                        </ItemDescription>
+                        <ItemDescription className="capitalize text-sm text-muted-foreground">
+                          {member['title'] || member['staff_role'] || 'Staff'}
+                        </ItemDescription>
+                      </ItemContent>
+                    </Item>
+                    <Item variant="muted">
+                      <ItemContent>
+                        <ItemDescription>
+                          {member['experience_years'] ?? 0} yrs experience
+                        </ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  </ItemGroup>
+                </ItemContent>
+              </Item>
+            ))}
+          </ItemGroup>
         </ScrollArea>
       </CardContent>
     </Card>

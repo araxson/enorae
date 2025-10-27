@@ -16,6 +16,14 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { cancelAppointment } from '@/features/customer/appointments/api/mutations'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface CancelAppointmentDialogProps {
   appointmentId: string
@@ -35,6 +43,8 @@ export function CancelAppointmentDialog({
 
   const hoursUntil = (new Date(startTime).getTime() - Date.now()) / (1000 * 60 * 60)
   const canCancel = hoursUntil >= 24
+  const remainingHours = Math.max(0, Math.floor(hoursUntil))
+  const remainingMinutes = Math.max(0, Math.floor((hoursUntil % 1) * 60))
 
   const handleCancel = async () => {
     setIsLoading(true)
@@ -88,7 +98,20 @@ export function CancelAppointmentDialog({
             <AlertTitle>Cancellation policy</AlertTitle>
             <AlertDescription>
               Cancellation policy: Appointments must be cancelled at least 24 hours in advance.
-              Hours remaining: {Math.floor(hoursUntil)}h {Math.floor((hoursUntil % 1) * 60)}m
+              <ItemGroup className="mt-3 gap-2">
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <ItemTitle>Hours remaining</ItemTitle>
+                    <ItemDescription>{remainingHours} hours</ItemDescription>
+                  </ItemContent>
+                </Item>
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <ItemTitle>Minutes remaining</ItemTitle>
+                    <ItemDescription>{remainingMinutes} minutes</ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </AlertDescription>
           </Alert>
         )}
@@ -108,7 +131,14 @@ export function CancelAppointmentDialog({
             </Button>
             {canCancel ? (
               <Button variant="destructive" onClick={handleCancel} disabled={isLoading}>
-                {isLoading ? 'Cancelling...' : 'Yes, cancel appointment'}
+                {isLoading ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Cancelling</span>
+                  </>
+                ) : (
+                  <span>Yes, cancel appointment</span>
+                )}
               </Button>
             ) : null}
           </ButtonGroup>

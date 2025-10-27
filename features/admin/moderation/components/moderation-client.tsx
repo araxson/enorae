@@ -10,6 +10,14 @@ import type { ModerationReview, ModerationStats as ModerationStatsType } from '@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface ModerationClientProps {
   reviews: ModerationReview[]
@@ -75,12 +83,16 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
 
   return (
     <div className="space-y-8">
-      <div className="space-y-1">
-        <p className="text-base font-semibold">Content moderation</p>
-        <p className="text-sm text-muted-foreground">
-          Monitor at-risk reviews, sentiment trends, and reviewer reputation across the platform.
-        </p>
-      </div>
+      <ItemGroup>
+        <Item variant="muted">
+          <ItemContent>
+            <p className="text-base font-semibold">Content moderation</p>
+            <p className="text-sm text-muted-foreground">
+              Monitor at-risk reviews, sentiment trends, and reviewer reputation across the platform.
+            </p>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       <ModerationStats stats={stats} />
 
@@ -140,7 +152,13 @@ function InsightCard({ title, emptyLabel, items, renderBadge }: InsightCardProps
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>{title}</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
@@ -152,17 +170,21 @@ function InsightCard({ title, emptyLabel, items, renderBadge }: InsightCardProps
           </Empty>
         ) : (
           items.map((review) => (
-            <div key={review['id'] ?? `${review['salon_id']}-${review['created_at']}`} className="flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <p className="text-sm font-medium truncate">{review['customer_name'] || 'Anonymous'}</p>
-                <div className="truncate">
-                  <CardDescription>{review['salon_name'] || 'Unknown salon'}</CardDescription>
+            <Item
+              key={review['id'] ?? `${review['salon_id']}-${review['created_at']}`}
+              variant="outline"
+              className="items-start gap-3"
+            >
+              <ItemContent>
+                <div className="min-w-0">
+                  <ItemTitle>{review['customer_name'] || 'Anonymous'}</ItemTitle>
+                  <ItemDescription>{review['salon_name'] || 'Unknown salon'}</ItemDescription>
                 </div>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              </ItemContent>
+              <ItemActions>
                 {renderBadge(review)}
-              </div>
-            </div>
+              </ItemActions>
+            </Item>
           ))
         )}
       </CardContent>

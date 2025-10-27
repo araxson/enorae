@@ -5,6 +5,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import type { ProfileDetail } from '@/features/admin/profile/types'
 import { updateProfileBasicsAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
@@ -55,39 +65,47 @@ export function ProfileBasicsForm({ profile, onUpdated }: ProfileBasicsFormProps
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle>Profile details</CardTitle>
-        <CardDescription>Update core profile identifiers for this user.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Profile details</CardTitle>
+              <CardDescription>Update core profile identifiers for this user.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="admin-profile-full-name" className="text-sm font-medium">
-              Full name
-            </label>
-            <Input
-              id="admin-profile-full-name"
-              value={fullName}
-              onChange={(event) => setFullName(event.target.value)}
-              placeholder="Alex Johnson"
-              disabled={isPending}
-            />
-          </div>
+          <FieldGroup className="gap-4">
+            <Field>
+              <FieldLabel htmlFor="admin-profile-full-name">Full name</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="admin-profile-full-name"
+                  value={fullName}
+                  onChange={(event) => setFullName(event.target.value)}
+                  placeholder="Alex Johnson"
+                  disabled={isPending}
+                />
+              </FieldContent>
+            </Field>
 
-          <div className="space-y-2">
-            <label htmlFor="admin-profile-username" className="text-sm font-medium">
-              Username
-            </label>
-            <Input
-              id="admin-profile-username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-              placeholder="alex.j"
-              disabled={isPending}
-            />
-            <p className="text-xs text-muted-foreground">
-              Letters, numbers, and . _ - characters are allowed (3-32 characters).
-            </p>
-          </div>
+            <Field>
+              <FieldLabel htmlFor="admin-profile-username">Username</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="admin-profile-username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                  placeholder="alex.j"
+                  disabled={isPending}
+                />
+                <FieldDescription>
+                  Letters, numbers, and . _ - characters are allowed (3-32 characters).
+                </FieldDescription>
+              </FieldContent>
+            </Field>
+          </FieldGroup>
 
           {feedback && (
             <Alert variant={feedback.success ? 'default' : 'destructive'}>
@@ -96,23 +114,36 @@ export function ProfileBasicsForm({ profile, onUpdated }: ProfileBasicsFormProps
             </Alert>
           )}
 
-          <div className="flex items-center gap-3">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? 'Saving…' : 'Save changes'}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => {
-                setFullName(profile.metadata.fullName ?? profile.summary.fullName ?? '')
-                setUsername(profile.summary.username ?? '')
-                setFeedback(initialState)
-              }}
-              disabled={isPending}
-            >
-              Reset
-            </Button>
-          </div>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemActions>
+                <ButtonGroup>
+                  <Button type="submit" disabled={isPending}>
+                    {isPending ? (
+                      <>
+                        <Spinner className="mr-2" />
+                        Saving…
+                      </>
+                    ) : (
+                      'Save changes'
+                    )}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => {
+                      setFullName(profile.metadata.fullName ?? profile.summary.fullName ?? '')
+                      setUsername(profile.summary.username ?? '')
+                      setFeedback(initialState)
+                    }}
+                    disabled={isPending}
+                  >
+                    Reset
+                  </Button>
+                </ButtonGroup>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </form>
       </CardContent>
     </Card>

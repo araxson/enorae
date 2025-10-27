@@ -5,6 +5,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Mail, ShieldQuestion, UserCircle2 } from 'lucide-react'
 import type { ProfileDetail } from '@/features/admin/profile/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface ProfileSummaryCardProps {
   profile: ProfileDetail | null
@@ -36,7 +43,13 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
     return (
       <Card>
         <CardHeader className="pb-4">
-          <CardTitle>Profile overview</CardTitle>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Profile overview</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="space-y-4">
           <Skeleton className="h-16 w-full" />
@@ -51,7 +64,13 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
     return (
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle>Profile overview</CardTitle>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Profile overview</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -70,7 +89,13 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle>Profile overview</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Profile overview</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
@@ -122,26 +147,34 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <p className="text-xs text-muted-foreground">Last activity</p>
-            <p className="text-sm font-medium">{formatDate(summary.lastActiveAt)}</p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Created</p>
-            <p className="text-sm font-medium">{formatDate(summary.createdAt)}</p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Locale &amp; timezone</p>
-            <p className="text-sm font-medium">
-              {[summary.locale, summary.timezone].filter(Boolean).join(' · ') || '—'}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Country</p>
-            <p className="text-sm font-medium">{summary.countryCode ?? '—'}</p>
-          </div>
-        </div>
+        <ItemGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Item variant="muted" size="sm" className="flex-col items-start">
+            <ItemContent className="gap-1">
+              <ItemDescription>Last activity</ItemDescription>
+              <ItemTitle>{formatDate(summary.lastActiveAt)}</ItemTitle>
+            </ItemContent>
+          </Item>
+          <Item variant="muted" size="sm" className="flex-col items-start">
+            <ItemContent className="gap-1">
+              <ItemDescription>Created</ItemDescription>
+              <ItemTitle>{formatDate(summary.createdAt)}</ItemTitle>
+            </ItemContent>
+          </Item>
+          <Item variant="muted" size="sm" className="flex-col items-start">
+            <ItemContent className="gap-1">
+              <ItemDescription>Locale &amp; timezone</ItemDescription>
+              <ItemTitle>
+                {[summary.locale, summary.timezone].filter(Boolean).join(' · ') || '—'}
+              </ItemTitle>
+            </ItemContent>
+          </Item>
+          <Item variant="muted" size="sm" className="flex-col items-start">
+            <ItemContent className="gap-1">
+              <ItemDescription>Country</ItemDescription>
+              <ItemTitle>{summary.countryCode ?? '—'}</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
 
         {roles.length > 0 && (
           <div className="space-y-2">

@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge'
 import { Edit, Trash2 } from 'lucide-react'
 import type { AppointmentServiceDetails } from './types'
 import { formatCurrency, formatTime, getStatusColor } from './utils'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface ServicesTableProps {
   services: AppointmentServiceDetails[]
@@ -76,7 +77,7 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
               </Badge>
             </TableCell>
             <TableCell className="text-right">
-              <div className="flex items-center justify-end gap-2">
+              <ButtonGroup className="ml-auto justify-end">
                 <Button variant="ghost" size="sm" onClick={handleEdit(service)} aria-label={`Edit service ${service['service_id']}`}>
                   <Edit className="h-4 w-4" />
                 </Button>
@@ -89,7 +90,7 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
-              </div>
+              </ButtonGroup>
             </TableCell>
           </TableRow>
         ))}

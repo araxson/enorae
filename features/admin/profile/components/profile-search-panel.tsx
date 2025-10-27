@@ -2,15 +2,27 @@
 
 import { ChangeEvent } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import type { ProfileSearchResult } from '@/features/admin/profile/types'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Spinner } from '@/components/ui/spinner'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface ProfileSearchPanelProps {
   results: ProfileSearchResult[]
@@ -36,17 +48,39 @@ export function ProfileSearchPanel({
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle>User Directory</CardTitle>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={searchTerm}
-            onChange={handleChange}
-            placeholder="Search by name, email, or username"
-            className="pl-9"
-            aria-label="Search profiles"
-          />
-        </div>
+        <ItemGroup className="gap-4">
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>User Directory</CardTitle>
+            </ItemContent>
+          </Item>
+          <Item variant="muted" className="flex-1">
+            <ItemContent>
+              <InputGroup aria-label="Search profiles">
+                <InputGroupAddon>
+                  <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={searchTerm}
+                  onChange={handleChange}
+                  placeholder="Search by name, email, or username"
+                />
+                <InputGroupAddon align="inline-end">
+                  {searchTerm ? (
+                    <InputGroupButton
+                      onClick={() => onSearchChange('')}
+                      aria-label="Clear search"
+                      size="icon-sm"
+                      variant="ghost"
+                    >
+                      <X className="h-4 w-4" aria-hidden="true" />
+                    </InputGroupButton>
+                  ) : null}
+                </InputGroupAddon>
+              </InputGroup>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="flex h-full flex-col gap-4">
         {isSearching && (
@@ -67,50 +101,51 @@ export function ProfileSearchPanel({
                   </EmptyHeader>
                 </Empty>
               ) : (
-                <ul className="divide-y">
+                <ItemGroup className="divide-y">
                   {results.map((profile) => {
                     const isActive = selectedId === profile.id
                     return (
-                      <li key={profile.id}>
+                      <Item
+                        key={profile.id}
+                        asChild
+                        variant={isActive ? 'muted' : 'default'}
+                        size="sm"
+                        className="px-0"
+                      >
                         <Button
                           type="button"
                           variant="ghost"
                           onClick={() => onSelect(profile.id)}
-                          className={cn(
-                            'w-full justify-start px-4 py-3 text-left transition hover:bg-muted/60',
-                            isActive && 'bg-muted/80',
-                          )}
+                          className="w-full justify-start px-4 py-3 text-left"
                         >
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="space-y-1">
-                              <p className="text-sm font-medium leading-tight">
-                                {profile.fullName || profile.email || 'Unknown user'}
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                {profile.email ?? 'No email on file'}
-                              </p>
-                              {profile.username && (
-                                <p className="text-xs text-muted-foreground">@{profile.username}</p>
-                              )}
-                            </div>
-                            <div className="space-y-1 text-right">
-                              {profile.primaryRole && (
-                                <div className="text-xs">
-                                  <Badge variant="outline">
-                                    {profile.primaryRole.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
-                                  </Badge>
-                                </div>
-                              )}
-                              {profile.status && (
-                                <p className="text-xs text-muted-foreground">{profile.status}</p>
-                              )}
-                            </div>
-                          </div>
+                          <ItemContent className="items-start gap-1">
+                            <ItemTitle>
+                              {profile.fullName || profile.email || 'Unknown user'}
+                            </ItemTitle>
+                            <ItemDescription>
+                              {profile.email ?? 'No email on file'}
+                            </ItemDescription>
+                            {profile.username ? (
+                              <ItemDescription>@{profile.username}</ItemDescription>
+                            ) : null}
+                          </ItemContent>
+                          <ItemActions className="flex-col items-end gap-1 text-right text-xs">
+                            {profile.primaryRole ? (
+                              <Badge variant="outline">
+                                {profile.primaryRole
+                                  .replace(/_/g, ' ')
+                                  .replace(/\b\w/g, (char) => char.toUpperCase())}
+                              </Badge>
+                            ) : null}
+                            {profile.status ? (
+                              <span className="text-muted-foreground">{profile.status}</span>
+                            ) : null}
+                          </ItemActions>
                         </Button>
-                      </li>
+                      </Item>
                     )
                   })}
-                </ul>
+                </ItemGroup>
               )}
             </ScrollArea>
           </CardContent>

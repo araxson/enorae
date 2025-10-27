@@ -69,9 +69,10 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
                   <Card key={`${violation.identifier}-${violation.endpoint}`}>
                     <CardHeader>
                       <ItemGroup>
-                        <Item>
+                        <Item className="items-start justify-between gap-2">
                           <ItemContent>
                             <CardTitle>{violation.identifier}</CardTitle>
+                            <CardDescription>Endpoint {violation.endpoint}</CardDescription>
                           </ItemContent>
                           <ItemActions className="flex-none gap-1">
                             <Badge variant="destructive">
@@ -82,7 +83,6 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
                           </ItemActions>
                         </Item>
                       </ItemGroup>
-                      <CardDescription>Endpoint {violation.endpoint}</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-col gap-1">
@@ -117,9 +117,10 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
                   <Card key={rule.id}>
                     <CardHeader>
                       <ItemGroup>
-                        <Item>
+                        <Item className="items-start justify-between gap-2">
                           <ItemContent>
                             <CardTitle>{rule.ruleName}</CardTitle>
+                            <CardDescription>Rate limit policy</CardDescription>
                           </ItemContent>
                           <ItemActions className="flex-none">
                             <Badge variant={rule.isActive ? 'outline' : 'secondary'}>

@@ -1,6 +1,16 @@
 import { Sparkles } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Badge } from '@/components/ui/badge'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface FeatureUsagePanelProps {
@@ -13,10 +23,16 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-muted-foreground" />
-          <CardTitle>Feature Usage Signals</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <Sparkles className="h-4 w-4" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Feature Usage Signals</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         {items.length === 0 ? (
@@ -27,20 +43,23 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="space-y-2">
+          <ItemGroup className="space-y-2">
             {items.map((item) => (
-              <Card key={item.key}>
-                <CardHeader className="pb-2">
-                  <CardTitle>{item.key}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <CardDescription>
+              <Item key={item.key} variant="outline" size="sm">
+                <ItemContent>
+                  <ItemTitle>{item.key}</ItemTitle>
+                  <ItemDescription>
+                    Interaction volume across last 30 days of telemetry.
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions>
+                  <Badge variant="secondary">
                     {item.count.toLocaleString('en-US')} hits
-                  </CardDescription>
-                </CardContent>
-              </Card>
+                  </Badge>
+                </ItemActions>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         )}
       </CardContent>
     </Card>

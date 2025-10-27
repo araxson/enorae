@@ -9,9 +9,11 @@ import {
 } from '@/components/ui/empty'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
@@ -27,24 +29,34 @@ export function AcquisitionPanel({ acquisition }: AcquisitionPanelProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <Users className="h-4 w-4 text-muted-foreground" />
-          <CardTitle>User Acquisition</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <Users className="h-4 w-4" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>User Acquisition</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs text-muted-foreground">New users in last 7 days</p>
-            <p className="text-2xl font-semibold">{newUsersLast7Days.toLocaleString('en-US')}</p>
-          </div>
-          <div className="text-xs">
-            <Badge variant={deltaPositive ? 'secondary' : 'destructive'}>
-              {deltaPositive ? '+' : ''}
-              {deltaLast7Days.toLocaleString('en-US')} vs prior 7d
-            </Badge>
-          </div>
-        </div>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <ItemDescription>New users in last 7 days</ItemDescription>
+              <span className="text-2xl font-semibold">
+                {newUsersLast7Days.toLocaleString('en-US')}
+              </span>
+            </ItemContent>
+            <ItemActions>
+              <Badge variant={deltaPositive ? 'secondary' : 'destructive'}>
+                {deltaPositive ? '+' : ''}
+                {deltaLast7Days.toLocaleString('en-US')} vs prior 7d
+              </Badge>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
 
         <div className="grid gap-4">
           <div>

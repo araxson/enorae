@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ImageIcon } from 'lucide-react'
 import Image from 'next/image'
@@ -14,7 +14,14 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { Item, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type SalonMediaView = Database['public']['Views']['salon_media_view']['Row']
 
@@ -29,15 +36,21 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ImageIcon className="h-5 w-5" aria-hidden="true" />
-            <CardTitle>Gallery</CardTitle>
-          </div>
-          {media['gallery_image_count'] !== null && media['gallery_image_count'] > 0 && (
-            <Badge variant="secondary">{media['gallery_image_count']} photos</Badge>
-          )}
-        </div>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <ImageIcon className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Gallery</ItemTitle>
+            </ItemContent>
+            {media['gallery_image_count'] !== null && media['gallery_image_count'] > 0 ? (
+              <ItemActions className="flex-none">
+                <Badge variant="secondary">{media['gallery_image_count']} photos</Badge>
+              </ItemActions>
+            ) : null}
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         {media['logo_url'] || media['cover_image_url'] || hasGallery ? (

@@ -17,6 +17,7 @@ import { createStaffMember, updateStaffMember } from '@/features/business/staff/
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import { useStaffFormState } from './use-staff-form-state'
 import { StaffFormFields } from './staff-form-fields'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type StaffFormDialogProps = {
   open: boolean
@@ -95,13 +96,15 @@ export function StaffFormDialog({ open, onClose, staff, onSuccess }: StaffFormDi
           </div>
 
           <DialogFooter className="mt-6">
-            <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? <Spinner className="mr-2" /> : null}
-              {staff ? 'Update Staff Member' : 'Add Staff Member'}
-            </Button>
+            <ButtonGroup>
+              <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? <Spinner className="mr-2" /> : null}
+                {staff ? 'Update Staff Member' : 'Add Staff Member'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </form>
       </DialogContent>

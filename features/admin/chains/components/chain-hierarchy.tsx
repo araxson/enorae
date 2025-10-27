@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Building2, MapPin, Star } from 'lucide-react'
 import type { ChainSalon } from '@/features/admin/chains/api/queries'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
 
 interface ChainHierarchyProps {
   chainName: string
@@ -22,9 +23,17 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
 
   return (
     <Card>
-      <CardHeader className="flex items-center gap-2">
-        <Building2 className="h-5 w-5" />
-        <CardTitle>Chain Hierarchy: {chainName}</CardTitle>
+      <CardHeader>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <Building2 className="h-5 w-5" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Chain Hierarchy: {chainName}</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
@@ -56,10 +65,18 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
                   <TableCell className="font-medium">{salon.name}</TableCell>
                   <TableCell>
                     {salon.city || salon.state ? (
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MapPin className="h-3 w-3" />
-                        {[salon.city, salon.state].filter(Boolean).join(', ')}
-                      </div>
+                      <ItemGroup>
+                        <Item variant="muted" className="items-center gap-1 text-sm text-muted-foreground">
+                          <ItemMedia variant="icon">
+                            <MapPin className="h-3 w-3" />
+                          </ItemMedia>
+                          <ItemContent>
+                            <ItemDescription>
+                              {[salon.city, salon.state].filter(Boolean).join(', ')}
+                            </ItemDescription>
+                          </ItemContent>
+                        </Item>
+                      </ItemGroup>
                     ) : (
                       <span className="text-muted-foreground">N/A</span>
                     )}

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -14,7 +15,10 @@ import {
   Field,
   FieldContent,
   FieldError,
+  FieldGroup,
   FieldLabel,
+  FieldLegend,
+  FieldSeparator,
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -78,33 +82,38 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FieldSet>
-        <Field>
-          <FieldLabel htmlFor="start_time">Start Time</FieldLabel>
-          <FieldContent>
-            <Input
-              id="start_time"
-              type="datetime-local"
-              {...register('start_time')}
-            />
-            {errors['start_time'] ? (
-              <FieldError>{errors['start_time'].message}</FieldError>
-            ) : null}
-          </FieldContent>
-        </Field>
+        <FieldLegend>Timing</FieldLegend>
+        <FieldGroup className="@md/field-group:grid @md/field-group:grid-cols-2">
+          <Field>
+            <FieldLabel htmlFor="start_time">Start Time</FieldLabel>
+            <FieldContent>
+              <Input
+                id="start_time"
+                type="datetime-local"
+                {...register('start_time')}
+              />
+              {errors['start_time'] ? (
+                <FieldError>{errors['start_time'].message}</FieldError>
+              ) : null}
+            </FieldContent>
+          </Field>
 
-        <Field>
-          <FieldLabel htmlFor="end_time">End Time</FieldLabel>
-          <FieldContent>
-            <Input
-              id="end_time"
-              type="datetime-local"
-              {...register('end_time')}
-            />
-            {errors['end_time'] ? (
-              <FieldError>{errors['end_time'].message}</FieldError>
-            ) : null}
-          </FieldContent>
-        </Field>
+          <Field>
+            <FieldLabel htmlFor="end_time">End Time</FieldLabel>
+            <FieldContent>
+              <Input
+                id="end_time"
+                type="datetime-local"
+                {...register('end_time')}
+              />
+              {errors['end_time'] ? (
+                <FieldError>{errors['end_time'].message}</FieldError>
+              ) : null}
+            </FieldContent>
+          </Field>
+        </FieldGroup>
+
+        <FieldSeparator />
 
         <Field>
           <FieldLabel htmlFor="block_type">Block Type</FieldLabel>
@@ -169,7 +178,14 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
               </Button>
             )}
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : blockedTime ? 'Update' : 'Create'}
+              {isSubmitting ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <span>{blockedTime ? 'Update' : 'Create'}</span>
+              )}
             </Button>
           </ButtonGroup>
         </div>

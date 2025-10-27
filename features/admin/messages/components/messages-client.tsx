@@ -14,6 +14,7 @@ import { MessagesTable } from './messages-table'
 import { MessagesModerationTable } from './messages-moderation-table'
 import { MessagesActivityTable } from './messages-activity-table'
 import { MessagesReportSummary } from './messages-report-summary'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface MessagesClientProps {
   threads: MessageThreadWithInsights[]
@@ -64,12 +65,16 @@ export function MessagesClient({
 
   return (
     <div className="flex flex-col gap-10">
-      <div>
-        <h1 className="scroll-m-20 text-4xl font-extrabold">Messages Oversight</h1>
-        <p className="text-muted-foreground">
-          Monitor platform-wide communications, moderate flagged content, and track response performance.
-        </p>
-      </div>
+      <ItemGroup>
+        <Item variant="muted">
+          <ItemContent>
+            <h1 className="scroll-m-20 text-4xl font-extrabold">Messages Oversight</h1>
+            <p className="text-muted-foreground">
+              Monitor platform-wide communications, moderate flagged content, and track response performance.
+            </p>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       <MessagesStats stats={stats} />
 

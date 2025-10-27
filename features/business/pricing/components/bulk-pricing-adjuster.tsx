@@ -1,15 +1,31 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 import { bulkAdjustPricing } from '@/features/business/pricing/api/pricing-rules.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Spinner } from '@/components/ui/spinner'
 
 type ServiceOption = { id: string; name: string; price?: number }
 
@@ -73,109 +89,137 @@ export function BulkPricingAdjuster({ salonId, services }: BulkPricingAdjusterPr
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Bulk Pricing Adjustment</CardTitle>
-        <CardDescription>Quickly adjust pricing across multiple services.</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div>
-            <Label htmlFor="scope">Scope</Label>
-            <Select
-              value={scope}
-              onValueChange={(value: 'all' | 'selected') => setScope(value)}
-            >
-              <SelectTrigger id="scope">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Services</SelectItem>
-                <SelectItem value="selected">Selected Services</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Bulk Pricing Adjustment</ItemTitle>
+        <ItemDescription>Quickly adjust pricing across multiple services.</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
+        <FieldSet className="space-y-4">
+          <FieldGroup className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Field>
+              <FieldLabel htmlFor="scope">Scope</FieldLabel>
+              <FieldContent>
+                <Select
+                  value={scope}
+                  onValueChange={(value: 'all' | 'selected') => setScope(value)}
+                >
+                  <SelectTrigger id="scope">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Services</SelectItem>
+                    <SelectItem value="selected">Selected Services</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
 
-          <div>
-            <Label htmlFor="adjustment-type">Adjustment Type</Label>
-            <Select
-              value={adjustmentType}
-              onValueChange={(value: 'percentage' | 'fixed') => setAdjustmentType(value)}
-            >
-              <SelectTrigger id="adjustment-type">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="percentage">Percentage</SelectItem>
-                <SelectItem value="fixed">Fixed Amount ($)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+            <Field>
+              <FieldLabel htmlFor="adjustment-type">Adjustment Type</FieldLabel>
+              <FieldContent>
+                <Select
+                  value={adjustmentType}
+                  onValueChange={(value: 'percentage' | 'fixed') => setAdjustmentType(value)}
+                >
+                  <SelectTrigger id="adjustment-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="percentage">Percentage</SelectItem>
+                    <SelectItem value="fixed">Fixed Amount ($)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
 
-  <div>
-            <Label htmlFor="adjustment-value">
-              {adjustmentType === 'percentage' ? 'Percent (%)' : 'Amount ($)'}
-            </Label>
-            <Input
-              id="adjustment-value"
-              type="number"
-              step={adjustmentType === 'percentage' ? 1 : 0.5}
-              value={adjustmentValue}
-              onChange={(event) => setAdjustmentValue(Number(event.target.value))}
-            />
-          </div>
-        </div>
+            <Field>
+              <FieldLabel htmlFor="adjustment-value">
+                {adjustmentType === 'percentage' ? 'Percent (%)' : 'Amount ($)'}
+              </FieldLabel>
+              <FieldContent>
+                <Input
+                  id="adjustment-value"
+                  type="number"
+                  step={adjustmentType === 'percentage' ? 1 : 0.5}
+                  value={adjustmentValue}
+                  onChange={(event) => setAdjustmentValue(Number(event.target.value))}
+                />
+              </FieldContent>
+            </Field>
+          </FieldGroup>
 
-        {scope === 'selected' && (
-          <div>
-            <Label>Choose Services</Label>
-            <Card className="mt-2">
-              <CardContent className="p-0">
-                <ScrollArea className="max-h-40">
-                  <div className="p-2 space-y-1">
-                    {services.map((service) => {
-                      const isActive = selectedServices.includes(service.id)
-                      return (
-                        <Button
-                          key={service.id}
-                          type="button"
-                          variant={isActive ? 'default' : 'outline'}
-                          onClick={() => toggleService(service.id)}
-                          className="flex w-full items-center justify-between"
-                        >
-                          <span>{service.name}</span>
-                          {service.price !== undefined && (
-                            <Badge variant="secondary">${service.price.toFixed(2)}</Badge>
-                          )}
-                        </Button>
-                      )
-                    })}
-                  </div>
-                </ScrollArea>
-              </CardContent>
-            </Card>
-            {selectedServices.length > 0 ? (
-              <p className="mt-2 text-xs text-muted-foreground">
-                {selectedServices.length} services selected
-              </p>
-            ) : null}
-          </div>
-        )}
+          {scope === 'selected' ? (
+            <Field>
+              <FieldLabel>Choose Services</FieldLabel>
+              <FieldContent>
+                <Item variant="outline" className="mt-2 flex-col p-0">
+                    <ScrollArea className="max-h-40">
+                      <ItemGroup className="space-y-1 p-2">
+                        {services.map((service) => {
+                          const isActive = selectedServices.includes(service.id)
+                          return (
+                            <Item
+                              key={service.id}
+                              asChild
+                              variant={isActive ? 'muted' : 'outline'}
+                            >
+                              <button
+                                type="button"
+                                className="w-full text-left"
+                                onClick={() => toggleService(service.id)}
+                                aria-pressed={isActive}
+                              >
+                                <ItemContent>
+                                  <ItemTitle>{service.name}</ItemTitle>
+                                </ItemContent>
+                                {service.price !== undefined ? (
+                                  <ItemActions>
+                                    <Badge variant="secondary">
+                                      ${service.price.toFixed(2)}
+                                    </Badge>
+                                  </ItemActions>
+                                ) : null}
+                              </button>
+                            </Item>
+                          )
+                        })}
+                      </ItemGroup>
+                    </ScrollArea>
+                </Item>
+              </FieldContent>
+              {selectedServices.length > 0 ? (
+                <FieldDescription>
+                  {selectedServices.length} services selected.
+                </FieldDescription>
+              ) : null}
+            </Field>
+          ) : null}
 
-        <div>
-          <Label htmlFor="reason">Reason (optional)</Label>
-          <Input
-            id="reason"
-            value={reason}
-            onChange={(event) => setReason(event.target.value)}
-            placeholder="e.g., Holiday promotion"
-          />
-        </div>
+          <Field>
+            <FieldLabel htmlFor="reason">Reason (optional)</FieldLabel>
+            <FieldContent>
+              <Input
+                id="reason"
+                value={reason}
+                onChange={(event) => setReason(event.target.value)}
+                placeholder="e.g., Holiday promotion"
+              />
+            </FieldContent>
+          </Field>
 
-        <Button onClick={handleAdjust} disabled={isPending}>
-          {isPending ? 'Applying...' : 'Apply Adjustment'}
-        </Button>
-      </CardContent>
-    </Card>
+          <Button onClick={handleAdjust} disabled={isPending} className="flex items-center gap-2">
+            {isPending ? (
+              <>
+                <Spinner />
+                Applying
+              </>
+            ) : (
+              'Apply Adjustment'
+            )}
+          </Button>
+        </FieldSet>
+      </ItemContent>
+    </Item>
   )
 }

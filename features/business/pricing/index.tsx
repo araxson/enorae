@@ -6,7 +6,13 @@ import { PricingRulesList } from './components/pricing-rules-list'
 import { DynamicPricingDashboard } from './components/dynamic-pricing-dashboard'
 import { BulkPricingAdjuster } from './components/bulk-pricing-adjuster'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type PricingRuleRecord = {
   id: string | null
@@ -71,14 +77,14 @@ export async function DynamicPricing() {
 
   return (
     <div className="flex flex-col gap-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>Dynamic pricing</CardTitle>
-          <CardDescription>
+      <Item variant="outline" className="flex-col gap-2">
+        <ItemHeader>
+          <ItemTitle>Dynamic pricing</ItemTitle>
+          <ItemDescription>
             Configure time-based and demand-based pricing rules to optimize revenue.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+          </ItemDescription>
+        </ItemHeader>
+      </Item>
 
       <DynamicPricingDashboard
         rules={analytics.rules}
@@ -91,14 +97,14 @@ export async function DynamicPricing() {
 
       <PricingRulesForm salonId={salon.id} services={serviceList.map(s => ({ id: s.id, name: s.name || 'Untitled Service', price: s.base_price ?? undefined }))} />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Active pricing rules</CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
+      <Item variant="outline" className="flex-col gap-2">
+        <ItemHeader>
+          <ItemTitle>Active pricing rules</ItemTitle>
+        </ItemHeader>
+        <ItemContent className="p-0">
           <PricingRulesList rules={normalizedRules} />
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
     </div>
   )
 }

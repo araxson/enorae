@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Calendar, DollarSign, MessageSquare, Star, Users } from 'lucide-react'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 import type {
   AppointmentsOverview,
   MessagesOverview,
@@ -35,11 +36,15 @@ export function AdminOverviewTabs({
 
   return (
     <Tabs defaultValue="revenue" className="w-full gap-6">
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Calendar className="h-3.5 w-3.5" />
-          Data refreshes automatically every 60 seconds
-        </div>
+      <ItemGroup className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <Item variant="muted" className="items-center gap-2 text-xs text-muted-foreground">
+          <ItemContent>
+            <div className="flex items-center gap-2">
+              <Calendar className="h-3.5 w-3.5" />
+              <ItemDescription>Data refreshes automatically every 60 seconds</ItemDescription>
+            </div>
+          </ItemContent>
+        </Item>
         <ScrollArea className="w-full md:w-auto">
           <TabsList className="flex w-full min-w-max justify-between md:w-auto">
             <TabsTrigger value="revenue">
@@ -75,7 +80,7 @@ export function AdminOverviewTabs({
           </TabsList>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
-      </div>
+      </ItemGroup>
 
       <TabsContent value="revenue">
         <AdminOverviewRevenueTab revenue={revenue} windowSize={chartWindow} />

@@ -7,6 +7,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ShieldBan } from 'lucide-react'
 import type { ProfileDetail } from '@/features/admin/profile/types'
 import { anonymizeProfileAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
+import { Spinner } from '@/components/ui/spinner'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface ProfileActionsProps {
   profile: ProfileDetail | null
@@ -49,22 +52,44 @@ export function ProfileActions({ profile, onAnonymized, isLoading }: ProfileActi
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle>Security actions</CardTitle>
-        <CardDescription>Administrative controls for user privacy and data retention.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Security actions</CardTitle>
+              <CardDescription>Administrative controls for user privacy and data retention.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex-1 text-sm text-muted-foreground">
-          Use anonymization to comply with GDPR and permanently redact personal data.
-        </div>
-        <Button
-          type="button"
-          variant="destructive"
-          disabled={isPending || isLoading}
-          onClick={handleAnonymize}
-        >
-          <ShieldBan className="mr-2 h-4 w-4" />
-          Anonymize user
-        </Button>
+      <CardContent>
+        <ItemGroup className="gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <Item variant="muted" className="flex-1">
+            <ItemContent>
+              <p className="text-sm text-muted-foreground">
+                Use anonymization to comply with GDPR and permanently redact personal data.
+              </p>
+            </ItemContent>
+          </Item>
+          <Item variant="muted">
+            <ItemActions>
+              <ButtonGroup>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  disabled={isPending || isLoading}
+                  onClick={handleAnonymize}
+                >
+                  {isPending || isLoading ? (
+                    <Spinner className="mr-2" />
+                  ) : (
+                    <ShieldBan className="mr-2 h-4 w-4" />
+                  )}
+                  {isPending || isLoading ? 'Anonymizing…' : 'Anonymize user'}
+                </Button>
+              </ButtonGroup>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardContent>
       {feedback && (
         <CardContent className="pt-0">

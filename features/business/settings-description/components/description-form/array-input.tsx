@@ -5,8 +5,19 @@ import { X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Kbd } from '@/components/ui/kbd'
+import {
+  InputGroup,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 type ArrayInputProps = {
   label: string
   items: string[]
@@ -27,25 +38,30 @@ export function ArrayInput({ label, items, onAdd, onRemove, placeholder }: Array
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <Label>{label}</Label>
-      <div className="flex gap-3">
-        <Input
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault()
-              handleAdd()
-            }
-          }}
-          placeholder={placeholder}
-        />
-        <Button type="button" variant="outline" onClick={handleAdd}>
-          Add
-        </Button>
-      </div>
-      <div className="flex gap-3 flex-wrap">
+    <Field>
+      <FieldLabel>{label}</FieldLabel>
+      <FieldContent>
+        <InputGroup>
+          <InputGroupInput
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+                handleAdd()
+              }
+            }}
+            placeholder={placeholder}
+          />
+          <InputGroupButton type="button" variant="outline" onClick={handleAdd}>
+            Add
+          </InputGroupButton>
+        </InputGroup>
+        <FieldDescription className="text-xs text-muted-foreground">
+          Press <Kbd>Enter</Kbd> to add quickly.
+        </FieldDescription>
+      </FieldContent>
+      <div className="flex flex-wrap gap-3">
         {items.map((item, index) => (
           <Badge key={`${item}-${index}`} variant="secondary">
             {item}
@@ -60,6 +76,6 @@ export function ArrayInput({ label, items, onAdd, onRemove, placeholder }: Array
           </Badge>
         ))}
       </div>
-    </div>
+    </Field>
   )
 }

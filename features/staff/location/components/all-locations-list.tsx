@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/empty'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
@@ -50,39 +51,39 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
         return (
           <Card key={location['id']}>
             <CardHeader>
-              <div className="p-4 pb-2">
-                <div className="flex gap-3 items-center flex-wrap">
-                  <CardTitle>
-                    {location.location_name || location['name']}
-                  </CardTitle>
-                  {isCurrent && <Badge variant="default">Your Location</Badge>}
-                  {location['is_primary'] && <Badge variant="outline">Primary</Badge>}
-                </div>
-              </div>
+              <ItemGroup>
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <CardTitle>{location.location_name || location['name']}</CardTitle>
+                  </ItemContent>
+                  <ItemActions className="flex gap-2">
+                    {isCurrent ? <Badge variant="default">Your Location</Badge> : null}
+                    {location['is_primary'] ? <Badge variant="outline">Primary</Badge> : null}
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
             </CardHeader>
             {(address || location.phone_number) && (
               <CardContent>
-                <div className="p-4 pt-0">
-                  <ItemGroup className="space-y-3">
-                    {address ? (
-                      <Item variant="muted" size="sm">
-                        <ItemMedia variant="icon">
-                          <MapPin className="h-3 w-3" aria-hidden="true" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemDescription>{address}</ItemDescription>
-                        </ItemContent>
-                      </Item>
-                    ) : null}
-                    {location.phone_number ? (
-                      <Item variant="muted" size="sm">
-                        <ItemContent>
-                          <ItemDescription>{location.phone_number}</ItemDescription>
-                        </ItemContent>
-                      </Item>
-                    ) : null}
-                  </ItemGroup>
-                </div>
+                <ItemGroup className="space-y-3">
+                  {address ? (
+                    <Item variant="muted" size="sm">
+                      <ItemMedia variant="icon">
+                        <MapPin className="h-3 w-3" aria-hidden="true" />
+                      </ItemMedia>
+                      <ItemContent>
+                        <ItemDescription>{address}</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  ) : null}
+                  {location.phone_number ? (
+                    <Item variant="muted" size="sm">
+                      <ItemContent>
+                        <ItemDescription>{location.phone_number}</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  ) : null}
+                </ItemGroup>
               </CardContent>
             )}
           </Card>

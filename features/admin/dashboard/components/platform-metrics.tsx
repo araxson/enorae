@@ -15,6 +15,14 @@ import {
   UserCheck,
   Users,
 } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 /**
  * Input metrics required to render the platform KPIs surface.
@@ -185,8 +193,14 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
     <section className="flex flex-col gap-4">
       <Card>
         <CardHeader>
-          <CardTitle>Platform metrics</CardTitle>
-          <CardDescription>Core KPIs refresh every minute so you can respond quickly.</CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Platform metrics</CardTitle>
+                <CardDescription>Core KPIs refresh every minute so you can respond quickly.</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Badge variant="outline">
@@ -197,30 +211,24 @@ export function PlatformMetrics({ metrics }: PlatformMetricsProps) {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <ItemGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {cards.map(({ key, title, value, description, icon: Icon, progressValue, helper }) => (
-          <Card key={key}>
-            <CardHeader>
-              <CardTitle>{title}</CardTitle>
-              <CardDescription>{description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                  <strong>{value}</strong>
-                </div>
-                <Progress value={progressValue} />
-                {helper ? (
-                  <div className="flex items-center gap-2">
-                    {helper}
-                  </div>
-                ) : null}
-              </div>
-            </CardContent>
-          </Card>
+          <Item key={key} variant="outline" className="flex-col items-start gap-4">
+            <ItemMedia variant="icon">
+              <Icon className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>{title}</ItemTitle>
+              <ItemDescription>{description}</ItemDescription>
+              <span className="mt-2 flex items-center gap-2 text-lg font-semibold text-foreground">
+                {value}
+              </span>
+              <Progress value={progressValue} className="mt-2" />
+              {helper ? <div className="mt-2 flex items-center gap-2">{helper}</div> : null}
+            </ItemContent>
+          </Item>
         ))}
-      </div>
+      </ItemGroup>
     </section>
   )
 }

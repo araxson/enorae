@@ -9,6 +9,15 @@ import { SessionCard } from './session-card'
 import { ConfirmDialog } from '@/features/shared/ui-components'
 import { revokeSession, revokeAllOtherSessions } from '@/features/shared/sessions/api/mutations'
 import type { SessionWithDevice } from '@/features/shared/sessions/api/queries'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { ShieldAlert } from 'lucide-react'
 
 interface SessionListProps {
   sessions: SessionWithDevice[]
@@ -65,12 +74,16 @@ export function SessionList({ sessions }: SessionListProps) {
 
   if (sessions.length === 0) {
     return (
-      <div className="flex flex-col gap-4">
-        <Alert>
-          <AlertTitle>No active sessions</AlertTitle>
-          <AlertDescription>No active sessions found.</AlertDescription>
-        </Alert>
-      </div>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <ShieldAlert className="h-6 w-6" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No active sessions</EmptyTitle>
+          <EmptyDescription>No active sessions found.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Sign in on another device to see it appear here.</EmptyContent>
+      </Empty>
     )
   }
 

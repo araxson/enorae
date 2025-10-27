@@ -16,6 +16,11 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface SessionListProps {
   sessions: StaffSessionDetail[]
@@ -75,8 +80,14 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
     <div className="flex flex-col gap-4">
       <Card>
         <CardHeader>
-          <CardTitle>Active Sessions</CardTitle>
-          <CardDescription>Manage devices where you&apos;re currently signed in</CardDescription>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <CardTitle>Active Sessions</CardTitle>
+                <CardDescription>Manage devices where you&apos;re currently signed in</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Table>

@@ -1,6 +1,14 @@
 import { Heart, Lightbulb, Eye, Shield } from 'lucide-react'
 
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import { valuesData } from './values.data'
 
 const iconMap = {
@@ -13,8 +21,12 @@ const iconMap = {
 export function Values() {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl bg-muted/30">
-      <div className="flex flex-col gap-8">
-        <h2 className="scroll-m-20 text-center">{valuesData.title}</h2>
+      <ItemGroup className="gap-8">
+        <Item className="mx-auto flex-col items-center text-center" variant="muted">
+          <ItemHeader>
+            <h2 className="scroll-m-20">{valuesData.title}</h2>
+          </ItemHeader>
+        </Item>
 
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
           {valuesData.values.map((value) => {
@@ -32,7 +44,7 @@ export function Values() {
             )
           })}
         </div>
-      </div>
+      </ItemGroup>
     </section>
   )
 }

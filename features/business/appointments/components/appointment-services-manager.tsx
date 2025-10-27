@@ -13,6 +13,7 @@ import { removeServiceFromAppointment } from '@/features/business/appointments/a
 import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import { useToast } from '@/lib/hooks/use-toast'
 import { Separator } from '@/components/ui/separator'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface AppointmentServicesManagerProps {
   appointmentId: string
@@ -110,12 +111,14 @@ export function AppointmentServicesManager({
     <>
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <CardTitle>Services</CardTitle>
-            <Button onClick={() => setShowAddDialog(true)} size="sm">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Service
-            </Button>
+            <ButtonGroup>
+              <Button onClick={() => setShowAddDialog(true)} size="sm">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Service
+              </Button>
+            </ButtonGroup>
           </div>
         </CardHeader>
         <CardContent>
@@ -167,7 +170,7 @@ export function AppointmentServicesManager({
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        <ButtonGroup className="ml-auto justify-end">
                           <Button
                             variant="ghost"
                             size="sm"
@@ -183,7 +186,7 @@ export function AppointmentServicesManager({
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
-                        </div>
+                        </ButtonGroup>
                       </TableCell>
                     </TableRow>
                   ))}

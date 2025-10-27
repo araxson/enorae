@@ -146,10 +146,16 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
 
       <Card>
         <CardHeader>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <CardTitle>Recent activity</CardTitle>
-            <History className="h-5 w-5" aria-hidden="true" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Recent activity</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <History className="h-5 w-5" aria-hidden="true" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           {transactions.length === 0 ? (

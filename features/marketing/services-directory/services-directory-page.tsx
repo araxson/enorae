@@ -1,7 +1,13 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Separator } from '@/components/ui/separator'
-import { ItemGroup } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+} from '@/components/ui/item'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
 import {
@@ -29,6 +35,11 @@ export async function ServicesDirectoryPage() {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <ItemGroup className="gap-8">
+        <Item className="flex-col" variant="muted">
+          <ItemContent>
+            <ItemDescription>Browse every service Enorae salons offer and jump into details quickly.</ItemDescription>
+          </ItemContent>
+        </Item>
         <DirectoryHeader />
         <CategoryNavigation categories={categories} />
         {popularServices.length > 0 ? (
@@ -38,7 +49,11 @@ export async function ServicesDirectoryPage() {
           </>
         ) : null}
         <ItemGroup className="gap-4">
-          <h2 className="scroll-m-20">All Services</h2>
+          <Item className="flex-col" variant="muted">
+            <ItemHeader>
+              <h2 className="scroll-m-20">All Services</h2>
+            </ItemHeader>
+          </Item>
           <ServicesGrid services={services} />
         </ItemGroup>
       </ItemGroup>
@@ -72,11 +87,17 @@ export async function ServicesCategoryPage({
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <ItemGroup className="gap-8">
         <ItemGroup className="gap-4">
-          <h1 className="scroll-m-20">{category.name}</h1>
-          <p className="leading-7 text-muted-foreground">
-            Browse {category.count} {category.name.toLowerCase()} services
-            offered by {salons.length} salon{salons.length === 1 ? '' : 's'}.
-          </p>
+          <Item className="flex-col" variant="muted">
+            <ItemHeader>
+              <h1 className="scroll-m-20">{category.name}</h1>
+            </ItemHeader>
+            <ItemContent>
+              <ItemDescription>
+                Browse {category.count} {category.name.toLowerCase()} services
+                offered by {salons.length} salon{salons.length === 1 ? '' : 's'}.
+              </ItemDescription>
+            </ItemContent>
+          </Item>
         </ItemGroup>
 
         <CategoryNavigation
@@ -85,16 +106,22 @@ export async function ServicesCategoryPage({
         />
 
         <ItemGroup className="gap-4">
-          <h2 className="scroll-m-20">{category.name} Services</h2>
+          <Item className="flex-col" variant="muted">
+            <ItemHeader>
+              <h2 className="scroll-m-20">{category.name} Services</h2>
+            </ItemHeader>
+          </Item>
           <ServicesGrid services={services} categoryName={category.name} />
         </ItemGroup>
 
         <Separator />
 
         <ItemGroup className="gap-4">
-          <h2 className="scroll-m-20">
-            Salons Offering {category.name}
-          </h2>
+          <Item className="flex-col" variant="muted">
+            <ItemHeader>
+              <h2 className="scroll-m-20">Salons Offering {category.name}</h2>
+            </ItemHeader>
+          </Item>
           <CategorySalons salons={salons} categoryName={category.name} />
         </ItemGroup>
       </ItemGroup>

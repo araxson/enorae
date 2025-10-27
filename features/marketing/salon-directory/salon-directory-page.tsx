@@ -1,4 +1,4 @@
-import { ItemGroup } from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 import {
   DirectoryHeader,
@@ -41,6 +41,11 @@ export async function SalonDirectoryPage({
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <ItemGroup className="gap-8">
+        <Item className="flex-col" variant="muted">
+          <ItemContent>
+            <ItemDescription>Discover salons near you and tailor the list with filters and categories.</ItemDescription>
+          </ItemContent>
+        </Item>
         <DirectoryHeader />
         <SalonFilters cities={cities} categories={categories} />
         <SalonGrid salons={salons} />

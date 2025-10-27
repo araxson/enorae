@@ -9,6 +9,13 @@ import {
   FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface NotificationSettingsProps {
   emailNotifications: boolean
@@ -33,10 +40,16 @@ export function NotificationSettings({
 }: NotificationSettingsProps) {
   return (
     <div>
-      <div className="flex items-center gap-2 mb-4">
-        <Bell className="h-4 w-4" />
-        <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Notification Preferences</h3>
-      </div>
+      <ItemGroup className="mb-4">
+        <Item variant="muted" size="sm">
+          <ItemMedia variant="icon">
+            <Bell className="h-4 w-4" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>Notification Preferences</ItemTitle>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
       <FieldSet>
         <FieldLegend className="sr-only">Notification preferences</FieldLegend>
         <FieldGroup className="gap-4">

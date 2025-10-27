@@ -1,7 +1,15 @@
 import { ArrowUpRight, ArrowDownRight, Users, Store, CalendarDays, PieChart } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { PlatformAnalyticsSnapshot, GrowthDelta } from '@/features/admin/analytics/api/admin-analytics-types'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface MetricSummaryCardsProps {
   growth: PlatformAnalyticsSnapshot['growth']['summary']
@@ -59,31 +67,25 @@ export function MetricSummaryCards({ growth, acquisition, retention }: MetricSum
   ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <ItemGroup className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       {cards.map(({ title, icon: Icon, value, helper, delta }) => (
-        <Card key={title}>
-          <CardHeader className="flex flex-row items-start justify-between pb-2">
-            <div className="flex items-center gap-2">
-              <Icon className="h-4 w-4 text-muted-foreground" />
-              <CardTitle>{title}</CardTitle>
-            </div>
-            {delta.icon ? (
-              <div className="flex items-center gap-1 text-xs">
-                <delta.icon className="h-3 w-3" />
-                <Badge variant={delta.variant}>{delta.label}</Badge>
-              </div>
-            ) : (
-              <div className="text-xs">
-                <Badge variant={delta.variant}>{delta.label}</Badge>
-              </div>
-            )}
-          </CardHeader>
-          <CardContent className="space-y-1">
-            <div className="text-2xl font-semibold">{value}</div>
-            <p className="text-xs text-muted-foreground">{helper}</p>
-          </CardContent>
-        </Card>
+        <Item key={title} variant="outline" className="flex-col items-start gap-4">
+          <ItemMedia variant="icon">
+            <Icon className="h-4 w-4" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>{title}</ItemTitle>
+            <span className="text-2xl font-semibold">{value}</span>
+            <ItemDescription>{helper}</ItemDescription>
+          </ItemContent>
+          <ItemActions>
+            <Badge variant={delta.variant}>
+              {delta.icon ? <delta.icon className="mr-1 h-3 w-3" /> : null}
+              {delta.label}
+            </Badge>
+          </ItemActions>
+        </Item>
       ))}
-    </div>
+    </ItemGroup>
   )
 }

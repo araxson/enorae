@@ -15,6 +15,24 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CreditCard, CheckCircle2, XCircle } from 'lucide-react'
 import { updateChainSubscription } from '@/features/admin/chains/api/mutations'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Spinner } from '@/components/ui/spinner'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface ChainSubscriptionProps {
   chainId: string
@@ -60,11 +78,17 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <CreditCard className="h-5 w-5" />
-          <CardTitle>Subscription Management</CardTitle>
-        </div>
-        <CardDescription>{chainName}</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <CreditCard className="h-5 w-5" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Subscription Management</CardTitle>
+              <CardDescription>{chainName}</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
         {message && (
@@ -79,54 +103,73 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
           </Alert>
         )}
 
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Current Tier:</span>
-            <Badge variant="outline">{currentTierInfo?.label || 'Free'}</Badge>
-          </div>
-          {currentTierInfo?.description && (
-            <CardDescription>{currentTierInfo.description}</CardDescription>
-          )}
-        </div>
+        <ItemGroup className="gap-2">
+          <Item>
+            <ItemContent>
+              <ItemTitle>Current tier</ItemTitle>
+              {currentTierInfo?.description ? (
+                <ItemDescription>{currentTierInfo.description}</ItemDescription>
+              ) : null}
+            </ItemContent>
+            <ItemActions>
+              <Badge variant="outline">{currentTierInfo?.label || 'Free'}</Badge>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Update Subscription Tier</label>
-          <Select value={selectedTier} onValueChange={setSelectedTier}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select tier" />
-            </SelectTrigger>
-            <SelectContent>
-              {SUBSCRIPTION_TIERS.map((tier) => (
-                <SelectItem key={tier.value} value={tier.value}>
-                  <div className="flex flex-col">
-                    <span className="font-medium">{tier.label}</span>
-                    <CardDescription>{tier.description}</CardDescription>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        <FieldGroup className="space-y-4">
+          <Field>
+            <FieldLabel>Update Subscription Tier</FieldLabel>
+            <FieldContent>
+              <Select value={selectedTier} onValueChange={setSelectedTier}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select tier" />
+                </SelectTrigger>
+                <SelectContent>
+                  {SUBSCRIPTION_TIERS.map((tier) => (
+                    <SelectItem key={tier.value} value={tier.value}>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{tier.label}</span>
+                        <CardDescription>{tier.description}</CardDescription>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FieldContent>
+          </Field>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="subscription-reason">
-            Reason (optional)
-          </label>
-          <Textarea
-            id="subscription-reason"
-            value={reason}
-            onChange={(event) => setReason(event.target.value)}
-            placeholder="Add context for this change (optional, max 500 characters)"
-          />
-        </div>
+          <Field>
+            <FieldLabel htmlFor="subscription-reason">Reason (optional)</FieldLabel>
+            <FieldContent>
+              <Textarea
+                id="subscription-reason"
+                value={reason}
+                onChange={(event) => setReason(event.target.value)}
+                placeholder="Add context for this change (optional, max 500 characters)"
+                rows={3}
+              />
+              <FieldDescription>Helps audit why subscription tiers change.</FieldDescription>
+            </FieldContent>
+          </Field>
+        </FieldGroup>
 
-        <Button
-          onClick={handleUpdateSubscription}
-          disabled={isLoading || selectedTier === currentTier}
-          className="w-full"
-        >
-          {isLoading ? 'Updating...' : 'Update Subscription'}
-        </Button>
+        <ButtonGroup className="w-full justify-end">
+          <Button
+            onClick={handleUpdateSubscription}
+            disabled={isLoading || selectedTier === currentTier}
+            className="w-full"
+          >
+            {isLoading ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Updating…</span>
+              </>
+            ) : (
+              <span>Update Subscription</span>
+            )}
+          </Button>
+        </ButtonGroup>
 
         <Alert>
           <AlertTitle>Note</AlertTitle>

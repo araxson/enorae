@@ -23,6 +23,7 @@ import { MoreHorizontal } from 'lucide-react'
 import type { ToastUsageRecord } from '@/features/admin/database-toast/api/queries'
 import { optimizeToastUsage } from '@/features/admin/database-toast/api/mutations'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Spinner } from '@/components/ui/spinner'
 
 interface ToastUsageTableProps {
   tables: ToastUsageRecord[]
@@ -65,7 +66,8 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
   }
 
   return (
-    <ScrollArea className="w-full">
+    <div className="relative" aria-busy={isLoading}>
+      <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -138,6 +140,13 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
         </TableBody>
       </Table>
       <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+      </ScrollArea>
+      {isLoading ? (
+        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+          <Spinner className="size-6" />
+          <span className="sr-only">Processing</span>
+        </div>
+      ) : null}
+    </div>
   )
 }

@@ -3,6 +3,13 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import type { MessagesOverview } from './admin-overview-types'
 import { safeFormatDate } from './admin-overview-utils'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type MessagesTabProps = {
   messages: MessagesOverview[]
@@ -13,10 +20,16 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Recent messages</CardTitle>
-          <CardDescription>
-            Customer and staff communications from the last 24 hours.
-          </CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Recent messages</CardTitle>
+                <CardDescription>
+                  Customer and staff communications from the last 24 hours.
+                </CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -35,30 +48,34 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent messages</CardTitle>
-        <CardDescription>
-          Customer and staff communications from the last 24 hours.
-        </CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Recent messages</CardTitle>
+              <CardDescription>
+                Customer and staff communications from the last 24 hours.
+              </CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-80 pr-4">
-          <div className="space-y-3">
+          <ItemGroup className="space-y-3">
             {rows.map((msg) => (
-              <Card key={msg['id']}>
-                <CardHeader className="pb-2">
-                  <CardTitle>{msg['subject'] || 'No subject'}</CardTitle>
-                  <CardDescription>
+              <Item key={msg['id']} variant="outline" className="flex-col gap-3">
+                <ItemContent>
+                  <ItemTitle>{msg['subject'] || 'No subject'}</ItemTitle>
+                  <ItemDescription>
                     {msg['customer_name'] || 'Unknown customer'} • {msg['salon_name'] || 'Unknown salon'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <p className="text-xs text-muted-foreground">
+                  </ItemDescription>
+                  <span className="text-xs text-muted-foreground">
                     {safeFormatDate(msg['created_at'], 'MMM d, HH:mm')}
-                  </p>
-                </CardContent>
-              </Card>
+                  </span>
+                </ItemContent>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         </ScrollArea>
       </CardContent>
     </Card>

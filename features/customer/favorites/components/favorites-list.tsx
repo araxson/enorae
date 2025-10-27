@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { MapPin, StickyNote } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -15,6 +14,17 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface FavoritesListProps {
   favorites: FavoriteWithSalon[]
@@ -23,26 +33,22 @@ interface FavoritesListProps {
 export function FavoritesList({ favorites }: FavoritesListProps) {
   if (favorites.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <MapPin className="h-6 w-6" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No favorite salons yet</EmptyTitle>
-              <EmptyDescription>
-                Start exploring salons and save your favorites for quick access.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button asChild>
-                <Link href="/customer/salons">Browse salons</Link>
-              </Button>
-            </EmptyContent>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <MapPin className="h-6 w-6" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No favorite salons yet</EmptyTitle>
+          <EmptyDescription>
+            Start exploring salons and save your favorites for quick access.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button asChild>
+            <Link href="/customer/salons">Browse salons</Link>
+          </Button>
+        </EmptyContent>
+      </Empty>
     )
   }
 
@@ -54,17 +60,21 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
         if (!salon) return null
 
         return (
-          <Card key={favorite['id']}>
-            <CardHeader className="space-y-1">
-              <CardTitle>{salon['name'] || 'Unnamed salon'}</CardTitle>
+          <Item key={favorite['id']} variant="outline" className="flex h-full flex-col gap-4">
+            <ItemHeader className="items-start gap-3">
               {salon['formatted_address'] ? (
-                <div className="flex items-center gap-2">
+                <ItemMedia variant="icon">
                   <MapPin className="h-4 w-4" aria-hidden="true" />
-                  <CardDescription>{salon['formatted_address']}</CardDescription>
-                </div>
+                </ItemMedia>
               ) : null}
-            </CardHeader>
-            <CardContent className="space-y-4">
+              <ItemContent>
+                <ItemTitle>{salon['name'] || 'Unnamed salon'}</ItemTitle>
+                {salon['formatted_address'] ? (
+                  <ItemDescription>{salon['formatted_address']}</ItemDescription>
+                ) : null}
+              </ItemContent>
+            </ItemHeader>
+            <ItemContent className="gap-4">
               {favorite['notes'] ? (
                 <Alert>
                   <StickyNote className="h-4 w-4" aria-hidden="true" />
@@ -73,24 +83,31 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
                 </Alert>
               ) : null}
 
-              <div>
-                <Badge variant="secondary">
-                  {salon['is_accepting_bookings'] ? 'Accepting bookings' : 'Not accepting bookings'}
-                </Badge>
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-wrap items-center gap-2">
-              <Button asChild className="flex-1 min-w-36">
-                <Link href={`/customer/salons/${salon['slug']}`}>View details</Link>
-              </Button>
-              <FavoriteNotesButton
-                salonId={salon['id'] || ''}
-                salonName={salon['name'] || ''}
-                initialNotes={favorite['notes']}
-              />
-              <FavoriteButton salonId={salon['id'] || ''} initialFavorited variant="icon" />
-            </CardFooter>
-          </Card>
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <ItemDescription>Booking status</ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Badge variant="secondary">
+                    {salon['is_accepting_bookings'] ? 'Accepting bookings' : 'Not accepting bookings'}
+                  </Badge>
+                </ItemActions>
+              </Item>
+            </ItemContent>
+            <ItemFooter>
+              <ButtonGroup className="w-full flex-wrap gap-2" orientation="horizontal">
+                <Button asChild className="flex-1 min-w-36">
+                  <Link href={`/customer/salons/${salon['slug']}`}>View details</Link>
+                </Button>
+                <FavoriteNotesButton
+                  salonId={salon['id'] || ''}
+                  salonName={salon['name'] || ''}
+                  initialNotes={favorite['notes']}
+                />
+                <FavoriteButton salonId={salon['id'] || ''} initialFavorited variant="icon" />
+              </ButtonGroup>
+            </ItemFooter>
+          </Item>
         )
       })}
     </div>

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { resetPassword } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import {
   Card,
   CardContent,
@@ -16,6 +16,12 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
 import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
 
 export function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null)
@@ -71,39 +77,49 @@ export function ResetPasswordForm() {
               </Alert>
             )}
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password">New password</Label>
-              <PasswordInput
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter new password"
-                required
-                autoFocus
-              />
-              {password && (
-                <PasswordStrengthIndicator password={password} showRequirements />
-              )}
-            </div>
+            <Field>
+              <FieldLabel htmlFor="password">New password</FieldLabel>
+              <FieldContent>
+                <PasswordInput
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter new password"
+                  required
+                  autoFocus
+                />
+                {password ? (
+                  <FieldDescription>
+                    <PasswordStrengthIndicator password={password} showRequirements />
+                  </FieldDescription>
+                ) : null}
+              </FieldContent>
+            </Field>
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="confirmPassword">Confirm new password</Label>
-              <PasswordInput
-                id="confirmPassword"
-                name="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm new password"
-                required
-              />
-              {confirmPassword && password !== confirmPassword && (
-                <p className="text-sm font-medium text-destructive">Passwords do not match</p>
-              )}
-              {confirmPassword && password === confirmPassword && (
-                <p className="text-sm font-medium text-primary">Passwords match</p>
-              )}
-            </div>
+            <Field>
+              <FieldLabel htmlFor="confirmPassword">Confirm new password</FieldLabel>
+              <FieldContent>
+                <PasswordInput
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm new password"
+                  required
+                />
+                {confirmPassword && password !== confirmPassword ? (
+                  <FieldDescription className="text-destructive font-medium">
+                    Passwords do not match
+                  </FieldDescription>
+                ) : null}
+                {confirmPassword && password === confirmPassword ? (
+                  <FieldDescription className="text-primary font-medium">
+                    Passwords match
+                  </FieldDescription>
+                ) : null}
+              </FieldContent>
+            </Field>
           </div>
         </CardContent>
 
@@ -113,7 +129,14 @@ export function ResetPasswordForm() {
             className="w-full"
             disabled={loading || !isPasswordValid || password !== confirmPassword}
           >
-            {loading ? 'Resetting password...' : 'Reset password'}
+            {loading ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Resetting password...</span>
+              </>
+            ) : (
+              <span>Reset password</span>
+            )}
           </Button>
         </CardFooter>
       </form>

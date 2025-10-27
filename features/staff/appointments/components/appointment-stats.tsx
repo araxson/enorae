@@ -1,12 +1,13 @@
 'use client'
 
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader } from '@/components/ui/card'
 import { Calendar, Clock, CheckCircle, History } from 'lucide-react'
 import type { StaffAppointment } from '@/features/staff/appointments/api/queries'
 import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -55,18 +56,18 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
         const Icon = stat.icon
         return (
           <Card key={stat.label}>
-            <CardHeader className="flex flex-row items-start justify-between gap-4">
-              <Item variant="muted" size="sm">
-                <ItemContent>
-                  <ItemTitle>
-                    <CardTitle>{stat.value}</CardTitle>
-                  </ItemTitle>
-                  <ItemDescription>{stat.label}</ItemDescription>
-                </ItemContent>
-                <ItemMedia variant="icon">
-                  <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
-                </ItemMedia>
-              </Item>
+            <CardHeader>
+              <ItemGroup>
+                <Item variant="muted" size="sm">
+                  <ItemMedia variant="icon">
+                    <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>{stat.value}</ItemTitle>
+                    <ItemDescription>{stat.label}</ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardHeader>
           </Card>
         )

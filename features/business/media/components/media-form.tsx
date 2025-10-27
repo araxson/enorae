@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 
 import type { SalonMedia as SalonMediaRow } from '@/features/business/locations'
 
@@ -40,7 +41,14 @@ export function MediaForm({ media }: Omit<MediaFormProps, 'salonId'>) {
 
         <div className="flex justify-end">
           <Button type="submit" disabled={state.isSubmitting}>
-            {state.isSubmitting ? 'Saving...' : 'Save Media'}
+            {state.isSubmitting ? (
+              <>
+                <Spinner />
+                Saving
+              </>
+            ) : (
+              'Save Media'
+            )}
           </Button>
         </div>
       </div>

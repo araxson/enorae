@@ -21,6 +21,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -31,8 +32,14 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Audit Logs</CardTitle>
-          <CardDescription>No audit entries available.</CardDescription>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Audit Logs</CardTitle>
+                <CardDescription>No audit entries available.</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="py-12">
           <Empty>
@@ -63,8 +70,14 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
   return (
     <Card>
       <CardHeader className="sr-only">
-        <CardTitle>Audit logs</CardTitle>
-        <CardDescription>Latest recorded admin and system activity</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Audit logs</CardTitle>
+              <CardDescription>Latest recorded admin and system activity</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="w-full">

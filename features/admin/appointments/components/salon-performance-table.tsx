@@ -10,6 +10,7 @@ import {
 import type { SalonPerformance } from '@/features/admin/appointments/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface SalonPerformanceTableProps {
   salons: SalonPerformance[]
@@ -24,7 +25,13 @@ export function SalonPerformanceTable({ salons }: SalonPerformanceTableProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
-        <CardTitle>Top Performing Salons</CardTitle>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Top Performing Salons</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ScrollArea className="w-full">

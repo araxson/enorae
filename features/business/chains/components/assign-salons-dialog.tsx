@@ -12,7 +12,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -21,6 +20,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { assignSalonToChain } from '@/features/business/chains/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
 
 type AssignSalonsDialogProps = {
   open: boolean
@@ -84,30 +89,32 @@ export function AssignSalonsDialog({
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="salon">Select Salon</Label>
-              <Select
-                value={selectedSalonId}
-                onValueChange={setSelectedSalonId}
-              >
-                <SelectTrigger id="salon">
-                  <SelectValue placeholder="Choose a salon" />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableSalons.length === 0 ? (
-                    <div className="p-2 text-sm text-muted-foreground">
-                      No available salons
-                    </div>
-                  ) : (
-                    availableSalons.map((salon) => (
-                      <SelectItem key={salon.id} value={salon.id}>
-                        {salon.name}
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
+            <Field>
+              <FieldLabel htmlFor="salon">Select Salon</FieldLabel>
+              <FieldContent>
+                <Select
+                  value={selectedSalonId}
+                  onValueChange={setSelectedSalonId}
+                >
+                  <SelectTrigger id="salon">
+                    <SelectValue placeholder="Choose a salon" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableSalons.length === 0 ? (
+                      <div className="p-2 text-sm text-muted-foreground">
+                        No available salons
+                      </div>
+                    ) : (
+                      availableSalons.map((salon) => (
+                        <SelectItem key={salon.id} value={salon.id}>
+                          {salon.name}
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
           </div>
 
           <DialogFooter className="mt-6">
@@ -123,7 +130,14 @@ export function AssignSalonsDialog({
               type="submit"
               disabled={isSubmitting || availableSalons.length === 0}
             >
-              {isSubmitting ? 'Assigning...' : 'Assign Salon'}
+              {isSubmitting ? (
+                <>
+                  <Spinner />
+                  Assigning
+                </>
+              ) : (
+                'Assign Salon'
+              )}
             </Button>
           </DialogFooter>
         </form>

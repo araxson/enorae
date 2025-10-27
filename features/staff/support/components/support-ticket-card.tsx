@@ -14,18 +14,32 @@ import { Button } from '@/components/ui/button'
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function SupportTicketCard() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Start a support ticket</CardTitle>
-        <CardDescription>The more detail you share, the faster we can assist.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <CardTitle>Start a support ticket</CardTitle>
+              <CardDescription>The more detail you share, the faster we can assist.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <FieldSet>
@@ -40,48 +54,48 @@ export function SupportTicketCard() {
             <FieldLabel>Priority</FieldLabel>
             <FieldContent>
               <RadioGroup defaultValue="standard" className="grid grid-cols-3 gap-3">
-              <Card>
-                <CardContent className="flex items-start gap-3">
-                  <RadioGroupItem
-                    id="priority-low"
-                    value="low"
-                    aria-labelledby="priority-low-title"
-                    aria-describedby="priority-low-description"
-                  />
-                  <div className="space-y-1">
-                    <h4 className="font-semibold" id="priority-low-title">Low</h4>
-                    <p className="text-sm text-muted-foreground" id="priority-low-description">Informational</p>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="flex items-start gap-3">
-                  <RadioGroupItem
-                    id="priority-standard"
-                    value="standard"
-                    aria-labelledby="priority-standard-title"
-                    aria-describedby="priority-standard-description"
-                  />
-                  <div className="space-y-1">
-                    <h4 className="font-semibold" id="priority-standard-title">Standard</h4>
-                    <p className="text-sm text-muted-foreground" id="priority-standard-description">Needs attention</p>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="flex items-start gap-3">
-                  <RadioGroupItem
-                    id="priority-urgent"
-                    value="urgent"
-                    aria-labelledby="priority-urgent-title"
-                    aria-describedby="priority-urgent-description"
-                  />
-                  <div className="space-y-1">
-                    <h4 className="font-semibold" id="priority-urgent-title">Urgent</h4>
-                    <p className="text-sm text-muted-foreground" id="priority-urgent-description">Blocking work</p>
-                  </div>
-                </CardContent>
-              </Card>
+                <Item variant="outline" size="sm" className="items-start gap-3">
+                  <ItemMedia>
+                    <RadioGroupItem
+                      id="priority-low"
+                      value="low"
+                      aria-labelledby="priority-low-title"
+                      aria-describedby="priority-low-description"
+                    />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle id="priority-low-title">Low</ItemTitle>
+                    <ItemDescription id="priority-low-description">Informational</ItemDescription>
+                  </ItemContent>
+                </Item>
+                <Item variant="outline" size="sm" className="items-start gap-3">
+                  <ItemMedia>
+                    <RadioGroupItem
+                      id="priority-standard"
+                      value="standard"
+                      aria-labelledby="priority-standard-title"
+                      aria-describedby="priority-standard-description"
+                    />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle id="priority-standard-title">Standard</ItemTitle>
+                    <ItemDescription id="priority-standard-description">Needs attention</ItemDescription>
+                  </ItemContent>
+                </Item>
+                <Item variant="outline" size="sm" className="items-start gap-3">
+                  <ItemMedia>
+                    <RadioGroupItem
+                      id="priority-urgent"
+                      value="urgent"
+                      aria-labelledby="priority-urgent-title"
+                      aria-describedby="priority-urgent-description"
+                    />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle id="priority-urgent-title">Urgent</ItemTitle>
+                    <ItemDescription id="priority-urgent-description">Blocking work</ItemDescription>
+                  </ItemContent>
+                </Item>
               </RadioGroup>
             </FieldContent>
           </Field>
@@ -110,24 +124,24 @@ export function SupportTicketCard() {
             </FieldContent>
           </Field>
 
-          <Card>
-            <CardContent className="flex flex-col gap-3">
-              <div className="space-y-1">
-                <h4 className="font-semibold" id="attach-logs-title">Attach logs automatically</h4>
-                <p className="text-sm text-muted-foreground" id="attach-logs-description">
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <ItemTitle id="attach-logs-title">Attach logs automatically</ItemTitle>
+                <ItemDescription id="attach-logs-description">
                   Include the last 10 events from your activity timeline.
-                </p>
-              </div>
-              <div className="flex justify-end">
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
                 <Switch
                   id="attach-logs"
                   defaultChecked
                   aria-labelledby="attach-logs-title"
                   aria-describedby="attach-logs-description"
                 />
-              </div>
-            </CardContent>
-          </Card>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
 
           <ButtonGroup>
             <Button type="submit">Submit ticket</Button>

@@ -2,10 +2,22 @@
 
 import { useState, FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Send } from 'lucide-react'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+} from '@/components/ui/button-group'
+import { Kbd, KbdGroup } from '@/components/ui/kbd'
 
 interface MessageComposerProps {
   onSend: (content: string) => Promise<{ error?: string }>
@@ -81,29 +93,55 @@ export function MessageComposer({
         </Alert>
       )}
 
-      <Textarea
-        value={content}
-        onChange={(event) => setContent(event.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        disabled={disabled || isSubmitting}
-        rows={3}
-        className="resize-none"
-      />
+      <Field>
+        <FieldLabel htmlFor="message-composer">Message</FieldLabel>
+        <FieldContent>
+          <Textarea
+            id="message-composer"
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            disabled={disabled || isSubmitting}
+            rows={3}
+            className="resize-none"
+          />
+          <FieldDescription>
+            Message recipients are notified instantly.
+          </FieldDescription>
+        </FieldContent>
+      </Field>
 
-      <ItemGroup>
-        <Item>
-          <ItemContent>
-            <ItemDescription>Press Ctrl+Enter to send</ItemDescription>
-          </ItemContent>
-          <ItemActions className="flex-none">
-            <Button type="submit" disabled={disabled || isSubmitting || !content.trim()} className="gap-2">
-              {isSubmitting ? 'Sending...' : <Send className="h-4 w-4" />}
-              {isSubmitting ? null : 'Send message'}
-            </Button>
-          </ItemActions>
-        </Item>
-      </ItemGroup>
+      <ButtonGroup className="w-full justify-between">
+        <ButtonGroupText asChild>
+          <span className="flex items-center gap-1 text-sm">
+            Press
+            <KbdGroup>
+              <Kbd>Ctrl</Kbd>
+              <Kbd>Enter</Kbd>
+            </KbdGroup>
+            to send
+          </span>
+        </ButtonGroupText>
+        <ButtonGroupSeparator className="hidden sm:block" />
+        <Button
+          type="submit"
+          disabled={disabled || isSubmitting || !content.trim()}
+          className="gap-2"
+        >
+          {isSubmitting ? (
+            <>
+              <Spinner className="size-4" />
+              <span>Sending...</span>
+            </>
+          ) : (
+            <>
+              <Send className="h-4 w-4" />
+              <span>Send message</span>
+            </>
+          )}
+        </Button>
+      </ButtonGroup>
     </form>
   )
 }

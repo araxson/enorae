@@ -23,6 +23,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface RecentSalonsProps {
   salons: AdminSalon[]
@@ -67,17 +74,19 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
     <div className="h-full">
       <Card>
         <CardHeader className="space-y-3">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <CardTitle>Recent salons</CardTitle>
-              <CardDescription>
-                Latest teams that completed onboarding in the last 30 days.
-              </CardDescription>
-            </div>
-            <Badge variant="secondary" className="shrink-0">
-              {salons.length} new
-            </Badge>
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Recent salons</CardTitle>
+                <CardDescription>
+                  Latest teams that completed onboarding in the last 30 days.
+                </CardDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge variant="secondary">{salons.length} new</Badge>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="space-y-4">
           <ScrollArea className="h-80 pr-4">
@@ -126,12 +135,14 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
             </Table>
           </ScrollArea>
 
-          <Button asChild variant="ghost" size="sm" className="gap-1 px-0 text-xs font-semibold">
-            <Link href="/admin/salons">
-              View all salons
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          </Button>
+          <ButtonGroup>
+            <Button asChild variant="ghost" size="sm" className="gap-1 px-0 text-xs font-semibold">
+              <Link href="/admin/salons">
+                View all salons
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            </Button>
+          </ButtonGroup>
         </CardContent>
       </Card>
     </div>

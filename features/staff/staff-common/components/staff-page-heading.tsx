@@ -27,7 +27,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
 import { CalendarDays, Command as CommandIcon, Filter, Sparkles } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
 import { cn } from '@/lib/utils'
@@ -36,6 +35,21 @@ import type {
   StaffFilter,
   StaffToggle,
 } from './types'
+import { Kbd } from '@/components/ui/kbd'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface StaffPageHeadingProps {
   title: string
@@ -108,83 +122,102 @@ export function StaffPageHeading({
           </div>
 
           <div className="flex items-center gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="outline" size="icon" onClick={onOpenCommand} aria-label="Quick navigator">
-                  <CommandIcon className="h-4 w-4" aria-hidden="true" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Quick navigator</TooltipContent>
-            </Tooltip>
+            <ButtonGroup className="items-center gap-2">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="icon" onClick={onOpenCommand} aria-label="Quick navigator">
+                    <CommandIcon className="h-4 w-4" aria-hidden="true" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="flex items-center gap-2">
+                  <span>Quick navigator</span>
+                  <Kbd>⌘K</Kbd>
+                </TooltipContent>
+              </Tooltip>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="gap-2" aria-label="Select date range">
-                  <CalendarDays className="h-4 w-4" aria-hidden="true" />
-                  <span className="hidden sm:inline-flex">{dateLabel}</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
-                <Calendar
-                  mode="range"
-                  defaultMonth={dateRange?.from}
-                  selected={dateRange ?? undefined}
-                  onSelect={(range) => onDateRangeChange(range ?? null)}
-                  numberOfMonths={2}
-                />
-              </PopoverContent>
-            </Popover>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="gap-2" aria-label="Select date range">
+                    <CalendarDays className="h-4 w-4" aria-hidden="true" />
+                    <span className="hidden sm:inline-flex">{dateLabel}</span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <Calendar
+                    mode="range"
+                    defaultMonth={dateRange?.from}
+                    selected={dateRange ?? undefined}
+                    onSelect={(range) => onDateRangeChange(range ?? null)}
+                    numberOfMonths={2}
+                  />
+                </PopoverContent>
+              </Popover>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" aria-label="Display options">
-                  <Filter className="h-4 w-4" aria-hidden="true" />
-                  <span className="sr-only">Display options</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64" align="end">
-                <DropdownMenuLabel>Display options</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {filters && filters.length > 0 ? (
-                  <div className="space-y-2 px-2 py-1.5">
-                    {filters.map((filter) => (
-                      <Label key={filter.id} className="flex items-start gap-3">
-                        <Checkbox defaultChecked={filter.defaultChecked} className="mt-1" />
-                        <div className="text-sm leading-6">
-                          <span>{filter.label}</span>
-                          {filter.description ? (
-                            <span className="block text-xs text-muted-foreground">{filter.description}</span>
-                          ) : null}
-                        </div>
-                      </Label>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="px-2 text-sm text-muted-foreground">No quick filters available.</p>
-                )}
-
-                {toggles && toggles.length > 0 ? (
-                  <>
-                    <DropdownMenuSeparator />
-                    <div className="space-y-3 px-2 py-1.5">
-                      {toggles.map((toggle) => (
-                        <div key={toggle.id} className="flex items-start justify-between gap-3">
-                          <div className="space-y-1">
-                            <span className="text-sm font-medium">{toggle.label}</span>
-                            {toggle.helper ? (
-                              <span className="text-xs text-muted-foreground">{toggle.helper}</span>
-                            ) : null}
-                          </div>
-                          <Switch defaultChecked={toggle.defaultOn} />
-                        </div>
-                      ))}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon" aria-label="Display options">
+                    <Filter className="h-4 w-4" aria-hidden="true" />
+                    <span className="sr-only">Display options</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64" align="end">
+                  <DropdownMenuLabel>Display options</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {filters && filters.length > 0 ? (
+                    <div className="space-y-2 px-2 py-1.5">
+                      {filters.map((filter) => {
+                        const labelId = `${filter.id}-label`
+                        return (
+                          <Item key={filter.id} className="items-start gap-3">
+                            <ItemActions className="flex-none pt-1">
+                              <Checkbox
+                                id={filter.id}
+                                defaultChecked={filter.defaultChecked}
+                                aria-labelledby={labelId}
+                              />
+                            </ItemActions>
+                            <ItemContent>
+                              <ItemTitle id={labelId}>{filter.label}</ItemTitle>
+                              {filter.description ? (
+                                <ItemDescription>{filter.description}</ItemDescription>
+                              ) : null}
+                            </ItemContent>
+                          </Item>
+                        )
+                      })}
                     </div>
-                  </>
-                ) : null}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  ) : (
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>No quick filters available</EmptyTitle>
+                        <EmptyDescription>Adjust settings to add frequently used filters.</EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
+                  )}
 
-            {toolbarEnd}
+                  {toggles && toggles.length > 0 ? (
+                    <>
+                      <DropdownMenuSeparator />
+                      <div className="space-y-3 px-2 py-1.5">
+                        {toggles.map((toggle) => (
+                          <div key={toggle.id} className="flex items-start justify-between gap-3">
+                            <div className="space-y-1">
+                              <span className="text-sm font-medium">{toggle.label}</span>
+                              {toggle.helper ? (
+                                <span className="text-xs text-muted-foreground">{toggle.helper}</span>
+                              ) : null}
+                            </div>
+                            <Switch defaultChecked={toggle.defaultOn} />
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : null}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {toolbarEnd}
+            </ButtonGroup>
 
             <Avatar className="h-9 w-9">
               <AvatarImage src={avatarUrl ?? undefined} />

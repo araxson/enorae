@@ -15,6 +15,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 
 type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
@@ -46,7 +53,16 @@ export function StaffGrid({ staff }: StaffGridProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Our team</CardTitle>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Calendar className="h-4 w-4" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Our team</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -54,20 +70,26 @@ export function StaffGrid({ staff }: StaffGridProps) {
             <HoverCard key={member['id'] || ''}>
               <HoverCardTrigger asChild>
                 <Card className="transition-colors hover:bg-muted/50">
-                  <CardHeader className="flex flex-row items-center gap-3">
-                    <Avatar>
-                      <AvatarFallback>
-                        {member.title?.slice(0, 2).toUpperCase() || 'ST'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="min-w-0 space-y-1">
-                      <CardTitle>{member['title'] || 'Staff member'}</CardTitle>
-                      {member['bio'] && (
-                        <div className="line-clamp-2">
-                          <CardDescription>{member['bio']}</CardDescription>
-                        </div>
-                      )}
-                    </div>
+                  <CardHeader>
+                    <ItemGroup className="items-center gap-3">
+                      <Item>
+                        <ItemMedia>
+                          <Avatar>
+                            <AvatarFallback>
+                              {member.title?.slice(0, 2).toUpperCase() || 'ST'}
+                            </AvatarFallback>
+                          </Avatar>
+                        </ItemMedia>
+                        <ItemContent>
+                          <CardTitle>{member['title'] || 'Staff member'}</CardTitle>
+                          {member['bio'] ? (
+                            <div className="line-clamp-2">
+                              <CardDescription>{member['bio']}</CardDescription>
+                            </div>
+                          ) : null}
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
                   </CardHeader>
                   <CardContent />
                 </Card>
@@ -85,10 +107,16 @@ export function StaffGrid({ staff }: StaffGridProps) {
                   </div>
                 </div>
                 {member['bio'] && <CardDescription>{member['bio']}</CardDescription>}
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Calendar className="h-3 w-3" />
-                  <span>Click to book an appointment</span>
-                </div>
+                <Item>
+                  <ItemMedia variant="icon">
+                    <Calendar className="h-3 w-3" aria-hidden="true" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemDescription>
+                      <span className="text-xs text-muted-foreground">Click to book an appointment</span>
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
               </HoverCardContent>
             </HoverCard>
           ))}

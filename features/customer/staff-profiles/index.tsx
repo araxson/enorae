@@ -1,6 +1,8 @@
+import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { getStaffProfile } from './api/queries'
 import { StaffProfileDetail } from './components/staff-profile-detail'
+import { Spinner } from '@/components/ui/spinner'
 
 export async function StaffProfilePage({ staffId }: { staffId: string }) {
   const profile = await getStaffProfile(staffId)
@@ -23,7 +25,17 @@ export async function StaffProfileFeature({
 }) {
   const resolved = await params
 
-  return <StaffProfilePage staffId={resolved.id} />
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner />
+        </div>
+      }
+    >
+      <StaffProfilePage staffId={resolved.id} />
+    </Suspense>
+  )
 }
 
 export { getStaffProfile, getSalonStaff } from './api/queries'

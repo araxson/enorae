@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import type { UserRole } from '@/lib/types'
+import { Spinner } from '@/components/ui/spinner'
 
 type DialogProps = {
   open: boolean
@@ -34,8 +35,15 @@ export function RevokeRoleDialog({ open, onOpenChange, isLoading, onConfirm, rol
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} disabled={isLoading}>
-            {isLoading ? 'Revoking...' : 'Revoke'}
+          <AlertDialogAction onClick={onConfirm} disabled={isLoading} className="flex items-center gap-2">
+            {isLoading ? (
+              <>
+                <Spinner />
+                Revoking…
+              </>
+            ) : (
+              'Revoke'
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -64,8 +72,16 @@ export function DeleteRoleDialog({ open, onOpenChange, isLoading, onConfirm, ena
               onClick={onConfirm}
               disabled={isLoading}
               variant="destructive"
+              className="flex items-center gap-2"
             >
-              {isLoading ? 'Deleting...' : 'Delete Permanently'}
+              {isLoading ? (
+                <>
+                  <Spinner />
+                  Deleting…
+                </>
+              ) : (
+                'Delete Permanently'
+              )}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

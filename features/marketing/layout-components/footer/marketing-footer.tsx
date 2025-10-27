@@ -6,6 +6,7 @@ import {
   ItemDescription,
   ItemGroup,
   ItemMedia,
+  ItemHeader,
 } from '@/components/ui/item'
 import { Sparkles, Mail, MapPin, Phone } from 'lucide-react'
 import { NewsletterForm } from '@/features/marketing/common-components/newsletter-form'
@@ -49,16 +50,20 @@ export function MarketingFooter() {
           <Separator />
 
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="flex flex-col gap-6">
-              <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-                <Sparkles className="h-6 w-6 text-primary" />
-                <span className="text-primary font-bold">
-                  Enorae
-                </span>
-              </Link>
-              <p className="text-sm leading-7 text-muted-foreground">
-                Your Beauty Appointments, Simplified. The modern platform connecting clients with premier salons.
-              </p>
+            <Item className="flex-col gap-6">
+              <ItemHeader>
+                <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
+                  <Sparkles className="h-6 w-6 text-primary" />
+                  <span className="text-primary font-bold">
+                    Enorae
+                  </span>
+                </Link>
+              </ItemHeader>
+              <ItemContent>
+                <ItemDescription>
+                  Your Beauty Appointments, Simplified. The modern platform connecting clients with premier salons.
+                </ItemDescription>
+              </ItemContent>
               <ItemGroup className="gap-2">
                 <Item variant="muted">
                   <ItemMedia variant="icon">
@@ -85,10 +90,12 @@ export function MarketingFooter() {
                   </ItemContent>
                 </Item>
               </ItemGroup>
-            </div>
+            </Item>
 
-            <div className="flex flex-col gap-6">
-              <h3 className="font-semibold">Product</h3>
+            <Item className="flex-col gap-6">
+              <ItemHeader>
+                <h3 className="font-semibold">Product</h3>
+              </ItemHeader>
               <ItemGroup className="gap-2">
                 {footerLinks.product.map((link) => (
                   <Item key={link.href} asChild variant="muted">
@@ -103,10 +110,12 @@ export function MarketingFooter() {
                   </Item>
                 ))}
               </ItemGroup>
-            </div>
+            </Item>
 
-            <div className="flex flex-col gap-6">
-              <h3 className="font-semibold">Company</h3>
+            <Item className="flex-col gap-6">
+              <ItemHeader>
+                <h3 className="font-semibold">Company</h3>
+              </ItemHeader>
               <ItemGroup className="gap-2">
                 {footerLinks.company.map((link) => (
                   <Item key={link.href} asChild variant="muted">
@@ -121,10 +130,12 @@ export function MarketingFooter() {
                   </Item>
                 ))}
               </ItemGroup>
-            </div>
+            </Item>
 
-            <div className="flex flex-col gap-6">
-              <h3 className="font-semibold">Legal</h3>
+            <Item className="flex-col gap-6">
+              <ItemHeader>
+                <h3 className="font-semibold">Legal</h3>
+              </ItemHeader>
               <ItemGroup className="gap-2">
                 {footerLinks.legal.map((link) => (
                   <Item key={link.href} asChild variant="muted">
@@ -153,7 +164,7 @@ export function MarketingFooter() {
                   </Item>
                 ))}
               </ItemGroup>
-            </div>
+            </Item>
           </div>
 
           <Separator />

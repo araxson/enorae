@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns'
 import type { MessageThreadWithInsights } from '@/features/admin/messages/api/queries'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 interface MessagesTableProps {
   threads: MessageThreadWithInsights[]
@@ -52,8 +53,14 @@ export function MessagesTable({ threads }: MessagesTableProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Message Threads</CardTitle>
-        <CardDescription>Conversation activity and SLA indicators.</CardDescription>
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <CardTitle>Message Threads</CardTitle>
+              <CardDescription>Conversation activity and SLA indicators.</CardDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="w-full">

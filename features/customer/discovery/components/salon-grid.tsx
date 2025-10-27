@@ -24,6 +24,14 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 
@@ -48,29 +56,39 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
 
   if (salons.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Search className="h-10 w-10" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No salons found</EmptyTitle>
-              <EmptyDescription>
-                Try adjusting your search filters or check back later for new salons.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              Tip: update your filters or expand your search area.
-            </EmptyContent>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Search className="h-10 w-10" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No salons found</EmptyTitle>
+          <EmptyDescription>
+            Try adjusting your search filters or check back later for new salons.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          Tip: update your filters or expand your search area.
+        </EmptyContent>
+      </Empty>
     )
   }
 
   return (
     <div className="space-y-8">
+      <ItemGroup>
+        <Item variant="muted" size="sm">
+          <ItemMedia variant="icon">
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>Salon results</ItemTitle>
+            <ItemDescription>
+              Showing {currentSalons.length} of {salons.length} salons
+            </ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
+
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {currentSalons.map((salon) => {
           // Build proper location string from address data

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { NormalizedReview } from './use-reviews-list'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type ReviewCardProps = {
   review: NormalizedReview
@@ -90,18 +91,18 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
             </Field>
           </div>
 
-          <div className="flex gap-3">
-            {!review.response && (
+          <ButtonGroup>
+            {!review.response ? (
               <Button size="sm" variant="outline" onClick={handleRespond}>
                 <MessageSquare className="h-4 w-4 mr-2" aria-hidden="true" />
                 Respond
               </Button>
-            )}
-            {!review.is_flagged && (
+            ) : null}
+            {!review.is_flagged ? (
               <Button size="sm" variant="ghost" onClick={handleFlag} aria-label="Flag review for moderation">
                 <Flag className="h-4 w-4" aria-hidden="true" />
               </Button>
-            )}
+            ) : null}
             <Button
               size="sm"
               variant="ghost"
@@ -110,7 +111,7 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
             >
               <TrendingUp className={`h-4 w-4 ${review.is_featured ? 'fill-current' : ''}`} aria-hidden="true" />
             </Button>
-          </div>
+          </ButtonGroup>
         </div>
       </CardHeader>
 

@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Field, FieldContent, FieldLabel, FieldSet } from '@/components/ui/field'
@@ -10,6 +9,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
@@ -73,12 +73,12 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
 
   return (
     <div className="grid gap-4 grid-cols-1 xl:grid-cols-3">
-      <Card className="xl:col-span-2">
-        <CardHeader>
-          <CardTitle>Customer Segments</CardTitle>
-          <CardDescription>Distribution of customers by engagement health</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <Item variant="outline" className="xl:col-span-2 flex-col gap-4">
+        <ItemHeader>
+          <ItemTitle>Customer Segments</ItemTitle>
+          <ItemDescription>Distribution of customers by engagement health</ItemDescription>
+        </ItemHeader>
+        <ItemContent className="space-y-4">
           <div className="flex flex-wrap gap-3">
             <Badge variant="default">Active · {data.counts.active}</Badge>
             <Badge variant="secondary">At Risk · {data.counts.atRisk}</Badge>
@@ -89,15 +89,15 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
             {renderProgressRow('At Risk', data.counts.atRisk, totalCustomers, 'secondary')}
             {renderProgressRow('Churned', data.counts.churned, totalCustomers, 'destructive')}
           </FieldSet>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Lifetime Value</CardTitle>
-          <CardDescription>Average customer revenue contribution</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <ItemTitle>Lifetime Value</ItemTitle>
+          <ItemDescription>Average customer revenue contribution</ItemDescription>
+        </ItemHeader>
+        <ItemContent className="space-y-4">
           <FieldSet className="space-y-3">
             <Field>
               <FieldLabel>Average LTV</FieldLabel>
@@ -139,15 +139,15 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
               </ItemGroup>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
 
-      <Card className="xl:col-span-2">
-        <CardHeader>
-          <CardTitle>Visit Frequency</CardTitle>
-          <CardDescription>How often customers return for services</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <Item variant="outline" className="xl:col-span-2 flex-col gap-4">
+        <ItemHeader>
+          <ItemTitle>Visit Frequency</ItemTitle>
+          <ItemDescription>How often customers return for services</ItemDescription>
+        </ItemHeader>
+        <ItemContent>
           <FieldSet className="space-y-3">
             {bucketLabels.map((bucket) =>
               renderProgressRow(
@@ -157,15 +157,15 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
               )
             )}
           </FieldSet>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Average Order Value</CardTitle>
-          <CardDescription>Distribution of spend per visit</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <ItemTitle>Average Order Value</ItemTitle>
+          <ItemDescription>Distribution of spend per visit</ItemDescription>
+        </ItemHeader>
+        <ItemContent>
           <FieldSet className="space-y-3">
             {aovLabels.map((bucket) =>
               renderProgressRow(
@@ -175,8 +175,8 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
               )
             )}
           </FieldSet>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
     </div>
   )
 }

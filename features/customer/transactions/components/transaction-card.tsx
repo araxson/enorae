@@ -12,8 +12,10 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
+import { Briefcase, CreditCard, Calendar as CalendarIcon } from 'lucide-react'
 import type { CustomerTransactionWithDetails } from '@/features/customer/transactions/api/queries'
 
 interface TransactionCardProps {
@@ -60,6 +62,9 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
         <ItemGroup className="gap-3">
           {transaction.staff ? (
             <Item variant="muted">
+              <ItemMedia variant="icon">
+                <Briefcase className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
               <ItemContent>
                 <ItemTitle>Staff member</ItemTitle>
                 <ItemDescription className="text-foreground">
@@ -71,6 +76,9 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
 
           {transaction.payment_method ? (
             <Item variant="muted">
+              <ItemMedia variant="icon">
+                <CreditCard className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
               <ItemContent>
                 <ItemTitle>Payment method</ItemTitle>
                 <ItemDescription className="capitalize">
@@ -82,6 +90,9 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
 
           {transaction.appointment ? (
             <Item variant="muted">
+              <ItemMedia variant="icon">
+                <CalendarIcon className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
               <ItemContent>
                 <ItemTitle>Related appointment</ItemTitle>
                 <ItemDescription>

@@ -1,7 +1,6 @@
 'use client'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -16,14 +15,7 @@ import { Star, MessageSquare, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemTitle } from '@/components/ui/item'
 
 import type { BusinessReviewStats } from '@/features/business/dashboard/types'
 
@@ -34,12 +26,12 @@ type ReviewsCardProps = {
 export function ReviewsCard({ stats }: ReviewsCardProps) {
   if (stats.totalReviews === 0) {
     return (
-      <Card>
-        <CardHeader className="flex items-center gap-2">
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader className="items-center gap-2">
           <Star className="h-5 w-5" />
-          <CardTitle>Customer Reviews</CardTitle>
-        </CardHeader>
-        <CardContent>
+          <ItemTitle>Customer Reviews</ItemTitle>
+        </ItemHeader>
+        <ItemContent>
           <Empty>
             <EmptyHeader>
               <EmptyTitle>No reviews yet</EmptyTitle>
@@ -49,18 +41,18 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
               <Link href="/business/reviews">Manage Reviews</Link>
             </Button>
           </Empty>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
     )
   }
 
   return (
-    <Card>
-      <CardHeader className="gap-4">
+    <Item variant="outline" className="flex-col gap-6">
+      <ItemHeader className="gap-4">
         <ButtonGroup className="w-full items-center justify-between">
           <ButtonGroupText className="flex items-center gap-2">
             <Star className="h-5 w-5" />
-            <CardTitle>Customer Reviews</CardTitle>
+            <ItemTitle>Customer Reviews</ItemTitle>
           </ButtonGroupText>
           <ButtonGroupSeparator />
           <Tooltip>
@@ -71,9 +63,9 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
             </TooltipTrigger>
             <TooltipContent>Open review inbox</TooltipContent>
           </Tooltip>
-      </ButtonGroup>
-    </CardHeader>
-    <CardContent>
+        </ButtonGroup>
+      </ItemHeader>
+      <ItemContent>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Average Rating */}
           <div className="flex flex-col gap-6">
@@ -160,7 +152,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
             </ItemGroup>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

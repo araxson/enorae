@@ -101,7 +101,14 @@ export function ClientDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{client['customer_name'] || client['customer_id'] || 'Client Details'}</DialogTitle>
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <DialogTitle>{client['customer_name'] || client['customer_id'] || 'Client Details'}</DialogTitle>
+                <ItemDescription>Overview of appointment history and contact info.</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </DialogHeader>
 
         <div className="flex flex-col gap-6">
@@ -154,11 +161,17 @@ export function ClientDetailDialog({
           </div>
 
           <div>
-            <h3 className="mb-4 text-lg font-semibold">Appointment History</h3>
+            <ItemGroup className="mb-4">
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <ItemTitle>Appointment History</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
             {loading ? (
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Spinner className="h-4 w-4" />
-                Loading appointments…
+                <Spinner className="size-4" />
+                <span>Loading appointments…</span>
               </div>
             ) : appointments.length === 0 ? (
               <Empty>

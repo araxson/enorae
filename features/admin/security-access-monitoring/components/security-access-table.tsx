@@ -28,6 +28,7 @@ import {
   dismissSecurityAlert,
   suppressSecurityAlert,
 } from '@/features/admin/security-access-monitoring/api/mutations'
+import { Spinner } from '@/components/ui/spinner'
 
 interface SecurityAccessTableProps {
   records: SecurityAccessRecord[]
@@ -124,7 +125,8 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
   }
 
   return (
-    <ScrollArea className="w-full">
+    <div className="relative" aria-busy={isLoading}>
+      <ScrollArea className="w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -205,6 +207,12 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
         </TableBody>
       </Table>
       <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+      </ScrollArea>
+      {isLoading ? (
+        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+          <Spinner className="size-6" />
+        </div>
+      ) : null}
+    </div>
   )
 }

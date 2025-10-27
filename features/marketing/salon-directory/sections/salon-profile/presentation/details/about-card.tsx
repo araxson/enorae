@@ -3,6 +3,8 @@ import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemHeader,
+  ItemTitle,
   ItemGroup,
 } from '@/components/ui/item'
 import type { Salon } from '../types'
@@ -22,7 +24,10 @@ export function AboutCard({ salon }: AboutCardProps) {
       </CardHeader>
       <CardContent>
         <ItemGroup>
-          <Item variant="muted">
+          <Item variant="muted" className="flex-col gap-2">
+            <ItemHeader>
+              <ItemTitle>What guests can expect</ItemTitle>
+            </ItemHeader>
             <ItemContent>
               <ItemDescription>{description}</ItemDescription>
             </ItemContent>

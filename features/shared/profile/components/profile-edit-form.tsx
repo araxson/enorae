@@ -4,15 +4,21 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Upload, User } from 'lucide-react'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { uploadAvatar } from '@/features/shared/profile/api/mutations'
 import { updateProfileMetadata } from '@/features/shared/profile-metadata/api/mutations'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
 
 type Profile = Database['public']['Views']['profiles_view']['Row']
 
@@ -111,8 +117,17 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploadingAvatar}
               >
-                <Upload className="mr-2 h-4 w-4" />
-                {isUploadingAvatar ? 'Uploading...' : 'Upload avatar'}
+                {isUploadingAvatar ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-4 w-4" />
+                    <span>Upload avatar</span>
+                  </>
+                )}
               </Button>
               <p className="text-xs text-muted-foreground">
                 JPG, PNG, WebP or GIF. Max 5MB.
@@ -122,15 +137,18 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
 
           {/* Profile Fields */}
           <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="full_name">Full name</Label>
-              <Input
-                id="full_name"
-                name="full_name"
-                defaultValue={profile['full_name'] || ''}
-                placeholder="Enter your full name"
-              />
-            </div>
+            <Field>
+              <FieldLabel htmlFor="full_name">Full name</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="full_name"
+                  name="full_name"
+                  defaultValue={profile['full_name'] || ''}
+                  placeholder="Enter your full name"
+                />
+                <FieldDescription>Displayed across your profile.</FieldDescription>
+              </FieldContent>
+            </Field>
           </div>
 
           {error && (
@@ -141,9 +159,16 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
             </Alert>
           )}
 
-          <div className="flex gap-3">
+          <ButtonGroup>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Saving...' : 'Save changes'}
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <span>Save changes</span>
+              )}
             </Button>
             <Button
               type="button"
@@ -153,7 +178,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
             >
               Cancel
             </Button>
-          </div>
+          </ButtonGroup>
         </form>
       </CardContent>
     </Card>

@@ -1,6 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemSeparator,
+} from '@/components/ui/item'
 import type { Database } from '@/lib/types/database.types'
 
 type SalonDescription = Database['public']['Views']['salons_view']['Row']
@@ -16,22 +21,32 @@ export function SalonDescriptionComponent({ description }: SalonDescriptionProps
         <CardTitle>About</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-          {/* Short Description */}
-          {description.short_description && (
-            <p className="text-foreground">{description.short_description}</p>
-          )}
+        <ItemGroup className="gap-6">
+          {description.short_description ? (
+            <Item>
+              <ItemContent>
+                <ItemDescription>
+                  <span className="text-foreground">{description.short_description}</span>
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          ) : null}
 
-          {/* Full Description */}
-          {description.full_description && (
+          {description.full_description ? (
             <>
-              <Separator />
-              <p className="whitespace-pre-line text-muted-foreground">{description.full_description}</p>
+              <ItemSeparator />
+              <Item>
+                <ItemContent>
+                  <ItemDescription>
+                    <span className="whitespace-pre-line text-muted-foreground">
+                      {description.full_description}
+                    </span>
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
             </>
-          )}
-
-          {/* Note: Welcome message and cancellation policy not available in current database schema */}
-        </div>
+          ) : null}
+        </ItemGroup>
       </CardContent>
     </Card>
   )

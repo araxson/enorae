@@ -5,7 +5,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { ItemGroup } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+} from '@/components/ui/item'
 import { StatBadge } from '@/features/marketing/common-components'
 
 import { metrics } from './metrics.data'
@@ -20,10 +25,17 @@ export function Metrics() {
             Key platform metrics updated weekly
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {metrics.map((stat) => (
-            <StatBadge key={stat.label} {...stat} />
-          ))}
+        <CardContent className="flex flex-col gap-4">
+          <Item variant="muted">
+            <ItemContent>
+              <ItemDescription>Platform insights refresh every Monday morning.</ItemDescription>
+            </ItemContent>
+          </Item>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {metrics.map((stat) => (
+              <StatBadge key={stat.label} {...stat} />
+            ))}
+          </div>
         </CardContent>
       </Card>
     </section>
