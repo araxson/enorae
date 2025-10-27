@@ -2,10 +2,24 @@
 import { useState } from 'react'
 import { Upload, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { uploadPortfolioImage } from '@/features/staff/profile/api/mutations'
 import Image from 'next/image'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface PortfolioGalleryProps {
   portfolioImages?: string[]
@@ -45,37 +59,40 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
         <CardDescription>Upload images to showcase your work.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-4">
-          <div>
-            <input
-              type="file"
-              id="portfolio-upload"
-              accept="image/jpeg,image/jpg,image/png,image/webp"
-              onChange={handleFileChange}
-              disabled={isUploading}
-              className="hidden"
-            />
-            <label htmlFor="portfolio-upload">
-              <Button
-                type="button"
-                variant="outline"
+        <FieldSet className="flex flex-col gap-4">
+          <Field>
+            <FieldLabel htmlFor="portfolio-upload">Upload image</FieldLabel>
+            <FieldContent>
+              <input
+                type="file"
+                id="portfolio-upload"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                onChange={handleFileChange}
                 disabled={isUploading}
-                onClick={() => document.getElementById('portfolio-upload')?.click()}
-              >
-                {isUploading ? (
-                  <>Uploading...</>
-                ) : (
-                  <>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Image
-                  </>
-                )}
-              </Button>
-            </label>
-            <p className="ml-2 text-xs text-muted-foreground">Max 5MB per image</p>
-          </div>
+                className="hidden"
+              />
+              <ButtonGroup>
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={isUploading}
+                  onClick={() => document.getElementById('portfolio-upload')?.click()}
+                >
+                  {isUploading ? (
+                    <>Uploading...</>
+                  ) : (
+                    <>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Image
+                    </>
+                  )}
+                </Button>
+              </ButtonGroup>
+              <FieldDescription>Max 5MB per image</FieldDescription>
+            </FieldContent>
+          </Field>
 
-          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+          {error ? <span className="text-sm text-destructive">{error}</span> : null}
 
           {portfolioImages.length > 0 ? (
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -91,13 +108,17 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
               ))}
             </div>
           ) : (
-            <Alert className="flex flex-col items-center gap-3 py-6">
-              <Upload className="h-12 w-12 text-muted-foreground" />
-              <AlertTitle>No portfolio images yet</AlertTitle>
-              <AlertDescription>Add your best work!</AlertDescription>
-            </Alert>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Upload className="h-12 w-12 text-muted-foreground" aria-hidden="true" />
+                </EmptyMedia>
+                <EmptyTitle>No portfolio images yet</EmptyTitle>
+                <EmptyDescription>Add your best work!</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
-        </div>
+        </FieldSet>
       </CardContent>
     </Card>
   )

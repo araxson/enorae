@@ -13,6 +13,14 @@ import { CreateRequestDialog } from './create-request-dialog'
 import type { TimeOffRequestWithStaff, TimeOffBalance, TeamTimeOffCalendar } from '@/features/staff/time-off/api/queries'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface TimeOffRequestsClientProps {
   staffId: string
@@ -108,33 +116,59 @@ export function TimeOffRequestsClient({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                      <p className="text-2xl font-semibold">{balance.total_days}</p>
-                      <p className="text-sm text-muted-foreground">Total</p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-semibold text-secondary">{balance.used_days}</p>
-                      <p className="text-sm text-muted-foreground">Used</p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-semibold text-primary">{balance.remaining_days}</p>
-                      <p className="text-sm text-muted-foreground">Remaining</p>
-                    </div>
-                  </div>
+                  <ItemGroup className="grid grid-cols-3 gap-4 text-center">
+                    <Item variant="outline" size="sm">
+                      <ItemContent>
+                        <ItemTitle>{balance.total_days}</ItemTitle>
+                        <ItemDescription>Total</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                    <Item variant="outline" size="sm">
+                      <ItemContent>
+                        <ItemTitle>
+                          <span className="text-secondary">{balance.used_days}</span>
+                        </ItemTitle>
+                        <ItemDescription>Used</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                    <Item variant="outline" size="sm">
+                      <ItemContent>
+                        <ItemTitle>
+                          <span className="text-primary">{balance.remaining_days}</span>
+                        </ItemTitle>
+                        <ItemDescription>Remaining</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  </ItemGroup>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Used: {balance.used_days} days</span>
-                      <span>{usagePercent.toFixed(0)}%</span>
-                    </div>
+                    <ItemGroup>
+                      <Item>
+                        <ItemContent>
+                          <ItemDescription>Used: {balance.used_days} days</ItemDescription>
+                        </ItemContent>
+                        <ItemActions>
+                          <div className="text-muted-foreground text-sm font-medium">
+                            {usagePercent.toFixed(0)}%
+                          </div>
+                        </ItemActions>
+                      </Item>
+                    </ItemGroup>
                     <Progress value={usagePercent} className="h-2" />
                   </div>
                   {balance.pending_days > 0 && (
                     <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Pending approval: {balance.pending_days} days</span>
-                        <span>{pendingPercent.toFixed(0)}%</span>
-                      </div>
+                      <ItemGroup>
+                        <Item>
+                          <ItemContent>
+                            <ItemDescription>Pending approval: {balance.pending_days} days</ItemDescription>
+                          </ItemContent>
+                          <ItemActions>
+                            <div className="text-muted-foreground text-sm font-medium">
+                              {pendingPercent.toFixed(0)}%
+                            </div>
+                          </ItemActions>
+                        </Item>
+                      </ItemGroup>
                       <Progress value={pendingPercent} className="h-2" />
                     </div>
                   )}
@@ -163,21 +197,27 @@ export function TimeOffRequestsClient({
                 {teamCalendar.map((entry, idx) => (
                   <Card key={`${entry['staff_id']}-${idx}`}>
                     <CardContent className="space-y-3">
-                      <div className="flex items-center justify-between gap-4">
-                        <div>
-                          <h3 className="font-semibold">{entry['staff_name']}</h3>
-                          {entry.staff_title && (
-                            <p className="text-sm text-muted-foreground">{entry.staff_title}</p>
-                          )}
-                        </div>
-                        <Badge variant={entry['status'] === 'approved' ? 'default' : 'secondary'}>
-                          {entry['status']}
-                        </Badge>
-                      </div>
+                      <ItemGroup>
+                        <Item>
+                          <ItemContent>
+                            <ItemTitle>{entry['staff_name']}</ItemTitle>
+                            {entry.staff_title && (
+                              <ItemDescription>{entry.staff_title}</ItemDescription>
+                            )}
+                          </ItemContent>
+                          <ItemActions>
+                            <Badge variant={entry['status'] === 'approved' ? 'default' : 'secondary'}>
+                              {entry['status']}
+                            </Badge>
+                          </ItemActions>
+                        </Item>
+                      </ItemGroup>
                       <div className="flex items-center justify-between text-sm">
                         <div>
                           <p className="font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</p>
-                          <p className="text-sm text-muted-foreground capitalize">{entry.request_type.replace('_', ' ')}</p>
+                          <div className="capitalize">
+                            <CardDescription>{entry.request_type.replace('_', ' ')}</CardDescription>
+                          </div>
                         </div>
                       </div>
                     </CardContent>

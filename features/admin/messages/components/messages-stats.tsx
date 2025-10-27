@@ -1,6 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { MessageStats } from '@/features/admin/messages/api/queries'
 import { MessageSquare, AlertTriangle, ShieldAlert, GitPullRequest, Clock, Timer, MailWarning } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface MessagesStatsProps {
   stats: MessageStats
@@ -27,10 +33,16 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Total Threads</CardTitle>
-            <MessageSquare className="h-8 w-8 text-muted-foreground" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Total Threads</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <MessageSquare className="h-8 w-8 text-muted-foreground" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           <CardDescription>
             Open {stats.openThreads} · In progress {stats.inProgressThreads}
           </CardDescription>
@@ -42,10 +54,16 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Urgent Threads</CardTitle>
-            <AlertTriangle className="h-8 w-8 text-accent" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Urgent Threads</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <AlertTriangle className="h-8 w-8 text-accent" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           <CardDescription>High priority {stats.highPriorityThreads}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -55,10 +73,16 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Flagged Messages</CardTitle>
-            <ShieldAlert className="h-8 w-8 text-destructive" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Flagged Messages</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <ShieldAlert className="h-8 w-8 text-destructive" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           <CardDescription>Threads affected {stats.flaggedThreads}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -68,10 +92,16 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Open Escalations</CardTitle>
-            <GitPullRequest className="h-8 w-8 text-accent" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Open Escalations</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <GitPullRequest className="h-8 w-8 text-accent" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           <CardDescription>
             Resolved {stats.resolvedThreads + stats.closedThreads + stats.archivedThreads}
           </CardDescription>
@@ -83,10 +113,16 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Avg First Response</CardTitle>
-            <Clock className="h-8 w-8 text-secondary" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Avg First Response</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <Clock className="h-8 w-8 text-secondary" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           <CardDescription>
             Based on {stats.totalMeasuredResponses} responses
           </CardDescription>
@@ -100,10 +136,16 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Responses ≤ 1h</CardTitle>
-            <Timer className="h-8 w-8 text-primary" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Responses ≤ 1h</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <Timer className="h-8 w-8 text-primary" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           <CardDescription>Customer SLA coverage</CardDescription>
         </CardHeader>
         <CardContent>
@@ -115,10 +157,16 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
 
       <Card className="md:col-span-2 xl:col-span-3">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Unread Messages</CardTitle>
-            <MailWarning className="h-8 w-8 text-secondary" />
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <CardTitle>Unread Messages</CardTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <MailWarning className="h-8 w-8 text-secondary" />
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           <CardDescription>Across customers and staff</CardDescription>
         </CardHeader>
         <CardContent>

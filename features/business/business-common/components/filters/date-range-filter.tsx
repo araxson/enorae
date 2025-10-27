@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { format } from 'date-fns'
+import { Field, FieldContent, FieldLabel, FieldSet } from '@/components/ui/field'
 
 interface DateRangeFilterProps {
   startDate?: Date
@@ -43,44 +44,47 @@ export function DateRangeFilter({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <div className="flex flex-col gap-4 p-4">
-          <div>
-            <p className="text-sm font-medium mb-2">Start Date</p>
-            <CalendarComponent
-              mode="single"
-              selected={startDate}
-              onSelect={(date) => handleSelect(date, 'start')}
-              initialFocus
-            />
-          </div>
-          <div>
-            <p className="text-sm font-medium mb-2">End Date</p>
-            <CalendarComponent
-              mode="single"
-              selected={endDate}
-              onSelect={(date) => handleSelect(date, 'end')}
-              disabled={(date) => startDate ? date < startDate : false}
-            />
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onDateChange(undefined, undefined)
-                setIsOpen(false)
-              }}
-            >
-              Clear
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => setIsOpen(false)}
-            >
-              Apply
-            </Button>
-          </div>
-        </div>
+        <FieldSet className="flex flex-col gap-4 p-4">
+          <Field>
+            <FieldLabel>Start date</FieldLabel>
+            <FieldContent>
+              <CalendarComponent
+                mode="single"
+                selected={startDate}
+                onSelect={(date) => handleSelect(date, 'start')}
+                initialFocus
+              />
+            </FieldContent>
+          </Field>
+          <Field>
+            <FieldLabel>End date</FieldLabel>
+            <FieldContent>
+              <CalendarComponent
+                mode="single"
+                selected={endDate}
+                onSelect={(date) => handleSelect(date, 'end')}
+                disabled={(date) => (startDate ? date < startDate : false)}
+              />
+            </FieldContent>
+          </Field>
+          <Field>
+            <FieldContent className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  onDateChange(undefined, undefined)
+                  setIsOpen(false)
+                }}
+              >
+                Clear
+              </Button>
+              <Button size="sm" onClick={() => setIsOpen(false)}>
+                Apply
+              </Button>
+            </FieldContent>
+          </Field>
+        </FieldSet>
       </PopoverContent>
     </Popover>
   )

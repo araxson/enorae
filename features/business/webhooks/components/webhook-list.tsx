@@ -6,7 +6,15 @@ import { toast } from 'sonner'
 import { Webhook } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Table,
   TableBody,
@@ -83,42 +91,49 @@ export function WebhookList({ webhooks }: WebhookListProps) {
 
   if (webhooks.length === 0) {
     return (
-      <Alert>
-        <Webhook className="h-4 w-4" />
-        <AlertTitle>No webhook entries found</AlertTitle>
-        <AlertDescription>New webhook activity will appear here.</AlertDescription>
-      </Alert>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Webhook className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No webhook entries found</EmptyTitle>
+          <EmptyDescription>New webhook activity will appear here.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Configure outbound webhooks to monitor delivery history.</EmptyContent>
+      </Empty>
     )
   }
 
   return (
     <>
-      <div className="flex gap-3 justify-end mb-4">
-        {failedCount > 0 && (
-          <ConfirmDialog
-            title="Retry All Failed Webhooks?"
-            description={`Retry ${failedCount} failed webhook${failedCount === 1 ? '' : 's'} now?`}
-            confirmText="Retry"
-            onConfirm={handleRetryAll}
-          >
-            <Button variant="outline" disabled={isRetryingAll}>
-              {isRetryingAll ? 'Retrying...' : `Retry All Failed (${failedCount})`}
-            </Button>
-          </ConfirmDialog>
-        )}
+      <div className="mb-4 flex justify-end">
+        <ButtonGroup>
+          {failedCount > 0 ? (
+            <ConfirmDialog
+              title="Retry All Failed Webhooks?"
+              description={`Retry ${failedCount} failed webhook${failedCount === 1 ? '' : 's'} now?`}
+              confirmText="Retry"
+              onConfirm={handleRetryAll}
+            >
+              <Button variant="outline" disabled={isRetryingAll}>
+                {isRetryingAll ? 'Retrying...' : `Retry All Failed (${failedCount})`}
+              </Button>
+            </ConfirmDialog>
+          ) : null}
 
-        {completedCount > 0 && (
-          <ConfirmDialog
-            title="Clear Completed Webhooks?"
-            description="Remove completed webhooks older than 30 days. This action cannot be undone."
-            confirmText="Clear"
-            onConfirm={handleClearCompleted}
-          >
-            <Button variant="outline" disabled={isClearing}>
-              {isClearing ? 'Clearing...' : 'Clear Old Completed'}
-            </Button>
-          </ConfirmDialog>
-        )}
+          {completedCount > 0 ? (
+            <ConfirmDialog
+              title="Clear Completed Webhooks?"
+              description="Remove completed webhooks older than 30 days. This action cannot be undone."
+              confirmText="Clear"
+              onConfirm={handleClearCompleted}
+            >
+              <Button variant="outline" disabled={isClearing}>
+                {isClearing ? 'Clearing...' : 'Clear Old Completed'}
+              </Button>
+            </ConfirmDialog>
+          ) : null}
+        </ButtonGroup>
       </div>
 
       <Table>

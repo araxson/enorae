@@ -12,9 +12,16 @@ import {
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, AlertTriangle, AlertCircle } from 'lucide-react'
 import type { SecurityEvent } from '@/features/admin/security/api/queries'
-import { DataTableEmpty } from '@/features/shared/ui-components'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface SecurityEventsTableProps {
   events: SecurityEvent[]
@@ -23,11 +30,16 @@ interface SecurityEventsTableProps {
 export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
   if (events.length === 0) {
     return (
-      <DataTableEmpty
-        icon={Shield}
-        title="No security events found"
-        description="Security events will appear here when suspicious or anomalous activity is detected."
-      />
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Shield />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No security events found</EmptyTitle>
+          <EmptyDescription>Security insights populate when suspicious or anomalous activity is detected.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Monitoring runs continuously and will surface events automatically.</EmptyContent>
+      </Empty>
     )
   }
 

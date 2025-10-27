@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { SecurityIncident } from '@/features/admin/security-monitoring/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface IncidentResponsePanelProps {
   incidents: SecurityIncident[]
@@ -37,7 +38,12 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
       </CardHeader>
       <CardContent>
         {incidents.length === 0 ? (
-          <CardDescription>No active security incidents detected.</CardDescription>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No active security incidents</EmptyTitle>
+              <EmptyDescription>Response tasks populate automatically when new incidents trigger.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="flex flex-col gap-2">
             {incidents.slice(0, 6).map((incident) => (

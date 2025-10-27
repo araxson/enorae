@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { NormalizedReview } from './use-reviews-list'
+import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 
 type ReviewCardProps = {
   review: NormalizedReview
@@ -81,10 +82,12 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
                 </div>
               )}
             </div>
-            <div className="flex gap-4 items-center">
-              {renderStars(review.rating)}
-              <p className="text-sm font-medium text-muted-foreground">{formatDate(review.created_at)}</p>
-            </div>
+            <Field>
+              <FieldContent className="flex items-center gap-4">
+                {renderStars(review.rating)}
+                <FieldDescription>{formatDate(review.created_at)}</FieldDescription>
+              </FieldContent>
+            </Field>
           </div>
 
           <div className="flex gap-3">
@@ -164,14 +167,16 @@ type RatingItemProps = {
 const RatingItem = memo(function RatingItem({ label, rating }: RatingItemProps) {
   const stars = rating || 0
   return (
-    <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <div className="flex gap-1" role="img" aria-label={`${label}: ${stars} out of 5 stars`}>
-        {STAR_INDICES.map((index) => (
-          <StarIcon key={index} filled={index < stars} />
-        ))}
-      </div>
-    </div>
+    <Field>
+      <FieldLabel>{label}</FieldLabel>
+      <FieldContent>
+        <div className="flex gap-1" role="img" aria-label={`${label}: ${stars} out of 5 stars`}>
+          {STAR_INDICES.map((index) => (
+            <StarIcon key={index} filled={index < stars} />
+          ))}
+        </div>
+      </FieldContent>
+    </Field>
   )
 })
 

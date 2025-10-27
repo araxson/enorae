@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
+import { Empty, EmptyContent, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import {
   Table,
   TableBody,
@@ -24,6 +24,7 @@ import {
 import { CheckCircle2, XCircle, Eye, Download } from 'lucide-react'
 import type { AuditLog } from '@/features/business/settings-audit-logs/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Field, FieldContent, FieldDescription, FieldLabel, FieldSet } from '@/components/ui/field'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -108,6 +109,7 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
                           <EmptyTitle>No audit logs found</EmptyTitle>
                           <EmptyDescription>Activity will appear here once audits are recorded.</EmptyDescription>
                         </EmptyHeader>
+                        <EmptyContent>Enable logging or perform actions to populate this table.</EmptyContent>
                       </Empty>
                     </TableCell>
                   </TableRow>
@@ -173,74 +175,99 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
 
           {selectedLog && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Timestamp</p>
-                  <p className="font-mono text-sm">{formatDate(selectedLog.created_at)}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Action</p>
-                  <p className="capitalize">{selectedLog.action}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Entity Type</p>
-                  <p className="capitalize">{selectedLog.entity_type}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Entity ID</p>
-                  <p className="font-mono text-sm">{selectedLog.entity_id || 'N/A'}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">User ID</p>
-                  <p className="font-mono text-sm">{selectedLog.user_id}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">IP Address</p>
-                  <p className="font-mono text-sm">{selectedLog.ip_address || 'N/A'}</p>
-                </div>
-              </div>
+              <FieldSet className="grid gap-4 md:grid-cols-2">
+                <Field>
+                  <FieldLabel>Timestamp</FieldLabel>
+                  <FieldContent>
+                    <FieldDescription>{formatDate(selectedLog.created_at)}</FieldDescription>
+                  </FieldContent>
+                </Field>
+                <Field>
+                  <FieldLabel>Action</FieldLabel>
+                  <FieldContent>
+                    <FieldDescription>{formatActionLabel(selectedLog.action)}</FieldDescription>
+                  </FieldContent>
+                </Field>
+                <Field>
+                  <FieldLabel>Entity type</FieldLabel>
+                  <FieldContent>
+                    <FieldDescription>
+                      <span className="capitalize">{selectedLog.entity_type}</span>
+                    </FieldDescription>
+                  </FieldContent>
+                </Field>
+                <Field>
+                  <FieldLabel>Entity ID</FieldLabel>
+                  <FieldContent>
+                    <FieldDescription>{selectedLog.entity_id || 'N/A'}</FieldDescription>
+                  </FieldContent>
+                </Field>
+                <Field>
+                  <FieldLabel>User ID</FieldLabel>
+                  <FieldContent>
+                    <FieldDescription>{selectedLog.user_id}</FieldDescription>
+                  </FieldContent>
+                </Field>
+                <Field>
+                  <FieldLabel>IP address</FieldLabel>
+                  <FieldContent>
+                    <FieldDescription>{selectedLog.ip_address || 'N/A'}</FieldDescription>
+                  </FieldContent>
+                </Field>
+              </FieldSet>
 
               {selectedLog.user_agent && (
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">User Agent</p>
-                  <p className="text-sm bg-muted p-2 rounded font-mono break-all">
-                    {selectedLog.user_agent}
-                  </p>
-                </div>
+                <Field>
+                  <FieldLabel>User agent</FieldLabel>
+                  <FieldContent>
+                    <ScrollArea className="rounded bg-muted">
+                      <pre className="p-3 text-xs text-muted-foreground">
+                        {selectedLog.user_agent}
+                      </pre>
+                      <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                  </FieldContent>
+                </Field>
               )}
 
               {selectedLog.old_values && Object.keys(selectedLog.old_values).length > 0 && (
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">Old Values</p>
-                  <ScrollArea className="rounded bg-muted">
-                    <pre className="p-3 text-xs text-muted-foreground">
-                      {JSON.stringify(selectedLog.old_values, null, 2)}
-                    </pre>
-                    <ScrollBar orientation="horizontal" />
-                  </ScrollArea>
-                </div>
+                <Field>
+                  <FieldLabel>Old values</FieldLabel>
+                  <FieldContent>
+                    <ScrollArea className="rounded bg-muted">
+                      <pre className="p-3 text-xs text-muted-foreground">
+                        {JSON.stringify(selectedLog.old_values, null, 2)}
+                      </pre>
+                      <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                  </FieldContent>
+                </Field>
               )}
 
               {selectedLog.new_values && Object.keys(selectedLog.new_values).length > 0 && (
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">New Values</p>
-                  <ScrollArea className="rounded bg-muted">
-                    <pre className="p-3 text-xs text-muted-foreground">
-                      {JSON.stringify(selectedLog.new_values, null, 2)}
-                    </pre>
-                    <ScrollBar orientation="horizontal" />
-                  </ScrollArea>
-                </div>
+                <Field>
+                  <FieldLabel>New values</FieldLabel>
+                  <FieldContent>
+                    <ScrollArea className="rounded bg-muted">
+                      <pre className="p-3 text-xs text-muted-foreground">
+                        {JSON.stringify(selectedLog.new_values, null, 2)}
+                      </pre>
+                      <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                  </FieldContent>
+                </Field>
               )}
 
               {selectedLog.error_message && (
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">Error Message</p>
-                  <Alert variant="destructive">
-                    <AlertTitle>Operation failed</AlertTitle>
-                    <AlertDescription>{selectedLog.error_message}</AlertDescription>
-                  </Alert>
-                </div>
+                <Field className="gap-2">
+                  <FieldLabel>Error message</FieldLabel>
+                  <FieldContent>
+                    <Alert variant="destructive">
+                      <AlertTitle>Operation failed</AlertTitle>
+                      <AlertDescription>{selectedLog.error_message}</AlertDescription>
+                    </Alert>
+                  </FieldContent>
+                </Field>
               )}
             </div>
           )}

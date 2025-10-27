@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { DisputeCandidate } from '@/features/admin/appointments/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface DisputesPanelProps {
   disputes: DisputeCandidate[]
@@ -24,7 +25,12 @@ export function DisputesPanel({ disputes }: DisputesPanelProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         {disputes.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No high-risk appointments awaiting review.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No high-risk appointments</EmptyTitle>
+              <EmptyDescription>The dispute queue fills when appointments trigger elevated risk checks.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="space-y-2">
             {disputes.slice(0, 6).map((item) => (

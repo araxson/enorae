@@ -6,9 +6,11 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { Loader2, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import type { ProfileSearchResult } from '@/features/admin/profile/types'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Spinner } from '@/components/ui/spinner'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface ProfileSearchPanelProps {
   results: ProfileSearchResult[]
@@ -49,7 +51,7 @@ export function ProfileSearchPanel({
       <CardContent className="flex h-full flex-col gap-4">
         {isSearching && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Spinner />
             Searching profiles…
           </div>
         )}
@@ -58,7 +60,12 @@ export function ProfileSearchPanel({
           <CardContent className="p-0">
             <ScrollArea className="h-96">
               {results.length === 0 ? (
-                <p className="p-4 text-sm text-muted-foreground">No profiles found.</p>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No profiles found</EmptyTitle>
+                    <EmptyDescription>Try adjusting the search query or filters to locate a user.</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               ) : (
                 <ul className="divide-y">
                   {results.map((profile) => {

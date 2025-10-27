@@ -1,4 +1,12 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { CalendarDays } from 'lucide-react'
 import { TimeOffRequestCard } from './components/time-off-request-card'
 import { getSalonTimeOffRequests, getPendingSalonTimeOffRequests } from './api/queries'
 import { approveTimeOffRequest, rejectTimeOffRequest } from './api/mutations'
@@ -37,10 +45,15 @@ export async function BusinessTimeOff() {
         )}
 
         {allRequests.length === 0 ? (
-          <Alert>
-            <AlertTitle>No requests</AlertTitle>
-            <AlertDescription>No time-off requests found</AlertDescription>
-          </Alert>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <CalendarDays className="h-8 w-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No requests</EmptyTitle>
+              <EmptyDescription>No time-off requests found</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {allRequests.map((request) => (

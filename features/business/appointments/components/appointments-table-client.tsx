@@ -2,14 +2,20 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { DataTableEmpty } from '@/features/shared/ui-components'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { Calendar } from 'lucide-react'
 import type { AppointmentWithDetails } from '@/features/business/appointments/api/queries'
 import { confirmAppointment, cancelAppointment, completeAppointment } from '@/features/business/appointments/api/mutations'
 import { useAppointmentsFilter } from './appointments-table/use-appointments-filter'
 import { AppointmentsFilterControls } from './appointments-table/filter-controls'
 import { AppointmentsTableRow } from './appointments-table/table-row'
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 
 interface AppointmentsTableClientProps {
   appointments: AppointmentWithDetails[]
@@ -26,11 +32,16 @@ export function AppointmentsTableClient({ appointments }: AppointmentsTableClien
 
   if (appointments.length === 0) {
     return (
-      <DataTableEmpty
-        icon={Calendar}
-        title="No appointments yet"
-        description="Appointments will appear here once customers book services"
-      />
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Calendar className="h-6 w-6" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No appointments yet</EmptyTitle>
+          <EmptyDescription>Appointments will appear here once customers book services.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Promote services or invite clients to start tracking activity.</EmptyContent>
+      </Empty>
     )
   }
 

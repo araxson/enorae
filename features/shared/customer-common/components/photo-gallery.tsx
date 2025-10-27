@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
@@ -127,26 +128,28 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
 
                 {allImages.length > 1 && (
                   <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between p-4">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={goToPrevious}
-                      disabled={selectedIndex === 0}
-                      className="bg-background/80 text-foreground hover:bg-background"
-                      aria-label="Previous image"
-                    >
-                      <ChevronLeft className="h-6 w-6" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={goToNext}
-                      disabled={selectedIndex === allImages.length - 1}
-                      className="bg-background/80 text-foreground hover:bg-background"
-                      aria-label="Next image"
-                    >
-                      <ChevronRight className="h-6 w-6" />
-                    </Button>
+                    <ButtonGroup className="w-full justify-between">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={goToPrevious}
+                        disabled={selectedIndex === 0}
+                        className="bg-background/80 text-foreground hover:bg-background"
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft className="h-6 w-6" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={goToNext}
+                        disabled={selectedIndex === allImages.length - 1}
+                        className="bg-background/80 text-foreground hover:bg-background"
+                        aria-label="Next image"
+                      >
+                        <ChevronRight className="h-6 w-6" />
+                      </Button>
+                    </ButtonGroup>
                   </div>
                 )}
 

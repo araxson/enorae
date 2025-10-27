@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -11,6 +10,15 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Bell, Globe, DollarSign, Shield } from 'lucide-react'
 import { updateProfilePreferences } from '@/features/customer/profile/api/mutations'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
 
 type ProfilePreferences = Database['public']['Views']['profiles_preferences_view']['Row']
 
@@ -104,109 +112,131 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
           </TabsList>
 
           <TabsContent value="regional" className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="timezone">Timezone</Label>
-              <Select value={timezone} onValueChange={setTimezone}>
-                <SelectTrigger id="timezone">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
-                  <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
-                  <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
-                  <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
-                  <SelectItem value="Europe/London">London (GMT)</SelectItem>
-                  <SelectItem value="Europe/Paris">Paris (CET)</SelectItem>
-                  <SelectItem value="Asia/Tokyo">Tokyo (JST)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <FieldSet>
+              <FieldLegend>Regional defaults</FieldLegend>
+              <FieldGroup className="gap-4">
+                <Field>
+                  <FieldLabel htmlFor="timezone">Timezone</FieldLabel>
+                  <FieldContent>
+                    <Select value={timezone} onValueChange={setTimezone}>
+                      <SelectTrigger id="timezone">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
+                        <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
+                        <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
+                        <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
+                        <SelectItem value="Europe/London">London (GMT)</SelectItem>
+                        <SelectItem value="Europe/Paris">Paris (CET)</SelectItem>
+                        <SelectItem value="Asia/Tokyo">Tokyo (JST)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FieldContent>
+                </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="locale">Language</Label>
-              <Select value={locale} onValueChange={setLocale}>
-                <SelectTrigger id="locale">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en-US">English (US)</SelectItem>
-                  <SelectItem value="en-GB">English (UK)</SelectItem>
-                  <SelectItem value="es-ES">Spanish</SelectItem>
-                  <SelectItem value="fr-FR">French</SelectItem>
-                  <SelectItem value="de-DE">German</SelectItem>
-                  <SelectItem value="ja-JP">Japanese</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+                <Field>
+                  <FieldLabel htmlFor="locale">Language</FieldLabel>
+                  <FieldContent>
+                    <Select value={locale} onValueChange={setLocale}>
+                      <SelectTrigger id="locale">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en-US">English (US)</SelectItem>
+                        <SelectItem value="en-GB">English (UK)</SelectItem>
+                        <SelectItem value="es-ES">Spanish</SelectItem>
+                        <SelectItem value="fr-FR">French</SelectItem>
+                        <SelectItem value="de-DE">German</SelectItem>
+                        <SelectItem value="ja-JP">Japanese</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FieldContent>
+                </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="currency" className="flex items-center gap-2">
-                <DollarSign className="h-4 w-4" />
-                Currency
-              </Label>
-              <Select value={currencyCode} onValueChange={setCurrencyCode}>
-                <SelectTrigger id="currency">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="USD">USD ($)</SelectItem>
-                  <SelectItem value="EUR">EUR (€)</SelectItem>
-                  <SelectItem value="GBP">GBP (£)</SelectItem>
-                  <SelectItem value="JPY">JPY (¥)</SelectItem>
-                  <SelectItem value="CAD">CAD ($)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+                <Field>
+                  <FieldLabel htmlFor="currency">
+                    <span className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4" />
+                      Currency
+                    </span>
+                  </FieldLabel>
+                  <FieldContent>
+                    <Select value={currencyCode} onValueChange={setCurrencyCode}>
+                      <SelectTrigger id="currency">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="USD">USD ($)</SelectItem>
+                        <SelectItem value="EUR">EUR (€)</SelectItem>
+                        <SelectItem value="GBP">GBP (£)</SelectItem>
+                        <SelectItem value="JPY">JPY (¥)</SelectItem>
+                        <SelectItem value="CAD">CAD ($)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FieldContent>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
           </TabsContent>
 
           <TabsContent value="notifications" className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <Label htmlFor="email-notifications">Email Notifications</Label>
-                <p className="text-xs text-muted-foreground">Receive updates via email</p>
-              </div>
-              <Switch
-                id="email-notifications"
-                checked={emailNotifications}
-                onCheckedChange={setEmailNotifications}
-              />
-            </div>
+            <FieldSet>
+              <FieldLegend>Notification preferences</FieldLegend>
+              <FieldGroup className="gap-4">
+                <Field orientation="responsive">
+                  <FieldLabel htmlFor="email-notifications">Email notifications</FieldLabel>
+                  <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                    <FieldDescription>Receive updates via email</FieldDescription>
+                    <Switch
+                      className="sm:ml-4"
+                      id="email-notifications"
+                      checked={emailNotifications}
+                      onCheckedChange={setEmailNotifications}
+                    />
+                  </FieldContent>
+                </Field>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <Label htmlFor="sms-notifications">SMS Notifications</Label>
-                <p className="text-xs text-muted-foreground">Receive text message alerts</p>
-              </div>
-              <Switch
-                id="sms-notifications"
-                checked={smsNotifications}
-                onCheckedChange={setSmsNotifications}
-              />
-            </div>
+                <Field orientation="responsive">
+                  <FieldLabel htmlFor="sms-notifications">SMS notifications</FieldLabel>
+                  <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                    <FieldDescription>Receive text message alerts</FieldDescription>
+                    <Switch
+                      className="sm:ml-4"
+                      id="sms-notifications"
+                      checked={smsNotifications}
+                      onCheckedChange={setSmsNotifications}
+                    />
+                  </FieldContent>
+                </Field>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <Label htmlFor="appointment-reminders">Appointment Reminders</Label>
-                <p className="text-xs text-muted-foreground">Get reminders before appointments</p>
-              </div>
-              <Switch
-                id="appointment-reminders"
-                checked={appointmentReminders}
-                onCheckedChange={setAppointmentReminders}
-              />
-            </div>
+                <Field orientation="responsive">
+                  <FieldLabel htmlFor="appointment-reminders">Appointment reminders</FieldLabel>
+                  <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                    <FieldDescription>Get reminders before appointments</FieldDescription>
+                    <Switch
+                      className="sm:ml-4"
+                      id="appointment-reminders"
+                      checked={appointmentReminders}
+                      onCheckedChange={setAppointmentReminders}
+                    />
+                  </FieldContent>
+                </Field>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <Label htmlFor="marketing-emails">Marketing Emails</Label>
-                <p className="text-xs text-muted-foreground">Receive promotional offers and news</p>
-              </div>
-              <Switch
-                id="marketing-emails"
-                checked={marketingEmails}
-                onCheckedChange={setMarketingEmails}
-              />
-            </div>
+                <Field orientation="responsive">
+                  <FieldLabel htmlFor="marketing-emails">Marketing emails</FieldLabel>
+                  <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                    <FieldDescription>Receive promotional offers and news</FieldDescription>
+                    <Switch
+                      className="sm:ml-4"
+                      id="marketing-emails"
+                      checked={marketingEmails}
+                      onCheckedChange={setMarketingEmails}
+                    />
+                  </FieldContent>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
 
             <Alert>
               <Shield className="h-4 w-4" />

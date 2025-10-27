@@ -2,6 +2,7 @@ import { AlertTriangle } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { CancellationPattern } from '@/features/admin/appointments/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface CancellationPatternsCardProps {
   patterns: CancellationPattern[]
@@ -20,7 +21,12 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
       </CardHeader>
       <CardContent className="space-y-3">
         {patterns.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No cancellation hotspots detected.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No cancellation hotspots detected</EmptyTitle>
+              <EmptyDescription>Patterns display once salons accumulate notable cancellation trends.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="space-y-2">
             {patterns.slice(0, 6).map((pattern) => (

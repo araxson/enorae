@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { PaymentMethodStats } from '@/features/admin/finance/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
@@ -59,6 +59,7 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
                     <Empty>
                       <EmptyHeader>
                         <EmptyTitle>No payment method data available</EmptyTitle>
+                        <EmptyDescription>Connect a processor or import transactions to analyze usage.</EmptyDescription>
                       </EmptyHeader>
                     </Empty>
                   </TableCell>

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { ChainActions } from './chain-actions'
 import type { Database } from '@/lib/types/database.types'
 
@@ -32,9 +33,13 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
         <CardDescription>Review chain memberships and platform status.</CardDescription>
       </CardHeader>
       {chains.length === 0 ? (
-        <CardContent className="flex flex-col items-center gap-2 py-12">
-          <p className="text-muted-foreground">No salon chains found</p>
-          <p className="text-sm text-muted-foreground">Chains will appear here once created</p>
+        <CardContent className="py-12">
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No salon chains found</EmptyTitle>
+              <EmptyDescription>Chains will appear here once created.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       ) : (
         <CardContent className="p-0">

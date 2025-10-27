@@ -131,9 +131,9 @@ export function AdvancedPreferencesForm({
                   ))}
                 </SelectContent>
               </Select>
-              <p className="text-sm text-muted-foreground">
+              <CardDescription>
                 Appointments and times will be displayed in your selected timezone
-              </p>
+              </CardDescription>
             </div>
 
             <div className="flex flex-col gap-3">
@@ -158,9 +158,9 @@ export function AdvancedPreferencesForm({
                   ))}
                 </SelectContent>
               </Select>
-              <p className="text-sm text-muted-foreground">
+              <CardDescription>
                 Affects date formats, number formats, and interface language
-              </p>
+              </CardDescription>
             </div>
 
             <div className="flex flex-col gap-3">
@@ -185,9 +185,9 @@ export function AdvancedPreferencesForm({
                   ))}
                 </SelectContent>
               </Select>
-              <p className="text-sm text-muted-foreground">
+              <CardDescription>
                 Prices and amounts will be displayed in your selected currency
-              </p>
+              </CardDescription>
             </div>
 
             {error && (

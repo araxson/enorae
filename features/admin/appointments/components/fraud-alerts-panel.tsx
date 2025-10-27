@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { FraudAlert } from '@/features/admin/appointments/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface FraudAlertsPanelProps {
   alerts: FraudAlert[]
@@ -32,7 +33,12 @@ export function FraudAlertsPanel({ alerts }: FraudAlertsPanelProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         {alerts.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No suspicious activity detected.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No suspicious activity detected</EmptyTitle>
+              <EmptyDescription>Fraud signals surface automatically when risk thresholds trigger.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="space-y-2">
             {alerts.slice(0, 8).map((alert) => (

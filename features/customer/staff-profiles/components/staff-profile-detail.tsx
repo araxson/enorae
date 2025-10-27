@@ -11,6 +11,13 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Mail, Star, Briefcase } from 'lucide-react'
 import type { StaffProfile } from '@/features/customer/staff-profiles/api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface StaffProfileDetailProps {
   profile: StaffProfile
@@ -95,19 +102,23 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
                   ) : null}
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
-                  <div className="flex flex-col gap-3" role="list">
+                  <ItemGroup className="gap-3">
                     {service['description'] ? (
-                      <CardDescription>{service['description']}</CardDescription>
+                      <Item variant="muted">
+                        <ItemContent>
+                          <ItemDescription>{service['description']}</ItemDescription>
+                        </ItemContent>
+                      </Item>
                     ) : null}
                     {service['duration_minutes'] ? (
-                      <div className="flex items-center gap-2">
-                        <Briefcase className="h-3 w-3" aria-hidden="true" />
-                        <CardDescription>
-                          {service['duration_minutes']} minutes
-                        </CardDescription>
-                      </div>
+                      <Item variant="muted">
+                        <ItemContent className="flex items-center gap-2">
+                          <Briefcase className="h-3 w-3" aria-hidden="true" />
+                          <ItemTitle>{service['duration_minutes']} minutes</ItemTitle>
+                        </ItemContent>
+                      </Item>
                     ) : null}
-                  </div>
+                  </ItemGroup>
                 </CardContent>
               </Card>
             ))}

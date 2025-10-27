@@ -13,6 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { QueryPerformanceSnapshot } from '@/features/admin/database-health/api/query-performance'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface QueryPerformancePanelProps {
   data: QueryPerformanceSnapshot
@@ -75,9 +76,12 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
               </TableBody>
             </Table>
             {slowQueries.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No slow queries detected</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No slow queries detected</EmptyTitle>
+                  <EmptyDescription>All monitored queries fall within the configured performance thresholds.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
 
@@ -109,9 +113,12 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
               </TableBody>
             </Table>
             {mostCalledQueries.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No query data available</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No query data available</EmptyTitle>
+                  <EmptyDescription>Query frequency analytics populate after sampling recent traffic.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
 
@@ -143,9 +150,12 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
               </TableBody>
             </Table>
             {indexPerformance.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No index data available</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No index data available</EmptyTitle>
+                  <EmptyDescription>Index efficiency metrics appear when scans and usage statistics are present.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
         </Tabs>

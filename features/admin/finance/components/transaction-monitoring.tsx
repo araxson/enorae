@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { StatCard } from '@/features/shared/ui-components'
 import { Activity, CreditCard, Users, Building2 } from 'lucide-react'
 import type { TransactionMetrics, ManualTransactionRow } from '@/features/admin/finance/types'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface TransactionMonitoringProps {
   metrics: TransactionMetrics
@@ -78,6 +78,7 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
                     <Empty>
                       <EmptyHeader>
                         <EmptyTitle>No recent transactions</EmptyTitle>
+                        <EmptyDescription>Financial activity will display after payments are captured.</EmptyDescription>
                       </EmptyHeader>
                     </Empty>
                   </TableCell>

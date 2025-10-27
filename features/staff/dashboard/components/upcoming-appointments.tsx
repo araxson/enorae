@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/features/shared/ui-components'
 import {
   Item,
   ItemGroup,
@@ -16,6 +15,13 @@ import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
 import { format } from 'date-fns'
 import { Clock, Calendar } from 'lucide-react'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface UpcomingAppointmentsProps {
   appointments: AppointmentWithDetails[]
@@ -29,11 +35,15 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
           <CardTitle>Upcoming Appointments</CardTitle>
         </CardHeader>
         <CardContent>
-          <EmptyState
-            icon={Calendar}
-            title="No Upcoming Appointments"
-            description="No appointments scheduled for the next 7 days"
-          />
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Calendar className="h-8 w-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No upcoming appointments</EmptyTitle>
+              <EmptyDescription>No appointments are scheduled for the next 7 days.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

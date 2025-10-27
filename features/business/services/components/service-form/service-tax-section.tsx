@@ -2,7 +2,7 @@
 
 import { Switch } from '@/components/ui/switch'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Field, FieldContent, FieldDescription, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field'
 
 interface ServiceTaxSectionProps {
   isTaxable: boolean
@@ -22,47 +22,51 @@ export function ServiceTaxSection({
   onCommissionRateChange,
 }: ServiceTaxSectionProps) {
   return (
-    <section className="space-y-4">
-      <h3 className="text-sm font-medium">Tax & Commission</h3>
+    <FieldSet className="space-y-4">
+      <FieldLegend>Tax &amp; commission</FieldLegend>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="flex items-center space-x-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <Field orientation="horizontal" className="items-center gap-3">
           <Switch id="isTaxable" checked={isTaxable} onCheckedChange={onTaxableChange} />
-          <Label htmlFor="isTaxable" className="cursor-pointer">
+          <FieldLabel htmlFor="isTaxable" className="cursor-pointer">
             Taxable
-          </Label>
-        </div>
+          </FieldLabel>
+        </Field>
 
-        <div>
-          <Label htmlFor="taxRate">Tax Rate (%)</Label>
-          <Input
-            id="taxRate"
-            type="number"
-            step="0.01"
-            min="0"
-            max="100"
-            value={taxRate}
-            onChange={(event) => onTaxRateChange(event.target.value)}
-            placeholder="8.5"
-            disabled={!isTaxable}
-          />
-        </div>
+        <Field>
+          <FieldLabel htmlFor="taxRate">Tax rate (%)</FieldLabel>
+          <FieldContent>
+            <Input
+              id="taxRate"
+              type="number"
+              step="0.01"
+              min="0"
+              max="100"
+              value={taxRate}
+              onChange={(event) => onTaxRateChange(event.target.value)}
+              placeholder="8.5"
+              disabled={!isTaxable}
+            />
+          </FieldContent>
+        </Field>
 
-        <div>
-          <Label htmlFor="commissionRate">Commission Rate (%)</Label>
-          <Input
-            id="commissionRate"
-            type="number"
-            step="0.01"
-            min="0"
-            max="100"
-            value={commissionRate}
-            onChange={(event) => onCommissionRateChange(event.target.value)}
-            placeholder="15"
-          />
-          <p className="text-xs text-muted-foreground mt-1">Staff commission</p>
-        </div>
+        <Field>
+          <FieldLabel htmlFor="commissionRate">Commission rate (%)</FieldLabel>
+          <FieldContent>
+            <Input
+              id="commissionRate"
+              type="number"
+              step="0.01"
+              min="0"
+              max="100"
+              value={commissionRate}
+              onChange={(event) => onCommissionRateChange(event.target.value)}
+              placeholder="15"
+            />
+            <FieldDescription>Staff commission</FieldDescription>
+          </FieldContent>
+        </Field>
       </div>
-    </section>
+    </FieldSet>
   )
 }

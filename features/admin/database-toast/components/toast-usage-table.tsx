@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { ToastUsageRecord } from '@/features/admin/database-toast/api/queries'
 import { optimizeToastUsage } from '@/features/admin/database-toast/api/mutations'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface ToastUsageTableProps {
   tables: ToastUsageRecord[]
@@ -84,6 +84,7 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
                 <Empty>
                   <EmptyHeader>
                     <EmptyTitle>No TOAST usage data available</EmptyTitle>
+                    <EmptyDescription>Large-object storage metrics populate after Postgres TOAST stats are synced.</EmptyDescription>
                   </EmptyHeader>
                 </Empty>
               </TableCell>
@@ -104,7 +105,7 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
                   {table.suggested_compression ? (
                     <Badge variant="outline">{table.suggested_compression}</Badge>
                   ) : (
-                    <span className="text-muted-foreground">None</span>
+                    <Badge variant="secondary">No suggestion</Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-right">

@@ -4,10 +4,18 @@ import { useMemo, useState } from 'react'
 import { DollarSign, TrendingUp, Calendar, PieChart } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CommissionData, DailyEarnings, ServiceRevenue, CommissionRate, PayoutSchedule } from '@/features/staff/commission/api/queries'
 import { EarningsChart } from './earnings-chart'
 import { ServiceBreakdown } from './service-breakdown'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export interface CommissionClientProps {
   staffId: string
@@ -57,53 +65,69 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between pb-2">
-            <CardTitle>Today&apos;s Earnings</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Today&apos;s earnings</ItemTitle>
+            </ItemContent>
+          </Item>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">${commission.todayEarnings.toFixed(2)}</div>
-          <p className="text-xs text-muted-foreground">Revenue from completed appointments</p>
+          <CardDescription>Revenue from completed appointments</CardDescription>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between pb-2">
-            <CardTitle>This Week</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>This week</ItemTitle>
+            </ItemContent>
+          </Item>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">${commission.weekEarnings.toFixed(2)}</div>
-          <p className="text-xs text-muted-foreground">Week-to-date earnings</p>
+          <CardDescription>Week-to-date earnings</CardDescription>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between pb-2">
-            <CardTitle>This Month</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>This month</ItemTitle>
+            </ItemContent>
+          </Item>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">${commission.monthEarnings.toFixed(2)}</div>
-          <p className="text-xs text-muted-foreground">Monthly revenue total</p>
+          <CardDescription>Monthly revenue total</CardDescription>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between pb-2">
-            <CardTitle>Avg Per Appointment</CardTitle>
-            <PieChart className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <PieChart className="h-4 w-4 text-muted-foreground" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Average per appointment</ItemTitle>
+            </ItemContent>
+          </Item>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">${commission.avgPerAppointment.toFixed(2)}</div>
-          <p className="text-xs text-muted-foreground">{commission.totalAppointments} appointments this month</p>
+          <CardDescription>{commission.totalAppointments} appointments this month</CardDescription>
         </CardContent>
       </Card>
     </div>
@@ -147,19 +171,23 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">
+              <CardDescription>
                 Your commission is calculated based on completed appointments. The figures shown represent the total service revenue from appointments you&apos;ve completed.
-              </p>
-              <div className="grid gap-4 pt-4 md:grid-cols-2">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase">Completed appointments</p>
-                  <p className="text-lg font-semibold">{commission.totalAppointments}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase">Month revenue</p>
-                  <p className="text-lg font-semibold">${commission.monthEarnings.toFixed(2)}</p>
-                </div>
-              </div>
+              </CardDescription>
+              <ItemGroup className="grid gap-4 pt-4 md:grid-cols-2">
+                <Item variant="outline" size="sm">
+                  <ItemContent>
+                    <ItemTitle>{commission.totalAppointments}</ItemTitle>
+                    <ItemDescription>Completed appointments</ItemDescription>
+                  </ItemContent>
+                </Item>
+                <Item variant="outline" size="sm">
+                  <ItemContent>
+                    <ItemTitle>${commission.monthEarnings.toFixed(2)}</ItemTitle>
+                    <ItemDescription>Month revenue</ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </div>
           </CardContent>
         </Card>

@@ -1,0 +1,5 @@
+export { TermsPage } from './terms-page'
+export { termsMetadata } from './terms.seo'
+export * from './sections'
+export * from './api/queries'
+export * from './api/mutations'

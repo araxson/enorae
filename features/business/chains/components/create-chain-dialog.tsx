@@ -13,9 +13,17 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { createSalonChain, updateSalonChain } from '@/features/business/chains/api/mutations'
 import type { SalonChainWithCounts } from '@/features/business/chains/api/queries'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type CreateChainDialogProps = {
   open: boolean
@@ -79,47 +87,56 @@ export function CreateChainDialog({
         <form onSubmit={handleSubmit}>
           {isEditing && <input type="hidden" name="id" value={chain?.['id'] ?? ''} />}
 
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Chain Name</Label>
-              <Input
-                id="name"
-                name="name"
-                defaultValue={chain?.['name'] ?? ''}
-                placeholder="e.g., Luxury Salons Group"
-                required
-              />
-            </div>
+          <FieldSet>
+            <FieldGroup className="space-y-4">
+              <Field>
+                <FieldLabel htmlFor="name">Chain Name</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="name"
+                    name="name"
+                    defaultValue={chain?.['name'] ?? ''}
+                    placeholder="e.g., Luxury Salons Group"
+                    required
+                  />
+                </FieldContent>
+              </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="legal_name">Legal Name (Optional)</Label>
-              <Input
-                id="legal_name"
-                name="legal_name"
-                defaultValue={chain?.['legal_name'] ?? ''}
-                placeholder="e.g., Luxury Salons Inc."
-              />
-            </div>
-          </div>
+              <Field>
+                <FieldLabel htmlFor="legal_name">Legal Name (Optional)</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="legal_name"
+                    name="legal_name"
+                    defaultValue={chain?.['legal_name'] ?? ''}
+                    placeholder="e.g., Luxury Salons Inc."
+                  />
+                  <FieldDescription>Optional legal entity name</FieldDescription>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
           <DialogFooter className="mt-6">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting
-                ? isEditing
-                  ? 'Updating...'
-                  : 'Creating...'
-                : isEditing
-                ? 'Update Chain'
-                : 'Create Chain'}
-            </Button>
+            <ButtonGroup>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting
+                  ? isEditing
+                    ? 'Updating...'
+                    : 'Creating...'
+                  : isEditing
+                  ? 'Update Chain'
+                  : 'Create Chain'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </form>
       </DialogContent>

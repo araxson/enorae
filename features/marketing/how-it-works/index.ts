@@ -1,0 +1,5 @@
+export { HowItWorksPage } from './how-it-works-page'
+export { howItWorksMetadata } from './how-it-works.seo'
+export * from './sections'
+export * from './api/queries'
+export * from './api/mutations'

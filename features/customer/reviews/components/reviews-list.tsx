@@ -4,11 +4,18 @@ import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/features/shared/ui-components'
 import { Star } from 'lucide-react'
 import { EditReviewDialog } from './edit-review-dialog'
 import { DeleteReviewDialog } from './delete-review-dialog'
 import type { ReviewsListProps } from '@/features/customer/reviews/types'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 function StarRating({ rating }: { rating: number | null }) {
   const validRating = rating ?? 0
@@ -25,16 +32,26 @@ function StarRating({ rating }: { rating: number | null }) {
 export function ReviewsList({ reviews }: ReviewsListProps) {
   if (reviews.length === 0) {
     return (
-      <EmptyState
-        icon={Star}
-        title="No reviews yet"
-        description="Share feedback after your next appointment to help others discover great salons."
-        action={
-          <Button asChild>
-            <Link href="/customer/appointments">View upcoming appointments</Link>
-          </Button>
-        }
-      />
+      <Card>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Star className="h-6 w-6" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No reviews yet</EmptyTitle>
+              <EmptyDescription>
+                Share feedback after your next appointment to help others discover great salons.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild>
+                <Link href="/customer/appointments">View upcoming appointments</Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 
@@ -53,15 +70,18 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">{review['comment']}</p>
-              <p className="text-xs text-muted-foreground">
-                {review['created_at'] &&
-                  new Date(review['created_at']).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-              </p>
+              <CardDescription>{review['comment']}</CardDescription>
+              {review['created_at'] ? (
+                <CardDescription>
+                  <time dateTime={review['created_at']}>
+                    {new Date(review['created_at']).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                </CardDescription>
+              ) : null}
             </div>
           </CardContent>
           <CardFooter>

@@ -58,7 +58,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                       )
                     })}
                   </div>
-                  <p className="text-sm text-muted-foreground">{review['rating']}/5</p>
+                  <CardDescription>{review['rating']}/5</CardDescription>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -69,27 +69,27 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-6">
-              {review['title'] && <p className="font-medium">{review['title']}</p>}
-              {review['comment'] && <p className="text-sm text-muted-foreground">{review['comment']}</p>}
+              <div className="flex flex-col gap-6">
+                {review['title'] && <p className="font-medium">{review['title']}</p>}
+                {review['comment'] && <CardDescription>{review['comment']}</CardDescription>}
 
               <Separator />
               <div className="grid grid-cols-3 gap-4 pt-2">
                 {review['service_quality_rating'] && (
                   <div>
-                    <p className="text-xs text-muted-foreground">Service Quality</p>
+                    <Badge variant="outline">Service Quality</Badge>
                     <p className="text-sm font-medium">{review['service_quality_rating']}/5</p>
                   </div>
                 )}
                 {review['cleanliness_rating'] && (
                   <div>
-                    <p className="text-xs text-muted-foreground">Cleanliness</p>
+                    <Badge variant="outline">Cleanliness</Badge>
                     <p className="text-sm font-medium">{review['cleanliness_rating']}/5</p>
                   </div>
                 )}
                 {review['value_rating'] && (
                   <div>
-                    <p className="text-xs text-muted-foreground">Value</p>
+                    <Badge variant="outline">Value</Badge>
                     <p className="text-sm font-medium">{review['value_rating']}/5</p>
                   </div>
                 )}
@@ -99,14 +99,14 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <User className="w-3 h-3" />
-                  <span>{review['customer_name'] || 'Anonymous'}</span>
+                  <CardDescription>{review['customer_name'] || 'Anonymous'}</CardDescription>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-muted-foreground">
+                  <CardDescription>
                     {review['created_at'] ? format(new Date(review['created_at']), 'MMM dd, yyyy') : 'N/A'}
-                  </p>
+                  </CardDescription>
                   {review['helpful_count'] && review['helpful_count'] > 0 && (
-                    <p className="text-xs">{review['helpful_count']} found helpful</p>
+                    <CardDescription>{review['helpful_count']} found helpful</CardDescription>
                   )}
                 </div>
               </div>

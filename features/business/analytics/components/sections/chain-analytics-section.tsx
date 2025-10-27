@@ -3,6 +3,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ExportButton } from '@/features/business/business-common/components'
 import { Building2, TrendingUp } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ChainBreakdown = {
   salonId: string
@@ -72,22 +79,20 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
           />
         </div>
 
-        <div className="mt-4">
-          <p className="text-sm font-medium text-muted-foreground">Top Salons by Revenue</p>
-          <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4 space-y-2">
+          <CardDescription>Top Salons by Revenue</CardDescription>
+          <ItemGroup className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
             {breakdown.slice(0, 6).map((row) => (
-              <Card key={row.salonId}>
-                <CardHeader className="pb-2">
-                  <CardTitle>{row.salonName}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <p className="text-sm text-muted-foreground">
+              <Item key={row.salonId} variant="outline" className="flex-col gap-1">
+                <ItemContent>
+                  <ItemTitle>{row.salonName}</ItemTitle>
+                  <ItemDescription>
                     ${row.revenue.toLocaleString()} • {row.appointments} appts
-                  </p>
-                </CardContent>
-              </Card>
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         </div>
       </CardContent>
     </Card>
@@ -97,7 +102,7 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <p className="text-sm font-medium text-muted-foreground">{label}</p>
+      <CardDescription>{label}</CardDescription>
       <div className="text-2xl font-bold">{value}</div>
     </div>
   )

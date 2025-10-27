@@ -1,7 +1,20 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { MapPin } from 'lucide-react'
 import type { StaffLocationDetail } from '@/features/staff/location/types'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 
 interface AllLocationsListProps {
   locations: StaffLocationDetail[]
@@ -13,9 +26,12 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
     return (
       <Card>
         <CardContent>
-          <div className="p-8 text-center">
-            <p className="text-sm text-muted-foreground">No locations found</p>
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No locations found</EmptyTitle>
+              <EmptyDescription>Add a salon location to see it listed here.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -47,19 +63,25 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
             {(address || location.phone_number) && (
               <CardContent>
                 <div className="p-4 pt-0">
-                  <div className="flex flex-col gap-3">
-                    {address && (
-                      <div className="flex gap-3 items-start">
-                        <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm text-muted-foreground">{address}</p>
-                      </div>
-                    )}
-                    {location.phone_number && (
-                      <p className="text-sm text-muted-foreground">
-                        {location.phone_number}
-                      </p>
-                    )}
-                  </div>
+                  <ItemGroup className="space-y-3">
+                    {address ? (
+                      <Item variant="muted" size="sm">
+                        <ItemMedia variant="icon">
+                          <MapPin className="h-3 w-3" aria-hidden="true" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemDescription>{address}</ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    ) : null}
+                    {location.phone_number ? (
+                      <Item variant="muted" size="sm">
+                        <ItemContent>
+                          <ItemDescription>{location.phone_number}</ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    ) : null}
+                  </ItemGroup>
                 </div>
               </CardContent>
             )}

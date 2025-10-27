@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -21,6 +20,15 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { createManualTransaction } from '@/features/business/transactions/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface CreateTransactionDialogProps {
   open: boolean
@@ -73,107 +81,116 @@ export function CreateTransactionDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex flex-col gap-6 my-6">
-            {/* Transaction Date */}
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="transactionAt">Transaction Date</Label>
-              <Input
-                type="date"
-                id="transactionAt"
-                name="transactionAt"
-                required
-                max={new Date().toISOString().split('T')[0]}
-                defaultValue={new Date().toISOString().split('T')[0]}
-              />
-            </div>
+          <FieldSet>
+            <FieldGroup className="flex flex-col gap-6 my-6">
+              <Field>
+                <FieldLabel htmlFor="transactionAt">Transaction Date</FieldLabel>
+                <FieldContent>
+                  <Input
+                    type="date"
+                    id="transactionAt"
+                    name="transactionAt"
+                    required
+                    max={new Date().toISOString().split('T')[0]}
+                    defaultValue={new Date().toISOString().split('T')[0]}
+                  />
+                </FieldContent>
+              </Field>
 
-            {/* Transaction Type */}
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="transactionType">Transaction Type</Label>
-              <Select value={transactionType} onValueChange={setTransactionType}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="payment">Payment</SelectItem>
-                  <SelectItem value="refund">Refund</SelectItem>
-                  <SelectItem value="adjustment">Adjustment</SelectItem>
-                  <SelectItem value="fee">Fee</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="transactionType">Transaction Type</FieldLabel>
+                <FieldContent>
+                  <Select value={transactionType} onValueChange={setTransactionType}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select transaction type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="payment">Payment</SelectItem>
+                      <SelectItem value="refund">Refund</SelectItem>
+                      <SelectItem value="adjustment">Adjustment</SelectItem>
+                      <SelectItem value="fee">Fee</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
 
-            {/* Payment Method */}
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="paymentMethod">Payment Method</Label>
-              <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cash">Cash</SelectItem>
-                  <SelectItem value="credit_card">Credit Card</SelectItem>
-                  <SelectItem value="debit_card">Debit Card</SelectItem>
-                  <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
-                  <SelectItem value="check">Check</SelectItem>
-                  <SelectItem value="mobile_payment">Mobile Payment</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="paymentMethod">Payment Method</FieldLabel>
+                <FieldContent>
+                  <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select payment method" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cash">Cash</SelectItem>
+                      <SelectItem value="credit_card">Credit Card</SelectItem>
+                      <SelectItem value="debit_card">Debit Card</SelectItem>
+                      <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
+                      <SelectItem value="check">Check</SelectItem>
+                      <SelectItem value="mobile_payment">Mobile Payment</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
 
-            {/* Optional: Staff Member */}
-            {staffOptions.length > 0 && (
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="staffId">Staff Member (Optional)</Label>
-                <Select name="staffId">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select staff member" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {staffOptions.map((staff) => (
-                      <SelectItem key={staff.id} value={staff.id}>
-                        {staff.full_name || 'Unknown'}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+              {staffOptions.length > 0 ? (
+                <Field>
+                  <FieldLabel htmlFor="staffId">Staff Member (Optional)</FieldLabel>
+                  <FieldContent>
+                    <Select name="staffId" disabled={isSubmitting}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select staff member" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {staffOptions.map((staff) => (
+                          <SelectItem key={staff.id} value={staff.id}>
+                            {staff.full_name || 'Unknown'}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FieldContent>
+                </Field>
+              ) : null}
 
-            {/* Optional: Customer */}
-            {customerOptions.length > 0 && (
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="customerId">Customer (Optional)</Label>
-                <Select name="customerId">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select customer" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {customerOptions.map((customer) => (
-                      <SelectItem key={customer.id} value={customer.id}>
-                        {customer.full_name || customer.email || 'Unknown'}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-          </div>
+              {customerOptions.length > 0 ? (
+                <Field>
+                  <FieldLabel htmlFor="customerId">Customer (Optional)</FieldLabel>
+                  <FieldContent>
+                    <Select name="customerId" disabled={isSubmitting}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select customer" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {customerOptions.map((customer) => (
+                          <SelectItem key={customer.id} value={customer.id}>
+                            {customer.full_name || customer.email || 'Unknown'}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FieldContent>
+                </Field>
+              ) : null}
+            </FieldGroup>
+          </FieldSet>
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Recording...' : 'Record Transaction'}
-            </Button>
+            <ButtonGroup>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Recording...' : 'Record Transaction'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </form>
       </DialogContent>

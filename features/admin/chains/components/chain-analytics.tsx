@@ -48,6 +48,7 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
                   <Empty>
                     <EmptyHeader>
                       <EmptyTitle>No chain analytics available</EmptyTitle>
+                      <EmptyDescription>Insights appear once chains accumulate operational data.</EmptyDescription>
                     </EmptyHeader>
                   </Empty>
                 </TableCell>

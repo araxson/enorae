@@ -15,8 +15,16 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { UserActionsMenu } from './user-actions-menu'
 import { formatDistanceToNow } from 'date-fns'
 import { User, Shield } from 'lucide-react'
-import { DataTableEmpty } from '@/features/shared/ui-components'
 import { STATUS_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { Spinner } from '@/components/ui/spinner'
 
 type UserWithDetails = {
   id: string
@@ -48,11 +56,18 @@ export function UsersTable({
 
   if (users.length === 0) {
     return (
-      <DataTableEmpty
-        icon={User}
-        title="No users found"
-        description="Invite staff and platform administrators to see them listed here."
-      />
+      <Empty>
+        <EmptyMedia variant="icon">
+          <User />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No users found</EmptyTitle>
+          <EmptyDescription>Invite staff and administrators to populate the directory.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          Once accounts are created, role assignments, sessions, and status appear automatically.
+        </EmptyContent>
+      </Empty>
     )
   }
 
@@ -90,7 +105,8 @@ export function UsersTable({
                       aria-busy={rowIsLoading}
                     >
                       {rowIsLoading && (
-                        <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-background/60 text-xs font-medium text-muted-foreground">
+                        <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-lg bg-background/60 text-xs font-medium text-muted-foreground">
+                          <Spinner className="h-4 w-4" />
                           Processing…
                         </div>
                       )}

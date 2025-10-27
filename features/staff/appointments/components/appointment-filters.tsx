@@ -4,6 +4,11 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Search } from 'lucide-react'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 type AppointmentFiltersProps = {
   onSearchChange?: (search: string) => void
   onStatusChange: (status: string) => void
@@ -27,15 +32,16 @@ export function AppointmentFilters({
   return (
     <div className="flex gap-4 flex-col sm:flex-row">
       {showSearch ? (
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
+        <InputGroup className="flex-1">
+          <InputGroupAddon>
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </InputGroupAddon>
+          <InputGroupInput
             placeholder="Search by customer name or email..."
             value={searchValue ?? localSearch}
             onChange={(event) => handleSearchChange(event.target.value)}
-            className="pl-10"
           />
-        </div>
+        </InputGroup>
       ) : null}
       <Select onValueChange={onStatusChange} defaultValue="all">
         <SelectTrigger className="w-full sm:w-44">

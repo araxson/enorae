@@ -5,8 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
   Command,
@@ -20,6 +18,21 @@ import type { SalonSearchResult } from '@/features/customer/salon-search/api/que
 import { SalonCard } from './salon-card'
 import { useSearchSuggestions } from './use-search-suggestions'
 import { SearchFilters } from './search-filters'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { Spinner } from '@/components/ui/spinner'
 
 interface AdvancedSearchClientProps {
   initialResults: SalonSearchResult[]
@@ -88,16 +101,32 @@ export function AdvancedSearchClient({
             {/* Search Term with Suggestions */}
             <Popover open={suggestionsOpen} onOpenChange={handleSuggestionOpenChange}>
               <PopoverTrigger asChild>
-                <div className="relative">
-                  <Input
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  </InputGroupAddon>
+                  <InputGroupInput
                     placeholder="Search by salon name..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                    className="pr-10"
+                    onFocus={() => setSuggestionsOpen(true)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch()
+                      }
+                    }}
+                    aria-label="Search salons"
                   />
-                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                </div>
+                  <InputGroupButton
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={handleSearch}
+                    aria-label="Run search"
+                  >
+                    <Search className="h-4 w-4" aria-hidden="true" />
+                  </InputGroupButton>
+                </InputGroup>
               </PopoverTrigger>
               <PopoverContent align="start" className="p-0">
                 <Command>
@@ -142,7 +171,14 @@ export function AdvancedSearchClient({
             />
 
             <Button onClick={handleSearch} className="w-full" disabled={isSearching}>
-              {isSearching ? 'Searching...' : 'Search Salons'}
+              {isSearching ? (
+                <>
+                  <Spinner className="mr-2" />
+                  Searching…
+                </>
+              ) : (
+                'Search Salons'
+              )}
             </Button>
           </div>
         </CardContent>
@@ -181,14 +217,19 @@ export function AdvancedSearchClient({
       {/* No Results */}
       {results.length === 0 && searchTerm && (
         <Card>
-          <CardHeader className="items-center justify-center">
-            <CardTitle>No salons found</CardTitle>
-            <CardDescription>
-              No salons match your filters right now.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex items-center justify-center">
-            Try searching a nearby city or lowering your rating threshold.
+          <CardContent className="p-6">
+            <Empty>
+              <EmptyMedia variant="icon">
+                <Search className="h-6 w-6" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No salons found</EmptyTitle>
+                <EmptyDescription>No salons match your filters right now.</EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                Try searching a nearby city or lowering your rating threshold.
+              </EmptyContent>
+            </Empty>
           </CardContent>
         </Card>
       )}

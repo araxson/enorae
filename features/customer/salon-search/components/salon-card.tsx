@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { MapPin, Star, Shield, Sparkles } from 'lucide-react'
+import { Item, ItemActions, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 type SalonCardProps = {
   salon: {
@@ -52,19 +53,23 @@ function SalonCardComponent({ salon, variant = 'default' }: SalonCardProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
-              <span>{formatRating(salon.rating_average)} stars</span>
-            </div>
-            {variant === 'featured' ? (
-              <Badge variant="secondary">Featured</Badge>
-            ) : salon.similarity_score ? (
-              <Badge variant="outline">
-                {Math.round(salon.similarity_score * 100)}% match
-              </Badge>
-            ) : null}
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent className="flex items-center gap-2">
+                <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
+                <ItemTitle>{formatRating(salon.rating_average)} stars</ItemTitle>
+              </ItemContent>
+              <ItemActions className="flex-none gap-2">
+                {variant === 'featured' ? (
+                  <Badge variant="secondary">Featured</Badge>
+                ) : salon.similarity_score ? (
+                  <Badge variant="outline">
+                    {Math.round(salon.similarity_score * 100)}% match
+                  </Badge>
+                ) : null}
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardContent>
       </Card>
     </Link>

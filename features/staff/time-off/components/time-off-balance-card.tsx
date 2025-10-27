@@ -4,6 +4,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 import { Progress } from '@/components/ui/progress'
 import type { TimeOffBalance } from '@/features/staff/time-off/api/queries'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface TimeOffBalanceCardProps {
   balance: TimeOffBalance
@@ -53,14 +61,17 @@ function BalanceStat({
   value: number
   tone?: 'default' | 'info' | 'success'
 }) {
-  const valueClass =
-    tone === 'info' ? 'text-secondary' : tone === 'success' ? 'text-primary' : undefined
+  const valueTone = tone === 'info' ? 'text-secondary' : tone === 'success' ? 'text-primary' : 'text-foreground'
 
   return (
-    <div>
-      <span className={`text-2xl font-bold ${valueClass ?? ''}`}>{value}</span>
-      <span className="block text-xs text-muted-foreground">{label}</span>
-    </div>
+    <Item variant="outline" size="sm">
+      <ItemContent>
+        <ItemTitle>
+          <span className={`text-2xl font-bold ${valueTone}`}>{value}</span>
+        </ItemTitle>
+        <ItemDescription>{label}</ItemDescription>
+      </ItemContent>
+    </Item>
   )
 }
 
@@ -73,10 +84,16 @@ function UsageRow({
 }) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between text-sm">
-        <span className="text-sm text-foreground">{label}</span>
-        <span className="text-sm text-foreground">{percent.toFixed(0)}%</span>
-      </div>
+      <ItemGroup>
+        <Item>
+          <ItemContent>
+            <ItemDescription>{label}</ItemDescription>
+          </ItemContent>
+          <ItemActions>
+            <ItemDescription>{percent.toFixed(0)}%</ItemDescription>
+          </ItemActions>
+        </Item>
+      </ItemGroup>
       <Progress value={percent} className="h-2" />
     </div>
   )

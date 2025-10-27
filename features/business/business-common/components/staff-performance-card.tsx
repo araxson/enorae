@@ -1,11 +1,21 @@
 'use client'
 
 import { Fragment } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, Calendar, DollarSign } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface StaffPerformanceCardProps {
   staff: {
@@ -46,8 +56,13 @@ export function StaffPerformanceCard({
         <CardHeader>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
-        <CardContent className="flex h-48 items-center justify-center">
-          <p className="text-sm text-muted-foreground">No staff performance data available</p>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No staff performance data</EmptyTitle>
+              <EmptyDescription>Performance analytics will appear once activity is recorded.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -57,46 +72,38 @@ export function StaffPerformanceCard({
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+        {description ? <CardDescription>{description}</CardDescription> : null}
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col">
+        <ItemGroup className="space-y-3">
           {topStaff.map((member, index) => (
             <Fragment key={member.id}>
-              <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0 transition-colors hover:bg-muted/50">
-                <div className="flex flex-1 items-center gap-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-6 w-6 items-center justify-center text-sm font-semibold text-muted-foreground">
-                      #{index + 1}
-                    </span>
-                    <Avatar>
-                      <AvatarImage src={member.avatar || undefined} />
-                      <AvatarFallback>
-                        {member.name.split(' ').map((n) => n[0]).join('').toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="font-medium">{member.name}</div>
-                    {member.title ? (
-                      <p className="text-sm font-medium text-muted-foreground">{member.title}</p>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div className="grid w-52 grid-cols-2 gap-4">
+              <Item variant="outline" size="sm" className="items-center transition-colors hover:bg-muted/50">
+                <ItemMedia className="flex items-center gap-3">
+                  <span className="flex h-6 w-6 items-center justify-center text-sm font-semibold text-muted-foreground">
+                    #{index + 1}
+                  </span>
+                  <Avatar>
+                    <AvatarImage src={member.avatar || undefined} />
+                    <AvatarFallback>
+                      {member.name.split(' ').map((n) => n[0]).join('').toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </ItemMedia>
+                <ItemContent className="flex-1">
+                  <ItemTitle>{member.name}</ItemTitle>
+                  {member.title ? <ItemDescription>{member.title}</ItemDescription> : null}
+                </ItemContent>
+                <ItemActions className="grid w-52 grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-sm font-medium">{member.appointmentCount}</p>
+                    <CardDescription>{member.appointmentCount}</CardDescription>
                   </div>
-
                   <div className="flex items-center gap-2">
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-sm font-medium">{formatCurrency(member.totalRevenue)}</p>
+                    <CardDescription>{formatCurrency(member.totalRevenue)}</CardDescription>
                   </div>
-                </div>
-
+                </ItemActions>
                 {member.trend && member.trendPercentage !== undefined ? (
                   <Badge
                     variant={
@@ -108,11 +115,11 @@ export function StaffPerformanceCard({
                     {member.trendPercentage}%
                   </Badge>
                 ) : null}
-              </article>
+              </Item>
               {index < topStaff.length - 1 ? <Separator /> : null}
             </Fragment>
           ))}
-        </div>
+        </ItemGroup>
       </CardContent>
     </Card>
   )

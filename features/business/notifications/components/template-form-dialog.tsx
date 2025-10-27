@@ -5,6 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 
 type TemplateFormData = {
@@ -45,96 +53,119 @@ export function TemplateFormDialog({
         <DialogHeader>
           <DialogTitle>{isEditMode ? 'Edit Template' : 'Create Template'}</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-6">
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div>
-              <label className="text-sm font-medium">Name</label>
+        <FieldGroup className="flex flex-col gap-6">
+          <FieldGroup className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            <Field>
+              <FieldLabel htmlFor="template-name">Name</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="template-name"
+                  value={formData.name}
+                  onChange={(e) => onFormChange({ ...formData, name: e.target.value })}
+                  placeholder="e.g. Review Request"
+                />
+              </FieldContent>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="template-event">Event</FieldLabel>
+              <FieldContent>
+                <Select
+                  value={formData.event}
+                  onValueChange={(value: NotificationTemplate['event']) =>
+                    onFormChange({ ...formData, event: value })
+                  }
+                >
+                  <SelectTrigger id="template-event">
+                    <SelectValue placeholder="Select event" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {eventOptions.map((event) => (
+                      <SelectItem key={event} value={event}>
+                        {event.replace(/_/g, ' ')}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
+          </FieldGroup>
+
+          <FieldGroup className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            <Field>
+              <FieldLabel htmlFor="template-channel">Channel</FieldLabel>
+              <FieldContent>
+                <Select
+                  value={formData.channel}
+                  onValueChange={(value: NotificationTemplate['channel']) =>
+                    onFormChange({ ...formData, channel: value })
+                  }
+                >
+                  <SelectTrigger id="template-channel">
+                    <SelectValue placeholder="Select channel" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {channelOptions.map((channel) => (
+                      <SelectItem key={channel} value={channel}>
+                        {channel.toUpperCase()}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="template-subject">Subject</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="template-subject"
+                  value={formData.subject}
+                  onChange={(e) => onFormChange({ ...formData, subject: e.target.value })}
+                  placeholder="Used for email or push notifications"
+                />
+              </FieldContent>
+            </Field>
+          </FieldGroup>
+
+          <Field>
+            <FieldLabel htmlFor="template-description">Description</FieldLabel>
+            <FieldContent>
               <Input
-                value={formData.name}
-                onChange={(e) => onFormChange({ ...formData, name: e.target.value })}
-                placeholder="e.g. Review Request"
+                id="template-description"
+                value={formData.description}
+                onChange={(e) => onFormChange({ ...formData, description: e.target.value })}
+                placeholder="Internal description"
               />
-            </div>
-            <div>
-              <label className="text-sm font-medium">Event</label>
-              <Select
-                value={formData.event}
-                onValueChange={(value: NotificationTemplate['event']) =>
-                  onFormChange({ ...formData, event: value })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {eventOptions.map((event) => (
-                    <SelectItem key={event} value={event}>
-                      {event.replace(/_/g, ' ')}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div>
-              <label className="text-sm font-medium">Channel</label>
-              <Select
-                value={formData.channel}
-                onValueChange={(value: NotificationTemplate['channel']) =>
-                  onFormChange({ ...formData, channel: value })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {channelOptions.map((channel) => (
-                    <SelectItem key={channel} value={channel}>
-                      {channel.toUpperCase()}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <label className="text-sm font-medium">Subject</label>
-              <Input
-                value={formData.subject}
-                onChange={(e) => onFormChange({ ...formData, subject: e.target.value })}
-                placeholder="Used for email or push notifications"
+            </FieldContent>
+          </Field>
+
+          <Field>
+            <FieldLabel htmlFor="template-body">Body</FieldLabel>
+            <FieldContent>
+              <Textarea
+                id="template-body"
+                value={formData.body}
+                onChange={(e) => onFormChange({ ...formData, body: e.target.value })}
+                placeholder="Use {{placeholders}} to personalize messages"
+                rows={8}
               />
-            </div>
-          </div>
-          <div>
-            <label className="text-sm font-medium">Description</label>
-            <Input
-              value={formData.description}
-              onChange={(e) => onFormChange({ ...formData, description: e.target.value })}
-              placeholder="Internal description"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium">Body</label>
-            <Textarea
-              value={formData.body}
-              onChange={(e) => onFormChange({ ...formData, body: e.target.value })}
-              placeholder="Use {{placeholders}} to personalize messages"
-              rows={8}
-            />
-          </div>
+              <FieldDescription>Supports markdown and template placeholders.</FieldDescription>
+            </FieldContent>
+          </Field>
+
           <DialogFooter>
-            <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={isPending}>
-              Cancel
-            </Button>
-            <Button
-              onClick={onSave}
-              disabled={isPending || formData.name.trim().length === 0}
-            >
-              {isPending ? 'Saving...' : 'Save Template'}
-            </Button>
+            <ButtonGroup>
+              <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={isPending}>
+                Cancel
+              </Button>
+              <Button
+                onClick={onSave}
+                disabled={isPending || formData.name.trim().length === 0}
+              >
+                {isPending ? 'Saving...' : 'Save Template'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
-        </div>
+        </FieldGroup>
       </DialogContent>
     </Dialog>
   )

@@ -1,12 +1,23 @@
-import { MarketingServicesDirectoryPage } from '@/features/marketing/services-directory'
-import { generateMetadata as genMeta } from '@/lib/metadata'
+import { Suspense } from 'react'
 
-export const metadata = genMeta({
-  title: 'Browse Services',
-  description: 'Explore all available beauty and wellness services. Find the perfect treatment for your needs and book appointments at top salons.',
-  keywords: ['beauty services', 'salon services', 'hair services', 'nail services', 'spa services', 'wellness', 'beauty treatments'],
-})
+import { Spinner } from '@/components/ui/spinner'
+import {
+  ServicesDirectoryPage,
+  marketingServicesDirectoryMetadata,
+} from '@/features/marketing/services-directory'
+
+export const metadata = marketingServicesDirectoryMetadata
 
 export default async function ServicesPage() {
-  return <MarketingServicesDirectoryPage />
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-16">
+          <Spinner className="size-6 text-muted-foreground" />
+        </div>
+      }
+    >
+      <ServicesDirectoryPage />
+    </Suspense>
+  )
 }

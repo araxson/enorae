@@ -6,7 +6,23 @@ import { Badge } from '@/components/ui/badge'
 import { Users, Gift, Check, MessageSquare, History } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import type { Referral } from '@/features/customer/referrals/api/queries'
-import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type Props = {
   referralCode: Referral | null
@@ -30,16 +46,22 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
   if (!referralCode) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Referrals coming soon</CardTitle>
-          <CardDescription>
-            Invite rewards aren&apos;t available yet. We&apos;ll notify you once referrals launch.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CardDescription>
-            Keep an eye on announcements for the referral program rollout.
-          </CardDescription>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Users className="h-6 w-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>Referrals coming soon</EmptyTitle>
+              <EmptyDescription>
+                Invite rewards aren&apos;t available yet. We&apos;ll notify you once referrals
+                launch.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              Keep an eye on announcements for the referral program rollout.
+            </EmptyContent>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -86,26 +108,38 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
         </CardHeader>
         <CardContent>
           {history.length === 0 ? (
-            <CardDescription>No referrals recorded yet.</CardDescription>
+            <Empty>
+              <EmptyMedia variant="icon">
+                <History className="h-6 w-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No referrals recorded yet</EmptyTitle>
+                <EmptyDescription>
+                  Share your code when the program launches to start earning rewards.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
-            <div className="flex flex-col">
+            <ItemGroup className="gap-2">
               {history.map((referral, index) => (
                 <Fragment key={referral.id}>
-                  <div className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">Code: {referral.code}</p>
-                      <p className="text-sm text-muted-foreground">
+                  <Item>
+                    <ItemContent>
+                      <ItemTitle>Code: {referral.code}</ItemTitle>
+                      <ItemDescription>
                         {formatDistanceToNow(new Date(referral.created_at), { addSuffix: true })}
-                      </p>
-                    </div>
-                    <Badge variant={referral.status === 'completed' ? 'default' : 'secondary'}>
-                      {referral.status === 'completed' ? 'Completed' : 'Pending'}
-                    </Badge>
-                  </div>
-                  {index < history.length - 1 ? <Separator /> : null}
+                      </ItemDescription>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <Badge variant={referral.status === 'completed' ? 'default' : 'secondary'}>
+                        {referral.status === 'completed' ? 'Completed' : 'Pending'}
+                      </Badge>
+                    </ItemActions>
+                  </Item>
+                  {index < history.length - 1 ? <ItemSeparator /> : null}
                 </Fragment>
               ))}
-            </div>
+            </ItemGroup>
           )}
         </CardContent>
       </Card>

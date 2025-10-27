@@ -8,9 +8,9 @@ import type { ReactNode } from 'react'
 export function InfoBlock({ label, value, helper }: { label: string; value: string; helper?: string | null }) {
   return (
     <div className="space-y-1">
-      <p className="text-sm text-muted-foreground">{label}</p>
+      <CardDescription>{label}</CardDescription>
       <p className="font-medium">{value}</p>
-      {helper && <p className="text-xs text-muted-foreground">{helper}</p>}
+      {helper ? <CardDescription>{helper}</CardDescription> : null}
     </div>
   )
 }
@@ -64,7 +64,7 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
 
   return (
     <div className="space-y-1">
-      <p className="text-sm text-muted-foreground">Rating & status</p>
+      <CardDescription>Rating & status</CardDescription>
       <div className="flex flex-wrap items-center gap-2">{badges}</div>
     </div>
   )

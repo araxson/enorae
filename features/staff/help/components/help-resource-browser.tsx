@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Download } from 'lucide-react'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 
 const resources: ReadonlyArray<{
   title: string
@@ -22,16 +23,20 @@ export function HelpResourceBrowser() {
   return (
     <Card id="resource-browser">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>Resource browser</CardTitle>
-            <CardDescription>Browse top resources and save them for easy access.</CardDescription>
-          </div>
-          <Button variant="outline" size="sm" className="gap-2">
-            <Download className="h-4 w-4" />
-            Export list
-          </Button>
-        </div>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <CardTitle>Resource browser</CardTitle>
+              <CardDescription>Browse top resources and save them for easy access.</CardDescription>
+            </ItemContent>
+            <ItemActions>
+              <Button variant="outline" size="sm">
+                <Download className="mr-2 h-4 w-4" />
+                Export list
+              </Button>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="all" className="space-y-4">

@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { formatDistanceToNow } from 'date-fns'
 import type { ModerationQueueItem } from '@/features/admin/messages/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface MessagesModerationTableProps {
   items: ModerationQueueItem[]
@@ -37,7 +38,12 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
       <CardContent className="space-y-4">
         <ScrollArea className="w-full">
           {items.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No flagged messages in the selected period.</p>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No flagged messages</EmptyTitle>
+                <EmptyDescription>The moderation queue is clear for the selected period.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <Table>
               <TableHeader>

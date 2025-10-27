@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { StaffOverview } from './admin-overview-types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type StaffTabProps = {
   staff: StaffOverview[]
@@ -25,7 +26,13 @@ export function AdminOverviewStaffTab({ staff }: StaffTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">No staff records found.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No staff records found</EmptyTitle>
+              <EmptyDescription>Staff performance metrics appear once teams are onboarded.</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>Invite or sync staff to see role distribution and experience levels.</EmptyContent>
+          </Empty>
         </CardContent>
       </Card>
     )

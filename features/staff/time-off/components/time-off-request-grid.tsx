@@ -2,6 +2,7 @@
 
 import { CalendarClock, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Empty,
   EmptyContent,
@@ -41,10 +42,12 @@ export function TimeOffRequestGrid({
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <Button variant="default" onClick={onCreateRequest}>
-            <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
-            Create request
-          </Button>
+          <ButtonGroup>
+            <Button variant="default" onClick={onCreateRequest}>
+              <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+              Create request
+            </Button>
+          </ButtonGroup>
         </EmptyContent>
       </Empty>
     )

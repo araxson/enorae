@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -8,6 +9,16 @@ import type { AppointmentWithDetails } from '@/features/shared/appointments/type
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
 import { Clock, User, CheckCircle } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface TodayScheduleProps {
   appointments: AppointmentWithDetails[]
@@ -68,7 +79,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
       <Separator />
       <CardContent>
         <ScrollArea className="max-h-96">
-          <div className="p-6 space-y-3">
+          <ItemGroup className="p-6 gap-3">
             {appointments.map((appointment, index) => {
               const customerLabel = appointment.customer_id || 'Customer'
               const customerInitials = getInitials(customerLabel)
@@ -79,53 +90,41 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
               }
 
               return (
-                <div key={appointment.id ?? index}>
-                  <Card>
-                    <CardContent>
-                      <div
-                        className={`flex min-w-0 items-center gap-3 rounded-md p-3 transition-colors ${
-                          isCompleted ? 'opacity-75 bg-muted' : 'bg-background hover:bg-accent'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <div className="flex w-16 flex-none flex-col items-center gap-1">
-                            <Clock className="h-4 w-4 text-muted-foreground" />
-                            <p className="text-sm font-semibold">{formatAppointmentTime(appointment.start_time)}</p>
+                <Fragment key={appointment.id ?? index}>
+                  <Item
+                    variant={isCompleted ? 'muted' : 'outline'}
+                    size="sm"
+                    className={isCompleted ? 'opacity-75' : ''}
+                  >
+                    <ItemMedia variant="icon">
+                      <Clock className="h-4 w-4" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback className="text-xs font-semibold">
+                            {customerInitials}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0">
+                          <ItemTitle>{customerLabel}</ItemTitle>
+                          <ItemDescription>{formatAppointmentTime(appointment.start_time)}</ItemDescription>
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <User className="h-3 w-3" />
+                            <span className="truncate">Customer ID</span>
                           </div>
-
-                          <Separator orientation="vertical" className="h-10" />
-
-                          <Avatar className="h-8 w-8">
-                            <AvatarFallback className="text-xs font-semibold">
-                              {customerInitials}
-                            </AvatarFallback>
-                          </Avatar>
-
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">
-                              {customerLabel}
-                            </p>
-                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                              <User className="h-3 w-3" />
-                              <span className="truncate">Customer ID</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="shrink-0">
-                          <Badge variant={statusConfig.variant}>
-                            {formatStatus(statusConfig.label)}
-                          </Badge>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  {index < appointments.length - 1 && <Separator className="my-3" />}
-                </div>
+                    </ItemContent>
+                    <ItemActions>
+                      <Badge variant={statusConfig.variant}>{formatStatus(statusConfig.label)}</Badge>
+                    </ItemActions>
+                  </Item>
+                  {index < appointments.length - 1 ? <ItemSeparator /> : null}
+                </Fragment>
               )
             })}
-          </div>
+          </ItemGroup>
         </ScrollArea>
       </CardContent>
     </Card>

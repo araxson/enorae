@@ -1,6 +1,12 @@
 import { type ReactNode } from 'react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+} from '@/components/ui/item'
 import { cn } from '@/lib/utils'
 
 type MarketingHeroProps = {
@@ -45,7 +51,13 @@ export function MarketingHero({
             <CardDescription>{subtitle}</CardDescription>
           </CardHeader>
           <CardContent className={cn('flex w-full flex-col gap-6', contentAlignment)}>
-            <CardDescription>{description}</CardDescription>
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemContent>
+                  <ItemDescription>{description}</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
             {children}
           </CardContent>
         </Card>

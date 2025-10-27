@@ -22,6 +22,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import type { ModerationReview } from '@/features/admin/moderation/api/queries'
+import { Spinner } from '@/components/ui/spinner'
 
 const DATE_FORMAT = 'MMM d, yyyy'
 
@@ -68,7 +69,8 @@ export function ReviewsTableRow({
   return (
     <TableRow className={isLoading ? 'relative opacity-60 pointer-events-none' : 'relative'} aria-busy={isLoading}>
       {isLoading && (
-        <div className="absolute inset-0 bg-background/70 flex items-center justify-center text-xs font-medium text-muted-foreground">
+        <div className="absolute inset-0 bg-background/70 flex items-center justify-center gap-2 text-xs font-medium text-muted-foreground">
+          <Spinner />
           Processing…
         </div>
       )}
@@ -88,7 +90,11 @@ export function ReviewsTableRow({
         </div>
       </TableCell>
       <TableCell className="max-w-md">
-        <p className="text-sm truncate">{review['comment'] || 'No text'}</p>
+        {review['comment'] ? (
+          <p className="text-sm truncate">{review['comment']}</p>
+        ) : (
+          <Badge variant="outline">No comment provided</Badge>
+        )}
         <p className="text-xs text-muted-foreground">{review.commentLength} chars</p>
       </TableCell>
       <TableCell>

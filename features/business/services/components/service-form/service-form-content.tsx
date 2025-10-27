@@ -1,10 +1,9 @@
 'use client'
 
-import { Loader2 } from 'lucide-react'
-
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Spinner } from '@/components/ui/spinner'
 import { ServiceBasicSection } from './service-basic-section'
 import { ServiceDurationSection } from './service-duration-section'
 import { ServicePricingSection } from './service-pricing-section'
@@ -118,7 +117,7 @@ export function ServiceFormContent({ service, state, actions, handlers }: Servic
             Cancel
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isSubmitting ? <Spinner className="mr-2" /> : null}
             {service ? 'Update Service' : 'Create Service'}
           </Button>
         </DialogFooter>

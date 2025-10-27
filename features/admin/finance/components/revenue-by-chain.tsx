@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { ChainRevenueData } from '@/features/admin/finance/types'
 
 interface RevenueByChainProps {
@@ -42,6 +42,7 @@ export function RevenueByChain({ data }: RevenueByChainProps) {
                   <Empty>
                     <EmptyHeader>
                       <EmptyTitle>No chain revenue data available</EmptyTitle>
+                      <EmptyDescription>Revenue metrics populate after chains process transactions.</EmptyDescription>
                     </EmptyHeader>
                   </Empty>
                 </TableCell>

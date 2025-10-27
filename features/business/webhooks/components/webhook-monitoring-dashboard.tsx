@@ -6,7 +6,16 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { RefreshCw, AlertCircle, CheckCircle, Clock, Activity } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 import type { WebhookStats, WebhookDeliveryLog } from '@/features/business/webhooks/api/queries'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface WebhookMonitoringDashboardProps {
   stats: WebhookStats
@@ -65,9 +74,17 @@ export function WebhookMonitoringDashboard({
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Webhooks</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Total Webhooks</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Activity className="h-4 w-4 text-muted-foreground" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.total_webhooks}</div>
@@ -75,9 +92,17 @@ export function WebhookMonitoringDashboard({
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Success Rate</CardTitle>
-            <CheckCircle className="h-4 w-4 text-primary" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Success Rate</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <CheckCircle className="h-4 w-4 text-primary" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.success_rate.toFixed(1)}%</div>
@@ -88,9 +113,17 @@ export function WebhookMonitoringDashboard({
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Failed Deliveries</CardTitle>
-            <AlertCircle className="h-4 w-4 text-destructive" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Failed Deliveries</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <AlertCircle className="h-4 w-4 text-destructive" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.failed_deliveries}</div>
@@ -101,9 +134,17 @@ export function WebhookMonitoringDashboard({
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Avg Delivery Time</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Avg Delivery Time</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{Math.round(stats.avg_delivery_time)}ms</div>
@@ -117,18 +158,26 @@ export function WebhookMonitoringDashboard({
       {/* Failed Webhooks */}
       {failedWebhooks.length > 0 && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Failed Webhooks</h3>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Refresh
-            </Button>
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemTitle>
+                  <h3 className="text-lg font-semibold">Failed Webhooks</h3>
+                </ItemTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRefresh}
+                  disabled={isRefreshing}
+                >
+                  {isRefreshing ? <Spinner className="mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+                  Refresh
+                </Button>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           {failedWebhooks.map((webhook) => (
             <Alert key={webhook.id} variant="destructive">
               <AlertCircle className="h-4 w-4" />
@@ -164,38 +213,42 @@ export function WebhookMonitoringDashboard({
             <CardDescription>Webhook delivery attempt history</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
+            <ItemGroup className="space-y-3">
               {deliveryLogs.map((log) => (
                 <Card key={log.id}>
-                  <CardContent className="flex items-start justify-between gap-4 py-3">
-                    <div className="flex-1 space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className={getStatusColor(log.status)}>
-                          {getStatusIcon(log.status)}
-                        </span>
-                        <Badge variant={log.status === 'delivered' ? 'default' : 'destructive'}>
-                          <span className="text-xs">{log.status}</span>
-                        </Badge>
-                        {log.response_code ? (
-                          <span className="text-sm text-muted-foreground">
-                            HTTP {log.response_code}
-                          </span>
-                        ) : null}
-                      </div>
-                      {log.error_message ? (
-                        <p className="text-sm text-destructive">
-                          {log.error_message}
-                        </p>
-                      ) : null}
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span>{log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A'}</span>
-                        {log.delivery_time_ms ? <span>{log.delivery_time_ms}ms</span> : null}
-                      </div>
-                    </div>
+                  <CardContent className="py-3">
+                    <ItemGroup>
+                      <Item className="items-start gap-4">
+                        <ItemContent className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className={getStatusColor(log.status)}>
+                              {getStatusIcon(log.status)}
+                            </span>
+                            <Badge variant={log.status === 'delivered' ? 'default' : 'destructive'}>
+                              <span className="text-xs">{log.status}</span>
+                            </Badge>
+                            {log.response_code ? (
+                              <span className="text-sm text-muted-foreground">
+                                HTTP {log.response_code}
+                              </span>
+                            ) : null}
+                          </div>
+                          {log.error_message ? (
+                            <p className="text-sm text-destructive">
+                              {log.error_message}
+                            </p>
+                          ) : null}
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span>{log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A'}</span>
+                            {log.delivery_time_ms ? <span>{log.delivery_time_ms}ms</span> : null}
+                          </div>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
                   </CardContent>
                 </Card>
               ))}
-            </div>
+            </ItemGroup>
           </CardContent>
         </Card>
       )}

@@ -7,8 +7,9 @@ import { ModerationFilters } from './moderation-filters'
 import { ReviewsTable } from './reviews-table'
 import { ReviewDetailDialog } from './review-detail-dialog'
 import type { ModerationReview, ModerationStats as ModerationStatsType } from '@/features/admin/moderation/api/queries'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface ModerationClientProps {
   reviews: ModerationReview[]
@@ -143,13 +144,20 @@ function InsightCard({ title, emptyLabel, items, renderBadge }: InsightCardProps
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <p className="text-xs text-muted-foreground">{emptyLabel}</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>{emptyLabel}</EmptyTitle>
+              <EmptyDescription>These insights populate automatically as moderation data shifts.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           items.map((review) => (
             <div key={review['id'] ?? `${review['salon_id']}-${review['created_at']}`} className="flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-sm font-medium truncate">{review['customer_name'] || 'Anonymous'}</p>
-                <p className="text-xs text-muted-foreground truncate">{review['salon_name'] || 'Unknown salon'}</p>
+                <div className="truncate">
+                  <CardDescription>{review['salon_name'] || 'Unknown salon'}</CardDescription>
+                </div>
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 {renderBadge(review)}

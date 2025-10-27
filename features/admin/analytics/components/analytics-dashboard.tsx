@@ -5,7 +5,6 @@ import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { cn } from '@/lib/utils'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 import { MetricSummaryCards } from './metric-summary-cards'
 import { GrowthTrendPanel } from './growth-trend-panel'
@@ -13,6 +12,7 @@ import { AcquisitionPanel } from './acquisition-panel'
 import { RetentionPanel } from './retention-panel'
 import { FeatureUsagePanel } from './feature-usage-panel'
 import { PerformanceBenchmarksTable } from './performance-benchmarks-table'
+import { Spinner } from '@/components/ui/spinner'
 
 interface PlatformAnalyticsDashboardProps {
   snapshot: PlatformAnalyticsSnapshot
@@ -78,7 +78,7 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
             Auto-refresh 60s
           </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
-            <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
+            {isRefreshing ? <Spinner className="mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
             Refresh
           </Button>
         </div>

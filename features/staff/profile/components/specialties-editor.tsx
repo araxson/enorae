@@ -6,6 +6,12 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { updateStaffMetadata } from '@/features/staff/profile/api/mutations'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 interface SpecialtiesEditorProps {
   initialSpecialties?: string[]
@@ -61,8 +67,8 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          <div className="flex gap-3">
-            <Input
+          <InputGroup>
+            <InputGroupInput
               placeholder="Add specialty..."
               value={newSpecialty}
               onChange={(e) => setNewSpecialty(e.target.value)}
@@ -74,32 +80,40 @@ export function SpecialtiesEditor({ initialSpecialties = [] }: SpecialtiesEditor
               }}
               disabled={isSaving}
             />
-            <Button type="button" onClick={handleAdd} disabled={!newSpecialty.trim() || isSaving}>
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
+            <InputGroupAddon align="inline-end">
+              <Button type="button" onClick={handleAdd} disabled={!newSpecialty.trim() || isSaving} size="sm">
+                <Plus className="h-4 w-4" />
+              </Button>
+            </InputGroupAddon>
+          </InputGroup>
 
           {specialties.length > 0 ? (
             <div className="flex flex-wrap gap-3">
               {specialties.map((specialty) => (
                 <Badge key={specialty} variant="outline">
                   {specialty}
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="icon"
                     onClick={() => handleRemove(specialty)}
-                    className="ml-2 hover:text-destructive"
                     disabled={isSaving}
                   >
                     <X className="h-3 w-3" />
-                  </button>
+                  </Button>
                 </Badge>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">No specialties added yet</p>
+            <CardDescription>No specialties added yet</CardDescription>
           )}
 
-          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+          {error ? (
+            <Alert variant="destructive">
+              <AlertTitle>Unable to save specialties</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          ) : null}
         </div>
       </CardContent>
     </Card>

@@ -7,6 +7,14 @@ import { Card, CardContent, CardHeader, CardDescription, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { archiveThread } from '@/features/staff/messages/api/mutations'
 import type { MessageThread } from '@/features/staff/messages/types'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface MessageThreadListProps {
   threads: MessageThread[]
@@ -31,11 +39,15 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
     return (
       <Card>
         <CardHeader>
-          <div className="flex flex-col items-center text-center">
-            <MessageCircle className="h-12 w-12 text-muted-foreground" />
-            <CardTitle>No messages found</CardTitle>
-            <CardDescription>Start a conversation to see it listed here.</CardDescription>
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <MessageCircle className="h-8 w-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No messages found</EmptyTitle>
+              <EmptyDescription>Start a conversation to see it listed here.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardHeader>
       </Card>
     )
@@ -62,13 +74,15 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                     ) : null}
                   </div>
 
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(event) => handleArchive(thread['id']!, event)}
-                  >
-                    <Archive className="h-4 w-4" />
-                  </Button>
+                  <ButtonGroup>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(event) => handleArchive(thread['id']!, event)}
+                    >
+                      <Archive className="h-4 w-4" />
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </CardHeader>
               <CardContent>
@@ -86,9 +100,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                   </div>
 
                   {thread['customer_id'] ? (
-                    <p className="text-sm text-muted-foreground">
-                      Customer ID: {thread['customer_id']}
-                    </p>
+                    <CardDescription>Customer ID: {thread['customer_id']}</CardDescription>
                   ) : null}
                 </div>
               </CardContent>

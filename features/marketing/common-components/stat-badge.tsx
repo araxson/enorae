@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import { LucideIcon } from 'lucide-react'
 
 interface StatBadgeProps {
@@ -10,13 +16,14 @@ interface StatBadgeProps {
 
 export function StatBadge({ icon: Icon, value, label }: StatBadgeProps) {
   return (
-    <Card>
-      <CardHeader className="items-center gap-3 justify-center">
-        <Icon className="h-6 w-6 text-primary" />
-        <CardTitle>{value}</CardTitle>
-        <CardDescription>{label}</CardDescription>
-      </CardHeader>
-      <CardContent />
-    </Card>
+    <Item className="flex-col items-center text-center" variant="outline">
+      <ItemMedia variant="icon">
+        <Icon className="size-5 text-primary" />
+      </ItemMedia>
+      <ItemContent>
+        <ItemTitle>{value}</ItemTitle>
+        <ItemDescription>{label}</ItemDescription>
+      </ItemContent>
+    </Item>
   )
 }

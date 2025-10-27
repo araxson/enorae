@@ -5,7 +5,6 @@ import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { cn } from '@/lib/utils'
 import type { AppointmentSnapshot } from '@/features/admin/appointments/types'
 import { MetricsSummary } from './metrics-summary'
 import { TrendTable } from './trend-table'
@@ -15,6 +14,7 @@ import { FraudAlertsPanel } from './fraud-alerts-panel'
 import { DisputesPanel } from './disputes-panel'
 import { SalonPerformanceTable } from './salon-performance-table'
 import { RecentAppointmentsTable } from './recent-appointments-table'
+import { Spinner } from '@/components/ui/spinner'
 
 interface AppointmentsDashboardProps {
   snapshot: AppointmentSnapshot
@@ -70,7 +70,7 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
             Auto-refresh 30s
           </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
-            <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
+            {isRefreshing ? <Spinner className="mr-2 h-4 w-4" /> : <RefreshCw className="mr-2 h-4 w-4" />}
             Refresh
           </Button>
         </div>

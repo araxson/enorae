@@ -3,10 +3,17 @@
 import { useEffect, useState, useTransition } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { updateNotificationPreferences } from '@/features/business/notifications/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ChannelPreferences = Record<string, boolean>
 
@@ -77,14 +84,28 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Delivery Preferences</CardTitle>
-          <CardDescription>Control which events trigger notifications per channel</CardDescription>
-        </div>
-        <Button onClick={handleSave} disabled={isPending}>
-          {isPending ? 'Saving...' : 'Save Preferences'}
-        </Button>
+      <CardHeader>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <ItemTitle>
+                <CardTitle>Delivery Preferences</CardTitle>
+              </ItemTitle>
+              <ItemDescription>
+                <CardDescription>
+                  Control which events trigger notifications per channel
+                </CardDescription>
+              </ItemDescription>
+            </ItemContent>
+            <ItemActions>
+              <div className="flex-none">
+                <Button onClick={handleSave} disabled={isPending}>
+                  {isPending ? 'Saving...' : 'Save Preferences'}
+                </Button>
+              </div>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
@@ -102,21 +123,29 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
                 <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                   {Object.entries(events).map(([event, value]) => (
                     <Card key={event}>
-                      <CardContent className="flex items-center justify-between gap-4">
-                        <div>
-                          <Label className="capitalize">
-                            {event.replace(/_/g, ' ')}
-                          </Label>
-                          <p className="text-xs text-muted-foreground">
-                            Trigger when {event.replace(/_/g, ' ')} occurs
-                          </p>
-                        </div>
-                        <Switch
-                          checked={value}
-                          onCheckedChange={(checked) =>
-                            handleToggle(channel as keyof typeof state, event, checked)
-                          }
-                        />
+                      <CardContent>
+                        <ItemGroup>
+                          <Item>
+                            <ItemContent>
+                              <ItemTitle>
+                                <span className="capitalize">{event.replace(/_/g, ' ')}</span>
+                              </ItemTitle>
+                              <ItemDescription>
+                                Trigger when {event.replace(/_/g, ' ')} occurs
+                              </ItemDescription>
+                            </ItemContent>
+                            <ItemActions>
+                              <div className="flex-none">
+                                <Switch
+                                  checked={value}
+                                  onCheckedChange={(checked) =>
+                                    handleToggle(channel as keyof typeof state, event, checked)
+                                  }
+                                />
+                              </div>
+                            </ItemActions>
+                          </Item>
+                        </ItemGroup>
                       </CardContent>
                     </Card>
                   ))}

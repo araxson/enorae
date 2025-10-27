@@ -1,11 +1,17 @@
 'use client'
 import { Fragment } from 'react'
 import { format } from 'date-fns'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MessageCircle } from 'lucide-react'
 import type { Message } from '@/features/staff/messages/types'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface MessageListProps {
   messages: Message[]
@@ -15,11 +21,15 @@ interface MessageListProps {
 export function MessageList({ messages, currentUserId }: MessageListProps) {
   if (messages.length === 0) {
     return (
-      <Alert className="flex flex-col items-center gap-3 py-8">
-        <MessageCircle className="h-12 w-12 text-muted-foreground" />
-        <AlertTitle>No messages</AlertTitle>
-        <AlertDescription>Start chatting to see messages here.</AlertDescription>
-      </Alert>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <MessageCircle className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No messages yet</EmptyTitle>
+          <EmptyDescription>Start chatting to see conversation history here.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     )
   }
 

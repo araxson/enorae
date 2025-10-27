@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Loader2 } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -70,7 +70,7 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
 
             <div className="flex justify-end">
               <Button type="submit" disabled={isSubmitting || username === currentUsername}>
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isSubmitting && <Spinner className="mr-2 h-4 w-4" />}
                 Update Username
               </Button>
             </div>

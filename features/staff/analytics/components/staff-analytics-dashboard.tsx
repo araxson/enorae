@@ -18,8 +18,16 @@ import type {
   CustomerRelationship,
 } from '@/features/staff/analytics/api/queries'
 import { Progress } from '@/components/ui/progress'
-import { Separator } from '@/components/ui/separator'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface StaffAnalyticsDashboardProps {
   metrics: StaffPerformanceMetrics
@@ -57,10 +65,16 @@ export function StaffAnalyticsDashboard({
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
-            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>Total Revenue</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Total Revenue</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{formatCurrency(metrics.total_revenue)}</div>
@@ -72,10 +86,16 @@ export function StaffAnalyticsDashboard({
 
         <Card>
           <CardHeader>
-            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>Estimated Commission</CardTitle>
-              <Award className="h-4 w-4 text-primary" />
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Estimated Commission</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Award className="h-4 w-4 text-primary" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{formatCurrency(earnings.estimated_commission)}</div>
@@ -87,10 +107,16 @@ export function StaffAnalyticsDashboard({
 
         <Card>
           <CardHeader>
-            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>Appointments</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Appointments</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{metrics.completed_appointments}</div>
@@ -102,10 +128,16 @@ export function StaffAnalyticsDashboard({
 
         <Card>
           <CardHeader>
-            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>Customers</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Customers</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{metrics.unique_customers}</div>
@@ -133,26 +165,40 @@ export function StaffAnalyticsDashboard({
                   <CardDescription>Your appointment performance metrics</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Total Appointments</span>
-                      <Badge variant="outline">{metrics.total_appointments}</Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Completed</span>
-                      <Badge variant="secondary">
-                        {metrics.completed_appointments}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Cancelled</span>
-                      <Badge variant="destructive">{metrics.cancelled_appointments}</Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">No Shows</span>
-                      <Badge variant="secondary">{metrics.no_show_appointments}</Badge>
-                    </div>
-                  </div>
+                  <ItemGroup className="gap-3">
+                    <Item>
+                      <ItemContent>
+                        <ItemDescription>Total Appointments</ItemDescription>
+                      </ItemContent>
+                      <ItemActions className="flex-none">
+                        <Badge variant="outline">{metrics.total_appointments}</Badge>
+                      </ItemActions>
+                    </Item>
+                    <Item>
+                      <ItemContent>
+                        <ItemDescription>Completed</ItemDescription>
+                      </ItemContent>
+                      <ItemActions className="flex-none">
+                        <Badge variant="secondary">{metrics.completed_appointments}</Badge>
+                      </ItemActions>
+                    </Item>
+                    <Item>
+                      <ItemContent>
+                        <ItemDescription>Cancelled</ItemDescription>
+                      </ItemContent>
+                      <ItemActions className="flex-none">
+                        <Badge variant="destructive">{metrics.cancelled_appointments}</Badge>
+                      </ItemActions>
+                    </Item>
+                    <Item>
+                      <ItemContent>
+                        <ItemDescription>No Shows</ItemDescription>
+                      </ItemContent>
+                      <ItemActions className="flex-none">
+                        <Badge variant="secondary">{metrics.no_show_appointments}</Badge>
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
                 </CardContent>
               </Card>
 
@@ -164,21 +210,33 @@ export function StaffAnalyticsDashboard({
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium">Completion Rate</span>
-                        <span className="text-sm font-semibold text-primary">
-                          {formatPercentage(metrics.completion_rate)}
-                        </span>
-                      </div>
+                      <ItemGroup>
+                        <Item>
+                          <ItemContent>
+                            <ItemTitle>Completion Rate</ItemTitle>
+                          </ItemContent>
+                          <ItemActions className="flex-none">
+                            <span className="text-sm font-semibold text-primary">
+                              {formatPercentage(metrics.completion_rate)}
+                            </span>
+                          </ItemActions>
+                        </Item>
+                      </ItemGroup>
                       <Progress value={metrics.completion_rate} className="h-2" />
                     </div>
                     <div>
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium">Cancellation Rate</span>
-                        <span className="text-sm font-semibold text-destructive">
-                          {formatPercentage(metrics.cancellation_rate)}
-                        </span>
-                      </div>
+                      <ItemGroup>
+                        <Item>
+                          <ItemContent>
+                            <ItemTitle>Cancellation Rate</ItemTitle>
+                          </ItemContent>
+                          <ItemActions className="flex-none">
+                            <span className="text-sm font-semibold text-destructive">
+                              {formatPercentage(metrics.cancellation_rate)}
+                            </span>
+                          </ItemActions>
+                        </Item>
+                      </ItemGroup>
                       <Progress value={metrics.cancellation_rate} className="h-2" />
                     </div>
                   </div>
@@ -198,24 +256,26 @@ export function StaffAnalyticsDashboard({
               <CardContent>
                 <div className="space-y-4">
                   {revenueBreakdown.length > 0 ? (
-                    <div className="flex flex-col">
+                    <ItemGroup className="gap-0">
                       {revenueBreakdown.map((service, index) => (
                         <Fragment key={service.service_id}>
-                          <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-                            <div className="space-y-1">
-                              <p className="font-medium">{service.service_name}</p>
-                              <p className="text-sm text-muted-foreground">
+                          <Item variant="outline" size="sm">
+                            <ItemContent>
+                              <ItemTitle>{service.service_name}</ItemTitle>
+                              <ItemDescription>
                                 {service.bookings_count} bookings • {formatCurrency(service.avg_price)} avg
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
-                            </div>
-                          </article>
-                          {index < revenueBreakdown.length - 1 ? <Separator /> : null}
+                              </ItemDescription>
+                            </ItemContent>
+                            <ItemActions>
+                              <div className="text-right text-sm font-semibold leading-tight">
+                                {formatCurrency(service.total_revenue)}
+                              </div>
+                            </ItemActions>
+                          </Item>
+                          {index < revenueBreakdown.length - 1 ? <ItemSeparator /> : null}
                         </Fragment>
                       ))}
-                    </div>
+                    </ItemGroup>
                   ) : (
                     <Empty>
                       <EmptyHeader>
@@ -240,26 +300,30 @@ export function StaffAnalyticsDashboard({
               <CardContent>
                 <div className="space-y-4">
                   {customerRelationships.length > 0 ? (
-                    <div className="flex flex-col">
+                    <ItemGroup className="gap-0">
                       {customerRelationships.map((customer, index) => (
                         <Fragment key={customer.customer_id}>
-                          <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-                            <div className="flex-1 space-y-1">
-                              <p className="font-medium">{customer.customer_name}</p>
-                              <p className="text-sm text-muted-foreground">
+                          <Item variant="outline" size="sm">
+                            <ItemContent>
+                              <ItemTitle>{customer.customer_name}</ItemTitle>
+                              <ItemDescription>
                                 {customer.total_appointments} appointments • Last visit:{' '}
                                 {new Date(customer.last_appointment_date).toLocaleDateString()}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p className="font-semibold">{formatCurrency(customer.total_spent)}</p>
-                              <p className="text-xs text-muted-foreground">Total spent</p>
-                            </div>
-                          </article>
-                          {index < customerRelationships.length - 1 ? <Separator /> : null}
+                              </ItemDescription>
+                            </ItemContent>
+                            <ItemActions>
+                              <div className="text-right text-sm leading-tight">
+                                <div className="font-semibold">
+                                  {formatCurrency(customer.total_spent)}
+                                </div>
+                                <div className="text-xs text-muted-foreground">Total spent</div>
+                              </div>
+                            </ItemActions>
+                          </Item>
+                          {index < customerRelationships.length - 1 ? <ItemSeparator /> : null}
                         </Fragment>
                       ))}
-                    </div>
+                    </ItemGroup>
                   ) : (
                     <Empty>
                       <EmptyHeader>

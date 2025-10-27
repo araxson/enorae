@@ -3,7 +3,15 @@ import { Star } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { formatCurrency, formatPercentage, getSegmentIcon, getSegmentColor } from './utils'
@@ -52,13 +60,13 @@ export function CustomerList({
         </CardHeader>
         <CardContent>
           {customers.length > 0 ? (
-            <div className="flex flex-col">
+            <ItemGroup>
               {customers.map((customer, index) => (
                 <Fragment key={customer.customer_id}>
-                  <article className="flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0">
-                    <div className="flex-1 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{customer.customer_name}</span>
+                  <Item variant="outline" className="flex-col items-start gap-4">
+                    <ItemContent>
+                      <ItemHeader>
+                        <ItemTitle>{customer.customer_name}</ItemTitle>
                         <Badge
                           variant="outline"
                           className={getSegmentColor(customer.segment)}
@@ -66,7 +74,7 @@ export function CustomerList({
                           {getSegmentIcon(customer.segment)}
                           <span className="ml-1">{customer.segment}</span>
                         </Badge>
-                      </div>
+                      </ItemHeader>
 
                       <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground md:grid-cols-4">
                         <div>
@@ -82,32 +90,30 @@ export function CustomerList({
                           <span className="font-medium">{customer.favorite_service_name}</span>{' '}
                           favorite
                         </div>
-                        {customer.average_rating > 0 && (
+                        {customer.average_rating > 0 ? (
                           <div className="flex items-center gap-1">
                             <Star className="h-3 w-3 fill-star-filled text-star-filled" />
                             <span className="font-medium">{customer.average_rating.toFixed(1)}</span>
                           </div>
-                        )}
+                        ) : null}
                       </div>
 
-                      <div className="text-xs text-muted-foreground">
-                        Last visit: {new Date(customer.last_visit_date).toLocaleDateString()} •
-                        Favorite staff: {customer.favorite_staff_name}
-                      </div>
+                      <ItemDescription>
+                        Last visit: {new Date(customer.last_visit_date).toLocaleDateString()} • Favorite
+                        staff: {customer.favorite_staff_name}
+                      </ItemDescription>
 
-                      {customer.cancellation_rate > 20 && (
+                      {customer.cancellation_rate > 20 ? (
                         <Badge variant="destructive">
-                          <span className="text-xs">
-                            High cancellation rate ({formatPercentage(customer.cancellation_rate)})
-                          </span>
+                          High cancellation rate ({formatPercentage(customer.cancellation_rate)})
                         </Badge>
-                      )}
-                    </div>
-                  </article>
-                  {index < customers.length - 1 ? <Separator /> : null}
+                      ) : null}
+                    </ItemContent>
+                  </Item>
+                  {index < customers.length - 1 ? <ItemSeparator /> : null}
                 </Fragment>
               ))}
-            </div>
+            </ItemGroup>
           ) : (
             <Empty>
               <EmptyHeader>

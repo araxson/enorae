@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { SecurityAccessRecord } from '@/features/admin/security-access-monitoring/api/queries'
@@ -146,6 +146,7 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
                 <Empty>
                   <EmptyHeader>
                     <EmptyTitle>No security access records found</EmptyTitle>
+                    <EmptyDescription>New sign-in alerts and escalations will appear once access events are logged.</EmptyDescription>
                   </EmptyHeader>
                 </Empty>
               </TableCell>

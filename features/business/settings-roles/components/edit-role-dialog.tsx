@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -21,6 +20,15 @@ import {
 import { updateUserRole } from '@/features/business/settings-roles/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import type { UserRoleWithDetails } from '@/features/business/settings-roles/api/queries'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface EditRoleDialogProps {
   open: boolean
@@ -94,31 +102,39 @@ export function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-4">
-            <div className="space-y-2">
-              <Label>User</Label>
-              <div className="text-sm text-muted-foreground">
-                {role.user?.['full_name']} ({role.user?.['email']})
-              </div>
-            </div>
+          <FieldSet>
+            <FieldGroup className="gap-4">
+              <Field>
+                <FieldLabel>User</FieldLabel>
+                <FieldContent>
+                  <FieldDescription>
+                    {role.user?.['full_name']} ({role.user?.['email']})
+                  </FieldDescription>
+                </FieldContent>
+              </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <Select value={selectedRole} onValueChange={setSelectedRole}>
-                <SelectTrigger id="role">
-                  <SelectValue placeholder="Select role" />
-                </SelectTrigger>
-                <SelectContent>
-                  {ROLES.map((r) => (
-                    <SelectItem key={r.value} value={r.value}>
-                      {r.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="role">Role</FieldLabel>
+                <FieldContent>
+                  <Select value={selectedRole} onValueChange={setSelectedRole}>
+                    <SelectTrigger id="role">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ROLES.map((r) => (
+                        <SelectItem key={r.value} value={r.value}>
+                          {r.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
-            <DialogFooter>
+          <DialogFooter>
+            <ButtonGroup>
               <Button
                 type="button"
                 variant="outline"
@@ -130,8 +146,8 @@ export function EditRoleDialog({ open, onOpenChange, role }: EditRoleDialogProps
               <Button type="submit" disabled={isPending}>
                 {isPending ? 'Updating...' : 'Update Role'}
               </Button>
-            </DialogFooter>
-          </div>
+            </ButtonGroup>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

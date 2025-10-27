@@ -2,12 +2,18 @@ import { Suspense } from 'react'
 
 import { Notifications } from './components/notifications'
 
-import { PageLoading } from '@/features/shared/ui-components'
+import { Spinner } from '@/components/ui/spinner'
 
 export function NotificationsFeature() {
 
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner />
+        </div>
+      }
+    >
       <Notifications />
     </Suspense>
   )

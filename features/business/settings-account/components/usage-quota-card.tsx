@@ -3,6 +3,7 @@ import { AlertCircle } from 'lucide-react'
 import type { UsageQuota } from '../types'
 import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 
 export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
   return (
@@ -17,27 +18,31 @@ export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
           const isNearLimit = percentage >= 80
 
           return (
-            <div key={quota.name}>
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="text-sm font-medium">{quota.name}</span>
-                  <span className="text-sm">
-                    {quota.used} / {quota.limit} {quota.unit}
-                  </span>
-                </div>
+            <Field key={quota.name} className="gap-2">
+              <FieldContent className="flex items-center justify-between gap-2">
+                <FieldLabel>{quota.name}</FieldLabel>
+                <span className="text-sm text-muted-foreground">
+                  {quota.used} / {quota.limit} {quota.unit}
+                </span>
+              </FieldContent>
+              <FieldContent className="gap-2">
                 <Progress
                   value={Math.min(percentage, 100)}
                   className={`h-2 ${isNearLimit ? 'bg-destructive/10' : ''}`}
                 />
                 {isNearLimit && (
-                  <Alert variant="destructive" className="mt-2">
+                  <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" aria-hidden="true" />
                     <AlertTitle>Approaching limit</AlertTitle>
-                    <AlertDescription>Consider upgrading to avoid hitting this quota.</AlertDescription>
+                    <AlertDescription>
+                      Consider upgrading to avoid hitting this quota.
+                    </AlertDescription>
                   </Alert>
                 )}
-              </div>
-            )
-          })}
+              </FieldContent>
+            </Field>
+          )
+        })}
       </CardContent>
     </Card>
   )

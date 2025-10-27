@@ -1,6 +1,14 @@
 'use client'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import type { StaffFormState } from './staff-form-types'
@@ -13,90 +21,99 @@ type StaffFormFieldsProps = {
 
 export function StaffFormFields({ form, disabled, staff }: StaffFormFieldsProps) {
   return (
-    <div className="flex flex-col gap-6">
-      <section className="space-y-4">
-        <h3 className="text-sm font-medium">Basic Information</h3>
-
-        <div>
-          <Label htmlFor="email">Email Address *</Label>
-          <Input
-            id="email"
-            type="email"
-            value={form.email}
-            onChange={(event) => form.setEmail(event.target.value)}
-            required
-            disabled={!!staff || disabled}
-            placeholder="staff@example.com"
-          />
-          {staff && (
-            <p className="mt-1 text-xs text-muted-foreground">Email cannot be changed after creation</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="full-name">Full Name *</Label>
-          <Input
-            id="full-name"
-            value={form.fullName}
-            onChange={(event) => form.setFullName(event.target.value)}
-            required
-            disabled={disabled}
-            placeholder="John Doe"
-          />
-        </div>
-
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <div>
-            <Label htmlFor="title">Job Title</Label>
+    <FieldSet>
+      <FieldLegend>Basic Information</FieldLegend>
+      <FieldGroup className="gap-6">
+        <Field>
+          <FieldLabel htmlFor="email">Email Address *</FieldLabel>
+          <FieldContent>
             <Input
-              id="title"
-              value={form.title}
-              onChange={(event) => form.setTitle(event.target.value)}
-              disabled={disabled}
-              placeholder="Senior Stylist"
+              id="email"
+              type="email"
+              value={form.email}
+              onChange={(event) => form.setEmail(event.target.value)}
+              required
+              disabled={!!staff || disabled}
+              placeholder="staff@example.com"
             />
-          </div>
+            {staff ? <FieldDescription>Email cannot be changed after creation</FieldDescription> : null}
+          </FieldContent>
+        </Field>
 
-          <div>
-            <Label htmlFor="experience">Years of Experience</Label>
+        <Field>
+          <FieldLabel htmlFor="full-name">Full Name *</FieldLabel>
+          <FieldContent>
             <Input
-              id="experience"
-              type="number"
-              min="0"
-              value={form.experienceYears}
-              onChange={(event) => form.setExperienceYears(event.target.value)}
+              id="full-name"
+              value={form.fullName}
+              onChange={(event) => form.setFullName(event.target.value)}
+              required
               disabled={disabled}
-              placeholder="5"
+              placeholder="John Doe"
             />
-          </div>
+          </FieldContent>
+        </Field>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <Field>
+            <FieldLabel htmlFor="title">Job Title</FieldLabel>
+            <FieldContent>
+              <Input
+                id="title"
+                value={form.title}
+                onChange={(event) => form.setTitle(event.target.value)}
+                disabled={disabled}
+                placeholder="Senior Stylist"
+              />
+            </FieldContent>
+          </Field>
+
+          <Field>
+            <FieldLabel htmlFor="experience">Years of Experience</FieldLabel>
+            <FieldContent>
+              <Input
+                id="experience"
+                type="number"
+                min="0"
+                value={form.experienceYears}
+                onChange={(event) => form.setExperienceYears(event.target.value)}
+                disabled={disabled}
+                placeholder="5"
+              />
+            </FieldContent>
+          </Field>
         </div>
 
-        <div>
-          <Label htmlFor="bio">Bio</Label>
-          <Textarea
-            id="bio"
-            value={form.bio}
-            onChange={(event) => form.setBio(event.target.value)}
-            disabled={disabled}
-            placeholder="Brief professional bio..."
-            rows={3}
-          />
-        </div>
-
-        {!staff && (
-          <div>
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={form.phone}
-              onChange={(event) => form.setPhone(event.target.value)}
+        <Field>
+          <FieldLabel htmlFor="bio">Bio</FieldLabel>
+          <FieldContent>
+            <Textarea
+              id="bio"
+              value={form.bio}
+              onChange={(event) => form.setBio(event.target.value)}
               disabled={disabled}
-              placeholder="+1 (555) 000-0000"
+              placeholder="Brief professional bio..."
+              rows={3}
             />
-          </div>
-        )}
-      </section>
-    </div>
+          </FieldContent>
+        </Field>
+
+        {!staff ? (
+          <Field>
+            <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
+            <FieldContent>
+              <Input
+                id="phone"
+                type="tel"
+                value={form.phone}
+                onChange={(event) => form.setPhone(event.target.value)}
+                disabled={disabled}
+                placeholder="+1 (555) 000-0000"
+              />
+            </FieldContent>
+          </Field>
+        ) : null}
+      </FieldGroup>
+    </FieldSet>
   )
 }

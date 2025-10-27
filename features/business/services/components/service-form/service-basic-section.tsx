@@ -1,8 +1,8 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { Field, FieldContent, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field'
 
 interface ServiceBasicSectionProps {
   name: string
@@ -18,30 +18,34 @@ export function ServiceBasicSection({
   onDescriptionChange,
 }: ServiceBasicSectionProps) {
   return (
-    <section className="space-y-4">
-      <h3 className="text-sm font-medium">Basic Information</h3>
+    <FieldSet className="space-y-4">
+      <FieldLegend>Basic information</FieldLegend>
 
-      <div>
-        <Label htmlFor="name">Service Name *</Label>
-        <Input
-          id="name"
-          value={name}
-          onChange={(event) => onNameChange(event.target.value)}
-          required
-          placeholder="e.g., Women's Haircut"
-        />
-      </div>
+      <Field>
+        <FieldLabel htmlFor="name">Service name *</FieldLabel>
+        <FieldContent>
+          <Input
+            id="name"
+            value={name}
+            onChange={(event) => onNameChange(event.target.value)}
+            required
+            placeholder="e.g., Women's Haircut"
+          />
+        </FieldContent>
+      </Field>
 
-      <div>
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          value={description}
-          onChange={(event) => onDescriptionChange(event.target.value)}
-          placeholder="Brief description of the service..."
-          rows={3}
-        />
-      </div>
-    </section>
+      <Field>
+        <FieldLabel htmlFor="description">Description</FieldLabel>
+        <FieldContent>
+          <Textarea
+            id="description"
+            value={description}
+            onChange={(event) => onDescriptionChange(event.target.value)}
+            placeholder="Brief description of the service..."
+            rows={3}
+          />
+        </FieldContent>
+      </Field>
+    </FieldSet>
   )
 }

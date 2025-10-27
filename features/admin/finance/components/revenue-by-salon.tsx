@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { AdminRevenueRow } from '@/features/admin/finance/types'
 
 interface RevenueBySalonProps {
@@ -51,6 +51,7 @@ export function RevenueBySalon({ data }: RevenueBySalonProps) {
                   <Empty>
                     <EmptyHeader>
                       <EmptyTitle>No revenue data available</EmptyTitle>
+                      <EmptyDescription>Salon-level revenue appears once bookings and sales are recorded.</EmptyDescription>
                     </EmptyHeader>
                   </Empty>
                 </TableCell>

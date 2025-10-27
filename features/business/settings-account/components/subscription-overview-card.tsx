@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { CheckCircle2, TrendingUp } from 'lucide-react'
 import type { Subscription } from '../types'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 const tierFeatures: Record<Subscription['tier'], string[]> = {
   basic: [
@@ -57,7 +58,7 @@ export function SubscriptionOverviewCard({
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
-            <p className="text-sm text-muted-foreground mb-2">Plan Details</p>
+            <CardDescription>Plan Details</CardDescription>
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm">Tier</span>
@@ -90,7 +91,7 @@ export function SubscriptionOverviewCard({
           </div>
 
           <div>
-            <p className="text-sm text-muted-foreground mb-2">Features Included</p>
+            <CardDescription>Features Included</CardDescription>
             <ul className="space-y-1.5">
               {tierFeatures[subscription.tier].map((feature) => (
                 <li key={feature} className="flex gap-2 text-sm">
@@ -104,7 +105,7 @@ export function SubscriptionOverviewCard({
 
         <Separator />
 
-        <div className="flex gap-4">
+        <ButtonGroup>
           <Button variant="outline" className="gap-2">
             <TrendingUp className="h-4 w-4" />
             Upgrade Plan
@@ -113,7 +114,7 @@ export function SubscriptionOverviewCard({
           <Button variant="destructive">
             Cancel Subscription
           </Button>
-        </div>
+        </ButtonGroup>
       </CardContent>
     </Card>
   )

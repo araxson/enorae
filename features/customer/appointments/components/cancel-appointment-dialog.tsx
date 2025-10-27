@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { cancelAppointment } from '@/features/customer/appointments/api/mutations'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface CancelAppointmentDialogProps {
   appointmentId: string
@@ -55,7 +56,7 @@ export function CancelAppointmentDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children || (
-          <Button variant="destructive" className="flex-1">
+          <Button variant="destructive" className="w-full">
             Cancel appointment
           </Button>
         )}
@@ -101,14 +102,16 @@ export function CancelAppointmentDialog({
         )}
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
-            Keep appointment
-          </Button>
-          {canCancel && (
-            <Button variant="destructive" onClick={handleCancel} disabled={isLoading}>
-              {isLoading ? 'Cancelling...' : 'Yes, cancel appointment'}
+          <ButtonGroup className="w-full justify-end gap-2">
+            <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
+              Keep appointment
             </Button>
-          )}
+            {canCancel ? (
+              <Button variant="destructive" onClick={handleCancel} disabled={isLoading}>
+                {isLoading ? 'Cancelling...' : 'Yes, cancel appointment'}
+              </Button>
+            ) : null}
+          </ButtonGroup>
         </DialogFooter>
       </DialogContent>
     </Dialog>

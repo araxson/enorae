@@ -1,6 +1,13 @@
 import { getUserSalon, getStaffWithServices, getAvailableServices } from './api/queries'
 import { StaffManagementClient } from './components/staff-management-client'
-import { EmptyState } from '@/features/shared/ui-components'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { AlertCircle, Users } from 'lucide-react'
 
 export async function StaffManagement() {
@@ -10,11 +17,16 @@ export async function StaffManagement() {
   } catch {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
-        <EmptyState
-          icon={AlertCircle}
-          title="Authentication Required"
-          description="Please log in to manage staff"
-        />
+        <Empty>
+          <EmptyMedia variant="icon">
+            <AlertCircle className="h-6 w-6" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>Authentication required</EmptyTitle>
+            <EmptyDescription>Please log in to manage staff.</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>Sign in to assign roles and services to your team.</EmptyContent>
+        </Empty>
       </section>
     )
   }
@@ -22,11 +34,16 @@ export async function StaffManagement() {
   if (!salon || !salon.id) {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
-        <EmptyState
-          icon={Users}
-          title="No Salon Found"
-          description="Please create a salon to manage staff"
-        />
+        <Empty>
+          <EmptyMedia variant="icon">
+            <Users className="h-6 w-6" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>No salon found</EmptyTitle>
+            <EmptyDescription>Please create a salon to manage staff.</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>Complete salon onboarding to add team members.</EmptyContent>
+        </Empty>
       </section>
     )
   }

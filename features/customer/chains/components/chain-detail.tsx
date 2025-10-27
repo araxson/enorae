@@ -4,6 +4,14 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Store, Users, MapPin } from 'lucide-react'
 import type { SalonChainWithLocations } from '@/features/customer/chains/api/queries'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface ChainDetailProps {
   chain: SalonChainWithLocations
@@ -88,9 +96,24 @@ export function ChainDetail({ chain }: ChainDetailProps) {
             ))}
           </div>
         ) : (
-          <p className="leading-7 text-muted-foreground text-center py-8">
-            No locations found for this chain
-          </p>
+          <Card>
+            <CardContent className="p-6">
+              <Empty>
+                <EmptyMedia variant="icon">
+                  <MapPin className="h-6 w-6" aria-hidden="true" />
+                </EmptyMedia>
+                <EmptyHeader>
+                  <EmptyTitle>No locations found</EmptyTitle>
+                  <EmptyDescription>
+                    This chain hasn&apos;t listed individual salon locations yet.
+                  </EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>
+                  Check back soon for new locations or follow the chain for updates.
+                </EmptyContent>
+              </Empty>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>

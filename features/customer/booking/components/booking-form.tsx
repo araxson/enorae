@@ -4,8 +4,6 @@ import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { createBooking } from '@/features/customer/booking/api/mutations'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -23,10 +21,24 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Progress } from '@/components/ui/progress'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, Calendar, Clock } from 'lucide-react'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
 import { AvailabilityIndicator } from './form/availability-indicator'
 import type { BookingFormProps, Service, Staff } from '@/features/customer/booking/types'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 export function BookingForm({ salonId, salonName, services, staff }: BookingFormProps) {
   const [error, setError] = useState<string | null>(null)
@@ -151,10 +163,16 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <CardDescription>Progress</CardDescription>
-            <CardDescription>{progress}%</CardDescription>
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemDescription>Progress</ItemDescription>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <ItemDescription>{progress}%</ItemDescription>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
           <Progress value={progress} className="h-2" />
         </div>
       </CardHeader>
@@ -162,7 +180,7 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
       <form action={handleSubmit} className="space-y-0">
         <input type="hidden" name="salonId" value={salonId} />
 
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" aria-hidden="true" />
@@ -171,73 +189,96 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
             </Alert>
           )}
 
-          <div className="space-y-2">
-            <Label htmlFor="serviceId">Service</Label>
-            <Select
-              name="serviceId"
-              value={selectedService}
-              onValueChange={setSelectedService}
-              required
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a service" />
-              </SelectTrigger>
-              <SelectContent>
-                {services.map((service) => (
-                  <SelectItem key={service['id'] || ''} value={service['id'] || ''}>
-                    {service['name']}
-                    {service['category_name'] ? ` (${service['category_name']})` : ''}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <FieldSet>
+            <FieldLegend>Appointment details</FieldLegend>
+            <FieldGroup className="gap-6">
+              <Field>
+                <FieldLabel htmlFor="serviceId">Service</FieldLabel>
+                <FieldContent>
+                  <Select
+                    name="serviceId"
+                    value={selectedService}
+                    onValueChange={setSelectedService}
+                    required
+                  >
+                    <SelectTrigger id="serviceId">
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {services.map((service) => (
+                        <SelectItem key={service['id'] || ''} value={service['id'] || ''}>
+                          {service['name']}
+                          {service['category_name'] ? ` (${service['category_name']})` : ''}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="staffId">Staff member</Label>
-            <Select
-              name="staffId"
-              value={selectedStaff}
-              onValueChange={setSelectedStaff}
-              required
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select staff member" />
-              </SelectTrigger>
-              <SelectContent>
-                {staff.map((member) => (
-                  <SelectItem key={member['id'] || ''} value={member['id'] || ''}>
-                    {member['title'] || 'Staff member'}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              <Field>
+                <FieldLabel htmlFor="staffId">Staff member</FieldLabel>
+                <FieldContent>
+                  <Select
+                    name="staffId"
+                    value={selectedStaff}
+                    onValueChange={setSelectedStaff}
+                    required
+                  >
+                    <SelectTrigger id="staffId">
+                      <SelectValue placeholder="Select staff member" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {staff.map((member) => (
+                        <SelectItem key={member['id'] || ''} value={member['id'] || ''}>
+                          {member['title'] || 'Staff member'}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="date">Date</Label>
-            <Input
-              id="date"
-              name="date"
-              type="date"
-              required
-              min={new Date().toISOString().split('T')[0]}
-              value={dateValue}
-              onChange={(event) => setDateValue(event.target.value)}
-            />
-          </div>
+              <Field>
+                <FieldLabel htmlFor="date">Date</FieldLabel>
+                <FieldContent>
+                  <InputGroup>
+                    <InputGroupAddon>
+                      <Calendar className="h-4 w-4" aria-hidden="true" />
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      id="date"
+                      name="date"
+                      type="date"
+                      required
+                      min={new Date().toISOString().split('T')[0]}
+                      value={dateValue}
+                      onChange={(event) => setDateValue(event.target.value)}
+                    />
+                  </InputGroup>
+                </FieldContent>
+              </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="time">Time</Label>
-            <Input
-              id="time"
-              name="time"
-              type="time"
-              required
-              value={timeValue}
-              onChange={(event) => setTimeValue(event.target.value)}
-            />
-          </div>
+              <Field>
+                <FieldLabel htmlFor="time">Time</FieldLabel>
+                <FieldContent>
+                  <InputGroup>
+                    <InputGroupAddon>
+                      <Clock className="h-4 w-4" aria-hidden="true" />
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      id="time"
+                      name="time"
+                      type="time"
+                      required
+                      value={timeValue}
+                      onChange={(event) => setTimeValue(event.target.value)}
+                    />
+                  </InputGroup>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
           <AvailabilityIndicator
             status={availabilityStatus}

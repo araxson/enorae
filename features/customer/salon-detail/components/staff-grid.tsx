@@ -7,6 +7,14 @@ import {
 } from '@/components/ui/hover-card'
 import { Calendar } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type Staff = Database['public']['Views']['staff_profiles_view']['Row']
 
@@ -18,11 +26,19 @@ export function StaffGrid({ staff }: StaffGridProps) {
   if (staff.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>Our team</CardTitle>
-          <CardDescription>No staff members available</CardDescription>
-        </CardHeader>
-        <CardContent />
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Calendar className="h-6 w-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No staff members available</EmptyTitle>
+              <EmptyDescription>
+                Check back soon to meet the stylists working at this salon.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
       </Card>
     )
   }
@@ -47,9 +63,9 @@ export function StaffGrid({ staff }: StaffGridProps) {
                     <div className="min-w-0 space-y-1">
                       <CardTitle>{member['title'] || 'Staff member'}</CardTitle>
                       {member['bio'] && (
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {member['bio']}
-                        </p>
+                        <div className="line-clamp-2">
+                          <CardDescription>{member['bio']}</CardDescription>
+                        </div>
                       )}
                     </div>
                   </CardHeader>
@@ -65,10 +81,10 @@ export function StaffGrid({ staff }: StaffGridProps) {
                   </Avatar>
                   <div className="space-y-1">
                     <h4 className="text-xl">{member['title'] || 'Staff member'}</h4>
-                    {member['bio'] && <p className="text-sm text-muted-foreground">{member['bio']}</p>}
+                    {member['bio'] && <CardDescription>{member['bio']}</CardDescription>}
                   </div>
                 </div>
-                {member['bio'] && <p className="text-sm text-muted-foreground">{member['bio']}</p>}
+                {member['bio'] && <CardDescription>{member['bio']}</CardDescription>}
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Calendar className="h-3 w-3" />
                   <span>Click to book an appointment</span>

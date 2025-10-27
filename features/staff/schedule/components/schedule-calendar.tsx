@@ -7,7 +7,16 @@ import { Button } from '@/components/ui/button'
 import { Plus, Edit2, Trash2 } from 'lucide-react'
 import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type ScheduleCalendarProps = {
   schedules: StaffScheduleWithStaff[]
@@ -81,58 +90,60 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                   <CardTitle>{formatDayName(day)}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-col gap-3">
+                  <ItemGroup className="gap-3">
                     {daySchedules.map((schedule, index) => (
                       <Fragment key={schedule['id']}>
-                        <div className="flex items-center justify-between rounded-lg p-3">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium">
-                                {schedule.staff?.['title'] || 'Unknown Staff'}
-                            </span>
-                            <Badge variant={schedule['is_active'] ? 'default' : 'secondary'}>
-                              {schedule['is_active'] ? 'Active' : 'Inactive'}
-                            </Badge>
-                          </div>
-                          <p className="text-xs text-muted-foreground">
-                            {formatTime(schedule['start_time'])} - {formatTime(schedule['end_time'])}
-                            {schedule.staff?.['title'] && ` • ${schedule.staff['title']}`}
-                          </p>
-                          {schedule['break_start'] && schedule['break_end'] && (
-                            <p className="text-xs text-muted-foreground mt-1">
-                              Break: {formatTime(schedule['break_start'])} - {formatTime(schedule['break_end'])}
-                            </p>
-                          )}
-                        </div>
-                        <div className="flex gap-2">
-                          {onEdit && (
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => onEdit(schedule)}
-                            >
-                              <Edit2 className="h-4 w-4" />
-                              <span className="sr-only">Edit</span>
-                            </Button>
-                          )}
-                          {onDelete && schedule['id'] && (
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => onDelete(schedule['id']!)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              <span className="sr-only">Delete</span>
-                            </Button>
-                          )}
-                        </div>
-                        </div>
-                        {index < daySchedules.length - 1 ? <Separator /> : null}
+                        <Item variant="outline" size="sm">
+                          <ItemContent>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <ItemTitle>{schedule.staff?.['title'] || 'Unknown Staff'}</ItemTitle>
+                              <Badge variant={schedule['is_active'] ? 'default' : 'secondary'}>
+                                {schedule['is_active'] ? 'Active' : 'Inactive'}
+                              </Badge>
+                            </div>
+                            <ItemDescription>
+                              {formatTime(schedule['start_time'])} - {formatTime(schedule['end_time'])}
+                              {schedule.staff?.['title'] ? ` • ${schedule.staff['title']}` : ''}
+                            </ItemDescription>
+                            {schedule['break_start'] && schedule['break_end'] ? (
+                              <ItemDescription>
+                                Break: {formatTime(schedule['break_start'])} - {formatTime(schedule['break_end'])}
+                              </ItemDescription>
+                            ) : null}
+                          </ItemContent>
+                          {(onEdit || onDelete) ? (
+                            <ItemActions>
+                              <ButtonGroup>
+                                {onEdit ? (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => onEdit(schedule)}
+                                  >
+                                    <Edit2 className="h-4 w-4" />
+                                    <span className="sr-only">Edit</span>
+                                  </Button>
+                                ) : null}
+                                {onDelete && schedule['id'] ? (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => onDelete(schedule['id']!)}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                    <span className="sr-only">Delete</span>
+                                  </Button>
+                                ) : null}
+                              </ButtonGroup>
+                            </ItemActions>
+                          ) : null}
+                        </Item>
+                        {index < daySchedules.length - 1 ? <ItemSeparator /> : null}
                       </Fragment>
                     ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </ItemGroup>
+                </CardContent>
+              </Card>
             )
           })}
         </div>

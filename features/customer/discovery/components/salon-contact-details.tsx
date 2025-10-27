@@ -1,8 +1,30 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { Phone, Mail, Globe } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type SalonContactDetails = Database['public']['Views']['salons_view']['Row']
 
@@ -16,43 +38,55 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
       icon: Phone,
       label: 'Phone',
       value: contactDetails['primary_phone'],
-      action: contactDetails['primary_phone'] && (
+      action: contactDetails['primary_phone'] ? (
         <Button size="sm" variant="outline" asChild>
           <a href={`tel:${contactDetails['primary_phone']}`}>Call</a>
         </Button>
-      ),
+      ) : null,
     },
     {
       icon: Mail,
       label: 'Email',
       value: contactDetails['primary_email'],
-      action: contactDetails['primary_email'] && (
+      action: contactDetails['primary_email'] ? (
         <Button size="sm" variant="outline" asChild>
           <a href={`mailto:${contactDetails['primary_email']}`}>Email</a>
         </Button>
-      ),
+      ) : null,
     },
     {
       icon: Globe,
       label: 'Website',
-      value: contactDetails['website_url'] ? 'Visit website' : null,
-      action: contactDetails['website_url'] && (
+      value: contactDetails['website_url'],
+      action: contactDetails['website_url'] ? (
         <Button size="sm" variant="outline" asChild>
           <a href={contactDetails['website_url']} target="_blank" rel="noopener noreferrer">
             Visit
           </a>
         </Button>
-      ),
+      ) : null,
     },
   ].filter((method) => method.value)
 
   if (contactMethods.length === 0) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Contact Information</CardTitle>
-          <CardDescription>No contact information available</CardDescription>
-        </CardHeader>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Phone className="h-6 w-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No contact information available</EmptyTitle>
+              <EmptyDescription>
+                The salon has not shared contact details yet. Check back later for updates.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              Follow the salon to receive updates as soon as contact options are added.
+            </EmptyContent>
+          </Empty>
+        </CardContent>
       </Card>
     )
   }
@@ -60,27 +94,29 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Contact Information</CardTitle>
+        <CardTitle>Contact information</CardTitle>
         <CardDescription>Reach the salon using the channels below.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableBody>
-            {contactMethods.map((method) => {
-              const Icon = method.icon
-              return (
-                <TableRow key={method.label}>
-                  <TableCell className="w-12">
-                    <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                  </TableCell>
-                  <TableCell className="font-medium">{method.label}</TableCell>
-                  <TableCell className="text-muted-foreground">{method.value}</TableCell>
-                  <TableCell className="text-right">{method.action}</TableCell>
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        </Table>
+        <ItemGroup className="gap-3">
+          {contactMethods.map((method) => {
+            const Icon = method.icon
+            return (
+              <Item key={method.label} variant="outline">
+                <ItemMedia variant="icon">
+                  <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>{method.label}</ItemTitle>
+                  <ItemDescription className="text-foreground break-all">
+                    {method.value}
+                  </ItemDescription>
+                </ItemContent>
+                {method.action ? <ItemActions className="flex-none">{method.action}</ItemActions> : null}
+              </Item>
+            )
+          })}
+        </ItemGroup>
       </CardContent>
     </Card>
   )

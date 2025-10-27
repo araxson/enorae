@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/select'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
+import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import { DashboardCommandButton } from './dashboard-command-button'
 import { DashboardPreferencesSheet } from './dashboard-preferences-sheet'
 import { DashboardQuickFiltersDrawer } from './dashboard-quick-filters-drawer'
@@ -93,9 +94,9 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <p className="text-sm font-medium text-muted-foreground">Timeframe</p>
+        <Field orientation="responsive" className="items-center justify-between gap-3">
+          <FieldLabel>Timeframe</FieldLabel>
+          <FieldContent className="flex items-center gap-3">
             <Select value={timeframe} onValueChange={(value) => setTimeframe(value as typeof timeframe)}>
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Select timeframe" />
@@ -108,16 +109,16 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          </FieldContent>
+          <FieldContent className="flex items-center gap-3 text-xs text-muted-foreground">
             <Badge variant="outline" className="flex items-center gap-1">
               Timeframe {timeframe} days
             </Badge>
             <Badge variant="outline" className="flex items-center gap-1">
               {isTenantOwner ? 'Tenant owner' : 'Team member'}
             </Badge>
-          </div>
-        </div>
+          </FieldContent>
+        </Field>
 
         <Separator />
 

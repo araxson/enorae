@@ -5,6 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
+import { cn } from '@/lib/utils/index'
 import type { RevenueForecast } from '@/lib/utils/metrics'
 
 type RevenueForecastCardProps = {
@@ -98,38 +106,50 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
             </ResponsiveContainer>
           </ChartContainer>
 
-          <div className="space-y-4">
-            <div>
-              <div className="text-sm text-muted-foreground">Avg daily revenue</div>
-              <div className="text-2xl font-semibold">
-                ${forecast.averageRevenue.toFixed(0)}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground">
-                Projected change (next {forecast.points.filter((p) => p.actual === undefined).length} days)
-              </div>
-              <div className={`text-xl font-semibold ${growthColor}`}>
-                {forecast.projectedGrowth >= 0 ? '+' : ''}
-                {forecast.projectedGrowth.toFixed(1)}%
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-sm font-medium text-muted-foreground">Upcoming forecast</div>
-              <ul className="space-y-1 text-sm">
-                {upcoming.slice(0, 4).map((point) => (
-                  <li key={point.date}>
-                    <Card>
-                      <CardContent className="flex items-center justify-between gap-4 py-3">
-                        <span>{point.date}</span>
-                        <span className="font-medium">${point.forecast.toLocaleString()}</span>
-                      </CardContent>
-                    </Card>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <ItemGroup className="space-y-4">
+            <Item variant="muted" className="flex-col">
+              <ItemContent className="gap-2">
+                <ItemTitle>Avg daily revenue</ItemTitle>
+                <div className="text-2xl font-semibold">
+                  ${forecast.averageRevenue.toFixed(0)}
+                </div>
+              </ItemContent>
+            </Item>
+
+            <Item variant="muted" className="flex-col">
+              <ItemContent className="gap-2">
+                <ItemTitle>
+                  Projected change (next {forecast.points.filter((p) => p.actual === undefined).length} days)
+                </ItemTitle>
+                <div className={cn('text-xl font-semibold', growthColor)}>
+                  {forecast.projectedGrowth >= 0 ? '+' : ''}
+                  {forecast.projectedGrowth.toFixed(1)}%
+                </div>
+              </ItemContent>
+            </Item>
+
+            <Item variant="outline" className="flex-col">
+              <ItemContent className="gap-3">
+                <ItemTitle>Upcoming forecast</ItemTitle>
+                <ItemGroup className="space-y-2">
+                  {upcoming.slice(0, 4).map((point) => (
+                    <Item
+                      key={point.date}
+                      variant="muted"
+                      className="items-center justify-between"
+                    >
+                      <ItemHeader>
+                        <ItemTitle>{point.date}</ItemTitle>
+                        <div className="text-sm font-medium">
+                          ${point.forecast.toLocaleString()}
+                        </div>
+                      </ItemHeader>
+                    </Item>
+                  ))}
+                </ItemGroup>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </div>
       </CardContent>
     </Card>

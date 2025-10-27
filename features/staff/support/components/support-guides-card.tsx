@@ -3,6 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2, Clock, FileText } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 
 type GuideSection = {
   id: string
@@ -52,20 +59,32 @@ export function SupportGuidesCard({ sections }: SupportGuidesCardProps) {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <ul className="space-y-3 text-sm text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
-                          Review the onboarding checklist to ensure nothing blocks customers from booking.
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <Clock className="mt-0.5 h-4 w-4 text-secondary" />
-                          Add buffer times and automated reminders for your services within scheduling preferences.
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <FileText className="mt-0.5 h-4 w-4 text-accent" />
-                          Download printable cheat sheets for front-desk team members joining midweek.
-                        </li>
-                      </ul>
+                      <ItemGroup className="space-y-3 text-sm text-muted-foreground">
+                        <Item variant="muted" size="sm">
+                          <ItemMedia variant="icon">
+                            <CheckCircle2 className="h-4 w-4 text-primary" aria-hidden="true" />
+                          </ItemMedia>
+                          <ItemContent>
+                            <ItemDescription>Review the onboarding checklist to ensure nothing blocks customers from booking.</ItemDescription>
+                          </ItemContent>
+                        </Item>
+                        <Item variant="muted" size="sm">
+                          <ItemMedia variant="icon">
+                            <Clock className="h-4 w-4 text-secondary" aria-hidden="true" />
+                          </ItemMedia>
+                          <ItemContent>
+                            <ItemDescription>Add buffer times and automated reminders for your services within scheduling preferences.</ItemDescription>
+                          </ItemContent>
+                        </Item>
+                        <Item variant="muted" size="sm">
+                          <ItemMedia variant="icon">
+                            <FileText className="h-4 w-4 text-accent" aria-hidden="true" />
+                          </ItemMedia>
+                          <ItemContent>
+                            <ItemDescription>Download printable cheat sheets for front-desk team members joining midweek.</ItemDescription>
+                          </ItemContent>
+                        </Item>
+                      </ItemGroup>
                       <Button variant="secondary" size="sm">
                         View full playbook
                       </Button>

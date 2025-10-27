@@ -3,15 +3,33 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { EmptyState } from '@/features/shared/ui-components'
 import type { DashboardAppointment } from '@/features/customer/dashboard/api/queries/appointments'
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
 import { format } from 'date-fns'
 import { Calendar, MapPin, Clock, ChevronRight, Store } from 'lucide-react'
 import Link from 'next/link'
+import { Separator } from '@/components/ui/separator'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface UpcomingBookingsProps {
   appointments: DashboardAppointment[]
@@ -26,16 +44,20 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
           <CardDescription>Your scheduled appointments will appear here</CardDescription>
         </CardHeader>
         <CardContent>
-          <EmptyState
-            icon={Calendar}
-            title="No Upcoming Appointments"
-            description="You don't have any upcoming appointments"
-            action={
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Calendar className="h-6 w-6" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No Upcoming Appointments</EmptyTitle>
+              <EmptyDescription>You don't have any upcoming appointments</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button asChild>
                 <Link href="/customer/salons">Book an Appointment</Link>
               </Button>
-            }
-          />
+            </EmptyContent>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -68,7 +90,8 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
       <Separator />
       <CardContent className="p-0">
         <ScrollArea className="h-96">
-          <div className="p-6 space-y-4">
+          <div className="p-6">
+            <ItemGroup className="gap-4">
             {appointments.map((appointment, index) => {
               const salonInitials = getInitials(appointment['salon_name'] || 'Salon')
               const appointmentDate = appointment['start_time']
@@ -77,50 +100,53 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
 
               return (
                 <Fragment key={appointment['id']}>
-                  <article className="group rounded-lg border border-border/50">
-                    <div className="flex items-start gap-4 p-4">
-                      <Avatar className="h-10 w-10 border-2 border-background">
-                        <AvatarFallback className="bg-primary/10 text-primary">
-                          {salonInitials}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <p className="truncate text-sm font-semibold">{appointment['salon_name'] || 'Salon TBD'}</p>
-                        <p className="text-sm text-muted-foreground">{appointmentDate}</p>
-                      </div>
-                      <Badge variant={getStatusVariant(appointment['status'])}>
-                        {appointment['status'] || 'pending'}
-                      </Badge>
-                    </div>
-                    <div className="flex flex-col gap-3 px-4 pb-4">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        <span>{formatAppointmentTime(appointment['start_time'])}</span>
-                      </div>
-                      {appointment['salon_name'] ? (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <MapPin className="h-3 w-3" />
-                          <span>View location</span>
+                    <Item variant="outline" size="sm">
+                      <ItemMedia variant="icon">
+                        <Avatar className="h-10 w-10 border-2 border-background">
+                          <AvatarFallback className="bg-primary/10 text-primary">
+                            {salonInitials}
+                          </AvatarFallback>
+                        </Avatar>
+                      </ItemMedia>
+                      <ItemContent>
+                        <ItemHeader>
+                          <ItemTitle>{appointment['salon_name'] || 'Salon TBD'}</ItemTitle>
+                          <Badge variant={getStatusVariant(appointment['status'])}>
+                            {appointment['status'] || 'pending'}
+                          </Badge>
+                        </ItemHeader>
+                        <ItemDescription>{appointmentDate}</ItemDescription>
+                        <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-2">
+                            <Clock className="h-3 w-3" />
+                            <span>{formatAppointmentTime(appointment['start_time'])}</span>
+                          </div>
+                          {appointment['salon_name'] ? (
+                            <div className="flex items-center gap-2">
+                              <MapPin className="h-3 w-3" />
+                              <span>View location</span>
+                            </div>
+                          ) : null}
                         </div>
-                      ) : null}
-                      <div className="flex justify-end">
+                      </ItemContent>
+                      <ItemActions className="ml-auto">
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="opacity-0 transition-opacity group-hover:opacity-100"
+                          className="opacity-0 transition-opacity group-hover/item:opacity-100"
                           asChild
                         >
                           <Link href={`/customer/appointments/${appointment['id']}`}>
                             View
                           </Link>
                         </Button>
-                      </div>
-                    </div>
-                  </article>
-                  {index < appointments.length - 1 ? <Separator /> : null}
+                      </ItemActions>
+                    </Item>
+                    {index < appointments.length - 1 ? <ItemSeparator /> : null}
                 </Fragment>
               )
             })}
+            </ItemGroup>
           </div>
         </ScrollArea>
       </CardContent>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { BulkActionsMenu } from './bulk-actions-menu'
+import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 
 interface AppointmentsBulkClientProps {
   children: React.ReactNode
@@ -36,19 +37,19 @@ export function AppointmentsBulkClient({ children, totalCount }: AppointmentsBul
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <Field orientation="responsive" className="items-center justify-between gap-4">
+        <FieldContent className="flex items-center gap-3">
           <Checkbox
             checked={selectAll}
             onCheckedChange={handleSelectAll}
             id="select-all"
           />
-          <label htmlFor="select-all" className="text-sm font-medium cursor-pointer">
+          <FieldLabel htmlFor="select-all" className="cursor-pointer">
             Select all ({totalCount})
-          </label>
-        </div>
+          </FieldLabel>
+        </FieldContent>
         {selectedIds.length > 0 && (
-          <div className="flex items-center gap-2">
+          <FieldContent className="flex items-center gap-2">
             <BulkActionsMenu
               selectedIds={selectedIds}
               onClearSelection={clearSelection}
@@ -56,9 +57,9 @@ export function AppointmentsBulkClient({ children, totalCount }: AppointmentsBul
             <Button variant="ghost" size="sm" onClick={clearSelection}>
               Clear
             </Button>
-          </div>
+          </FieldContent>
         )}
-      </div>
+      </Field>
       {children}
     </div>
   )

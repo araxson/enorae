@@ -8,6 +8,7 @@ import { SalonsFilters } from './salons-filters'
 import { SalonsTable } from './salons-table'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface SalonsClientProps {
   salons: AdminSalon[]
@@ -109,7 +110,12 @@ function InsightCard({ title, subtitle, items, renderBadge }: InsightCardProps) 
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <p className="text-xs text-muted-foreground">No salons in this category.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No salons in this category</EmptyTitle>
+              <EmptyDescription>Insights will fill once salons match the selected criteria.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           items.slice(0, 5).map((salon) => (
             <div key={salon['id']} className="flex items-center justify-between gap-3">

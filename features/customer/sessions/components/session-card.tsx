@@ -5,6 +5,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { SessionWithDevice } from '@/features/customer/sessions/api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface SessionCardProps {
   session: SessionWithDevice
@@ -53,22 +60,32 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-3">
-            <span className="w-24 text-sm text-muted-foreground">Created:</span>
-            <span className="text-sm text-foreground">{formatDate(session['created_at'])}</span>
-          </div>
-
-          <div className="flex gap-3">
-            <span className="w-24 text-sm text-muted-foreground">Last Updated:</span>
-            <span className="text-sm text-foreground">{formatDate(session['updated_at'])}</span>
-          </div>
-
-          <div className="flex gap-3">
-            <span className="w-24 text-sm text-muted-foreground">Status:</span>
-            <span className="text-sm text-foreground">{session['is_active'] ? 'Active' : 'Inactive'}</span>
-          </div>
-        </div>
+        <ItemGroup className="gap-2">
+          <Item variant="muted">
+            <ItemContent>
+              <ItemTitle>Created</ItemTitle>
+              <ItemDescription className="text-foreground">
+                {formatDate(session['created_at'])}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+          <Item variant="muted">
+            <ItemContent>
+              <ItemTitle>Last updated</ItemTitle>
+              <ItemDescription className="text-foreground">
+                {formatDate(session['updated_at'])}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+          <Item variant="muted">
+            <ItemContent>
+              <ItemTitle>Status</ItemTitle>
+              <ItemDescription className="text-foreground">
+                {session['is_active'] ? 'Active' : 'Inactive'}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardContent>
       {!session.is_current && session['id'] ? (
         <CardFooter className="justify-end">

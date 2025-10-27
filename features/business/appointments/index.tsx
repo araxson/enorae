@@ -1,6 +1,13 @@
 import { getAppointments, getUserSalon } from './api/queries'
 import { AppointmentsTableClient } from './components/appointments-table-client'
-import { EmptyState } from '@/features/shared/ui-components'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { AlertCircle, Calendar } from 'lucide-react'
 
 // Export types
@@ -13,11 +20,16 @@ export async function AppointmentsManagement() {
   } catch {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
-        <EmptyState
-          icon={AlertCircle}
-          title="Authentication Required"
-          description="Please log in to view appointments"
-        />
+        <Empty>
+          <EmptyMedia variant="icon">
+            <AlertCircle className="h-6 w-6" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>Authentication Required</EmptyTitle>
+            <EmptyDescription>Please log in to view appointments.</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>Sign in with an admin or staff account to continue.</EmptyContent>
+        </Empty>
       </section>
     )
   }
@@ -25,11 +37,16 @@ export async function AppointmentsManagement() {
   if (!salon || !salon.id) {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
-        <EmptyState
-          icon={Calendar}
-          title="No Salon Found"
-          description="Please create a salon to manage appointments"
-        />
+        <Empty>
+          <EmptyMedia variant="icon">
+            <Calendar className="h-6 w-6" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>No salon found</EmptyTitle>
+            <EmptyDescription>Please create a salon to manage appointments.</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>Set up your first location to unlock scheduling tools.</EmptyContent>
+        </Empty>
       </section>
     )
   }

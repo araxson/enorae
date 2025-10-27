@@ -2,6 +2,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type LearningTrack = {
   title: string
@@ -23,33 +31,33 @@ export function HelpLearningHubCard({ tracks }: HelpLearningHubCardProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {tracks.map((track, index) => (
-            <Card key={track.title}>
-              <CardContent>
-                <div className="space-y-3 pt-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <CardTitle>{track.title}</CardTitle>
-                      <CardDescription>{track.duration} • {track.level}</CardDescription>
-                    </div>
-                    <Badge variant={index === 0 ? 'secondary' : 'outline'}>
-                      {index === 0 ? 'Recommended' : 'Track'}
-                    </Badge>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
+          <ItemGroup className="space-y-3">
+            {tracks.map((track, index) => (
+              <Item key={track.title} variant="outline" size="sm">
+                <ItemContent>
+                  <ItemTitle>{track.title}</ItemTitle>
+                  <ItemDescription>{track.duration} • {track.level}</ItemDescription>
+                  <div className="flex flex-wrap gap-2 pt-2">
                     {track.tags.map((tag) => (
                       <Badge key={tag} variant="outline">
                         {tag}
                       </Badge>
                     ))}
                   </div>
-                  <Button size="sm" variant="outline" className="w-full">
-                    Start lesson
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="pt-3">
+                    <Button size="sm" variant="outline">
+                      Start lesson
+                    </Button>
+                  </div>
+                </ItemContent>
+                <ItemActions>
+                  <Badge variant={index === 0 ? 'secondary' : 'outline'}>
+                    {index === 0 ? 'Recommended' : 'Track'}
+                  </Badge>
+                </ItemActions>
+              </Item>
+            ))}
+          </ItemGroup>
 
           <Separator />
 

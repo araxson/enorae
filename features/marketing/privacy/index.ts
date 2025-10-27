@@ -1,0 +1,5 @@
+export { PrivacyPage } from './privacy-page'
+export { privacyMetadata } from './privacy.seo'
+export * from './sections'
+export * from './api/queries'
+export * from './api/mutations'

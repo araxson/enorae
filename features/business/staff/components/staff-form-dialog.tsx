@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Loader2 } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -13,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 import { createStaffMember, updateStaffMember } from '@/features/business/staff/api/mutations'
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import { useStaffFormState } from './use-staff-form-state'
@@ -99,7 +99,7 @@ export function StaffFormDialog({ open, onClose, staff, onSuccess }: StaffFormDi
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isSubmitting ? <Spinner className="mr-2" /> : null}
               {staff ? 'Update Staff Member' : 'Add Staff Member'}
             </Button>
           </DialogFooter>

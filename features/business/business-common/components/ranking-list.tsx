@@ -4,6 +4,15 @@ import { type ComponentType, type ReactNode } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import { formatCurrency } from '@/features/business/business-common/components/value-formatters'
 
 export type RankingItem = {
@@ -112,10 +121,14 @@ export function RankingList({
   return (
     <Card className={className}>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          {IconComponent && <IconComponent className={`h-5 w-5 ${iconColor}`} />}
-          <CardTitle>{title}</CardTitle>
-        </div>
+        <ItemGroup>
+          <Item>
+            <ItemContent className="flex items-center gap-2">
+              {IconComponent && <IconComponent className={`h-5 w-5 ${iconColor}`} />}
+              <CardTitle>{title}</CardTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         {displayItems.length === 0 ? (
@@ -125,34 +138,29 @@ export function RankingList({
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="space-y-3">
+          <ItemGroup className="space-y-3">
             {displayItems.map((item, index) => (
-              <Card key={item.id}>
-                <CardContent className="flex items-center justify-between gap-3 py-3 transition-colors hover:bg-accent/40">
-                  <div className="flex items-center gap-3">
-                    <Badge
-                      variant={index === 0 ? 'default' : 'outline'}
-                      className="w-8 justify-center"
-                    >
-                      #{index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{item.name}</div>
-                      {item.subtitle ? (
-                        <p className="text-xs text-muted-foreground">{item.subtitle}</p>
-                      ) : null}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold">{formatValue(item.value)}</div>
+              <Item key={item.id} variant="outline" size="sm" className="items-center">
+                <ItemMedia>
+                  <Badge variant={index === 0 ? 'default' : 'outline'} className="w-8 justify-center">
+                    #{index + 1}
+                  </Badge>
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>{item.name}</ItemTitle>
+                  {item.subtitle ? <ItemDescription>{item.subtitle}</ItemDescription> : null}
+                </ItemContent>
+                <ItemActions>
+                  <div className="flex flex-col items-end">
+                    <span className="font-semibold">{formatValue(item.value)}</span>
                     {item.metric ? (
-                      <p className="text-xs text-muted-foreground">{item.metric}</p>
+                      <span className="text-xs text-muted-foreground">{item.metric}</span>
                     ) : null}
                   </div>
-                </CardContent>
-              </Card>
+                </ItemActions>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         )}
       </CardContent>
     </Card>

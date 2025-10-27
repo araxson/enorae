@@ -1,9 +1,13 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Mail, CheckCircle } from 'lucide-react'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import { Mail, CheckCircle, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { subscribeToNewsletter } from '@/features/marketing/newsletter/api/mutations'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -62,20 +66,36 @@ export function NewsletterForm({
   if (inline) {
     return (
       <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <div className="flex flex-wrap items-center gap-2">
-          <Input
+        <InputGroup>
+          <InputGroupAddon>
+            <Mail className="size-4" aria-hidden="true" />
+          </InputGroupAddon>
+          <InputGroupInput
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             disabled={isPending}
-            className="flex-1"
           />
-          <Button type="submit" disabled={isPending} className="gap-2">
-            <Mail className="h-4 w-4" />
-            {buttonText}
-          </Button>
-        </div>
+          {email ? (
+            <InputGroupAddon>
+              <InputGroupButton
+                size="icon-sm"
+                variant="ghost"
+                type="button"
+                onClick={() => setEmail('')}
+                aria-label="Clear email"
+              >
+                <X className="size-4" aria-hidden="true" />
+              </InputGroupButton>
+            </InputGroupAddon>
+          ) : null}
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton type="submit" size="sm" disabled={isPending}>
+              {buttonText}
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
       </form>
     )
   }
@@ -88,17 +108,36 @@ export function NewsletterForm({
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-2">
-          <Input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            disabled={isPending}
-          />
-          <Button type="submit" disabled={isPending} className="w-full gap-2">
-            <Mail className="h-4 w-4" />
-            {buttonText}
-          </Button>
+          <InputGroup>
+            <InputGroupAddon>
+              <Mail className="size-4" aria-hidden="true" />
+            </InputGroupAddon>
+            <InputGroupInput
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              disabled={isPending}
+            />
+            {email ? (
+              <InputGroupAddon>
+                <InputGroupButton
+                  size="icon-sm"
+                  variant="ghost"
+                  type="button"
+                  onClick={() => setEmail('')}
+                  aria-label="Clear email"
+                >
+                  <X className="size-4" aria-hidden="true" />
+                </InputGroupButton>
+              </InputGroupAddon>
+            ) : null}
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton type="submit" size="sm" disabled={isPending}>
+                {buttonText}
+              </InputGroupButton>
+            </InputGroupAddon>
+          </InputGroup>
         </form>
       </CardContent>
     </Card>

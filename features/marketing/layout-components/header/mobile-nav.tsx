@@ -4,9 +4,15 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
-import { cn } from '@/lib/utils'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
 import type { Database } from '@/lib/types/database.types'
 import { MarketingUserNav } from './marketing-user-nav'
@@ -33,18 +39,19 @@ export function MobileNav({ navigationItems, user, role }: MobileNavProps) {
       <SheetContent side="right" className="w-full sm:w-80">
         <nav className="mt-8 flex flex-col gap-4">
           {/* Navigation Links */}
-          {navigationItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              className={cn(
-                'py-2 text-lg font-medium transition-colors hover:text-primary'
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
+          <ItemGroup className="gap-2">
+            {navigationItems.map((item) => (
+              <Item key={item.href} asChild variant="muted">
+                <Link href={item.href} onClick={() => setOpen(false)} className="no-underline">
+                  <ItemContent>
+                    <ItemTitle>
+                      <span className="text-lg font-medium">{item.label}</span>
+                    </ItemTitle>
+                  </ItemContent>
+                </Link>
+              </Item>
+            ))}
+          </ItemGroup>
 
           {/* Auth Section */}
           <Separator className="my-2" />
@@ -52,18 +59,18 @@ export function MobileNav({ navigationItems, user, role }: MobileNavProps) {
             {user && role ? (
               <MarketingUserNav user={user} role={role} />
             ) : (
-              <>
-                <Button variant="outline" asChild className="w-full">
+              <ButtonGroup className="flex w-full flex-col gap-2">
+                <Button variant="outline" asChild>
                   <Link href="/login" onClick={() => setOpen(false)}>
                     Login
                   </Link>
                 </Button>
-                <Button asChild className="w-full">
+                <Button asChild>
                   <Link href="/signup" onClick={() => setOpen(false)}>
                     Sign Up
                   </Link>
                 </Button>
-              </>
+              </ButtonGroup>
             )}
           </div>
         </nav>

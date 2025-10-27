@@ -9,6 +9,13 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -20,11 +27,19 @@ export function ServiceList({ services }: ServiceListProps) {
   if (services.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>Services</CardTitle>
-          <CardDescription>No services available</CardDescription>
-        </CardHeader>
-        <CardContent />
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Clock className="h-6 w-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No services available</EmptyTitle>
+              <EmptyDescription>
+                Check back soon for the latest offerings from this salon.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
       </Card>
     )
   }
@@ -51,13 +66,13 @@ export function ServiceList({ services }: ServiceListProps) {
               <AccordionContent className="px-4 pb-4 pt-2">
                 <div className="space-y-4">
                   {service['description'] && (
-                    <p className="text-sm text-muted-foreground">{service['description']}</p>
+                    <CardDescription>{service['description']}</CardDescription>
                   )}
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     {service['duration_minutes'] && (
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Clock className="h-4 w-4" />
-                        <p className="text-sm">{service['duration_minutes']} min</p>
+                        <Badge variant="outline">{service['duration_minutes']} min</Badge>
                       </div>
                     )}
                     <Button size="sm">Book now</Button>

@@ -7,6 +7,13 @@ import { Badge } from '@/components/ui/badge'
 import { Calendar, Clock, Ban } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface BlockedTimesCalendarProps {
   blockedTimes: BlockedTime[]
@@ -155,16 +162,24 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
 
         {/* Legend */}
         <Separator className="mt-4" />
-        <div className="flex gap-4 pt-4">
-          <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-info" />
-            <span className="text-xs text-muted-foreground">Appointments</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Ban className="h-4 w-4 text-destructive" />
-            <span className="text-xs text-muted-foreground">Blocked Times</span>
-          </div>
-        </div>
+        <ItemGroup className="flex flex-wrap gap-2 pt-4">
+          <Item size="sm" variant="muted">
+            <ItemMedia variant="icon">
+              <Clock className="h-4 w-4 text-info" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Appointments</ItemTitle>
+            </ItemContent>
+          </Item>
+          <Item size="sm" variant="muted">
+            <ItemMedia variant="icon">
+              <Ban className="h-4 w-4 text-destructive" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Blocked times</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardContent>
     </Card>
   )

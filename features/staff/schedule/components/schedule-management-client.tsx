@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -22,6 +21,14 @@ import { Switch } from '@/components/ui/switch'
 import { createStaffSchedule, updateStaffSchedule, deleteStaffSchedule } from '@/features/staff/schedule/api/mutations'
 import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
 import type { DayOfWeek } from '@/features/staff/schedule/api/staff-schedules/constants'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface ScheduleManagementClientProps {
   schedules: StaffScheduleWithStaff[]
@@ -125,92 +132,108 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
           <DialogHeader>
             <DialogTitle>{editingSchedule ? 'Edit Schedule' : 'Add Schedule'}</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="day_of_week">Day of Week</Label>
-              <Select
-                value={formData['day_of_week']}
-                onValueChange={(value) => {
-                  if (isDayOfWeek(value)) {
-                    setFormData({ ...formData, day_of_week: value })
-                  }
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="monday">Monday</SelectItem>
-                  <SelectItem value="tuesday">Tuesday</SelectItem>
-                  <SelectItem value="wednesday">Wednesday</SelectItem>
-                  <SelectItem value="thursday">Thursday</SelectItem>
-                  <SelectItem value="friday">Friday</SelectItem>
-                  <SelectItem value="saturday">Saturday</SelectItem>
-                  <SelectItem value="sunday">Sunday</SelectItem>
-                </SelectContent>
-              </Select>
+          <FieldSet>
+            <Field>
+              <FieldLabel htmlFor="day_of_week">Day of week</FieldLabel>
+              <FieldContent>
+                <Select
+                  value={formData['day_of_week']}
+                  onValueChange={(value) => {
+                    if (isDayOfWeek(value)) {
+                      setFormData({ ...formData, day_of_week: value })
+                    }
+                  }}
+                >
+                  <SelectTrigger id="day_of_week">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monday">Monday</SelectItem>
+                    <SelectItem value="tuesday">Tuesday</SelectItem>
+                    <SelectItem value="wednesday">Wednesday</SelectItem>
+                    <SelectItem value="thursday">Thursday</SelectItem>
+                    <SelectItem value="friday">Friday</SelectItem>
+                    <SelectItem value="saturday">Saturday</SelectItem>
+                    <SelectItem value="sunday">Sunday</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Field>
+                <FieldLabel htmlFor="start_time">Start time</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="start_time"
+                    type="time"
+                    value={formData['start_time']}
+                    onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
+                  />
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="end_time">End time</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="end_time"
+                    type="time"
+                    value={formData['end_time']}
+                    onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
+                  />
+                </FieldContent>
+              </Field>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="start_time">Start Time</Label>
-                <Input
-                  id="start_time"
-                  type="time"
-                  value={formData['start_time']}
-                  onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="end_time">End Time</Label>
-                <Input
-                  id="end_time"
-                  type="time"
-                  value={formData['end_time']}
-                  onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
-                />
-              </div>
+              <Field>
+                <FieldLabel htmlFor="break_start">Break start</FieldLabel>
+                <FieldContent>
+                  <FieldDescription>Optional</FieldDescription>
+                  <Input
+                    id="break_start"
+                    type="time"
+                    value={formData['break_start']}
+                    onChange={(e) => setFormData({ ...formData, break_start: e.target.value })}
+                  />
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="break_end">Break end</FieldLabel>
+                <FieldContent>
+                  <FieldDescription>Optional</FieldDescription>
+                  <Input
+                    id="break_end"
+                    type="time"
+                    value={formData['break_end']}
+                    onChange={(e) => setFormData({ ...formData, break_end: e.target.value })}
+                  />
+                </FieldContent>
+              </Field>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="break_start">Break Start (Optional)</Label>
-                <Input
-                  id="break_start"
-                  type="time"
-                  value={formData['break_start']}
-                  onChange={(e) => setFormData({ ...formData, break_start: e.target.value })}
+            <Field orientation="horizontal">
+              <FieldLabel htmlFor="is_active">Active</FieldLabel>
+              <FieldContent>
+                <Switch
+                  id="is_active"
+                  checked={formData['is_active']}
+                  onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
                 />
-              </div>
-              <div>
-                <Label htmlFor="break_end">Break End (Optional)</Label>
-                <Input
-                  id="break_end"
-                  type="time"
-                  value={formData['break_end']}
-                  onChange={(e) => setFormData({ ...formData, break_end: e.target.value })}
-                />
-              </div>
-            </div>
+              </FieldContent>
+            </Field>
 
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="is_active"
-                checked={formData['is_active']}
-                onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-              />
-              <Label htmlFor="is_active">Active</Label>
+            <div className="flex justify-end">
+              <ButtonGroup>
+                <Button variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isPending}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSubmit} disabled={isPending}>
+                  {editingSchedule ? 'Update' : 'Create'}
+                </Button>
+              </ButtonGroup>
             </div>
-
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isPending}>
-                Cancel
-              </Button>
-              <Button onClick={handleSubmit} disabled={isPending}>
-                {editingSchedule ? 'Update' : 'Create'}
-              </Button>
-            </div>
-          </div>
+          </FieldSet>
         </DialogContent>
       </Dialog>
     </>

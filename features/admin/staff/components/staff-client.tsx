@@ -12,6 +12,7 @@ import { StaffFilters, type RiskFilter } from './staff-filters'
 import { StaffTable } from './staff-table'
 import { StaffRiskBadge } from './staff-risk-badge'
 import type { BackgroundStatus } from '@/features/admin/staff/api/dashboard/metrics'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 function InsightList({ title, description, items }: { title: string; description: string; items: StaffWithMetrics[] }) {
   return (
@@ -22,7 +23,12 @@ function InsightList({ title, description, items }: { title: string; description
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <p className="text-xs text-muted-foreground">No records</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No staff records</EmptyTitle>
+              <EmptyDescription>Metrics show up once team members match this condition.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           items.slice(0, 5).map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-3">
@@ -51,7 +57,12 @@ function TopPerformerList({ items }: { items: StaffPerformanceBenchmark[] }) {
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <p className="text-xs text-muted-foreground">No performers yet</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No performers yet</EmptyTitle>
+              <EmptyDescription>Top performers populate after ratings and compliance scores stabilize.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           items.slice(0, 5).map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-3">

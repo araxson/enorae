@@ -1,5 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DollarSign, Users, Calendar, Award } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemMedia,
+} from '@/components/ui/item'
 import type { StaffPerformanceMetrics } from '@/features/staff/analytics/api/queries'
 import { formatCurrency, formatPercentage } from './utils'
 
@@ -16,10 +21,14 @@ export function MetricsCards({ metrics, earnings }: MetricsCardsProps) {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Total Revenue</CardTitle>
+            </ItemContent>
+          </Item>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">{formatCurrency(metrics.total_revenue)}</div>
@@ -31,10 +40,14 @@ export function MetricsCards({ metrics, earnings }: MetricsCardsProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Estimated Commission</CardTitle>
-            <Award className="h-4 w-4 text-primary" />
-          </div>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Award className="h-4 w-4 text-primary" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Estimated Commission</CardTitle>
+            </ItemContent>
+          </Item>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">{formatCurrency(earnings.estimated_commission)}</div>
@@ -46,10 +59,14 @@ export function MetricsCards({ metrics, earnings }: MetricsCardsProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Appointments</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Appointments</CardTitle>
+            </ItemContent>
+          </Item>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">{metrics.completed_appointments}</div>
@@ -61,10 +78,14 @@ export function MetricsCards({ metrics, earnings }: MetricsCardsProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Customers</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </ItemMedia>
+            <ItemContent>
+              <CardTitle>Customers</CardTitle>
+            </ItemContent>
+          </Item>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">{metrics.unique_customers}</div>

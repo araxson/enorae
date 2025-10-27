@@ -3,8 +3,8 @@ import { Suspense } from 'react'
 import { getCustomerMetrics } from './api/queries'
 import { MetricsDashboard } from './components/metrics-dashboard'
 
-import { PageLoading } from '@/features/shared/ui-components'
 import { generateMetadata as genMeta } from '@/lib/metadata'
+import { Spinner } from '@/components/ui/spinner'
 
 export const customerAnalyticsMetadata = genMeta({
 
@@ -36,7 +36,13 @@ export function CustomerAnalyticsPage() {
 
 export function CustomerAnalyticsFeature() {
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner />
+        </div>
+      }
+    >
       <CustomerAnalyticsPage />
     </Suspense>
   )

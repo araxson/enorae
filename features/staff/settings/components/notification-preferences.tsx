@@ -3,11 +3,11 @@ import { useState } from 'react'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
 import type { NotificationPreferences, NotificationChannel } from '@/features/staff/settings/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface NotificationPreferencesProps {
   initialPreferences: NotificationPreferences
@@ -91,9 +91,11 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
         </ScrollArea>
       </div>
       <CardFooter className="flex w-full justify-end">
-        <Button onClick={handleSave} disabled={isSaving}>
-          {isSaving ? 'Saving...' : 'Save Changes'}
-        </Button>
+        <ButtonGroup>
+          <Button onClick={handleSave} disabled={isSaving}>
+            {isSaving ? 'Saving...' : 'Save Changes'}
+          </Button>
+        </ButtonGroup>
       </CardFooter>
     </Card>
   )

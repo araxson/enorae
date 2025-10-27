@@ -8,6 +8,14 @@ import type { ServicePerformance } from '@/features/business/service-performance
 import { RevenueLeaders } from './partials/revenue-leaders'
 import { PopularityRanking } from './partials/popularity-ranking'
 import { formatCurrency } from './partials/format-utils'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ServiceProfitability = {
   service_id: string
@@ -75,24 +83,24 @@ export function ServicePerformanceDashboard({
           <CardTitle>Profitability by Service</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {mostProfitable.map((entry) => (
-            <Card key={entry.service_id}>
-              <CardContent className="flex items-center justify-between gap-4">
-                <div>
-                  <p>{entry.service_name}</p>
-                  <p className="text-muted-foreground">
+          <ItemGroup className="flex flex-col gap-2">
+            {mostProfitable.map((entry) => (
+              <Item key={entry.service_id} variant="outline" className="items-start">
+                <ItemContent>
+                  <ItemTitle>{entry.service_name}</ItemTitle>
+                  <ItemDescription>
                     Margin {Number.isFinite(entry.margin) ? entry.margin.toFixed(1) : '0'}%
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p>{formatCurrency(entry.profit)}</p>
-                  <p className="text-muted-foreground">
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-col items-end text-right">
+                  <span>{formatCurrency(entry.profit)}</span>
+                  <span className="text-muted-foreground">
                     Revenue {formatCurrency(entry.revenue)} · Cost {formatCurrency(entry.cost)}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </span>
+                </ItemActions>
+              </Item>
+            ))}
+          </ItemGroup>
         </CardContent>
       </Card>
 
@@ -105,20 +113,24 @@ export function ServicePerformanceDashboard({
             {services.map((service) => (
               <Card key={service.service_id}>
                 <CardContent className="space-y-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">{service.service_name}</h4>
-                      <div className="flex items-center gap-2 mt-1">
-                        {getPerformanceIcon(service.cancellation_rate || 0)}
-                        <span className="text-muted-foreground">
-                          {service.cancellation_rate?.toFixed(1) || 0}% cancellation rate
-                        </span>
-                      </div>
-                    </div>
-                    <Badge variant={service.cancellation_rate > 20 ? 'destructive' : 'default'}>
-                      {service.cancellation_rate > 20 ? 'Needs Attention' : 'Performing Well'}
-                    </Badge>
-                  </div>
+                  <ItemGroup>
+                    <Item>
+                      <ItemContent>
+                        <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">{service.service_name}</h4>
+                        <div className="mt-1 flex items-center gap-2">
+                          {getPerformanceIcon(service.cancellation_rate || 0)}
+                          <span className="text-muted-foreground">
+                            {service.cancellation_rate?.toFixed(1) || 0}% cancellation rate
+                          </span>
+                        </div>
+                      </ItemContent>
+                      <ItemActions className="flex-none">
+                        <Badge variant={service.cancellation_rate > 20 ? 'destructive' : 'default'}>
+                          {service.cancellation_rate > 20 ? 'Needs Attention' : 'Performing Well'}
+                        </Badge>
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
 
                   <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                     <div>
@@ -162,14 +174,20 @@ export function ServicePerformanceDashboard({
                 <AccordionItem key={record.service_id} value={record.service_id}>
                   <AccordionTrigger>{record.service_name}</AccordionTrigger>
                   <AccordionContent className="space-y-1 text-muted-foreground">
-                    {record.staff.slice(0, 3).map((staff) => (
-                      <div key={staff.staff_id} className="flex justify-between">
-                        <span>{staff.staff_name}</span>
-                        <span>
-                          {staff.appointmentCount} appts · {formatCurrency(staff.revenue)}
-                        </span>
-                      </div>
-                    ))}
+                    <ItemGroup>
+                      {record.staff.slice(0, 3).map((staff) => (
+                        <Item key={staff.staff_id}>
+                          <ItemContent>
+                            <ItemDescription>{staff.staff_name}</ItemDescription>
+                          </ItemContent>
+                          <ItemActions className="flex-none">
+                            <ItemDescription>
+                              {staff.appointmentCount} appts · {formatCurrency(staff.revenue)}
+                            </ItemDescription>
+                          </ItemActions>
+                        </Item>
+                      ))}
+                    </ItemGroup>
                   </AccordionContent>
                 </AccordionItem>
               ))}
@@ -190,10 +208,16 @@ export function ServicePerformanceDashboard({
                 <AccordionItem key={`${pair.primary}-${pair.paired}`} value={`${pair.primary}-${pair.paired}`}>
                   <AccordionTrigger>{pair.primary}</AccordionTrigger>
                   <AccordionContent>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Often paired with {pair.paired}</span>
-                      <Badge variant="secondary">{pair.count} combos</Badge>
-                    </div>
+                    <ItemGroup>
+                      <Item>
+                        <ItemContent>
+                          <ItemDescription>Often paired with {pair.paired}</ItemDescription>
+                        </ItemContent>
+                        <ItemActions className="flex-none">
+                          <Badge variant="secondary">{pair.count} combos</Badge>
+                        </ItemActions>
+                      </Item>
+                    </ItemGroup>
                   </AccordionContent>
                 </AccordionItem>
               ))}

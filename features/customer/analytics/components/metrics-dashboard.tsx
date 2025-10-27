@@ -4,7 +4,24 @@ import { Fragment } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { DollarSign, Calendar, CheckCircle2, XCircle, TrendingUp } from 'lucide-react'
 import type { CustomerMetrics } from '@/features/customer/analytics/api/queries'
-import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Badge } from '@/components/ui/badge'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface MetricsDashboardProps {
   metrics: CustomerMetrics
@@ -65,65 +82,99 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
         })}
       </div>
 
-      {/* Favorite Services */}
-      {metrics.favoriteServices.length > 0 && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
-              <CardTitle>Favorite services</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col">
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
+            <CardTitle>Favorite services</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {metrics.favoriteServices.length === 0 ? (
+            <Empty>
+              <EmptyMedia variant="icon">
+                <TrendingUp className="h-6 w-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No favorite services yet</EmptyTitle>
+                <EmptyDescription>
+                  Book more appointments to see your most-loved services appear here.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            <ItemGroup className="gap-2">
               {metrics.favoriteServices.map((service, index) => (
                 <Fragment key={`${service.service}-${index}`}>
-                  <div className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
-                    <p className="text-sm font-medium text-foreground">{service.service}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {service.count} {service.count === 1 ? 'booking' : 'bookings'}
-                    </p>
-                  </div>
-                  {index < metrics.favoriteServices.length - 1 ? <Separator /> : null}
+                  <Item>
+                    <ItemContent>
+                      <ItemTitle>{service.service}</ItemTitle>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <Badge variant="secondary">
+                        {service.count} {service.count === 1 ? 'booking' : 'bookings'}
+                      </Badge>
+                    </ItemActions>
+                  </Item>
+                  {index < metrics.favoriteServices.length - 1 ? <ItemSeparator /> : null}
                 </Fragment>
               ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            </ItemGroup>
+          )}
+        </CardContent>
+      </Card>
 
-      {/* Recent Activity */}
-      {metrics.recentActivity.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent activity</CardTitle>
-            <CardDescription>Latest customer appointments</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col">
-              {metrics.recentActivity.map((appointment, index) => (
-                <Fragment key={appointment['id']}>
-                  <div className="flex items-start justify-between py-3 first:pt-0 last:pb-0">
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-foreground">
-                        {appointment['service_name'] || 'Service'}
-                      </p>
-                      <p className="text-sm text-muted-foreground">{appointment['salon_name'] || 'Salon'}</p>
-                    </div>
-                    <div className="space-y-1 text-right">
-                      <p className="text-sm text-foreground">
-                        {appointment['start_time'] ? new Date(appointment['start_time']).toLocaleDateString() : 'N/A'}
-                      </p>
-                      <p className="text-xs capitalize text-muted-foreground">{appointment['status']}</p>
-                    </div>
-                  </div>
-                  {index < metrics.recentActivity.length - 1 ? <Separator /> : null}
-                </Fragment>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent activity</CardTitle>
+          <CardDescription>Latest customer appointments</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {metrics.recentActivity.length === 0 ? (
+            <Empty>
+              <EmptyMedia variant="icon">
+                <Calendar className="h-6 w-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No recent activity</EmptyTitle>
+                <EmptyDescription>
+                  Recent appointments will display here once you start booking.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            <ItemGroup className="gap-2">
+              {metrics.recentActivity.map((appointment, index) => {
+                const statusLabel = appointment['status']
+                  ? appointment['status']
+                      .split('_')
+                      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+                      .join(' ')
+                  : 'Status'
+                return (
+                  <Fragment key={appointment['id']}>
+                    <Item>
+                      <ItemContent>
+                        <ItemTitle>{appointment['service_name'] || 'Service'}</ItemTitle>
+                        <ItemDescription>{appointment['salon_name'] || 'Salon'}</ItemDescription>
+                      </ItemContent>
+                      <ItemActions className="flex-none flex-col items-end gap-1">
+                        <span>
+                          {appointment['start_time']
+                            ? new Date(appointment['start_time']).toLocaleDateString()
+                            : 'N/A'}
+                        </span>
+                        <Badge variant="outline">{statusLabel}</Badge>
+                      </ItemActions>
+                    </Item>
+                    {index < metrics.recentActivity.length - 1 ? <ItemSeparator /> : null}
+                  </Fragment>
+                )
+              })}
+            </ItemGroup>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -45,6 +45,7 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
                   <Empty>
                     <EmptyHeader>
                       <EmptyTitle>No salons in this chain</EmptyTitle>
+                      <EmptyDescription>Invite or link salons to this chain to populate the hierarchy.</EmptyDescription>
                     </EmptyHeader>
                   </Empty>
                 </TableCell>

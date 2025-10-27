@@ -157,10 +157,10 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
                   {record.security_flags.length > 0 ? (
                     <div className="flex items-center gap-1">
                       <ShieldAlert className="h-4 w-4 text-destructive" />
-                      <span className="text-sm">{record.security_flags.length} flags</span>
+                      <Badge variant="destructive">{record.security_flags.length} flags</Badge>
                     </div>
                   ) : (
-                    <span className="text-sm text-muted-foreground">None</span>
+                    <Badge variant="outline">No flags</Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-sm">

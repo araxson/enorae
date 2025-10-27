@@ -3,8 +3,8 @@ import { Suspense } from 'react'
 import { getLoyaltyPoints, getLoyaltyTransactions } from './api/queries'
 import { LoyaltyDashboard } from './components/loyalty-dashboard'
 
-import { PageLoading } from '@/features/shared/ui-components'
 import { generateMetadata as genMeta } from '@/lib/metadata'
+import { Spinner } from '@/components/ui/spinner'
 
 export const loyaltyMetadata = genMeta({
 
@@ -34,7 +34,13 @@ export async function LoyaltyProgram() {
 
 export function LoyaltyProgramFeature() {
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner />
+        </div>
+      }
+    >
       <LoyaltyProgram />
     </Suspense>
   )

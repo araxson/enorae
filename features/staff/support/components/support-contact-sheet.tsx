@@ -7,7 +7,6 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -18,6 +17,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface SupportContactSheetProps {
   open: boolean
@@ -34,45 +40,52 @@ export function SupportContactSheet({ open, onOpenChange }: SupportContactSheetP
         </SheetHeader>
 
         <ScrollArea className="flex-1">
-          <div className="space-y-4 pr-2 pt-4">
-            <div className="grid gap-2">
-              <Label htmlFor="callback-day">Preferred day</Label>
-              <Select defaultValue="today">
-                <SelectTrigger id="callback-day">
-                  <SelectValue placeholder="Choose a day" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="tomorrow">Tomorrow</SelectItem>
-                  <SelectItem value="later">Later this week</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          <FieldSet className="space-y-4 pr-2 pt-4">
+            <Field>
+              <FieldLabel htmlFor="callback-day">Preferred day</FieldLabel>
+              <FieldContent>
+                <Select defaultValue="today">
+                  <SelectTrigger id="callback-day">
+                    <SelectValue placeholder="Choose a day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="today">Today</SelectItem>
+                    <SelectItem value="tomorrow">Tomorrow</SelectItem>
+                    <SelectItem value="later">Later this week</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
 
-            <div className="grid gap-2">
-              <Label htmlFor="callback-window">Time window</Label>
-              <Input id="callback-window" placeholder="e.g. 2:00 – 3:00 PM" />
-            </div>
+            <Field>
+              <FieldLabel htmlFor="callback-window">Time window</FieldLabel>
+              <FieldContent>
+                <Input id="callback-window" placeholder="e.g. 2:00 – 3:00 PM" />
+              </FieldContent>
+            </Field>
 
-            <div className="grid gap-2">
-              <Label htmlFor="callback-notes">Notes for the specialist</Label>
-              <Textarea
-                id="callback-notes"
-                rows={3}
-                placeholder="Optional context helps us prepare."
-              />
-            </div>
-          </div>
+            <Field>
+              <FieldLabel htmlFor="callback-notes">Notes for the specialist</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="callback-notes"
+                  rows={3}
+                  placeholder="Optional context helps us prepare."
+                />
+              </FieldContent>
+            </Field>
+          </FieldSet>
         </ScrollArea>
 
-        <SheetFooter className="gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button>Schedule</Button>
+        <SheetFooter>
+          <ButtonGroup className="justify-end">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button>Schedule</Button>
+          </ButtonGroup>
         </SheetFooter>
       </SheetContent>
     </Sheet>
   )
 }
-

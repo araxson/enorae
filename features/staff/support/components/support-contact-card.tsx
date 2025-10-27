@@ -5,6 +5,15 @@ import { Button } from '@/components/ui/button'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Switch } from '@/components/ui/switch'
 import { Phone, MessageCircle } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface SupportContactCardProps {
   onOpenContact: () => void
@@ -19,39 +28,37 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <Card>
-            <CardContent className="flex flex-col gap-3">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-secondary" aria-hidden />
-                  <h3 className="font-semibold" id="contact-hotline-title">Hotline</h3>
-                </div>
-                <p className="text-sm text-muted-foreground" id="contact-hotline-description">
+          <ItemGroup className="space-y-3">
+            <Item variant="outline" size="sm">
+              <ItemMedia variant="icon">
+                <Phone className="h-4 w-4 text-secondary" aria-hidden />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle id="contact-hotline-title">Hotline</ItemTitle>
+                <ItemDescription id="contact-hotline-description">
                   Best for urgent issues that block work.
-                </p>
-              </div>
-              <div className="flex justify-end">
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
                 <Badge variant="secondary">15 min avg</Badge>
-              </div>
-            </CardContent>
-          </Card>
+              </ItemActions>
+            </Item>
 
-          <Card>
-            <CardContent className="flex flex-col gap-3">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4 text-primary" aria-hidden />
-                  <h3 className="font-semibold" id="contact-chat-title">Chat</h3>
-                </div>
-                <p className="text-sm text-muted-foreground" id="contact-chat-description">
+            <Item variant="outline" size="sm">
+              <ItemMedia variant="icon">
+                <MessageCircle className="h-4 w-4 text-primary" aria-hidden />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle id="contact-chat-title">Chat</ItemTitle>
+                <ItemDescription id="contact-chat-description">
                   Great for multi-step troubleshooting.
-                </p>
-              </div>
-              <div className="flex justify-end">
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
                 <Badge variant="outline">Live 8a–8p</Badge>
-              </div>
-            </CardContent>
-          </Card>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
 
           <Separator />
 
@@ -72,9 +79,9 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
             <CardContent className="flex flex-col gap-3">
               <div className="space-y-1">
                 <h3 className="font-semibold" id="status-alerts-title">Status alerts</h3>
-                <p className="text-sm text-muted-foreground" id="status-alerts-description">
+                <CardDescription id="status-alerts-description">
                   Receive mobile and email alerts when ticket status changes or a fix is shipped.
-                </p>
+                </CardDescription>
               </div>
               <div className="flex justify-end">
                 <Switch

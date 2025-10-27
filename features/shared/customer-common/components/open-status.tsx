@@ -1,5 +1,11 @@
-import { Badge } from '@/components/ui/badge'
 import { Clock } from 'lucide-react'
+
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+} from '@/components/ui/item'
 import { cn } from '@/lib/utils'
 import { formatHourTo12Hour } from '@/lib/utils/date-time'
 
@@ -11,13 +17,19 @@ interface OpenStatusProps {
 
 export function OpenStatus({ isOpen, nextOpenTime, className }: OpenStatusProps) {
   return (
-    <Badge
-      variant={isOpen ? 'default' : 'secondary'}
-      className={cn('gap-1', className)}
+    <Item
+      variant={isOpen ? 'muted' : 'outline'}
+      className={cn('w-fit gap-2', className)}
     >
-      <Clock className="h-3 w-3" aria-hidden="true" />
-      {isOpen ? 'Open Now' : nextOpenTime ? `Opens ${nextOpenTime}` : 'Closed'}
-    </Badge>
+      <ItemMedia variant="icon">
+        <Clock className="h-3 w-3" aria-hidden="true" />
+      </ItemMedia>
+      <ItemContent>
+        <ItemDescription>
+          {isOpen ? 'Open Now' : nextOpenTime ? `Opens ${nextOpenTime}` : 'Closed'}
+        </ItemDescription>
+      </ItemContent>
+    </Item>
   )
 }
 

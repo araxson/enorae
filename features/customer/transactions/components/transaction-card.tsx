@@ -1,6 +1,19 @@
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { format } from 'date-fns'
+import { Badge } from '@/components/ui/badge'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { CustomerTransactionWithDetails } from '@/features/customer/transactions/api/queries'
 
 interface TransactionCardProps {
@@ -12,7 +25,9 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
     ? new Date(transaction.transaction_at)
     : new Date()
 
-  const getTypeColor = (type: string | null): "default" | "destructive" | "secondary" | "outline" => {
+  const getTypeColor = (
+    type: string | null,
+  ): 'default' | 'destructive' | 'secondary' | 'outline' => {
     if (!type) return 'outline'
     switch (type.toLowerCase()) {
       case 'sale':
@@ -42,34 +57,42 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-4">
-          {transaction.staff && (
-            <div>
-              <p className="text-sm text-muted-foreground">Staff Member</p>
-              <p className="leading-7">{transaction.staff.full_name}</p>
-            </div>
-          )}
+        <ItemGroup className="gap-3">
+          {transaction.staff ? (
+            <Item variant="muted">
+              <ItemContent>
+                <ItemTitle>Staff member</ItemTitle>
+                <ItemDescription className="text-foreground">
+                  {transaction.staff.full_name}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          ) : null}
 
-          {transaction.payment_method && (
-            <div>
-              <p className="text-sm text-muted-foreground">Payment Method</p>
-              <p className="leading-7 capitalize">{transaction.payment_method}</p>
-            </div>
-          )}
+          {transaction.payment_method ? (
+            <Item variant="muted">
+              <ItemContent>
+                <ItemTitle>Payment method</ItemTitle>
+                <ItemDescription className="capitalize">
+                  {transaction.payment_method}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          ) : null}
 
-          {transaction.appointment && (
-            <div>
-              <p className="text-sm text-muted-foreground">Related Appointment</p>
-              {transaction.appointment.start_time ? (
-                <p className="text-sm">
-                  {format(new Date(transaction.appointment.start_time), 'PPP')}
-                </p>
-              ) : (
-                <p className="text-sm text-muted-foreground">Scheduled time unavailable</p>
-              )}
-            </div>
-          )}
-        </div>
+          {transaction.appointment ? (
+            <Item variant="muted">
+              <ItemContent>
+                <ItemTitle>Related appointment</ItemTitle>
+                <ItemDescription>
+                  {transaction.appointment.start_time
+                    ? format(new Date(transaction.appointment.start_time), 'PPP')
+                    : 'Scheduled time unavailable'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          ) : null}
+        </ItemGroup>
       </CardContent>
     </Card>
   )

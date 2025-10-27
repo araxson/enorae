@@ -49,9 +49,9 @@ function TemplateCardComponent({ template, onEdit, onDelete, disabled }: Templat
         {template.subject ? (
           <p className="text-sm font-semibold">{template.subject}</p>
         ) : null}
-        <p className="text-sm text-muted-foreground whitespace-pre-line line-clamp-4">
-          {template.body}
-        </p>
+        <div className="whitespace-pre-line line-clamp-4">
+          <CardDescription>{template.body}</CardDescription>
+        </div>
         <ButtonGroup>
           <Button
             variant="outline"

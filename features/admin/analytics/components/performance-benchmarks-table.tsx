@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
@@ -19,6 +20,8 @@ const formatCurrencyCompact = (value: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', notation: 'compact', maximumFractionDigits: 1 }).format(value)
 
 export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmarksTableProps) {
+  const hasTopSalons = performance.topSalons.length > 0
+
   return (
     <Card>
       <CardHeader className="pb-4">
@@ -27,23 +30,21 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
       <CardContent className="space-y-4">
         <div className="grid gap-4 text-sm md:grid-cols-3">
           <div>
-            <p className="text-xs text-muted-foreground">Avg. utilization</p>
+            <CardDescription>Avg. utilization</CardDescription>
             <p className="text-xl font-semibold">{formatPercent(performance.avgUtilization)}</p>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Revenue per salon (30d)</p>
+            <CardDescription>Revenue per salon (30d)</CardDescription>
             <p className="text-xl font-semibold">{formatCurrencyCompact(performance.revenuePerSalon)}</p>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Appointments per salon</p>
+            <CardDescription>Appointments per salon</CardDescription>
             <p className="text-xl font-semibold">{performance.appointmentsPerSalon.toFixed(1)}</p>
           </div>
         </div>
 
         <ScrollArea className="w-full">
-          {performance.topSalons.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No salon-level benchmarks available.</p>
-          ) : (
+          {hasTopSalons ? (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -75,8 +76,15 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
                 ))}
               </TableBody>
             </Table>
+          ) : (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No salon benchmarks available</EmptyTitle>
+                <EmptyDescription>Salon performance insights appear after enough historical activity.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
-          {performance.topSalons.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+          {hasTopSalons ? <ScrollBar orientation="horizontal" /> : null}
         </ScrollArea>
       </CardContent>
     </Card>

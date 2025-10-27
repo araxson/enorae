@@ -16,7 +16,7 @@ import { toast } from 'sonner'
 import type { StatsFreshnessRecord } from '@/features/admin/statistics-freshness/api/queries'
 import { refreshTableStatistics } from '@/features/admin/statistics-freshness/api/mutations'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface FreshnessTableProps {
   tables: StatsFreshnessRecord[]
@@ -75,6 +75,7 @@ export function FreshnessTable({ tables }: FreshnessTableProps) {
                 <Empty>
                   <EmptyHeader>
                     <EmptyTitle>No table statistics available</EmptyTitle>
+                    <EmptyDescription>Run analyze jobs or connect a data source to populate freshness metrics.</EmptyDescription>
                   </EmptyHeader>
                 </Empty>
               </TableCell>

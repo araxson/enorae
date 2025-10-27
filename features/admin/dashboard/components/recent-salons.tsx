@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/features/shared/ui-components'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Table,
@@ -16,6 +15,14 @@ import type { AdminSalon } from '@/features/admin/salons'
 import { safeFormatDate } from './admin-overview-utils'
 import Link from 'next/link'
 import { ArrowUpRight, Building2 } from 'lucide-react'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface RecentSalonsProps {
   salons: AdminSalon[]
@@ -43,11 +50,16 @@ const getInitials = (name?: string | null): string => {
 export function RecentSalons({ salons }: RecentSalonsProps) {
   if (salons.length === 0) {
     return (
-      <EmptyState
-        icon={Building2}
-        title="No salons yet"
-        description="As soon as salons join the platform they will appear here."
-      />
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Building2 />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No salons yet</EmptyTitle>
+          <EmptyDescription>As soon as salons join, their onboarding progress appears here.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Invite partners or import salon data to populate this list.</EmptyContent>
+      </Empty>
     )
   }
 

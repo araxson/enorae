@@ -148,7 +148,7 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                             <Badge variant="secondary">Reports {thread.unresolvedReports}</Badge>
                           ) : null}
                           {!thread.hasFlaggedMessages && thread.unresolvedReports === 0 ? (
-                            <p className="text-xs text-muted-foreground">None</p>
+                            <Badge variant="outline">No signals</Badge>
                           ) : null}
                         </div>
                       </TableCell>

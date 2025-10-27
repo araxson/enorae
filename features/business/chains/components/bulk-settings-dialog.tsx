@@ -13,9 +13,17 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { updateChainSettings } from '@/features/business/chains/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type BulkSettingsDialogProps = {
   open: boolean
@@ -74,66 +82,74 @@ export function BulkSettingsDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="bookingLeadTimeHours">
-                Booking Lead Time (hours)
-              </Label>
-              <Input
-                id="bookingLeadTimeHours"
-                name="bookingLeadTimeHours"
-                type="number"
-                min="0"
-                placeholder="e.g., 24"
-              />
-              <p className="text-xs text-muted-foreground">
-                Minimum hours in advance customers must book
-              </p>
-            </div>
+          <FieldSet>
+            <FieldGroup className="space-y-4">
+              <Field>
+                <FieldLabel htmlFor="bookingLeadTimeHours">
+                  Booking Lead Time (hours)
+                </FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="bookingLeadTimeHours"
+                    name="bookingLeadTimeHours"
+                    type="number"
+                    min="0"
+                    placeholder="e.g., 24"
+                  />
+                  <FieldDescription>
+                    Minimum hours in advance customers must book
+                  </FieldDescription>
+                </FieldContent>
+              </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="cancellationHours">
-                Cancellation Policy (hours)
-              </Label>
-              <Input
-                id="cancellationHours"
-                name="cancellationHours"
-                type="number"
-                min="0"
-                placeholder="e.g., 48"
-              />
-              <p className="text-xs text-muted-foreground">
-                Hours before appointment when cancellation is allowed
-              </p>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="cancellationHours">
+                  Cancellation Policy (hours)
+                </FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="cancellationHours"
+                    name="cancellationHours"
+                    type="number"
+                    min="0"
+                    placeholder="e.g., 48"
+                  />
+                  <FieldDescription>
+                    Hours before appointment when cancellation is allowed
+                  </FieldDescription>
+                </FieldContent>
+              </Field>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="isAcceptingBookings">Accept Bookings</Label>
-                <p className="text-xs text-muted-foreground">
-                  Allow new bookings at all locations
-                </p>
-              </div>
-              <Switch
-                id="isAcceptingBookings"
-                checked={isAcceptingBookings}
-                onCheckedChange={setIsAcceptingBookings}
-              />
-            </div>
-          </div>
+              <Field>
+                <FieldLabel htmlFor="isAcceptingBookings">Accept Bookings</FieldLabel>
+                <FieldContent>
+                  <div className="flex items-center justify-between">
+                    <FieldDescription>Allow new bookings at all locations</FieldDescription>
+                    <Switch
+                      id="isAcceptingBookings"
+                      checked={isAcceptingBookings}
+                      onCheckedChange={setIsAcceptingBookings}
+                    />
+                  </div>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
           <DialogFooter className="mt-6">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Updating...' : 'Update All Locations'}
-            </Button>
+            <ButtonGroup>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Updating...' : 'Update All Locations'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </form>
       </DialogContent>

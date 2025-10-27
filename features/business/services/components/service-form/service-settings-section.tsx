@@ -1,7 +1,7 @@
 'use client'
 
 import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
+import { Field, FieldContent, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field'
 
 interface ServiceSettingsSectionProps {
   isActive: boolean
@@ -21,31 +21,35 @@ export function ServiceSettingsSection({
   onFeaturedChange,
 }: ServiceSettingsSectionProps) {
   return (
-    <section className="space-y-4">
-      <h3 className="text-sm font-medium">Settings</h3>
+    <FieldSet className="space-y-3">
+      <FieldLegend>Settings</FieldLegend>
 
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="isActive" className="cursor-pointer">
-            Active
-          </Label>
+      <Field orientation="horizontal" className="items-center justify-between">
+        <FieldLabel htmlFor="isActive" className="cursor-pointer">
+          Active
+        </FieldLabel>
+        <FieldContent className="flex justify-end">
           <Switch id="isActive" checked={isActive} onCheckedChange={onActiveChange} />
-        </div>
+        </FieldContent>
+      </Field>
 
-        <div className="flex items-center justify-between">
-          <Label htmlFor="isBookable" className="cursor-pointer">
-            Bookable Online
-          </Label>
+      <Field orientation="horizontal" className="items-center justify-between">
+        <FieldLabel htmlFor="isBookable" className="cursor-pointer">
+          Bookable online
+        </FieldLabel>
+        <FieldContent className="flex justify-end">
           <Switch id="isBookable" checked={isBookable} onCheckedChange={onBookableChange} />
-        </div>
+        </FieldContent>
+      </Field>
 
-        <div className="flex items-center justify-between">
-          <Label htmlFor="isFeatured" className="cursor-pointer">
-            Featured Service
-          </Label>
+      <Field orientation="horizontal" className="items-center justify-between">
+        <FieldLabel htmlFor="isFeatured" className="cursor-pointer">
+          Featured service
+        </FieldLabel>
+        <FieldContent className="flex justify-end">
           <Switch id="isFeatured" checked={isFeatured} onCheckedChange={onFeaturedChange} />
-        </div>
-      </div>
-    </section>
+        </FieldContent>
+      </Field>
+    </FieldSet>
   )
 }

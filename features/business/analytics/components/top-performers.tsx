@@ -3,7 +3,16 @@ import { Award, Star } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
 type TopPerformersProps = {
   services: Array<{ name: string; count: number; revenue: number }>
   staff: Array<{ name: string; title: string | null; count: number; revenue: number }>
@@ -37,29 +46,27 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
               </EmptyHeader>
             </Empty>
           ) : (
-            <div className="flex flex-col">
+            <ItemGroup className="gap-0">
               {services.map((service, index) => (
                 <Fragment key={service.name}>
-                  <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-                    <div className="flex items-center gap-4">
+                  <Item variant="outline" size="sm">
+                    <ItemMedia>
                       <Badge variant={index === 0 ? 'default' : 'outline'}>
                         #{index + 1}
                       </Badge>
-                      <div>
-                        <div className="font-medium">{service.name}</div>
-                        <p className="text-xs text-muted-foreground">
-                          {service.count} bookings
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>{service.name}</ItemTitle>
+                      <ItemDescription>{service.count} bookings</ItemDescription>
+                    </ItemContent>
+                    <ItemActions className="flex-none text-right">
                       <div className="font-semibold">{formatCurrency(service.revenue)}</div>
-                    </div>
-                  </article>
-                  {index < services.length - 1 ? <Separator /> : null}
+                    </ItemActions>
+                  </Item>
+                  {index < services.length - 1 ? <ItemSeparator /> : null}
                 </Fragment>
               ))}
-            </div>
+            </ItemGroup>
           )}
         </CardContent>
       </Card>
@@ -81,29 +88,29 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
               </EmptyHeader>
             </Empty>
           ) : (
-            <div className="flex flex-col">
+            <ItemGroup className="gap-0">
               {staff.map((member, index) => (
                 <Fragment key={member.name}>
-                  <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-                    <div className="flex items-center gap-4">
+                  <Item variant="outline" size="sm">
+                    <ItemMedia>
                       <Badge variant={index === 0 ? 'default' : 'outline'}>
                         #{index + 1}
                       </Badge>
-                      <div>
-                        <div className="font-medium">{member.name}</div>
-                        <p className="text-xs text-muted-foreground">
-                          {member.title || 'Staff'} • {member.count} appointments
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>{member.name}</ItemTitle>
+                      <ItemDescription>
+                        {member.title || 'Staff'} • {member.count} appointments
+                      </ItemDescription>
+                    </ItemContent>
+                    <ItemActions className="flex-none text-right">
                       <div className="font-semibold">{formatCurrency(member.revenue)}</div>
-                    </div>
-                  </article>
-                  {index < staff.length - 1 ? <Separator /> : null}
+                    </ItemActions>
+                  </Item>
+                  {index < staff.length - 1 ? <ItemSeparator /> : null}
                 </Fragment>
               ))}
-            </div>
+            </ItemGroup>
           )}
         </CardContent>
       </Card>

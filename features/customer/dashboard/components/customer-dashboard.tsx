@@ -32,9 +32,25 @@ import {
 } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { EmptyState, RefreshButton, LastUpdated } from '@/features/shared/ui-components'
+import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
 import { Separator } from '@/components/ui/separator'
 import { VIPStatusCard } from './vip-status-card'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export async function CustomerDashboardPage() {
   let upcomingAppointments
@@ -66,16 +82,26 @@ export async function CustomerDashboardPage() {
 
     return (
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        <EmptyState
-          icon={AlertCircle}
-          title="Error loading dashboard"
-          description="We couldn't load your dashboard data. Please try again."
-          action={
-            <Button asChild variant="outline">
-              <Link href="/customer">Refresh</Link>
-            </Button>
-          }
-        />
+        <Card>
+          <CardContent className="p-6">
+            <Empty>
+              <EmptyMedia variant="icon">
+                <AlertCircle className="h-6 w-6" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>Error loading dashboard</EmptyTitle>
+                <EmptyDescription>
+                  We couldn't load your dashboard data. Please try again.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <Button asChild variant="outline">
+                  <Link href="/customer">Refresh</Link>
+                </Button>
+              </EmptyContent>
+            </Empty>
+          </CardContent>
+        </Card>
       </div>
     )
   }
@@ -137,13 +163,19 @@ export async function CustomerDashboardPage() {
             </CardHeader>
             <CardContent>
               {!pastAppointments || pastAppointments.length === 0 ? (
-                <EmptyState
-                  icon={History}
-                  title="No past appointments"
-                  description="Your appointment history will appear here"
-                />
+                <Empty>
+                  <EmptyMedia variant="icon">
+                    <History className="h-6 w-6" />
+                  </EmptyMedia>
+                  <EmptyHeader>
+                    <EmptyTitle>No past appointments</EmptyTitle>
+                    <EmptyDescription>
+                      Your appointment history will appear here
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               ) : (
-                <div className="space-y-3">
+                <ItemGroup className="gap-3">
                   {pastAppointments.map((appointment) => {
                     if (!appointment?.['id']) return null
 
@@ -157,27 +189,25 @@ export async function CustomerDashboardPage() {
                       : 'Date not available'
 
                     return (
-                      <Card key={appointment['id']}>
-                        <CardHeader>
-                          <CardTitle>{appointment['service_names'] || 'Service'}</CardTitle>
-                          <CardDescription>
+                      <Item key={appointment['id']} variant="outline" size="sm">
+                        <ItemContent>
+                          <ItemHeader>
+                            <ItemTitle>{appointment['service_names'] || 'Service'}</ItemTitle>
+                            <Badge variant="secondary">
+                              {appointment['status'] ?? 'pending'}
+                            </Badge>
+                          </ItemHeader>
+                          <ItemDescription>
                             {appointment['salon_name']
                               ? `at ${appointment['salon_name']}`
                               : 'Salon not specified'}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex flex-wrap items-center justify-between gap-3">
-                            <span className="text-sm text-muted-foreground">{appointmentDate}</span>
-                            <span className="text-sm text-muted-foreground capitalize">
-                              {appointment['status'] ?? 'pending'}
-                            </span>
-                          </div>
-                        </CardContent>
-                      </Card>
+                          </ItemDescription>
+                          <div className="text-sm text-muted-foreground">{appointmentDate}</div>
+                        </ItemContent>
+                      </Item>
                     )
                   })}
-                </div>
+                </ItemGroup>
               )}
             </CardContent>
           </Card>

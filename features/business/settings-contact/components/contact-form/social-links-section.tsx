@@ -1,7 +1,12 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 
 type PrimitiveValue = string | null | undefined
 
@@ -29,19 +34,21 @@ const SOCIAL_FIELDS: Array<{ id: keyof SocialLinks; label: string; placeholder: 
 
 export function SocialLinksSection({ initialValues }: SocialLinksSectionProps) {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-2">
       {SOCIAL_FIELDS.map(({ id, label, placeholder }) => (
-        <div key={id} className="flex flex-col gap-3">
-          <Label htmlFor={id}>{label}</Label>
-          <Input
-            id={id}
-            name={id}
-            type="url"
-            defaultValue={initialValues[id] ?? ''}
-            placeholder={placeholder}
-          />
-        </div>
+        <Field key={id}>
+          <FieldLabel htmlFor={id}>{label}</FieldLabel>
+          <FieldContent>
+            <Input
+              id={id}
+              name={id}
+              type="url"
+              defaultValue={initialValues[id] ?? ''}
+              placeholder={placeholder}
+            />
+          </FieldContent>
+        </Field>
       ))}
-    </div>
+    </FieldGroup>
   )
 }

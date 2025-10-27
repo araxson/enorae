@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Shield, Building2 } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 
 type UserRole = Database['identity']['Tables']['user_roles']['Row']
 
@@ -51,9 +52,17 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
 
             return (
               <Card key={userRole.id}>
-                <CardHeader className="flex items-center justify-between gap-3">
-                  <CardTitle>{getRoleDisplayName(userRole.role)}</CardTitle>
-                  <Badge variant={getRoleBadgeVariant(userRole.role)}>{badgeLabel}</Badge>
+                <CardHeader>
+                  <ItemGroup>
+                    <Item>
+                      <ItemContent>
+                        <CardTitle>{getRoleDisplayName(userRole.role)}</CardTitle>
+                      </ItemContent>
+                      <ItemActions className="flex-none">
+                        <Badge variant={getRoleBadgeVariant(userRole.role)}>{badgeLabel}</Badge>
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {userRole.salon_id && (

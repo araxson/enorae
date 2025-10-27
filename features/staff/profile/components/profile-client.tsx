@@ -2,7 +2,7 @@
 
 import { User, Briefcase, Edit } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
@@ -16,6 +16,13 @@ import { PortfolioGallery } from './portfolio-gallery'
 import type { Database } from '@/lib/types/database.types'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type StaffProfile = Database['public']['Views']['staff_enriched_view']['Row']
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row'] | null
@@ -99,18 +106,16 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
                   <p className="text-xl font-semibold leading-tight">
                     {profile.name || 'Staff member'}
                   </p>
-                  {profile.title && <p className="text-muted-foreground">{profile.title}</p>}
-                  {profile.email && (
-                    <p className="text-sm text-muted-foreground">{profile.email}</p>
-                  )}
+                  {profile.title ? <CardDescription>{profile.title}</CardDescription> : null}
+                  {profile.email ? <CardDescription>{profile.email}</CardDescription> : null}
                 </div>
 
                 {profile.salon_name && (
                   <>
                     <Separator />
                     <div className="space-y-1">
-                      <p className="text-sm font-medium">Salon</p>
-                      <p className="text-sm text-muted-foreground">{profile.salon_name}</p>
+                      <Badge variant="outline">Salon</Badge>
+                      <CardDescription>{profile.salon_name}</CardDescription>
                     </div>
                   </>
                 )}
@@ -142,22 +147,28 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {profile['title'] && (
-                      <div>
-                        <p className="text-sm font-medium">Title</p>
-                        <p className="text-sm text-muted-foreground">{profile['title']}</p>
-                      </div>
-                    )}
-                    {profile['experience_years'] !== null && profile['experience_years'] !== undefined && (
-                      <div>
-                        <p className="text-sm font-medium">Experience</p>
-                        <p className="text-sm text-muted-foreground">
-                          {profile['experience_years']} years
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                  <ItemGroup className="grid gap-4 sm:grid-cols-2">
+                    {profile['title'] ? (
+                      <Item variant="outline" size="sm">
+                        <ItemContent>
+                          <ItemTitle>
+                            <Badge variant="outline">Title</Badge>
+                          </ItemTitle>
+                          <ItemDescription>{profile['title']}</ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    ) : null}
+                    {profile['experience_years'] !== null && profile['experience_years'] !== undefined ? (
+                      <Item variant="outline" size="sm">
+                        <ItemContent>
+                          <ItemTitle>
+                            <Badge variant="outline">Experience</Badge>
+                          </ItemTitle>
+                          <ItemDescription>{profile['experience_years']} years</ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    ) : null}
+                  </ItemGroup>
                 </CardContent>
               </Card>
 
@@ -170,9 +181,9 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="whitespace-pre-wrap text-sm text-muted-foreground">
-                      {profile['bio']}
-                    </p>
+                    <div className="whitespace-pre-wrap">
+                      <CardDescription>{profile['bio']}</CardDescription>
+                    </div>
                   </CardContent>
                 </Card>
               )}

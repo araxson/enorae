@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { AppointmentSnapshot } from '@/features/admin/appointments/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface NoShowPanelProps {
   noShows: AppointmentSnapshot['noShows']
@@ -30,7 +31,12 @@ export function NoShowPanel({ noShows }: NoShowPanelProps) {
         </div>
 
         {noShows.recent.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No recent no-show events.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No recent no-show events</EmptyTitle>
+              <EmptyDescription>The tracker updates as guests miss scheduled appointments.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="space-y-2">
             {noShows.recent.map((item) => (

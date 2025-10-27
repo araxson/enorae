@@ -1,9 +1,17 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Clock } from 'lucide-react'
 import type { OperatingHours } from '@/features/staff/operating-hours/types'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface OperatingHoursCardProps {
   hours: OperatingHours[]
@@ -21,41 +29,52 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex gap-3 items-center">
-          <Clock className="h-5 w-5" aria-hidden="true" />
-          <CardTitle>Operating Hours</CardTitle>
-        </div>
+        <Item variant="muted" size="sm">
+          <ItemMedia variant="icon">
+            <Clock className="h-5 w-5" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <CardTitle>Operating Hours</CardTitle>
+          </ItemContent>
+        </Item>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3">
+      <CardContent>
+        <ItemGroup className="flex flex-col gap-3">
           {sortedHours.map((hour) => {
             const isToday = hour['day_of_week'] === today
 
             return (
-              <div
+              <Item
                 key={hour['id']}
-                className={cn('flex gap-4 items-center justify-between', isToday ? 'font-semibold' : '')}
+                variant="outline"
+                size="sm"
+                className={cn(isToday ? 'border-primary/60' : '')}
               >
-                <div className="flex gap-3 items-center">
-                  <p className="capitalize min-w-24">
-                    {hour['day_of_week']}
-                  </p>
-                  {isToday && <Badge variant="default">Today</Badge>}
-                </div>
-
-                {hour['is_closed'] ? (
-                  <Badge variant="secondary">Closed</Badge>
-                ) : (
-                  <p className="text-sm text-muted-foreground">{hour['hours_display']}</p>
-                )}
-              </div>
+                <ItemContent>
+                  <ItemTitle>
+                    <span className="capitalize">{hour['day_of_week']}</span>
+                  </ItemTitle>
+                </ItemContent>
+                <ItemActions>
+                  <div className="flex items-center gap-2">
+                    {isToday ? <Badge variant="default">Today</Badge> : null}
+                    {hour['is_closed'] ? (
+                      <Badge variant="secondary">Closed</Badge>
+                    ) : (
+                      <ItemDescription>{hour['hours_display']}</ItemDescription>
+                    )}
+                  </div>
+                </ItemActions>
+              </Item>
             )
           })}
+        </ItemGroup>
       </CardContent>
       {sortedHours[0]?.['salon_name'] && (
         <>
           <Separator />
           <CardFooter>
-            <p className="text-xs text-muted-foreground">{sortedHours[0]['salon_name']}</p>
+            <CardDescription>{sortedHours[0]['salon_name']}</CardDescription>
           </CardFooter>
         </>
       )}

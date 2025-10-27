@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { getStatusVariant } from './utils'
 import type { AppointmentDetailContentProps } from './types'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 export function AppointmentHeader({ appointment }: Pick<AppointmentDetailContentProps, 'appointment'>) {
   if (!appointment) return null
@@ -11,12 +12,16 @@ export function AppointmentHeader({ appointment }: Pick<AppointmentDetailContent
 
   return (
     <>
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-sm text-muted-foreground">
-          {appointment['confirmation_code'] || 'No code'}
-        </span>
-        <Badge variant={getStatusVariant(appointment['status'])}>{statusLabel}</Badge>
-      </div>
+      <ItemGroup>
+        <Item>
+          <ItemContent>
+            <ItemDescription>{appointment['confirmation_code'] || 'No code'}</ItemDescription>
+          </ItemContent>
+          <ItemActions className="flex-none">
+            <Badge variant={getStatusVariant(appointment['status'])}>{statusLabel}</Badge>
+          </ItemActions>
+        </Item>
+      </ItemGroup>
       <Separator />
     </>
   )

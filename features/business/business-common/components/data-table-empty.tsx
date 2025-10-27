@@ -1,12 +1,12 @@
 import { LucideIcon } from 'lucide-react'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { Button } from '@/components/ui/button'
 
 interface DataTableEmptyProps {
@@ -26,19 +26,21 @@ export function DataTableEmpty({
   action,
 }: DataTableEmptyProps) {
   return (
-    <Card>
-      <CardHeader className="items-center justify-center">
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center justify-center gap-4 py-8">
-        {Icon && <Icon className="h-16 w-16 text-muted-foreground" aria-hidden="true" />}
-      </CardContent>
-      {action && (
-        <CardFooter className="justify-center">
-          <Button variant="default" onClick={action.onClick}>{action.label}</Button>
-        </CardFooter>
-      )}
-    </Card>
+    <Empty>
+      {Icon ? (
+        <EmptyMedia variant="icon">
+          <Icon className="h-6 w-6" aria-hidden="true" />
+        </EmptyMedia>
+      ) : null}
+      <EmptyHeader>
+        <EmptyTitle>{title}</EmptyTitle>
+        <EmptyDescription>{description}</EmptyDescription>
+      </EmptyHeader>
+      {action ? (
+        <EmptyContent>
+          <Button onClick={action.onClick}>{action.label}</Button>
+        </EmptyContent>
+      ) : null}
+    </Empty>
   )
 }

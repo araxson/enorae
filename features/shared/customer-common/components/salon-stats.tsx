@@ -1,5 +1,13 @@
 import { Users, Scissors } from 'lucide-react'
-import { cn } from "@/lib/utils";
+
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
+import { cn } from '@/lib/utils'
 
 interface SalonStatsProps {
   staffCount?: number | null
@@ -15,23 +23,31 @@ export function SalonStats({ staffCount, servicesCount, className }: SalonStatsP
   }
 
   return (
-    <div className={cn('flex gap-4 items-center', className)}>
+    <ItemGroup className={cn('flex flex-wrap gap-3', className)}>
       {staffCount && staffCount > 0 && (
-        <div className="flex gap-2 items-center">
-          <Users className="h-4 w-4 text-muted-foreground" />
-          <p className="text-sm font-medium text-muted-foreground">
-            {staffCount} {staffCount === 1 ? 'staff member' : 'staff'}
-          </p>
-        </div>
+        <Item variant="muted">
+          <ItemMedia variant="icon">
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemDescription>
+              {staffCount} {staffCount === 1 ? 'staff member' : 'staff'}
+            </ItemDescription>
+          </ItemContent>
+        </Item>
       )}
       {servicesCount && servicesCount > 0 && (
-        <div className="flex gap-2 items-center">
-          <Scissors className="h-4 w-4 text-muted-foreground" />
-          <p className="text-sm font-medium text-muted-foreground">
-            {servicesCount} {servicesCount === 1 ? 'service' : 'services'}
-          </p>
-        </div>
+        <Item variant="muted">
+          <ItemMedia variant="icon">
+            <Scissors className="h-4 w-4 text-muted-foreground" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemDescription>
+              {servicesCount} {servicesCount === 1 ? 'service' : 'services'}
+            </ItemDescription>
+          </ItemContent>
+        </Item>
       )}
-    </div>
+    </ItemGroup>
   )
 }

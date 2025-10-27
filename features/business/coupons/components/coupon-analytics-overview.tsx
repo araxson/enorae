@@ -8,6 +8,14 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } fro
 import { format } from 'date-fns'
 import type { CouponAnalyticsSnapshot } from '@/features/business/coupons/api/queries/coupon-validation'
 import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries/coupon-validation'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type CouponAnalyticsOverviewProps = {
   analytics: CouponAnalyticsSnapshot
@@ -20,66 +28,94 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
     <div className="flex flex-col gap-8">
       <div className="grid gap-4 grid-cols-1 md:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Discount Issued</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Total Discount Issued</CardTitle>
+                  <CardDescription>
+                    Avg ${summary.totals.averageDiscount.toFixed(2)} per redemption
+                  </CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <DollarSign className="h-4 w-4" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${summary.totals.totalDiscount.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground">
-              Avg ${summary.totals.averageDiscount.toFixed(2)} per redemption
-            </p>
+          <CardContent className="text-2xl font-bold">
+            ${summary.totals.totalDiscount.toFixed(2)}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Redemptions</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Total Redemptions</CardTitle>
+                  <CardDescription>
+                    Across {analytics.coupons.length} coupons
+                  </CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <Activity className="h-4 w-4" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{summary.totals.totalUses}</div>
-            <p className="text-xs text-muted-foreground">
-              Across {analytics.coupons.length} coupons
-            </p>
-          </CardContent>
+          <CardContent className="text-2xl font-bold">{summary.totals.totalUses}</CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Active Campaigns</CardTitle>
-            <Award className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Active Campaigns</CardTitle>
+                  <CardDescription>{summary.expiringSoon.length} expiring soon</CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <Award className="h-4 w-4" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{summary.totals.activeCoupons}</div>
-            <p className="text-xs text-muted-foreground">
-              {summary.expiringSoon.length} expiring soon
-            </p>
-          </CardContent>
+          <CardContent className="text-2xl font-bold">{summary.totals.activeCoupons}</CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Best Performer</CardTitle>
-            <CalendarClock className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Best Performer</CardTitle>
+                  {summary.topCoupon ? (
+                    <ItemDescription>{summary.topCoupon.stats.totalUses} uses</ItemDescription>
+                  ) : null}
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <CalendarClock className="h-4 w-4" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             {summary.topCoupon ? (
-              <>
-                <div className="flex items-center gap-2">
-                  <div className="font-mono text-sm">
-                    <Badge variant="secondary">{summary.topCoupon.code}</Badge>
-                  </div>
-                  <span className="text-sm text-muted-foreground">
-                    {summary.topCoupon.stats.totalUses} uses
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">
-                  ${summary.topCoupon.stats.totalDiscount.toFixed(2)} in discounts
-                </p>
-              </>
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <ItemTitle>
+                      <Badge variant="secondary">{summary.topCoupon.code}</Badge>
+                    </ItemTitle>
+                    <ItemDescription>
+                      ${summary.topCoupon.stats.totalDiscount.toFixed(2)} in discounts
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             ) : (
-              <p className="text-sm text-muted-foreground">No redemptions yet</p>
+              <CardDescription>No redemptions yet</CardDescription>
             )}
           </CardContent>
         </Card>
@@ -155,31 +191,29 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
             <CardTitle>Expiring Soon</CardTitle>
             <CardDescription>Coupons ending within the next 7 days</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {summary.expiringSoon.map((coupon) => (
-                <Card key={coupon.id}>
-                  <CardContent className="flex flex-wrap items-center justify-between gap-4">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <div className="font-mono text-xs">
-                          <Badge variant="secondary">{coupon.code}</Badge>
-                        </div>
-                        <span className="text-sm font-medium">{coupon.description}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {coupon.valid_until
-                          ? format(new Date(coupon.valid_until), 'MMM d, yyyy')
-                          : 'No expiry date'}
-                      </p>
-                    </div>
-                    <Badge variant="outline">{coupon.stats.totalUses} uses</Badge>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <CardContent>
+          <ItemGroup className="flex flex-col gap-3">
+            {summary.expiringSoon.map((coupon) => (
+              <Item key={coupon.id} variant="outline" className="flex-wrap items-center justify-between gap-4">
+                <ItemContent>
+                  <ItemTitle>
+                    <Badge variant="secondary">{coupon.code}</Badge>
+                    <span>{coupon.description}</span>
+                  </ItemTitle>
+                  <ItemDescription>
+                    {coupon.valid_until
+                      ? format(new Date(coupon.valid_until), 'MMM d, yyyy')
+                      : 'No expiry date'}
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Badge variant="outline">{coupon.stats.totalUses} uses</Badge>
+                </ItemActions>
+              </Item>
+            ))}
+          </ItemGroup>
+        </CardContent>
+      </Card>
       ) : null}
     </div>
   )

@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ScrollArea } from '@/components/ui/scroll-area'
 import type { MessagesOverview } from './admin-overview-types'
 import { safeFormatDate } from './admin-overview-utils'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type MessagesTabProps = {
   messages: MessagesOverview[]
@@ -18,7 +19,12 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">No messages have been received today.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No messages yet</EmptyTitle>
+              <EmptyDescription>Inbound and outbound messages will appear as conversations start.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

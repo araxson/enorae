@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/table'
 import type { MessageActivityPoint } from '@/features/admin/messages/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface MessagesActivityTableProps {
   activity: MessageActivityPoint[]
@@ -26,6 +27,7 @@ const formatMinutes = (value: number | null) => {
 export function MessagesActivityTable({ activity }: MessagesActivityTableProps) {
   const totalInbound = activity.reduce((sum, item) => sum + item.inbound, 0)
   const totalOutbound = activity.reduce((sum, item) => sum + item.outbound, 0)
+  const hasVolume = activity.some((point) => point.inbound > 0 || point.outbound > 0)
 
   return (
     <Card>
@@ -35,9 +37,7 @@ export function MessagesActivityTable({ activity }: MessagesActivityTableProps) 
       </CardHeader>
       <CardContent className="space-y-4">
         <ScrollArea className="w-full">
-          {activity.every((point) => point.inbound === 0 && point.outbound === 0) ? (
-            <p className="text-sm text-muted-foreground">No message activity recorded within the selected window.</p>
-          ) : (
+          {hasVolume ? (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -66,10 +66,15 @@ export function MessagesActivityTable({ activity }: MessagesActivityTableProps) 
                 </TableRow>
               </TableBody>
             </Table>
+          ) : (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No message activity recorded</EmptyTitle>
+                <EmptyDescription>Inbound and outbound messages will populate after the first interactions.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
-          {activity.every((point) => point.inbound === 0 && point.outbound === 0) ? null : (
-            <ScrollBar orientation="horizontal" />
-          )}
+          {hasVolume ? <ScrollBar orientation="horizontal" /> : null}
         </ScrollArea>
       </CardContent>
     </Card>

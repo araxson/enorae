@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PricingGrid } from './pricing-grid'
 import { PricingFormDialog } from './pricing-form-dialog'
 import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
@@ -43,9 +43,7 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
         <div className="flex gap-4 items-start justify-between">
           <div>
             <h1 className="text-4xl font-bold">Service Pricing</h1>
-            <p className="text-sm text-muted-foreground">
-              Manage pricing for your salon services
-            </p>
+            <CardDescription>Manage pricing for your salon services</CardDescription>
           </div>
           <Button onClick={handleAddPricing}>Add Pricing</Button>
         </div>

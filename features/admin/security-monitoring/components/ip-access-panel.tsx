@@ -2,6 +2,7 @@ import { Network, CheckCircle2, XCircle } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { IpAccessEvent } from '@/features/admin/security-monitoring/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface IpAccessPanelProps {
   events: IpAccessEvent[]
@@ -18,7 +19,12 @@ export function IpAccessPanel({ events }: IpAccessPanelProps) {
       </CardHeader>
       <CardContent>
         {events.length === 0 ? (
-          <CardDescription>No access attempts recorded.</CardDescription>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No access attempts recorded</EmptyTitle>
+              <EmptyDescription>IP access logs populate once firewall events are captured.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="flex flex-col gap-2">
             {events.slice(0, 8).map((event) => (

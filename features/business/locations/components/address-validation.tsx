@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { LocationAddress } from './address-form/types'
+import { Spinner } from '@/components/ui/spinner'
 
 type ValidationResult = {
   isValid: boolean
@@ -138,7 +139,11 @@ export function AddressValidation({ address }: Props) {
             disabled={isValidating || !address}
             className="w-full"
           >
-            <RefreshCw className={`h-4 w-4 mr-2 ${isValidating ? 'animate-spin' : ''}`} />
+            {isValidating ? (
+              <Spinner className="mr-2" />
+            ) : (
+              <RefreshCw className="h-4 w-4 mr-2" />
+            )}
             {isValidating ? 'Validating...' : 'Validate Address'}
           </Button>
 

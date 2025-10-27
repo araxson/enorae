@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
@@ -27,6 +28,8 @@ const formatCurrencyCompact = (value: number) =>
 export function GrowthTrendPanel({ series }: GrowthTrendPanelProps) {
   const rows = series.slice(-14).reverse()
 
+  const hasRows = rows.length > 0
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
@@ -34,9 +37,7 @@ export function GrowthTrendPanel({ series }: GrowthTrendPanelProps) {
       </CardHeader>
       <CardContent>
         <ScrollArea className="w-full">
-          {rows.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No analytics snapshots available yet.</p>
-          ) : (
+          {hasRows ? (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -61,8 +62,15 @@ export function GrowthTrendPanel({ series }: GrowthTrendPanelProps) {
                 ))}
               </TableBody>
             </Table>
+          ) : (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No analytics snapshots available</EmptyTitle>
+                <EmptyDescription>Growth metrics populate after the first data refresh window.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
-          {rows.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+          {hasRows ? <ScrollBar orientation="horizontal" /> : null}
         </ScrollArea>
       </CardContent>
     </Card>

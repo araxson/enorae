@@ -1,6 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { DollarSign, Star } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+} from '@/components/ui/item'
 
 type ServicePerformance = {
   service_id: string
@@ -29,26 +36,28 @@ export function RevenueLeaders({ services, formatCurrency }: RevenueLeadersProps
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-4">
+        <ItemGroup className="flex flex-col gap-4">
           {topServices.map((service, index) => (
-            <div key={service.service_id} className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
+            <Item key={service.service_id}>
+              <ItemContent className="flex items-center gap-3">
                 <Badge variant={index === 0 ? 'default' : 'secondary'}>#{index + 1}</Badge>
                 <div>
-                  <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">{service.service_name}</h4>
-                  <p className="text-muted-foreground">{service.total_bookings} bookings</p>
+                  <ItemTitle className="text-lg font-semibold">
+                    {service.service_name}
+                  </ItemTitle>
+                  <ItemDescription>{service.total_bookings} bookings</ItemDescription>
                 </div>
-              </div>
-              <div className="text-right">
+              </ItemContent>
+              <ItemActions className="flex-none text-right">
                 <p>{formatCurrency(service.total_revenue)}</p>
                 <div className="flex items-center gap-1 text-muted-foreground">
                   <Star className="h-3 w-3 text-accent" />
                   {service.avg_rating?.toFixed(1) || 'N/A'}
                 </div>
-              </div>
-            </div>
+              </ItemActions>
+            </Item>
           ))}
-        </div>
+        </ItemGroup>
       </CardContent>
     </Card>
   )

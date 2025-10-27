@@ -2,6 +2,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Calendar, CheckCircle, Heart, TrendingUp } from 'lucide-react'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface CustomerMetricsProps {
   metrics: {
@@ -46,15 +55,24 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
     },
   ]
 
+  const hasActivity =
+    metrics.upcomingAppointments > 0 ||
+    metrics.completedAppointments > 0 ||
+    metrics.favorites > 0
+
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-sm text-muted-foreground">Your activity</p>
-        <div className="flex items-center gap-2">
-          <TrendingUp className="h-3 w-3" />
-          <Badge variant={activityVariant}>{activityLevel} user</Badge>
-        </div>
-      </div>
+      <ItemGroup>
+        <Item>
+          <ItemContent>
+            <ItemDescription>Your activity</ItemDescription>
+          </ItemContent>
+          <ItemActions className="flex-none items-center gap-2">
+            <TrendingUp className="h-3 w-3" />
+            <Badge variant={activityVariant}>{activityLevel} user</Badge>
+          </ItemActions>
+        </Item>
+      </ItemGroup>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map(({ label, value, description, icon: Icon, progress, showHearts }) => (
@@ -64,10 +82,16 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
               <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between">
-                <p className="text-2xl font-semibold text-foreground">{value}</p>
-                <Icon className="h-5 w-5" aria-hidden="true" />
-              </div>
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <span className="text-2xl font-semibold text-foreground">{value}</span>
+                  </ItemContent>
+                  <ItemActions className="flex-none">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
 
               {typeof showHearts === 'number' && showHearts > 0 ? (
                 <div className="flex flex-wrap items-center gap-1 pt-3">
@@ -87,6 +111,27 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
           </Card>
         ))}
       </div>
+
+      {!hasActivity ? (
+        <Card>
+          <CardContent className="p-6">
+            <Empty>
+              <EmptyMedia variant="icon">
+                <Calendar className="h-6 w-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No activity yet</EmptyTitle>
+                <EmptyDescription>
+                  Start booking appointments and saving favorites to build your history.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                Returning here after a visit will show your progress and rewards.
+              </EmptyContent>
+            </Empty>
+          </CardContent>
+        </Card>
+      ) : null}
     </section>
   )
 }

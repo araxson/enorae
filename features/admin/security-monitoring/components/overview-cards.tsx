@@ -3,6 +3,13 @@ import { Activity, AlertTriangle, ShieldAlert, UserX, Lock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { SecurityMonitoringSnapshot, SecurityMetric } from '@/features/admin/security-monitoring/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 interface OverviewCardsProps {
   snapshot: SecurityMonitoringSnapshot
@@ -70,10 +77,16 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
         {overviewDescriptors.map(({ key, label, description, icon: Icon }) => (
           <Card key={key}>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>{label}</CardTitle>
-                <Icon className="h-4 w-4" aria-hidden="true" />
-              </div>
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <CardTitle>{label}</CardTitle>
+                  </ItemContent>
+                  <ItemActions className="flex-none">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
               <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
@@ -83,17 +96,23 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
         ))}
       </div>
 
-      {metrics.length > 0 && (
+      {metrics.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {metrics.slice(0, 8).map((metric) => (
             <Card key={metric.key}>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>{metric.label}</CardTitle>
-                  <Badge variant={STATUS_VARIANT[metric.status] ?? 'outline'}>
-                    {statusLabel(metric.status)}
-                  </Badge>
-                </div>
+                <ItemGroup>
+                  <Item>
+                    <ItemContent>
+                      <CardTitle>{metric.label}</CardTitle>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <Badge variant={STATUS_VARIANT[metric.status] ?? 'outline'}>
+                        {statusLabel(metric.status)}
+                      </Badge>
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-1">
@@ -108,6 +127,13 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
             </Card>
           ))}
         </div>
+      ) : (
+        <Empty>
+          <EmptyHeader>
+            <EmptyTitle>No metric insights yet</EmptyTitle>
+            <EmptyDescription>Trend cards populate once observability signals meet the minimum sample size.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       )}
     </div>
   )

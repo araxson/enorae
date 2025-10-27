@@ -1,6 +1,5 @@
 'use client'
 
-import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -12,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Spinner } from '@/components/ui/spinner'
 import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
 import {
   CostProfitSection,
@@ -91,7 +91,7 @@ export function PricingFormDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {loading ? <Spinner className="mr-2" /> : null}
               {editPricing ? 'Update Pricing' : 'Add Pricing'}
             </Button>
           </DialogFooter>

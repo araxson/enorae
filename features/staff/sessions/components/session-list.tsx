@@ -9,6 +9,13 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { revokeSession } from '@/features/staff/sessions/api/mutations'
 import type { StaffSessionDetail } from '@/features/staff/sessions/types'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface SessionListProps {
   sessions: StaffSessionDetail[]
@@ -48,11 +55,19 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
 
   if (activeSessions.length === 0) {
     return (
-      <Alert className="flex flex-col items-center gap-3 py-8">
-        <Monitor className="h-12 w-12 text-muted-foreground" />
-        <AlertTitle>No active sessions</AlertTitle>
-        <AlertDescription>Sign in on a device to see sessions here.</AlertDescription>
-      </Alert>
+      <Card>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Monitor className="h-12 w-12 text-muted-foreground" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No active sessions</EmptyTitle>
+              <EmptyDescription>Sign in on a device to see sessions here.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 

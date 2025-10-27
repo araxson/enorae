@@ -17,7 +17,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import type { UserRoleWithDetails } from '@/features/business/settings-roles/api/queries'
 import { format } from 'date-fns'
 
@@ -58,11 +65,16 @@ const ROLE_COLORS: Record<string, 'default' | 'secondary' | 'destructive' | 'out
 export function RolesList({ roles, onEdit, onDeactivate }: RolesListProps) {
   if (roles.length === 0) {
     return (
-      <Alert>
-        <Shield className="h-4 w-4" />
-        <AlertTitle>No user roles found</AlertTitle>
-        <AlertDescription>Roles will appear once they are created.</AlertDescription>
-      </Alert>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Shield className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No user roles found</EmptyTitle>
+          <EmptyDescription>Roles will appear once they are created.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Create roles to assign permissions and manage team access.</EmptyContent>
+      </Empty>
     )
   }
 

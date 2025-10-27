@@ -1,5 +1,6 @@
 import { Sparkles } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface FeatureUsagePanelProps {
@@ -19,7 +20,12 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
       </CardHeader>
       <CardContent>
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No feature usage telemetry returned.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No feature usage telemetry</EmptyTitle>
+              <EmptyDescription>Signals will appear once product instrumentation reports recent events.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="space-y-2">
             {items.map((item) => (
@@ -28,9 +34,9 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
                   <CardTitle>{item.key}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <p className="text-sm text-muted-foreground">
+                  <CardDescription>
                     {item.count.toLocaleString('en-US')} hits
-                  </p>
+                  </CardDescription>
                 </CardContent>
               </Card>
             ))}

@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
@@ -16,6 +15,15 @@ import {
 } from '@/components/ui/dialog'
 import { createSalonLocation, updateSalonLocation } from '@/features/business/locations/api/mutations'
 import type { SalonLocation } from '@/features/business/locations'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type LocationFormProps = {
   location?: SalonLocation | null
@@ -67,60 +75,70 @@ export function LocationForm({ location, open, onOpenChange }: LocationFormProps
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            {location && (
-              <input type="hidden" name="id" value={location['id'] || ''} />
-            )}
+          <FieldSet>
+            <FieldGroup className="grid gap-4 py-4">
+              {location ? <input type="hidden" name="id" value={location['id'] || ''} /> : null}
 
-            <div className="grid gap-2">
-              <Label htmlFor="name">Location Name *</Label>
-              <Input
-                id="name"
-                name="name"
-                defaultValue={location?.['name'] ?? ''}
-                required
-                maxLength={200}
-                placeholder="Main Branch"
-              />
-            </div>
+              <Field>
+                <FieldLabel htmlFor="name">Location Name *</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="name"
+                    name="name"
+                    defaultValue={location?.['name'] ?? ''}
+                    required
+                    maxLength={200}
+                    placeholder="Main Branch"
+                  />
+                </FieldContent>
+              </Field>
 
-            <div className="grid gap-2">
-              <Label htmlFor="slug">URL Slug *</Label>
-              <Input
-                id="slug"
-                name="slug"
-                defaultValue={location?.['slug'] ?? ''}
-                required
-                maxLength={200}
-                placeholder="main-branch"
-                pattern="[a-z0-9-]+"
-              />
-            </div>
+              <Field>
+                <FieldLabel htmlFor="slug">URL Slug *</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="slug"
+                    name="slug"
+                    defaultValue={location?.['slug'] ?? ''}
+                    required
+                    maxLength={200}
+                    placeholder="main-branch"
+                    pattern="[a-z0-9-]+"
+                  />
+                  <FieldDescription>Use lowercase letters, numbers, and dashes only.</FieldDescription>
+                </FieldContent>
+              </Field>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="isPrimary"
-                checked={isPrimary}
-                onCheckedChange={(checked) => setIsPrimary(checked as boolean)}
-              />
-              <Label htmlFor="isPrimary">
-                Set as primary location
-              </Label>
-            </div>
-          </div>
+              <Field>
+                <FieldLabel htmlFor="isPrimary">Set as primary location</FieldLabel>
+                <FieldContent>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="isPrimary"
+                      checked={isPrimary}
+                      onCheckedChange={(checked) => setIsPrimary(checked as boolean)}
+                    />
+                    <FieldDescription>Mark as the default location for the business.</FieldDescription>
+                  </div>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : location ? 'Update' : 'Create'}
-            </Button>
+            <ButtonGroup>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Saving...' : location ? 'Update' : 'Create'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </form>
       </DialogContent>

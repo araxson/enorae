@@ -1,12 +1,23 @@
-import { MarketingExplore } from '@/features/marketing/explore'
-import { generateMetadata as genMeta } from '@/lib/metadata'
+import { Suspense } from 'react'
 
-export const metadata = genMeta({
-  title: 'Explore Salons',
-  description: 'Discover and book appointments at the best salons in your area',
-  keywords: ['explore salons', 'find beauty salon', 'book salon appointment'],
-})
+import { Spinner } from '@/components/ui/spinner'
+import {
+  MarketingExplorePage,
+  exploreSEO,
+} from '@/features/marketing/explore'
+
+export const metadata = exploreSEO
 
 export default async function ExplorePage() {
-  return <MarketingExplore />
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-16">
+          <Spinner className="size-6 text-muted-foreground" />
+        </div>
+      }
+    >
+      <MarketingExplorePage />
+    </Suspense>
+  )
 }

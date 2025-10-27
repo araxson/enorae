@@ -13,6 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { DatabaseHealthSnapshot } from '@/features/admin/database-health/api/database-health'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface DatabaseHealthPanelProps {
   data: DatabaseHealthSnapshot
@@ -78,9 +79,12 @@ export function DatabaseHealthPanel({ data }: DatabaseHealthPanelProps) {
               </TableBody>
             </Table>
             {bloatedTables.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No table bloat detected</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No table bloat detected</EmptyTitle>
+                  <EmptyDescription>Tables remain within healthy vacuum thresholds.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
 
@@ -120,9 +124,12 @@ export function DatabaseHealthPanel({ data }: DatabaseHealthPanelProps) {
               </TableBody>
             </Table>
             {cachePerformance.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No cache data available</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No cache data available</EmptyTitle>
+                  <EmptyDescription>Once cache hit metrics arrive, they will populate here.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
 
@@ -174,9 +181,12 @@ export function DatabaseHealthPanel({ data }: DatabaseHealthPanelProps) {
               </TableBody>
             </Table>
             {hotUpdateStats.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No HOT update data available</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No HOT update data available</EmptyTitle>
+                  <EmptyDescription>HOT update telemetry appears once write volume meets monitoring thresholds.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
 
@@ -216,9 +226,12 @@ export function DatabaseHealthPanel({ data }: DatabaseHealthPanelProps) {
               </TableBody>
             </Table>
             {toastUsage.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No TOAST usage data available</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No TOAST usage data available</EmptyTitle>
+                  <EmptyDescription>Large object storage metrics will surface when TOAST usage is observed.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
         </Tabs>

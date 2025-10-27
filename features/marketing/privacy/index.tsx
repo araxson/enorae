@@ -1,5 +1,0 @@
-export * from './components'
-export { privacyMetadata } from './components/privacy-metadata'
-export * from './api/queries'
-export { Hero } from './components/sections/hero'
-export { Content } from './components/sections/content'

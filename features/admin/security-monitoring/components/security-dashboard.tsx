@@ -5,7 +5,6 @@ import { formatDistanceToNow } from 'date-fns'
 import { RefreshCw, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { cn } from '@/lib/utils'
 import type { SecurityMonitoringSnapshot } from '@/features/admin/security-monitoring/types'
 import { OverviewCards } from './overview-cards'
 import { SecurityEventsPanel } from './security-events-panel'
@@ -14,6 +13,7 @@ import { FailedLoginsPanel } from './failed-logins-panel'
 import { RateLimitPanel } from './rate-limit-panel'
 import { IpAccessPanel } from './ip-access-panel'
 import { IncidentResponsePanel } from './incident-response-panel'
+import { Spinner } from '@/components/ui/spinner'
 
 interface SecurityDashboardProps {
   snapshot: SecurityMonitoringSnapshot
@@ -82,7 +82,7 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
             Auto-refresh 15s
           </p>
           <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
-            <RefreshCw className={cn('mr-2 h-4 w-4', isRefreshing && 'animate-spin')} />
+            {isRefreshing ? <Spinner className="mr-2 h-4 w-4" /> : <RefreshCw className="mr-2 h-4 w-4" />}
             Refresh
           </Button>
         </div>

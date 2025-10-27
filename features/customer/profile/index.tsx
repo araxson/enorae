@@ -4,13 +4,13 @@ import { AppointmentsList } from './components/appointments-list'
 import { ProfileHeader } from './components/profile-header'
 import { getProfile, getUserAppointments } from './api/queries'
 
-import { PageLoading } from '@/features/shared/ui-components'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { MetadataForm } from '@/features/shared/profile-metadata'
 import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
 import { ProfileEditForm } from '@/features/shared/profile/components/profile-edit-form'
 import { UsernameForm } from '@/features/shared/profile/components/username-form'
+import { Spinner } from '@/components/ui/spinner'
 
 export const customerProfileMetadata = genMeta({
 
@@ -52,7 +52,13 @@ export async function CustomerProfile() {
 
 export function CustomerProfileFeature() {
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner />
+        </div>
+      }
+    >
       <CustomerProfile />
     </Suspense>
   )

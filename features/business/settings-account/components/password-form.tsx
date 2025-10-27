@@ -2,11 +2,24 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Loader2, CheckCircle, AlertCircle, Eye, EyeOff } from 'lucide-react'
+import { CheckCircle, AlertCircle, Eye, EyeOff } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 import { updatePassword } from '@/features/business/settings-account/api/mutations'
 
 export function PasswordForm() {
@@ -60,120 +73,111 @@ export function PasswordForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-6">
-            {success && (
-              <Alert>
-                <CheckCircle className="h-4 w-4" />
+          <FieldSet>
+            <FieldGroup className="gap-6">
+              {success && (
+                <Alert>
+                  <CheckCircle className="h-4 w-4" />
                 <AlertTitle>Password updated</AlertTitle>
                 <AlertDescription>Password updated successfully</AlertDescription>
               </Alert>
-            )}
+              )}
 
-            {error && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Update failed</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+              {error && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Update failed</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
 
-            <div>
-              <Label htmlFor="current-password">Current Password</Label>
-              <div className="relative">
-                <Input
-                  id="current-password"
-                  type={showCurrent ? 'text' : 'password'}
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  required
-                  disabled={isSubmitting}
-                  className="pr-10"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3"
-                  onClick={() => setShowCurrent(!showCurrent)}
-                  disabled={isSubmitting}
-                >
-                  {showCurrent ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="current-password">Current Password</FieldLabel>
+                <FieldContent>
+                  <InputGroup data-disabled={isSubmitting}>
+                    <InputGroupInput
+                      id="current-password"
+                      type={showCurrent ? 'text' : 'password'}
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      required
+                      disabled={isSubmitting}
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton
+                        onClick={() => setShowCurrent(!showCurrent)}
+                        disabled={isSubmitting}
+                        variant="ghost"
+                        size="icon-sm"
+                      >
+                        {showCurrent ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                </FieldContent>
+              </Field>
 
-            <div>
-              <Label htmlFor="new-password">New Password</Label>
-              <div className="relative">
-                <Input
-                  id="new-password"
-                  type={showNew ? 'text' : 'password'}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                  minLength={8}
-                  disabled={isSubmitting}
-                  className="pr-10"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3"
-                  onClick={() => setShowNew(!showNew)}
-                  disabled={isSubmitting}
-                >
-                  {showNew ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                Must be at least 8 characters
-              </p>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="new-password">New Password</FieldLabel>
+                <FieldContent>
+                  <InputGroup data-disabled={isSubmitting}>
+                    <InputGroupInput
+                      id="new-password"
+                      type={showNew ? 'text' : 'password'}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                      minLength={8}
+                      disabled={isSubmitting}
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton
+                        onClick={() => setShowNew(!showNew)}
+                        disabled={isSubmitting}
+                        variant="ghost"
+                        size="icon-sm"
+                      >
+                        {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <FieldDescription>Must be at least 8 characters</FieldDescription>
+                </FieldContent>
+              </Field>
 
-            <div>
-              <Label htmlFor="confirm-password">Confirm New Password</Label>
-              <div className="relative">
-                <Input
-                  id="confirm-password"
-                  type={showConfirm ? 'text' : 'password'}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  minLength={8}
-                  disabled={isSubmitting}
-                  className="pr-10"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3"
-                  onClick={() => setShowConfirm(!showConfirm)}
-                  disabled={isSubmitting}
-                >
-                  {showConfirm ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="confirm-password">Confirm New Password</FieldLabel>
+                <FieldContent>
+                  <InputGroup data-disabled={isSubmitting}>
+                    <InputGroupInput
+                      id="confirm-password"
+                      type={showConfirm ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      minLength={8}
+                      disabled={isSubmitting}
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton
+                        onClick={() => setShowConfirm(!showConfirm)}
+                        disabled={isSubmitting}
+                        variant="ghost"
+                        size="icon-sm"
+                      >
+                        {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                </FieldContent>
+              </Field>
 
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Update Password
-            </Button>
-          </div>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? <Spinner className="mr-2" /> : null}
+                Update Password
+              </Button>
+            </FieldGroup>
+          </FieldSet>
         </form>
       </CardContent>
     </Card>

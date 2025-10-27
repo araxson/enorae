@@ -2,6 +2,7 @@ import { Users, Fingerprint } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { FailedLoginSummary } from '@/features/admin/security-monitoring/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface FailedLoginsPanelProps {
   summary: FailedLoginSummary
@@ -11,7 +12,12 @@ const TopList = ({ title, items }: { title: string; items: FailedLoginSummary['b
   <div>
     <h3 className="scroll-m-20 text-xl font-semibold tracking-tight mb-2">{title}</h3>
     {items.length === 0 ? (
-      <CardDescription>No data</CardDescription>
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>No data available</EmptyTitle>
+          <EmptyDescription>{title} will populate once failed attempts are recorded.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     ) : (
       <ul className="mt-2 flex flex-col gap-1">
         {items.slice(0, 5).map((item) => (
@@ -57,7 +63,12 @@ export function FailedLoginsPanel({ summary }: FailedLoginsPanelProps) {
             <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Recent Attempts</h3>
           </div>
           {summary.attempts.length === 0 ? (
-            <CardDescription>No failed logins recorded.</CardDescription>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No failed logins recorded</EmptyTitle>
+                <EmptyDescription>Authentication failures will surface here for quick investigation.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <div className="flex flex-col gap-2">
               {summary.attempts.slice(0, 6).map((attempt) => (

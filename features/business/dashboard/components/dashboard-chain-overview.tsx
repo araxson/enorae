@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import type { BusinessMultiLocationMetrics } from '@/features/business/dashboard/types'
 import { getAccentStripeClass, type MetricAccent } from './metric-card'
 
@@ -102,18 +103,24 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
             <AccordionTrigger>Chain health metrics</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="text-sm font-medium text-muted-foreground">Confirmation rate</div>
-                    <div className="text-sm font-medium text-muted-foreground">{appointmentFill}%</div>
-                  </div>
-                  <Progress value={appointmentFill} aria-label="Confirmation rate progress" />
-                </div>
-                <div className="flex flex-wrap items-center gap-4">
-                  <Badge variant="outline">Staff: {metrics.totalStaff}</Badge>
-                  <Badge variant="outline">Services: {metrics.totalServices}</Badge>
-                  <Badge variant="outline">Pending: {metrics.pendingAppointments}</Badge>
-                </div>
+                <Field>
+                  <FieldLabel>Confirmation rate</FieldLabel>
+                  <FieldContent className="gap-2">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <span>Network average</span>
+                      <span>{appointmentFill}%</span>
+                    </div>
+                    <Progress value={appointmentFill} aria-label="Confirmation rate progress" />
+                  </FieldContent>
+                </Field>
+                <Field>
+                  <FieldLabel>Key counts</FieldLabel>
+                  <FieldContent className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline">Staff: {metrics.totalStaff}</Badge>
+                    <Badge variant="outline">Services: {metrics.totalServices}</Badge>
+                    <Badge variant="outline">Pending: {metrics.pendingAppointments}</Badge>
+                  </FieldContent>
+                </Field>
               </div>
             </AccordionContent>
           </AccordionItem>

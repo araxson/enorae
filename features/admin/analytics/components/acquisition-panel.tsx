@@ -1,6 +1,19 @@
 import { Users, Globe2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 
 interface AcquisitionPanelProps {
@@ -37,18 +50,25 @@ export function AcquisitionPanel({ acquisition }: AcquisitionPanelProps) {
           <div>
             <p className="mb-2 text-xs font-semibold text-muted-foreground">Top roles</p>
             {byRole.length === 0 ? (
-              <p className="text-xs text-muted-foreground">No recent user role data.</p>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No role distribution yet</EmptyTitle>
+                  <EmptyDescription>Role-level adoption appears after new users complete onboarding.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             ) : (
-              <ul className="space-y-2">
+              <ItemGroup>
                 {byRole.map((item) => (
-                  <li key={item.label} className="flex items-center justify-between">
-                    <span className="font-medium text-foreground">{item.label}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {item.count.toLocaleString('en-US')} · {(item.percentage * 100).toFixed(1)}%
-                    </span>
-                  </li>
+                  <Item key={item.label} variant="outline">
+                    <ItemContent>
+                      <ItemTitle>{item.label}</ItemTitle>
+                      <ItemDescription>
+                        {item.count.toLocaleString('en-US')} users · {(item.percentage * 100).toFixed(1)}%
+                      </ItemDescription>
+                    </ItemContent>
+                  </Item>
                 ))}
-              </ul>
+              </ItemGroup>
             )}
           </div>
 
@@ -58,18 +78,25 @@ export function AcquisitionPanel({ acquisition }: AcquisitionPanelProps) {
               Top countries
             </p>
             {byCountry.length === 0 ? (
-              <p className="text-xs text-muted-foreground">No geographic acquisition data.</p>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No geographic acquisition data</EmptyTitle>
+                  <EmptyDescription>Country insights populate once location telemetry is available.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             ) : (
-              <ul className="space-y-2">
+              <ItemGroup>
                 {byCountry.map((item) => (
-                  <li key={item.label} className="flex items-center justify-between">
-                    <span className="font-medium text-foreground">{item.label}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {item.count.toLocaleString('en-US')} · {(item.percentage * 100).toFixed(1)}%
-                    </span>
-                  </li>
+                  <Item key={item.label} variant="outline">
+                    <ItemContent>
+                      <ItemTitle>{item.label}</ItemTitle>
+                      <ItemDescription>
+                        {item.count.toLocaleString('en-US')} users · {(item.percentage * 100).toFixed(1)}%
+                      </ItemDescription>
+                    </ItemContent>
+                  </Item>
                 ))}
-              </ul>
+              </ItemGroup>
             )}
           </div>
         </div>

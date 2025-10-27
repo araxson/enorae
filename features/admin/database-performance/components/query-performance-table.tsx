@@ -73,7 +73,7 @@ export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
                       {query.recommended_index}
                     </Badge>
                   ) : (
-                    <span className="text-xs text-muted-foreground">None</span>
+                    <Badge variant="secondary">No index</Badge>
                   )}
                 </TableCell>
               </TableRow>

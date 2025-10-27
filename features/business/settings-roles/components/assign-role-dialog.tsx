@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -20,6 +19,14 @@ import {
 } from '@/components/ui/select'
 import { assignUserRole } from '@/features/business/settings-roles/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface AssignRoleDialogProps {
   open: boolean
@@ -98,40 +105,48 @@ export function AssignRoleDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="user">Staff Member</Label>
-              <Select value={selectedUserId} onValueChange={setSelectedUserId}>
-                <SelectTrigger id="user">
-                  <SelectValue placeholder="Select staff member" />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableStaff.map((staff) => (
-                    <SelectItem key={staff.id} value={staff.id}>
-                      {staff.full_name || staff.email}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <FieldSet>
+            <FieldGroup className="gap-4">
+              <Field>
+                <FieldLabel htmlFor="user">Staff Member</FieldLabel>
+                <FieldContent>
+                  <Select value={selectedUserId} onValueChange={setSelectedUserId}>
+                    <SelectTrigger id="user">
+                      <SelectValue placeholder="Select staff member" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableStaff.map((staff) => (
+                        <SelectItem key={staff.id} value={staff.id}>
+                          {staff.full_name || staff.email}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <Select value={selectedRole} onValueChange={setSelectedRole}>
-                <SelectTrigger id="role">
-                  <SelectValue placeholder="Select role" />
-                </SelectTrigger>
-                <SelectContent>
-                  {ROLES.map((role) => (
-                    <SelectItem key={role.value} value={role.value}>
-                      {role.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="role">Role</FieldLabel>
+                <FieldContent>
+                  <Select value={selectedRole} onValueChange={setSelectedRole}>
+                    <SelectTrigger id="role">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ROLES.map((role) => (
+                        <SelectItem key={role.value} value={role.value}>
+                          {role.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
-            <DialogFooter>
+          <DialogFooter>
+            <ButtonGroup>
               <Button
                 type="button"
                 variant="outline"
@@ -143,8 +158,8 @@ export function AssignRoleDialog({
               <Button type="submit" disabled={isPending}>
                 {isPending ? 'Assigning...' : 'Assign Role'}
               </Button>
-            </DialogFooter>
-          </div>
+            </ButtonGroup>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

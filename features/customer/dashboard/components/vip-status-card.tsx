@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 
 import type { CustomerVipStatus } from '@/features/customer/dashboard/api/queries'
 
@@ -62,13 +63,19 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
                 <CardDescription>{description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between">
-                  <p className="text-2xl font-semibold text-foreground">{value}</p>
-                  <Badge variant="outline">{badgeText}</Badge>
-                </div>
+                <ItemGroup>
+                  <Item>
+                    <ItemContent>
+                      <span className="text-2xl font-semibold text-foreground">{value}</span>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <Badge variant="outline">{badgeText}</Badge>
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardContent>
               <CardFooter>
-                <p className="text-sm text-muted-foreground">{footer}</p>
+                <CardDescription>{footer}</CardDescription>
               </CardFooter>
             </Card>
           ))}
@@ -79,29 +86,31 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
                 <CardDescription>Current monthly spend</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
-                    <p className="text-2xl font-semibold text-foreground">
-                      ${vipStatus.monthlySpend.toLocaleString()}
-                    </p>
-                  </div>
-                  <Badge variant="outline">Monthly total</Badge>
-                </div>
+                <ItemGroup>
+                  <Item>
+                    <ItemContent className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <span className="text-2xl font-semibold text-foreground">
+                        ${vipStatus.monthlySpend.toLocaleString()}
+                      </span>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <Badge variant="outline">Monthly total</Badge>
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardContent>
               <CardFooter>
-                <p className="text-sm text-muted-foreground">
-                  Points will post once appointments complete.
-                </p>
+                <CardDescription>Points will post once appointments complete.</CardDescription>
               </CardFooter>
             </Card>
           ) : null}
         </div>
       </CardContent>
       <CardFooter>
-        <p className="text-sm text-muted-foreground">
+        <CardDescription>
           Maintain VIP status by meeting monthly spend requirements.
-        </p>
+        </CardDescription>
       </CardFooter>
     </Card>
   )

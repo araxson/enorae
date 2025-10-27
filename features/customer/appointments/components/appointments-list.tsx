@@ -4,9 +4,16 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/features/shared/ui-components'
 import { CalendarX } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type Appointment = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
@@ -34,16 +41,26 @@ const formatStatus = (status: AppointmentStatus | 'pending') =>
 export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
-      <EmptyState
-        icon={CalendarX}
-        title="No appointments yet"
-        description="Book your first appointment at a salon"
-        action={
-          <Button asChild>
-            <Link href="/customer/salons">Browse salons</Link>
-          </Button>
-        }
-      />
+      <Card>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <CalendarX className="h-6 w-6" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No appointments yet</EmptyTitle>
+              <EmptyDescription>
+                Book your first appointment at a salon
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild>
+                <Link href="/customer/salons">Browse salons</Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 
@@ -57,22 +74,26 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
           </CardHeader>
           <CardContent className="p-6 pt-0 space-y-3">
             <div className="space-y-1">
-              <p className="text-sm">
-                {appointment['start_time'] &&
-                  new Date(appointment['start_time']).toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {appointment['start_time'] &&
-                  new Date(appointment['start_time']).toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-              </p>
+              {appointment['start_time'] ? (
+                <>
+                  <CardDescription>
+                    {new Date(appointment['start_time']).toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </CardDescription>
+                  <CardDescription>
+                    <time dateTime={appointment['start_time']}>
+                      {new Date(appointment['start_time']).toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </time>
+                  </CardDescription>
+                </>
+              ) : null}
             </div>
 
             <div>

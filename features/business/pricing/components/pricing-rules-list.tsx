@@ -2,11 +2,25 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Trash2 } from 'lucide-react'
 import { togglePricingRuleStatus, deletePricingRule } from '@/features/business/pricing/api/pricing-rules.mutations'
 import { useToast } from '@/lib/hooks/use-toast'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface PricingRule {
   id: string
@@ -79,60 +93,73 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
 
   if (rules.length === 0) {
     return (
-      <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>No pricing rules configured yet.</CardTitle>
-          <CardDescription>Create your first dynamic pricing rule to optimize revenue.</CardDescription>
-        </CardHeader>
-      </Card>
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>No pricing rules configured yet.</EmptyTitle>
+          <EmptyDescription>Create your first dynamic pricing rule to optimize revenue.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     )
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <ItemGroup className="flex flex-col gap-4">
       {rules.map((rule) => (
-        <Card key={rule.id}>
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <CardTitle>{rule.rule_name}</CardTitle>
+        <Item key={rule.id} variant="outline" className="flex flex-col items-start gap-3">
+          <ItemHeader>
+            <ItemTitle>{rule.rule_name}</ItemTitle>
+            <div className="flex flex-wrap items-center gap-2">
               <Badge variant="outline">{getRuleTypeLabel(rule.rule_type)}</Badge>
               {rule.is_active ? <Badge variant="default">Active</Badge> : null}
             </div>
-            <CardDescription>
-              Priority {rule.priority}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3 pt-0">
-            <div className="text-sm text-muted-foreground space-y-1">
+          </ItemHeader>
+          <ItemContent>
+            <ItemDescription>Priority {rule.priority}</ItemDescription>
+            <div className="space-y-1 text-sm text-muted-foreground">
               {rule.multiplier && rule.multiplier !== 1 ? (
-                <p>Multiplier: {rule.multiplier}x ({((rule.multiplier - 1) * 100).toFixed(0)}% {rule.multiplier > 1 ? 'increase' : 'decrease'})</p>
+                <p>
+                  Multiplier: {rule.multiplier}x ({((rule.multiplier - 1) * 100).toFixed(0)}%{' '}
+                  {rule.multiplier > 1 ? 'increase' : 'decrease'})
+                </p>
               ) : null}
               {rule.fixed_adjustment && rule.fixed_adjustment !== 0 ? (
-                <p>Fixed: {rule.fixed_adjustment > 0 ? '+' : ''}{rule.fixed_adjustment}</p>
+                <p>
+                  Fixed: {rule.fixed_adjustment > 0 ? '+' : ''}
+                  {rule.fixed_adjustment}
+                </p>
               ) : null}
               {rule.start_time && rule.end_time ? (
-                <p>Time: {rule.start_time} - {rule.end_time}</p>
+                <p>
+                  Time: {rule.start_time} - {rule.end_time}
+                </p>
               ) : null}
-              {(rule.valid_from || rule.valid_until) ? (
-                <p>Season: {rule.valid_from || 'now'} → {rule.valid_until || 'ongoing'}</p>
+              {rule.valid_from || rule.valid_until ? (
+                <p>
+                  Season: {rule.valid_from || 'now'} → {rule.valid_until || 'ongoing'}
+                </p>
               ) : null}
               {rule.customer_segment ? (
                 <p>Segment: {rule.customer_segment.replace(/_/g, ' ')}</p>
               ) : null}
             </div>
-            <div className="flex items-center gap-2">
-              <Switch
-                checked={rule.is_active}
-                onCheckedChange={() => handleToggle(rule.id, rule.is_active)}
-                aria-label={`Toggle pricing rule ${rule.rule_name} ${rule.is_active ? 'inactive' : 'active'}`}
-              />
-              <Button variant="ghost" size="icon" onClick={() => handleDelete(rule.id)} aria-label={`Delete pricing rule ${rule.rule_name}`}>
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+          </ItemContent>
+          <ItemActions>
+            <Switch
+              checked={rule.is_active}
+              onCheckedChange={() => handleToggle(rule.id, rule.is_active)}
+              aria-label={`Toggle pricing rule ${rule.rule_name} ${rule.is_active ? 'inactive' : 'active'}`}
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => handleDelete(rule.id)}
+              aria-label={`Delete pricing rule ${rule.rule_name}`}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </ItemActions>
+        </Item>
       ))}
-    </div>
+    </ItemGroup>
   )
 }

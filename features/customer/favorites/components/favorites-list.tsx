@@ -7,6 +7,14 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { FavoriteWithSalon } from '@/features/customer/favorites/api/queries'
 import { FavoriteButton } from './favorite-button'
 import { FavoriteNotesButton } from './favorite-notes-button'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface FavoritesListProps {
   favorites: FavoriteWithSalon[]
@@ -16,17 +24,24 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
   if (favorites.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center space-y-2">
-          <CardTitle>No favorite salons yet</CardTitle>
-          <CardDescription>
-            Start exploring salons and save your favorites for quick access.
-          </CardDescription>
-        </CardHeader>
-        <CardFooter className="justify-center">
-          <Button asChild>
-            <Link href="/customer/salons">Browse salons</Link>
-          </Button>
-        </CardFooter>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <MapPin className="h-6 w-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No favorite salons yet</EmptyTitle>
+              <EmptyDescription>
+                Start exploring salons and save your favorites for quick access.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild>
+                <Link href="/customer/salons">Browse salons</Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
+        </CardContent>
       </Card>
     )
   }

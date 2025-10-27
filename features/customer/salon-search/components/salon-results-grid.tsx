@@ -3,8 +3,17 @@
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { MapPin, Star, Shield, Sparkles, TrendingUp } from 'lucide-react'
+import { MapPin, Star, Shield, Sparkles, TrendingUp, Search } from 'lucide-react'
+import { Item, ItemActions, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
 import type { SalonSearchResult } from '@/features/customer/salon-search/api/queries'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface SalonResultsGridProps {
   results: SalonSearchResult[]
@@ -50,18 +59,22 @@ function SalonCard({ salon, featured = false }: SalonCardProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-accent text-accent" />
-              <p className="text-sm text-muted-foreground">{formatRating(salon.rating_average)}</p>
-            </div>
-            {featured && <Badge variant="secondary">Featured</Badge>}
-            {!featured && salon.similarity_score && (
-              <Badge variant="outline">
-                {Math.round(salon.similarity_score * 100)}% match
-              </Badge>
-            )}
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent className="flex items-center gap-2">
+                <Star className="h-4 w-4 fill-accent text-accent" />
+                <ItemTitle>{formatRating(salon.rating_average)}</ItemTitle>
+              </ItemContent>
+              <ItemActions className="flex-none gap-2">
+                {featured && <Badge variant="secondary">Featured</Badge>}
+                {!featured && salon.similarity_score && (
+                  <Badge variant="outline">
+                    {Math.round(salon.similarity_score * 100)}% match
+                  </Badge>
+                )}
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardContent>
       </Card>
     </Link>
@@ -108,14 +121,19 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {/* No Results */}
       {showNoResults && (
         <Card>
-          <CardHeader className="text-center">
-            <CardTitle>No salons found</CardTitle>
-            <CardDescription>Nothing matches your current filters.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground text-center">
-              Adjust your search term or remove filters to broaden the results.
-            </p>
+          <CardContent className="p-6">
+            <Empty>
+              <EmptyMedia variant="icon">
+                <Search className="h-6 w-6" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No salons found</EmptyTitle>
+                <EmptyDescription>Nothing matches your current filters.</EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                Adjust your search term or remove filters to broaden the results.
+              </EmptyContent>
+            </Empty>
           </CardContent>
         </Card>
       )}

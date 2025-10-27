@@ -48,6 +48,9 @@ export function CustomersTab({ customerRelationships }: CustomersTabProps) {
               <EmptyTitle>No customer data available</EmptyTitle>
               <EmptyDescription>Invite customers back to populate this list.</EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>
+              <p className="text-sm text-muted-foreground">Follow up with recent visitors or encourage rebooking to surface top customers.</p>
+            </EmptyContent>
           </Empty>
         )}
       </CardContent>

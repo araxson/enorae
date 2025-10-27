@@ -11,6 +11,14 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Calendar, Clock, User, Hash } from 'lucide-react'
 import type { StaffAppointment, AppointmentStatus } from '@/features/staff/appointments/api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type AppointmentDetailDialogProps = {
   appointment: StaffAppointment | null
@@ -52,79 +60,89 @@ export function AppointmentDetailDialog({
             <Badge variant={config.variant}>{config.label}</Badge>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="flex gap-3 items-start">
-              <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-xs text-muted-foreground">Date</p>
-                <p className="font-medium">
+          <ItemGroup className="grid gap-4 md:grid-cols-2">
+            <Item>
+              <ItemMedia variant="icon">
+                <Calendar className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Date</ItemTitle>
+                <ItemDescription>
                   {appointment['start_time']
                     ? format(new Date(appointment['start_time']), 'EEEE, MMMM dd, yyyy')
                     : 'N/A'}
-                </p>
-              </div>
-            </div>
+                </ItemDescription>
+              </ItemContent>
+            </Item>
 
-            <div className="flex gap-3 items-start">
-              <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-xs text-muted-foreground">Time</p>
-                <p className="font-medium">
+            <Item>
+              <ItemMedia variant="icon">
+                <Clock className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Time</ItemTitle>
+                <ItemDescription>
                   {appointment['start_time']
                     ? format(new Date(appointment['start_time']), 'h:mm a')
                     : 'N/A'}
-                  {appointment['duration_minutes'] && ` (${appointment['duration_minutes']} min)`}
-                </p>
-              </div>
-            </div>
-          </div>
+                  {appointment['duration_minutes'] ? ` (${appointment['duration_minutes']} min)` : ''}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
 
           <Separator />
 
           <div>
             <p className="font-semibold mb-3">Customer Information</p>
-            <div className="flex flex-col gap-3">
-              <div className="flex gap-3 items-start">
-                <User className="h-5 w-5 text-muted-foreground mt-0.5" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Customer ID</p>
-                  <p>{appointment.customer_id ?? 'No customer assigned'}</p>
-                </div>
-              </div>
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemMedia variant="icon">
+                  <User className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Customer ID</ItemTitle>
+                  <ItemDescription>{appointment.customer_id ?? 'No customer assigned'}</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
 
           <Separator />
 
           <div>
             <p className="font-semibold mb-3">Appointment Details</p>
-            <div className="flex flex-col gap-3">
+            <ItemGroup>
               {appointment.confirmation_code ? (
-                <div className="flex gap-3 items-start">
-                  <Hash className="h-5 w-5 text-muted-foreground mt-0.5" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Confirmation code</p>
-                    <p>{appointment.confirmation_code}</p>
-                  </div>
-                </div>
+                <Item>
+                  <ItemMedia variant="icon">
+                    <Hash className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>Confirmation code</ItemTitle>
+                    <ItemDescription>{appointment.confirmation_code}</ItemDescription>
+                  </ItemContent>
+                </Item>
               ) : null}
 
               {appointment.duration_minutes ? (
-                <div className="flex gap-3 items-start">
-                  <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Duration</p>
-                    <p className="font-medium">{appointment.duration_minutes} minutes</p>
-                  </div>
-                </div>
+                <Item>
+                  <ItemMedia variant="icon">
+                    <Clock className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>Duration</ItemTitle>
+                    <ItemDescription>{appointment.duration_minutes} minutes</ItemDescription>
+                  </ItemContent>
+                </Item>
               ) : null}
+            </ItemGroup>
 
-              {!appointment.duration_minutes && !appointment.confirmation_code ? (
-                <p className="text-sm text-muted-foreground">
-                  Additional appointment details are not available in the current view.
-                </p>
-              ) : null}
-            </div>
+            {!appointment.duration_minutes && !appointment.confirmation_code ? (
+              <p className="text-sm text-muted-foreground">
+                Additional appointment details are not available in the current view.
+              </p>
+            ) : null}
           </div>
 
           {/* TODO: Add notes field to appointments view if needed */}

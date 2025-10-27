@@ -4,10 +4,17 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
 import { Send } from 'lucide-react'
 import { threadMessageSchema, type ThreadMessageFormData } from '@/features/staff/messages/schema'
 import { sendThreadMessage } from '@/features/staff/messages/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface MessageFormProps {
   threadId: string
@@ -46,29 +53,29 @@ export function MessageForm({ threadId, onSuccess }: MessageFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-4">
-        <div>
-          <Label htmlFor="content">Message</Label>
-          <Textarea
-            id="content"
-            placeholder="Type your message..."
-            rows={4}
-            {...register('content')}
-          />
-          {errors.content && (
-            <p className="text-sm text-destructive mt-1">{errors.content.message}</p>
-          )}
-        </div>
+      <FieldSet className="gap-4">
+        <Field>
+          <FieldLabel htmlFor="content">Message</FieldLabel>
+          <FieldContent>
+            <Textarea
+              id="content"
+              placeholder="Type your message..."
+              rows={4}
+              {...register('content')}
+            />
+            {errors.content ? <FieldError>{errors.content.message}</FieldError> : null}
+          </FieldContent>
+        </Field>
 
-        {error && (
-          <p className="text-sm text-destructive">{error}</p>
-        )}
+        {error ? <FieldError>{error}</FieldError> : null}
 
-        <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-          <Send className="h-4 w-4 mr-2" />
-          {isSubmitting ? 'Sending...' : 'Send Message'}
-        </Button>
-      </div>
+        <ButtonGroup className="w-full sm:w-auto">
+          <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+            <Send className="h-4 w-4 mr-2" />
+            {isSubmitting ? 'Sending...' : 'Send Message'}
+          </Button>
+        </ButtonGroup>
+      </FieldSet>
     </form>
   )
 }

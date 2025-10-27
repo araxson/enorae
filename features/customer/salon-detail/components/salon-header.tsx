@@ -16,6 +16,14 @@ import {
   ContactInfo,
 } from '@/features/shared/customer-common/components'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Salon = Database['public']['Views']['salons_view']['Row'] & {
   booking_lead_time_hours?: number | null
@@ -99,45 +107,62 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
         </div>
       </CardHeader>
       <CardContent className="space-y-6 px-6 pb-6">
-        <div className="flex flex-wrap items-center gap-4">
-          {salon['rating_average'] && (
-            <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-accent text-accent" />
-              <span className="text-sm text-muted-foreground">
-                {Number(salon['rating_average']).toFixed(1)}
-              </span>
-              {salon['rating_count'] && (
-                <span className="text-sm text-muted-foreground">
-                  ({salon['rating_count']} {salon['rating_count'] === 1 ? 'review' : 'reviews'})
-                </span>
-              )}
-            </div>
-          )}
-          {salon['formatted_address'] && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4" />
-              <span>{salon['formatted_address']}</span>
-            </div>
-          )}
-          {typeof salon['booking_lead_time_hours'] === 'number' && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Clock className="h-4 w-4" />
-              <span>
-                Booking lead time:&nbsp;
-                {salon['booking_lead_time_hours'] === 0
-                  ? 'Same day'
-                  : `${salon['booking_lead_time_hours']} ${salon['booking_lead_time_hours'] === 1 ? 'hour' : 'hours'}`}
-              </span>
-            </div>
-          )}
-        </div>
+        <ItemGroup className="flex flex-wrap gap-4">
+          {salon['rating_average'] ? (
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Star className="h-4 w-4 fill-accent text-accent" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{Number(salon['rating_average']).toFixed(1)}</ItemTitle>
+                {salon['rating_count'] ? (
+                  <ItemDescription>
+                    ({salon['rating_count']}{' '}
+                    {salon['rating_count'] === 1 ? 'review' : 'reviews'})
+                  </ItemDescription>
+                ) : null}
+              </ItemContent>
+            </Item>
+          ) : null}
+
+          {salon['formatted_address'] ? (
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <MapPin className="h-4 w-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemDescription className="text-sm text-foreground">
+                  {salon['formatted_address']}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          ) : null}
+
+          {typeof salon['booking_lead_time_hours'] === 'number' ? (
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Clock className="h-4 w-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemDescription>
+                  Booking lead time:&nbsp;
+                  {salon['booking_lead_time_hours'] === 0
+                    ? 'Same day'
+                    : `${salon['booking_lead_time_hours']} ${
+                        salon['booking_lead_time_hours'] === 1 ? 'hour' : 'hours'
+                      }`}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          ) : null}
+        </ItemGroup>
 
         <Separator />
 
         {salon['full_description'] && (
           <div className="space-y-3">
             <span className="text-sm text-foreground">About</span>
-            <p className="text-sm text-muted-foreground">{salon['full_description']}</p>
+            <CardDescription>{salon['full_description']}</CardDescription>
           </div>
         )}
 

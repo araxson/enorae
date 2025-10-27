@@ -46,6 +46,9 @@ export function RevenueTab({ revenueBreakdown }: RevenueTabProps) {
               <EmptyTitle>No revenue data available</EmptyTitle>
               <EmptyDescription>Adjust the reporting range to see service performance.</EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>
+              <p className="text-sm text-muted-foreground">Select a broader time period or ensure services have recent bookings.</p>
+            </EmptyContent>
           </Empty>
         )}
       </CardContent>

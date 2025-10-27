@@ -2,14 +2,28 @@
 
 import { useMemo, useState } from 'react'
 import { Users, Calendar, DollarSign } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import { ClientStats } from './client-stats'
 import { ClientFilters } from './client-filters'
 import { ClientDetailDialog } from './client-detail-dialog'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffQuickAction, StaffSummary } from '@/features/staff/staff-common/components/types'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ClientsClientProps = {
   clients: ClientWithHistory[]
@@ -94,17 +108,17 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
           <CardTitle>Clients</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-4 text-center py-8">
-            <Avatar className="h-16 w-16 mx-auto">
-              <AvatarFallback className="bg-muted">
-                <Users className="w-8 h-8 text-muted-foreground" />
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="font-medium">No Clients Yet</p>
-              <p className="text-sm text-muted-foreground">Your client list will appear here once you complete appointments</p>
-            </div>
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Users className="h-8 w-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No clients yet</EmptyTitle>
+              <EmptyDescription>
+                Your client list will appear once you complete appointments.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -146,28 +160,46 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
             >
               <CardHeader>
                 <CardTitle>{client.customer_name || 'Walk-in Customer'}</CardTitle>
-                {client.customer_email && <p className="text-sm text-muted-foreground">{client.customer_email}</p>}
+                {client.customer_email ? (
+                  <CardDescription>{client.customer_email}</CardDescription>
+                ) : null}
               </CardHeader>
               <CardContent>
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <p>{client.total_appointments} appointments</p>
-                  </div>
+                <ItemGroup className="gap-2">
+                  <Item size="sm" variant="muted">
+                    <ItemMedia variant="icon">
+                      <Calendar className="h-4 w-4" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>{client.total_appointments} appointments</ItemTitle>
+                    </ItemContent>
+                  </Item>
                   {client.total_revenue && client.total_revenue > 0 ? (
-                    <div className="flex items-center gap-2 text-sm">
-                      <DollarSign className="h-4 w-4 text-muted-foreground" />
-                      <p>${Number(client.total_revenue).toFixed(2)} lifetime value</p>
-                    </div>
+                    <Item size="sm" variant="muted">
+                      <ItemMedia variant="icon">
+                        <DollarSign className="h-4 w-4" aria-hidden="true" />
+                      </ItemMedia>
+                      <ItemContent>
+                        <ItemTitle>${Number(client.total_revenue).toFixed(2)}</ItemTitle>
+                        <ItemDescription>Lifetime value</ItemDescription>
+                      </ItemContent>
+                    </Item>
                   ) : null}
                   {client.last_appointment_date ? (
-                    <div className="text-sm">
-                      <p className="text-muted-foreground">
-                        Last visit: {new Date(client.last_appointment_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                      </p>
-                    </div>
+                    <Item size="sm" variant="muted">
+                      <ItemContent>
+                        <ItemTitle>Last visit</ItemTitle>
+                        <ItemDescription>
+                          {new Date(client.last_appointment_date).toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                          })}
+                        </ItemDescription>
+                      </ItemContent>
+                    </Item>
                   ) : null}
-                </div>
+                </ItemGroup>
               </CardContent>
             </Card>
           ))}

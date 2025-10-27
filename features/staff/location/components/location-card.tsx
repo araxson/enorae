@@ -4,6 +4,15 @@ import { Button } from '@/components/ui/button'
 import { MapPin, Phone, Mail, ExternalLink } from 'lucide-react'
 import type { StaffLocationDetail } from '@/features/staff/location/types'
 import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface LocationCardProps {
   location: StaffLocationDetail
@@ -39,58 +48,71 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-3 p-6 pt-0">
-          {address && (
-            <div className="flex gap-3 items-start">
-              <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-              <p className="text-sm">{address}</p>
-            </div>
-          )}
+        <div className="p-6 pt-0 space-y-3">
+          <ItemGroup className="space-y-3">
+            {address ? (
+              <Item variant="muted" size="sm">
+                <ItemMedia variant="icon">
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemDescription>{address}</ItemDescription>
+                </ItemContent>
+              </Item>
+            ) : null}
 
-          {location.phone_number && (
-            <div className="flex gap-3 items-center">
-              <Phone className="h-4 w-4" />
-              <p className="text-sm">{location.phone_number}</p>
-            </div>
-          )}
+            {location.phone_number ? (
+              <Item variant="muted" size="sm">
+                <ItemMedia variant="icon">
+                  <Phone className="h-4 w-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemDescription>{location.phone_number}</ItemDescription>
+                </ItemContent>
+              </Item>
+            ) : null}
 
-          {location['email'] && (
-            <div className="flex gap-3 items-center">
-              <Mail className="h-4 w-4" />
-              <p className="text-sm">{location['email']}</p>
-            </div>
-          )}
+            {location['email'] ? (
+              <Item variant="muted" size="sm">
+                <ItemMedia variant="icon">
+                  <Mail className="h-4 w-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemDescription>{location['email']}</ItemDescription>
+                </ItemContent>
+              </Item>
+            ) : null}
+          </ItemGroup>
 
-          {location['accessibility_notes'] && (
+          {location['accessibility_notes'] ? (
             <>
               <Separator />
-              <div className="pt-3">
-                <p className="text-sm text-muted-foreground">
-                  <strong>Accessibility:</strong> {location['accessibility_notes']}
-                </p>
+              <div className="pt-3 space-y-2">
+                <Badge variant="outline">Accessibility</Badge>
+                <CardDescription>{location['accessibility_notes']}</CardDescription>
               </div>
             </>
-          )}
+          ) : null}
         </div>
       </CardContent>
       <CardFooter>
         <div className="p-6 pt-0">
-          <div className="flex gap-3">
+          <ButtonGroup>
             <Button variant="outline" size="sm" asChild>
               <a href={mapUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Get Directions
               </a>
             </Button>
-            {location.phone_number && (
+            {location.phone_number ? (
               <Button variant="outline" size="sm" asChild>
                 <a href={`tel:${location.phone_number}`}>
                   <Phone className="mr-2 h-4 w-4" />
                   Call
                 </a>
               </Button>
-            )}
-          </div>
+            ) : null}
+          </ButtonGroup>
         </div>
       </CardFooter>
     </Card>

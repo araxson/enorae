@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { RateLimitRecord } from '@/features/admin/rate-limit-tracking/types'
@@ -27,6 +27,7 @@ import {
   unblockIdentifier,
   purgeStaleRecords,
 } from '@/features/admin/rate-limit-tracking/api/mutations'
+import { Spinner } from '@/components/ui/spinner'
 
 interface RateLimitTableProps {
   records: RateLimitRecord[]
@@ -112,6 +113,7 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
                 <Empty>
                   <EmptyHeader>
                     <EmptyTitle>No rate limit records found</EmptyTitle>
+                    <EmptyDescription>Traffic limit data appears once endpoints record throttled requests.</EmptyDescription>
                   </EmptyHeader>
                 </Empty>
               </TableCell>
@@ -143,7 +145,7 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
                           size="icon"
                           disabled={isLoading}
                         >
-                          <MoreHorizontal className="h-4 w-4" />
+                          {isLoading ? <Spinner className="h-4 w-4" /> : <MoreHorizontal className="h-4 w-4" />}
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">

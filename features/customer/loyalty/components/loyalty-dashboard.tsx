@@ -7,8 +7,23 @@ import { Progress } from '@/components/ui/progress'
 import { Star, Trophy, TrendingUp, History } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import type { LoyaltyPoints, LoyaltyTransaction } from '@/features/customer/loyalty/api/queries'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { Separator } from '@/components/ui/separator'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Props = {
   points: LoyaltyPoints | null
@@ -23,16 +38,21 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
   if (!points) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Loyalty coming soon</CardTitle>
-          <CardDescription>
-            We&apos;ll let you know when loyalty rewards are ready.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CardDescription>
-            Check back for updates or enable notifications in your profile settings.
-          </CardDescription>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Star className="h-6 w-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>Loyalty coming soon</EmptyTitle>
+              <EmptyDescription>
+                We&apos;ll let you know when loyalty rewards are ready.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              Check back for updates or enable notifications in your profile settings.
+            </EmptyContent>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -48,10 +68,16 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="gap-2">
-            <div className="flex items-center justify-between gap-3">
-              <CardDescription>Total points</CardDescription>
-              <Star className="h-5 w-5" aria-hidden="true" />
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardDescription>Total points</CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Star className="h-5 w-5" aria-hidden="true" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
             <CardTitle>{formatNumber(points.total_points)}</CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
@@ -61,10 +87,16 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
 
         <Card>
           <CardHeader className="gap-2">
-            <div className="flex items-center justify-between gap-3">
-              <CardDescription>Current tier</CardDescription>
-              <Trophy className="h-5 w-5" aria-hidden="true" />
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardDescription>Current tier</CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Trophy className="h-5 w-5" aria-hidden="true" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
             <CardTitle>{points.tier.toUpperCase()}</CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
@@ -74,10 +106,16 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
 
         <Card>
           <CardHeader className="gap-2">
-            <div className="flex items-center justify-between gap-3">
-              <CardDescription>Lifetime earned</CardDescription>
-              <TrendingUp className="h-5 w-5" aria-hidden="true" />
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardDescription>Lifetime earned</CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <TrendingUp className="h-5 w-5" aria-hidden="true" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
             <CardTitle>{formatNumber(points.points_earned)}</CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
@@ -93,10 +131,16 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Progress value={tierProgress} className="h-3" />
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <CardDescription>{formatNumber(points.total_points)} points earned</CardDescription>
-            <CardDescription>{formatNumber(points.next_tier_points)} needed</CardDescription>
-          </div>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemDescription>{formatNumber(points.total_points)} points earned</ItemDescription>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <ItemDescription>{formatNumber(points.next_tier_points)} needed</ItemDescription>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardContent>
       </Card>
 
@@ -116,25 +160,27 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
               </EmptyHeader>
             </Empty>
           ) : (
-            <div className="flex flex-col">
+            <ItemGroup className="gap-2">
               {transactions.map((transaction, index) => (
                 <Fragment key={transaction.id}>
-                  <div className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">{transaction.description}</p>
-                      <p className="text-sm text-muted-foreground">
+                  <Item>
+                    <ItemContent>
+                      <ItemTitle>{transaction.description}</ItemTitle>
+                      <ItemDescription>
                         {formatDistanceToNow(new Date(transaction.created_at), { addSuffix: true })}
-                      </p>
-                    </div>
-                    <Badge>
-                      {transaction.type === 'earned' ? '+' : '-'}
-                      {formatNumber(Math.abs(transaction.points))}
-                    </Badge>
-                  </div>
-                  {index < transactions.length - 1 ? <Separator /> : null}
+                      </ItemDescription>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <Badge>
+                        {transaction.type === 'earned' ? '+' : '-'}
+                        {formatNumber(Math.abs(transaction.points))}
+                      </Badge>
+                    </ItemActions>
+                  </Item>
+                  {index < transactions.length - 1 ? <ItemSeparator /> : null}
                 </Fragment>
               ))}
-            </div>
+            </ItemGroup>
           )}
         </CardContent>
       </Card>

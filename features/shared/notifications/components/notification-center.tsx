@@ -146,12 +146,18 @@ export function NotificationCenter({ notifications }: Props) {
                           </AlertDescription>
                           {!notification.is_read && <Badge variant="secondary">New</Badge>}
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {notification.context_type && `Type: ${notification.context_type}`}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                        </p>
+                        <div className="space-y-1">
+                          {notification.context_type ? (
+                            <AlertDescription>
+                              Type: {notification.context_type}
+                            </AlertDescription>
+                          ) : null}
+                          <AlertDescription>
+                            <time dateTime={notification.created_at}>
+                              {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                            </time>
+                          </AlertDescription>
+                        </div>
                       </div>
                       <div className="flex gap-1">
                         {!notification.is_read && (

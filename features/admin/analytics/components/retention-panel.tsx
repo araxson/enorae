@@ -1,5 +1,5 @@
 import { ShieldCheck, AlertTriangle } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface RetentionPanelProps {
   retention: PlatformAnalyticsSnapshot['retention']
@@ -31,27 +32,32 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <p className="text-xs text-muted-foreground">Retention rate</p>
+            <CardDescription>Retention rate</CardDescription>
             <p className="text-2xl font-semibold">{formatPercent(retention.retentionRate)}</p>
-            <p className="text-xs text-muted-foreground">
+            <CardDescription>
               {retention.returningCustomers.toLocaleString('en-US')} returning customers
-            </p>
+            </CardDescription>
           </div>
           <div>
-            <p className="flex items-center gap-1 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1">
               <AlertTriangle className="h-3 w-3" />
-              Churn rate
-            </p>
+              <CardDescription>Churn rate</CardDescription>
+            </div>
             <p className="text-2xl font-semibold">{formatPercent(retention.churnRate)}</p>
-            <p className="text-xs text-muted-foreground">
+            <CardDescription>
               Based on cancelled appointments
-            </p>
+            </CardDescription>
           </div>
         </div>
 
         <ScrollArea className="w-full">
           {series.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Not enough data to render retention trend.</p>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>Retention trend unavailable</EmptyTitle>
+                <EmptyDescription>Collect additional retention snapshots to populate this table.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <Table>
               <TableHeader>

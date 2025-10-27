@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 
 import {
   Select,
@@ -23,6 +22,15 @@ import {
 } from '@/components/ui/dialog'
 import { createServiceCategory, updateServiceCategory } from '@/features/business/service-categories/api/mutations'
 import type { ServiceCategoryWithCounts } from '@/features/business/service-categories/api/queries'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 type CategoryFormProps = {
   category?: ServiceCategoryWithCounts | null
@@ -75,6 +83,7 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <form onSubmit={handleSubmit}>
+          <div className="space-y-6">
           <DialogHeader>
             <DialogTitle>
               {category ? 'Edit Category' : 'Create Category'}
@@ -86,41 +95,46 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            {category && (
-              <input type="hidden" name="id" value={category['id'] || ''} />
-            )}
+          <FieldSet>
+            <FieldGroup className="grid gap-4 py-4">
+              {category ? <input type="hidden" name="id" value={category['id'] || ''} /> : null}
 
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name *</Label>
-              <Input
-                id="name"
-                name="name"
-                defaultValue={category?.['name'] || ''}
-                required
-                maxLength={100}
-              />
-            </div>
+              <Field>
+                <FieldLabel htmlFor="name">Name *</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="name"
+                    name="name"
+                    defaultValue={category?.['name'] || ''}
+                    required
+                    maxLength={100}
+                  />
+                </FieldContent>
+              </Field>
 
-            <div className="grid gap-2">
-              <Label htmlFor="parentId">Parent Category</Label>
-              <Select value={parentId || 'none'} onValueChange={(v) => setParentId(v === 'none' ? '' : v)}>
-                <SelectTrigger id="parentId">
-                  <SelectValue placeholder="None (Top Level)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">None (Top Level)</SelectItem>
-                  {availableParents.map((cat) => (
-                    <SelectItem key={cat['id']} value={cat['id'] || ''}>
-                      {cat['parent_id'] ? `↳ ${cat['name']}` : cat['name']}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <p className="text-muted-foreground">
-                Optional: Create a subcategory under an existing category
-              </p>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="parentId">Parent Category</FieldLabel>
+                <FieldContent>
+                  <Select value={parentId || 'none'} onValueChange={(v) => setParentId(v === 'none' ? '' : v)}>
+                    <SelectTrigger id="parentId">
+                      <SelectValue placeholder="None (Top Level)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None (Top Level)</SelectItem>
+                      {availableParents.map((cat) => (
+                        <SelectItem key={cat['id']} value={cat['id'] || ''}>
+                          {cat['parent_id'] ? `↳ ${cat['name']}` : cat['name']}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FieldDescription>
+                    Optional: Create a subcategory under an existing category
+                  </FieldDescription>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
             {/* TODO: Add description field to database schema */}
             {/* <div className="grid gap-2">
@@ -166,17 +180,19 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
           </div>
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : category ? 'Update' : 'Create'}
-            </Button>
+            <ButtonGroup>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Saving...' : category ? 'Update' : 'Create'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </form>
       </DialogContent>

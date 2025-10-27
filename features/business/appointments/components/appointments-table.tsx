@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { format } from 'date-fns'
 import { confirmAppointment, cancelAppointment, completeAppointment } from '@/features/business/appointments/api/mutations'
 import type { AppointmentWithDetails } from '@/features/business/appointments/api/queries'
+import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 
 interface AppointmentsTableProps {
   appointments: AppointmentWithDetails[]
@@ -70,12 +71,12 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                 <TableRow key={appointment['id']}>
                   <TableCell>
                     {appointmentDate ? (
-                      <div className="flex flex-col gap-2">
-                        <div>{format(appointmentDate, 'MMM dd, yyyy')}</div>
-                        <p className="text-sm font-medium text-muted-foreground">
-                          {format(appointmentDate, 'h:mm a')}
-                        </p>
-                      </div>
+                      <Field>
+                        <FieldLabel>{format(appointmentDate, 'MMM dd, yyyy')}</FieldLabel>
+                        <FieldContent>
+                          <FieldDescription>{format(appointmentDate, 'h:mm a')}</FieldDescription>
+                        </FieldContent>
+                      </Field>
                     ) : (
                       'No date'
                     )}
@@ -92,32 +93,34 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <div className="flex gap-2 items-center">
-                      {appointment['status'] === 'pending' && appointment['id'] && (
-                        <form action={handleConfirm}>
-                          <input type="hidden" name="id" value={appointment['id']} />
-                          <Button size="sm" variant="outline" type="submit">
-                            Confirm
-                          </Button>
-                        </form>
-                      )}
-                      {appointment['status'] === 'confirmed' && appointment['id'] && (
-                        <form action={handleComplete}>
-                          <input type="hidden" name="id" value={appointment['id']} />
-                          <Button size="sm" variant="outline" type="submit">
-                            Complete
-                          </Button>
-                        </form>
-                      )}
-                      {appointment['status'] !== 'cancelled' && appointment['status'] !== 'completed' && appointment['id'] && (
-                        <form action={handleCancel}>
-                          <input type="hidden" name="id" value={appointment['id']} />
-                          <Button size="sm" variant="destructive" type="submit">
-                            Cancel
-                          </Button>
-                        </form>
-                      )}
-                    </div>
+                    <Field>
+                      <FieldContent className="flex items-center gap-2">
+                        {appointment['status'] === 'pending' && appointment['id'] && (
+                          <form action={handleConfirm}>
+                            <input type="hidden" name="id" value={appointment['id']} />
+                            <Button size="sm" variant="outline" type="submit">
+                              Confirm
+                            </Button>
+                          </form>
+                        )}
+                        {appointment['status'] === 'confirmed' && appointment['id'] && (
+                          <form action={handleComplete}>
+                            <input type="hidden" name="id" value={appointment['id']} />
+                            <Button size="sm" variant="outline" type="submit">
+                              Complete
+                            </Button>
+                          </form>
+                        )}
+                        {appointment['status'] !== 'cancelled' && appointment['status'] !== 'completed' && appointment['id'] && (
+                          <form action={handleCancel}>
+                            <input type="hidden" name="id" value={appointment['id']} />
+                            <Button size="sm" variant="destructive" type="submit">
+                              Cancel
+                            </Button>
+                          </form>
+                        )}
+                      </FieldContent>
+                    </Field>
                   </TableCell>
                 </TableRow>
               )

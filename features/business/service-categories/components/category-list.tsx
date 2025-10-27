@@ -5,7 +5,22 @@ import { Edit2, Trash2, Scissors } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -52,15 +67,16 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
 
   if (categories.length === 0) {
     return (
-      <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>No service categories found</CardTitle>
-          <CardDescription>Create a category to organize your services.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center py-6">
-          <Scissors className="h-12 w-12 text-muted-foreground mb-4" />
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Scissors className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No service categories found</EmptyTitle>
+          <EmptyDescription>Create a category to organize your services.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Group services into categories to streamline booking filters.</EmptyContent>
+      </Empty>
     )
   }
 
@@ -71,23 +87,27 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
   const renderCategory = (category: ServiceCategoryWithCounts, isSubcategory = false) => (
     <div
       key={category['id']}
-      className={isSubcategory ? 'ml-8 border-l-4 border-l-primary/30 pl-4' : ''}
+      className={isSubcategory ? 'ml-8 border-l border-l-primary/30 pl-4' : ''}
     >
-      <Card>
-        <CardHeader>
-            <div className="flex items-start justify-between">
-              <div className="flex flex-1 items-center gap-2">
-                {isSubcategory && <span className="text-muted-foreground">↳</span>}
-                <CardTitle>{category['name']}</CardTitle>
-              </div>
-              <Badge variant="secondary">
-                {category.service_count || 0} services
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-2">
-            {onEdit && (
+      <Item variant="outline" className="flex-col items-start gap-3">
+        <ItemHeader>
+          <ItemTitle>
+            {isSubcategory ? (
+              <>
+                <span aria-hidden="true">↳</span>
+                <span>{category['name']}</span>
+              </>
+            ) : (
+              category['name']
+            )}
+          </ItemTitle>
+          <Badge variant="secondary">
+            {category.service_count || 0} services
+          </Badge>
+        </ItemHeader>
+        <ItemActions>
+          <ButtonGroup>
+            {onEdit ? (
               <Button
                 variant="outline"
                 size="sm"
@@ -96,7 +116,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
                 <Edit2 className="mr-2 h-4 w-4" />
                 Edit
               </Button>
-            )}
+            ) : null}
             <Button
               variant="outline"
               size="sm"
@@ -105,9 +125,9 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
               <Trash2 className="mr-2 h-4 w-4" />
               Delete
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </ButtonGroup>
+        </ItemActions>
+      </Item>
     </div>
   )
 
@@ -115,12 +135,12 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {topLevelCategories.map((category) => (
-          <div key={category['id']} className="space-y-4">
+          <ItemGroup key={category['id']} className="space-y-4">
             {renderCategory(category)}
             {subcategories
               .filter((sub) => sub['parent_id'] === category['id'])
               .map((sub) => renderCategory(sub, true))}
-          </div>
+          </ItemGroup>
         ))}
       </div>
 

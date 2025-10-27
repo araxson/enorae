@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { Scissors } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Dialog,
@@ -14,7 +15,7 @@ import { useToast } from '@/lib/hooks/use-toast'
 import { CouponForm } from './coupon-form'
 import type { CouponWithStats } from '@/features/business/coupons/api/queries/coupon-validation'
 import { CouponCard } from './coupon-card'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 
 type ServiceOption = { id: string; name: string }
 
@@ -61,16 +62,15 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
 
   if (coupons.length === 0) {
     return (
-      <Card>
-        <CardContent>
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No coupons created yet</EmptyTitle>
-              <EmptyDescription>Create your first coupon to attract and retain customers.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Scissors className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No coupons created yet</EmptyTitle>
+          <EmptyDescription>Create your first coupon to attract and retain customers.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     )
   }
 

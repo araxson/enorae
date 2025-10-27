@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -57,7 +58,7 @@ export function RefreshButton({ onRefresh }: RefreshButtonProps) {
       aria-label="Refresh dashboard data"
       className="gap-2"
     >
-      <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+      {isRefreshing ? <Spinner className="h-4 w-4" /> : <RefreshCw className="h-4 w-4" />}
       {isRefreshing ? 'Refreshing...' : 'Refresh'}
     </Button>
   )

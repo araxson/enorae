@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Mail, ShieldQuestion, UserCircle2 } from 'lucide-react'
 import type { ProfileDetail } from '@/features/admin/profile/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface ProfileSummaryCardProps {
   profile: ProfileDetail | null
@@ -53,9 +54,12 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
           <CardTitle>Profile overview</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Select a user to view their profile details.
-          </p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No profile selected</EmptyTitle>
+              <EmptyDescription>Pick a user to view account details and attributes.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

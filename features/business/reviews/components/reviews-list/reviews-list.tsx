@@ -4,6 +4,13 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { ButtonGroup } from '@/components/ui/button-group'
 import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 import { ReviewCard } from './review-card'
 import { useReviewsList } from './use-reviews-list'
@@ -19,12 +26,12 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
     <>
       <div className="flex flex-col gap-4">
         {normalizedReviews.length === 0 ? (
-          <Card>
-            <CardHeader className="items-center justify-center">
-              <CardTitle>No reviews yet</CardTitle>
-              <CardDescription>Reviews will appear once customers share feedback.</CardDescription>
-            </CardHeader>
-          </Card>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No reviews yet</EmptyTitle>
+              <EmptyDescription>Reviews will appear once customers share feedback.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           normalizedReviews.map((review) => (
             <ReviewCard
@@ -64,12 +71,14 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => actions.selectReview(null)} disabled={state.isSubmitting}>
-              Cancel
-            </Button>
-            <Button onClick={handlers.handleRespond} disabled={state.isSubmitting || !state.response.trim()}>
-              {state.isSubmitting ? 'Posting...' : 'Post Response'}
-            </Button>
+            <ButtonGroup>
+              <Button variant="outline" onClick={() => actions.selectReview(null)} disabled={state.isSubmitting}>
+                Cancel
+              </Button>
+              <Button onClick={handlers.handleRespond} disabled={state.isSubmitting || !state.response.trim()}>
+                {state.isSubmitting ? 'Posting...' : 'Post Response'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -88,12 +97,14 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={actions.closeFlagDialog} disabled={state.isSubmitting}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={handlers.handleFlag} disabled={state.isSubmitting || !state.flagReason.trim()}>
-              {state.isSubmitting ? 'Flagging...' : 'Flag Review'}
-            </Button>
+            <ButtonGroup>
+              <Button variant="outline" onClick={actions.closeFlagDialog} disabled={state.isSubmitting}>
+                Cancel
+              </Button>
+              <Button variant="destructive" onClick={handlers.handleFlag} disabled={state.isSubmitting || !state.flagReason.trim()}>
+                {state.isSubmitting ? 'Flagging...' : 'Flag Review'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </DialogContent>
       </Dialog>

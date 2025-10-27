@@ -14,6 +14,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import { Item, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 type SalonMediaView = Database['public']['Views']['salon_media_view']['Row']
 
@@ -39,75 +40,77 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-4">
-          {/* Logo */}
-          {media['logo_url'] && (
-            <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">Logo</p>
-              <AspectRatio ratio={1} className="overflow-hidden rounded-md">
-                <Image
-                  src={media['logo_url']}
-                  alt={media['salon_name'] || 'Salon logo'}
-                  fill
-                  className="object-contain"
-                />
-              </AspectRatio>
-            </div>
-          )}
+        {media['logo_url'] || media['cover_image_url'] || hasGallery ? (
+          <ItemGroup className="gap-4">
+            {media['logo_url'] && (
+              <Item>
+                <ItemContent className="gap-2">
+                  <ItemTitle>Logo</ItemTitle>
+                  <AspectRatio ratio={1} className="overflow-hidden rounded-md">
+                    <Image
+                      src={media['logo_url']}
+                      alt={media['salon_name'] || 'Salon logo'}
+                      fill
+                      className="object-contain"
+                    />
+                  </AspectRatio>
+                </ItemContent>
+              </Item>
+            )}
 
-          {/* Cover Image */}
-          {media['cover_image_url'] && (
-            <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">Cover image</p>
-              <AspectRatio ratio={21 / 9} className="overflow-hidden rounded-md">
-                <Image
-                  src={media['cover_image_url']}
-                  alt={media['salon_name'] || 'Salon cover'}
-                  fill
-                  className="object-cover"
-                />
-              </AspectRatio>
-            </div>
-          )}
+            {media['cover_image_url'] && (
+              <Item>
+                <ItemContent className="gap-2">
+                  <ItemTitle>Cover image</ItemTitle>
+                  <AspectRatio ratio={21 / 9} className="overflow-hidden rounded-md">
+                    <Image
+                      src={media['cover_image_url']}
+                      alt={media['salon_name'] || 'Salon cover'}
+                      fill
+                      className="object-cover"
+                    />
+                  </AspectRatio>
+                </ItemContent>
+              </Item>
+            )}
 
-          {/* Gallery Carousel */}
-          {hasGallery && (
-            <div>
-              <p className="mb-2 text-xs text-muted-foreground">Photos</p>
-              <Carousel className="w-full">
-                <CarouselContent>
-                  {galleryUrls.map((url, idx) => (
-                    <CarouselItem key={idx} className="basis-1/2 md:basis-1/3">
-                      <AspectRatio ratio={1} className="overflow-hidden rounded-md">
-                        <Image
-                          src={url}
-                          alt={`${media['salon_name'] || 'Salon'} - Photo ${idx + 1}`}
-                          fill
-                          className="object-cover"
-                        />
-                      </AspectRatio>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
-          )}
-
-          {/* No Media Message */}
-          {!media['logo_url'] && !media['cover_image_url'] && !hasGallery && (
-            <Empty>
-              <EmptyMedia variant="icon">
-                <ImageIcon className="h-6 w-6" aria-hidden="true" />
-              </EmptyMedia>
-              <EmptyHeader>
-                <EmptyTitle>No photos available</EmptyTitle>
-                <EmptyDescription>Upload media to showcase your salon.</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          )}
-        </div>
+            {hasGallery && (
+              <Item>
+                <ItemContent className="gap-2">
+                  <ItemTitle>Photos</ItemTitle>
+                  <Carousel className="w-full">
+                    <CarouselContent>
+                      {galleryUrls.map((url, idx) => (
+                        <CarouselItem key={idx} className="basis-1/2 md:basis-1/3">
+                          <AspectRatio ratio={1} className="overflow-hidden rounded-md">
+                            <Image
+                              src={url}
+                              alt={`${media['salon_name'] || 'Salon'} - Photo ${idx + 1}`}
+                              fill
+                              className="object-cover"
+                            />
+                          </AspectRatio>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                </ItemContent>
+              </Item>
+            )}
+          </ItemGroup>
+        ) : (
+          <Empty>
+            <EmptyMedia variant="icon">
+              <ImageIcon className="h-6 w-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No photos available</EmptyTitle>
+              <EmptyDescription>Upload media to showcase your salon.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
       </CardContent>
     </Card>
   )

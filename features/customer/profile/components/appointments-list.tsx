@@ -1,7 +1,21 @@
-import { AppointmentCard } from '@/features/shared/appointments'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import type { Database } from '@/lib/types/database.types'
 import { format } from 'date-fns'
+import { AppointmentCard } from '@/features/shared/appointments'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import type { Database } from '@/lib/types/database.types'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { Calendar } from 'lucide-react'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed'
@@ -23,11 +37,22 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>Appointments</CardTitle>
-          <CardDescription>No appointments yet</CardDescription>
-        </CardHeader>
-        <CardContent />
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Calendar className="h-6 w-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No appointments yet</EmptyTitle>
+              <EmptyDescription>
+                Schedule your next visit to see appointments listed here.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              Book through the salon search to get started.
+            </EmptyContent>
+          </Empty>
+        </CardContent>
       </Card>
     )
   }
@@ -42,7 +67,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
         return (
           <AppointmentCard
             key={appointment.id}
-            title={appt.salon?.name || 'Salon Appointment'}
+            title={appt.salon?.name || 'Salon appointment'}
             staffName={appt.staff?.full_name || appt.staff?.title || 'Staff TBD'}
             date={appointmentDate ? format(appointmentDate, 'MMM dd, yyyy') : 'No date'}
             time={appointmentDate ? format(appointmentDate, 'h:mm a') : ''}

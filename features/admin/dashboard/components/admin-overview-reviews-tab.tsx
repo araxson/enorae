@@ -59,9 +59,15 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
                 </CardHeader>
                 <CardContent className="space-y-3 pt-0">
                   <Separator />
-                  <p className="line-clamp-3 text-sm text-muted-foreground">
-                    {review['comment'] || 'No comment provided.'}
-                  </p>
+                  {review['comment'] ? (
+                    <p className="line-clamp-3 text-sm text-muted-foreground">
+                      {review['comment']}
+                    </p>
+                  ) : (
+                    <Badge variant="outline" className="w-fit">
+                      No comment provided
+                    </Badge>
+                  )}
                 </CardContent>
               </Card>
             ))}

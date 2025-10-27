@@ -23,7 +23,7 @@ import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { RateLimitRule } from '@/features/admin/rate-limit-rules/api/queries'
 import { toggleRateLimitRule, deleteRateLimitRule } from '@/features/admin/rate-limit-rules/api/mutations'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface RateLimitRulesTableProps {
   rules: RateLimitRule[]
@@ -94,6 +94,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
                 <Empty>
                   <EmptyHeader>
                     <EmptyTitle>No rate limit rules defined</EmptyTitle>
+                    <EmptyDescription>Create a rule to enforce request policies for high-traffic endpoints.</EmptyDescription>
                   </EmptyHeader>
                 </Empty>
               </TableCell>

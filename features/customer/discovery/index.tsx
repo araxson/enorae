@@ -3,8 +3,8 @@ import { Suspense } from 'react'
 import { getSalons } from './api/queries'
 import { SalonDiscoveryClient } from './components/salon-discovery-client'
 
-import { PageLoading } from '@/features/shared/ui-components'
 import { generateMetadata as genMeta } from '@/lib/metadata'
+import { Spinner } from '@/components/ui/spinner'
 
 export const salonDiscoveryMetadata = genMeta({
 
@@ -20,7 +20,13 @@ export async function SalonDiscovery() {
 
 export function SalonDiscoveryFeature() {
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner />
+        </div>
+      }
+    >
       <SalonDiscovery />
     </Suspense>
   )

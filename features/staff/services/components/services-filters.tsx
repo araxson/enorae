@@ -9,6 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 type ServicesFiltersProps = {
   searchQuery: string
@@ -34,15 +39,16 @@ export function ServicesFilters({
   return (
     <div className="flex flex-wrap items-center gap-3">
       {showSearch ? (
-        <div className="relative flex-1 min-w-56">
-          <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
+        <InputGroup className="flex-1 min-w-56">
+          <InputGroupAddon>
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </InputGroupAddon>
+          <InputGroupInput
             placeholder="Search services..."
             value={searchQuery}
             onChange={(event) => onSearchChange(event.target.value)}
-            className="pl-9"
           />
-        </div>
+        </InputGroup>
       ) : null}
 
       <Select value={categoryFilter} onValueChange={onCategoryFilterChange}>

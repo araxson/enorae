@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetT
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Field, FieldContent, FieldDescription, FieldLabel, FieldSet } from '@/components/ui/field'
 
 export function DashboardPreferencesSheet() {
   const [open, setOpen] = useState(false)
@@ -31,11 +32,11 @@ export function DashboardPreferencesSheet() {
             label="Highlight review alerts"
             description="Alerts surface flagged reviews in the overview tab."
           />
-          <div className="flex flex-col gap-2">
-            <span className="text-sm font-medium text-foreground">Email digests</span>
+          <FieldSet className="flex flex-col gap-2">
+            <FieldLabel>Email digests</FieldLabel>
             <PreferenceCheckbox id="digest-daily" label="Daily performance email" defaultChecked />
             <PreferenceCheckbox id="digest-weekly" label="Weekly summary on Mondays" />
-          </div>
+          </FieldSet>
         </div>
         <SheetFooter>
           <Button onClick={() => setOpen(false)}>Save changes</Button>
@@ -54,15 +55,13 @@ type PreferenceToggleProps = {
 
 function PreferenceToggle({ id, label, description, defaultChecked }: PreferenceToggleProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex gap-4 items-center items-center justify-between">
-        <label htmlFor={id} className="text-sm font-medium text-foreground">
-          {label}
-        </label>
+    <Field className="gap-2">
+      <FieldContent className="flex items-center justify-between gap-4">
+        <FieldLabel htmlFor={id}>{label}</FieldLabel>
         <Switch id={id} defaultChecked={defaultChecked} />
-      </div>
-      <p className="text-xs font-medium text-muted-foreground">{description}</p>
-    </div>
+      </FieldContent>
+      <FieldDescription>{description}</FieldDescription>
+    </Field>
   )
 }
 
@@ -74,11 +73,9 @@ type PreferenceCheckboxProps = {
 
 function PreferenceCheckbox({ id, label, defaultChecked }: PreferenceCheckboxProps) {
   return (
-    <div className="flex gap-4 items-center items-center gap-3">
+    <Field orientation="horizontal" className="items-center gap-3">
       <Checkbox id={id} defaultChecked={defaultChecked} />
-      <label htmlFor={id} className="text-sm text-muted-foreground">
-        {label}
-      </label>
-    </div>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+    </Field>
   )
 }

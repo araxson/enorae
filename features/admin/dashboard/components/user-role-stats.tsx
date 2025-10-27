@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Users } from 'lucide-react'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface UserRoleStatsProps {
   stats: {
@@ -58,6 +59,27 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
 
   const topRole = sortedRoles[0]
   const topRoleLabel = topRole ? roleLabels[topRole[0]] || topRole[0] : null
+
+  if (sortedRoles.length === 0) {
+    return (
+      <div className="h-full">
+        <Card>
+          <CardHeader className="space-y-3">
+            <CardTitle>User distribution</CardTitle>
+            <CardDescription>Role analytics will appear when users are assigned roles.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No role data available</EmptyTitle>
+                <EmptyDescription>Assign platform roles to users to populate distribution metrics.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   return (
     <div className="h-full">

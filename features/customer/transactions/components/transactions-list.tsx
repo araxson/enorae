@@ -2,13 +2,20 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/features/shared/ui-components'
 import { Receipt } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { format } from 'date-fns'
 import type { CustomerTransactionWithDetails } from '@/features/customer/transactions/api/queries'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface TransactionsListProps {
   transactions: CustomerTransactionWithDetails[]
@@ -31,16 +38,26 @@ const getTypeColor = (type: string | null): "default" | "destructive" | "seconda
 export function TransactionsList({ transactions }: TransactionsListProps) {
   if (transactions.length === 0) {
     return (
-      <EmptyState
-        icon={Receipt}
-        title="No transactions yet"
-        description="Your completed appointments will appear here once you make a booking."
-        action={
-          <Button asChild>
-            <Link href="/customer/salons">Book an appointment</Link>
-          </Button>
-        }
-      />
+      <Card>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Receipt className="h-6 w-6" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No transactions yet</EmptyTitle>
+              <EmptyDescription>
+                Your completed appointments will appear here once you make a booking.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild>
+                <Link href="/customer/salons">Book an appointment</Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 

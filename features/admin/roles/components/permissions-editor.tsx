@@ -2,9 +2,15 @@
 
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface PermissionsEditorProps {
   permissions: string[]
@@ -24,22 +30,33 @@ export function PermissionsEditor({ permissions, onAdd, onRemove }: PermissionsE
 
   return (
     <div className="space-y-2">
-      <div className="flex flex-wrap items-center gap-2">
-        <Input
+      <InputGroup className="w-full sm:w-64">
+        <InputGroupInput
           value={value}
           onChange={(event) => setValue(event.target.value)}
           placeholder="Add permission key"
-          className="h-9 w-full sm:w-56"
           aria-label="Permission key"
         />
-        <Button type="button" size="sm" variant="outline" onClick={handleAdd}>
-          <Plus className="mr-1 h-4 w-4" />
-          Add
-        </Button>
-      </div>
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            onClick={handleAdd}
+            size="sm"
+            variant="outline"
+            disabled={!value.trim()}
+          >
+            <Plus className="h-4 w-4" />
+            Add
+          </InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
 
       {permissions.length === 0 ? (
-        <p className="text-xs text-muted-foreground">No custom permissions applied.</p>
+        <Empty>
+          <EmptyHeader>
+            <EmptyTitle>No custom permissions applied</EmptyTitle>
+            <EmptyDescription>Use the input above to grant additional role capabilities.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       ) : (
         <div className="flex flex-wrap gap-2">
           {permissions.map((permission) => (

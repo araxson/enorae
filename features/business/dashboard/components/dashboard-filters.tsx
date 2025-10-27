@@ -34,6 +34,20 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Switch } from '@/components/ui/switch'
 import { Slider } from '@/components/ui/slider'
 import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+} from '@/components/ui/item'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 const stylistOptions = ['Any stylist', 'Color specialists', 'Front desk', 'Senior stylists']
 
 export function DashboardFilters() {
@@ -59,20 +73,22 @@ export function DashboardFilters() {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Badge variant="outline">
-                <span className="flex items-center gap-1">
-                  <Filter className="h-3.5 w-3.5" />
-                  Smart filters
-                </span>
-              </Badge>
-            </div>
-            <div className="flex flex-col gap-2 items-end text-xs text-muted-foreground">
-              <span>{formattedRange}</span>
-              <span>{selectedStylist}</span>
-            </div>
-          </div>
+          <ItemGroup>
+            <Item className="items-stretch gap-4">
+              <ItemContent className="flex items-center gap-3">
+                <Badge variant="outline">
+                  <span className="flex items-center gap-1">
+                    <Filter className="h-3.5 w-3.5" />
+                    Smart filters
+                  </span>
+                </Badge>
+              </ItemContent>
+              <ItemActions className="flex-col items-end gap-2 text-xs text-muted-foreground">
+                <span>{formattedRange}</span>
+                <span>{selectedStylist}</span>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
 
           <Separator />
 
@@ -117,69 +133,101 @@ export function DashboardFilters() {
           <Separator />
 
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <p className="text-sm font-medium text-muted-foreground">Team focus</p>
-              <Command>
-                <CommandInput placeholder="Filter by team group" />
-                <CommandList>
-                  <CommandEmpty>No matches.</CommandEmpty>
-                  <CommandGroup heading="Groups">
-                    {stylistOptions.map((option) => (
-                      <CommandItem key={option} onSelect={() => setSelectedStylist(option)}>
-                        {option}
+            <Field>
+              <FieldLabel>Team focus</FieldLabel>
+              <FieldContent>
+                <Command>
+                  <CommandInput placeholder="Filter by team group" />
+                  <CommandList>
+                    <CommandEmpty>No matches.</CommandEmpty>
+                    <CommandGroup heading="Groups">
+                      {stylistOptions.map((option) => (
+                        <CommandItem key={option} onSelect={() => setSelectedStylist(option)}>
+                          {option}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                    <CommandSeparator />
+                    <CommandGroup heading="Actions">
+                      <CommandItem onSelect={() => setSelectedStylist('Any stylist')}>
+                        Reset selection
                       </CommandItem>
-                    ))}
-                  </CommandGroup>
-                  <CommandSeparator />
-                  <CommandGroup heading="Actions">
-                    <CommandItem onSelect={() => setSelectedStylist('Any stylist')}>Reset selection</CommandItem>
-                    <CommandItem onSelect={() => setSelectedStylist('Senior stylists')}>Focus on senior stylists</CommandItem>
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </div>
+                      <CommandItem onSelect={() => setSelectedStylist('Senior stylists')}>
+                        Focus on senior stylists
+                      </CommandItem>
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </FieldContent>
+            </Field>
 
-            <div className="flex flex-wrap items-start gap-6">
-              <div className="flex flex-col gap-2">
-                <p className="text-sm font-medium text-muted-foreground">Service mix</p>
-                <RadioGroup value={serviceTier} onValueChange={(value) => setServiceTier(value as typeof serviceTier)}>
-                  <div className="flex items-center gap-2"><RadioGroupItem value="all" id="tier-all" /><label htmlFor="tier-all" className="text-sm text-muted-foreground">All services</label></div>
-                  <div className="flex items-center gap-2"><RadioGroupItem value="premium" id="tier-premium" /><label htmlFor="tier-premium" className="text-sm text-muted-foreground">Premium services</label></div>
-                  <div className="flex items-center gap-2"><RadioGroupItem value="standard" id="tier-standard" /><label htmlFor="tier-standard" className="text-sm text-muted-foreground">Standard services</label></div>
-                </RadioGroup>
-              </div>
+            <FieldGroup className="flex flex-wrap items-start gap-6">
+              <Field className="min-w-[240px]">
+                <FieldLabel>Service mix</FieldLabel>
+                <FieldContent>
+                  <RadioGroup
+                    value={serviceTier}
+                    onValueChange={(value) => setServiceTier(value as typeof serviceTier)}
+                  >
+                    <Field orientation="horizontal" className="items-center gap-2">
+                      <RadioGroupItem value="all" id="tier-all" />
+                      <FieldLabel htmlFor="tier-all">All services</FieldLabel>
+                    </Field>
+                    <Field orientation="horizontal" className="items-center gap-2">
+                      <RadioGroupItem value="premium" id="tier-premium" />
+                      <FieldLabel htmlFor="tier-premium">Premium services</FieldLabel>
+                    </Field>
+                    <Field orientation="horizontal" className="items-center gap-2">
+                      <RadioGroupItem value="standard" id="tier-standard" />
+                      <FieldLabel htmlFor="tier-standard">Standard services</FieldLabel>
+                    </Field>
+                  </RadioGroup>
+                </FieldContent>
+              </Field>
 
-              <div className="flex flex-col gap-2 w-full max-w-xs">
-                <p className="text-sm font-medium text-muted-foreground">Booking load threshold</p>
-                <Slider defaultValue={[75]} aria-label="Booking load threshold" />
-                <p className="text-xs text-muted-foreground">Alerts when booking load exceeds 75% capacity.</p>
-              </div>
+              <Field className="w-full max-w-xs">
+                <FieldLabel>Booking load threshold</FieldLabel>
+                <FieldContent>
+                  <Slider defaultValue={[75]} aria-label="Booking load threshold" />
+                  <FieldDescription>Alerts when booking load exceeds 75% capacity.</FieldDescription>
+                </FieldContent>
+              </Field>
 
-              <div className="flex flex-col gap-2">
-                <p className="text-sm font-medium text-muted-foreground">Staff assignments</p>
-                <div className="flex items-center gap-2"><Checkbox id="assignment-balanced" defaultChecked /><label htmlFor="assignment-balanced" className="text-sm text-muted-foreground">Balanced workload</label></div>
-                <div className="flex items-center gap-2"><Checkbox id="assignment-specialist" /><label htmlFor="assignment-specialist" className="text-sm text-muted-foreground">Highlight specialists</label></div>
-              </div>
-            </div>
+              <Field className="min-w-[240px]">
+                <FieldLabel>Staff assignments</FieldLabel>
+                <FieldContent className="flex flex-col gap-2">
+                  <Field orientation="horizontal" className="items-center gap-2">
+                    <Checkbox id="assignment-balanced" defaultChecked />
+                    <FieldLabel htmlFor="assignment-balanced">Balanced workload</FieldLabel>
+                  </Field>
+                  <Field orientation="horizontal" className="items-center gap-2">
+                    <Checkbox id="assignment-specialist" />
+                    <FieldLabel htmlFor="assignment-specialist">Highlight specialists</FieldLabel>
+                  </Field>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
 
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <Switch id="include-cancellations" />
-                <label htmlFor="include-cancellations" className="text-sm text-muted-foreground">
-                  Include cancellations
-                </label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="ghost" size="sm" onClick={() => {
-                  setDateRange({})
-                  setSelectedStylist(stylistOptions[0])
-                  setServiceTier('all')
-                }}>
-                  Reset
-                </Button>
-                <Button size="sm">Apply filters</Button>
-              </div>
-            </div>
+            <ItemGroup>
+              <Item className="items-center justify-between gap-4">
+                <ItemContent>
+                  <Field orientation="horizontal" className="items-center gap-3">
+                    <Switch id="include-cancellations" />
+                    <FieldLabel htmlFor="include-cancellations">Include cancellations</FieldLabel>
+                  </Field>
+                </ItemContent>
+                <ItemActions className="flex items-center gap-2">
+                  <Button variant="ghost" size="sm" onClick={() => {
+                    setDateRange({})
+                    setSelectedStylist(stylistOptions[0])
+                    setServiceTier('all')
+                  }}>
+                    Reset
+                  </Button>
+                  <Button size="sm">Apply filters</Button>
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </div>
         </div>
       </CardContent>

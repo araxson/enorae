@@ -6,12 +6,25 @@ import { toast } from 'sonner'
 import { bulkUpdateOperatingHours } from '@/features/business/operating-hours/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+  FieldGroup,
+} from '@/components/ui/field'
 
 interface OperatingHour {
   id: string
@@ -106,54 +119,68 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
                 return (
                   <AccordionItem key={index} value={String(index)}>
                     <AccordionTrigger>
-                      <div className="flex items-center justify-between w-full pr-4">
-                        <span>{day}</span>
-                        <span className="text-sm text-muted-foreground">
-                          {dayHours.is_closed ? 'Closed' : `${dayHours.open_time} - ${dayHours.close_time}`}
-                        </span>
-                      </div>
+                      <ItemGroup className="w-full pr-4">
+                        <Item>
+                          <ItemContent>
+                            <ItemTitle>{day}</ItemTitle>
+                          </ItemContent>
+                          <ItemActions className="flex-none">
+                            <ItemDescription>
+                              {dayHours.is_closed ? 'Closed' : `${dayHours.open_time} - ${dayHours.close_time}`}
+                            </ItemDescription>
+                          </ItemActions>
+                        </Item>
+                      </ItemGroup>
                     </AccordionTrigger>
                     <AccordionContent>
-                      <div className="grid gap-4 grid-cols-1 md:grid-cols-4 items-end pt-4">
-                        <div className="space-y-2">
-                          <Label htmlFor={`open-${index}`}>
-                            Open Time
-                          </Label>
-                          <Input
-                            id={`open-${index}`}
-                            type="time"
-                            value={dayHours.open_time}
-                            onChange={(e) => updateDay(index, 'open_time', e.target.value)}
-                            disabled={dayHours.is_closed}
-                          />
-                        </div>
+                      <FieldGroup className="grid gap-4 grid-cols-1 items-end pt-4 md:grid-cols-4">
+                        <Field>
+                          <FieldLabel htmlFor={`open-${index}`}>Open Time</FieldLabel>
+                          <FieldContent>
+                            <Input
+                              id={`open-${index}`}
+                              type="time"
+                              value={dayHours.open_time}
+                              onChange={(e) => updateDay(index, 'open_time', e.target.value)}
+                              disabled={dayHours.is_closed}
+                            />
+                          </FieldContent>
+                        </Field>
 
-                        <div className="space-y-2">
-                          <Label htmlFor={`close-${index}`}>
-                            Close Time
-                          </Label>
-                          <Input
-                            id={`close-${index}`}
-                            type="time"
-                            value={dayHours.close_time}
-                            onChange={(e) => updateDay(index, 'close_time', e.target.value)}
-                            disabled={dayHours.is_closed}
-                          />
-                        </div>
+                        <Field>
+                          <FieldLabel htmlFor={`close-${index}`}>Close Time</FieldLabel>
+                          <FieldContent>
+                            <Input
+                              id={`close-${index}`}
+                              type="time"
+                              value={dayHours.close_time}
+                              onChange={(e) => updateDay(index, 'close_time', e.target.value)}
+                              disabled={dayHours.is_closed}
+                            />
+                          </FieldContent>
+                        </Field>
 
-                        <div className="flex gap-3 items-center">
-                          <Switch
-                            id={`closed-${index}`}
-                            checked={dayHours.is_closed}
-                            onCheckedChange={(checked) =>
-                              updateDay(index, 'is_closed', checked)
-                            }
-                          />
-                          <Label htmlFor={`closed-${index}`}>
-                            Closed
-                          </Label>
-                        </div>
-                      </div>
+                        <ItemGroup>
+                          <Item className="items-center">
+                            <ItemContent>
+                              <ItemTitle>
+                                <FieldLabel htmlFor={`closed-${index}`} className="text-sm font-medium">
+                                  Closed
+                                </FieldLabel>
+                              </ItemTitle>
+                            </ItemContent>
+                            <ItemActions className="flex-none">
+                              <Switch
+                                id={`closed-${index}`}
+                                checked={dayHours.is_closed}
+                                onCheckedChange={(checked) =>
+                                  updateDay(index, 'is_closed', checked)
+                                }
+                              />
+                            </ItemActions>
+                          </Item>
+                        </ItemGroup>
+                      </FieldGroup>
                     </AccordionContent>
                   </AccordionItem>
                 )

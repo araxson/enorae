@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { StickyNote, Loader2 } from 'lucide-react'
+import { StickyNote } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Dialog,
@@ -22,6 +22,13 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { toggleFavorite } from '@/features/customer/favorites/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 
 interface FavoriteNotesButtonProps {
   salonId: string
@@ -74,27 +81,31 @@ export function FavoriteNotesButton({ salonId, salonName, initialNotes }: Favori
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-2">
-          <Label htmlFor="notes">Your Notes</Label>
-          <Textarea
-            id="notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="e.g., Great haircut, ask for Sarah, bring photo next time..."
-            maxLength={500}
-            rows={6}
-          />
-          <p className="text-xs text-muted-foreground">
-            {notes.length}/500 characters
-          </p>
-        </div>
+        <FieldSet className="space-y-2">
+          <Field>
+            <FieldLabel htmlFor="notes">Your notes</FieldLabel>
+            <FieldContent>
+              <Textarea
+                id="notes"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="e.g., Great haircut, ask for Sarah, bring photo next time..."
+                maxLength={500}
+                rows={6}
+              />
+            </FieldContent>
+            <FieldDescription className="text-xs">
+              {notes.length}/500 characters
+            </FieldDescription>
+          </Field>
+        </FieldSet>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
             Cancel
           </Button>
           <Button onClick={handleSave} disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {loading && <Spinner className="mr-2 h-4 w-4" />}
             Save Notes
           </Button>
         </DialogFooter>

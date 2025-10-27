@@ -1,7 +1,14 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 type AssignedService = {
   id: string | null
   service_id: string | null
@@ -19,22 +26,26 @@ export function AssignedServicesList({ services, onUnassign }: AssignedServicesL
   }
 
   return (
-    <div className="space-y-3">
-      <p className="leading-7 text-sm font-medium">Currently Assigned</p>
-      <div className="flex flex-wrap gap-2">
-        {services.map((service) => (
-          <Badge key={service.id} variant="outline">
-            <span className="flex items-center gap-2">
-              <span>{service.service_name}</span>
-              {service.service_id && (
-                <Button variant="ghost" size="sm" onClick={() => onUnassign(service.service_id!)}>
-                  Remove
-                </Button>
-              )}
-            </span>
-          </Badge>
-        ))}
-      </div>
-    </div>
+    <Field className="gap-3">
+      <FieldLabel>Currently assigned</FieldLabel>
+      <FieldContent>
+        <ItemGroup className="gap-2">
+          {services.map((service) => (
+            <Item key={service.id} variant="outline" size="sm" className="items-center">
+              <ItemContent>
+                <ItemTitle>{service.service_name || 'Unassigned service'}</ItemTitle>
+              </ItemContent>
+              {service.service_id ? (
+                <ItemActions>
+                  <Button variant="ghost" size="sm" onClick={() => onUnassign(service.service_id!)}>
+                    Remove
+                  </Button>
+                </ItemActions>
+              ) : null}
+            </Item>
+          ))}
+        </ItemGroup>
+      </FieldContent>
+    </Field>
   )
 }

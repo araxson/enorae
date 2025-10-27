@@ -3,6 +3,14 @@ import { Badge } from '@/components/ui/badge'
 import type { StaffPerformanceMetrics } from '@/features/staff/analytics/api/queries'
 import { formatPercentage } from './utils'
 import { Progress } from '@/components/ui/progress'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface PerformanceTabProps {
   metrics: StaffPerformanceMetrics
@@ -17,24 +25,40 @@ export function PerformanceTab({ metrics }: PerformanceTabProps) {
           <CardDescription>Your appointment performance metrics</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Total Appointments</span>
-              <Badge variant="outline">{metrics.total_appointments}</Badge>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Completed</span>
-              <Badge variant="default">{metrics.completed_appointments}</Badge>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Cancelled</span>
-              <Badge variant="destructive">{metrics.cancelled_appointments}</Badge>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">No Shows</span>
-              <Badge variant="secondary">{metrics.no_show_appointments}</Badge>
-            </div>
-          </div>
+          <ItemGroup className="gap-3">
+            <Item>
+              <ItemContent>
+                <ItemDescription>Total Appointments</ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge variant="outline">{metrics.total_appointments}</Badge>
+              </ItemActions>
+            </Item>
+            <Item>
+              <ItemContent>
+                <ItemDescription>Completed</ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge variant="default">{metrics.completed_appointments}</Badge>
+              </ItemActions>
+            </Item>
+            <Item>
+              <ItemContent>
+                <ItemDescription>Cancelled</ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge variant="destructive">{metrics.cancelled_appointments}</Badge>
+              </ItemActions>
+            </Item>
+            <Item>
+              <ItemContent>
+                <ItemDescription>No Shows</ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge variant="secondary">{metrics.no_show_appointments}</Badge>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardContent>
       </Card>
 
@@ -46,21 +70,33 @@ export function PerformanceTab({ metrics }: PerformanceTabProps) {
         <CardContent>
           <div className="space-y-4">
             <div>
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-sm font-medium">Completion Rate</span>
-                <span className="text-sm font-semibold text-primary">
-                  {formatPercentage(metrics.completion_rate)}
-                </span>
-              </div>
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <ItemTitle>Completion Rate</ItemTitle>
+                  </ItemContent>
+                  <ItemActions>
+                    <span className="text-sm font-semibold text-primary">
+                      {formatPercentage(metrics.completion_rate)}
+                    </span>
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
               <Progress value={metrics.completion_rate} className="h-2" />
             </div>
             <div>
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-sm font-medium">Cancellation Rate</span>
-                <span className="text-sm font-semibold text-destructive">
-                  {formatPercentage(metrics.cancellation_rate)}
-                </span>
-              </div>
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <ItemTitle>Cancellation Rate</ItemTitle>
+                  </ItemContent>
+                  <ItemActions>
+                    <span className="text-sm font-semibold text-destructive">
+                      {formatPercentage(metrics.cancellation_rate)}
+                    </span>
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
               <Progress value={metrics.cancellation_rate} className="h-2" />
             </div>
           </div>

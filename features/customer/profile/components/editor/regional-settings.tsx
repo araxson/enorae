@@ -1,6 +1,14 @@
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Globe, DollarSign } from 'lucide-react'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 interface RegionalSettingsProps {
   timezone: string
@@ -20,70 +28,75 @@ export function RegionalSettings({
   onCurrencyCodeChange,
 }: RegionalSettingsProps) {
   return (
-    <div>
-      <Label className="flex items-center gap-2 mb-4">
-        <Globe className="h-4 w-4" />
-        Regional Settings
-      </Label>
-      <div className="flex flex-col gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="timezone">
-            Timezone
-          </Label>
-          <Select value={timezone} onValueChange={onTimezoneChange}>
-            <SelectTrigger id="timezone">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
-              <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
-              <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
-              <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
-              <SelectItem value="Europe/London">London (GMT)</SelectItem>
-              <SelectItem value="Europe/Paris">Paris (CET)</SelectItem>
-              <SelectItem value="Asia/Tokyo">Tokyo (JST)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+    <FieldSet className="flex flex-col gap-4">
+      <FieldLegend className="flex items-center gap-2 text-base font-medium">
+        <Globe className="h-4 w-4" aria-hidden="true" />
+        Regional settings
+      </FieldLegend>
+      <FieldGroup className="gap-4">
+        <Field>
+          <FieldLabel htmlFor="timezone">Timezone</FieldLabel>
+          <FieldContent>
+            <Select value={timezone} onValueChange={onTimezoneChange}>
+              <SelectTrigger id="timezone">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
+                <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
+                <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
+                <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
+                <SelectItem value="Europe/London">London (GMT)</SelectItem>
+                <SelectItem value="Europe/Paris">Paris (CET)</SelectItem>
+                <SelectItem value="Asia/Tokyo">Tokyo (JST)</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+          <FieldDescription>Select the timezone used for appointment reminders.</FieldDescription>
+        </Field>
 
-        <div className="space-y-2">
-          <Label htmlFor="locale">
-            Language
-          </Label>
-          <Select value={locale} onValueChange={onLocaleChange}>
-            <SelectTrigger id="locale">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="en-US">English (US)</SelectItem>
-              <SelectItem value="en-GB">English (UK)</SelectItem>
-              <SelectItem value="es-ES">Spanish</SelectItem>
-              <SelectItem value="fr-FR">French</SelectItem>
-              <SelectItem value="de-DE">German</SelectItem>
-              <SelectItem value="ja-JP">Japanese</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <Field>
+          <FieldLabel htmlFor="locale">Language</FieldLabel>
+          <FieldContent>
+            <Select value={locale} onValueChange={onLocaleChange}>
+              <SelectTrigger id="locale">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en-US">English (US)</SelectItem>
+                <SelectItem value="en-GB">English (UK)</SelectItem>
+                <SelectItem value="es-ES">Spanish</SelectItem>
+                <SelectItem value="fr-FR">French</SelectItem>
+                <SelectItem value="de-DE">German</SelectItem>
+                <SelectItem value="ja-JP">Japanese</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+          <FieldDescription>Controls notification language and locale formatting.</FieldDescription>
+        </Field>
 
-        <div className="space-y-2">
-          <Label htmlFor="currency" className="flex items-center gap-2">
-            <DollarSign className="h-4 w-4" />
+        <Field>
+          <FieldLabel htmlFor="currency" className="flex items-center gap-2">
+            <DollarSign className="h-4 w-4" aria-hidden="true" />
             Currency
-          </Label>
-          <Select value={currencyCode} onValueChange={onCurrencyCodeChange}>
-            <SelectTrigger id="currency">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="USD">USD ($)</SelectItem>
-              <SelectItem value="EUR">EUR (€)</SelectItem>
-              <SelectItem value="GBP">GBP (£)</SelectItem>
-              <SelectItem value="JPY">JPY (¥)</SelectItem>
-              <SelectItem value="CAD">CAD ($)</SelectItem>
-            </SelectContent>
-          </Select>
-       </div>
-      </div>
-    </div>
+          </FieldLabel>
+          <FieldContent>
+            <Select value={currencyCode} onValueChange={onCurrencyCodeChange}>
+              <SelectTrigger id="currency">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="USD">USD ($)</SelectItem>
+                <SelectItem value="EUR">EUR (€)</SelectItem>
+                <SelectItem value="GBP">GBP (£)</SelectItem>
+                <SelectItem value="JPY">JPY (¥)</SelectItem>
+                <SelectItem value="CAD">CAD ($)</SelectItem>
+              </SelectContent>
+            </Select>
+          </FieldContent>
+          <FieldDescription>Displayed in pricing and receipts across the app.</FieldDescription>
+        </Field>
+      </FieldGroup>
+    </FieldSet>
   )
 }

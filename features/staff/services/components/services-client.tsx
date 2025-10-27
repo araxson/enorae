@@ -7,7 +7,13 @@ import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-comm
 import { ServicesStats } from './services-stats'
 import { ServicesFilters } from './services-filters'
 import { ServiceCard } from './service-card'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type StaffService = {
   id: string
@@ -78,14 +84,6 @@ export function ServicesClient({ services }: ServicesClientProps) {
     { id: 'commission', label: 'Commission insights', href: '/staff/commission', icon: Sparkles },
   ]
 
-  if (services.length === 0) {
-    return (
-      <div className="space-y-6">
-        <ServicesStats services={services} />
-      </div>
-    )
-  }
-
   const tabs = [
     { value: 'catalog', label: 'Services', icon: Sparkles },
     { value: 'insights', label: 'Insights', icon: SlidersHorizontal },
@@ -125,10 +123,15 @@ export function ServicesClient({ services }: ServicesClientProps) {
 
         {activeTab === 'catalog' ? (
           filteredServices.length === 0 ? (
-            <Alert>
-              <AlertTitle>No services match your filters</AlertTitle>
-              <AlertDescription>Adjust your filters to see additional services.</AlertDescription>
-            </Alert>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Sparkles className="h-8 w-8" aria-hidden="true" />
+                </EmptyMedia>
+                <EmptyTitle>No services match your filters</EmptyTitle>
+                <EmptyDescription>Adjust your filters to see additional services.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {filteredServices.map((service) => (

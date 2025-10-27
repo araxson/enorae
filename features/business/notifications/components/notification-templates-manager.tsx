@@ -7,7 +7,13 @@ import { PlusCircle } from 'lucide-react'
 import { useToast } from '@/lib/hooks/use-toast'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 import { deleteNotificationTemplate, upsertNotificationTemplate } from '@/features/business/notifications/api/mutations'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { TemplateCard } from './template-card'
 import { TemplateFormDialog } from './template-form-dialog'
 
@@ -149,12 +155,17 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
         </CardHeader>
         <CardContent>
           {templates.length === 0 ? (
-            <Alert>
-              <AlertTitle>No templates configured</AlertTitle>
-              <AlertDescription>
-                Create your first template to standardize notifications.
-              </AlertDescription>
-            </Alert>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <PlusCircle className="h-8 w-8" aria-hidden="true" />
+                </EmptyMedia>
+                <EmptyTitle>No templates configured</EmptyTitle>
+                <EmptyDescription>
+                  Create your first template to standardize notifications.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               {templates.map((template) => (

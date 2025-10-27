@@ -4,6 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { TrendingUp, TrendingDown, Users, UserPlus, Repeat, DollarSign } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface CustomerInsightsCardProps {
   data: {
@@ -45,7 +53,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
       <CardContent>
         <div className="flex flex-col gap-6">
           {/* Key Metrics */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
               {
                 icon: <Users className="h-5 w-5 text-muted-foreground" />,
@@ -73,24 +81,36 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                 description: 'Retention Rate',
               },
             ].map((metric) => (
-              <Card key={metric.description}>
-                <CardHeader className="items-center space-y-2 justify-center">
+              <Item
+                key={metric.description}
+                variant="outline"
+                className="flex flex-col items-center justify-center gap-2 py-6"
+              >
+                <ItemContent className="flex flex-col items-center gap-2">
                   <div className="flex items-center justify-center">{metric.icon}</div>
                   <CardTitle>{metric.title}</CardTitle>
                   <CardDescription>{metric.description}</CardDescription>
-                </CardHeader>
-              </Card>
+                </ItemContent>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
 
           <Separator />
 
           {/* Value Metrics */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Avg Lifetime Value</CardTitle>
-                <DollarSign className="h-5 w-5 text-muted-foreground" />
+              <CardHeader>
+                <ItemGroup>
+                  <Item>
+                    <ItemContent>
+                      <CardTitle>Avg Lifetime Value</CardTitle>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <DollarSign className="h-5 w-5 text-muted-foreground" />
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent className="space-y-1">
                 <CardTitle>{formatCurrency(data.averageLifetimeValue)}</CardTitle>
@@ -99,9 +119,17 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
             </Card>
 
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Avg Order Value</CardTitle>
-                <DollarSign className="h-5 w-5 text-muted-foreground" />
+              <CardHeader>
+                <ItemGroup>
+                  <Item>
+                    <ItemContent>
+                      <CardTitle>Avg Order Value</CardTitle>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <DollarSign className="h-5 w-5 text-muted-foreground" />
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent className="space-y-1">
                 <CardTitle>{formatCurrency(data.averageOrderValue)}</CardTitle>
@@ -119,25 +147,25 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
                   <CardTitle>Top Customers</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-3">
-                  {data.topCustomers.map((customer, index) => (
-                    <Card key={customer.name}>
-                      <CardContent className="flex items-center justify-between gap-4">
-                        <div className="flex-1">
-                          <p className="font-medium">{customer.name}</p>
-                          {customer.email && (
-                            <p className="text-sm text-muted-foreground">{customer.email}</p>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-4">
+                  <ItemGroup className="gap-2">
+                    {data.topCustomers.map((customer, index) => (
+                      <Item key={customer.name} variant="outline" className="items-start">
+                        <ItemContent>
+                          <ItemTitle>{customer.name}</ItemTitle>
+                          {customer.email ? (
+                            <ItemDescription>{customer.email}</ItemDescription>
+                          ) : null}
+                        </ItemContent>
+                        <ItemActions className="flex-none items-center gap-4">
                           <div className="text-right">
-                            <p className="font-semibold">{formatCurrency(customer.totalSpent)}</p>
-                            <p className="text-sm text-muted-foreground">{customer.visitCount} visits</p>
+                            <CardDescription>{formatCurrency(customer.totalSpent)}</CardDescription>
+                            <CardDescription>{customer.visitCount} visits</CardDescription>
                           </div>
                           <Badge variant="secondary">#{index + 1}</Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </ItemActions>
+                      </Item>
+                    ))}
+                  </ItemGroup>
                 </CardContent>
               </Card>
             </>

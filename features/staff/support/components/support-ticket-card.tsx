@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import {
@@ -12,6 +11,14 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 export function SupportTicketCard() {
   return (
@@ -21,15 +28,18 @@ export function SupportTicketCard() {
         <CardDescription>The more detail you share, the faster we can assist.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="grid gap-2">
-            <Label htmlFor="ticket-subject">Subject</Label>
-            <Input id="ticket-subject" placeholder="Briefly describe the problem" />
-          </div>
+        <FieldSet>
+          <Field>
+            <FieldLabel htmlFor="ticket-subject">Subject</FieldLabel>
+            <FieldContent>
+              <Input id="ticket-subject" placeholder="Briefly describe the problem" />
+            </FieldContent>
+          </Field>
 
-          <div className="grid gap-2">
-            <Label>Priority</Label>
-            <RadioGroup defaultValue="standard" className="grid grid-cols-3 gap-3">
+          <Field>
+            <FieldLabel>Priority</FieldLabel>
+            <FieldContent>
+              <RadioGroup defaultValue="standard" className="grid grid-cols-3 gap-3">
               <Card>
                 <CardContent className="flex items-start gap-3">
                   <RadioGroupItem
@@ -72,28 +82,33 @@ export function SupportTicketCard() {
                   </div>
                 </CardContent>
               </Card>
-            </RadioGroup>
-          </div>
+              </RadioGroup>
+            </FieldContent>
+          </Field>
 
-          <div className="grid gap-2">
-            <Label htmlFor="ticket-area">Area</Label>
-            <Select defaultValue="appointments">
-              <SelectTrigger id="ticket-area">
-                <SelectValue placeholder="Select an area" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="appointments">Appointments</SelectItem>
-                <SelectItem value="clients">Clients</SelectItem>
-                <SelectItem value="profile">Profile & availability</SelectItem>
-                <SelectItem value="other">Something else</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <Field>
+            <FieldLabel htmlFor="ticket-area">Area</FieldLabel>
+            <FieldContent>
+              <Select defaultValue="appointments">
+                <SelectTrigger id="ticket-area">
+                  <SelectValue placeholder="Select an area" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="appointments">Appointments</SelectItem>
+                  <SelectItem value="clients">Clients</SelectItem>
+                  <SelectItem value="profile">Profile & availability</SelectItem>
+                  <SelectItem value="other">Something else</SelectItem>
+                </SelectContent>
+              </Select>
+            </FieldContent>
+          </Field>
 
-          <div className="grid gap-2">
-            <Label htmlFor="ticket-details">Details</Label>
-            <Textarea id="ticket-details" rows={4} placeholder="Share the exact error, steps to reproduce, or screenshots." />
-          </div>
+          <Field>
+            <FieldLabel htmlFor="ticket-details">Details</FieldLabel>
+            <FieldContent>
+              <Textarea id="ticket-details" rows={4} placeholder="Share the exact error, steps to reproduce, or screenshots." />
+            </FieldContent>
+          </Field>
 
           <Card>
             <CardContent className="flex flex-col gap-3">
@@ -114,11 +129,11 @@ export function SupportTicketCard() {
             </CardContent>
           </Card>
 
-          <div className="flex items-center gap-2">
+          <ButtonGroup>
             <Button type="submit">Submit ticket</Button>
             <Button variant="outline">Save as draft</Button>
-          </div>
-        </div>
+          </ButtonGroup>
+        </FieldSet>
       </CardContent>
     </Card>
   )

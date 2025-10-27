@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
 import type { DailyMetricsDashboardProps } from '../types'
+import { Field, FieldContent, FieldDescription, FieldLabel, FieldSet } from '@/components/ui/field'
 
 type Props = Pick<DailyMetricsDashboardProps, 'aggregated'>
 
@@ -26,22 +27,22 @@ export function AppointmentIssuesCard({ aggregated }: Props) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-muted-foreground">Cancelled</div>
-            <div className="flex items-center gap-2">
+        <FieldSet className="space-y-2">
+          <Field orientation="horizontal" className="items-center justify-between gap-3">
+            <FieldLabel>Cancelled</FieldLabel>
+            <FieldContent className="flex items-center gap-2">
               <div className="text-sm font-medium">{aggregated.cancelledAppointments}</div>
-              <div className="text-xs text-muted-foreground">({cancellationRate.toFixed(1)}%)</div>
-            </div>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-muted-foreground">No-Shows</div>
-            <div className="flex items-center gap-2">
+              <FieldDescription>({cancellationRate.toFixed(1)}%)</FieldDescription>
+            </FieldContent>
+          </Field>
+          <Field orientation="horizontal" className="items-center justify-between gap-3">
+            <FieldLabel>No-shows</FieldLabel>
+            <FieldContent className="flex items-center gap-2">
               <div className="text-sm font-medium">{aggregated.noShowAppointments}</div>
-              <div className="text-xs text-muted-foreground">({noShowRate.toFixed(1)}%)</div>
-            </div>
-          </div>
-        </div>
+              <FieldDescription>({noShowRate.toFixed(1)}%)</FieldDescription>
+            </FieldContent>
+          </Field>
+        </FieldSet>
       </CardContent>
     </Card>
   )

@@ -7,13 +7,6 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -23,6 +16,23 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { deleteSalonChain } from '@/features/business/chains/api/mutations'
 import type { SalonChainWithCounts } from '@/features/business/chains/api/queries'
 
@@ -60,15 +70,16 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
 
   if (chains.length === 0) {
     return (
-      <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>No salon chains found</CardTitle>
-          <CardDescription>Chains appear here once created.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center py-6">
-          <Building2 className="h-12 w-12 text-muted-foreground mb-4" />
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Building2 className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No salon chains found</EmptyTitle>
+          <EmptyDescription>Chains appear here once created.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Create a chain to group salons and manage shared metrics.</EmptyContent>
+      </Empty>
     )
   }
 
@@ -76,60 +87,54 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {chains.map((chain) => (
-          <Card key={chain['id']}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1 space-y-2">
-                  <CardTitle>{chain['name']}</CardTitle>
-                  {chain['legal_name'] && (
-                    <CardDescription>
-                      {chain['legal_name']}
-                    </CardDescription>
-                  )}
+          <Item key={chain['id']} variant="outline" className="flex flex-col items-start gap-4">
+            <ItemHeader>
+              <ItemTitle>{chain['name']}</ItemTitle>
+              <Badge variant="secondary">
+                {chain['salon_count'] || 0} locations
+              </Badge>
+            </ItemHeader>
+            <ItemContent>
+              {chain['legal_name'] ? (
+                <ItemDescription>{chain['legal_name']}</ItemDescription>
+              ) : null}
+              {chain['staff_count'] !== null && chain['staff_count'] > 0 ? (
+                <div className="text-sm text-muted-foreground">
+                  {chain['staff_count']} staff members
                 </div>
-                <Badge variant="secondary">
-                  {chain['salon_count'] || 0} locations
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {chain['staff_count'] !== null && chain['staff_count'] > 0 && (
-                  <div className="text-sm text-muted-foreground">
-                    {chain['staff_count']} staff members
-                  </div>
-                )}
-                <div className="flex gap-2">
+              ) : null}
+            </ItemContent>
+            <ItemActions>
+              <ButtonGroup>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => router.push(`/business/chains/${chain['id']}`)}
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  View
+                </Button>
+                {onEdit ? (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => router.push(`/business/chains/${chain['id']}`)}
+                    onClick={() => onEdit(chain)}
                   >
-                    <Eye className="h-4 w-4 mr-2" />
-                    View
+                    <Edit2 className="h-4 w-4 mr-2" />
+                    Edit
                   </Button>
-                  {onEdit && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => onEdit(chain)}
-                    >
-                      <Edit2 className="h-4 w-4 mr-2" />
-                      Edit
-                    </Button>
-                  )}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setDeleteId(chain['id'])}
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                ) : null}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setDeleteId(chain['id'])}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
+              </ButtonGroup>
+            </ItemActions>
+          </Item>
         ))}
       </div>
 

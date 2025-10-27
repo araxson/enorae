@@ -36,10 +36,10 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
       <CardContent>
         {!appointments || appointments.length === 0 ? (
           <Empty>
+            <EmptyMedia variant="icon">
+              <History className="h-8 w-8" aria-hidden="true" />
+            </EmptyMedia>
             <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <History className="h-8 w-8" aria-hidden="true" />
-              </EmptyMedia>
               <EmptyTitle>No past appointments</EmptyTitle>
               <EmptyDescription>Your appointment history will appear here.</EmptyDescription>
             </EmptyHeader>

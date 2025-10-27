@@ -3,6 +3,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { PieChart } from 'lucide-react'
 
 import type { ServiceRevenue } from '@/features/staff/commission/api/queries'
 
@@ -18,7 +26,15 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
           <CardTitle>Revenue by Service</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">No service data available</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <PieChart className="h-8 w-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No service data available</EmptyTitle>
+              <EmptyDescription>Once services generate revenue, the breakdown appears here.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

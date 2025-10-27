@@ -6,6 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
+import {
   Copy,
   Trash2,
   Calendar,
@@ -74,34 +83,42 @@ export const CouponCard = memo(function CouponCard({
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between">
-          <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
-            <div>
-              <p className="font-medium flex items-center gap-2">
+          <ItemGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Item variant="muted" className="items-start gap-3">
+              <ItemMedia variant="icon">
                 <Gift className="h-4 w-4 text-muted-foreground" />
-                Discount
-              </p>
-              <p className="text-muted-foreground">{formatDiscount(coupon)}</p>
-            </div>
-            <div>
-              <p className="font-medium flex items-center gap-2">
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Discount</ItemTitle>
+                <ItemDescription>{formatDiscount(coupon)}</ItemDescription>
+              </ItemContent>
+            </Item>
+            <Item variant="muted" className="items-start gap-3">
+              <ItemMedia variant="icon">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                Validity
-              </p>
-              <p className="text-muted-foreground">{renderValidity(coupon)}</p>
-            </div>
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Validity</ItemTitle>
+                <ItemDescription>{renderValidity(coupon)}</ItemDescription>
+              </ItemContent>
+            </Item>
             {coupon.min_purchase_amount ? (
-              <div>
-                <p className="font-medium">Minimum Purchase</p>
-                <p className="text-muted-foreground">${coupon.min_purchase_amount}</p>
-              </div>
+              <Item variant="muted" className="items-start gap-3">
+                <ItemContent>
+                  <ItemTitle>Minimum purchase</ItemTitle>
+                  <ItemDescription>${coupon.min_purchase_amount}</ItemDescription>
+                </ItemContent>
+              </Item>
             ) : null}
             {coupon.max_uses ? (
-              <div>
-                <p className="font-medium">Max Uses</p>
-                <p className="text-muted-foreground">{coupon.max_uses} total</p>
-              </div>
+              <Item variant="muted" className="items-start gap-3">
+                <ItemContent>
+                  <ItemTitle>Max uses</ItemTitle>
+                  <ItemDescription>{coupon.max_uses} total</ItemDescription>
+                </ItemContent>
+              </Item>
             ) : null}
-          </div>
+          </ItemGroup>
           <div className="flex items-center gap-2 self-start">
             <Switch
               checked={coupon.is_active}
@@ -124,53 +141,61 @@ export const CouponCard = memo(function CouponCard({
             <CardDescription>Usage and discount impact</CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 pt-0 md:grid-cols-3">
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">Total Uses</p>
-              <p className="flex items-center gap-2 text-xl font-semibold">
-                {coupon.stats.totalUses}
-                <TrendingUp className="h-4 w-4 text-primary" />
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {coupon.stats.uniqueCustomers} unique customers
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">Discount Given</p>
-              <p className="text-xl font-semibold">${coupon.stats.totalDiscount.toFixed(2)}</p>
-              <p className="text-xs text-muted-foreground">
-                Avg ${coupon.stats.averageDiscount.toFixed(2)} per redemption
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">Last Used</p>
-              <p className="text-sm font-medium">
-                {coupon.stats.lastUsedAt
-                  ? formatDistanceToNow(new Date(coupon.stats.lastUsedAt), { addSuffix: true })
-                  : 'No usage yet'}
-              </p>
-            </div>
+            <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <Item variant="muted" className="flex-col gap-2">
+                <ItemTitle>Total uses</ItemTitle>
+                <div className="flex items-center gap-2 text-xl font-semibold">
+                  {coupon.stats.totalUses}
+                  <TrendingUp className="h-4 w-4 text-primary" />
+                </div>
+                <ItemDescription>
+                  {coupon.stats.uniqueCustomers} unique customers
+                </ItemDescription>
+              </Item>
+              <Item variant="muted" className="flex-col gap-2">
+                <ItemTitle>Discount given</ItemTitle>
+                <div className="text-xl font-semibold">
+                  ${coupon.stats.totalDiscount.toFixed(2)}
+                </div>
+                <ItemDescription>
+                  Avg ${coupon.stats.averageDiscount.toFixed(2)} per redemption
+                </ItemDescription>
+              </Item>
+              <Item variant="muted" className="flex-col gap-2">
+                <ItemTitle>Last used</ItemTitle>
+                <ItemDescription>
+                  {coupon.stats.lastUsedAt
+                    ? formatDistanceToNow(new Date(coupon.stats.lastUsedAt), { addSuffix: true })
+                    : 'No usage yet'}
+                </ItemDescription>
+              </Item>
+            </ItemGroup>
           </CardContent>
         </Card>
 
         {serviceNames.length ? (
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1">
+          <Field>
+            <FieldLabel className="flex items-center gap-1">
               <BarChart3 className="h-3 w-3" />
-              <Badge variant="secondary">Limited to services</Badge>
-            </div>
-            {serviceNames.map((service) => (
-              <Badge key={service} variant="outline">
-                {service}
-              </Badge>
-            ))}
-          </div>
+              Limited to services
+            </FieldLabel>
+            <FieldContent className="flex flex-wrap items-center gap-2 pt-1">
+              {serviceNames.map((service) => (
+                <Badge key={service} variant="outline">
+                  {service}
+                </Badge>
+              ))}
+            </FieldContent>
+          </Field>
         ) : null}
 
         {coupon.applicable_customer_ids?.length ? (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Users className="h-4 w-4" />
-            Targeted to {coupon.applicable_customer_ids.length} specific customers
-          </div>
+          <Field>
+            <FieldContent className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Users className="h-4 w-4" />
+              Targeted to {coupon.applicable_customer_ids.length} specific customers
+            </FieldContent>
+          </Field>
         ) : null}
       </CardContent>
     </Card>

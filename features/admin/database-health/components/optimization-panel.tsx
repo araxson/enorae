@@ -14,6 +14,13 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AlertCircle, Clock, Database } from 'lucide-react'
 import type { OptimizationSnapshot } from '@/features/admin/database-health/api/optimization'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface OptimizationPanelProps {
   data: OptimizationSnapshot
@@ -89,11 +96,15 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
                 </TableBody>
               </Table>
             ) : (
-              <div className="text-center py-8">
-                <AlertCircle className="h-12 w-12 mx-auto mb-4 text-primary" />
-                <div className="font-semibold">No Optimization Recommendations</div>
-                <p className="text-muted-foreground">Your database is running optimally!</p>
-              </div>
+              <Empty>
+                <EmptyMedia variant="icon">
+                  <AlertCircle />
+                </EmptyMedia>
+                <EmptyHeader>
+                  <EmptyTitle>No optimization recommendations</EmptyTitle>
+                  <EmptyDescription>Your database is running optimally right now.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
 
@@ -125,9 +136,12 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
               </TableBody>
             </Table>
             {unusedIndexes.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">All indexes are being used</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No unused indexes detected</EmptyTitle>
+                  <EmptyDescription>Every monitored index has recent scan activity.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
 
@@ -177,9 +191,12 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
               </TableBody>
             </Table>
             {statisticsFreshness.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No statistics data available</p>
-              </div>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No statistics data available</EmptyTitle>
+                  <EmptyDescription>Statistics health appears once analyze jobs report freshness.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </TabsContent>
         </Tabs>

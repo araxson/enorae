@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback } from 'react'
 import { Trash2, Power, PowerOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Table,
@@ -160,11 +160,11 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
                       <TableCell>{formatTime(schedule['end_time'])}</TableCell>
                       <TableCell>
                         {schedule['break_start'] && schedule['break_end'] ? (
-                          <p className="leading-7 text-sm">
+                          <CardDescription>
                             {formatTime(schedule['break_start'])} - {formatTime(schedule['break_end'])}
-                          </p>
+                          </CardDescription>
                         ) : (
-                          <p className="text-sm text-muted-foreground">No break</p>
+                          <CardDescription>No break</CardDescription>
                         )}
                       </TableCell>
                       <TableCell>

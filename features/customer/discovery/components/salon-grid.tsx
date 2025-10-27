@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SalonCard } from '@/features/shared/salons'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Search } from 'lucide-react'
 import {
   Pagination,
@@ -16,6 +16,14 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 
@@ -41,15 +49,21 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
   if (salons.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>No salons found</CardTitle>
-          <CardDescription>
-            Try adjusting your search filters or check back later for new salons.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center gap-3">
-          <Search className="h-12 w-12" aria-hidden="true" />
-          <span>Tip: update your filters or expand your search area.</span>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Search className="h-10 w-10" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No salons found</EmptyTitle>
+              <EmptyDescription>
+                Try adjusting your search filters or check back later for new salons.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              Tip: update your filters or expand your search area.
+            </EmptyContent>
+          </Empty>
         </CardContent>
       </Card>
     )

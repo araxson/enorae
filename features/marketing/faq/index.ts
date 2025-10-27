@@ -1,0 +1,6 @@
+export { FAQPage } from './faq-page'
+export { FAQFeature } from './feature'
+export { faqSEO } from './faq.seo'
+export * from './sections'
+export * from './api/queries'
+export * from './api/mutations'

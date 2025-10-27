@@ -1,5 +1,14 @@
 import { subDays, format } from 'date-fns'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { BarChart3, Store } from 'lucide-react'
 import { DailyMetricsDashboard } from './components/daily-metrics-dashboard'
 import { getUserSalon } from '@/features/business/staff/api/queries'
 import { getDailyMetrics, getMetricsComparison } from './api/queries'
@@ -44,10 +53,16 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
   if (!salon?.id) {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
-        <Alert>
-          <AlertTitle>No salon found</AlertTitle>
-          <AlertDescription>No salon found</AlertDescription>
-        </Alert>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Store className="h-8 w-8" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyTitle>No salon found</EmptyTitle>
+            <EmptyDescription>Please create a salon profile to view analytics.</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>Set up your first location to unlock reporting insights.</EmptyContent>
+        </Empty>
       </section>
     )
   }
@@ -77,12 +92,18 @@ export async function DailyAnalytics({ dateFrom, dateTo }: DailyAnalyticsProps =
           </Card>
 
           {metrics.length === 0 ? (
-            <Alert>
-              <AlertTitle>No data available</AlertTitle>
-              <AlertDescription>
-                No data available for this date range. Metrics are collected daily.
-              </AlertDescription>
-            </Alert>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <BarChart3 className="h-8 w-8" aria-hidden="true" />
+                </EmptyMedia>
+                <EmptyTitle>No data available</EmptyTitle>
+                <EmptyDescription>
+                  No data available for this date range. Metrics are collected daily.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>Try expanding the date range or enabling data collection.</EmptyContent>
+            </Empty>
           ) : (
             <DailyMetricsDashboard
               metrics={metrics}

@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState, useTransition } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 import { calculateDynamicPrice } from '@/features/business/services/api/pricing-functions'
 
 type DynamicPricingPreviewProps = {
@@ -83,44 +83,48 @@ export function DynamicPricingPreview({ serviceId, currencyCode }: DynamicPricin
         <CardTitle>Dynamic Pricing Preview</CardTitle>
         <CardDescription>Calculate the real-time price for a specific booking time.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-4">
-
-          <div className="flex flex-col md:flex-row gap-4 items-end">
-            <div className="w-full md:max-w-xs space-y-2">
-              <Label htmlFor="dynamic-pricing-time">Booking time</Label>
-              <Input
-                id="dynamic-pricing-time"
-                type="datetime-local"
-                value={dateTimeValue}
-                onChange={(event) => setDateTimeValue(event.target.value)}
-                disabled={isPending}
-              />
-            </div>
-
-            <Button
-              type="button"
-              onClick={handlePreview}
-              disabled={!serviceId || isPending}
-            >
+      <CardContent className="flex flex-col gap-4">
+        <Field orientation="responsive" className="items-end gap-4">
+          <FieldContent className="w-full space-y-2 md:max-w-xs">
+            <FieldLabel htmlFor="dynamic-pricing-time">Booking time</FieldLabel>
+            <Input
+              id="dynamic-pricing-time"
+              type="datetime-local"
+              value={dateTimeValue}
+              onChange={(event) => setDateTimeValue(event.target.value)}
+              disabled={isPending}
+            />
+          </FieldContent>
+          <FieldContent className="flex-none">
+            <Button type="button" onClick={handlePreview} disabled={!serviceId || isPending}>
               {isPending ? 'Calculating…' : 'Preview Price'}
             </Button>
-          </div>
+          </FieldContent>
+        </Field>
 
-          {formattedPrice && !error && (
-            <p className="text-sm font-medium">
+        {formattedPrice && !error && (
+          <Field>
+            <FieldDescription>
               Calculated price: <span className="font-semibold text-primary">{formattedPrice}</span>
-            </p>
-          )}
+            </FieldDescription>
+          </Field>
+        )}
 
-          {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+        {error && (
+          <Field>
+            <FieldDescription>
+              <span className="text-destructive">{error}</span>
+            </FieldDescription>
+          </Field>
+        )}
 
-          {!serviceId && (
-            <p className="text-xs text-muted-foreground">
+        {!serviceId && (
+          <Field>
+            <FieldDescription>
               Choose a service to enable dynamic pricing calculations.
-            </p>
-          )}
-        </div>
+            </FieldDescription>
+          </Field>
+        )}
       </CardContent>
     </Card>
   )

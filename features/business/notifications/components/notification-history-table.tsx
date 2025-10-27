@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { Bell } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -11,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDistanceToNow, format } from 'date-fns'
 
 import type { NotificationEntry } from '@/features/business/notifications/types'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 
 type NotificationHistoryTableProps = {
   history: NotificationEntry[]
@@ -46,6 +47,9 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
         <CardContent>
           <Empty>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Bell className="h-6 w-6" aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>No notifications yet</EmptyTitle>
               <EmptyDescription>Trigger events or send a test notification to populate history.</EmptyDescription>
             </EmptyHeader>

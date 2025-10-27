@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -56,18 +57,18 @@ export async function MarketingHeader() {
           </NavigationMenu>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex md:items-center md:gap-2">
+          <div className="hidden md:flex md:items-center">
             {session ? (
               <MarketingUserNav user={session.user} role={session.role} />
             ) : (
-              <>
+              <ButtonGroup className="md:gap-2">
                 <Button variant="ghost" asChild>
                   <Link href="/login">Login</Link>
                 </Button>
                 <Button asChild>
                   <Link href="/signup">Sign Up</Link>
                 </Button>
-              </>
+              </ButtonGroup>
             )}
           </div>
 

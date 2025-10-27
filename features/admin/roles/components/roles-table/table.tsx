@@ -61,6 +61,7 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
                   <Empty>
                     <EmptyHeader>
                       <EmptyTitle>No role assignments found</EmptyTitle>
+                      <EmptyDescription>Assign roles to staff or administrators to manage permissions.</EmptyDescription>
                     </EmptyHeader>
                   </Empty>
                 </TableCell>

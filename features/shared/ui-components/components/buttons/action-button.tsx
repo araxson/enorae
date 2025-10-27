@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Loader2 } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 
 interface ActionButtonProps extends Omit<React.ComponentProps<typeof Button>, 'onClick'> {
@@ -73,7 +73,7 @@ export function ActionButton({
       disabled={disabled || loading}
       onClick={handleClick}
     >
-      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
+      {loading && <Spinner className="mr-2 h-4 w-4" aria-hidden="true" />}
       {loading && loadingText ? loadingText : children}
     </Button>
   )

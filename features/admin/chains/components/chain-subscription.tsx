@@ -85,7 +85,7 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
             <Badge variant="outline">{currentTierInfo?.label || 'Free'}</Badge>
           </div>
           {currentTierInfo?.description && (
-            <p className="text-sm text-muted-foreground">{currentTierInfo.description}</p>
+            <CardDescription>{currentTierInfo.description}</CardDescription>
           )}
         </div>
 
@@ -100,7 +100,7 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
                 <SelectItem key={tier.value} value={tier.value}>
                   <div className="flex flex-col">
                     <span className="font-medium">{tier.label}</span>
-                    <span className="text-xs text-muted-foreground">{tier.description}</span>
+                    <CardDescription>{tier.description}</CardDescription>
                   </div>
                 </SelectItem>
               ))}

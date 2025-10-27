@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/table'
 import type { SalonPerformance } from '@/features/admin/appointments/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface SalonPerformanceTableProps {
   salons: SalonPerformance[]
@@ -28,7 +29,12 @@ export function SalonPerformanceTable({ salons }: SalonPerformanceTableProps) {
       <CardContent>
         <ScrollArea className="w-full">
           {salons.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No salon metrics returned.</p>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No salon metrics returned</EmptyTitle>
+                <EmptyDescription>Performance insights appear once salons accumulate appointment activity.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <Table>
               <TableHeader>

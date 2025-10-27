@@ -1,6 +1,6 @@
 import { StructuredData, generateFAQSchema } from '@/lib/seo'
-import { FAQPage } from './components/faq-page'
-import { questionsData } from './components/sections/questions/questions.data'
+import { FAQPage } from './faq-page'
+import { questionsData } from './sections/questions/questions.data'
 
 export function FAQFeature() {
   const faqEntries = questionsData.categories.flatMap((category) =>

@@ -1,6 +1,13 @@
-import { Badge } from '@/components/ui/badge'
 import { Scissors, Sparkles, Heart, Crown } from 'lucide-react'
-import { cn } from "@/lib/utils";
+
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
+import { cn } from '@/lib/utils'
 
 interface SpecialtiesTagsProps {
   specialties: string[] | null
@@ -25,21 +32,29 @@ export function SpecialtiesTags({ specialties, limit, className }: SpecialtiesTa
   const hasMore = limit && specialties.length > limit
 
   return (
-    <div className={cn('flex gap-2 items-center', className)}>
+    <ItemGroup className={cn('flex flex-wrap gap-2', className)}>
       {displaySpecialties.map((specialty) => {
         const Icon = SPECIALTY_ICONS[specialty]
         return (
-          <Badge key={specialty} variant="default">
-            {Icon && <Icon className="mr-1 h-3 w-3" />}
-            {specialty}
-          </Badge>
+          <Item key={specialty} variant="muted">
+            {Icon && (
+              <ItemMedia variant="icon">
+                <Icon className="h-3 w-3" />
+              </ItemMedia>
+            )}
+            <ItemContent>
+              <ItemDescription>{specialty}</ItemDescription>
+            </ItemContent>
+          </Item>
         )
       })}
       {hasMore && (
-        <Badge variant="outline">
-          +{specialties.length - limit!} more
-        </Badge>
+        <Item variant="muted">
+          <ItemContent>
+            <ItemDescription>+{specialties.length - limit!} more</ItemDescription>
+          </ItemContent>
+        </Item>
       )}
-    </div>
+    </ItemGroup>
   )
 }

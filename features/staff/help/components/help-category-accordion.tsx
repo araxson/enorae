@@ -6,6 +6,13 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ResourceCategory = {
   id: string
@@ -32,10 +39,16 @@ export function HelpCategoryAccordion({ categories }: HelpCategoryAccordionProps
           {categories.map((category) => (
             <AccordionItem key={category.id} value={category.id}>
               <AccordionTrigger>
-                <div className="flex items-center gap-2">
-                  <span>{category.name}</span>
-                  <Badge variant="outline">Follow</Badge>
-                </div>
+                <ItemGroup>
+                  <Item variant="muted" size="sm">
+                    <ItemContent>
+                      <ItemTitle>{category.name}</ItemTitle>
+                    </ItemContent>
+                    <ItemActions>
+                      <Badge variant="outline">Follow</Badge>
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground">
                 {category.description}

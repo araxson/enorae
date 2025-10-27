@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertCircle, Repeat } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 
@@ -163,7 +163,7 @@ export function BlockedTimeForm({
                     <SelectItem value="weekends">Weekends only</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-sm text-muted-foreground">
+                <CardDescription>
                   {recurrencePattern === 'daily' && 'Repeats every day at the same time.'}
                   {recurrencePattern === 'weekly' && 'Repeats every week on the same day.'}
                   {recurrencePattern === 'biweekly' && 'Repeats every two weeks on the same day.'}
@@ -171,7 +171,7 @@ export function BlockedTimeForm({
                   {recurrencePattern === 'yearly' && 'Repeats every year on the same date.'}
                   {recurrencePattern === 'weekdays' && 'Repeats every weekday (Mon–Fri).'}
                   {recurrencePattern === 'weekends' && 'Repeats every weekend (Sat–Sun).'}
-                </p>
+                </CardDescription>
               </div>
             )}
           </div>

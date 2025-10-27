@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Clock, DollarSign, Star, TrendingUp, MoreVertical, Power } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,6 +15,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/lib/hooks/use-toast'
 import { toggleServiceAvailability, updateServiceProficiency } from '@/features/staff/services/api/mutations'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type StaffService = {
   id: string
@@ -102,7 +110,9 @@ export function ServiceCard({ service }: ServiceCardProps) {
               <CardTitle>{service.service_name}</CardTitle>
               {service.is_available === false && <Badge variant="outline">Unavailable</Badge>}
             </div>
-            {service.category_name && <p className="text-sm text-muted-foreground">{service.category_name}</p>}
+            {service.category_name ? (
+              <CardDescription>{service.category_name}</CardDescription>
+            ) : null}
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {service.proficiency_level && (
@@ -144,34 +154,51 @@ export function ServiceCard({ service }: ServiceCardProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
+        <ItemGroup className="gap-2">
           {service.effective_duration && (
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm">{service.effective_duration} minutes</p>
-            </div>
+            <Item size="sm" variant="muted">
+              <ItemMedia variant="icon">
+                <Clock className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{service.effective_duration} minutes</ItemTitle>
+                <ItemDescription>Duration</ItemDescription>
+              </ItemContent>
+            </Item>
           )}
           {service.effective_price && (
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm">${service.effective_price}</p>
-            </div>
+            <Item size="sm" variant="muted">
+              <ItemMedia variant="icon">
+                <DollarSign className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>${service.effective_price}</ItemTitle>
+                <ItemDescription>Base price</ItemDescription>
+              </ItemContent>
+            </Item>
           )}
           {service.performed_count != null && service.performed_count > 0 && (
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Performed {service.performed_count} times</p>
-            </div>
+            <Item size="sm" variant="muted">
+              <ItemMedia variant="icon">
+                <TrendingUp className="h-4 w-4" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Performed {service.performed_count} times</ItemTitle>
+              </ItemContent>
+            </Item>
           )}
           {service.rating_average && service.rating_count && service.rating_count > 0 && (
-            <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-accent text-accent" />
-              <p className="text-sm">
-                {service.rating_average.toFixed(1)} ({service.rating_count} reviews)
-              </p>
-            </div>
+            <Item size="sm" variant="muted">
+              <ItemMedia variant="icon">
+                <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{service.rating_average.toFixed(1)} rating</ItemTitle>
+                <ItemDescription>{service.rating_count} reviews</ItemDescription>
+              </ItemContent>
+            </Item>
           )}
-        </div>
+        </ItemGroup>
       </CardContent>
     </Card>
   )

@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Select,
@@ -24,6 +23,14 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
 import { createTimeOffRequest } from '@/features/staff/time-off/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface CreateRequestDialogProps {
   open: boolean
@@ -78,89 +85,102 @@ export function CreateRequestDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="startAt">Start date</Label>
-              <Input
-                type="date"
-                id="startAt"
-                name="startAt"
-                required
-                min={new Date().toISOString().split('T')[0]}
-              />
+          <FieldSet className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="startAt">Start date</FieldLabel>
+                <FieldContent>
+                  <Input
+                    type="date"
+                    id="startAt"
+                    name="startAt"
+                    required
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="endAt">End date</FieldLabel>
+                <FieldContent>
+                  <Input
+                    type="date"
+                    id="endAt"
+                    name="endAt"
+                    required
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                </FieldContent>
+              </Field>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="endAt">End date</Label>
-              <Input
-                type="date"
-                id="endAt"
-                name="endAt"
-                required
-                min={new Date().toISOString().split('T')[0]}
-              />
-            </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="requestType">Request type</Label>
-            <Select value={requestType} onValueChange={setRequestType}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="vacation">Vacation</SelectItem>
-                <SelectItem value="sick_leave">Sick leave</SelectItem>
-                <SelectItem value="personal">Personal</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+            <Field>
+              <FieldLabel htmlFor="requestType">Request type</FieldLabel>
+              <FieldContent>
+                <Select value={requestType} onValueChange={setRequestType}>
+                  <SelectTrigger id="requestType">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="vacation">Vacation</SelectItem>
+                    <SelectItem value="sick_leave">Sick leave</SelectItem>
+                    <SelectItem value="personal">Personal</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="reason">Reason (optional)</Label>
-            <Textarea
-              id="reason"
-              name="reason"
-              placeholder="Provide additional details about your request"
-              rows={3}
-            />
-          </div>
+            <Field>
+              <FieldLabel htmlFor="reason">Reason (optional)</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="reason"
+                  name="reason"
+                  placeholder="Provide additional details about your request"
+                  rows={3}
+                />
+              </FieldContent>
+            </Field>
 
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <Checkbox
-                id="isAutoReschedule"
-                checked={isAutoReschedule}
-                onCheckedChange={(checked) => setIsAutoReschedule(!!checked)}
-              />
-              <Label htmlFor="isAutoReschedule">
-                Automatically reschedule affected appointments
-              </Label>
-            </div>
-            <div className="flex items-center gap-3">
-              <Checkbox
-                id="isNotifyCustomers"
-                checked={isNotifyCustomers}
-                onCheckedChange={(checked) => setIsNotifyCustomers(!!checked)}
-              />
-              <Label htmlFor="isNotifyCustomers">
-                Notify customers about affected appointments
-              </Label>
-            </div>
-          </div>
+            <Field>
+              <FieldDescription>Notifications</FieldDescription>
+              <FieldContent>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      id="isAutoReschedule"
+                      checked={isAutoReschedule}
+                      onCheckedChange={(checked) => setIsAutoReschedule(!!checked)}
+                    />
+                    <span>Automatically reschedule affected appointments</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      id="isNotifyCustomers"
+                      checked={isNotifyCustomers}
+                      onCheckedChange={(checked) => setIsNotifyCustomers(!!checked)}
+                    />
+                    <span>Notify customers about affected appointments</span>
+                  </div>
+                </div>
+              </FieldContent>
+            </Field>
+          </FieldSet>
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Submit request'}
-            </Button>
+            <ButtonGroup className="justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Submit request'}
+              </Button>
+            </ButtonGroup>
           </DialogFooter>
         </form>
       </DialogContent>

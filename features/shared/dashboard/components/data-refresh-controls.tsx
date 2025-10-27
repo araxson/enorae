@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 
-import { RefreshCw, Clock, Loader2 } from 'lucide-react'
+import { RefreshCw, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Spinner } from '@/components/ui/spinner'
 import type { DataRefreshControlsProps } from '@/features/shared/dashboard/types'
 
 const DEFAULT_LOADING = 'Refreshing...'
@@ -74,7 +75,7 @@ export function DataRefreshControls({
     >
       {isPending ? (
         <>
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Spinner className="h-4 w-4" />
           {loadingLabel}
         </>
       ) : (

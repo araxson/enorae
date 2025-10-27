@@ -14,8 +14,15 @@ import {
 import { Building2, Users } from 'lucide-react'
 import type { AdminSalon } from '@/features/admin/salons/api/queries'
 import { COMPLIANCE_BADGE_VARIANT, LICENSE_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
-import { DataTableEmpty } from '@/features/shared/ui-components'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface SalonsTableProps {
   salons: AdminSalon[]
@@ -24,11 +31,18 @@ interface SalonsTableProps {
 export function SalonsTable({ salons }: SalonsTableProps) {
   if (salons.length === 0) {
     return (
-      <DataTableEmpty
-        icon={Building2}
-        title="No salons found"
-        description="When salons join the platform, their profiles and metrics will appear here."
-      />
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Building2 />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No salons found</EmptyTitle>
+          <EmptyDescription>Salon records appear after owners complete their onboarding.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          When salons join the platform, their profiles and metrics populate automatically.
+        </EmptyContent>
+      </Empty>
     )
   }
 

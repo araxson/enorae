@@ -5,7 +5,15 @@ import { Badge } from '@/components/ui/badge'
 import { DollarSign, Star } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 import { formatCurrency } from './utils'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function TopRevenueCard({ services }: { services: ServicePerformance[] }) {
   const topServices = [...services]
@@ -28,32 +36,33 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
               <EmptyTitle>No service performance data</EmptyTitle>
               <EmptyDescription>Track completed appointments to see revenue rankings.</EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>Encourage bookings or import historical data to populate this list.</EmptyContent>
           </Empty>
         ) : (
-          <div className="flex flex-col gap-4">
+          <ItemGroup className="flex flex-col gap-4">
             {topServices.map((service, index) => (
-              <div key={service.service_id} className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              <Item key={service.service_id}>
+                <ItemContent className="flex items-center gap-3">
                   <Badge variant={index === 0 ? 'default' : 'secondary'}>
                     #{index + 1}
                   </Badge>
                   <div>
-                    <h4 className="text-lg font-semibold">{service.service_name}</h4>
-                    <p className="text-xs text-muted-foreground">
+                    <ItemTitle className="text-lg font-semibold">{service.service_name}</ItemTitle>
+                    <ItemDescription className="text-xs text-muted-foreground">
                       {service.total_bookings} bookings
-                    </p>
+                    </ItemDescription>
                   </div>
-                </div>
-                <div className="text-right">
+                </ItemContent>
+                <ItemActions className="flex-none text-right">
                   <p className="text-xs font-semibold">{formatCurrency(service.total_revenue)}</p>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <Star className="h-3 w-3" />
                     {service.avg_rating?.toFixed(1) || 'N/A'}
                   </div>
-                </div>
-              </div>
+                </ItemActions>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         )}
       </CardContent>
     </Card>

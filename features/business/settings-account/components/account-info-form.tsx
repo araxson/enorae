@@ -3,10 +3,18 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Loader2, CheckCircle, AlertCircle } from 'lucide-react'
+import { CheckCircle, AlertCircle } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 import { updateProfile } from '@/features/business/settings-account/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
@@ -50,10 +58,11 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-6">
-            {success && (
-              <Alert>
-                <CheckCircle className="h-4 w-4" />
+          <FieldSet>
+            <FieldGroup className="gap-6">
+              {success && (
+                <Alert>
+                  <CheckCircle className="h-4 w-4" />
                 <AlertTitle>Profile updated</AlertTitle>
                 <AlertDescription>Profile updated successfully</AlertDescription>
               </Alert>
@@ -65,51 +74,58 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
                 <AlertTitle>Update failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
-            )}
+              )}
 
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={profile['email'] || ''}
-                disabled
-                className="bg-muted"
-              />
-              <p className="text-sm text-muted-foreground mt-1">
-                Email cannot be changed here. Contact support if needed.
-              </p>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={profile['email'] || ''}
+                    disabled
+                    className="bg-muted"
+                  />
+                  <FieldDescription>
+                    Email cannot be changed here. Contact support if needed.
+                  </FieldDescription>
+                </FieldContent>
+              </Field>
 
-            <div>
-              <Label htmlFor="full-name">Full Name</Label>
-              <Input
-                id="full-name"
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Enter your full name"
-                disabled={isSubmitting}
-              />
-            </div>
+              <Field>
+                <FieldLabel htmlFor="full-name">Full Name</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="full-name"
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Enter your full name"
+                    disabled={isSubmitting}
+                  />
+                </FieldContent>
+              </Field>
 
-            <div>
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input
-                id="phone"
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="+1 (555) 000-0000"
-                disabled={isSubmitting}
-              />
-            </div>
+              <Field>
+                <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+1 (555) 000-0000"
+                    disabled={isSubmitting}
+                  />
+                </FieldContent>
+              </Field>
 
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Save Changes
-            </Button>
-          </div>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? <Spinner className="mr-2" /> : null}
+                Save Changes
+              </Button>
+            </FieldGroup>
+          </FieldSet>
         </form>
       </CardContent>
     </Card>

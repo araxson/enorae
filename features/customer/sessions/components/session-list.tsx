@@ -23,6 +23,14 @@ import {
 import { revokeSession, revokeAllOtherSessions } from '@/features/customer/sessions/api/mutations'
 import type { SessionWithDevice } from '@/features/customer/sessions/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface SessionListProps {
   sessions: SessionWithDevice[]
@@ -103,14 +111,24 @@ export function SessionList({ sessions }: SessionListProps) {
 
   if (sessions.length === 0) {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-2xl text-foreground">Active Sessions</div>
-        <Alert>
-          <Info className="h-4 w-4" />
-          <AlertTitle>Notice</AlertTitle>
-          <AlertDescription>No active sessions found.</AlertDescription>
-        </Alert>
-      </div>
+      <Card>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Info className="h-6 w-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No active sessions</EmptyTitle>
+              <EmptyDescription>
+                You&apos;re not signed in on any other devices right now.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              Keep this page open to monitor new sign-ins in real time.
+            </EmptyContent>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 

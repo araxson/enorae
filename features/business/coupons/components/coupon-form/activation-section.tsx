@@ -1,6 +1,7 @@
-import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
+import { Item, ItemActions, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
 import type { CouponFormState } from '@/features/business/coupons/components/coupon-form.types'
+import { FieldLabel } from '@/components/ui/field'
 
 interface CouponActivationSectionProps {
   formData: CouponFormState
@@ -13,13 +14,21 @@ export function CouponActivationSection({ formData, onChange }: CouponActivation
   const setFormData = onChange
 
   return (
-    <div className="flex items-center justify-between">
-      <Label htmlFor="is_active">Active</Label>
-      <Switch
-        id="is_active"
-        checked={formData.is_active}
-        onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-      />
-    </div>
+    <ItemGroup>
+      <Item>
+        <ItemContent>
+          <ItemTitle>
+            <FieldLabel htmlFor="is_active">Active</FieldLabel>
+          </ItemTitle>
+        </ItemContent>
+        <ItemActions className="flex-none">
+          <Switch
+            id="is_active"
+            checked={formData.is_active}
+            onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
+          />
+        </ItemActions>
+      </Item>
+    </ItemGroup>
   )
 }

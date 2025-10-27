@@ -13,6 +13,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Search, Command as CommandIcon, MoreHorizontal, CalendarDays } from 'lucide-react'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 import type { StaffQuickAction, StaffTab } from './types'
 
 interface StaffPageNavigationProps {
@@ -42,15 +47,16 @@ export function StaffPageNavigation({
     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-1 flex-col gap-3">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
+          <InputGroup className="flex-1">
+            <InputGroupAddon>
+              <Search className="h-4 w-4" aria-hidden="true" />
+            </InputGroupAddon>
+            <InputGroupInput
               placeholder={searchPlaceholder}
               value={searchValue ?? ''}
               onChange={(event) => onSearchChange?.(event.target.value)}
-              className="pl-9"
             />
-          </div>
+          </InputGroup>
 
           {quickActions && quickActions.length > 0 ? (
             <ButtonGroup className="w-full sm:w-fit">

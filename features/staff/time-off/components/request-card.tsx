@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -28,6 +27,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface RequestCardProps {
   request: TimeOffRequestWithStaff
@@ -116,26 +130,36 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="space-y-2">
-            <div className="flex gap-3">
-              <p className="text-sm font-medium text-muted-foreground">From:</p>
-              <p className="text-sm font-medium">{request['start_at'] ? new Date(request['start_at']).toLocaleDateString() : '—'}</p>
-            </div>
-            <div className="flex gap-3">
-              <p className="text-sm font-medium text-muted-foreground">To:</p>
-              <p className="text-sm font-medium">{request['end_at'] ? new Date(request['end_at']).toLocaleDateString() : '—'}</p>
-            </div>
-            {request['reason'] && (
-              <div className="space-y-1">
-                <p className="text-sm font-medium text-muted-foreground">Reason:</p>
-                <p className="text-sm font-medium">{request['reason']}</p>
-              </div>
-            )}
-          </div>
+          <ItemGroup className="space-y-2">
+            <Item variant="outline" size="sm">
+              <ItemContent>
+                <ItemTitle>From</ItemTitle>
+                <ItemDescription>
+                  {request['start_at'] ? new Date(request['start_at']).toLocaleDateString() : '—'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+            <Item variant="outline" size="sm">
+              <ItemContent>
+                <ItemTitle>To</ItemTitle>
+                <ItemDescription>
+                  {request['end_at'] ? new Date(request['end_at']).toLocaleDateString() : '—'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+            {request['reason'] ? (
+              <Item variant="outline" size="sm">
+                <ItemContent>
+                  <ItemTitle>Reason</ItemTitle>
+                  <ItemDescription>{request['reason']}</ItemDescription>
+                </ItemContent>
+              </Item>
+            ) : null}
+          </ItemGroup>
 
           {isStaffView ? (
             // Staff view: can edit pending requests or cancel any request
-            <div className="flex justify-end gap-2">
+            <ButtonGroup className="justify-end">
               {request['status'] === 'pending' && (
                 <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
                   <DialogTrigger asChild>
@@ -147,60 +171,68 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
                     <DialogHeader>
                       <DialogTitle>Edit Time-Off Request</DialogTitle>
                     </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="startAt">Start Date</Label>
-                        <Input
-                          id="startAt"
-                          type="date"
-                          value={editData.startAt}
-                          onChange={(e) => setEditData({ ...editData, startAt: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="endAt">End Date</Label>
-                        <Input
-                          id="endAt"
-                          type="date"
-                          value={editData.endAt}
-                          onChange={(e) => setEditData({ ...editData, endAt: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="requestType">Type</Label>
-                        <Select
-                          value={editData.requestType}
-                          onValueChange={(value) => setEditData({ ...editData, requestType: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="vacation">Vacation</SelectItem>
-                            <SelectItem value="sick_leave">Sick Leave</SelectItem>
-                            <SelectItem value="personal">Personal</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label htmlFor="reason">Reason</Label>
-                        <Textarea
-                          id="reason"
-                          value={editData['reason']}
-                          onChange={(e) => setEditData({ ...editData, reason: e.target.value })}
-                          rows={3}
-                        />
-                      </div>
-                      <div className="flex justify-end gap-2">
+                    <FieldSet className="space-y-4">
+                      <Field>
+                        <FieldLabel htmlFor="startAt">Start date</FieldLabel>
+                        <FieldContent>
+                          <Input
+                            id="startAt"
+                            type="date"
+                            value={editData.startAt}
+                            onChange={(e) => setEditData({ ...editData, startAt: e.target.value })}
+                          />
+                        </FieldContent>
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor="endAt">End date</FieldLabel>
+                        <FieldContent>
+                          <Input
+                            id="endAt"
+                            type="date"
+                            value={editData.endAt}
+                            onChange={(e) => setEditData({ ...editData, endAt: e.target.value })}
+                          />
+                        </FieldContent>
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor="requestType">Type</FieldLabel>
+                        <FieldContent>
+                          <Select
+                            value={editData.requestType}
+                            onValueChange={(value) => setEditData({ ...editData, requestType: value })}
+                          >
+                            <SelectTrigger id="requestType">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="vacation">Vacation</SelectItem>
+                              <SelectItem value="sick_leave">Sick Leave</SelectItem>
+                              <SelectItem value="personal">Personal</SelectItem>
+                              <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FieldContent>
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor="reason">Reason</FieldLabel>
+                        <FieldContent>
+                          <Textarea
+                            id="reason"
+                            value={editData['reason']}
+                            onChange={(e) => setEditData({ ...editData, reason: e.target.value })}
+                            rows={3}
+                          />
+                        </FieldContent>
+                      </Field>
+                      <ButtonGroup className="justify-end">
                         <Button variant="outline" onClick={() => setIsEditOpen(false)} disabled={isPending}>
                           Cancel
                         </Button>
                         <Button onClick={handleUpdate} disabled={isPending}>
                           Save Changes
                         </Button>
-                      </div>
-                    </div>
+                      </ButtonGroup>
+                    </FieldSet>
                   </DialogContent>
                 </Dialog>
               )}
@@ -209,18 +241,18 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
                   Cancel Request
                 </Button>
               )}
-            </div>
+            </ButtonGroup>
           ) : (
             // Manager view: can approve/reject
             request['status'] === 'pending' && (
-              <div className="flex justify-end gap-2">
+              <ButtonGroup className="justify-end">
                 <Button size="sm" variant="outline" onClick={handleReject} disabled={isPending}>
                   Reject
                 </Button>
                 <Button size="sm" onClick={handleApprove} disabled={isPending}>
                   Approve
                 </Button>
-              </div>
+              </ButtonGroup>
             )
           )}
         </div>

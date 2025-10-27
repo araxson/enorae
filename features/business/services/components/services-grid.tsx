@@ -3,9 +3,22 @@
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/features/shared/ui-components'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { Scissors, Edit, DollarSign, Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+} from '@/components/ui/item'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -18,15 +31,18 @@ interface ServicesGridProps {
 export function ServicesGrid({ services, onEditService, isFiltered = false }: ServicesGridProps) {
   if (services.length === 0) {
     return (
-      <EmptyState
-        icon={Scissors}
-        title={isFiltered ? 'No services found' : 'No services available'}
-        description={
-          isFiltered
-            ? 'Try adjusting your search or filters'
-            : 'Add services to start accepting bookings'
-        }
-      />
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Scissors className="h-6 w-6" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>{isFiltered ? 'No services found' : 'No services available'}</EmptyTitle>
+          <EmptyDescription>
+            {isFiltered ? 'Try adjusting your search or filters.' : 'Add services to start accepting bookings.'}
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Use the “Add Service” action to build your catalog.</EmptyContent>
+      </Empty>
     )
   }
 
@@ -35,12 +51,18 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
       {services.map((service) => (
         <Card key={service['id']}>
           <CardHeader>
-            <div className="flex gap-3 items-start justify-between">
-              <CardTitle>{service['name']}</CardTitle>
-              <Badge variant={service['is_active'] ? 'default' : 'secondary'}>
-                {service['is_active'] ? 'Active' : 'Inactive'}
-              </Badge>
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>{service['name']}</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <Badge variant={service['is_active'] ? 'default' : 'secondary'}>
+                    {service['is_active'] ? 'Active' : 'Inactive'}
+                  </Badge>
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
 
           <CardContent>

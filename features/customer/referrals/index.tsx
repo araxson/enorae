@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 import { getReferralCode, getReferralStats, getReferralHistory } from './api/queries'
 import { ReferralDashboard } from './components/referral-dashboard'
 
-import { PageLoading } from '@/features/shared/ui-components'
+import { Spinner } from '@/components/ui/spinner'
 
 export async function ReferralProgram() {
 
@@ -33,7 +33,13 @@ export async function ReferralProgram() {
 
 export function ReferralProgramFeature() {
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner />
+        </div>
+      }
+    >
       <ReferralProgram />
     </Suspense>
   )

@@ -80,9 +80,9 @@ export function NotificationPreferencesForm({
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label htmlFor="email_appointments">Appointment updates</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <CardDescription>
                     Confirmations, reminders, and cancellations
-                  </p>
+                  </CardDescription>
                 </div>
                 <Switch
                   id="email_appointments"
@@ -96,9 +96,9 @@ export function NotificationPreferencesForm({
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label htmlFor="email_promotions">Promotions and offers</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <CardDescription>
                     Special deals and salon updates
-                  </p>
+                  </CardDescription>
                 </div>
                 <Switch
                   id="email_promotions"
@@ -122,9 +122,9 @@ export function NotificationPreferencesForm({
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label htmlFor="sms_reminders">Appointment reminders</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <CardDescription>
                     Get SMS reminders before your appointments
-                  </p>
+                  </CardDescription>
                 </div>
                 <Switch
                   id="sms_reminders"
@@ -148,9 +148,9 @@ export function NotificationPreferencesForm({
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label htmlFor="push_enabled">Enable push notifications</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <CardDescription>
                     Receive real-time updates on your device
-                  </p>
+                  </CardDescription>
                 </div>
                 <Switch
                   id="push_enabled"

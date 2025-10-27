@@ -3,11 +3,18 @@
 import { cn } from '@/lib/utils'
 
 import type { ReactNode, ComponentType } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import { formatCurrency, formatPercentage, calculateGrowthRate } from '@/features/business/business-common/components/value-formatters'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+} from '@/components/ui/item'
 
 type RevenueCardProps = {
   /**
@@ -118,33 +125,46 @@ export function RevenueCard({
 
   return (
     <Card role="article" aria-label={`${title} revenue metric`} className={cardClasses}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle>{title}</CardTitle>
-        {IconComponent && (
-          <IconComponent className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-        )}
+      <CardHeader>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <CardTitle>{title}</CardTitle>
+              {subtitle ? <CardDescription>{subtitle}</CardDescription> : null}
+            </ItemContent>
+            {IconComponent ? (
+              <ItemActions className="flex-none text-muted-foreground">
+                <IconComponent className="h-4 w-4" aria-hidden="true" />
+              </ItemActions>
+            ) : null}
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className={cn('flex flex-col', compact ? 'gap-2' : 'gap-3')}>
           {/* Primary amount */}
-          <div className="flex gap-2">
-            <div className={cn('font-semibold', compact ? 'text-2xl' : 'text-3xl font-bold')}>
-              {formattedAmount}
-            </div>
-            {growthRate !== undefined && (
-              <Badge
-                variant={growthRate >= 0 ? 'default' : 'destructive'}
-                className="flex items-center gap-1"
-              >
-                {growthRate >= 0 ? (
-                  <TrendingUp className="h-3 w-3" />
-                ) : (
-                  <TrendingDown className="h-3 w-3" />
+          <ItemGroup>
+            <Item>
+              <ItemContent className="flex gap-2">
+                <div className={cn('font-semibold', compact ? 'text-2xl' : 'text-3xl font-bold')}>
+                  {formattedAmount}
+                </div>
+                {growthRate !== undefined && (
+                  <Badge
+                    variant={growthRate >= 0 ? 'default' : 'destructive'}
+                    className="flex items-center gap-1"
+                  >
+                    {growthRate >= 0 ? (
+                      <TrendingUp className="h-3 w-3" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3" />
+                    )}
+                    {formatPercentage(Math.abs(growthRate), { includeSign: true })}
+                  </Badge>
                 )}
-                {formatPercentage(Math.abs(growthRate), { includeSign: true })}
-              </Badge>
-            )}
-          </div>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
 
           {/* Growth indicator */}
           {growthRate !== undefined && (
@@ -169,21 +189,25 @@ export function RevenueCard({
           {breakdown && breakdown.length > 0 && (
             <>
               <Separator />
-              <div className="flex flex-col gap-2">
+              <ItemGroup className="flex flex-col gap-2">
                 {breakdown.map((item) => (
-                  <div key={item.label} className="flex items-center justify-between gap-4">
-                    <div className="text-xs text-muted-foreground">{item.label}</div>
-                    <div className="text-sm font-medium">
-                      {formatCurrency(item.amount, { currency })}
-                    </div>
-                  </div>
+                  <Item key={item.label}>
+                    <ItemContent>
+                      <ItemDescription>{item.label}</ItemDescription>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <ItemDescription>
+                        {formatCurrency(item.amount, { currency })}
+                      </ItemDescription>
+                    </ItemActions>
+                  </Item>
                 ))}
-              </div>
+              </ItemGroup>
             </>
           )}
 
           {/* Subtitle */}
-          {subtitle && <div className="text-xs text-muted-foreground">{subtitle}</div>}
+          {!subtitle ? null : <div className="text-xs text-muted-foreground">{subtitle}</div>}
         </div>
       </CardContent>
     </Card>

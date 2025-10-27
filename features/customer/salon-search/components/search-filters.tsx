@@ -2,15 +2,29 @@
 
 import { useId } from 'react'
 import { useRouter } from 'next/navigation'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
 import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
 import { Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import { Spinner } from '@/components/ui/spinner'
 
 interface SearchFiltersProps {
   searchTerm: string
@@ -72,31 +86,44 @@ export function SearchFilters({
       <CardContent>
         <div className="flex flex-col gap-4">
           <div className="relative">
-            <Label htmlFor={searchInputId} className="sr-only">
-              Search by salon name
-            </Label>
-            <Input
-              id={searchInputId}
-              placeholder="Search by salon name..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleInputKeyDown}
-              role="combobox"
-              aria-haspopup="listbox"
-              aria-autocomplete="list"
-              aria-expanded={suggestions.length > 0}
-              aria-controls={suggestions.length > 0 ? suggestionsListId : undefined}
-              aria-activedescendant={
-                focusedIndex >= 0 ? `${suggestionsListId}-option-${focusedIndex}` : undefined
-              }
-              autoComplete="off"
-              aria-label="Search by salon name"
-              className="pr-10"
-            />
-            <Search
-              className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              aria-hidden="true"
-            />
+            <Field>
+              <FieldLabel htmlFor={searchInputId} className="sr-only">
+                Search by salon name
+              </FieldLabel>
+              <FieldContent>
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id={searchInputId}
+                    placeholder="Search by salon name..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={handleInputKeyDown}
+                    role="combobox"
+                    aria-haspopup="listbox"
+                    aria-autocomplete="list"
+                    aria-expanded={suggestions.length > 0}
+                    aria-controls={suggestions.length > 0 ? suggestionsListId : undefined}
+                    aria-activedescendant={
+                      focusedIndex >= 0 ? `${suggestionsListId}-option-${focusedIndex}` : undefined
+                    }
+                    autoComplete="off"
+                    aria-label="Search by salon name"
+                  />
+                  <InputGroupButton
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Run search"
+                    onClick={handleSearch}
+                  >
+                    <Search className="h-4 w-4" aria-hidden="true" />
+                  </InputGroupButton>
+                </InputGroup>
+              </FieldContent>
+            </Field>
 
             {suggestions.length > 0 && (
               <div className="absolute left-0 right-0 top-full z-10 mt-1">
@@ -133,73 +160,90 @@ export function SearchFilters({
             )}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <Label>City</Label>
-              <Select value={city} onValueChange={setCity}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All cities" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">All cities</SelectItem>
-                  {popularCities.map((c) => (
-                    <SelectItem key={c.city} value={c.city}>
-                      {c.city} ({c.count})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <FieldSet>
+            <FieldLegend className="sr-only">Search filters</FieldLegend>
+            <FieldGroup className="gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
+              <Field>
+                <FieldLabel htmlFor="city-filter">City</FieldLabel>
+                <FieldContent>
+                  <Select value={city} onValueChange={setCity}>
+                    <SelectTrigger id="city-filter">
+                      <SelectValue placeholder="All cities" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All cities</SelectItem>
+                      {popularCities.map((c) => (
+                        <SelectItem key={c.city} value={c.city}>
+                          {c.city} ({c.count})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
 
-            <div>
-              <Label>State</Label>
-              <Select value={state} onValueChange={setState}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All states" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">All states</SelectItem>
-                  {availableStates.map((s) => (
-                    <SelectItem key={s} value={s}>
-                      {s}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="state-filter">State</FieldLabel>
+                <FieldContent>
+                  <Select value={state} onValueChange={setState}>
+                    <SelectTrigger id="state-filter">
+                      <SelectValue placeholder="All states" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All states</SelectItem>
+                      {availableStates.map((s) => (
+                        <SelectItem key={s} value={s}>
+                          {s}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
 
-            <div>
-              <Label>Minimum Rating</Label>
-              <Select value={minRating} onValueChange={setMinRating}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Any rating" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Any rating</SelectItem>
-                  <SelectItem value="4.5">4.5+ stars</SelectItem>
-                  <SelectItem value="4.0">4.0+ stars</SelectItem>
-                  <SelectItem value="3.5">3.5+ stars</SelectItem>
-                  <SelectItem value="3.0">3.0+ stars</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <Field>
+                <FieldLabel htmlFor="rating-filter">Minimum rating</FieldLabel>
+                <FieldContent>
+                  <Select value={minRating} onValueChange={setMinRating}>
+                    <SelectTrigger id="rating-filter">
+                      <SelectValue placeholder="Any rating" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Any rating</SelectItem>
+                      <SelectItem value="4.5">4.5+ stars</SelectItem>
+                      <SelectItem value="4.0">4.0+ stars</SelectItem>
+                      <SelectItem value="3.5">3.5+ stars</SelectItem>
+                      <SelectItem value="3.0">3.0+ stars</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FieldContent>
+              </Field>
 
-            <div className="flex items-end">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="verified"
-                  checked={verifiedOnly}
-                  onCheckedChange={(checked) => setVerifiedOnly(Boolean(checked))}
-                />
-                <Label htmlFor="verified" className="cursor-pointer">
-                  Verified only
-                </Label>
-              </div>
-            </div>
-          </div>
+              <Field orientation="responsive">
+                <FieldLabel htmlFor="verified">Verification</FieldLabel>
+                <FieldContent className="flex items-center gap-2">
+                  <Checkbox
+                    id="verified"
+                    checked={verifiedOnly}
+                    onCheckedChange={(checked) => setVerifiedOnly(Boolean(checked))}
+                  />
+                  <FieldDescription className="text-sm text-foreground">
+                    Verified only
+                  </FieldDescription>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
 
           <Button variant="default" onClick={handleSearch} className="w-full" disabled={isSearching}>
-            {isSearching ? 'Searching...' : 'Search Salons'}
+            {isSearching ? (
+              <>
+                <Spinner className="mr-2" />
+                Searching…
+              </>
+            ) : (
+              'Search Salons'
+            )}
           </Button>
         </div>
       </CardContent>

@@ -8,7 +8,14 @@ import { getReviewStats } from '@/features/business/reviews/api/queries'
 import type { AppointmentWithDetails } from './api/queries'
 import type { BusinessDashboardMetrics, BusinessMultiLocationMetrics, BusinessReviewStats } from './types'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/features/shared/ui-components'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { Spinner } from '@/components/ui/spinner'
 import { AnalyticsTab } from './components/analytics-tab'
 import { DashboardView } from './components/dashboard-view'
@@ -43,16 +50,22 @@ export async function BusinessDashboardPage() {
     if (message.includes('role required')) {
       return (
         <section className="py-10 w-full px-6">
-          <EmptyState
-            icon={ShieldAlert}
-            title="Access denied"
-            description="You don't have permission to access the business dashboard. Please contact your administrator."
-            action={
+          <Empty>
+            <EmptyMedia variant="icon">
+              <ShieldAlert className="h-6 w-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>Access denied</EmptyTitle>
+              <EmptyDescription>
+                You don't have permission to access the business dashboard. Please contact your administrator.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button asChild variant="outline">
                 <Link href="/">Go home</Link>
               </Button>
-            }
-          />
+            </EmptyContent>
+          </Empty>
         </section>
       )
     }
@@ -62,16 +75,22 @@ export async function BusinessDashboardPage() {
   if (!salon || !salon.id) {
     return (
       <section className="py-10 w-full px-6">
-        <EmptyState
-          icon={Store}
-          title="No Salon Found"
-          description="You need to create or be assigned to a salon to access the dashboard."
-          action={
+        <Empty>
+          <EmptyMedia variant="icon">
+            <Store className="h-6 w-6" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>No salon found</EmptyTitle>
+            <EmptyDescription>
+              You need to create or be assigned to a salon to access the dashboard.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
             <Button asChild>
               <Link href="/business/settings/salon">Create Salon</Link>
             </Button>
-          }
-        />
+          </EmptyContent>
+        </Empty>
       </section>
     )
   }

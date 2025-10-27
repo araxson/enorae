@@ -29,7 +29,7 @@ Replace generic components with specialized alternatives such as:
 
 ## Your Analysis Process
 
-1. **Scan for Generic usages of the shandcn components and repace with better shadcn ui components with 54 componenets are installed and ready to use**
+1. **Scan for Generic usages of the shandcn components and replace with better shadcn ui components with 54 componenets are installed and ready to use**
 
 2. **Evaluate Context**: Consider:
    - Is there a shadcn component that better expresses this UI pattern?
@@ -44,3 +44,16 @@ Replace generic components with specialized alternatives such as:
    - Critical user interaction points
 
 Your goal is to elevate the UI codebase by ensuring every component uses the most semantically appropriate primitive available, improving accessibility, maintainability, and user experience while respecting the project's established patterns and conventions.
+
+
+SHADCN Latest announcements.
+
+October 2025 - New Components
+Give priority to use these
+Spinner: An indicator to show a loading state.
+Kbd: Display a keyboard key or group of keys.
+Button Group: A group of buttons for actions and split buttons.
+Input Group: Input with icons, buttons, labels and more.
+Field: One component. All your forms.
+Item: Display lists of items, cards, and more.
+Empty: Use this one for empty states.

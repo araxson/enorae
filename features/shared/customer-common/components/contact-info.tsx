@@ -1,6 +1,16 @@
 import { Phone, Mail, Globe } from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
-import { cn } from "@/lib/utils";
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { cn } from '@/lib/utils'
 
 interface ContactInfoProps {
   phone?: string | null
@@ -17,37 +27,56 @@ export function ContactInfo({ phone, email, websiteUrl, className }: ContactInfo
   }
 
   return (
-    <div className={cn('flex flex-col gap-3', className)}>
+    <ItemGroup className={cn('flex flex-col gap-3', className)}>
       {phone && (
-        <div className="flex gap-3 items-center">
-          <Phone className="h-4 w-4 text-muted-foreground" />
-          <a href={`tel:${phone}`} className="hover:underline">
-            <p className="text-sm font-medium">{phone}</p>
-          </a>
-        </div>
+        <Item variant="muted">
+          <ItemMedia variant="icon">
+            <Phone className="h-4 w-4 text-muted-foreground" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>
+              <a href={`tel:${phone}`} className="hover:underline">
+                {phone}
+              </a>
+            </ItemTitle>
+          </ItemContent>
+        </Item>
       )}
       {email && (
-        <div className="flex gap-3 items-center">
-          <Mail className="h-4 w-4 text-muted-foreground" />
-          <a href={`mailto:${email}`} className="hover:underline">
-            <p className="text-sm font-medium">{email}</p>
-          </a>
-        </div>
+        <Item variant="muted">
+          <ItemMedia variant="icon">
+            <Mail className="h-4 w-4 text-muted-foreground" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>
+              <a href={`mailto:${email}`} className="hover:underline">
+                {email}
+              </a>
+            </ItemTitle>
+          </ItemContent>
+        </Item>
       )}
       {websiteUrl && (
-        <div className="flex gap-3 items-center">
-          <Globe className="h-4 w-4 text-muted-foreground" />
-          <a
-            href={websiteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            <p className="text-sm font-medium">Visit Website</p>
-          </a>
-        </div>
+        <Item variant="muted">
+          <ItemMedia variant="icon">
+            <Globe className="h-4 w-4 text-muted-foreground" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>
+              <a
+                href={websiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                Visit Website
+              </a>
+            </ItemTitle>
+            <ItemDescription>Opens in a new tab</ItemDescription>
+          </ItemContent>
+        </Item>
       )}
-    </div>
+    </ItemGroup>
   )
 }
 
@@ -66,7 +95,7 @@ export function ContactButtons({ phone, email, websiteUrl, className }: ContactB
   }
 
   return (
-    <div className={cn('flex gap-3 items-center', className)}>
+    <ButtonGroup className={cn('flex flex-wrap gap-3', className)}>
       {phone && (
         <Button variant="outline" size="sm" asChild>
           <a href={`tel:${phone}`}>
@@ -91,6 +120,6 @@ export function ContactButtons({ phone, email, websiteUrl, className }: ContactB
           </a>
         </Button>
       )}
-    </div>
+    </ButtonGroup>
   )
 }

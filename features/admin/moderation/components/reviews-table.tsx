@@ -20,7 +20,7 @@ import { Label } from '@/components/ui/label'
 import { flagReview, unflagReview, deleteReview, featureReview } from '@/features/admin/moderation/api/mutations'
 import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import { ReviewsTableRow } from './reviews-table-row'
-import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 const EMPTY_MESSAGE = 'No reviews found'
 
@@ -166,6 +166,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
                     <Empty>
                       <EmptyHeader>
                         <EmptyTitle>{EMPTY_MESSAGE}</EmptyTitle>
+                        <EmptyDescription>Adjust filters or timeframe to explore other review sets.</EmptyDescription>
                       </EmptyHeader>
                     </Empty>
                   </TableCell>

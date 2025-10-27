@@ -7,6 +7,13 @@ import {
 } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 
 type FaqItem = {
   question: string
@@ -39,16 +46,24 @@ export function SupportFaqCard({ items }: SupportFaqCardProps) {
 
           <Separator />
 
-          <div className="space-y-2 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-3 w-20" />
-              <span>Latest incident updates posted hourly.</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-3 w-16" />
-              <span>Join the staff Slack channel for live tips.</span>
-            </div>
-          </div>
+          <ItemGroup className="space-y-2 text-sm text-muted-foreground">
+            <Item variant="muted" size="sm">
+              <ItemMedia>
+                <Skeleton className="h-3 w-20" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemDescription>Latest incident updates posted hourly.</ItemDescription>
+              </ItemContent>
+            </Item>
+            <Item variant="muted" size="sm">
+              <ItemMedia>
+                <Skeleton className="h-3 w-16" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemDescription>Join the staff Slack channel for live tips.</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </div>
       </CardContent>
     </Card>

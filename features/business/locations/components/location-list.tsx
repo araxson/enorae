@@ -1,16 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Edit2, Trash2, MapPin, Star } from 'lucide-react'
+import { Edit2, Trash2, MapPin } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,6 +15,23 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { deleteSalonLocation } from '@/features/business/locations/api/mutations'
 import type { SalonLocation } from '@/features/business/locations'
 
@@ -57,15 +68,16 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
 
   if (locations.length === 0) {
     return (
-      <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>No salon locations found</CardTitle>
-          <CardDescription>Add your first location to manage scheduling and staff.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center py-6">
-          <MapPin className="h-12 w-12 text-muted-foreground mb-4" />
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <MapPin className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No salon locations found</EmptyTitle>
+          <EmptyDescription>Add your first location to manage scheduling and staff.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Launch the location wizard to configure hours, services, and teams.</EmptyContent>
+      </Empty>
     )
   }
 
@@ -73,37 +85,27 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {locations.map((location) => (
-          <Card key={location['id']}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CardTitle>{location['name']}</CardTitle>
-                    {location['is_primary'] && (
-                      <Star className="h-4 w-4 fill-accent text-accent" />
-                    )}
-                  </div>
-                  <CardDescription>
-                    <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0" />
-                      <div className="flex flex-col gap-2">
-                        <p className="text-sm text-muted-foreground">/{location['slug']}</p>
-                        {location['is_active'] ? (
-                          <p className="text-sm font-medium text-primary">
-                            Active
-                          </p>
-                        ) : (
-                          <p className="text-sm text-muted-foreground">Inactive</p>
-                        )}
-                      </div>
-                    </div>
-                  </CardDescription>
+          <Item key={location['id']} variant="outline" className="flex flex-col items-start gap-4">
+            <ItemHeader>
+              <ItemTitle>{location['name']}</ItemTitle>
+              {location['is_primary'] ? (
+                <Badge variant="secondary">Primary</Badge>
+              ) : null}
+            </ItemHeader>
+            <ItemContent>
+              <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                <div className="flex flex-col gap-2">
+                  <ItemDescription>/{location['slug']}</ItemDescription>
+                  <span className={location['is_active'] ? 'font-medium text-primary' : ''}>
+                    {location['is_active'] ? 'Active' : 'Inactive'}
+                  </span>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-2">
-                {onEdit && (
+            </ItemContent>
+            <ItemActions>
+              <ButtonGroup>
+                {onEdit ? (
                   <Button
                     variant="outline"
                     size="sm"
@@ -112,8 +114,8 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                     <Edit2 className="h-4 w-4 mr-2" />
                     Edit
                   </Button>
-                )}
-                {!location['is_primary'] && (
+                ) : null}
+                {!location['is_primary'] ? (
                   <Button
                     variant="outline"
                     size="sm"
@@ -122,10 +124,10 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                     <Trash2 className="h-4 w-4 mr-2" />
                     Delete
                   </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                ) : null}
+              </ButtonGroup>
+            </ItemActions>
+          </Item>
         ))}
       </div>
 

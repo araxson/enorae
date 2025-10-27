@@ -3,11 +3,17 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { updateStaffInfo } from '@/features/staff/profile/api/mutations'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
 
 type StaffInfoFormProps = {
   profile: {
@@ -63,46 +69,54 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
           <CardTitle>Professional information</CardTitle>
           <CardDescription>Share your role, experience, and story with clients.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              name="title"
-              type="text"
-              defaultValue={profile.title || ''}
-              placeholder="e.g., Senior Stylist, Master Colorist"
-              maxLength={100}
-            />
-            <p className="text-muted-foreground">Your professional title or role.</p>
-          </div>
+        <CardContent>
+          <FieldSet className="space-y-6">
+            <Field>
+              <FieldLabel htmlFor="title">Title</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="title"
+                  name="title"
+                  type="text"
+                  defaultValue={profile.title || ''}
+                  placeholder="e.g., Senior Stylist, Master Colorist"
+                  maxLength={100}
+                />
+                <FieldDescription>Your professional title or role.</FieldDescription>
+              </FieldContent>
+            </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="experienceYears">Years of experience</Label>
-            <Input
-              id="experienceYears"
-              name="experienceYears"
-              type="number"
-              min="0"
-              max="100"
-              defaultValue={profile.experience_years ?? ''}
-              placeholder="e.g., 5"
-            />
-            <p className="text-muted-foreground">How many years you&apos;ve been practicing.</p>
-          </div>
+            <Field>
+              <FieldLabel htmlFor="experienceYears">Years of experience</FieldLabel>
+              <FieldContent>
+                <Input
+                  id="experienceYears"
+                  name="experienceYears"
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue={profile.experience_years ?? ''}
+                  placeholder="e.g., 5"
+                />
+                <FieldDescription>How many years you&apos;ve been practicing.</FieldDescription>
+              </FieldContent>
+            </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="bio">Bio</Label>
-            <Textarea
-              id="bio"
-              name="bio"
-              defaultValue={profile.bio || ''}
-              placeholder="Tell us about yourself, your specialties, and what you're passionate about..."
-              rows={6}
-              maxLength={1000}
-            />
-            <p className="text-muted-foreground">{profile.bio?.length || 0}/1000 characters</p>
-          </div>
+            <Field>
+              <FieldLabel htmlFor="bio">Bio</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="bio"
+                  name="bio"
+                  defaultValue={profile.bio || ''}
+                  placeholder="Tell us about yourself, your specialties, and what you're passionate about..."
+                  rows={6}
+                  maxLength={1000}
+                />
+                <FieldDescription>{profile.bio?.length || 0}/1000 characters</FieldDescription>
+              </FieldContent>
+            </Field>
+          </FieldSet>
         </CardContent>
       </Card>
 

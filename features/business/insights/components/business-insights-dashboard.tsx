@@ -17,6 +17,14 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 import type { TrendInsight, BusinessRecommendation, AnomalyAlert } from '@/features/business/insights/api/business-insights'
 
@@ -98,55 +106,57 @@ export function BusinessInsightsDashboard({
             {trends.map((trend, idx) => (
               <Card key={idx}>
                 <CardContent className="pt-6">
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-start justify-between">
-                  <div>
-                    <h4 className="font-semibold">{trend.metric}</h4>
-                    <p className="text-sm text-muted-foreground">{trend.message}</p>
-                  </div>
-                  {trend.trend === 'up' ? (
-                    <TrendingUp
-                      className={`h-6 w-6 ${
-                        trend.status === 'positive' ? 'text-primary' : 'text-destructive'
-                      }`}
-                      aria-hidden="true"
-                    />
-                  ) : trend.trend === 'down' ? (
-                    <TrendingDown
-                      className={`h-6 w-6 ${
-                        trend.status === 'negative' ? 'text-destructive' : 'text-primary'
-                      }`}
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    <Minus className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
-                  )}
-                </div>
-                <div className="flex items-baseline gap-2">
-                  <span
-                    className={`text-2xl font-bold ${
-                      trend.status === 'positive'
-                        ? 'text-primary'
-                        : trend.status === 'negative'
-                        ? 'text-destructive'
-                        : 'text-muted-foreground'
-                    }`}
-                  >
-                    {trend.changePercent.toFixed(1)}%
-                  </span>
-                  <Badge
-                    variant={
-                      trend.status === 'positive'
-                        ? 'default'
-                        : trend.status === 'negative'
-                        ? 'destructive'
-                        : 'secondary'
-                    }
-                  >
-                    {trend.status}
-                  </Badge>
-                </div>
-                  </div>
+                  <Item variant="muted" className="flex-col gap-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <ItemContent className="gap-1">
+                        <ItemTitle>{trend.metric}</ItemTitle>
+                        <ItemDescription>{trend.message}</ItemDescription>
+                      </ItemContent>
+                      <ItemMedia variant="icon">
+                        {trend.trend === 'up' ? (
+                          <TrendingUp
+                            className={`h-6 w-6 ${
+                              trend.status === 'positive' ? 'text-primary' : 'text-destructive'
+                            }`}
+                            aria-hidden="true"
+                          />
+                        ) : trend.trend === 'down' ? (
+                          <TrendingDown
+                            className={`h-6 w-6 ${
+                              trend.status === 'negative' ? 'text-destructive' : 'text-primary'
+                            }`}
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <Minus className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
+                        )}
+                      </ItemMedia>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span
+                        className={`text-2xl font-bold ${
+                          trend.status === 'positive'
+                            ? 'text-primary'
+                            : trend.status === 'negative'
+                            ? 'text-destructive'
+                            : 'text-muted-foreground'
+                        }`}
+                      >
+                        {trend.changePercent.toFixed(1)}%
+                      </span>
+                      <Badge
+                        variant={
+                          trend.status === 'positive'
+                            ? 'default'
+                            : trend.status === 'negative'
+                            ? 'destructive'
+                            : 'secondary'
+                        }
+                      >
+                        {trend.status}
+                      </Badge>
+                    </div>
+                  </Item>
                 </CardContent>
               </Card>
             ))}
@@ -189,22 +199,32 @@ export function BusinessInsightsDashboard({
                   </AccordionTrigger>
                   <AccordionContent className="space-y-4">
                     <p className="text-sm">{rec.description}</p>
-                    <Card>
-                      <CardContent className="flex items-center gap-2 py-3">
+                    <Item variant="outline" className="items-center gap-3">
+                      <ItemMedia variant="icon">
                         <Target className="h-4 w-4 text-primary" aria-hidden="true" />
-                        <span className="text-sm font-medium">Impact: {rec.impact}</span>
-                      </CardContent>
-                    </Card>
+                      </ItemMedia>
+                      <ItemContent>
+                        <ItemTitle>Impact</ItemTitle>
+                        <ItemDescription>{rec.impact}</ItemDescription>
+                      </ItemContent>
+                    </Item>
                     <div>
-                      <p className="mb-2 text-sm font-medium">Action items</p>
-                      <ul className="space-y-1.5">
+                      <ItemTitle>Action items</ItemTitle>
+                      <ItemGroup className="mt-2 space-y-1.5">
                         {rec.actionItems.map((item, idx) => (
-                          <li key={idx} className="flex gap-2 text-sm">
-                            <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
-                            <span>{item}</span>
-                          </li>
+                          <Item key={idx} variant="muted" className="items-start gap-2">
+                            <ItemMedia variant="icon">
+                              <CheckCircle2
+                                className="h-4 w-4 text-primary"
+                                aria-hidden="true"
+                              />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemDescription>{item}</ItemDescription>
+                            </ItemContent>
+                          </Item>
                         ))}
-                      </ul>
+                      </ItemGroup>
                     </div>
                   </AccordionContent>
                 </AccordionItem>

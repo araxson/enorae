@@ -1,6 +1,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Activity, TrendingUp, AlertTriangle, Clock, Calendar } from 'lucide-react'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 import type { Database } from '@/lib/types/database.types'
 
 type OperationalMetric = Database['public']['Views']['operational_metrics_view']['Row']
@@ -15,8 +25,15 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
       <Card>
         <CardHeader>
           <CardTitle>Operational Metrics</CardTitle>
-          <CardDescription>No operational data available</CardDescription>
         </CardHeader>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No operational data</EmptyTitle>
+              <EmptyDescription>Metrics will appear once operational tracking is enabled.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
       </Card>
     )
   }
@@ -32,56 +49,82 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="text-2xl font-bold">Operational Intelligence</h2>
-        <p className="text-sm text-muted-foreground">Real-time operational insights and forecasting</p>
-      </div>
+      <Field>
+        <FieldLabel>Operational intelligence</FieldLabel>
+        <FieldContent>
+          <FieldDescription>Real-time operational insights and forecasting</FieldDescription>
+        </FieldContent>
+      </Field>
 
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Peak Hour</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Peak Hour</CardTitle>
+                  <CardDescription>Busiest time of day</CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{peakHour}:00</div>
-            <p className="text-xs text-muted-foreground">Busiest time of day</p>
-          </CardContent>
+          <CardContent className="text-2xl font-bold">{peakHour}:00</CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Busiest Day</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Busiest Day</CardTitle>
+                  <CardDescription>Highest demand day</CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{busiestDayName}</div>
-            <p className="text-xs text-muted-foreground">Highest demand day</p>
-          </CardContent>
+          <CardContent className="text-2xl font-bold">{busiestDayName}</CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Anomaly Score</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Anomaly Score</CardTitle>
+                  <CardDescription>
+                    {anomalyScore > 0.7 ? 'High anomaly detected' : 'Normal operations'}
+                  </CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <AlertTriangle className="h-4 w-4" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{anomalyScore.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground">
-              {anomalyScore > 0.7 ? 'High anomaly detected' : 'Normal operations'}
-            </p>
-          </CardContent>
+          <CardContent className="text-2xl font-bold">{anomalyScore.toFixed(2)}</CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Forecast Accuracy</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Forecast Accuracy</CardTitle>
+                  <CardDescription>Prediction confidence</CardDescription>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <TrendingUp className="h-4 w-4" />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{(forecastAccuracy * 100).toFixed(1)}%</div>
-            <p className="text-xs text-muted-foreground">Prediction confidence</p>
-          </CardContent>
+          <CardContent className="text-2xl font-bold">{(forecastAccuracy * 100).toFixed(1)}%</CardContent>
         </Card>
       </div>
 
@@ -94,20 +137,28 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
           <CardDescription>Live operational updates</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Real-time Updates</span>
-              <Badge variant="secondary">{realtimeUpdates} updates</Badge>
-            </div>
-            {metrics['last_real_time_update'] && (
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Last Update</span>
-                <span className="text-sm text-muted-foreground">
-                  {new Date(metrics['last_real_time_update']).toLocaleString()}
-                </span>
-              </div>
-            )}
-          </div>
+          <ItemGroup className="flex flex-col gap-4">
+            <Item>
+              <ItemContent>
+                <ItemTitle>Real-time updates</ItemTitle>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <Badge variant="secondary">{realtimeUpdates} updates</Badge>
+              </ItemActions>
+            </Item>
+            {metrics['last_real_time_update'] ? (
+              <Item>
+                <ItemContent>
+                  <ItemTitle>Last update</ItemTitle>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <ItemDescription>
+                    {new Date(metrics['last_real_time_update']).toLocaleString()}
+                  </ItemDescription>
+                </ItemActions>
+              </Item>
+            ) : null}
+          </ItemGroup>
         </CardContent>
       </Card>
 

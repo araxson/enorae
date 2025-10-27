@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
 import {
   searchSalons,
   getPopularCities,
@@ -7,6 +6,7 @@ import {
   getFeaturedSalons,
 } from './api/queries'
 import { AdvancedSearchClient } from './components/advanced-search-client'
+import { Spinner } from '@/components/ui/spinner'
 
 interface SalonSearchProps {
   searchParams: {
@@ -68,7 +68,13 @@ export async function SalonSearchFeature({
   const params = await searchParams
 
   return (
-    <Suspense fallback={<PageLoading />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-12">
+          <Spinner />
+        </div>
+      }
+    >
       <SalonSearch searchParams={params} />
     </Suspense>
   )

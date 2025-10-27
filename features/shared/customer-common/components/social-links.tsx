@@ -1,6 +1,8 @@
 import { Facebook, Instagram, Twitter } from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
-import { cn } from "@/lib/utils";
+import { ButtonGroup } from '@/components/ui/button-group'
+import { cn } from '@/lib/utils'
 
 interface SocialLinksProps {
   facebookUrl?: string | null
@@ -26,7 +28,7 @@ export function SocialLinks({
   }
 
   return (
-    <div className={cn('flex gap-2 items-center', className)}>
+    <ButtonGroup className={cn('flex flex-wrap gap-2', className)}>
       {instagramUrl && (
         <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} asChild>
           <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -65,6 +67,6 @@ export function SocialLinks({
           </a>
         </Button>
       )}
-    </div>
+    </ButtonGroup>
   )
 }

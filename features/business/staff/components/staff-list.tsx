@@ -1,7 +1,23 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { EmptyState } from '@/features/shared/ui-components'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { Users } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 
@@ -14,11 +30,16 @@ interface StaffListProps {
 export function StaffList({ staff }: StaffListProps) {
   if (staff.length === 0) {
     return (
-      <EmptyState
-        icon={Users}
-        title="No staff members"
-        description="Add staff members to your team to get started"
-      />
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Users className="h-6 w-6" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No staff members</EmptyTitle>
+          <EmptyDescription>Add staff members to your team to get started.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Invite team members to assign roles and manage bookings.</EmptyContent>
+      </Empty>
     )
   }
 
@@ -28,30 +49,34 @@ export function StaffList({ staff }: StaffListProps) {
         <CardTitle>Staff Members</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
+        <ItemGroup className="gap-3">
           {staff.map((member, index) => (
-            <Card key={member['id'] || `${member['title']}-${index}`}>
-              <CardContent className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center">
+            <Item
+              key={member['id'] || `${member['title']}-${index}`}
+              variant="outline"
+              className="sm:items-center"
+            >
+              <ItemMedia className="flex-shrink-0">
                 <Avatar>
                   <AvatarFallback>
                     {member['title']?.slice(0, 2).toUpperCase() || 'ST'}
                   </AvatarFallback>
                 </Avatar>
+              </ItemMedia>
 
-                <div className="flex flex-1 flex-col gap-2">
-                  <div className="text-base">{member['title'] || 'Staff Member'}</div>
-                  {member['bio'] ? (
-                    <p className="line-clamp-2 text-sm text-muted-foreground">{member['bio']}</p>
-                  ) : null}
-                </div>
+              <ItemContent>
+                <ItemTitle>{member['title'] || 'Staff Member'}</ItemTitle>
+                {member['bio'] ? (
+                  <ItemDescription>{member['bio']}</ItemDescription>
+                ) : null}
+              </ItemContent>
 
-                <Badge variant="default">
-                  Active
-                </Badge>
-              </CardContent>
-            </Card>
+              <ItemActions>
+                <Badge variant="default">Active</Badge>
+              </ItemActions>
+            </Item>
           ))}
-        </div>
+        </ItemGroup>
       </CardContent>
     </Card>
   )

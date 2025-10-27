@@ -1,7 +1,12 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 
 type PrimitiveValue = string | null | undefined
 
@@ -14,28 +19,32 @@ type WebsiteBookingSectionProps = {
 
 export function WebsiteBookingSection({ initialValues }: WebsiteBookingSectionProps) {
   return (
-    <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-      <div className="flex flex-col gap-3">
-        <Label htmlFor="website_url">Website URL</Label>
-        <Input
-          id="website_url"
-          name="website_url"
-          type="url"
-          defaultValue={initialValues.website_url ?? ''}
-          placeholder="https://www.yoursalon.com"
-        />
-      </div>
+    <FieldGroup className="grid gap-6 grid-cols-1 md:grid-cols-2">
+      <Field>
+        <FieldLabel htmlFor="website_url">Website URL</FieldLabel>
+        <FieldContent>
+          <Input
+            id="website_url"
+            name="website_url"
+            type="url"
+            defaultValue={initialValues.website_url ?? ''}
+            placeholder="https://www.yoursalon.com"
+          />
+        </FieldContent>
+      </Field>
 
-      <div className="flex flex-col gap-3">
-        <Label htmlFor="booking_url">Booking URL</Label>
-        <Input
-          id="booking_url"
-          name="booking_url"
-          type="url"
-          defaultValue={initialValues.booking_url ?? ''}
-          placeholder="https://book.yoursalon.com"
-        />
-      </div>
-    </div>
+      <Field>
+        <FieldLabel htmlFor="booking_url">Booking URL</FieldLabel>
+        <FieldContent>
+          <Input
+            id="booking_url"
+            name="booking_url"
+            type="url"
+            defaultValue={initialValues.booking_url ?? ''}
+            placeholder="https://book.yoursalon.com"
+          />
+        </FieldContent>
+      </Field>
+    </FieldGroup>
   )
 }

@@ -2,13 +2,27 @@
 
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { Calendar, DollarSign, Mail, User } from 'lucide-react'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { Spinner } from '@/components/ui/spinner'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 
@@ -92,85 +106,98 @@ export function ClientDetailDialog({
 
         <div className="flex flex-col gap-6">
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="flex gap-3 items-start">
-              <User className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-xs text-muted-foreground">Name</p>
-                <p className="font-medium">{client['customer_name'] || 'Walk-in Customer'}</p>
+            <Item variant="outline" size="sm">
+              <ItemMedia variant="icon">
+                <User className="h-5 w-5" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{client['customer_name'] || 'Walk-in Customer'}</ItemTitle>
                 {client['customer_id'] ? (
-                  <p className="text-xs text-muted-foreground">ID {client['customer_id']}</p>
+                  <ItemDescription>ID {client['customer_id']}</ItemDescription>
                 ) : null}
-              </div>
-            </div>
+              </ItemContent>
+            </Item>
 
-            {client['customer_email'] && (
-              <div className="flex gap-3 items-start">
-                <Mail className="h-5 w-5 text-muted-foreground mt-0.5" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Email</p>
-                  <p>{client['customer_email']}</p>
-                </div>
-              </div>
-            )}
+            {client['customer_email'] ? (
+              <Item variant="outline" size="sm">
+                <ItemMedia variant="icon">
+                  <Mail className="h-5 w-5" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>{client['customer_email']}</ItemTitle>
+                  <ItemDescription>Email</ItemDescription>
+                </ItemContent>
+              </Item>
+            ) : null}
 
-            <div className="flex gap-3 items-start">
-              <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-xs text-muted-foreground">Total Appointments</p>
-                <p className="font-medium">{client['total_appointments']}</p>
-              </div>
-            </div>
+            <Item variant="outline" size="sm">
+              <ItemMedia variant="icon">
+                <Calendar className="h-5 w-5" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{client['total_appointments']}</ItemTitle>
+                <ItemDescription>Total appointments</ItemDescription>
+              </ItemContent>
+            </Item>
 
-            {client['total_revenue'] !== undefined && client['total_revenue'] !== null && (
-              <div className="flex gap-3 items-start">
-                <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Total Revenue</p>
-                  <p className="font-medium">${Number(client['total_revenue']).toFixed(2)}</p>
-                </div>
-              </div>
-            )}
+            {client['total_revenue'] !== undefined && client['total_revenue'] !== null ? (
+              <Item variant="outline" size="sm">
+                <ItemMedia variant="icon">
+                  <DollarSign className="h-5 w-5" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>${Number(client['total_revenue']).toFixed(2)}</ItemTitle>
+                  <ItemDescription>Total revenue</ItemDescription>
+                </ItemContent>
+              </Item>
+            ) : null}
           </div>
-
-          <Separator />
 
           <div>
             <h3 className="mb-4 text-lg font-semibold">Appointment History</h3>
             {loading ? (
-              <p className="text-muted-foreground">Loading...</p>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Spinner className="h-4 w-4" />
+                Loading appointments…
+              </div>
             ) : appointments.length === 0 ? (
-              <p className="text-muted-foreground">No appointments found</p>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <Calendar className="h-8 w-8" aria-hidden="true" />
+                  </EmptyMedia>
+                  <EmptyTitle>No appointments found</EmptyTitle>
+                  <EmptyDescription>This client has no appointment history yet.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             ) : (
-              <div className="flex flex-col gap-3">
+              <ItemGroup className="gap-2">
                 {appointments.map((apt) => {
-                  // TODO: Add service_names array to appointments view
                   const serviceNames = 'Appointment'
                   const startTime = apt['start_time']
                     ? format(new Date(apt['start_time']), 'MMM dd, yyyy • h:mm a')
                     : null
 
                   return (
-                    <Card key={apt['id']}>
-                      <CardHeader className="space-y-2">
+                    <Item key={apt['id']} variant="outline" size="sm">
+                      <ItemContent>
                         <div className="flex flex-wrap items-center gap-3">
                           <Badge variant={apt['status'] === 'completed' ? 'default' : 'outline'}>
                             {apt['status']}
                           </Badge>
-                          {startTime && <CardDescription>{startTime}</CardDescription>}
+                          {startTime ? (
+                            <ItemDescription>{startTime}</ItemDescription>
+                          ) : null}
                         </div>
-                        <CardTitle>{serviceNames}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="space-y-1">
-                          {apt['duration_minutes'] && (
-                            <span className="text-muted-foreground">{apt['duration_minutes']} minutes</span>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
+                        <ItemTitle>{serviceNames}</ItemTitle>
+                        {apt['duration_minutes'] ? (
+                          <ItemDescription>{apt['duration_minutes']} minutes</ItemDescription>
+                        ) : null}
+                      </ItemContent>
+                    </Item>
                   )
                 })}
-              </div>
+              </ItemGroup>
             )}
           </div>
         </div>

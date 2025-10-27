@@ -3,7 +3,18 @@
 import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { UserRole } from '@/lib/types'
-import { Badge } from '@/components/ui/badge'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface RolePermissionMatrixProps {
   roles: UserRole[]
@@ -25,7 +36,24 @@ export function RolePermissionMatrix({ roles }: RolePermissionMatrixProps) {
   const roleEntries = Object.entries(matrix)
 
   if (roleEntries.length === 0) {
-    return null
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Permission matrix</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            Aggregated permissions across active assignments. Use row actions to refine individual role permissions.
+          </p>
+        </CardHeader>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No role assignments detected</EmptyTitle>
+              <EmptyDescription>Roles will appear once users receive explicit permission sets.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
@@ -41,15 +69,22 @@ export function RolePermissionMatrix({ roles }: RolePermissionMatrixProps) {
           <div key={role} className="space-y-2">
             <div className="text-sm font-medium capitalize">{role.replace(/_/g, ' ')}</div>
             {permissions.size === 0 ? (
-              <p className="text-xs text-muted-foreground">No custom permissions</p>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No custom permissions</EmptyTitle>
+                  <EmptyDescription>Assign granular capabilities to extend this role beyond defaults.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             ) : (
-              <div className="flex flex-wrap gap-2">
+              <ItemGroup>
                 {Array.from(permissions).map((permission) => (
-                  <Badge key={permission} variant="secondary">
-                    {permission}
-                  </Badge>
+                  <Item key={permission} variant="outline">
+                    <ItemContent>
+                      <ItemTitle>{permission}</ItemTitle>
+                    </ItemContent>
+                  </Item>
                 ))}
-              </div>
+              </ItemGroup>
             )}
           </div>
         ))}

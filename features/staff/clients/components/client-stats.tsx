@@ -1,8 +1,15 @@
 'use client'
 
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader } from '@/components/ui/card'
 import { Users, UserCheck, Calendar, DollarSign } from 'lucide-react'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ClientStatsProps = {
   clients: ClientWithHistory[]
@@ -47,12 +54,16 @@ export function ClientStats({ clients }: ClientStatsProps) {
         const Icon = stat.icon
         return (
           <Card key={stat.label}>
-            <CardHeader className="flex flex-row items-start justify-between gap-4">
-              <div className="space-y-1">
-                <CardTitle>{stat.value}</CardTitle>
-                <CardDescription>{stat.label}</CardDescription>
-              </div>
-              <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
+            <CardHeader>
+              <Item variant="muted" size="sm">
+                <ItemMedia variant="icon">
+                  <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>{stat.value}</ItemTitle>
+                  <ItemDescription>{stat.label}</ItemDescription>
+                </ItemContent>
+              </Item>
             </CardHeader>
           </Card>
         )

@@ -1,4 +1,5 @@
-import { Loader2, CheckCircle2, XCircle, AlertCircle } from 'lucide-react'
+import { CheckCircle2, XCircle, AlertCircle } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import type { AvailabilityStatus } from './use-booking-form'
 
@@ -23,7 +24,7 @@ export function AvailabilityIndicator({
 
   const getIcon = () => {
     if (status === 'checking' || isCheckingAvailability) {
-      return <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+      return <Spinner className="h-4 w-4" aria-hidden="true" />
     }
     if (status === 'available') {
       return <CheckCircle2 className="h-4 w-4" aria-hidden="true" />

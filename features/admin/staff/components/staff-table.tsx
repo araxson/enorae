@@ -10,7 +10,13 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 import { StaffRiskBadge } from './staff-risk-badge'
 import { formatDate } from '@/lib/utils/date-time'
@@ -41,12 +47,13 @@ type StaffTableProps = {
 export function StaffTable({ staff }: StaffTableProps) {
   if (staff.length === 0) {
     return (
-      <Alert>
-        <AlertTitle>No staff records found</AlertTitle>
-        <AlertDescription>
-          Adjust your filters to see staff results.
-        </AlertDescription>
-      </Alert>
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>No staff records found</EmptyTitle>
+          <EmptyDescription>Adjust the filters or date range to explore staff activity.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>Once criteria match, staff profiles with compliance metrics will appear.</EmptyContent>
+      </Empty>
     )
   }
 

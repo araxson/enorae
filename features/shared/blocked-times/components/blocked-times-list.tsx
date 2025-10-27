@@ -112,9 +112,7 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
           </CardHeader>
           <CardContent className="p-5 pt-0">
             {blockedTime.reason && (
-              <p className="text-sm text-muted-foreground">
-                {blockedTime.reason}
-              </p>
+              <CardDescription>{blockedTime.reason}</CardDescription>
             )}
           </CardContent>
         </Card>

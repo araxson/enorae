@@ -1,9 +1,17 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { DailyEarnings } from '@/features/staff/commission/api/queries'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis } from 'recharts'
+import { TrendingUp } from 'lucide-react'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type EarningsChartProps = {
   data: DailyEarnings[]
@@ -17,7 +25,15 @@ export function EarningsChart({ data }: EarningsChartProps) {
           <CardTitle>Earnings Trend</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">No earnings data available</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <TrendingUp className="h-8 w-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No earnings data</EmptyTitle>
+              <EmptyDescription>Once you complete appointments, earnings performance appears here.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -27,7 +43,7 @@ export function EarningsChart({ data }: EarningsChartProps) {
     <Card>
       <CardHeader>
         <CardTitle>Earnings Trend (Last 30 Days)</CardTitle>
-        <p className="text-sm text-muted-foreground">Daily revenue from completed appointments</p>
+        <CardDescription>Daily revenue from completed appointments</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer

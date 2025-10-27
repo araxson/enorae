@@ -5,10 +5,17 @@ import { Pencil, Trash2, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { deleteBlockedTime } from '@/features/staff/blocked-times/api/mutations'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface BlockedTimesListProps {
   blockedTimes: BlockedTime[]
@@ -40,11 +47,15 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
 
   if (blockedTimes.length === 0) {
     return (
-      <Alert className="flex flex-col items-center gap-3 py-8">
-        <Clock className="h-12 w-12 text-muted-foreground" />
-        <AlertTitle>No blocked times</AlertTitle>
-        <AlertDescription>Create a blocked time to prevent bookings during specific periods</AlertDescription>
-      </Alert>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Clock className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No blocked times</EmptyTitle>
+          <EmptyDescription>Create a blocked time to prevent bookings during specific periods.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     )
   }
 
@@ -92,7 +103,7 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex gap-2 justify-end">
+                  <ButtonGroup className="ml-auto">
                     {onEdit && (
                       <Button
                         variant="ghost"
@@ -110,7 +121,7 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                  </div>
+                  </ButtonGroup>
                 </TableCell>
               </TableRow>
             ))}

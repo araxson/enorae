@@ -2,6 +2,14 @@ import { TrendingUp, TrendingDown, DollarSign, Calendar, Users, UserCheck } from
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { AnalyticsOverview } from '@/features/business/analytics/api/queries'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type AnalyticsOverviewProps = {
   data: AnalyticsOverview
@@ -60,36 +68,58 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
       {cards.map((card) => (
         <Card key={card.title}>
           <CardHeader>
-            <div className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle>
-                  {card.title}
-                </CardTitle>
-                <card.icon className={`h-4 w-4 ${card.iconColor}`} />
-              </div>
-            </div>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>{card.title}</CardTitle>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <card.icon className={`h-4 w-4 ${card.iconColor}`} />
+                </ItemActions>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-2">
-              <div className="flex items-baseline gap-2">
-                <div className="text-2xl">{card.value}</div>
-                {card.trend !== undefined && (
-                  <Badge variant={card.trend >= 0 ? 'default' : 'destructive'}>
-                    {card.trend >= 0 ? (
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                    ) : (
-                      <TrendingDown className="h-3 w-3 mr-1" />
+              <ItemGroup>
+                <Item>
+                  <ItemContent className="flex items-baseline gap-2">
+                    <div className="text-2xl">{card.value}</div>
+                    {card.trend !== undefined && (
+                      <Badge variant={card.trend >= 0 ? 'default' : 'destructive'}>
+                        {card.trend >= 0 ? (
+                          <TrendingUp className="mr-1 h-3 w-3" />
+                        ) : (
+                          <TrendingDown className="mr-1 h-3 w-3" />
+                        )}
+                        {formatPercent(Math.abs(card.trend))}
+                      </Badge>
                     )}
-                    {formatPercent(Math.abs(card.trend))}
-                  </Badge>
-                )}
-              </div>
-              {card.subtitle && (
-                <p className="text-xs text-muted-foreground">{card.subtitle}</p>
-              )}
-              {card.detail && (
-                <p className="text-xs text-muted-foreground">{card.detail}</p>
-              )}
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
+              {card.subtitle ? (
+                <ItemGroup>
+                  <Item>
+                    <ItemContent>
+                      <ItemDescription className="text-xs text-muted-foreground">
+                        {card.subtitle}
+                      </ItemDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
+              ) : null}
+              {card.detail ? (
+                <ItemGroup>
+                  <Item>
+                    <ItemContent>
+                      <ItemDescription className="text-xs text-muted-foreground">
+                        {card.detail}
+                      </ItemDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
+              ) : null}
             </div>
           </CardContent>
         </Card>

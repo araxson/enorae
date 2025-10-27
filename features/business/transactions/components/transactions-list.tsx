@@ -2,7 +2,13 @@
 
 import { DollarSign } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Table,
   TableBody,
@@ -37,12 +43,15 @@ const TRANSACTION_TYPE_COLORS = {
 export function TransactionsList({ transactions }: TransactionsListProps) {
   if (transactions.length === 0) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center gap-4 py-12">
-          <DollarSign className="h-12 w-12 text-muted-foreground" />
-          <p className="text-muted-foreground">No manual transactions found</p>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <DollarSign className="h-8 w-8" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyTitle>No manual transactions found</EmptyTitle>
+          <EmptyDescription>Manual adjustments will appear here once recorded.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     )
   }
 

@@ -15,6 +15,15 @@ import { Separator } from '@/components/ui/separator'
 import { Star, MessageSquare, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 import type { BusinessReviewStats } from '@/features/business/dashboard/types'
 
@@ -68,27 +77,29 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Average Rating */}
           <div className="flex flex-col gap-6">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Average Rating</p>
-              <div className="mt-1 flex items-baseline gap-2">
-                <div className="text-3xl font-bold">{stats.averageRating.toFixed(1)}</div>
-                <div className="flex items-center gap-2">
-                  {[...Array(5)].map((_, i) => {
-                    const isFilled = i < Math.round(stats.averageRating)
-                    return (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${isFilled ? 'text-primary' : 'text-muted-foreground'}`}
-                        fill={isFilled ? 'currentColor' : 'none'}
-                      />
-                    )
-                  })}
+            <Field>
+              <FieldLabel>Average rating</FieldLabel>
+              <FieldContent className="gap-2">
+                <div className="flex items-baseline gap-2">
+                  <div className="text-3xl font-bold">{stats.averageRating.toFixed(1)}</div>
+                  <div className="flex items-center gap-2">
+                    {[...Array(5)].map((_, i) => {
+                      const isFilled = i < Math.round(stats.averageRating)
+                      return (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${isFilled ? 'text-primary' : 'text-muted-foreground'}`}
+                          fill={isFilled ? 'currentColor' : 'none'}
+                        />
+                      )
+                    })}
+                  </div>
                 </div>
-              </div>
-              <p className="text-sm font-medium text-muted-foreground mt-1">
-                Based on {stats.totalReviews} {stats.totalReviews === 1 ? 'review' : 'reviews'}
-              </p>
-            </div>
+                <FieldDescription>
+                  Based on {stats.totalReviews} {stats.totalReviews === 1 ? 'review' : 'reviews'}
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
             {/* Action Items */}
             <Separator />
@@ -128,17 +139,25 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
 
           {/* Rating Distribution */}
           <div className="flex flex-col gap-2">
-            <p className="text-sm font-medium text-muted-foreground">Rating Distribution</p>
-            {stats.ratingDistribution.map(({ rating, count }) => {
-              const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
-              return (
-                <div key={rating} className="flex items-center gap-2">
-                  <p className="text-sm font-medium w-12 text-right">{rating} stars</p>
-                  <Progress value={percentage} className="flex-1 h-2" />
-                  <p className="text-sm font-medium w-8 text-muted-foreground">{count}</p>
-                </div>
-              )
-            })}
+            <FieldLabel>Rating distribution</FieldLabel>
+            <ItemGroup className="space-y-2">
+              {stats.ratingDistribution.map(({ rating, count }) => {
+                const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
+                return (
+                  <Item key={rating} className="items-center gap-3">
+                    <ItemContent className="flex items-center gap-2">
+                      <ItemTitle>{rating} stars</ItemTitle>
+                      <div className="flex-1">
+                        <Progress value={percentage} className="h-2" />
+                      </div>
+                    </ItemContent>
+                    <ItemActions className="flex-none">
+                      <ItemDescription>{count}</ItemDescription>
+                    </ItemActions>
+                  </Item>
+                )
+              })}
+            </ItemGroup>
           </div>
         </div>
       </CardContent>

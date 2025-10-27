@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { ProfileDetail } from '@/features/admin/profile/types'
 
 interface ProfileActivityCardProps {
@@ -57,9 +58,12 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
           <CardTitle>Recent activity</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Activity will appear here once a user is selected.
-          </p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No profile selected</EmptyTitle>
+              <EmptyDescription>Choose a profile to inspect recent activity.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -72,9 +76,12 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
           <CardTitle>Recent activity</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">
-            No audit events recorded for this profile in the recent window.
-          </p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No audit events recorded</EmptyTitle>
+              <EmptyDescription>Activity history updates as events stream in for this profile.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

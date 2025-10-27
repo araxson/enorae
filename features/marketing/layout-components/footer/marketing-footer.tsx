@@ -1,5 +1,12 @@
 import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from '@/components/ui/item'
 import { Sparkles, Mail, MapPin, Phone } from 'lucide-react'
 import { NewsletterForm } from '@/features/marketing/common-components/newsletter-form'
 
@@ -52,78 +59,100 @@ export function MarketingFooter() {
               <p className="text-sm leading-7 text-muted-foreground">
                 Your Beauty Appointments, Simplified. The modern platform connecting clients with premier salons.
               </p>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-muted-foreground" />
-                  <small className="text-sm font-medium leading-none text-muted-foreground">
-                    support@enorae.com
-                  </small>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-muted-foreground" />
-                  <small className="text-sm font-medium leading-none text-muted-foreground">1-800-ENORAE</small>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <small className="text-sm font-medium leading-none text-muted-foreground">San Francisco, CA</small>
-                </div>
-              </div>
+              <ItemGroup className="gap-2">
+                <Item variant="muted">
+                  <ItemMedia variant="icon">
+                    <Mail className="size-4" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemDescription>support@enorae.com</ItemDescription>
+                  </ItemContent>
+                </Item>
+                <Item variant="muted">
+                  <ItemMedia variant="icon">
+                    <Phone className="size-4" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemDescription>1-800-ENORAE</ItemDescription>
+                  </ItemContent>
+                </Item>
+                <Item variant="muted">
+                  <ItemMedia variant="icon">
+                    <MapPin className="size-4" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemDescription>San Francisco, CA</ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </div>
 
             <div className="flex flex-col gap-6">
               <h3 className="font-semibold">Product</h3>
-              <div className="flex flex-col gap-2">
+              <ItemGroup className="gap-2">
                 {footerLinks.product.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
+                  <Item key={link.href} asChild variant="muted">
+                    <Link
+                      href={link.href}
+                      className="no-underline"
+                    >
+                      <ItemContent>
+                        <ItemDescription>{link.label}</ItemDescription>
+                      </ItemContent>
+                    </Link>
+                  </Item>
                 ))}
-              </div>
+              </ItemGroup>
             </div>
 
             <div className="flex flex-col gap-6">
               <h3 className="font-semibold">Company</h3>
-              <div className="flex flex-col gap-2">
+              <ItemGroup className="gap-2">
                 {footerLinks.company.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
+                  <Item key={link.href} asChild variant="muted">
+                    <Link
+                      href={link.href}
+                      className="no-underline"
+                    >
+                      <ItemContent>
+                        <ItemDescription>{link.label}</ItemDescription>
+                      </ItemContent>
+                    </Link>
+                  </Item>
                 ))}
-              </div>
+              </ItemGroup>
             </div>
 
             <div className="flex flex-col gap-6">
               <h3 className="font-semibold">Legal</h3>
-              <div className="flex flex-col gap-2">
+              <ItemGroup className="gap-2">
                 {footerLinks.legal.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
+                  <Item key={link.href} asChild variant="muted">
+                    <Link
+                      href={link.href}
+                      className="no-underline"
+                    >
+                      <ItemContent>
+                        <ItemDescription>{link.label}</ItemDescription>
+                      </ItemContent>
+                    </Link>
+                  </Item>
                 ))}
-              </div>
-              <div className="mt-4 flex flex-col gap-2">
+              </ItemGroup>
+              <ItemGroup className="mt-4 gap-2">
                 {footerLinks.resources.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
+                  <Item key={link.href} asChild variant="muted">
+                    <Link
+                      href={link.href}
+                      className="no-underline"
+                    >
+                      <ItemContent>
+                        <ItemDescription>{link.label}</ItemDescription>
+                      </ItemContent>
+                    </Link>
+                  </Item>
                 ))}
-              </div>
+              </ItemGroup>
             </div>
           </div>
 

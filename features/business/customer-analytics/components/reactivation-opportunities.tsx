@@ -3,6 +3,15 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type ReactivationOpportunity = {
   id: string
@@ -28,24 +37,33 @@ export function ReactivationOpportunities({ total, customers }: ReactivationOppo
       </CardHeader>
       <CardContent className="space-y-3">
         <Badge variant="secondary">{total} customers to re-engage</Badge>
-        <div className="space-y-3">
-          {customers.slice(0, 5).map((customer) => (
-            <Card key={customer.id}>
-              <CardHeader className="pb-2">
-                <CardTitle>{customer.name}</CardTitle>
-                <CardDescription>{customer.email}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between pt-0">
-                <p className="text-sm text-muted-foreground">
-                  Last visit {format(new Date(customer.lastVisit), 'MMM d, yyyy')}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {customer.daysSinceLastVisit} days ago
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {customers.length === 0 ? (
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No reactivation opportunities</EmptyTitle>
+              <EmptyDescription>All customers have visited recently.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        ) : (
+          <ItemGroup className="space-y-3">
+            {customers.slice(0, 5).map((customer) => (
+              <Item key={customer.id} variant="outline" className="flex-col gap-2">
+                <ItemContent>
+                  <ItemTitle className="text-lg font-semibold">{customer.name}</ItemTitle>
+                  <ItemDescription>{customer.email}</ItemDescription>
+                </ItemContent>
+                <ItemContent>
+                  <ItemDescription>
+                    Last visit {format(new Date(customer.lastVisit), 'MMM d, yyyy')}
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-none text-muted-foreground">
+                  <ItemDescription>{customer.daysSinceLastVisit} days ago</ItemDescription>
+                </ItemActions>
+              </Item>
+            ))}
+          </ItemGroup>
+        )}
       </CardContent>
     </Card>
   )

@@ -1,10 +1,12 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card'
+import { Spinner } from '@/components/ui/spinner'
 
 export default function ExploreLoading() {
   return (
     <div className="container mx-auto py-12 space-y-8">
       <div className="text-center space-y-4">
+        <Spinner className="mx-auto size-6 text-muted-foreground" />
         <Skeleton className="h-12 w-96 mx-auto" />
         <Skeleton className="h-6 w-[32rem] mx-auto" />
       </div>

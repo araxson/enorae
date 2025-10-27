@@ -12,6 +12,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { RevenueOverview } from './admin-overview-types'
 import { formatCurrency, safeFormatDate } from './admin-overview-utils'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type RevenueTabProps = {
   revenue: RevenueOverview[]
@@ -29,9 +30,13 @@ export function AdminOverviewRevenueTab({ revenue, windowSize }: RevenueTabProps
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">
-            No revenue data is available yet. Once salons start transacting, trends will appear here.
-          </p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No revenue data available</EmptyTitle>
+              <EmptyDescription>Revenue trends display automatically once salons begin transacting.</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>Connect payment providers or import sales to unlock these insights.</EmptyContent>
+          </Empty>
         </CardContent>
       </Card>
     )

@@ -17,6 +17,7 @@ import { respondToReview } from '@/features/admin/moderation/api/mutations'
 import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import { DetailCard, InfoBlock, Panel, StatusBadges } from './review-detail-helpers'
 import { ReviewResponseForm } from './review-response-form'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type ReviewDetailDialogProps = {
   review: ModerationReview | null
@@ -151,7 +152,16 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
           )}
 
           <Panel title="Review">
-            {review['comment'] || 'No text provided'}
+            {review['comment'] ? (
+              review['comment']
+            ) : (
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No review text provided</EmptyTitle>
+                  <EmptyDescription>The reviewer submitted a rating without written feedback.</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            )}
             <p className="mt-2 text-xs text-muted-foreground">
               Posted on {review['created_at'] ? format(new Date(review['created_at']), 'MMMM d, yyyy') : 'Unknown date'}
             </p>

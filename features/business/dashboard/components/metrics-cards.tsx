@@ -9,6 +9,14 @@ import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { BusinessDashboardMetrics } from '@/features/business/dashboard/types'
 import { AppointmentMetricCard, RevenueMetricCard, getAccentStripeClass, type MetricAccent } from './metric-card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 
 type MetricsCardsProps = {
   metrics: BusinessDashboardMetrics
@@ -85,12 +93,12 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Dashboard summary
-        </p>
-        <p className="text-sm font-medium text-muted-foreground">Monitor the metrics your team watches daily.</p>
-      </div>
+      <Field>
+        <FieldLabel>Dashboard summary</FieldLabel>
+        <FieldContent>
+          <FieldDescription>Monitor the metrics your team watches daily.</FieldDescription>
+        </FieldContent>
+      </Field>
 
       {revenueMetrics.length > 0 && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -103,10 +111,16 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       <Separator />
 
       <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-muted-foreground">Appointments Overview</p>
-          <Badge variant="outline">{confirmationRate}% Confirmed</Badge>
-        </div>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <ItemTitle>Appointments overview</ItemTitle>
+            </ItemContent>
+            <ItemActions className="flex-none">
+              <Badge variant="outline">{confirmationRate}% Confirmed</Badge>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {appointmentMetrics.map((metric) => (
             <AppointmentMetricCard key={metric.title} {...metric} />
@@ -116,13 +130,14 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
 
       <Separator />
 
-      <div className="flex flex-col gap-4">
-        <p className="text-sm font-medium text-muted-foreground">Resources</p>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <AppointmentResource
-                title="Staff Members"
+      <Field>
+        <FieldLabel>Resources</FieldLabel>
+        <FieldContent>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AppointmentResource
+                  title="Staff Members"
                 icon={<Users className="h-4 w-4 text-secondary" aria-hidden="true" />}
                 value={metrics.totalStaff}
                 accent="accent"
@@ -143,8 +158,9 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
             </TooltipTrigger>
             <TooltipContent>Audit catalogs to avoid duplicates</TooltipContent>
           </Tooltip>
-        </div>
-      </div>
+          </div>
+        </FieldContent>
+      </Field>
     </div>
   )
 }
@@ -161,9 +177,15 @@ function AppointmentResource({ title, icon, value, description, accent }: Appoin
   return (
     <Card className="relative overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
-      <CardHeader className="flex items-center justify-between space-y-0 pb-0">
-        <CardTitle>{title}</CardTitle>
-        {icon}
+      <CardHeader className="pb-0">
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <CardTitle>{title}</CardTitle>
+            </ItemContent>
+            <ItemActions className="flex-none">{icon}</ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="text-2xl font-bold">{value}</div>

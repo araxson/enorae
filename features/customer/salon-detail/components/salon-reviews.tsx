@@ -8,6 +8,14 @@ import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { markReviewAsHelpful } from '@/features/customer/reviews/api/helpful-mutations'
 import type { Database } from '@/lib/types/database.types'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type SalonReview = Database['public']['Views']['salon_reviews_view']['Row']
 
@@ -69,7 +77,7 @@ function ReviewCard({ review }: { review: SalonReview }) {
         {reviewDate && <CardDescription>{reviewDate}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground">{review['comment']}</p>
+        <CardDescription>{review['comment']}</CardDescription>
       </CardContent>
       <CardFooter className="flex flex-wrap items-center justify-between gap-2">
         <Button variant="ghost" size="sm" onClick={handleMarkHelpful} disabled={isSubmitting}>
@@ -85,12 +93,19 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
   if (reviews.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>No reviews yet</CardTitle>
-          <CardDescription>Be the first to leave a review for this salon.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center">
-          Reviews from verified customers will appear here once submitted.
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Star className="h-6 w-6" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No reviews yet</EmptyTitle>
+              <EmptyDescription>Be the first to leave a review for this salon.</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              Reviews from verified customers will appear here once submitted.
+            </EmptyContent>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -105,14 +120,16 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
         <CardHeader>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle>Customer reviews ({reviews.length})</CardTitle>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
               <StarRating rating={Math.round(avgRating)} />
-              <span>{avgRating.toFixed(1)} average</span>
+              <CardDescription>{avgRating.toFixed(1)} average</CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          Feedback from recent salon visits helps other customers choose with confidence.
+          <CardDescription>
+            Feedback from recent salon visits helps other customers choose with confidence.
+          </CardDescription>
         </CardContent>
       </Card>
 

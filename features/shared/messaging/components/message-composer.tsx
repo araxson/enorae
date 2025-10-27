@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Send } from 'lucide-react'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 interface MessageComposerProps {
   onSend: (content: string) => Promise<{ error?: string }>
@@ -90,13 +91,19 @@ export function MessageComposer({
         className="resize-none"
       />
 
-      <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <span>Press Ctrl+Enter to send</span>
-        <Button type="submit" disabled={disabled || isSubmitting || !content.trim()} className="gap-2">
-          {isSubmitting ? 'Sending...' : <Send className="h-4 w-4" />}
-          {isSubmitting ? null : 'Send message'}
-        </Button>
-      </div>
+      <ItemGroup>
+        <Item>
+          <ItemContent>
+            <ItemDescription>Press Ctrl+Enter to send</ItemDescription>
+          </ItemContent>
+          <ItemActions className="flex-none">
+            <Button type="submit" disabled={disabled || isSubmitting || !content.trim()} className="gap-2">
+              {isSubmitting ? 'Sending...' : <Send className="h-4 w-4" />}
+              {isSubmitting ? null : 'Send message'}
+            </Button>
+          </ItemActions>
+        </Item>
+      </ItemGroup>
     </form>
   )
 }

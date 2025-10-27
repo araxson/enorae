@@ -2,6 +2,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, CheckCircle, Clock, TrendingUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import {
+  Item,
+  ItemContent,
+  ItemMedia,
+} from '@/components/ui/item'
 
 interface StaffMetricsProps {
   metrics: {
@@ -29,10 +34,14 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         <Card>
           <CardHeader>
-            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>Today</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </div>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+              </ItemMedia>
+              <ItemContent>
+                <CardTitle>Today</CardTitle>
+              </ItemContent>
+            </Item>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{metrics.todayAppointments}</div>
@@ -48,10 +57,14 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
 
         <Card>
           <CardHeader>
-            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>This Week</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </div>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </ItemMedia>
+              <ItemContent>
+                <CardTitle>This Week</CardTitle>
+              </ItemContent>
+            </Item>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{metrics.weekAppointments}</div>
@@ -69,10 +82,14 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
 
         <Card>
           <CardHeader>
-            <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>This Month</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
-            </div>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              </ItemMedia>
+              <ItemContent>
+                <CardTitle>This Month</CardTitle>
+              </ItemContent>
+            </Item>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{metrics.monthCompleted}</div>
