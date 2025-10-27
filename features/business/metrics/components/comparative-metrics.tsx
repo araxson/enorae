@@ -2,6 +2,8 @@
 
 import { ArrowDownRight, ArrowUpRight, Equal } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Badge } from '@/components/ui/badge'
 import type { MetricsComparison } from '@/lib/utils/metrics'
 
 type MetricKey = keyof MetricsComparison
@@ -46,38 +48,44 @@ export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: 
         <CardDescription>{periodLabel} vs prior period</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {(Object.keys(metricCopy) as MetricKey[]).map((key) => {
-            const meta = metricCopy[key]
-            const details = comparison[key]
-            const indicator = changeIndicator(details.change)
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Metric</TableHead>
+              <TableHead className="text-right">Current</TableHead>
+              <TableHead className="text-right">Previous</TableHead>
+              <TableHead className="text-right">Change</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {(Object.keys(metricCopy) as MetricKey[]).map((key) => {
+              const meta = metricCopy[key]
+              const details = comparison[key]
+              const indicator = changeIndicator(details.change)
 
-            return (
-              <Card key={key} className="border-dashed">
-                <CardHeader className="pb-2">
-                  <CardDescription>{meta.label}</CardDescription>
-                </CardHeader>
-                <CardContent className="p-4 pt-0 space-y-3">
-                  <div>
-                    <div className="text-2xl font-semibold">
-                      {formatValue(details.current, meta.unit)}
+              return (
+                <TableRow key={key}>
+                  <TableCell className="font-medium">{meta.label}</TableCell>
+                  <TableCell className="text-right font-semibold">
+                    {formatValue(details.current, meta.unit)}
+                  </TableCell>
+                  <TableCell className="text-right text-muted-foreground">
+                    {formatValue(details.previous, meta.unit)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      {indicator.icon}
+                      <Badge variant={details.change > 1 ? 'default' : details.change < -1 ? 'destructive' : 'secondary'}>
+                        {details.change > 0 ? '+' : ''}
+                        {details.change.toFixed(1)}%
+                      </Badge>
                     </div>
-                    <div className="text-xs text-muted-foreground">
-                      Prev: {formatValue(details.previous, meta.unit)}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {indicator.icon}
-                    <span className={`text-sm font-medium ${indicator.tone}`}>
-                      {details.change > 0 ? '+' : ''}
-                      {details.change.toFixed(1)}%
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   )

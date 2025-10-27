@@ -19,35 +19,39 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="flex flex-col gap-3 rounded-lg border p-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-secondary" aria-hidden />
-                <h3 className="font-semibold" id="contact-hotline-title">Hotline</h3>
+          <Card>
+            <CardContent className="flex flex-col gap-3">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 text-secondary" aria-hidden />
+                  <h3 className="font-semibold" id="contact-hotline-title">Hotline</h3>
+                </div>
+                <p className="text-sm text-muted-foreground" id="contact-hotline-description">
+                  Best for urgent issues that block work.
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground" id="contact-hotline-description">
-                Best for urgent issues that block work.
-              </p>
-            </div>
-            <div className="flex justify-end">
-              <Badge variant="secondary">15 min avg</Badge>
-            </div>
-          </div>
+              <div className="flex justify-end">
+                <Badge variant="secondary">15 min avg</Badge>
+              </div>
+            </CardContent>
+          </Card>
 
-          <div className="flex flex-col gap-3 rounded-lg border p-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4 text-primary" aria-hidden />
-                <h3 className="font-semibold" id="contact-chat-title">Chat</h3>
+          <Card>
+            <CardContent className="flex flex-col gap-3">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="h-4 w-4 text-primary" aria-hidden />
+                  <h3 className="font-semibold" id="contact-chat-title">Chat</h3>
+                </div>
+                <p className="text-sm text-muted-foreground" id="contact-chat-description">
+                  Great for multi-step troubleshooting.
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground" id="contact-chat-description">
-                Great for multi-step troubleshooting.
-              </p>
-            </div>
-            <div className="flex justify-end">
-              <Badge variant="outline">Live 8a–8p</Badge>
-            </div>
-          </div>
+              <div className="flex justify-end">
+                <Badge variant="outline">Live 8a–8p</Badge>
+              </div>
+            </CardContent>
+          </Card>
 
           <Separator />
 
@@ -64,21 +68,23 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
             </HoverCardContent>
           </HoverCard>
 
-          <div className="flex flex-col gap-3 rounded-lg border p-4">
-            <div className="space-y-1">
-              <h3 className="font-semibold" id="status-alerts-title">Status alerts</h3>
-              <p className="text-sm text-muted-foreground" id="status-alerts-description">
-                Receive mobile and email alerts when ticket status changes or a fix is shipped.
-              </p>
-            </div>
-            <div className="flex justify-end">
-              <Switch
-                defaultChecked
-                aria-labelledby="status-alerts-title"
-                aria-describedby="status-alerts-description"
-              />
-            </div>
-          </div>
+          <Card>
+            <CardContent className="flex flex-col gap-3">
+              <div className="space-y-1">
+                <h3 className="font-semibold" id="status-alerts-title">Status alerts</h3>
+                <p className="text-sm text-muted-foreground" id="status-alerts-description">
+                  Receive mobile and email alerts when ticket status changes or a fix is shipped.
+                </p>
+              </div>
+              <div className="flex justify-end">
+                <Switch
+                  defaultChecked
+                  aria-labelledby="status-alerts-title"
+                  aria-describedby="status-alerts-description"
+                />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </CardContent>
     </Card>

@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 import type { SalonMetricsData } from '@/features/business/metrics/api/queries'
 
@@ -128,29 +129,33 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
             Core business metrics for {metrics.salon?.name || 'your salon'}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Total Bookings</span>
-            <span className="font-semibold">{metrics.total_bookings ?? 'N/A'}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Total Revenue</span>
-            <span className="font-semibold">{formatCurrency(metrics.total_revenue)}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Employee Count</span>
-            <span className="font-semibold">{metrics.employee_count ?? 'N/A'}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Average Rating</span>
-            <span className="font-semibold">
-              {metrics.rating_average?.toFixed(1) ?? 'N/A'} / 5.0
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Total Reviews</span>
-            <span className="font-semibold">{metrics.rating_count ?? 'N/A'}</span>
-          </div>
+        <CardContent>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell className="text-muted-foreground">Total Bookings</TableCell>
+                <TableCell className="text-right font-semibold">{metrics.total_bookings ?? 'N/A'}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="text-muted-foreground">Total Revenue</TableCell>
+                <TableCell className="text-right font-semibold">{formatCurrency(metrics.total_revenue)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="text-muted-foreground">Employee Count</TableCell>
+                <TableCell className="text-right font-semibold">{metrics.employee_count ?? 'N/A'}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="text-muted-foreground">Average Rating</TableCell>
+                <TableCell className="text-right font-semibold">
+                  {metrics.rating_average?.toFixed(1) ?? 'N/A'} / 5.0
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="text-muted-foreground">Total Reviews</TableCell>
+                <TableCell className="text-right font-semibold">{metrics.rating_count ?? 'N/A'}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>

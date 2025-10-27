@@ -6,6 +6,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 interface PhotoGalleryProps {
   images: string[]
@@ -51,46 +52,53 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
   return (
     <>
       <div className={cn('grid gap-2', className)}>
-        {/* Main image */}
-        {allImages[0] && (
-          <div
-            className="relative aspect-video w-full cursor-pointer overflow-hidden rounded-lg"
-            onClick={() => openLightbox(0)}
-          >
-            <Image
-              src={allImages[0]}
-              alt="Salon photo"
-              fill
-              className="object-cover transition-transform hover:scale-105"
-            />
-          </div>
-        )}
+        {allImages[0] ? (
+          <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg">
+            <button
+              type="button"
+              onClick={() => openLightbox(0)}
+              className="relative block h-full w-full cursor-pointer"
+            >
+              <Image
+                src={allImages[0]}
+                alt="Salon photo"
+                fill
+                className="object-cover transition-transform hover:scale-105"
+              />
+            </button>
+          </AspectRatio>
+        ) : null}
 
-        {/* Thumbnail grid */}
-        {allImages.length > 1 && (
+        {allImages.length > 1 ? (
           <div className="grid grid-cols-4 gap-2">
-                {allImages.slice(1, 5).map((image, index) => (
-                  <div
-                    key={index}
-                    className="relative aspect-square cursor-pointer overflow-hidden rounded-lg"
-                    onClick={() => openLightbox(index + 1)}
-                  >
-                    <Image
-                      src={image}
-                      alt={`Salon photo ${index + 2}`}
-                      fill
-                      className="object-cover transition-transform hover:scale-105"
-                    />
-                    {index === 3 && allImages.length > 5 && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-background/80 text-foreground">
-                        +{allImages.length - 5} more
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+            {allImages.slice(1, 5).map((image, index) => (
+              <AspectRatio
+                key={`${image}-${index}`}
+                ratio={1}
+                className="overflow-hidden rounded-lg"
+              >
+                <button
+                  type="button"
+                  onClick={() => openLightbox(index + 1)}
+                  className="group relative block h-full w-full cursor-pointer"
+                >
+                  <Image
+                    src={image}
+                    alt={`Salon photo ${index + 2}`}
+                    fill
+                    className="object-cover transition-transform group-hover:scale-105"
+                  />
+                  {index === 3 && allImages.length > 5 ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 text-foreground">
+                      +{allImages.length - 5} more
+                    </div>
+                  ) : null}
+                </button>
+              </AspectRatio>
+            ))}
           </div>
+        ) : null}
+      </div>
 
       {/* Lightbox Dialog */}
       <Dialog open={selectedIndex !== null} onOpenChange={(open) => !open && closeLightbox()}>

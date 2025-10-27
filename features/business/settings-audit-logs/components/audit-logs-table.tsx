@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import {
   Table,
   TableBody,
@@ -21,6 +23,7 @@ import {
 } from '@/components/ui/dialog'
 import { CheckCircle2, XCircle, Eye, Download } from 'lucide-react'
 import type { AuditLog } from '@/features/business/settings-audit-logs/api/queries'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -84,7 +87,7 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
         </CardHeader>
 
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
+          <ScrollArea className="w-full">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -99,8 +102,13 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
               <TableBody>
                 {logs.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
-                      No audit logs found
+                    <TableCell colSpan={6}>
+                      <Empty>
+                        <EmptyHeader>
+                          <EmptyTitle>No audit logs found</EmptyTitle>
+                          <EmptyDescription>Activity will appear here once audits are recorded.</EmptyDescription>
+                        </EmptyHeader>
+                      </Empty>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -149,7 +157,8 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
                 )}
               </TableBody>
             </Table>
-          </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </CardContent>
       </Card>
 
@@ -203,27 +212,34 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
               {selectedLog.old_values && Object.keys(selectedLog.old_values).length > 0 && (
                 <div>
                   <p className="text-sm font-medium text-muted-foreground mb-1">Old Values</p>
-                  <pre className="text-xs bg-muted p-3 rounded overflow-x-auto">
-                    {JSON.stringify(selectedLog.old_values, null, 2)}
-                  </pre>
+                  <ScrollArea className="rounded bg-muted">
+                    <pre className="p-3 text-xs text-muted-foreground">
+                      {JSON.stringify(selectedLog.old_values, null, 2)}
+                    </pre>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
                 </div>
               )}
 
               {selectedLog.new_values && Object.keys(selectedLog.new_values).length > 0 && (
                 <div>
                   <p className="text-sm font-medium text-muted-foreground mb-1">New Values</p>
-                  <pre className="text-xs bg-muted p-3 rounded overflow-x-auto">
-                    {JSON.stringify(selectedLog.new_values, null, 2)}
-                  </pre>
+                  <ScrollArea className="rounded bg-muted">
+                    <pre className="p-3 text-xs text-muted-foreground">
+                      {JSON.stringify(selectedLog.new_values, null, 2)}
+                    </pre>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
                 </div>
               )}
 
               {selectedLog.error_message && (
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">Error Message</p>
-                  <p className="text-sm text-destructive bg-destructive/10 p-2 rounded">
-                    {selectedLog.error_message}
-                  </p>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium text-muted-foreground">Error Message</p>
+                  <Alert variant="destructive">
+                    <AlertTitle>Operation failed</AlertTitle>
+                    <AlertDescription>{selectedLog.error_message}</AlertDescription>
+                  </Alert>
                 </div>
               )}
             </div>

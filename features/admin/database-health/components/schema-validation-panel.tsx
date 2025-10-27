@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, ShieldAlert, Key } from 'lucide-react'
 import type { SchemaValidationSnapshot } from '@/features/admin/database-health/api/schema-validation'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface SchemaValidationPanelProps {
   data: SchemaValidationSnapshot
@@ -87,9 +88,12 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
                   </TableBody>
                 </Table>
               ) : (
-                <div className="py-4 text-center">
-                  <p className="text-muted-foreground">All tables have RLS policies</p>
-                </div>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>All tables have RLS policies</EmptyTitle>
+                    <EmptyDescription>Great work—no missing row level security coverage.</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               )}
             </CardContent>
           </Card>
@@ -135,9 +139,12 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
                   </TableBody>
                 </Table>
               ) : (
-                <div className="py-4 text-center">
-                  <p className="text-muted-foreground">All tables have primary keys</p>
-                </div>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>All tables have primary keys</EmptyTitle>
+                    <EmptyDescription>Your schemas already enforce primary key requirements.</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               )}
             </CardContent>
           </Card>

@@ -14,6 +14,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Separator } from '@/components/ui/separator'
 import { Star, MessageSquare, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 import type { BusinessReviewStats } from '@/features/business/dashboard/types'
 
@@ -30,12 +31,15 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
           <CardTitle>Customer Reviews</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="py-8 text-center">
-            <p className="text-sm text-muted-foreground">No reviews yet. Reviews from customers will appear here.</p>
-            <Button asChild variant="outline" className="mt-4">
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No reviews yet</EmptyTitle>
+              <EmptyDescription>Reviews from customers will appear here.</EmptyDescription>
+            </EmptyHeader>
+            <Button asChild variant="outline">
               <Link href="/business/reviews">Manage Reviews</Link>
             </Button>
-          </div>
+          </Empty>
         </CardContent>
       </Card>
     )

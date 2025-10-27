@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { Separator } from '@/components/ui/separator'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Bell, Globe, DollarSign, Shield } from 'lucide-react'
 import { updateProfilePreferences } from '@/features/customer/profile/api/mutations'
@@ -91,150 +91,137 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-          {/* Regional Settings */}
-          <div>
-            <Label className="flex items-center gap-2 mb-4">
-              <Globe className="h-4 w-4" />
-              Regional Settings
-            </Label>
-            <div className="flex flex-col gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="timezone">
-                  Timezone
-                </Label>
-                <Select value={timezone} onValueChange={setTimezone}>
-                  <SelectTrigger id="timezone">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
-                    <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
-                    <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
-                    <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
-                    <SelectItem value="Europe/London">London (GMT)</SelectItem>
-                    <SelectItem value="Europe/Paris">Paris (CET)</SelectItem>
-                    <SelectItem value="Asia/Tokyo">Tokyo (JST)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+        <Tabs defaultValue="regional" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="regional">
+              <Globe className="mr-2 h-4 w-4" />
+              Regional
+            </TabsTrigger>
+            <TabsTrigger value="notifications">
+              <Bell className="mr-2 h-4 w-4" />
+              Notifications
+            </TabsTrigger>
+          </TabsList>
 
-              <div className="space-y-2">
-                <Label htmlFor="locale">
-                  Language
-                </Label>
-                <Select value={locale} onValueChange={setLocale}>
-                  <SelectTrigger id="locale">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="en-US">English (US)</SelectItem>
-                    <SelectItem value="en-GB">English (UK)</SelectItem>
-                    <SelectItem value="es-ES">Spanish</SelectItem>
-                    <SelectItem value="fr-FR">French</SelectItem>
-                    <SelectItem value="de-DE">German</SelectItem>
-                    <SelectItem value="ja-JP">Japanese</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="currency" className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4" />
-                  Currency
-                </Label>
-                <Select value={currencyCode} onValueChange={setCurrencyCode}>
-                  <SelectTrigger id="currency">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USD">USD ($)</SelectItem>
-                    <SelectItem value="EUR">EUR (€)</SelectItem>
-                    <SelectItem value="GBP">GBP (£)</SelectItem>
-                    <SelectItem value="JPY">JPY (¥)</SelectItem>
-                    <SelectItem value="CAD">CAD ($)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+          <TabsContent value="regional" className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="timezone">Timezone</Label>
+              <Select value={timezone} onValueChange={setTimezone}>
+                <SelectTrigger id="timezone">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
+                  <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
+                  <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
+                  <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
+                  <SelectItem value="Europe/London">London (GMT)</SelectItem>
+                  <SelectItem value="Europe/Paris">Paris (CET)</SelectItem>
+                  <SelectItem value="Asia/Tokyo">Tokyo (JST)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </div>
 
-          <Separator />
-
-          {/* Notification Preferences */}
-          <div>
-            <Label className="flex items-center gap-2 mb-4">
-              <Bell className="h-4 w-4" />
-              Notification Preferences
-            </Label>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Label htmlFor="email-notifications">Email Notifications</Label>
-                  <p className="text-xs text-muted-foreground">Receive updates via email</p>
-                </div>
-                <Switch
-                  id="email-notifications"
-                  checked={emailNotifications}
-                  onCheckedChange={setEmailNotifications}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Label htmlFor="sms-notifications">SMS Notifications</Label>
-                  <p className="text-xs text-muted-foreground">Receive text message alerts</p>
-                </div>
-                <Switch
-                  id="sms-notifications"
-                  checked={smsNotifications}
-                  onCheckedChange={setSmsNotifications}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Label htmlFor="appointment-reminders">Appointment Reminders</Label>
-                  <p className="text-xs text-muted-foreground">Get reminders before appointments</p>
-                </div>
-                <Switch
-                  id="appointment-reminders"
-                  checked={appointmentReminders}
-                  onCheckedChange={setAppointmentReminders}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Label htmlFor="marketing-emails">Marketing Emails</Label>
-                  <p className="text-xs text-muted-foreground">Receive promotional offers and news</p>
-                </div>
-                <Switch
-                  id="marketing-emails"
-                  checked={marketingEmails}
-                  onCheckedChange={setMarketingEmails}
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="locale">Language</Label>
+              <Select value={locale} onValueChange={setLocale}>
+                <SelectTrigger id="locale">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en-US">English (US)</SelectItem>
+                  <SelectItem value="en-GB">English (UK)</SelectItem>
+                  <SelectItem value="es-ES">Spanish</SelectItem>
+                  <SelectItem value="fr-FR">French</SelectItem>
+                  <SelectItem value="de-DE">German</SelectItem>
+                  <SelectItem value="ja-JP">Japanese</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </div>
 
-          <Separator />
+            <div className="space-y-2">
+              <Label htmlFor="currency" className="flex items-center gap-2">
+                <DollarSign className="h-4 w-4" />
+                Currency
+              </Label>
+              <Select value={currencyCode} onValueChange={setCurrencyCode}>
+                <SelectTrigger id="currency">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USD">USD ($)</SelectItem>
+                  <SelectItem value="EUR">EUR (€)</SelectItem>
+                  <SelectItem value="GBP">GBP (£)</SelectItem>
+                  <SelectItem value="JPY">JPY (¥)</SelectItem>
+                  <SelectItem value="CAD">CAD ($)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </TabsContent>
 
-          {/* Privacy Notice */}
-          <Alert>
-            <Shield className="h-4 w-4" />
-            <AlertTitle>Privacy &amp; Data</AlertTitle>
-            <AlertDescription>
-              Your preferences are stored securely and only used to improve your experience.
-              You can update these settings at any time.
-            </AlertDescription>
-          </Alert>
+          <TabsContent value="notifications" className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <Label htmlFor="email-notifications">Email Notifications</Label>
+                <p className="text-xs text-muted-foreground">Receive updates via email</p>
+              </div>
+              <Switch
+                id="email-notifications"
+                checked={emailNotifications}
+                onCheckedChange={setEmailNotifications}
+              />
+            </div>
 
-          {/* Save Button */}
-          <Button onClick={handleSave} disabled={isSaving} className="w-full">
-            {isSaving ? 'Saving...' : 'Save Preferences'}
-          </Button>
-        </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <Label htmlFor="sms-notifications">SMS Notifications</Label>
+                <p className="text-xs text-muted-foreground">Receive text message alerts</p>
+              </div>
+              <Switch
+                id="sms-notifications"
+                checked={smsNotifications}
+                onCheckedChange={setSmsNotifications}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <Label htmlFor="appointment-reminders">Appointment Reminders</Label>
+                <p className="text-xs text-muted-foreground">Get reminders before appointments</p>
+              </div>
+              <Switch
+                id="appointment-reminders"
+                checked={appointmentReminders}
+                onCheckedChange={setAppointmentReminders}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <Label htmlFor="marketing-emails">Marketing Emails</Label>
+                <p className="text-xs text-muted-foreground">Receive promotional offers and news</p>
+              </div>
+              <Switch
+                id="marketing-emails"
+                checked={marketingEmails}
+                onCheckedChange={setMarketingEmails}
+              />
+            </div>
+
+            <Alert>
+              <Shield className="h-4 w-4" />
+              <AlertTitle>Privacy &amp; Data</AlertTitle>
+              <AlertDescription>
+                Your preferences are stored securely and only used to improve your experience.
+                You can update these settings at any time.
+              </AlertDescription>
+            </Alert>
+          </TabsContent>
+        </Tabs>
+
+        <Button onClick={handleSave} disabled={isSaving} className="mt-6 w-full">
+          {isSaving ? 'Saving...' : 'Save Preferences'}
+        </Button>
       </CardContent>
     </Card>
   )

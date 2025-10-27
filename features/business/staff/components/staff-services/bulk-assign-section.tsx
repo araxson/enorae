@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Card, CardContent } from '@/components/ui/card'
 import type { ServiceRow } from './types'
 
 type BulkAssignSectionProps = {
@@ -46,23 +48,30 @@ export function BulkAssignSection({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 max-h-96 overflow-y-auto border-border border p-4">
-        {availableServices.map((service) => (
-          <div key={service.id} className="flex items-center gap-2">
-            <Checkbox
-              id={`service-${service.id}`}
-              checked={selectedServices.has(service.id!)}
-              onCheckedChange={() => onToggleService(service.id!)}
-            />
-            <Label htmlFor={`service-${service.id}`} className="cursor-pointer flex-1">
-              <span className="text-sm flex items-center gap-2">
-                <span className="truncate">{service.name}</span>
-                {assignedServiceIds.has(service.id) && <Badge variant="outline">Assigned</Badge>}
-              </span>
-            </Label>
-          </div>
-        ))}
-      </div>
+      <Card>
+        <CardContent className="p-0">
+          <ScrollArea className="h-96">
+            <div className="grid grid-cols-2 gap-2 p-4">
+              {availableServices.map((service) => (
+                <div key={service.id} className="flex items-center gap-2">
+                  <Checkbox
+                    id={`service-${service.id}`}
+                    checked={selectedServices.has(service.id!)}
+                    onCheckedChange={() => onToggleService(service.id!)}
+                  />
+                  <Label htmlFor={`service-${service.id}`} className="flex-1 cursor-pointer">
+                    <span className="flex items-center gap-2 text-sm">
+                      <span className="truncate">{service.name}</span>
+                      {assignedServiceIds.has(service.id) && <Badge variant="outline">Assigned</Badge>}
+                    </span>
+                  </Label>
+                </div>
+              ))}
+            </div>
+            <ScrollBar orientation="vertical" />
+          </ScrollArea>
+        </CardContent>
+      </Card>
     </div>
   )
 }

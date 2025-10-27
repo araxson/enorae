@@ -22,6 +22,7 @@ import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { ToastUsageRecord } from '@/features/admin/database-toast/api/queries'
 import { optimizeToastUsage } from '@/features/admin/database-toast/api/mutations'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface ToastUsageTableProps {
   tables: ToastUsageRecord[]
@@ -79,8 +80,12 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
         <TableBody>
           {tables.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
-                No TOAST usage data available
+              <TableCell colSpan={6}>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No TOAST usage data available</EmptyTitle>
+                  </EmptyHeader>
+                </Empty>
               </TableCell>
             </TableRow>
           ) : (

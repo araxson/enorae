@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { StatCard } from '@/features/shared/ui-components'
 import { Activity, CreditCard, Users, Building2 } from 'lucide-react'
 import type { TransactionMetrics, ManualTransactionRow } from '@/features/admin/finance/types'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface TransactionMonitoringProps {
   metrics: TransactionMetrics
@@ -73,8 +74,12 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
             <TableBody>
               {metrics.recentTransactions.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground">
-                    No recent transactions
+                  <TableCell colSpan={6}>
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>No recent transactions</EmptyTitle>
+                      </EmptyHeader>
+                    </Empty>
                   </TableCell>
                 </TableRow>
               ) : (

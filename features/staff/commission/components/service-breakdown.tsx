@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 import type { ServiceRevenue } from '@/features/staff/commission/api/queries'
 
@@ -32,26 +33,33 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
         <CardDescription>This month&apos;s performance breakdown</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-3">
-          {data.map((service) => {
-            const percentage = totalRevenue > 0 ? (service.revenue / totalRevenue) * 100 : 0
-            return (
-              <div key={service.service_name} className="space-y-2">
-                <div className="flex gap-4 items-center justify-between">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{service.service_name}</p>
-                    <p className="text-xs text-muted-foreground">{service.count} appointments</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold">${service.revenue.toFixed(2)}</p>
-                    <p className="text-xs text-muted-foreground">{percentage.toFixed(1)}%</p>
-                  </div>
-                </div>
-                <Progress value={percentage} className="h-2" />
-              </div>
-            )
-          })}
-        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Service</TableHead>
+              <TableHead className="text-right">Appointments</TableHead>
+              <TableHead className="text-right">Revenue</TableHead>
+              <TableHead className="text-right">Percentage</TableHead>
+              <TableHead className="w-32">Share</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.map((service) => {
+              const percentage = totalRevenue > 0 ? (service.revenue / totalRevenue) * 100 : 0
+              return (
+                <TableRow key={service.service_name}>
+                  <TableCell className="font-medium">{service.service_name}</TableCell>
+                  <TableCell className="text-right">{service.count}</TableCell>
+                  <TableCell className="text-right font-semibold">${service.revenue.toFixed(2)}</TableCell>
+                  <TableCell className="text-right">{percentage.toFixed(1)}%</TableCell>
+                  <TableCell>
+                    <Progress value={percentage} className="h-2" />
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   )

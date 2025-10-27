@@ -64,19 +64,19 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
               <div className="text-base font-semibold">{review.customer_name || 'Anonymous'}</div>
               {review.is_verified && (
                 <div className="flex items-center gap-1 text-xs">
-                  <CheckCircle2 className="h-3 w-3" />
+                  <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
                   <Badge variant="outline">Verified</Badge>
                 </div>
               )}
               {review.is_featured && (
                 <div className="flex items-center gap-1 text-xs">
-                  <TrendingUp className="h-3 w-3" />
+                  <TrendingUp className="h-3 w-3" aria-hidden="true" />
                   <Badge variant="default">Featured</Badge>
                 </div>
               )}
               {review.is_flagged && (
                 <div className="flex items-center gap-1 text-xs">
-                  <Flag className="h-3 w-3" />
+                  <Flag className="h-3 w-3" aria-hidden="true" />
                   <Badge variant="destructive">Flagged</Badge>
                 </div>
               )}
@@ -90,13 +90,13 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
           <div className="flex gap-3">
             {!review.response && (
               <Button size="sm" variant="outline" onClick={handleRespond}>
-                <MessageSquare className="h-4 w-4 mr-2" />
+                <MessageSquare className="h-4 w-4 mr-2" aria-hidden="true" />
                 Respond
               </Button>
             )}
             {!review.is_flagged && (
               <Button size="sm" variant="ghost" onClick={handleFlag} aria-label="Flag review for moderation">
-                <Flag className="h-4 w-4" />
+                <Flag className="h-4 w-4" aria-hidden="true" />
               </Button>
             )}
             <Button
@@ -105,7 +105,7 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
               onClick={handleToggleFeatured}
               aria-label={review.is_featured ? 'Unfeature review' : 'Feature review'}
             >
-              <TrendingUp className={`h-4 w-4 ${review.is_featured ? 'fill-current' : ''}`} />
+              <TrendingUp className={`h-4 w-4 ${review.is_featured ? 'fill-current' : ''}`} aria-hidden="true" />
             </Button>
           </div>
         </div>

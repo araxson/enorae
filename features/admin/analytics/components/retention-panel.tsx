@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface RetentionPanelProps {
   retention: PlatformAnalyticsSnapshot['retention']
@@ -48,10 +49,10 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
           </div>
         </div>
 
-        {series.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Not enough data to render retention trend.</p>
-        ) : (
-          <div className="overflow-x-auto">
+        <ScrollArea className="w-full">
+          {series.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Not enough data to render retention trend.</p>
+          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -76,8 +77,9 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
                 ))}
               </TableBody>
             </Table>
-          </div>
-        )}
+          )}
+          {series.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+        </ScrollArea>
       </CardContent>
     </Card>
   )

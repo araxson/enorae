@@ -73,14 +73,14 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
           />
         ) : (
           <ScrollArea className="h-96">
-            <div className="p-6 space-y-4">
-              {appointments.map((appointment, index) => {
+            <div className="p-6 space-y-3">
+              {appointments.map((appointment) => {
                 const statusConfig = getStatusConfig(appointment.status)
                 const customerInitials = getInitials('Guest')
 
                 return (
-                  <div key={appointment.id}>
-                    <div className="group -mx-2 flex items-start gap-4 rounded-lg p-2 transition-colors hover:bg-accent/50">
+                  <Card key={appointment.id} className="group border border-border/60">
+                    <CardContent className="flex items-start gap-4 p-4">
                       <Avatar className="h-10 w-10 border-2 border-background">
                         <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
                           {customerInitials}
@@ -135,10 +135,8 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                    </div>
-
-                    {index < appointments.length - 1 && <Separator className="my-4" />}
-                  </div>
+                    </CardContent>
+                  </Card>
                 )
               })}
             </div>

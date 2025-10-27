@@ -1,5 +1,10 @@
-import { MessageSquare, AlertTriangle, Clock, ShieldAlert, Gauge } from 'lucide-react'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+'use client'
+
+import { MessageSquare, AlertTriangle, Clock, ShieldAlert } from 'lucide-react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+
 type ModerationStatsProps = {
   stats: {
     totalReviews: number
@@ -12,60 +17,128 @@ type ModerationStatsProps = {
 }
 
 export function ModerationStats({ stats }: ModerationStatsProps) {
-  const cards = [
+  const countData = [
     {
-      label: 'Total reviews',
+      name: 'Total',
       value: stats.totalReviews,
-      icon: MessageSquare,
-      accent: 'text-primary',
+      fill: 'hsl(var(--primary))',
+      icon: MessageSquare
     },
     {
-      label: 'Flagged reviews',
+      name: 'Flagged',
       value: stats.flaggedReviews,
-      icon: AlertTriangle,
-      accent: 'text-destructive',
+      fill: 'hsl(var(--destructive))',
+      icon: AlertTriangle
     },
     {
-      label: 'Pending response',
+      name: 'Pending',
       value: stats.pendingReviews,
-      icon: Clock,
-      accent: 'text-accent',
+      fill: 'hsl(var(--accent))',
+      icon: Clock
     },
     {
-      label: 'High risk reviews',
+      name: 'High Risk',
       value: stats.highRiskReviews,
-      icon: ShieldAlert,
-      accent: 'text-destructive',
+      fill: 'hsl(var(--destructive))',
+      icon: ShieldAlert
+    },
+  ]
+
+  const scoreData = [
+    {
+      name: 'Sentiment',
+      value: parseFloat(stats.averageSentiment.toFixed(2)),
+      displayValue: stats.averageSentiment.toFixed(2),
+      fill: 'hsl(var(--secondary))'
     },
     {
-      label: 'Avg sentiment',
-      value: stats.averageSentiment.toFixed(2),
-      icon: Gauge,
-      accent: 'text-secondary',
+      name: 'Quality',
+      value: stats.averageQuality,
+      displayValue: `${stats.averageQuality}%`,
+      fill: 'hsl(var(--primary))'
     },
-    {
-      label: 'Avg quality score',
-      value: `${stats.averageQuality}%`,
-      icon: Gauge,
-      accent: 'text-primary',
-    },
-  ] as const
+  ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-5">
-      {cards.map(({ label, value, icon: Icon, accent }) => (
-        <Card key={label}>
-          <CardHeader className="p-4">
-            <div className="flex items-start justify-between gap-4">
-              <CardDescription>{label}</CardDescription>
-              <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
-            </div>
-            <CardTitle>
-              {typeof value === 'number' ? value : value}
-            </CardTitle>
-          </CardHeader>
-        </Card>
-      ))}
+    <div className="grid gap-4 md:grid-cols-2">
+      <Card>
+        <CardHeader>
+          <CardTitle>Review Distribution</CardTitle>
+          <CardDescription>Counts across moderation states</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer
+            config={{
+              value: {
+                label: 'Reviews',
+                color: 'hsl(var(--primary))'
+              }
+            }}
+            className="h-[280px]"
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={countData}>
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 12 }}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  tick={{ fontSize: 12 }}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar
+                  dataKey="value"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Quality Metrics</CardTitle>
+          <CardDescription>Average sentiment and quality scores</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer
+            config={{
+              value: {
+                label: 'Score',
+                color: 'hsl(var(--primary))'
+              }
+            }}
+            className="h-[280px]"
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={scoreData}>
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 12 }}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  domain={[0, 100]}
+                  tick={{ fontSize: 12 }}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar
+                  dataKey="value"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </div>
   )
 }

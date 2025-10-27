@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { AlertCircle } from 'lucide-react'
 import type { ChainCompliance } from '@/features/admin/chains/api/queries'
 
@@ -42,8 +43,12 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
           <TableBody>
             {compliance.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground">
-                  No compliance data available
+                <TableCell colSpan={6}>
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>No compliance data available</EmptyTitle>
+                    </EmptyHeader>
+                  </Empty>
                 </TableCell>
               </TableRow>
             ) : (

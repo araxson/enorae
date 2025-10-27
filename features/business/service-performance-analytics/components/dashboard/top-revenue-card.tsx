@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { DollarSign, Star } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 import { formatCurrency } from './utils'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 export function TopRevenueCard({ services }: { services: ServicePerformance[] }) {
   const topServices = [...services]
@@ -22,9 +23,12 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
       </CardHeader>
       <CardContent>
         {topServices.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No service performance data is available yet.
-          </p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No service performance data</EmptyTitle>
+              <EmptyDescription>Track completed appointments to see revenue rankings.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="flex flex-col gap-4">
             {topServices.map((service, index) => (

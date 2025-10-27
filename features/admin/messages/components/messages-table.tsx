@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { formatDistanceToNow } from 'date-fns'
 import type { MessageThreadWithInsights } from '@/features/admin/messages/api/queries'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface MessagesTableProps {
   threads: MessageThreadWithInsights[]
@@ -54,7 +56,7 @@ export function MessagesTable({ threads }: MessagesTableProps) {
         <CardDescription>Conversation activity and SLA indicators.</CardDescription>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
+        <ScrollArea className="w-full">
           <Table>
             <TableHeader>
               <TableRow>
@@ -73,8 +75,13 @@ export function MessagesTable({ threads }: MessagesTableProps) {
             <TableBody>
               {threads.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={10} className="h-24 text-center">
-                    No threads match the selected filters.
+                  <TableCell colSpan={10}>
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>No message threads</EmptyTitle>
+                        <EmptyDescription>No threads match the selected filters.</EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
                   </TableCell>
                 </TableRow>
               ) : (
@@ -170,7 +177,8 @@ export function MessagesTable({ threads }: MessagesTableProps) {
               )}
             </TableBody>
           </Table>
-        </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </CardContent>
     </Card>
   )

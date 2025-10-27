@@ -18,44 +18,46 @@ export function PerformanceOverviewCard({ services }: { services: ServicePerform
       <CardContent>
         <div className="space-y-4">
           {services.map((service) => (
-            <div key={service.service_id} className="border rounded-lg p-4">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <h4 className="font-semibold">{service.service_name}</h4>
-                  <div className="flex items-center gap-2 mt-1">
-                    {getPerformanceIcon(service.cancellation_rate || 0)}
-                    <p className="text-xs text-muted-foreground">
-                      {service.cancellation_rate?.toFixed(1) || 0}% cancellation rate
-                    </p>
+            <Card key={service.service_id}>
+              <CardContent className="space-y-4 py-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h4 className="font-semibold">{service.service_name}</h4>
+                    <div className="mt-1 flex items-center gap-2">
+                      {getPerformanceIcon(service.cancellation_rate || 0)}
+                      <p className="text-xs text-muted-foreground">
+                        {service.cancellation_rate?.toFixed(1) || 0}% cancellation rate
+                      </p>
+                    </div>
                   </div>
+                  <Badge variant={service.cancellation_rate > 20 ? 'destructive' : 'default'}>
+                    {service.cancellation_rate > 20 ? 'Needs Attention' : 'Performing Well'}
+                  </Badge>
                 </div>
-                <Badge variant={service.cancellation_rate > 20 ? 'destructive' : 'default'}>
-                  {service.cancellation_rate > 20 ? 'Needs Attention' : 'Performing Well'}
-                </Badge>
-              </div>
 
-              <div className="grid gap-4 md:grid-cols-4">
-                <div>
-                  <p className="text-xs text-muted-foreground">Total Bookings</p>
-                  <p className="font-semibold">{service.total_bookings}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Revenue</p>
-                  <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Avg Rating</p>
-                  <div className="flex items-center gap-1">
-                    <p className="font-semibold">{service.avg_rating?.toFixed(1) || 'N/A'}</p>
-                    <Star className="h-4 w-4 text-star-filled" />
+                <div className="grid gap-4 md:grid-cols-4">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Total Bookings</p>
+                    <p className="font-semibold">{service.total_bookings}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Revenue</p>
+                    <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Avg Rating</p>
+                    <div className="flex items-center gap-1">
+                      <p className="font-semibold">{service.avg_rating?.toFixed(1) || 'N/A'}</p>
+                      <Star className="h-4 w-4 text-star-filled" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Popularity Score</p>
+                    <p className="font-semibold">{service.popularity_score?.toFixed(0) || 0}</p>
                   </div>
                 </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Popularity Score</p>
-                  <p className="font-semibold">{service.popularity_score?.toFixed(0) || 0}</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </CardContent>

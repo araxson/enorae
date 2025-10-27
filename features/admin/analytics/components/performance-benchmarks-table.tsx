@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface PerformanceBenchmarksTableProps {
   performance: PlatformAnalyticsSnapshot['performance']
@@ -39,10 +40,10 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
           </div>
         </div>
 
-        {performance.topSalons.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No salon-level benchmarks available.</p>
-        ) : (
-          <div className="overflow-x-auto">
+        <ScrollArea className="w-full">
+          {performance.topSalons.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No salon-level benchmarks available.</p>
+          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -74,8 +75,9 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
                 ))}
               </TableBody>
             </Table>
-          </div>
-        )}
+          )}
+          {performance.topSalons.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+        </ScrollArea>
       </CardContent>
     </Card>
   )

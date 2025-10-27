@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { PenLine, Trash2 } from 'lucide-react'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 interface TemplateCardProps {
   template: NotificationTemplate
@@ -51,7 +52,7 @@ function TemplateCardComponent({ template, onEdit, onDelete, disabled }: Templat
         <p className="text-sm text-muted-foreground whitespace-pre-line line-clamp-4">
           {template.body}
         </p>
-        <div className="flex gap-2">
+        <ButtonGroup>
           <Button
             variant="outline"
             size="sm"
@@ -70,7 +71,7 @@ function TemplateCardComponent({ template, onEdit, onDelete, disabled }: Templat
             <Trash2 className="mr-2 h-4 w-4" />
             Delete
           </Button>
-        </div>
+        </ButtonGroup>
       </CardContent>
     </Card>
   )

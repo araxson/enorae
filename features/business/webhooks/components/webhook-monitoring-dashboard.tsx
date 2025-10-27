@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { RefreshCw, AlertCircle, CheckCircle, Clock, Activity } from 'lucide-react'
 import type { WebhookStats, WebhookDeliveryLog } from '@/features/business/webhooks/api/queries'
 
@@ -115,58 +116,44 @@ export function WebhookMonitoringDashboard({
 
       {/* Failed Webhooks */}
       {failedWebhooks.length > 0 && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Failed Webhooks</CardTitle>
-                <CardDescription>Recent webhook delivery failures</CardDescription>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-              >
-                <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-                Refresh
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {failedWebhooks.map((webhook) => (
-                <div
-                  key={webhook.id}
-                  className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">{webhook.url}</span>
-                      <Badge variant="destructive">
-                        <span className="text-xs">Failed</span>
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Event: {webhook.event_type}
-                    </p>
-                    {webhook.error_message && (
-                      <p className="text-sm text-destructive">
-                        Error: {webhook.error_message}
-                      </p>
-                    )}
-                    <p className="text-xs text-muted-foreground">
-                      {new Date(webhook.created_at).toLocaleString()}
-                    </p>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    Retry
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold">Failed Webhooks</h3>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+          </div>
+          {failedWebhooks.map((webhook) => (
+            <Alert key={webhook.id} variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle className="flex items-center justify-between">
+                <span>{webhook.url}</span>
+                <Button variant="outline" size="sm">
+                  Retry
+                </Button>
+              </AlertTitle>
+              <AlertDescription className="space-y-1">
+                <p className="text-sm">
+                  Event: {webhook.event_type}
+                </p>
+                {webhook.error_message && (
+                  <p className="text-sm">
+                    Error: {webhook.error_message}
+                  </p>
+                )}
+                <p className="text-xs opacity-70">
+                  {new Date(webhook.created_at).toLocaleString()}
+                </p>
+              </AlertDescription>
+            </Alert>
+          ))}
+        </div>
       )}
 
       {/* Delivery Logs */}
@@ -179,37 +166,34 @@ export function WebhookMonitoringDashboard({
           <CardContent>
             <div className="space-y-3">
               {deliveryLogs.map((log) => (
-                <div
-                  key={log.id}
-                  className="flex items-start justify-between border-b pb-3 last:border-0 last:pb-0"
-                >
-                  <div className="space-y-1 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className={getStatusColor(log.status)}>
-                        {getStatusIcon(log.status)}
-                      </span>
-                      <Badge variant={log.status === 'delivered' ? 'default' : 'destructive'}>
-                        <span className="text-xs">{log.status}</span>
-                      </Badge>
-                      {log.response_code && (
-                        <span className="text-sm text-muted-foreground">
-                          HTTP {log.response_code}
+                <Card key={log.id}>
+                  <CardContent className="flex items-start justify-between gap-4 py-3">
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className={getStatusColor(log.status)}>
+                          {getStatusIcon(log.status)}
                         </span>
-                      )}
+                        <Badge variant={log.status === 'delivered' ? 'default' : 'destructive'}>
+                          <span className="text-xs">{log.status}</span>
+                        </Badge>
+                        {log.response_code ? (
+                          <span className="text-sm text-muted-foreground">
+                            HTTP {log.response_code}
+                          </span>
+                        ) : null}
+                      </div>
+                      {log.error_message ? (
+                        <p className="text-sm text-destructive">
+                          {log.error_message}
+                        </p>
+                      ) : null}
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <span>{log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A'}</span>
+                        {log.delivery_time_ms ? <span>{log.delivery_time_ms}ms</span> : null}
+                      </div>
                     </div>
-                    {log.error_message && (
-                      <p className="text-sm text-destructive">
-                        {log.error_message}
-                      </p>
-                    )}
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <span>{log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A'}</span>
-                      {log.delivery_time_ms && (
-                        <span>{log.delivery_time_ms}ms</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </CardContent>

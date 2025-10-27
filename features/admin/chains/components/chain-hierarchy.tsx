@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Building2, MapPin, Star } from 'lucide-react'
 import type { ChainSalon } from '@/features/admin/chains/api/queries'
 
@@ -40,8 +41,12 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
           <TableBody>
             {salons.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground">
-                  No salons in this chain
+                <TableCell colSpan={6}>
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>No salons in this chain</EmptyTitle>
+                    </EmptyHeader>
+                  </Empty>
                 </TableCell>
               </TableRow>
             ) : (

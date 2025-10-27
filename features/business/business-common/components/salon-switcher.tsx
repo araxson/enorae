@@ -1,3 +1,4 @@
+import { useState, useTransition } from 'react'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import {
@@ -8,6 +9,13 @@ import {
 } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import type { Database } from '@/lib/types/database.types'
 
 type SalonOption = Pick<Database['public']['Views']['salons_view']['Row'], 'id' | 'name'>
@@ -50,25 +58,54 @@ export async function BusinessSalonSwitcher() {
   }
 
   return (
-    <form action={setActiveSalon} className="mb-6 flex flex-col gap-2">
+    <BusinessSalonSwitcherClient
+      salons={salons}
+      activeSalonId={activeSalonId ?? accessibleSalonIds[0] ?? ''}
+      setActiveSalon={setActiveSalon}
+    />
+  )
+}
+
+type ClientProps = {
+  salons: SalonOption[]
+  activeSalonId: string
+  setActiveSalon: (formData: FormData) => Promise<void>
+}
+
+function BusinessSalonSwitcherClient({ salons, activeSalonId, setActiveSalon }: ClientProps) {
+  'use client'
+
+  const [value, setValue] = useState(activeSalonId)
+  const [isPending, startTransition] = useTransition()
+
+  const handleSubmit = () => {
+    const formData = new FormData()
+    formData.set('salonId', value)
+    startTransition(async () => {
+      await setActiveSalon(formData)
+    })
+  }
+
+  return (
+    <div className="mb-6 flex flex-col gap-2">
       <Label htmlFor="business-salon-switcher">Active Salon</Label>
       <div className="flex items-center gap-2">
-        <select
-          id="business-salon-switcher"
-          name="salonId"
-          defaultValue={activeSalonId ?? accessibleSalonIds[0]}
-          className="w-64 rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          {salons.map(salon => (
-            <option key={salon.id || 'unknown'} value={salon.id || ''}>
-              {salon.name || 'Untitled Salon'}
-            </option>
-          ))}
-        </select>
-        <Button type="submit" variant="outline">
-          Switch
+        <Select value={value} onValueChange={setValue}>
+          <SelectTrigger id="business-salon-switcher" className="w-64">
+            <SelectValue placeholder="Select salon" />
+          </SelectTrigger>
+          <SelectContent>
+            {salons.map(salon => (
+              <SelectItem key={salon.id || 'unknown'} value={salon.id || ''}>
+                {salon.name || 'Untitled Salon'}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button type="button" variant="outline" onClick={handleSubmit} disabled={isPending}>
+          {isPending ? 'Switching...' : 'Switch'}
         </Button>
       </div>
-    </form>
+    </div>
   )
 }

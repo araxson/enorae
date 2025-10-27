@@ -16,6 +16,7 @@ import {
 import { toast } from 'sonner'
 import { deleteStaffSchedule, toggleScheduleActive } from '@/features/business/staff-schedules/api/mutations'
 import type { StaffScheduleWithDetails } from '@/features/business/staff-schedules/api/queries'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type SchedulesGridProps = {
   schedules: StaffScheduleWithDetails[]
@@ -114,7 +115,12 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
     return (
       <Card>
         <CardContent>
-          <p className="text-sm text-muted-foreground">No schedules configured yet. Add a schedule above to get started.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No schedules configured</EmptyTitle>
+              <EmptyDescription>Add a schedule above to get started.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

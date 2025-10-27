@@ -1,5 +1,6 @@
 import type { FormEvent } from 'react'
 import type { CouponFormState } from './coupon-form.types'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CouponBasicSection } from './coupon-form/basic-section'
 import { CouponDiscountSection } from './coupon-form/discount-section'
 import { CouponLimitsSection } from './coupon-form/limits-section'
@@ -33,23 +34,54 @@ export function CouponFormFields({
 }: CouponFormFieldsProps) {
   return (
     <form onSubmit={onSubmit}>
-      <div className="flex flex-col gap-6">
-        <CouponBasicSection
-          formData={formData}
-          onChange={onFormDataChange}
-          onGenerateCode={onGenerateCode}
-        />
-        <CouponDiscountSection formData={formData} onChange={onFormDataChange} />
-        <CouponLimitsSection formData={formData} onChange={onFormDataChange} />
-        <CouponServicesSection
-          services={services}
-          selectedServiceIds={selectedServiceIds}
-          onToggleService={onToggleService}
-        />
-        <CouponCustomersSection formData={formData} onChange={onFormDataChange} />
-        <CouponActivationSection formData={formData} onChange={onFormDataChange} />
-        <CouponSubmitSection isLoading={isLoading} isEditing={isEditing} />
-      </div>
+      <Tabs defaultValue="basic" className="w-full">
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="basic">Basic</TabsTrigger>
+          <TabsTrigger value="discount">Discount</TabsTrigger>
+          <TabsTrigger value="limits">Limits</TabsTrigger>
+          <TabsTrigger value="services">Services</TabsTrigger>
+          <TabsTrigger value="customers">Customers</TabsTrigger>
+          <TabsTrigger value="activation">Activation</TabsTrigger>
+        </TabsList>
+
+        <div className="mt-6">
+          <TabsContent value="basic">
+            <CouponBasicSection
+              formData={formData}
+              onChange={onFormDataChange}
+              onGenerateCode={onGenerateCode}
+            />
+          </TabsContent>
+
+          <TabsContent value="discount">
+            <CouponDiscountSection formData={formData} onChange={onFormDataChange} />
+          </TabsContent>
+
+          <TabsContent value="limits">
+            <CouponLimitsSection formData={formData} onChange={onFormDataChange} />
+          </TabsContent>
+
+          <TabsContent value="services">
+            <CouponServicesSection
+              services={services}
+              selectedServiceIds={selectedServiceIds}
+              onToggleService={onToggleService}
+            />
+          </TabsContent>
+
+          <TabsContent value="customers">
+            <CouponCustomersSection formData={formData} onChange={onFormDataChange} />
+          </TabsContent>
+
+          <TabsContent value="activation">
+            <CouponActivationSection formData={formData} onChange={onFormDataChange} />
+          </TabsContent>
+        </div>
+
+        <div className="mt-6">
+          <CouponSubmitSection isLoading={isLoading} isEditing={isEditing} />
+        </div>
+      </Tabs>
     </form>
   )
 }

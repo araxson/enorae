@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import type { Database } from '@/lib/types/database.types'
 
 type AdminReview = Database['public']['Views']['admin_reviews_overview_view']['Row']
@@ -21,7 +22,12 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           <CardDescription>No review activity found.</CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
-          <p className="text-center text-muted-foreground py-8">No reviews found</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No reviews found</EmptyTitle>
+              <EmptyDescription>No review activity found yet.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

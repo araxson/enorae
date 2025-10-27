@@ -2,7 +2,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Badge } from '@/components/ui/badge'
 import { Clock } from 'lucide-react'
 import type { OperatingHours } from '@/features/staff/operating-hours/types'
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
+import { Separator } from '@/components/ui/separator'
 
 interface OperatingHoursCardProps {
   hours: OperatingHours[]
@@ -51,9 +52,12 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
           })}
       </CardContent>
       {sortedHours[0]?.['salon_name'] && (
-        <CardFooter className="border-t">
-          <p className="text-xs text-muted-foreground">{sortedHours[0]['salon_name']}</p>
-        </CardFooter>
+        <>
+          <Separator />
+          <CardFooter>
+            <p className="text-xs text-muted-foreground">{sortedHours[0]['salon_name']}</p>
+          </CardFooter>
+        </>
       )}
     </Card>
   )

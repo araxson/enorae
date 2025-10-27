@@ -1,6 +1,9 @@
+import { Fragment } from 'react'
 import { Award, Star } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Separator } from '@/components/ui/separator'
 type TopPerformersProps = {
   services: Array<{ name: string; count: number; revenue: number }>
   staff: Array<{ name: string; title: string | null; count: number; revenue: number }>
@@ -27,31 +30,34 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
         </CardHeader>
         <CardContent>
           {services.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>No data available</p>
-            </div>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No service data available</EmptyTitle>
+                <EmptyDescription>Bookings will populate this list once activity begins.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
               {services.map((service, index) => (
-                <div
-                  key={service.name}
-                  className="flex items-center justify-between p-3 border rounded-lg"
-                >
-                  <div className="flex items-center gap-4">
-                    <Badge variant={index === 0 ? 'default' : 'outline'}>
-                      #{index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{service.name}</div>
-                      <p className="text-xs text-muted-foreground">
-                        {service.count} bookings
-                      </p>
+                <Fragment key={service.name}>
+                  <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+                    <div className="flex items-center gap-4">
+                      <Badge variant={index === 0 ? 'default' : 'outline'}>
+                        #{index + 1}
+                      </Badge>
+                      <div>
+                        <div className="font-medium">{service.name}</div>
+                        <p className="text-xs text-muted-foreground">
+                          {service.count} bookings
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold">{formatCurrency(service.revenue)}</div>
-                  </div>
-                </div>
+                    <div className="text-right">
+                      <div className="font-semibold">{formatCurrency(service.revenue)}</div>
+                    </div>
+                  </article>
+                  {index < services.length - 1 ? <Separator /> : null}
+                </Fragment>
               ))}
             </div>
           )}
@@ -68,31 +74,34 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
         </CardHeader>
         <CardContent>
           {staff.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>No data available</p>
-            </div>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No staff performance data</EmptyTitle>
+                <EmptyDescription>Staff metrics appear after appointments are completed.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
               {staff.map((member, index) => (
-                <div
-                  key={member.name}
-                  className="flex items-center justify-between p-3 border rounded-lg"
-                >
-                  <div className="flex items-center gap-4">
-                    <Badge variant={index === 0 ? 'default' : 'outline'}>
-                      #{index + 1}
-                    </Badge>
-                    <div>
-                      <div className="font-medium">{member.name}</div>
-                      <p className="text-xs text-muted-foreground">
-                        {member.title || 'Staff'} • {member.count} appointments
-                      </p>
+                <Fragment key={member.name}>
+                  <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+                    <div className="flex items-center gap-4">
+                      <Badge variant={index === 0 ? 'default' : 'outline'}>
+                        #{index + 1}
+                      </Badge>
+                      <div>
+                        <div className="font-medium">{member.name}</div>
+                        <p className="text-xs text-muted-foreground">
+                          {member.title || 'Staff'} • {member.count} appointments
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold">{formatCurrency(member.revenue)}</div>
-                  </div>
-                </div>
+                    <div className="text-right">
+                      <div className="font-semibold">{formatCurrency(member.revenue)}</div>
+                    </div>
+                  </article>
+                  {index < staff.length - 1 ? <Separator /> : null}
+                </Fragment>
               ))}
             </div>
           )}

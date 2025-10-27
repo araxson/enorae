@@ -16,6 +16,7 @@ import { toast } from 'sonner'
 import type { StatsFreshnessRecord } from '@/features/admin/statistics-freshness/api/queries'
 import { refreshTableStatistics } from '@/features/admin/statistics-freshness/api/mutations'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface FreshnessTableProps {
   tables: StatsFreshnessRecord[]
@@ -70,8 +71,12 @@ export function FreshnessTable({ tables }: FreshnessTableProps) {
         <TableBody>
           {tables.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
-                No table statistics available
+              <TableCell colSpan={6}>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No table statistics available</EmptyTitle>
+                  </EmptyHeader>
+                </Empty>
               </TableCell>
             </TableRow>
           ) : (

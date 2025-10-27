@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { ChainRevenueData } from '@/features/admin/finance/types'
 
 interface RevenueByChainProps {
@@ -37,8 +38,12 @@ export function RevenueByChain({ data }: RevenueByChainProps) {
           <TableBody>
             {data.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-muted-foreground">
-                  No chain revenue data available
+                <TableCell colSpan={5}>
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>No chain revenue data available</EmptyTitle>
+                    </EmptyHeader>
+                  </Empty>
                 </TableCell>
               </TableRow>
             ) : (

@@ -9,6 +9,7 @@ import { confirmAppointment, cancelAppointment, completeAppointment } from '@/fe
 import { useAppointmentsFilter } from './appointments-table/use-appointments-filter'
 import { AppointmentsFilterControls } from './appointments-table/filter-controls'
 import { AppointmentsTableRow } from './appointments-table/table-row'
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 
 interface AppointmentsTableClientProps {
   appointments: AppointmentWithDetails[]
@@ -53,8 +54,13 @@ export function AppointmentsTableClient({ appointments }: AppointmentsTableClien
           <Table>
             <TableBody>
               <TableRow>
-                <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
-                  No appointments match your search criteria
+                <TableCell colSpan={5}>
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>No matching appointments</EmptyTitle>
+                      <EmptyDescription>Try adjusting your filters to see more results.</EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
                 </TableCell>
               </TableRow>
             </TableBody>

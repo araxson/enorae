@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { SalonPerformance } from '@/features/admin/appointments/types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface SalonPerformanceTableProps {
   salons: SalonPerformance[]
@@ -24,37 +25,40 @@ export function SalonPerformanceTable({ salons }: SalonPerformanceTableProps) {
       <CardHeader className="pb-4">
         <CardTitle>Top Performing Salons</CardTitle>
       </CardHeader>
-      <CardContent className="overflow-x-auto">
-        {salons.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No salon metrics returned.</p>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Salon</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Completed</TableHead>
-                <TableHead>Cancellation %</TableHead>
-                <TableHead>No-show %</TableHead>
-                <TableHead>Revenue</TableHead>
-                <TableHead>Avg Duration</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {salons.map((salon) => (
-                <TableRow key={salon.salonId}>
-                  <TableCell className="font-medium text-foreground">{salon.salonName || salon.salonId}</TableCell>
-                  <TableCell>{salon.total}</TableCell>
-                  <TableCell>{salon.completed}</TableCell>
-                  <TableCell>{formatPercent(salon.cancelled, salon.total)}</TableCell>
-                  <TableCell>{formatPercent(salon.noShow, salon.total)}</TableCell>
-                  <TableCell>${salon.totalRevenue.toLocaleString('en-US', { maximumFractionDigits: 0 })}</TableCell>
-                  <TableCell>{Math.round(salon.avgDuration)} min</TableCell>
+      <CardContent>
+        <ScrollArea className="w-full">
+          {salons.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No salon metrics returned.</p>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Salon</TableHead>
+                  <TableHead>Total</TableHead>
+                  <TableHead>Completed</TableHead>
+                  <TableHead>Cancellation %</TableHead>
+                  <TableHead>No-show %</TableHead>
+                  <TableHead>Revenue</TableHead>
+                  <TableHead>Avg Duration</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
+              </TableHeader>
+              <TableBody>
+                {salons.map((salon) => (
+                  <TableRow key={salon.salonId}>
+                    <TableCell className="font-medium text-foreground">{salon.salonName || salon.salonId}</TableCell>
+                    <TableCell>{salon.total}</TableCell>
+                    <TableCell>{salon.completed}</TableCell>
+                    <TableCell>{formatPercent(salon.cancelled, salon.total)}</TableCell>
+                    <TableCell>{formatPercent(salon.noShow, salon.total)}</TableCell>
+                    <TableCell>${salon.totalRevenue.toLocaleString('en-US', { maximumFractionDigits: 0 })}</TableCell>
+                    <TableCell>{Math.round(salon.avgDuration)} min</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+          {salons.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+        </ScrollArea>
       </CardContent>
     </Card>
   )

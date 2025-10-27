@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface GrowthTrendPanelProps {
   series: PlatformAnalyticsSnapshot['growth']['series']
@@ -31,35 +32,38 @@ export function GrowthTrendPanel({ series }: GrowthTrendPanelProps) {
       <CardHeader className="pb-4">
         <CardTitle>Growth Trend (Last 14 snapshots)</CardTitle>
       </CardHeader>
-      <CardContent className="overflow-x-auto">
-        {rows.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No analytics snapshots available yet.</p>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead className="text-right">Revenue</TableHead>
-                <TableHead className="text-right">Appointments</TableHead>
-                <TableHead className="text-right">New Customers</TableHead>
-                <TableHead className="text-right">Returning</TableHead>
-                <TableHead className="text-right">Active Salons</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((entry) => (
-                <TableRow key={entry.date}>
-                  <TableCell className="font-medium text-foreground">{formatDate(entry.date)}</TableCell>
-                  <TableCell className="text-right">{formatCurrencyCompact(entry.revenue)}</TableCell>
-                  <TableCell className="text-right">{entry.appointments.toLocaleString('en-US')}</TableCell>
-                  <TableCell className="text-right">{entry.newCustomers.toLocaleString('en-US')}</TableCell>
-                  <TableCell className="text-right">{entry.returningCustomers.toLocaleString('en-US')}</TableCell>
-                  <TableCell className="text-right">{entry.activeSalons.toLocaleString('en-US')}</TableCell>
+      <CardContent>
+        <ScrollArea className="w-full">
+          {rows.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No analytics snapshots available yet.</p>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="text-right">Revenue</TableHead>
+                  <TableHead className="text-right">Appointments</TableHead>
+                  <TableHead className="text-right">New Customers</TableHead>
+                  <TableHead className="text-right">Returning</TableHead>
+                  <TableHead className="text-right">Active Salons</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
+              </TableHeader>
+              <TableBody>
+                {rows.map((entry) => (
+                  <TableRow key={entry.date}>
+                    <TableCell className="font-medium text-foreground">{formatDate(entry.date)}</TableCell>
+                    <TableCell className="text-right">{formatCurrencyCompact(entry.revenue)}</TableCell>
+                    <TableCell className="text-right">{entry.appointments.toLocaleString('en-US')}</TableCell>
+                    <TableCell className="text-right">{entry.newCustomers.toLocaleString('en-US')}</TableCell>
+                    <TableCell className="text-right">{entry.returningCustomers.toLocaleString('en-US')}</TableCell>
+                    <TableCell className="text-right">{entry.activeSalons.toLocaleString('en-US')}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+          {rows.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+        </ScrollArea>
       </CardContent>
     </Card>
   )

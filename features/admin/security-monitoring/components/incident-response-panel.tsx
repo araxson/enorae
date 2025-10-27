@@ -1,6 +1,7 @@
 import { AlertTriangle, ShieldCheck } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { SecurityIncident } from '@/features/admin/security-monitoring/types'
 
 interface IncidentResponsePanelProps {
@@ -40,28 +41,27 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
         ) : (
           <div className="flex flex-col gap-2">
             {incidents.slice(0, 6).map((incident) => (
-              <Card key={incident['id']}>
-                <CardHeader>
-                  <div className="flex items-center justify-between gap-2">
-                    <CardTitle>{incident.eventType}</CardTitle>
-                    {severityBadge(incident['severity'])}
-                  </div>
-                  <CardDescription>
-                    Detected at {new Date(incident.createdAt).toLocaleString()} · IP {incident.ipAddress ?? 'Unknown'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col gap-2">
+              <Alert
+                key={incident['id']}
+                variant={incident['severity'].toLowerCase() === 'critical' ? 'destructive' : 'default'}
+              >
+                <AlertTriangle className="h-4 w-4" />
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1">
+                    <AlertTitle>{incident.eventType}</AlertTitle>
+                    <AlertDescription>
+                      Detected at {new Date(incident.createdAt).toLocaleString()} · IP {incident.ipAddress ?? 'Unknown'}
+                    </AlertDescription>
                     {incident['description'] ? (
-                      <CardDescription>{incident['description']}</CardDescription>
+                      <AlertDescription className="mt-1">{incident['description']}</AlertDescription>
                     ) : null}
-                    <div className="flex items-start gap-2">
-                      <AlertTriangle className="h-3 w-3" aria-hidden="true" />
-                      <CardDescription>{guidanceFor(incident['severity'])}</CardDescription>
-                    </div>
+                    <AlertDescription className="mt-2 font-medium">
+                      {guidanceFor(incident['severity'])}
+                    </AlertDescription>
                   </div>
-                </CardContent>
-              </Card>
+                  {severityBadge(incident['severity'])}
+                </div>
+              </Alert>
             ))}
           </div>
         )}

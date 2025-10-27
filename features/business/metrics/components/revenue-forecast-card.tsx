@@ -118,9 +118,13 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
               <div className="text-sm font-medium text-muted-foreground">Upcoming forecast</div>
               <ul className="space-y-1 text-sm">
                 {upcoming.slice(0, 4).map((point) => (
-                  <li key={point.date} className="flex items-center justify-between rounded-md border px-3 py-2">
-                    <span>{point.date}</span>
-                    <span className="font-medium">${point.forecast.toLocaleString()}</span>
+                  <li key={point.date}>
+                    <Card>
+                      <CardContent className="flex items-center justify-between gap-4 py-3">
+                        <span>{point.date}</span>
+                        <span className="font-medium">${point.forecast.toLocaleString()}</span>
+                      </CardContent>
+                    </Card>
                   </li>
                 ))}
               </ul>

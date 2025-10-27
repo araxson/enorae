@@ -31,7 +31,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
           <CardHeader>
             <div className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>Today</CardTitle>
-              <Clock className="h-4 w-4" />
+              <Clock className="h-4 w-4 text-muted-foreground" />
             </div>
           </CardHeader>
           <CardContent>
@@ -50,7 +50,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
           <CardHeader>
             <div className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>This Week</CardTitle>
-              <Calendar className="h-4 w-4" />
+              <Calendar className="h-4 w-4 text-muted-foreground" />
             </div>
           </CardHeader>
           <CardContent>
@@ -71,7 +71,7 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
           <CardHeader>
             <div className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle>This Month</CardTitle>
-              <CheckCircle className="h-4 w-4" />
+              <CheckCircle className="h-4 w-4 text-muted-foreground" />
             </div>
           </CardHeader>
           <CardContent>

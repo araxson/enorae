@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -68,53 +69,56 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
       <CardContent className="p-0">
         <ScrollArea className="h-96">
           <div className="p-6 space-y-4">
-            {appointments.map((appointment) => {
+            {appointments.map((appointment, index) => {
               const salonInitials = getInitials(appointment['salon_name'] || 'Salon')
               const appointmentDate = appointment['start_time']
                 ? format(new Date(appointment['start_time']), 'EEEE, MMMM d, yyyy')
                 : 'Date TBD'
 
               return (
-                <Card key={appointment['id']} className="group">
-                  <CardHeader className="flex flex-row items-start gap-4">
-                    <Avatar className="h-10 w-10 border-2 border-background">
-                      <AvatarFallback className="bg-primary/10 text-primary">
-                        {salonInitials}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 space-y-1 min-w-0">
-                      <CardTitle>{appointment['salon_name'] || 'Salon TBD'}</CardTitle>
-                      <CardDescription>{appointmentDate}</CardDescription>
-                    </div>
-                    <Badge variant={getStatusVariant(appointment['status'])}>
-                      {appointment['status'] || 'pending'}
-                    </Badge>
-                  </CardHeader>
-                  <CardContent className="flex flex-col gap-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Clock className="h-3 w-3" />
-                      <span>{formatAppointmentTime(appointment['start_time'])}</span>
-                    </div>
-                    {appointment['salon_name'] && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="h-3 w-3" />
-                        <span>View location</span>
+                <Fragment key={appointment['id']}>
+                  <article className="group rounded-lg border border-border/50">
+                    <div className="flex items-start gap-4 p-4">
+                      <Avatar className="h-10 w-10 border-2 border-background">
+                        <AvatarFallback className="bg-primary/10 text-primary">
+                          {salonInitials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <p className="truncate text-sm font-semibold">{appointment['salon_name'] || 'Salon TBD'}</p>
+                        <p className="text-sm text-muted-foreground">{appointmentDate}</p>
                       </div>
-                    )}
-                  </CardContent>
-                  <CardFooter className="flex justify-end">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="opacity-0 transition-opacity group-hover:opacity-100"
-                      asChild
-                    >
-                      <Link href={`/customer/appointments/${appointment['id']}`}>
-                        View
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+                      <Badge variant={getStatusVariant(appointment['status'])}>
+                        {appointment['status'] || 'pending'}
+                      </Badge>
+                    </div>
+                    <div className="flex flex-col gap-3 px-4 pb-4">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        <span>{formatAppointmentTime(appointment['start_time'])}</span>
+                      </div>
+                      {appointment['salon_name'] ? (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <MapPin className="h-3 w-3" />
+                          <span>View location</span>
+                        </div>
+                      ) : null}
+                      <div className="flex justify-end">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="opacity-0 transition-opacity group-hover:opacity-100"
+                          asChild
+                        >
+                          <Link href={`/customer/appointments/${appointment['id']}`}>
+                            View
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </article>
+                  {index < appointments.length - 1 ? <Separator /> : null}
+                </Fragment>
               )
             })}
           </div>

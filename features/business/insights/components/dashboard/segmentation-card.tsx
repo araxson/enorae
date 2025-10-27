@@ -17,36 +17,48 @@ export function SegmentationCard({ summary }: SegmentationCardProps) {
       </CardHeader>
       <CardContent>
         <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-accent/10">
-            <Crown className="h-6 w-6 text-accent mb-2" />
-            <div className="text-2xl font-bold">{summary.segmentation.vip}</div>
-            <div className="text-xs text-muted-foreground">VIP</div>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-destructive/10">
-            <Heart className="h-6 w-6 text-destructive mb-2" />
-            <div className="text-2xl font-bold">{summary.segmentation.loyal}</div>
-            <div className="text-xs text-muted-foreground">Loyal</div>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-secondary/10">
-            <Users className="h-6 w-6 text-secondary mb-2" />
-            <div className="text-2xl font-bold">{summary.segmentation.regular}</div>
-            <div className="text-xs text-muted-foreground">Regular</div>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-accent/10">
-            <AlertTriangle className="h-6 w-6 text-accent mb-2" />
-            <div className="text-2xl font-bold">{summary.segmentation.at_risk}</div>
-            <div className="text-xs text-muted-foreground">At Risk</div>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-primary/10">
-            <UserPlus className="h-6 w-6 text-primary mb-2" />
-            <div className="text-2xl font-bold">{summary.segmentation.new}</div>
-            <div className="text-xs text-muted-foreground">New</div>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg bg-muted">
-            <UserX className="h-6 w-6 text-muted-foreground mb-2" />
-            <div className="text-2xl font-bold">{summary.segmentation.churned}</div>
-            <div className="text-xs text-muted-foreground">Churned</div>
-          </div>
+          <Card className="bg-accent/10">
+            <CardContent className="flex flex-col items-center gap-2 py-4">
+              <Crown className="h-6 w-6 text-accent" />
+              <div className="text-2xl font-bold">{summary.segmentation.vip}</div>
+              <div className="text-xs text-muted-foreground">VIP</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-destructive/10">
+            <CardContent className="flex flex-col items-center gap-2 py-4">
+              <Heart className="h-6 w-6 text-destructive" />
+              <div className="text-2xl font-bold">{summary.segmentation.loyal}</div>
+              <div className="text-xs text-muted-foreground">Loyal</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-secondary/10">
+            <CardContent className="flex flex-col items-center gap-2 py-4">
+              <Users className="h-6 w-6 text-secondary" />
+              <div className="text-2xl font-bold">{summary.segmentation.regular}</div>
+              <div className="text-xs text-muted-foreground">Regular</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-accent/10">
+            <CardContent className="flex flex-col items-center gap-2 py-4">
+              <AlertTriangle className="h-6 w-6 text-accent" />
+              <div className="text-2xl font-bold">{summary.segmentation.at_risk}</div>
+              <div className="text-xs text-muted-foreground">At Risk</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-primary/10">
+            <CardContent className="flex flex-col items-center gap-2 py-4">
+              <UserPlus className="h-6 w-6 text-primary" />
+              <div className="text-2xl font-bold">{summary.segmentation.new}</div>
+              <div className="text-xs text-muted-foreground">New</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-muted">
+            <CardContent className="flex flex-col items-center gap-2 py-4">
+              <UserX className="h-6 w-6 text-muted-foreground" />
+              <div className="text-2xl font-bold">{summary.segmentation.churned}</div>
+              <div className="text-xs text-muted-foreground">Churned</div>
+            </CardContent>
+          </Card>
         </div>
       </CardContent>
       <CardFooter>

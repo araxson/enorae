@@ -6,6 +6,14 @@ import { ImageIcon } from 'lucide-react'
 import Image from 'next/image'
 import type { Database } from '@/lib/types/database.types'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 
 type SalonMediaView = Database['public']['Views']['salon_media_view']['Row']
 
@@ -22,7 +30,7 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ImageIcon className="h-5 w-5" />
+            <ImageIcon className="h-5 w-5" aria-hidden="true" />
             <CardTitle>Gallery</CardTitle>
           </div>
           {media['gallery_image_count'] !== null && media['gallery_image_count'] > 0 && (
@@ -62,31 +70,42 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
             </div>
           )}
 
-          {/* Gallery Grid */}
+          {/* Gallery Carousel */}
           {hasGallery && (
             <div>
               <p className="mb-2 text-xs text-muted-foreground">Photos</p>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {galleryUrls.map((url, idx) => (
-                  <AspectRatio key={idx} ratio={1} className="overflow-hidden rounded-md">
-                    <Image
-                      src={url}
-                      alt={`${media['salon_name'] || 'Salon'} - Photo ${idx + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </AspectRatio>
-                ))}
-              </div>
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {galleryUrls.map((url, idx) => (
+                    <CarouselItem key={idx} className="basis-1/2 md:basis-1/3">
+                      <AspectRatio ratio={1} className="overflow-hidden rounded-md">
+                        <Image
+                          src={url}
+                          alt={`${media['salon_name'] || 'Salon'} - Photo ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </AspectRatio>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
             </div>
           )}
 
           {/* No Media Message */}
           {!media['logo_url'] && !media['cover_image_url'] && !hasGallery && (
-            <div className="py-8 text-center">
-              <ImageIcon className="mx-auto mb-2 h-12 w-12 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">No photos available yet</p>
-            </div>
+            <Empty>
+              <EmptyMedia variant="icon">
+                <ImageIcon className="h-6 w-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No photos available</EmptyTitle>
+                <EmptyDescription>Upload media to showcase your salon.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
         </div>
       </CardContent>

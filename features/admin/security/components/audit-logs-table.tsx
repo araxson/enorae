@@ -14,6 +14,13 @@ import { formatDistanceToNow } from 'date-fns'
 import { Shield, Activity } from 'lucide-react'
 import type { AuditLog } from '@/features/admin/security/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -27,14 +34,18 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
           <CardTitle>Audit Logs</CardTitle>
           <CardDescription>No audit entries available.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
-            <Activity className="h-12 w-12 text-muted-foreground" />
-            <p className="text-muted-foreground">No audit logs found</p>
-            <p className="text-sm text-muted-foreground">
-              Audit logs will appear here when users perform actions
-            </p>
-          </div>
+        <CardContent className="py-12">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Activity className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No audit logs found</EmptyTitle>
+              <EmptyDescription>
+                Audit logs will appear here when users perform actions.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

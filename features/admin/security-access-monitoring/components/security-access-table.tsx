@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { SecurityAccessRecord } from '@/features/admin/security-access-monitoring/api/queries'
@@ -141,8 +142,12 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
         <TableBody>
           {records.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={9} className="py-8 text-center text-muted-foreground">
-                No security access records found
+              <TableCell colSpan={9}>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No security access records found</EmptyTitle>
+                  </EmptyHeader>
+                </Empty>
               </TableCell>
             </TableRow>
           ) : (

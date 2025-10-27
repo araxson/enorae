@@ -232,16 +232,18 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
           )}
 
           {address?.['latitude'] && address?.['longitude'] && EXTERNAL_APIS.GOOGLE_MAPS.isEnabled() && (
-            <div className="overflow-hidden rounded-lg border">
-              <iframe
-                width="100%"
-                height="300"
-                className="w-full border-0"
-                loading="lazy"
-                src={`${EXTERNAL_APIS.GOOGLE_MAPS.EMBED_URL}?q=${address['latitude']},${address['longitude']}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                title="Location Map"
-              />
-            </div>
+            <Card>
+              <CardContent className="p-0">
+                <iframe
+                  width="100%"
+                  height="300"
+                  className="w-full border-0"
+                  loading="lazy"
+                  src={`${EXTERNAL_APIS.GOOGLE_MAPS.EMBED_URL}?q=${address['latitude']},${address['longitude']}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                  title="Location Map"
+                />
+              </CardContent>
+            </Card>
           )}
         </div>
       </CardContent>

@@ -8,6 +8,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { Sparkles } from 'lucide-react'
+import { Separator } from '@/components/ui/separator'
 import { MobileNav } from './mobile-nav'
 import { MarketingUserNav } from './marketing-user-nav'
 import { verifySession } from '@/lib/auth/session'
@@ -25,7 +26,7 @@ export async function MarketingHeader() {
   const session = await verifySession()
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -78,6 +79,7 @@ export async function MarketingHeader() {
           />
         </div>
       </div>
+      <Separator />
     </header>
   )
 }

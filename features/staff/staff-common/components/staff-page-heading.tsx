@@ -8,7 +8,6 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
-import { ButtonGroup } from '@/components/ui/button-group'
 import { Badge } from '@/components/ui/badge'
 import {
   DropdownMenu,
@@ -101,7 +100,7 @@ export function StaffPageHeading({
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-semibold">{title}</h1>
               <div className="hidden items-center gap-2 sm:flex">
-                <Sparkles className="h-3.5 w-3.5" />
+                <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
                 <Badge variant="secondary">Staff Portal</Badge>
               </div>
             </div>
@@ -111,8 +110,8 @@ export function StaffPageHeading({
           <div className="flex items-center gap-2">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="outline" size="icon" onClick={onOpenCommand}>
-                  <CommandIcon className="h-4 w-4" />
+                <Button variant="outline" size="icon" onClick={onOpenCommand} aria-label="Quick navigator">
+                  <CommandIcon className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Quick navigator</TooltipContent>
@@ -120,8 +119,8 @@ export function StaffPageHeading({
 
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <CalendarDays className="h-4 w-4" />
+                <Button variant="outline" className="gap-2" aria-label="Select date range">
+                  <CalendarDays className="h-4 w-4" aria-hidden="true" />
                   <span className="hidden sm:inline-flex">{dateLabel}</span>
                 </Button>
               </PopoverTrigger>
@@ -138,8 +137,9 @@ export function StaffPageHeading({
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Filter className="h-4 w-4" />
+                <Button variant="outline" size="icon" aria-label="Display options">
+                  <Filter className="h-4 w-4" aria-hidden="true" />
+                  <span className="sr-only">Display options</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-64" align="end">

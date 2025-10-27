@@ -4,6 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Star } from 'lucide-react'
 import type { ReviewsOverview } from './admin-overview-types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type ReviewsTabProps = {
   reviews: ReviewsOverview[]
@@ -20,7 +21,12 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">No reviews have been submitted yet.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No reviews yet</EmptyTitle>
+              <EmptyDescription>Reviews will appear here once customers provide feedback.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

@@ -38,9 +38,7 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
 
             <div className="space-y-2">
               <Label>Estimated Profit Margin</Label>
-              <div className="flex h-10 items-center rounded-md border px-3 text-lg font-semibold text-primary">
-                {profitMargin}%
-              </div>
+              <Input id="profit-margin" value={`${profitMargin}%`} readOnly />
               <p className="text-xs text-muted-foreground">Auto-calculated from price & cost</p>
             </div>
           </div>

@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
-import { RefreshCw } from 'lucide-react'
+import { RefreshCw, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
 import { MetricSummaryCards } from './metric-summary-cards'
@@ -71,9 +72,6 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
           <p className="text-muted-foreground">
             Aggregated growth and retention metrics across the platform. Last updated {lastUpdatedLabel}.
           </p>
-          {error && (
-            <p className="mt-2 text-destructive">{error}</p>
-          )}
         </div>
         <div className="flex items-center gap-3">
           <p className="text-muted-foreground">
@@ -85,6 +83,14 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
           </Button>
         </div>
       </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Unable to refresh analytics</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
       <MetricSummaryCards
         growth={data.growth.summary}

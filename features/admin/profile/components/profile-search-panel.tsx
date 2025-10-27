@@ -54,56 +54,60 @@ export function ProfileSearchPanel({
           </div>
         )}
 
-        <ScrollArea className="h-96 rounded-md border bg-muted/10">
-          {results.length === 0 ? (
-            <p className="p-4 text-sm text-muted-foreground">No profiles found.</p>
-          ) : (
-            <ul className="divide-y">
-              {results.map((profile) => {
-                const isActive = selectedId === profile.id
-                return (
-                  <li key={profile.id}>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => onSelect(profile.id)}
-                      className={cn(
-                        'w-full justify-start px-4 py-3 text-left transition hover:bg-muted/60',
-                        isActive && 'bg-muted/80',
-                      )}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="space-y-1">
-                          <p className="text-sm font-medium leading-tight">
-                            {profile.fullName || profile.email || 'Unknown user'}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {profile.email ?? 'No email on file'}
-                          </p>
-                          {profile.username && (
-                            <p className="text-xs text-muted-foreground">@{profile.username}</p>
+        <Card>
+          <CardContent className="p-0">
+            <ScrollArea className="h-96">
+              {results.length === 0 ? (
+                <p className="p-4 text-sm text-muted-foreground">No profiles found.</p>
+              ) : (
+                <ul className="divide-y">
+                  {results.map((profile) => {
+                    const isActive = selectedId === profile.id
+                    return (
+                      <li key={profile.id}>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          onClick={() => onSelect(profile.id)}
+                          className={cn(
+                            'w-full justify-start px-4 py-3 text-left transition hover:bg-muted/60',
+                            isActive && 'bg-muted/80',
                           )}
-                        </div>
-                        <div className="space-y-1 text-right">
-                          {profile.primaryRole && (
-                            <div className="text-xs">
-                              <Badge variant="outline">
-                                {profile.primaryRole.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
-                              </Badge>
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="space-y-1">
+                              <p className="text-sm font-medium leading-tight">
+                                {profile.fullName || profile.email || 'Unknown user'}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {profile.email ?? 'No email on file'}
+                              </p>
+                              {profile.username && (
+                                <p className="text-xs text-muted-foreground">@{profile.username}</p>
+                              )}
                             </div>
-                          )}
-                          {profile.status && (
-                            <p className="text-xs text-muted-foreground">{profile.status}</p>
-                          )}
-                        </div>
-                      </div>
-                    </Button>
-                  </li>
-                )
-              })}
-            </ul>
-          )}
-        </ScrollArea>
+                            <div className="space-y-1 text-right">
+                              {profile.primaryRole && (
+                                <div className="text-xs">
+                                  <Badge variant="outline">
+                                    {profile.primaryRole.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                                  </Badge>
+                                </div>
+                              )}
+                              {profile.status && (
+                                <p className="text-xs text-muted-foreground">{profile.status}</p>
+                              )}
+                            </div>
+                          </div>
+                        </Button>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
+            </ScrollArea>
+          </CardContent>
+        </Card>
       </CardContent>
     </Card>
   )

@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
 
@@ -99,58 +100,65 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
               </Alert>
             )}
 
-            {DAYS.map((day, index) => {
-              const dayHours = hours.find((h) => h.day_of_week === index)!
-              return (
-                <Card key={index}>
-                  <CardHeader className="pb-2">
-                    <CardTitle>{day}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <div className="grid gap-4 grid-cols-1 md:grid-cols-4 items-end">
-                      <div className="space-y-2">
-                        <Label htmlFor={`open-${index}`}>
-                          Open Time
-                        </Label>
-                        <Input
-                          id={`open-${index}`}
-                          type="time"
-                          value={dayHours.open_time}
-                          onChange={(e) => updateDay(index, 'open_time', e.target.value)}
-                          disabled={dayHours.is_closed}
-                        />
+            <Accordion type="multiple" defaultValue={['0', '1', '2', '3', '4', '5', '6']} className="w-full">
+              {DAYS.map((day, index) => {
+                const dayHours = hours.find((h) => h.day_of_week === index)!
+                return (
+                  <AccordionItem key={index} value={String(index)}>
+                    <AccordionTrigger>
+                      <div className="flex items-center justify-between w-full pr-4">
+                        <span>{day}</span>
+                        <span className="text-sm text-muted-foreground">
+                          {dayHours.is_closed ? 'Closed' : `${dayHours.open_time} - ${dayHours.close_time}`}
+                        </span>
                       </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid gap-4 grid-cols-1 md:grid-cols-4 items-end pt-4">
+                        <div className="space-y-2">
+                          <Label htmlFor={`open-${index}`}>
+                            Open Time
+                          </Label>
+                          <Input
+                            id={`open-${index}`}
+                            type="time"
+                            value={dayHours.open_time}
+                            onChange={(e) => updateDay(index, 'open_time', e.target.value)}
+                            disabled={dayHours.is_closed}
+                          />
+                        </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor={`close-${index}`}>
-                          Close Time
-                        </Label>
-                        <Input
-                          id={`close-${index}`}
-                          type="time"
-                          value={dayHours.close_time}
-                          onChange={(e) => updateDay(index, 'close_time', e.target.value)}
-                          disabled={dayHours.is_closed}
-                        />
-                      </div>
+                        <div className="space-y-2">
+                          <Label htmlFor={`close-${index}`}>
+                            Close Time
+                          </Label>
+                          <Input
+                            id={`close-${index}`}
+                            type="time"
+                            value={dayHours.close_time}
+                            onChange={(e) => updateDay(index, 'close_time', e.target.value)}
+                            disabled={dayHours.is_closed}
+                          />
+                        </div>
 
-                      <div className="flex gap-3 items-center">
-                        <Switch
-                          id={`closed-${index}`}
-                          checked={dayHours.is_closed}
-                          onCheckedChange={(checked) =>
-                            updateDay(index, 'is_closed', checked)
-                          }
-                        />
-                        <Label htmlFor={`closed-${index}`}>
-                          Closed
-                        </Label>
+                        <div className="flex gap-3 items-center">
+                          <Switch
+                            id={`closed-${index}`}
+                            checked={dayHours.is_closed}
+                            onCheckedChange={(checked) =>
+                              updateDay(index, 'is_closed', checked)
+                            }
+                          />
+                          <Label htmlFor={`closed-${index}`}>
+                            Closed
+                          </Label>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-            })}
+                    </AccordionContent>
+                  </AccordionItem>
+                )
+              })}
+            </Accordion>
           </div>
         </CardContent>
         <CardFooter>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { revokeSession } from '@/features/staff/sessions/api/mutations'
 import type { StaffSessionDetail } from '@/features/staff/sessions/types'
 
@@ -47,63 +48,77 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
 
   if (activeSessions.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col items-center text-center">
-            <CardTitle>No active sessions</CardTitle>
-            <CardDescription>Sign in on a device to see sessions here.</CardDescription>
-          </div>
-        </CardHeader>
-      </Card>
+      <Alert className="flex flex-col items-center gap-3 py-8">
+        <Monitor className="h-12 w-12 text-muted-foreground" />
+        <AlertTitle>No active sessions</AlertTitle>
+        <AlertDescription>Sign in on a device to see sessions here.</AlertDescription>
+      </Alert>
     )
   }
 
   return (
     <div className="flex flex-col gap-4">
-      {activeSessions.map((session) => {
-        const isCurrent = session['id'] === currentSessionId
-        const lastActiveValue = typeof session.last_active_at === "string" ? session.last_active_at : null
-        const createdValue = typeof session['created_at'] === "string" ? session['created_at'] : null
-        const parsedLastActive = lastActiveValue ? new Date(lastActiveValue) : null
-        const parsedCreatedAt = createdValue ? new Date(createdValue) : null
-        const formattedLastActive = parsedLastActive ? format(parsedLastActive, 'PPp') : null
-        const formattedCreatedAt = parsedCreatedAt ? format(parsedCreatedAt, 'PPp') : null
+      <Card>
+        <CardHeader>
+          <CardTitle>Active Sessions</CardTitle>
+          <CardDescription>Manage devices where you&apos;re currently signed in</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Device</TableHead>
+                <TableHead>Browser</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Last Active</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {activeSessions.map((session) => {
+                const isCurrent = session['id'] === currentSessionId
+                const lastActiveValue = typeof session.last_active_at === "string" ? session.last_active_at : null
+                const parsedLastActive = lastActiveValue ? new Date(lastActiveValue) : null
+                const formattedLastActive = parsedLastActive ? format(parsedLastActive, 'PPp') : 'Never'
 
-        return (
-          <Card key={session['id']}>
-            <CardHeader>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <div className="flex items-center gap-2">
-                  {getDeviceIcon(session.device_type)}
-                  <CardTitle>{session.device_name || 'Unknown Device'}</CardTitle>
-                  {isCurrent ? <Badge variant="default">Current</Badge> : null}
-                </div>
-                {!isCurrent ? (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => session['id'] && handleRevoke(session['id'])}
-                    disabled={revokingId === session['id']}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                ) : null}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <CardDescription>
-                  {session.browser_name} {session.browser_version ? `v${session.browser_version}` : ''}
-                </CardDescription>
-                {session.ip_address ? <p>IP: {session.ip_address}</p> : null}
-                {session.location ? <p>Location: {session.location}</p> : null}
-                {formattedLastActive ? <p>Last active: {formattedLastActive}</p> : null}
-                {formattedCreatedAt ? <p>Created: {formattedCreatedAt}</p> : null}
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
+                return (
+                  <TableRow key={session['id']}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {getDeviceIcon(session.device_type)}
+                        <div>
+                          <div className="font-medium">{session.device_name || 'Unknown Device'}</div>
+                          {session.ip_address ? (
+                            <div className="text-xs text-muted-foreground">{session.ip_address}</div>
+                          ) : null}
+                        </div>
+                        {isCurrent ? <Badge variant="default">Current</Badge> : null}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {session.browser_name} {session.browser_version ? `v${session.browser_version}` : ''}
+                    </TableCell>
+                    <TableCell>{session.location || 'Unknown'}</TableCell>
+                    <TableCell>{formattedLastActive}</TableCell>
+                    <TableCell className="text-right">
+                      {!isCurrent ? (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => session['id'] && handleRevoke(session['id'])}
+                          disabled={revokingId === session['id']}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      ) : null}
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       {activeSessions.length > 1 && (
         <Alert>

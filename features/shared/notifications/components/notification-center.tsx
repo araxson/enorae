@@ -5,11 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '@/features/shared/notifications/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import type { Database } from '@/lib/types/database.types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 
 type Message = Database['communication']['Tables']['messages']['Row']
 
@@ -120,51 +122,59 @@ export function NotificationCenter({ notifications }: Props) {
           <TabsContent value={activeTab}>
             <div className="flex flex-col gap-3 mt-4">
               {filteredNotifications.length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground">
-                  <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No notifications</p>
-                </div>
+                <Empty>
+                  <EmptyMedia variant="icon">
+                    <Bell className="h-6 w-6" />
+                  </EmptyMedia>
+                  <EmptyHeader>
+                    <EmptyTitle>No notifications</EmptyTitle>
+                    <EmptyDescription>New alerts will show up here as they arrive.</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               ) : (
                 filteredNotifications.map((notification) => (
-                  <Card key={notification.id} className={!notification.is_read ? 'border-primary' : ''}>
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start gap-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            {getChannelIcon(notification.context_type)}
-                            <h4 className="font-semibold">{notification.content}</h4>
-                            {!notification.is_read && <Badge variant="secondary">New</Badge>}
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {notification.context_type && `Type: ${notification.context_type}`}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                          </p>
+                  <Alert
+                    key={notification.id}
+                    className={!notification.is_read ? 'border-primary bg-primary/5' : ''}
+                  >
+                    <div className="flex justify-between items-start gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          {getChannelIcon(notification.context_type)}
+                          <AlertDescription className="font-semibold text-foreground">
+                            {notification.content}
+                          </AlertDescription>
+                          {!notification.is_read && <Badge variant="secondary">New</Badge>}
                         </div>
-                        <div className="flex gap-1">
-                          {!notification.is_read && (
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleMarkAsRead(notification.id)}
-                              aria-label="Mark notification as read"
-                            >
-                              <Check className="h-4 w-4" />
-                            </Button>
-                          )}
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {notification.context_type && `Type: ${notification.context_type}`}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                        </p>
+                      </div>
+                      <div className="flex gap-1">
+                        {!notification.is_read && (
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => handleDelete(notification.id)}
-                            aria-label="Delete notification"
+                            onClick={() => handleMarkAsRead(notification.id)}
+                            aria-label="Mark notification as read"
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Check className="h-4 w-4" />
                           </Button>
-                        </div>
+                        )}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(notification.id)}
+                          aria-label="Delete notification"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </Alert>
                 ))
               )}
             </div>

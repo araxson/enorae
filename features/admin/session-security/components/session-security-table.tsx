@@ -28,6 +28,7 @@ import {
   evictSession,
   overrideSeverity,
 } from '@/features/admin/session-security/api/mutations'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface SessionSecurityTableProps {
   records: SessionSecurityRecord[]
@@ -128,8 +129,12 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
         <TableBody>
           {records.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={8} className="py-8 text-center text-muted-foreground">
-                No session security records found
+              <TableCell colSpan={8}>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No session security records found</EmptyTitle>
+                  </EmptyHeader>
+                </Empty>
               </TableCell>
             </TableRow>
           ) : (

@@ -1,8 +1,9 @@
 'use client'
 
-import type { ReactNode, ComponentType } from 'react'
+import { type ComponentType, type ReactNode } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { formatCurrency } from '@/features/business/business-common/components/value-formatters'
 
 export type RankingItem = {
@@ -118,37 +119,38 @@ export function RankingList({
       </CardHeader>
       <CardContent>
         {displayItems.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            <p>{emptyMessage}</p>
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>{emptyMessage}</EmptyTitle>
+            </EmptyHeader>
+          </Empty>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="space-y-3">
             {displayItems.map((item, index) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent/50 transition-colors"
-              >
-                <div className="flex gap-3 items-center">
-                  <Badge
-                    variant={index === 0 ? 'default' : 'outline'}
-                    className="w-8 justify-center"
-                  >
-                    #{index + 1}
-                  </Badge>
-                  <div>
-                    <div className="font-medium">{item.name}</div>
-                    {item.subtitle && (
-                      <p className="text-xs text-muted-foreground">{item.subtitle}</p>
-                    )}
+              <Card key={item.id}>
+                <CardContent className="flex items-center justify-between gap-3 py-3 transition-colors hover:bg-accent/40">
+                  <div className="flex items-center gap-3">
+                    <Badge
+                      variant={index === 0 ? 'default' : 'outline'}
+                      className="w-8 justify-center"
+                    >
+                      #{index + 1}
+                    </Badge>
+                    <div>
+                      <div className="font-medium">{item.name}</div>
+                      {item.subtitle ? (
+                        <p className="text-xs text-muted-foreground">{item.subtitle}</p>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-semibold">{formatValue(item.value)}</div>
-                  {item.metric && (
-                    <p className="text-xs text-muted-foreground">{item.metric}</p>
-                  )}
-                </div>
-              </div>
+                  <div className="text-right">
+                    <div className="font-semibold">{formatValue(item.value)}</div>
+                    {item.metric ? (
+                      <p className="text-xs text-muted-foreground">{item.metric}</p>
+                    ) : null}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}

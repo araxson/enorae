@@ -189,10 +189,12 @@ export function BusinessInsightsDashboard({
                   </AccordionTrigger>
                   <AccordionContent className="space-y-4">
                     <p className="text-sm">{rec.description}</p>
-                    <div className="flex items-center gap-2 rounded-md border p-3">
-                      <Target className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span className="text-sm font-medium">Impact: {rec.impact}</span>
-                    </div>
+                    <Card>
+                      <CardContent className="flex items-center gap-2 py-3">
+                        <Target className="h-4 w-4 text-primary" aria-hidden="true" />
+                        <span className="text-sm font-medium">Impact: {rec.impact}</span>
+                      </CardContent>
+                    </Card>
                     <div>
                       <p className="mb-2 text-sm font-medium">Action items</p>
                       <ul className="space-y-1.5">
@@ -239,8 +241,8 @@ export function BusinessInsightsDashboard({
                   <CardContent>
                     <Alert>
                       <Lightbulb className="h-4 w-4" />
-                      <AlertDescription className="font-medium">
-                        {opp.potential}
+                      <AlertDescription>
+                        <span className="font-medium">{opp.potential}</span>
                       </AlertDescription>
                     </Alert>
                   </CardContent>

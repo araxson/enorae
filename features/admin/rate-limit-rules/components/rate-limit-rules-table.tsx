@@ -23,6 +23,7 @@ import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
 import type { RateLimitRule } from '@/features/admin/rate-limit-rules/api/queries'
 import { toggleRateLimitRule, deleteRateLimitRule } from '@/features/admin/rate-limit-rules/api/mutations'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface RateLimitRulesTableProps {
   rules: RateLimitRule[]
@@ -89,8 +90,12 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
         <TableBody>
           {rules.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="py-8 text-center text-muted-foreground">
-                No rate limit rules defined
+              <TableCell colSpan={7}>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No rate limit rules defined</EmptyTitle>
+                  </EmptyHeader>
+                </Empty>
               </TableCell>
             </TableRow>
           ) : (

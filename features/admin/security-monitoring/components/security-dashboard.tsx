@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
-import { RefreshCw } from 'lucide-react'
+import { RefreshCw, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import type { SecurityMonitoringSnapshot } from '@/features/admin/security-monitoring/types'
 import { OverviewCards } from './overview-cards'
@@ -74,11 +75,6 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
           <p className="text-sm text-muted-foreground">
             Streaming telemetry from Supabase security logs. Last updated {lastUpdatedLabel}.
           </p>
-          {error && (
-            <p className="mt-2 text-sm text-destructive">
-              {error}
-            </p>
-          )}
         </div>
 
         <div className="flex items-center gap-3">
@@ -91,6 +87,14 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
           </Button>
         </div>
       </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Unable to refresh security data</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
       <OverviewCards snapshot={data} />
 

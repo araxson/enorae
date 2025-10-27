@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { AdminRevenueRow } from '@/features/admin/finance/types'
 
 interface RevenueBySalonProps {
@@ -46,8 +47,12 @@ export function RevenueBySalon({ data }: RevenueBySalonProps) {
           <TableBody>
             {data.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-muted-foreground">
-                  No revenue data available
+                <TableCell colSpan={7}>
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>No revenue data available</EmptyTitle>
+                    </EmptyHeader>
+                  </Empty>
                 </TableCell>
               </TableRow>
             ) : (

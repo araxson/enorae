@@ -1,8 +1,14 @@
 'use client'
 
 import { format } from 'date-fns'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import type { SecurityIncidentRecord } from '@/features/admin/security-incidents/api/queries'
 
 interface IncidentTimelineProps {
@@ -36,32 +42,39 @@ export function IncidentTimeline({ incidents }: IncidentTimelineProps) {
     }
   }
 
+  if (incidents.length === 0) {
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>No incidents recorded</EmptyTitle>
+          <EmptyDescription>
+            Security incidents will appear here when detected
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    )
+  }
+
   return (
-    <div className="space-y-4">
-      {incidents.length === 0 ? (
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-center text-muted-foreground">No incidents recorded</p>
-          </CardContent>
-        </Card>
-      ) : (
-        incidents.map((incident) => (
-          <Card key={incident.id}>
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <CardTitle>{incident.event_type}</CardTitle>
-                  <CardDescription>
-                    {format(new Date(incident.occurred_at), 'PPp')}
-                  </CardDescription>
-                </div>
-                <div className="flex gap-2">
-                  {getSeverityBadge(incident.severity)}
-                  {getStatusBadge(incident.remediation_status)}
-                </div>
+    <Accordion type="multiple" className="w-full space-y-2">
+      {incidents.map((incident) => (
+        <AccordionItem value={incident.id} key={incident.id} className="border rounded-lg">
+          <AccordionTrigger className="px-4 hover:no-underline">
+            <div className="flex items-center justify-between w-full pr-4">
+              <div className="flex items-center gap-3 text-left">
+                <span className="font-medium">{incident.event_type}</span>
+                <span className="text-sm text-muted-foreground">
+                  {format(new Date(incident.occurred_at), 'PPp')}
+                </span>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
+              <div className="flex gap-2">
+                {getSeverityBadge(incident.severity)}
+                {getStatusBadge(incident.remediation_status)}
+              </div>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="px-4 pb-4 space-y-3">
               <p className="text-sm">{incident.description}</p>
               {incident.impacted_resources.length > 0 && (
                 <div>
@@ -78,10 +91,10 @@ export function IncidentTimeline({ incidents }: IncidentTimelineProps) {
               {incident.user_email && (
                 <p className="text-xs text-muted-foreground">User: {incident.user_email}</p>
               )}
-            </CardContent>
-          </Card>
-        ))
-      )}
-    </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
   )
 }

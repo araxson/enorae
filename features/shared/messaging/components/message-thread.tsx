@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { AlertCircle } from 'lucide-react'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface Message {
   id: string
@@ -84,9 +85,12 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
           <ScrollArea className="h-96">
             <div className="space-y-3">
               {messages.length === 0 ? (
-                <p className="leading-7 py-8 text-center text-muted-foreground">
-                  No messages yet. Start the conversation!
-                </p>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No messages yet</EmptyTitle>
+                    <EmptyDescription>Start the conversation!</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               ) : (
                 messages.map((message) => {
                   const isOwnMessage = message.from_user_id === currentUserId

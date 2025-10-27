@@ -16,13 +16,15 @@ export function ServicePairingsCard({ pairings }: { pairings: ServicePairing[] }
       </CardHeader>
       <CardContent className="space-y-2">
         {pairings.map((pair) => (
-          <div key={`${pair.primary}-${pair.paired}`} className="flex items-center justify-between rounded-md border px-3 py-2">
-            <div>
-              <p className="text-base font-medium">{pair.primary}</p>
-              <p className="text-xs text-muted-foreground">Often paired with {pair.paired}</p>
-            </div>
-            <Badge variant="secondary">{pair.count} combos</Badge>
-          </div>
+          <Card key={`${pair.primary}-${pair.paired}`}>
+            <CardContent className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-base font-medium">{pair.primary}</p>
+                <p className="text-xs text-muted-foreground">Often paired with {pair.paired}</p>
+              </div>
+              <Badge variant="secondary">{pair.count} combos</Badge>
+            </CardContent>
+          </Card>
         ))}
       </CardContent>
     </Card>

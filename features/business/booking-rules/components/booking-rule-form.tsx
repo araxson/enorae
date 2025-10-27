@@ -14,6 +14,13 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import type { BookingRuleWithService } from '@/features/business/booking-rules/api/queries'
 
 interface BookingRuleFormProps {
@@ -33,12 +40,14 @@ export function BookingRuleForm({
 }: BookingRuleFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [selectedServiceId, setSelectedServiceId] = useState<string>(rule?.service_id || '')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setIsSubmitting(true)
 
     const formData = new FormData(e.currentTarget)
+    formData.set('serviceId', selectedServiceId)
     const result = await onSubmit(formData)
 
     setIsSubmitting(false)
@@ -66,21 +75,22 @@ export function BookingRuleForm({
           <div className="flex flex-col gap-4 my-4">
             <div>
               <Label htmlFor="serviceId">Service</Label>
-              <select
-                id="serviceId"
-                name="serviceId"
-                required
+              <Select
+                value={selectedServiceId}
+                onValueChange={setSelectedServiceId}
                 disabled={!!rule}
-                defaultValue={rule?.service_id || ''}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <option value="">Select a service</option>
-                {services.map((service) => (
-                  <option key={service.id} value={service.id}>
-                    {service.name}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger id="serviceId">
+                  <SelectValue placeholder="Select a service" />
+                </SelectTrigger>
+                <SelectContent>
+                  {services.map((service) => (
+                    <SelectItem key={service.id} value={service.id}>
+                      {service.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               {rule && (
                 <p className="text-muted-foreground mt-1">
                   Service cannot be changed. Create a new rule for different services.

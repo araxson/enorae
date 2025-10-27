@@ -14,6 +14,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { StaffWithMetrics } from '@/features/admin/staff/api/queries'
 import { StaffRiskBadge } from './staff-risk-badge'
 import { formatDate } from '@/lib/utils/date-time'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 function renderBackgroundBadge(status: StaffWithMetrics['background']['status']) {
   switch (status) {
@@ -56,22 +57,23 @@ export function StaffTable({ staff }: StaffTableProps) {
           <CardTitle>Staff Directory</CardTitle>
           <CardDescription>Staff profiles with verification and performance metrics.</CardDescription>
         </CardHeader>
-        <CardContent className="overflow-x-auto p-0">
-          <Table>
-            <TableHeader>
-            <TableRow>
-              <TableHead>Staff member</TableHead>
-              <TableHead className="w-36">Role</TableHead>
-              <TableHead className="w-36">Salon</TableHead>
+        <CardContent className="p-0">
+          <ScrollArea className="w-full">
+            <Table>
+              <TableHeader>
+              <TableRow>
+                <TableHead>Staff member</TableHead>
+                <TableHead className="w-36">Role</TableHead>
+                <TableHead className="w-36">Salon</TableHead>
               <TableHead className="w-32">Background</TableHead>
               <TableHead className="w-32">Certifications</TableHead>
               <TableHead className="w-40">Performance</TableHead>
               <TableHead className="w-36">Compliance</TableHead>
             </TableRow>
             </TableHeader>
-            <TableBody>
-            {staff.map((member) => (
-              <TableRow key={member.id}>
+              <TableBody>
+              {staff.map((member) => (
+                <TableRow key={member.id}>
                 <TableCell>
                   <div className="flex flex-col gap-1">
                     <span className="font-medium">{member.fullName || member.title || 'Unnamed staff'}</span>
@@ -163,9 +165,11 @@ export function StaffTable({ staff }: StaffTableProps) {
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
-            </TableBody>
-          </Table>
+              ))}
+              </TableBody>
+            </Table>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </CardContent>
       </Card>
 

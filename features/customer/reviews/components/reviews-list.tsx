@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { EmptyState } from '@/features/shared/ui-components'
 import { Star } from 'lucide-react'
 import { EditReviewDialog } from './edit-review-dialog'
@@ -13,14 +14,11 @@ function StarRating({ rating }: { rating: number | null }) {
   const validRating = rating ?? 0
 
   return (
-    <div className="flex items-center gap-1">
-      {Array.from({ length: 5 }).map((_, index) => (
-        <span key={index} className={index < validRating ? 'text-accent' : 'text-muted-foreground/30'} aria-hidden="true">
-          ★
-        </span>
-      ))}
-      <span className="sr-only">{validRating} out of 5</span>
-    </div>
+    <Badge variant="secondary" className="gap-1">
+      <Star className="h-3 w-3 fill-accent text-accent" aria-hidden="true" />
+      <span>{validRating} / 5</span>
+      <span className="sr-only">{validRating} out of 5 stars</span>
+    </Badge>
   )
 }
 

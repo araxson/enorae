@@ -16,28 +16,24 @@ export function TeamTimeOffCalendarSection({ entries }: TeamTimeOffCalendarProps
       {entries.length === 0 ? (
         <Card>
           <CardHeader>
-            <div className="flex flex-col items-center text-center">
-              <CardTitle>No upcoming time off</CardTitle>
-              <CardDescription>No upcoming team time off</CardDescription>
-            </div>
+            <CardTitle>No upcoming time off</CardTitle>
+            <CardDescription>No upcoming team time off</CardDescription>
           </CardHeader>
         </Card>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid gap-4">
           {entries.map((entry) => (
             <Card key={`${entry.staff_id}-${entry.start_at}`}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between gap-4">
                   <div>
-                    <CardTitle>{entry.staff_name}</CardTitle>
-                    {entry.staff_title && <CardDescription>{entry.staff_title}</CardDescription>}
+                    <h3 className="font-semibold">{entry.staff_name}</h3>
+                    {entry.staff_title && <p className="text-sm text-muted-foreground">{entry.staff_title}</p>}
                   </div>
                   <Badge variant={entry.status === 'approved' ? 'default' : 'secondary'}>
                     {entry.status}
                   </Badge>
                 </div>
-              </CardHeader>
-              <CardContent>
                 <div className="flex items-center justify-between text-sm">
                   <div>
                     <span className="text-base font-medium text-foreground">

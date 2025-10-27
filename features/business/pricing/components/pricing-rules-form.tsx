@@ -103,20 +103,22 @@ export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesF
             selectedServiceName={selectedServiceName}
           />
 
-          <div className="flex items-center justify-between rounded-md border px-4 py-3">
-            <div className="space-y-1 text-sm text-muted-foreground">
-              <p>
-                {ruleLabels[formData.rule_type]} rule targeting {selectedServiceName.toLowerCase()}.
-              </p>
-              <p>
-                Multiplier: <strong>{formData.multiplier.toFixed(2)}</strong> • Fixed adjustment:{' '}
-                <strong>${formData.fixed_adjustment.toFixed(2)}</strong>
-              </p>
-            </div>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Saving…' : 'Create Pricing Rule'}
-            </Button>
-          </div>
+          <Card>
+            <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="space-y-1 text-sm text-muted-foreground">
+                <p>
+                  {ruleLabels[formData.rule_type]} rule targeting {selectedServiceName.toLowerCase()}.
+                </p>
+                <p>
+                  Multiplier: <strong>{formData.multiplier.toFixed(2)}</strong> • Fixed adjustment:{' '}
+                  <strong>${formData.fixed_adjustment.toFixed(2)}</strong>
+                </p>
+              </div>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? 'Saving…' : 'Create Pricing Rule'}
+              </Button>
+            </CardContent>
+          </Card>
         </form>
       </CardContent>
     </Card>

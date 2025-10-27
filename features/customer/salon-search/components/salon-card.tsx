@@ -42,20 +42,20 @@ function SalonCardComponent({ salon, variant = 'default' }: SalonCardProps) {
           <div className="flex items-start justify-between gap-2">
             <CardTitle>{salon.name}</CardTitle>
             <div className="flex gap-1">
-              {salon.is_verified && <Shield className="h-4 w-4 text-secondary" />}
-              {salon.is_featured && <Sparkles className="h-4 w-4 text-accent" />}
+              {salon.is_verified && <Shield className="h-4 w-4 text-secondary" aria-label="Verified salon" />}
+              {salon.is_featured && <Sparkles className="h-4 w-4 text-accent" aria-label="Featured salon" />}
             </div>
           </div>
           <div className="flex items-center gap-1 text-muted-foreground">
-            <MapPin className="h-3 w-3" />
+            <MapPin className="h-3 w-3" aria-hidden="true" />
             <CardDescription>{formatAddress(salon.address)}</CardDescription>
           </div>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-accent text-accent" />
-              <span>{formatRating(salon.rating_average)}</span>
+              <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
+              <span>{formatRating(salon.rating_average)} stars</span>
             </div>
             {variant === 'featured' ? (
               <Badge variant="secondary">Featured</Badge>

@@ -1,8 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { PaymentMethodStats } from '@/features/admin/finance/types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface PaymentMethodStatsProps {
   stats: PaymentMethodStats[]
@@ -39,7 +41,7 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
         <CardTitle>Payment Method Statistics</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 p-0">
-        <div className="px-6 pt-6">
+        <ScrollArea className="px-6 pt-6">
           <Table>
             <TableHeader>
               <TableRow>
@@ -53,8 +55,12 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
             <TableBody>
               {stats.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center text-muted-foreground">
-                    No payment method data available
+                  <TableCell colSpan={5}>
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>No payment method data available</EmptyTitle>
+                      </EmptyHeader>
+                    </Empty>
                   </TableCell>
                 </TableRow>
               ) : (
@@ -85,15 +91,15 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
               )}
             </TableBody>
           </Table>
-        </div>
-
-        {stats.length > 0 && (
-          <div className="flex items-center justify-between px-6 pb-6 text-sm text-muted-foreground">
-            <span>Total Transactions: {totalTransactions.toLocaleString()}</span>
-            <span>Methods Available: {stats.length}</span>
-          </div>
-        )}
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </CardContent>
+      {stats.length > 0 ? (
+        <CardFooter className="flex items-center justify-between px-6 pb-6 pt-0 text-sm text-muted-foreground">
+          <span>Total Transactions: {totalTransactions.toLocaleString()}</span>
+          <span>Methods Available: {stats.length}</span>
+        </CardFooter>
+      ) : null}
     </Card>
   )
 }

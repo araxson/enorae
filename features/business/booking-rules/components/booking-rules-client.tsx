@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
 import { Plus, Clock, Calendar, Timer } from 'lucide-react'
 import { BookingRuleForm } from './booking-rule-form'
 import type { BookingRuleWithService } from '@/features/business/booking-rules/api/queries'
@@ -119,7 +120,8 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                         )}
                     </div>
                 </CardContent>
-                <CardFooter className="border-t p-4">
+                <Separator className="mt-2" />
+                <CardFooter className="p-4">
                   <Button variant="outline" size="sm" onClick={() => handleEdit(rule)} className="w-full">
                     Edit Rule
                   </Button>

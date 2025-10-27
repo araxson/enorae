@@ -1,12 +1,15 @@
+import { Fragment } from 'react'
 import { Star } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { formatCurrency, formatPercentage, getSegmentIcon, getSegmentColor } from './utils'
 
 import type { CustomerMetrics } from './types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface CustomerListProps {
   topCustomers: CustomerMetrics[]
@@ -48,68 +51,71 @@ export function CustomerList({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {customers.length > 0 ? (
-              customers.map((customer) => (
-                <div
-                  key={customer.customer_id}
-                  className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0"
-                >
-                  <div className="space-y-2 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">{customer.customer_name}</span>
-                      <Badge
-                        variant="outline"
-                        className={getSegmentColor(customer.segment)}
-                      >
-                        {getSegmentIcon(customer.segment)}
-                        <span className="ml-1">{customer.segment}</span>
-                      </Badge>
-                    </div>
+          {customers.length > 0 ? (
+            <div className="flex flex-col">
+              {customers.map((customer, index) => (
+                <Fragment key={customer.customer_id}>
+                  <article className="flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0">
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{customer.customer_name}</span>
+                        <Badge
+                          variant="outline"
+                          className={getSegmentColor(customer.segment)}
+                        >
+                          {getSegmentIcon(customer.segment)}
+                          <span className="ml-1">{customer.segment}</span>
+                        </Badge>
+                      </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-muted-foreground">
-                      <div>
-                        <span className="font-medium">{customer.total_visits}</span> visits
-                      </div>
-                      <div>
-                        <span className="font-medium">
-                          {formatCurrency(customer.lifetime_value)}
-                        </span>{' '}
-                        LTV
-                      </div>
-                      <div>
-                        <span className="font-medium">{customer.favorite_service_name}</span>{' '}
-                        favorite
-                      </div>
-                      {customer.average_rating > 0 && (
-                        <div className="flex items-center gap-1">
-                          <Star className="h-3 w-3 fill-star-filled text-star-filled" />
-                          <span className="font-medium">{customer.average_rating.toFixed(1)}</span>
+                      <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground md:grid-cols-4">
+                        <div>
+                          <span className="font-medium">{customer.total_visits}</span> visits
                         </div>
+                        <div>
+                          <span className="font-medium">
+                            {formatCurrency(customer.lifetime_value)}
+                          </span>{' '}
+                          LTV
+                        </div>
+                        <div>
+                          <span className="font-medium">{customer.favorite_service_name}</span>{' '}
+                          favorite
+                        </div>
+                        {customer.average_rating > 0 && (
+                          <div className="flex items-center gap-1">
+                            <Star className="h-3 w-3 fill-star-filled text-star-filled" />
+                            <span className="font-medium">{customer.average_rating.toFixed(1)}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="text-xs text-muted-foreground">
+                        Last visit: {new Date(customer.last_visit_date).toLocaleDateString()} •
+                        Favorite staff: {customer.favorite_staff_name}
+                      </div>
+
+                      {customer.cancellation_rate > 20 && (
+                        <Badge variant="destructive">
+                          <span className="text-xs">
+                            High cancellation rate ({formatPercentage(customer.cancellation_rate)})
+                          </span>
+                        </Badge>
                       )}
                     </div>
-
-                    <div className="text-xs text-muted-foreground">
-                      Last visit: {new Date(customer.last_visit_date).toLocaleDateString()} •
-                      Favorite staff: {customer.favorite_staff_name}
-                    </div>
-
-                    {customer.cancellation_rate > 20 && (
-                      <Badge variant="destructive">
-                        <span className="text-xs">
-                          High cancellation rate ({formatPercentage(customer.cancellation_rate)})
-                        </span>
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-xs text-muted-foreground text-center py-8 block">
-                No customers in this segment
-              </p>
-            )}
-          </div>
+                  </article>
+                  {index < customers.length - 1 ? <Separator /> : null}
+                </Fragment>
+              ))}
+            </div>
+          ) : (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No customers in this segment</EmptyTitle>
+                <EmptyDescription>Adjust your filters or engage with clients to see insights here.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          )}
         </CardContent>
         <CardFooter>
           Use these insights to tailor perks and retain high-value clients.

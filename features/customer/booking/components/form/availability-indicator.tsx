@@ -1,4 +1,5 @@
 import { Loader2, CheckCircle2, XCircle, AlertCircle } from 'lucide-react'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import type { AvailabilityStatus } from './use-booking-form'
 
 interface AvailabilityIndicatorProps {
@@ -14,31 +15,34 @@ export function AvailabilityIndicator({
 }: AvailabilityIndicatorProps) {
   if (status === 'idle') return null
 
+  const getVariant = () => {
+    if (status === 'available') return 'default'
+    if (status === 'unavailable') return 'destructive'
+    return 'default'
+  }
+
+  const getIcon = () => {
+    if (status === 'checking' || isCheckingAvailability) {
+      return <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+    }
+    if (status === 'available') {
+      return <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+    }
+    if (status === 'unavailable') {
+      return <XCircle className="h-4 w-4" aria-hidden="true" />
+    }
+    return <AlertCircle className="h-4 w-4" aria-hidden="true" />
+  }
+
   return (
-    <div className="flex items-center gap-2 text-sm">
-      {status === 'checking' || isCheckingAvailability ? (
-        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-      ) : status === 'available' ? (
-        <CheckCircle2 className="h-4 w-4 text-primary" />
-      ) : status === 'unavailable' ? (
-        <XCircle className="h-4 w-4 text-destructive" />
-      ) : (
-        <AlertCircle className="h-4 w-4 text-destructive" />
-      )}
-      <span
-        className={
-          status === 'available'
-            ? 'text-primary'
-            : status === 'unavailable'
-            ? 'text-destructive'
-            : 'text-muted-foreground'
-        }
-      >
+    <Alert variant={getVariant()}>
+      {getIcon()}
+      <AlertDescription>
         {message ??
           (status === 'checking'
             ? 'Checking staff availability...'
             : 'Unable to determine availability.')}
-      </span>
-    </div>
+      </AlertDescription>
+    </Alert>
   )
 }

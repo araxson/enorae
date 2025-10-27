@@ -1,166 +1,143 @@
+'use client'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Settings, Shield, Mail, Bell, Database } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import { Settings, Shield, Mail, Bell, Database, Info } from 'lucide-react'
+
+interface SettingSection {
+  id: string
+  icon: typeof Shield
+  title: string
+  description: string
+  features: string[]
+  available: boolean
+}
 
 export function AdminSettingsClient() {
+  const sections: SettingSection[] = [
+    {
+      id: 'security',
+      icon: Shield,
+      title: 'Security Settings',
+      description: 'Manage authentication, authorization, and security policies',
+      features: [
+        'Password policies',
+        'Two-factor authentication',
+        'Session management',
+        'Rate limiting configuration'
+      ],
+      available: false
+    },
+    {
+      id: 'email',
+      icon: Mail,
+      title: 'Email Configuration',
+      description: 'Configure SMTP settings and email templates',
+      features: [
+        'SMTP provider settings',
+        'Email templates',
+        'Notification preferences',
+        'Delivery monitoring'
+      ],
+      available: false
+    },
+    {
+      id: 'notifications',
+      icon: Bell,
+      title: 'Notification Settings',
+      description: 'Manage platform notifications and alerts',
+      features: [
+        'Admin notifications',
+        'System alerts',
+        'Error notifications',
+        'Webhook configurations'
+      ],
+      available: false
+    },
+    {
+      id: 'database',
+      icon: Database,
+      title: 'Database Settings',
+      description: 'Database optimization and maintenance',
+      features: [
+        'Connection pooling',
+        'Query optimization',
+        'Backup configuration',
+        'Index management'
+      ],
+      available: false
+    },
+    {
+      id: 'general',
+      icon: Settings,
+      title: 'General Settings',
+      description: 'Platform-wide configuration options',
+      features: [
+        'Platform name and branding',
+        'Default locale and timezone',
+        'Feature flags',
+        'Maintenance mode'
+      ],
+      available: false
+    }
+  ]
+
   return (
     <section className="py-16 md:py-24 lg:py-32">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-primary" />
-                <CardTitle>Security Settings</CardTitle>
-              </div>
-              <CardDescription>
-                Manage authentication, authorization, and security policies
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-4">
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Password policies
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Two-factor authentication
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Session management
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Rate limiting configuration
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <Alert>
+            <Info className="h-4 w-4" />
+            <AlertTitle>Configuration Status</AlertTitle>
+            <AlertDescription>
+              Settings functionality will be implemented in a future update.
+              Platform configuration is currently managed through environment variables and Supabase Dashboard.
+            </AlertDescription>
+          </Alert>
 
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Mail className="h-5 w-5 text-primary" />
-                <CardTitle>Email Configuration</CardTitle>
-              </div>
-              <CardDescription>
-                Configure SMTP settings and email templates
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-4">
-                <p className="text-sm font-medium text-muted-foreground">
-                  • SMTP provider settings
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Email templates
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Notification preferences
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Delivery monitoring
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Bell className="h-5 w-5 text-primary" />
-                <CardTitle>Notification Settings</CardTitle>
-              </div>
-              <CardDescription>
-                Manage platform notifications and alerts
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-4">
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Admin notifications
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • System alerts
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Error notifications
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Webhook configurations
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Database className="h-5 w-5 text-primary" />
-                <CardTitle>Database Settings</CardTitle>
-              </div>
-              <CardDescription>
-                Database optimization and maintenance
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-4">
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Connection pooling
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Query optimization
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Backup configuration
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Index management
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Settings className="h-5 w-5 text-primary" />
-                <CardTitle>General Settings</CardTitle>
-              </div>
-              <CardDescription>
-                Platform-wide configuration options
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-4">
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Platform name and branding
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Default locale and timezone
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Feature flags
-                </p>
-                <p className="text-sm font-medium text-muted-foreground">
-                  • Maintenance mode
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {sections.map((section) => {
+              const Icon = section.icon
+              return (
+                <Card key={section.id} className="relative">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Icon className="h-5 w-5 text-primary" />
+                        <CardTitle>{section.title}</CardTitle>
+                      </div>
+                      {!section.available && (
+                        <Badge variant="secondary">Coming Soon</Badge>
+                      )}
+                    </div>
+                    <CardDescription>{section.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <ul className="space-y-2">
+                      {section.features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Separator />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={!section.available}
+                      className="w-full"
+                    >
+                      Configure
+                    </Button>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Configuration Status</CardTitle>
-            <CardDescription>
-              This is a placeholder page. Settings functionality will be implemented in a future update.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm font-medium text-muted-foreground">
-              For now, platform configuration is managed through environment variables and Supabase Dashboard.
-            </p>
-          </CardContent>
-        </Card>
         </div>
       </div>
     </section>

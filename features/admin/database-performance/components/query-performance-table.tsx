@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import type { QueryPerformanceRecord } from '@/features/admin/database-performance/api/queries'
 
@@ -48,8 +49,12 @@ export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
         <TableBody>
           {queries.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
-                No query performance data available
+              <TableCell colSpan={6}>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No query performance data available</EmptyTitle>
+                  </EmptyHeader>
+                </Empty>
               </TableCell>
             </TableRow>
           ) : (

@@ -158,22 +158,24 @@ export function CouponAnalyticsOverview({ analytics }: CouponAnalyticsOverviewPr
           <CardContent>
             <div className="space-y-3">
               {summary.expiringSoon.map((coupon) => (
-                <div key={coupon.id} className="flex items-center justify-between rounded-md border px-4 py-2">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <div className="font-mono text-xs">
-                        <Badge variant="secondary">{coupon.code}</Badge>
+                <Card key={coupon.id}>
+                  <CardContent className="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <div className="font-mono text-xs">
+                          <Badge variant="secondary">{coupon.code}</Badge>
+                        </div>
+                        <span className="text-sm font-medium">{coupon.description}</span>
                       </div>
-                      <span className="text-sm font-medium">{coupon.description}</span>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {coupon.valid_until
+                          ? format(new Date(coupon.valid_until), 'MMM d, yyyy')
+                          : 'No expiry date'}
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {coupon.valid_until
-                        ? format(new Date(coupon.valid_until), 'MMM d, yyyy')
-                        : 'No expiry date'}
-                    </p>
-                  </div>
-                  <Badge variant="outline">{coupon.stats.totalUses} uses</Badge>
-                </div>
+                    <Badge variant="outline">{coupon.stats.totalUses} uses</Badge>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </CardContent>

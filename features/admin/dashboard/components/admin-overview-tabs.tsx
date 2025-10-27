@@ -2,6 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Calendar, DollarSign, MessageSquare, Star, Users } from 'lucide-react'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import type {
   AppointmentsOverview,
   MessagesOverview,
@@ -39,38 +40,41 @@ export function AdminOverviewTabs({
           <Calendar className="h-3.5 w-3.5" />
           Data refreshes automatically every 60 seconds
         </div>
-        <TabsList className="w-full justify-between overflow-x-auto md:w-auto">
-          <TabsTrigger value="revenue">
-            <span className="flex items-center gap-1.5">
-              <DollarSign className="h-4 w-4" />
-              Revenue
-            </span>
-          </TabsTrigger>
-          <TabsTrigger value="appointments">
-            <span className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4" />
-              Appointments
-            </span>
-          </TabsTrigger>
-          <TabsTrigger value="reviews">
-            <span className="flex items-center gap-1.5">
-              <Star className="h-4 w-4" />
-              Reviews
-            </span>
-          </TabsTrigger>
-          <TabsTrigger value="messages">
-            <span className="flex items-center gap-1.5">
-              <MessageSquare className="h-4 w-4" />
-              Messages
-            </span>
-          </TabsTrigger>
-          <TabsTrigger value="staff">
-            <span className="flex items-center gap-1.5">
-              <Users className="h-4 w-4" />
-              Staff
-            </span>
-          </TabsTrigger>
-        </TabsList>
+        <ScrollArea className="w-full md:w-auto">
+          <TabsList className="flex w-full min-w-max justify-between md:w-auto">
+            <TabsTrigger value="revenue">
+              <span className="flex items-center gap-1.5">
+                <DollarSign className="h-4 w-4" />
+                Revenue
+              </span>
+            </TabsTrigger>
+            <TabsTrigger value="appointments">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-4 w-4" />
+                Appointments
+              </span>
+            </TabsTrigger>
+            <TabsTrigger value="reviews">
+              <span className="flex items-center gap-1.5">
+                <Star className="h-4 w-4" />
+                Reviews
+              </span>
+            </TabsTrigger>
+            <TabsTrigger value="messages">
+              <span className="flex items-center gap-1.5">
+                <MessageSquare className="h-4 w-4" />
+                Messages
+              </span>
+            </TabsTrigger>
+            <TabsTrigger value="staff">
+              <span className="flex items-center gap-1.5">
+                <Users className="h-4 w-4" />
+                Staff
+              </span>
+            </TabsTrigger>
+          </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
 
       <TabsContent value="revenue">

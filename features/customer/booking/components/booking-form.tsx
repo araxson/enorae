@@ -23,8 +23,9 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Progress } from '@/components/ui/progress'
-import { AlertCircle, CheckCircle2, Loader2, XCircle } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
+import { AvailabilityIndicator } from './form/availability-indicator'
 import type { BookingFormProps, Service, Staff } from '@/features/customer/booking/types'
 
 export function BookingForm({ salonId, salonName, services, staff }: BookingFormProps) {
@@ -164,7 +165,7 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
         <CardContent className="space-y-4">
           {error && (
             <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="h-4 w-4" aria-hidden="true" />
               <AlertTitle>Booking failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
@@ -238,33 +239,11 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
             />
           </div>
 
-          {availabilityStatus !== 'idle' && (
-            <div className="flex items-center gap-2">
-              {availabilityStatus === 'checking' || isCheckingAvailability ? (
-                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-              ) : availabilityStatus === 'available' ? (
-                <CheckCircle2 className="h-4 w-4 text-primary" />
-              ) : availabilityStatus === 'unavailable' ? (
-                <XCircle className="h-4 w-4 text-destructive" />
-              ) : (
-                <AlertCircle className="h-4 w-4 text-destructive" />
-              )}
-              <CardDescription
-                className={
-                  availabilityStatus === 'available'
-                    ? 'text-primary'
-                    : availabilityStatus === 'unavailable'
-                    ? 'text-destructive'
-                    : ''
-                }
-              >
-                {availabilityMessage ??
-                  (availabilityStatus === 'checking'
-                    ? 'Checking staff availability...'
-                    : 'Unable to determine availability.')}
-              </CardDescription>
-            </div>
-          )}
+          <AvailabilityIndicator
+            status={availabilityStatus}
+            message={availabilityMessage}
+            isCheckingAvailability={isCheckingAvailability}
+          />
         </CardContent>
 
         <CardFooter>

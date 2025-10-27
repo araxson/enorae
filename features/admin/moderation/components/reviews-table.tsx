@@ -20,6 +20,7 @@ import { Label } from '@/components/ui/label'
 import { flagReview, unflagReview, deleteReview, featureReview } from '@/features/admin/moderation/api/mutations'
 import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import { ReviewsTableRow } from './reviews-table-row'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 const EMPTY_MESSAGE = 'No reviews found'
 
@@ -161,8 +162,12 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
             <TableBody>
               {reviews.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="text-center text-muted-foreground">
-                    {EMPTY_MESSAGE}
+                  <TableCell colSpan={9}>
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>{EMPTY_MESSAGE}</EmptyTitle>
+                      </EmptyHeader>
+                    </Empty>
                   </TableCell>
                 </TableRow>
               ) : (

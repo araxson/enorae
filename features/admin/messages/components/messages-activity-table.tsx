@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { MessageActivityPoint } from '@/features/admin/messages/api/queries'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface MessagesActivityTableProps {
   activity: MessageActivityPoint[]
@@ -33,10 +34,10 @@ export function MessagesActivityTable({ activity }: MessagesActivityTableProps) 
         <CardDescription>Inbound vs outbound volume and average response time</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {activity.every((point) => point.inbound === 0 && point.outbound === 0) ? (
-          <p className="text-sm text-muted-foreground">No message activity recorded within the selected window.</p>
-        ) : (
-          <div className="overflow-x-auto">
+        <ScrollArea className="w-full">
+          {activity.every((point) => point.inbound === 0 && point.outbound === 0) ? (
+            <p className="text-sm text-muted-foreground">No message activity recorded within the selected window.</p>
+          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -65,8 +66,11 @@ export function MessagesActivityTable({ activity }: MessagesActivityTableProps) 
                 </TableRow>
               </TableBody>
             </Table>
-          </div>
-        )}
+          )}
+          {activity.every((point) => point.inbound === 0 && point.outbound === 0) ? null : (
+            <ScrollBar orientation="horizontal" />
+          )}
+        </ScrollArea>
       </CardContent>
     </Card>
   )

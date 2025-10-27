@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Separator } from '@/components/ui/separator'
 
 import { RefreshCw, Clock, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -91,7 +92,7 @@ export function DataRefreshControls({
         <Clock className="h-3.5 w-3.5" aria-hidden="true" />
         <span aria-live="polite">{relativeLabel}</span>
       </p>
-      <span className="hidden h-4 w-px bg-border sm:block" aria-hidden="true" />
+      <Separator orientation="vertical" className="hidden h-4 sm:block" decorative />
       {tooltip ? (
         <TooltipProvider delayDuration={150}>
           <Tooltip>

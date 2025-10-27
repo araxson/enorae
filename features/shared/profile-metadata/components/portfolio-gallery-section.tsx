@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { X, Upload, Image as ImageIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 
 type PortfolioImage = {
   url: string
@@ -105,47 +106,49 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
       </Button>
 
       {images.length > 0 && (
-        <div>
-          <div className="mb-4">
-            <Badge variant="secondary">
-              {images.length} image{images.length !== 1 ? 's' : ''} in portfolio
-            </Badge>
-          </div>
-          <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {images.map((image, index) => (
-              <div key={index} className="relative group">
-                <AspectRatio ratio={1}>
-                  {image.url ? (
-                    <img
-                      src={image.url}
-                      alt={image.caption || 'Portfolio image'}
-                      className="rounded-md object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center rounded-md border bg-muted">
-                      <ImageIcon className="h-8 w-8 text-muted-foreground" />
-                    </div>
+        <Card>
+          <CardContent className="space-y-4">
+            <div>
+              <Badge variant="secondary">
+                {images.length} image{images.length !== 1 ? 's' : ''} in portfolio
+              </Badge>
+            </div>
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {images.map((image, index) => (
+                <div key={index} className="relative group">
+                  <AspectRatio ratio={1}>
+                    {image.url ? (
+                      <img
+                        src={image.url}
+                        alt={image.caption || 'Portfolio image'}
+                        className="rounded-md object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center rounded-md border bg-muted">
+                        <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                    )}
+                  </AspectRatio>
+                  {image.caption && (
+                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                      {image.caption}
+                    </p>
                   )}
-                </AspectRatio>
-                {image.caption && (
-                  <p className="mt-1 truncate text-xs text-muted-foreground">
-                    {image.caption}
-                  </p>
-                )}
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  className="absolute right-2 top-2 h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-                  onClick={() => onRemove(index)}
-                  aria-label={`Remove ${image.caption || 'image'}`}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute right-2 top-2 h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
+                    onClick={() => onRemove(index)}
+                    aria-label={`Remove ${image.caption || 'image'}`}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   )

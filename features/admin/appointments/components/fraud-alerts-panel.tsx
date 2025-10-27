@@ -1,6 +1,7 @@
 import { ShieldAlert } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { FraudAlert } from '@/features/admin/appointments/types'
 
 interface FraudAlertsPanelProps {
@@ -35,26 +36,23 @@ export function FraudAlertsPanel({ alerts }: FraudAlertsPanelProps) {
         ) : (
           <div className="space-y-2">
             {alerts.slice(0, 8).map((alert) => (
-              <Card key={alert.id}>
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <CardTitle>{LABELS[alert.type]}</CardTitle>
-                    <div className="text-xs">
-                      <Badge variant={getVariant(alert.score)}>
-                        Risk {(alert.score * 100).toFixed(0)}%
-                      </Badge>
-                    </div>
+              <Alert key={alert.id} variant={alert.score >= 0.8 ? 'destructive' : 'default'}>
+                <ShieldAlert className="h-4 w-4" />
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1">
+                    <AlertTitle>{LABELS[alert.type]}</AlertTitle>
+                    <AlertDescription>{alert.summary}</AlertDescription>
+                    <AlertDescription className="mt-1">
+                      {alert.relatedAppointmentIds.length} linked appointment(s)
+                      {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
+                      {alert.salonId ? ` · Salon ${alert.salonId}` : ''}
+                    </AlertDescription>
                   </div>
-                  <CardDescription>{alert.summary}</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <p className="text-xs text-muted-foreground">
-                    {alert.relatedAppointmentIds.length} linked appointment(s)
-                    {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
-                    {alert.salonId ? ` · Salon ${alert.salonId}` : ''}
-                  </p>
-                </CardContent>
-              </Card>
+                  <Badge variant={getVariant(alert.score)}>
+                    Risk {(alert.score * 100).toFixed(0)}%
+                  </Badge>
+                </div>
+              </Alert>
             ))}
           </div>
         )}

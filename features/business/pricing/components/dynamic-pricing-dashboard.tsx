@@ -146,38 +146,37 @@ export function DynamicPricingDashboard({
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {rules.map((rule, index) => {
+                {rules.map((rule) => {
                   const isSurge = rule.adjustment_type === 'surge'
                   const badgeLabel = isSurge
                     ? `+${rule.adjustment_percentage}% Surge`
                     : `-${rule.adjustment_percentage}% Discount`
 
                   return (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between border-b pb-3 last:border-0 last:pb-0"
-                    >
-                      <div className="flex items-center gap-3">
+                    <Card key={`${rule.day_of_week}-${rule.hour_start}-${rule.hour_end}`}>
+                      <CardContent className="flex items-center justify-between gap-3 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">{getDayName(rule.day_of_week)}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Clock className="h-3 w-3" />
+                            <span>
+                              {formatTime(rule.hour_start)} - {formatTime(rule.hour_end)}
+                            </span>
+                          </div>
+                        </div>
                         <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">{getDayName(rule.day_of_week)}</span>
+                          {isSurge ? (
+                            <TrendingUp className="h-4 w-4 text-primary" />
+                          ) : (
+                            <TrendingDown className="h-4 w-4 text-secondary" />
+                          )}
+                          <Badge variant={isSurge ? 'default' : 'secondary'}>{badgeLabel}</Badge>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Clock className="h-3 w-3" />
-                          <span>
-                            {formatTime(rule.hour_start)} - {formatTime(rule.hour_end)}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {isSurge ? (
-                          <TrendingUp className="h-4 w-4 text-primary" />
-                        ) : (
-                          <TrendingDown className="h-4 w-4 text-secondary" />
-                        )}
-                        <Badge variant={isSurge ? 'default' : 'secondary'}>{badgeLabel}</Badge>
-                      </div>
-                    </div>
+                      </CardContent>
+                    </Card>
                   )
                 })}
               </div>
@@ -213,33 +212,32 @@ export function DynamicPricingDashboard({
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                {filteredScenarios.map((scenario, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between py-2 border-b last:border-0"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="font-medium w-24">{getDayName(scenario.day)}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {formatTime(scenario.hour)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm line-through text-muted-foreground">
-                        {formatCurrency(scenario.base_price)}
-                      </span>
-                      <span className="font-bold">
-                        {formatCurrency(scenario.adjusted_price)}
-                      </span>
-                      {scenario.adjustment_type !== 'none' && (
-                        <Badge variant={scenario.adjustment_type === 'surge' ? 'default' : 'secondary'}>
-                          {scenario.adjustment_type === 'surge' ? '+' : '-'}
-                          {scenario.adjustment_percentage}%
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
+              <div className="space-y-3">
+                {filteredScenarios.map((scenario) => (
+                  <Card key={`${scenario.day}-${scenario.hour}`}>
+                    <CardContent className="flex items-center justify-between gap-3 py-3">
+                      <div className="flex items-center gap-3">
+                        <span className="w-24 font-medium">{getDayName(scenario.day)}</span>
+                        <span className="text-sm text-muted-foreground">
+                          {formatTime(scenario.hour)}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm text-muted-foreground line-through">
+                          {formatCurrency(scenario.base_price)}
+                        </span>
+                        <span className="font-bold">
+                          {formatCurrency(scenario.adjusted_price)}
+                        </span>
+                        {scenario.adjustment_type !== 'none' && (
+                          <Badge variant={scenario.adjustment_type === 'surge' ? 'default' : 'secondary'}>
+                            {scenario.adjustment_type === 'surge' ? '+' : '-'}
+                            {scenario.adjustment_percentage}%
+                          </Badge>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </CardContent>
@@ -255,13 +253,11 @@ export function DynamicPricingDashboard({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {insights.map((insight) => (
-                  <div
-                    key={insight.service_id}
-                    className="border-b pb-4 last:border-0 last:pb-0"
-                  >
-                      <div className="flex items-start justify-between mb-2">
+                  <Card key={insight.service_id}>
+                    <CardContent className="space-y-3 py-4">
+                      <div className="flex items-start justify-between">
                         <div>
                           <h4 className="font-medium">{insight.service_name}</h4>
                           <p className="text-sm text-muted-foreground">
@@ -272,27 +268,28 @@ export function DynamicPricingDashboard({
                           +{formatCurrency(insight.potential_revenue_increase)}/mo
                         </Badge>
                       </div>
-                    <div className="grid grid-cols-2 gap-4 mt-3">
-                      <div className="flex items-center gap-2">
-                        <TrendingDown className="h-4 w-4 text-secondary" />
-                        <div>
-                          <p className="text-xs text-muted-foreground">Off-Peak Price</p>
-                          <p className="font-semibold">
-                            {formatCurrency(insight.avg_off_peak_price)}
-                          </p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex items-center gap-2">
+                          <TrendingDown className="h-4 w-4 text-secondary" />
+                          <div>
+                            <p className="text-xs text-muted-foreground">Off-Peak Price</p>
+                            <p className="font-semibold">
+                              {formatCurrency(insight.avg_off_peak_price)}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4 text-primary" />
+                          <div>
+                            <p className="text-xs text-muted-foreground">Peak Price</p>
+                            <p className="font-semibold">
+                              {formatCurrency(insight.avg_peak_price)}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-primary" />
-                        <div>
-                          <p className="text-xs text-muted-foreground">Peak Price</p>
-                          <p className="font-semibold">
-                            {formatCurrency(insight.avg_peak_price)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </CardContent>

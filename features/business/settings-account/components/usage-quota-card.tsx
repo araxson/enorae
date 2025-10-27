@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { AlertCircle } from 'lucide-react'
 import type { UsageQuota } from '../types'
 import { Progress } from '@/components/ui/progress'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
   return (
@@ -28,12 +29,11 @@ export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
                   className={`h-2 ${isNearLimit ? 'bg-destructive/10' : ''}`}
                 />
                 {isNearLimit && (
-                  <div className="mt-1 flex items-center gap-4">
-                    <AlertCircle className="h-3 w-3 text-destructive" />
-                    <p className="text-xs text-muted-foreground text-destructive">
-                      Approaching limit - consider upgrading
-                    </p>
-                  </div>
+                  <Alert variant="destructive" className="mt-2">
+                    <AlertCircle className="h-4 w-4" aria-hidden="true" />
+                    <AlertTitle>Approaching limit</AlertTitle>
+                    <AlertDescription>Consider upgrading to avoid hitting this quota.</AlertDescription>
+                  </Alert>
                 )}
               </div>
             )

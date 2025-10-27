@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
 import { DollarSign, Calendar, TrendingUp, Star, Users } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -110,7 +111,8 @@ export function CustomerInsightsDashboard({
             </CardTitle>
           </div>
           {favoriteStaff ? (
-            <div className="flex items-center gap-2 border-l pl-4">
+            <div className="flex items-center gap-2">
+              <Separator orientation="vertical" className="h-12" decorative />
               <Users className="h-5 w-5 text-muted-foreground" />
               <div className="space-y-1">
                 <CardDescription>Favorite staff</CardDescription>

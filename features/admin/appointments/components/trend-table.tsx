@@ -8,6 +8,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { AppointmentTrendPoint } from '@/features/admin/appointments/types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface TrendTableProps {
   trend: AppointmentTrendPoint[]
@@ -23,33 +25,41 @@ export function TrendTable({ trend }: TrendTableProps) {
       <CardHeader className="pb-4">
         <CardTitle>14-day Trend</CardTitle>
       </CardHeader>
-      <CardContent className="overflow-x-auto">
-        {rows.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No trend data from Supabase yet.</p>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Completed</TableHead>
-                <TableHead>Cancelled</TableHead>
-                <TableHead>No-shows</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((entry) => (
-                <TableRow key={entry.date}>
-                  <TableCell className="font-medium text-foreground">{formatDate(entry.date)}</TableCell>
-                  <TableCell>{entry.total}</TableCell>
-                  <TableCell>{entry.completed}</TableCell>
-                  <TableCell>{entry.cancelled}</TableCell>
-                  <TableCell>{entry.noShow}</TableCell>
+      <CardContent>
+        <ScrollArea className="w-full">
+          {rows.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No trend data yet</EmptyTitle>
+                <EmptyDescription>Supabase exports will populate this table once available.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Total</TableHead>
+                  <TableHead>Completed</TableHead>
+                  <TableHead>Cancelled</TableHead>
+                  <TableHead>No-shows</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
+              </TableHeader>
+              <TableBody>
+                {rows.map((entry) => (
+                  <TableRow key={entry.date}>
+                    <TableCell className="font-medium text-foreground">{formatDate(entry.date)}</TableCell>
+                    <TableCell>{entry.total}</TableCell>
+                    <TableCell>{entry.completed}</TableCell>
+                    <TableCell>{entry.cancelled}</TableCell>
+                    <TableCell>{entry.noShow}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+          {rows.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+        </ScrollArea>
       </CardContent>
     </Card>
   )

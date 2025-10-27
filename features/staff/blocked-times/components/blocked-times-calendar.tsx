@@ -5,6 +5,7 @@ import { format, startOfWeek, addDays, isSameDay, parseISO } from 'date-fns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, Clock, Ban } from 'lucide-react'
+import { Separator } from '@/components/ui/separator'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
 interface BlockedTimesCalendarProps {
@@ -129,18 +130,21 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
 
                     {/* Day summary */}
                     {(blocked.length > 0 || dayApts.length > 0) && (
-                      <div className="flex gap-1 pt-1 border-t">
-                        {dayApts.length > 0 && (
-                          <Badge variant="outline">
-                            {dayApts.length} apt{dayApts.length !== 1 ? 's' : ''}
-                          </Badge>
-                        )}
-                        {blocked.length > 0 && (
-                          <Badge variant="destructive">
-                            {blocked.length} blocked
-                          </Badge>
-                        )}
-                      </div>
+                      <>
+                        <Separator className="pt-1" />
+                        <div className="flex gap-1 pt-1">
+                          {dayApts.length > 0 && (
+                            <Badge variant="outline">
+                              {dayApts.length} apt{dayApts.length !== 1 ? 's' : ''}
+                            </Badge>
+                          )}
+                          {blocked.length > 0 && (
+                            <Badge variant="destructive">
+                              {blocked.length} blocked
+                            </Badge>
+                          )}
+                        </div>
+                      </>
                     )}
                   </div>
                 </CardContent>
@@ -150,7 +154,8 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
         </div>
 
         {/* Legend */}
-        <div className="flex gap-4 mt-4 pt-4 border-t">
+        <Separator className="mt-4" />
+        <div className="flex gap-4 pt-4">
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-info" />
             <span className="text-xs text-muted-foreground">Appointments</span>

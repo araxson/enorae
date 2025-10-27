@@ -1,5 +1,6 @@
 import { PricingCard } from './pricing-card'
 import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface PricingGridProps {
   pricing: ServicePricingWithService[]
@@ -9,9 +10,12 @@ interface PricingGridProps {
 export function PricingGrid({ pricing, onEdit }: PricingGridProps) {
   if (pricing.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="leading-7 text-muted-foreground">No pricing configured yet</p>
-      </div>
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>No pricing configured yet</EmptyTitle>
+          <EmptyDescription>Add pricing to surface services in booking flows.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     )
   }
 

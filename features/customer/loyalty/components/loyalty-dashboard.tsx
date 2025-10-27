@@ -1,11 +1,14 @@
 'use client'
 
+import { Fragment } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Star, Trophy, TrendingUp, History } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import type { LoyaltyPoints, LoyaltyTransaction } from '@/features/customer/loyalty/api/queries'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Separator } from '@/components/ui/separator'
 
 type Props = {
   points: LoyaltyPoints | null
@@ -106,25 +109,30 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
         </CardHeader>
         <CardContent>
           {transactions.length === 0 ? (
-            <CardDescription>No loyalty activity yet.</CardDescription>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No loyalty activity yet</EmptyTitle>
+                <EmptyDescription>Earn points by booking appointments or completing promotions.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
-            <div className="flex flex-col gap-3">
-              {transactions.map((transaction) => (
-                <div
-                  key={transaction.id}
-                  className="flex flex-wrap items-center justify-between gap-3"
-                >
-                  <div className="space-y-1">
-                    <CardDescription>{transaction.description}</CardDescription>
-                    <CardDescription>
-                      {formatDistanceToNow(new Date(transaction.created_at), { addSuffix: true })}
-                    </CardDescription>
+            <div className="flex flex-col">
+              {transactions.map((transaction, index) => (
+                <Fragment key={transaction.id}>
+                  <div className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">{transaction.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {formatDistanceToNow(new Date(transaction.created_at), { addSuffix: true })}
+                      </p>
+                    </div>
+                    <Badge>
+                      {transaction.type === 'earned' ? '+' : '-'}
+                      {formatNumber(Math.abs(transaction.points))}
+                    </Badge>
                   </div>
-                  <Badge>
-                    {transaction.type === 'earned' ? '+' : '-'}
-                    {formatNumber(Math.abs(transaction.points))}
-                  </Badge>
-                </div>
+                  {index < transactions.length - 1 ? <Separator /> : null}
+                </Fragment>
               ))}
             </div>
           )}

@@ -1,4 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 import type { CustomerRelationship } from '@/features/staff/analytics/api/queries'
 import { formatCurrency } from './utils'
@@ -15,36 +17,39 @@ export function CustomersTab({ customerRelationships }: CustomersTabProps) {
         <CardDescription>Your most loyal customers</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {customerRelationships.length > 0 ? (
-            customerRelationships.map((customer) => (
-              <div
-                key={customer.customer_id}
-                className="flex items-center justify-between border-b pb-3 last:border-0 last:pb-0"
-              >
-                <div className="flex-1 space-y-1">
-                  <span className="text-sm font-medium leading-tight text-foreground">
-                    {customer.customer_name}
-                  </span>
-                  <span className="block text-sm text-muted-foreground">
-                    {customer.total_appointments} appointments • Last visit:{' '}
+        {customerRelationships.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Customer</TableHead>
+                <TableHead className="text-right">Appointments</TableHead>
+                <TableHead className="text-right">Last Visit</TableHead>
+                <TableHead className="text-right">Total Spent</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {customerRelationships.map((customer) => (
+                <TableRow key={customer.customer_id}>
+                  <TableCell className="font-medium">{customer.customer_name}</TableCell>
+                  <TableCell className="text-right">{customer.total_appointments}</TableCell>
+                  <TableCell className="text-right">
                     {new Date(customer.last_appointment_date).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="text-right">
-                  <span className="text-sm font-semibold leading-tight text-foreground">
+                  </TableCell>
+                  <TableCell className="text-right font-semibold">
                     {formatCurrency(customer.total_spent)}
-                  </span>
-                  <span className="block text-xs text-muted-foreground">Total spent</span>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="py-4 text-center">
-              <CardDescription>No customer data available</CardDescription>
-            </div>
-          )}
-        </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No customer data available</EmptyTitle>
+              <EmptyDescription>Invite customers back to populate this list.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
       </CardContent>
     </Card>
   )

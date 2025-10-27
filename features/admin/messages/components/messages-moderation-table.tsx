@@ -10,6 +10,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { formatDistanceToNow } from 'date-fns'
 import type { ModerationQueueItem } from '@/features/admin/messages/api/queries'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface MessagesModerationTableProps {
   items: ModerationQueueItem[]
@@ -34,10 +35,10 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
         <CardDescription>Recently flagged messages requiring review</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No flagged messages in the selected period.</p>
-        ) : (
-          <div className="overflow-x-auto">
+        <ScrollArea className="w-full">
+          {items.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No flagged messages in the selected period.</p>
+          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -51,7 +52,7 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
                 {items.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell className="max-w-sm">
-                      <p className="text-sm font-medium leading-tight line-clamp-3">
+                      <p className="line-clamp-3 text-sm font-medium leading-tight">
                         {item.content}
                       </p>
                       <p className="text-xs text-muted-foreground">
@@ -64,7 +65,7 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
                           {item.severity.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                         </Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{item.reason}</p>
+                      <p className="line-clamp-2 text-xs text-muted-foreground">{item.reason}</p>
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline">
@@ -78,8 +79,9 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
                 ))}
               </TableBody>
             </Table>
-          </div>
-        )}
+          )}
+          {items.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+        </ScrollArea>
       </CardContent>
     </Card>
   )

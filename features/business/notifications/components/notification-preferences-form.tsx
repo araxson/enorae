@@ -101,25 +101,24 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
               <CardContent>
                 <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                   {Object.entries(events).map(([event, value]) => (
-                    <div
-                      key={event}
-                      className="flex items-center justify-between rounded-md border px-3 py-2"
-                    >
-                      <div>
-                        <Label className="capitalize">
-                          {event.replace(/_/g, ' ')}
-                        </Label>
-                        <p className="text-xs text-muted-foreground">
-                          Trigger when {event.replace(/_/g, ' ')} occurs
-                        </p>
-                      </div>
-                      <Switch
-                        checked={value}
-                        onCheckedChange={(checked) =>
-                          handleToggle(channel as keyof typeof state, event, checked)
-                        }
-                      />
-                    </div>
+                    <Card key={event}>
+                      <CardContent className="flex items-center justify-between gap-4">
+                        <div>
+                          <Label className="capitalize">
+                            {event.replace(/_/g, ' ')}
+                          </Label>
+                          <p className="text-xs text-muted-foreground">
+                            Trigger when {event.replace(/_/g, ' ')} occurs
+                          </p>
+                        </div>
+                        <Switch
+                          checked={value}
+                          onCheckedChange={(checked) =>
+                            handleToggle(channel as keyof typeof state, event, checked)
+                          }
+                        />
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </CardContent>

@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
-import { RefreshCw } from 'lucide-react'
+import { RefreshCw, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import type { AppointmentSnapshot } from '@/features/admin/appointments/types'
 import { MetricsSummary } from './metrics-summary'
@@ -63,9 +64,6 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
           <p className="text-muted-foreground">
             Aggregated metrics across all salons. Last updated {lastUpdatedLabel}.
           </p>
-          {error && (
-            <p className="mt-2 text-destructive">{error}</p>
-          )}
         </div>
         <div className="flex items-center gap-3">
           <p className="text-muted-foreground">
@@ -77,6 +75,14 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
           </Button>
         </div>
       </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Unable to refresh data</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
       <MetricsSummary totals={data.totals} performance={data.performance} />
 

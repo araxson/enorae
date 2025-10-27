@@ -1,6 +1,7 @@
 'use client'
 import { NotificationPreferencesForm } from './notification-preferences-form'
 import { AdvancedPreferencesForm } from './advanced-preferences-form'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Database } from '@/lib/types/database.types'
 
 type ProfilePreference = Database['identity']['Tables']['profiles_preferences']['Row']
@@ -52,10 +53,20 @@ export function UserPreferencesClient({ initialPreferences }: UserPreferencesCli
         </p>
       </div>
 
-      <div className="flex flex-col gap-8">
-        <AdvancedPreferencesForm initialPreferences={advancedPrefs} />
-        <NotificationPreferencesForm initialPreferences={notificationPrefs} />
-      </div>
+      <Tabs defaultValue="advanced" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="advanced">Regional & Locale</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="advanced" className="mt-6">
+          <AdvancedPreferencesForm initialPreferences={advancedPrefs} />
+        </TabsContent>
+
+        <TabsContent value="notifications" className="mt-6">
+          <NotificationPreferencesForm initialPreferences={notificationPrefs} />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

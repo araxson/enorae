@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table'
 import { Star, MapPin } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type LocationMetric = {
   salonId: string
@@ -46,8 +47,12 @@ export function ChainLocationsList({ locations, salons }: ChainLocationsListProp
       <TableBody>
         {locations.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={6} className="text-center text-muted-foreground">
-              No locations found in this chain
+            <TableCell colSpan={6}>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No locations found in this chain</EmptyTitle>
+                </EmptyHeader>
+              </Empty>
             </TableCell>
           </TableRow>
         ) : (

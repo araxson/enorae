@@ -17,11 +17,14 @@ import { questionsData } from './questions.data'
 export function Questions() {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-      <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>{questionsData.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-6">
+      <div className="space-y-6">
+        <div className="text-center">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
+            {questionsData.title}
+          </h2>
+        </div>
+
+        <div className="flex flex-col gap-6">
           {questionsData.categories.map((category) => (
             <Card key={category.name}>
               <CardHeader>
@@ -44,8 +47,8 @@ export function Questions() {
               </CardContent>
             </Card>
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </section>
   )
 }

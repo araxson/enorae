@@ -66,13 +66,13 @@ export function ForgotPasswordForm() {
 
               <p className="text-sm font-medium text-center text-muted-foreground">
                 Didn&apos;t receive the email? Check your spam folder or{' '}
-                <button
+                <Button
                   type="button"
+                  variant="link"
                   onClick={() => setSuccess(false)}
-                  className="text-primary hover:underline"
                 >
                   try again
-                </button>
+                </Button>
               </p>
             </div>
           </CardContent>

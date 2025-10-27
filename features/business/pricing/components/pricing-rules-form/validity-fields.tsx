@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Select,
   SelectContent,
@@ -90,21 +91,21 @@ export function ValidityFields({
             Lower numbers execute first when multiple rules apply (current target: {selectedServiceName}).
           </p>
         </div>
-        <div className="flex items-center justify-between rounded-md border px-4 py-3">
-          <div>
-            <Label htmlFor="is_active">
-              Active Rule
-            </Label>
-            <p className="text-sm text-muted-foreground">Deactivate to save rule for later use.</p>
-          </div>
-          <Switch
-            id="is_active"
-            checked={formData.is_active}
-            onCheckedChange={(checked) =>
-              setFormData((current) => ({ ...current, is_active: checked }))
-            }
-          />
-        </div>
+        <Card>
+          <CardContent className="flex items-center justify-between gap-4">
+            <div>
+              <Label htmlFor="is_active">Active Rule</Label>
+              <p className="text-sm text-muted-foreground">Deactivate to save rule for later use.</p>
+            </div>
+            <Switch
+              id="is_active"
+              checked={formData.is_active}
+              onCheckedChange={(checked) =>
+                setFormData((current) => ({ ...current, is_active: checked }))
+              }
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

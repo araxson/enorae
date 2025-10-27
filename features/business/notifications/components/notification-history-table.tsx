@@ -5,12 +5,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDistanceToNow, format } from 'date-fns'
 
 import type { NotificationEntry } from '@/features/business/notifications/types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type NotificationHistoryTableProps = {
   history: NotificationEntry[]
@@ -38,12 +39,19 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
 
   if (recentHistory.length === 0) {
     return (
-      <Alert>
-        <AlertTitle>No notifications yet</AlertTitle>
-        <AlertDescription>
-          Trigger events or run a test notification to populate history.
-        </AlertDescription>
-      </Alert>
+      <Card>
+        <CardHeader>
+          <CardTitle>Notification history</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No notifications yet</EmptyTitle>
+              <EmptyDescription>Trigger events or send a test notification to populate history.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 
@@ -54,8 +62,9 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
           <CardTitle>Notification history</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader>
+          <ScrollArea className="w-full">
+            <Table>
+              <TableHeader>
             <TableRow>
               <TableHead>Status</TableHead>
               <TableHead>Channels</TableHead>
@@ -107,7 +116,9 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
               </TableRow>
             ))}
             </TableBody>
-          </Table>
+            </Table>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </CardContent>
       </Card>
 

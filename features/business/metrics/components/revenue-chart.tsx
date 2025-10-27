@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row'] & { metric_at: string }
 
@@ -43,8 +44,13 @@ export function RevenueChart({ data }: RevenueChartProps) {
           <CardTitle>Revenue Trend</CardTitle>
           <CardDescription>No data available</CardDescription>
         </CardHeader>
-        <CardContent className="flex h-72 items-center justify-center text-muted-foreground">
-          No revenue data to display
+        <CardContent className="flex h-72 items-center justify-center">
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No revenue data to display</EmptyTitle>
+              <EmptyDescription>Analytics will appear once transactions are recorded.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

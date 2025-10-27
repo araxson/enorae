@@ -15,6 +15,7 @@ import { Building2, Users } from 'lucide-react'
 import type { AdminSalon } from '@/features/admin/salons/api/queries'
 import { COMPLIANCE_BADGE_VARIANT, LICENSE_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
 import { DataTableEmpty } from '@/features/shared/ui-components'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface SalonsTableProps {
   salons: AdminSalon[]
@@ -35,7 +36,7 @@ export function SalonsTable({ salons }: SalonsTableProps) {
     <>
       <Card className="hidden md:block">
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
+          <ScrollArea className="w-full">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -137,7 +138,8 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                 ))}
               </TableBody>
             </Table>
-          </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </CardContent>
       </Card>
 

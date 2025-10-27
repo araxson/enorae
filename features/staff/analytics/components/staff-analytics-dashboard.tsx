@@ -1,5 +1,6 @@
 'use client'
 
+import { Fragment } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
@@ -17,6 +18,8 @@ import type {
   CustomerRelationship,
 } from '@/features/staff/analytics/api/queries'
 import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface StaffAnalyticsDashboardProps {
   metrics: StaffPerformanceMetrics
@@ -195,26 +198,31 @@ export function StaffAnalyticsDashboard({
               <CardContent>
                 <div className="space-y-4">
                   {revenueBreakdown.length > 0 ? (
-                    revenueBreakdown.map((service) => (
-                      <div
-                        key={service.service_id}
-                        className="flex items-center justify-between border-b pb-3 last:border-0 last:pb-0"
-                      >
-                        <div className="space-y-1">
-                          <p className="font-medium">{service.service_name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {service.bookings_count} bookings • {formatCurrency(service.avg_price)} avg
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
-                        </div>
-                      </div>
-                    ))
+                    <div className="flex flex-col">
+                      {revenueBreakdown.map((service, index) => (
+                        <Fragment key={service.service_id}>
+                          <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+                            <div className="space-y-1">
+                              <p className="font-medium">{service.service_name}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {service.bookings_count} bookings • {formatCurrency(service.avg_price)} avg
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-semibold">{formatCurrency(service.total_revenue)}</p>
+                            </div>
+                          </article>
+                          {index < revenueBreakdown.length - 1 ? <Separator /> : null}
+                        </Fragment>
+                      ))}
+                    </div>
                   ) : (
-                    <p className="text-sm text-muted-foreground text-center py-4">
-                      No revenue data available for this period
-                    </p>
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>No revenue data available</EmptyTitle>
+                        <EmptyDescription>Select a different period to see revenue performance.</EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
                   )}
                 </div>
               </CardContent>
@@ -232,28 +240,33 @@ export function StaffAnalyticsDashboard({
               <CardContent>
                 <div className="space-y-4">
                   {customerRelationships.length > 0 ? (
-                    customerRelationships.map((customer) => (
-                      <div
-                        key={customer.customer_id}
-                        className="flex items-center justify-between border-b pb-3 last:border-0 last:pb-0"
-                      >
-                        <div className="space-y-1 flex-1">
-                          <p className="font-medium">{customer.customer_name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {customer.total_appointments} appointments • Last visit:{' '}
-                            {new Date(customer.last_appointment_date).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-semibold">{formatCurrency(customer.total_spent)}</p>
-                          <p className="text-xs text-muted-foreground">Total spent</p>
-                        </div>
-                      </div>
-                    ))
+                    <div className="flex flex-col">
+                      {customerRelationships.map((customer, index) => (
+                        <Fragment key={customer.customer_id}>
+                          <article className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+                            <div className="flex-1 space-y-1">
+                              <p className="font-medium">{customer.customer_name}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {customer.total_appointments} appointments • Last visit:{' '}
+                                {new Date(customer.last_appointment_date).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-semibold">{formatCurrency(customer.total_spent)}</p>
+                              <p className="text-xs text-muted-foreground">Total spent</p>
+                            </div>
+                          </article>
+                          {index < customerRelationships.length - 1 ? <Separator /> : null}
+                        </Fragment>
+                      ))}
+                    </div>
                   ) : (
-                    <p className="text-sm text-muted-foreground text-center py-4">
-                      No customer data available
-                    </p>
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>No customer data available</EmptyTitle>
+                        <EmptyDescription>Engage with clients to populate top customer insights.</EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
                   )}
                 </div>
               </CardContent>

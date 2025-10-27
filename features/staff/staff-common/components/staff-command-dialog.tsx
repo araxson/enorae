@@ -1,9 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import {
   Command,
   CommandEmpty,
@@ -14,6 +9,7 @@ import {
   CommandSeparator,
 } from '@/components/ui/command'
 import { Command as CommandIcon } from 'lucide-react'
+import { Separator } from '@/components/ui/separator'
 import type { StaffQuickAction } from './types'
 
 interface StaffCommandDialogProps {
@@ -26,7 +22,7 @@ export function StaffCommandDialog({ open, onOpenChange, quickActions }: StaffCo
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="p-0">
-        <DialogHeader className="space-y-0 border-b px-4 py-3">
+        <DialogHeader className="space-y-0 px-4 py-3">
           <DialogTitle>
             <span className="flex items-center gap-2 text-base">
               <CommandIcon className="h-4 w-4" />
@@ -34,6 +30,7 @@ export function StaffCommandDialog({ open, onOpenChange, quickActions }: StaffCo
             </span>
           </DialogTitle>
         </DialogHeader>
+        <Separator />
         <Command className="rounded-b-lg">
           <CommandInput placeholder="Jump to a staff view or action…" />
           <CommandList>

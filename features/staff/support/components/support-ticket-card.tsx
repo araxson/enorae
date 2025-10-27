@@ -30,8 +30,8 @@ export function SupportTicketCard() {
           <div className="grid gap-2">
             <Label>Priority</Label>
             <RadioGroup defaultValue="standard" className="grid grid-cols-3 gap-3">
-              <div className="flex flex-col gap-2 rounded-lg border p-3">
-                <div className="flex items-start gap-3">
+              <Card>
+                <CardContent className="flex items-start gap-3">
                   <RadioGroupItem
                     id="priority-low"
                     value="low"
@@ -42,10 +42,10 @@ export function SupportTicketCard() {
                     <h4 className="font-semibold" id="priority-low-title">Low</h4>
                     <p className="text-sm text-muted-foreground" id="priority-low-description">Informational</p>
                   </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2 rounded-lg border p-3">
-                <div className="flex items-start gap-3">
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="flex items-start gap-3">
                   <RadioGroupItem
                     id="priority-standard"
                     value="standard"
@@ -56,10 +56,10 @@ export function SupportTicketCard() {
                     <h4 className="font-semibold" id="priority-standard-title">Standard</h4>
                     <p className="text-sm text-muted-foreground" id="priority-standard-description">Needs attention</p>
                   </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2 rounded-lg border p-3">
-                <div className="flex items-start gap-3">
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="flex items-start gap-3">
                   <RadioGroupItem
                     id="priority-urgent"
                     value="urgent"
@@ -70,8 +70,8 @@ export function SupportTicketCard() {
                     <h4 className="font-semibold" id="priority-urgent-title">Urgent</h4>
                     <p className="text-sm text-muted-foreground" id="priority-urgent-description">Blocking work</p>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </RadioGroup>
           </div>
 
@@ -95,22 +95,24 @@ export function SupportTicketCard() {
             <Textarea id="ticket-details" rows={4} placeholder="Share the exact error, steps to reproduce, or screenshots." />
           </div>
 
-          <div className="flex flex-col gap-3 rounded-lg border p-4">
-            <div className="space-y-1">
-              <h4 className="font-semibold" id="attach-logs-title">Attach logs automatically</h4>
-              <p className="text-sm text-muted-foreground" id="attach-logs-description">
-                Include the last 10 events from your activity timeline.
-              </p>
-            </div>
-            <div className="flex justify-end">
-              <Switch
-                id="attach-logs"
-                defaultChecked
-                aria-labelledby="attach-logs-title"
-                aria-describedby="attach-logs-description"
-              />
-            </div>
-          </div>
+          <Card>
+            <CardContent className="flex flex-col gap-3">
+              <div className="space-y-1">
+                <h4 className="font-semibold" id="attach-logs-title">Attach logs automatically</h4>
+                <p className="text-sm text-muted-foreground" id="attach-logs-description">
+                  Include the last 10 events from your activity timeline.
+                </p>
+              </div>
+              <div className="flex justify-end">
+                <Switch
+                  id="attach-logs"
+                  defaultChecked
+                  aria-labelledby="attach-logs-title"
+                  aria-describedby="attach-logs-description"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
           <div className="flex items-center gap-2">
             <Button type="submit">Submit ticket</Button>

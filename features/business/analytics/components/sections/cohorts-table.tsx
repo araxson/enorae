@@ -1,8 +1,10 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ExportButton } from '@/features/business/business-common/components'
 import type { getCustomerCohorts } from '@/features/business/analytics/api/queries'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 type CustomerCohort = Awaited<ReturnType<typeof getCustomerCohorts>>[number]
 
@@ -32,30 +34,31 @@ export function CohortsTable({ cohorts, start, end }: Props) {
         <CardDescription>Monthly retention for the last 6 cohorts.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead>
-              <tr>
-                <th className="p-2 text-left">Cohort</th>
-                <th className="p-2 text-left">Size</th>
+        <ScrollArea className="w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Cohort</TableHead>
+                <TableHead>Size</TableHead>
                 {Array.from({ length: 6 }).map((_, index) => (
-                  <th key={index} className="p-2 text-left">M+{index}</th>
+                  <TableHead key={index}>M+{index}</TableHead>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {cohorts.map((cohort) => (
-                <tr key={cohort.cohort} className="border-t">
-                  <td className="p-2">{cohort.cohort}</td>
-                  <td className="p-2">{cohort.size}</td>
+                <TableRow key={cohort.cohort}>
+                  <TableCell>{cohort.cohort}</TableCell>
+                  <TableCell>{cohort.size}</TableCell>
                   {cohort.retention.slice(0, 6).map((value: number, index: number) => (
-                    <td key={index} className="p-2">{value.toFixed(1)}%</td>
+                    <TableCell key={index}>{value.toFixed(1)}%</TableCell>
                   ))}
-                </tr>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </CardContent>
     </Card>
   )

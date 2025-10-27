@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { ChainAnalytics } from '@/features/admin/chains/api/queries'
 
 interface ChainAnalyticsTableProps {
@@ -43,8 +44,12 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
           <TableBody>
             {analytics.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center text-muted-foreground">
-                  No chain analytics available
+                <TableCell colSpan={8}>
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>No chain analytics available</EmptyTitle>
+                    </EmptyHeader>
+                  </Empty>
                 </TableCell>
               </TableRow>
             ) : (

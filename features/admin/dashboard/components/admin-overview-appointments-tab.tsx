@@ -4,6 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import type { AppointmentsOverview } from './admin-overview-types'
 import { appointmentStatusVariant, safeFormatDate } from './admin-overview-utils'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type AppointmentsTabProps = {
   appointments: AppointmentsOverview[]
@@ -20,7 +21,12 @@ export function AdminOverviewAppointmentsTab({ appointments }: AppointmentsTabPr
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">No appointment activity to display yet.</p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No appointment activity</EmptyTitle>
+              <EmptyDescription>Bookings will appear here once appointments are created.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )

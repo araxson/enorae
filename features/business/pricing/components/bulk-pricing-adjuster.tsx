@@ -129,28 +129,31 @@ export function BulkPricingAdjuster({ salonId, services }: BulkPricingAdjusterPr
         {scope === 'selected' && (
           <div>
             <Label>Choose Services</Label>
-            <ScrollArea className="mt-2 max-h-40 rounded-md border">
-              <div className="p-2 space-y-1">
-                {services.map((service) => {
-                  const isActive = selectedServices.includes(service.id)
-                  return (
-                    <button
-                      key={service.id}
-                      type="button"
-                      onClick={() => toggleService(service.id)}
-                      className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-sm ${
-                        isActive ? 'bg-primary text-primary-foreground' : 'bg-muted/30'
-                      }`}
-                    >
-                      <span>{service.name}</span>
-                      {service.price !== undefined && (
-                        <Badge variant="secondary">${service.price.toFixed(2)}</Badge>
-                      )}
-                    </button>
-                  )
-                })}
-              </div>
-            </ScrollArea>
+            <Card className="mt-2">
+              <CardContent className="p-0">
+                <ScrollArea className="max-h-40">
+                  <div className="p-2 space-y-1">
+                    {services.map((service) => {
+                      const isActive = selectedServices.includes(service.id)
+                      return (
+                        <Button
+                          key={service.id}
+                          type="button"
+                          variant={isActive ? 'default' : 'outline'}
+                          onClick={() => toggleService(service.id)}
+                          className="flex w-full items-center justify-between"
+                        >
+                          <span>{service.name}</span>
+                          {service.price !== undefined && (
+                            <Badge variant="secondary">${service.price.toFixed(2)}</Badge>
+                          )}
+                        </Button>
+                      )
+                    })}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
             {selectedServices.length > 0 ? (
               <p className="mt-2 text-xs text-muted-foreground">
                 {selectedServices.length} services selected

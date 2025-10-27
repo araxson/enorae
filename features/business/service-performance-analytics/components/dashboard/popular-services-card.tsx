@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { TrendingUp } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 import { formatCurrency } from './utils'
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 export function PopularServicesCard({ services }: { services: ServicePerformance[] }) {
   const trendingServices = [...services]
@@ -22,9 +23,12 @@ export function PopularServicesCard({ services }: { services: ServicePerformance
       </CardHeader>
       <CardContent>
         {trendingServices.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No popular service data is available yet.
-          </p>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No popular service data</EmptyTitle>
+              <EmptyDescription>Bookings will populate this list when services gain traction.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <div className="flex flex-col gap-4">
             {trendingServices.map((service, index) => (

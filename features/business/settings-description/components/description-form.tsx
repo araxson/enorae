@@ -2,6 +2,12 @@
 
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 
 import type { Database } from '@/lib/types/database.types'
 
@@ -37,14 +43,37 @@ export function DescriptionForm({ salonId, description }: DescriptionFormProps) 
           </Alert>
         )}
 
-        <DescriptionsSection values={state.descriptionFields} />
+        <Accordion type="multiple" defaultValue={['descriptions', 'seo', 'array-fields']} className="w-full">
+          <AccordionItem value="descriptions">
+            <AccordionTrigger>Salon Descriptions</AccordionTrigger>
+            <AccordionContent>
+              <div className="pt-4">
+                <DescriptionsSection values={state.descriptionFields} />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
 
-        <SeoSection
-          metaTitle={state.descriptionFields.meta_title}
-          metaDescription={state.descriptionFields.meta_description}
-        />
+          <AccordionItem value="seo">
+            <AccordionTrigger>SEO & Meta Information</AccordionTrigger>
+            <AccordionContent>
+              <div className="pt-4">
+                <SeoSection
+                  metaTitle={state.descriptionFields.meta_title}
+                  metaDescription={state.descriptionFields.meta_description}
+                />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
 
-        <ArrayFieldsSection arrays={state.arrays} onChange={actions.setArrayField} />
+          <AccordionItem value="array-fields">
+            <AccordionTrigger>Additional Information</AccordionTrigger>
+            <AccordionContent>
+              <div className="pt-4">
+                <ArrayFieldsSection arrays={state.arrays} onChange={actions.setArrayField} />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <div className="flex justify-end">
           <Button type="submit" disabled={state.isSubmitting}>

@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Users, Calendar, DollarSign } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import { ClientStats } from './client-stats'
 import { ClientFilters } from './client-filters'
@@ -89,16 +90,19 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
   if (clients.length === 0) {
     return (
       <Card>
+        <CardHeader>
+          <CardTitle>Clients</CardTitle>
+        </CardHeader>
         <CardContent>
-          <div className="pt-6">
-            <div className="flex flex-col gap-4 text-center py-8">
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
+          <div className="flex flex-col gap-4 text-center py-8">
+            <Avatar className="h-16 w-16 mx-auto">
+              <AvatarFallback className="bg-muted">
                 <Users className="w-8 h-8 text-muted-foreground" />
-              </div>
-              <div>
-                <p className="font-medium">No Clients Yet</p>
-                <p className="text-sm text-muted-foreground">Your client list will appear here once you complete appointments</p>
-              </div>
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-medium">No Clients Yet</p>
+              <p className="text-sm text-muted-foreground">Your client list will appear here once you complete appointments</p>
             </div>
           </div>
         </CardContent>

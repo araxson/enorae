@@ -1,10 +1,12 @@
 'use client'
 
+import { Fragment } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users, Gift, Check, MessageSquare, History } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import type { Referral } from '@/features/customer/referrals/api/queries'
+import { Separator } from '@/components/ui/separator'
 
 type Props = {
   referralCode: Referral | null
@@ -86,22 +88,22 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
           {history.length === 0 ? (
             <CardDescription>No referrals recorded yet.</CardDescription>
           ) : (
-            <div className="flex flex-col gap-3">
-              {history.map((referral) => (
-                <div
-                  key={referral.id}
-                  className="flex flex-wrap items-center justify-between gap-3"
-                >
-                  <div className="space-y-1">
-                    <CardDescription>Code: {referral.code}</CardDescription>
-                    <CardDescription>
-                      {formatDistanceToNow(new Date(referral.created_at), { addSuffix: true })}
-                    </CardDescription>
+            <div className="flex flex-col">
+              {history.map((referral, index) => (
+                <Fragment key={referral.id}>
+                  <div className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">Code: {referral.code}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {formatDistanceToNow(new Date(referral.created_at), { addSuffix: true })}
+                      </p>
+                    </div>
+                    <Badge variant={referral.status === 'completed' ? 'default' : 'secondary'}>
+                      {referral.status === 'completed' ? 'Completed' : 'Pending'}
+                    </Badge>
                   </div>
-                  <Badge variant={referral.status === 'completed' ? 'default' : 'secondary'}>
-                    {referral.status === 'completed' ? 'Completed' : 'Pending'}
-                  </Badge>
-                </div>
+                  {index < history.length - 1 ? <Separator /> : null}
+                </Fragment>
               ))}
             </div>
           )}

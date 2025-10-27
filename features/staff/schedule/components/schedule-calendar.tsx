@@ -1,10 +1,13 @@
 'use client'
 
+import { Fragment } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Plus, Edit2, Trash2 } from 'lucide-react'
 import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Separator } from '@/components/ui/separator'
 
 type ScheduleCalendarProps = {
   schedules: StaffScheduleWithStaff[]
@@ -50,10 +53,20 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
       {schedules.length === 0 ? (
         <Card>
           <CardContent>
-            <div className="py-12 text-center text-muted-foreground">
-              <p>No schedules found</p>
-              <p className="text-sm text-muted-foreground">Click &quot;Add Schedule&quot; to create weekly schedules</p>
-            </div>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No schedules found</EmptyTitle>
+                <EmptyDescription>Click &quot;Add Schedule&quot; to create weekly schedules.</EmptyDescription>
+              </EmptyHeader>
+              {onAdd && (
+                <EmptyContent>
+                  <Button onClick={onAdd}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Schedule
+                  </Button>
+                </EmptyContent>
+              )}
+            </Empty>
           </CardContent>
         </Card>
       ) : (
@@ -69,15 +82,13 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col gap-3">
-                    {daySchedules.map(schedule => (
-                      <div
-                        key={schedule['id']}
-                        className="flex items-center justify-between p-3 border rounded-lg"
-                      >
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium">
-                              {schedule.staff?.['title'] || 'Unknown Staff'}
+                    {daySchedules.map((schedule, index) => (
+                      <Fragment key={schedule['id']}>
+                        <div className="flex items-center justify-between rounded-lg p-3">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-medium">
+                                {schedule.staff?.['title'] || 'Unknown Staff'}
                             </span>
                             <Badge variant={schedule['is_active'] ? 'default' : 'secondary'}>
                               {schedule['is_active'] ? 'Active' : 'Inactive'}
@@ -115,7 +126,9 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                             </Button>
                           )}
                         </div>
-                      </div>
+                        </div>
+                        {index < daySchedules.length - 1 ? <Separator /> : null}
+                      </Fragment>
                     ))}
                 </div>
               </CardContent>

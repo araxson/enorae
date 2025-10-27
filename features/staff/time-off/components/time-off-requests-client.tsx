@@ -12,6 +12,7 @@ import { RequestCard } from './request-card'
 import { CreateRequestDialog } from './create-request-dialog'
 import type { TimeOffRequestWithStaff, TimeOffBalance, TeamTimeOffCalendar } from '@/features/staff/time-off/api/queries'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface TimeOffRequestsClientProps {
   staffId: string
@@ -149,29 +150,30 @@ export function TimeOffRequestsClient({
             {teamCalendar.length === 0 ? (
               <Card>
                 <CardContent>
-                  <div className="py-12 text-center">
-                    <p className="text-muted-foreground">No upcoming team time off</p>
-                  </div>
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>No upcoming time off</EmptyTitle>
+                      <EmptyDescription>No upcoming team time off</EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
                 </CardContent>
               </Card>
             ) : (
               <div className="grid gap-4">
                 {teamCalendar.map((entry, idx) => (
                   <Card key={`${entry['staff_id']}-${idx}`}>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
+                    <CardContent className="space-y-3">
+                      <div className="flex items-center justify-between gap-4">
                         <div>
-                          <CardTitle>{entry['staff_name']}</CardTitle>
+                          <h3 className="font-semibold">{entry['staff_name']}</h3>
                           {entry.staff_title && (
-                            <CardDescription>{entry.staff_title}</CardDescription>
+                            <p className="text-sm text-muted-foreground">{entry.staff_title}</p>
                           )}
                         </div>
                         <Badge variant={entry['status'] === 'approved' ? 'default' : 'secondary'}>
                           {entry['status']}
                         </Badge>
                       </div>
-                    </CardHeader>
-                    <CardContent>
                       <div className="flex items-center justify-between text-sm">
                         <div>
                           <p className="font-medium">{new Date(entry.start_at).toLocaleDateString()} - {new Date(entry.end_at).toLocaleDateString()}</p>
@@ -198,12 +200,18 @@ export function TimeOffRequestsClient({
             {displayedRequests.length === 0 ? (
               <Card>
                 <CardContent>
-                  <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
-                    <p className="text-muted-foreground">No time-off requests yet</p>
-                    <p className="text-sm text-muted-foreground">
-                      Click the New request button to submit a time-off request
-                    </p>
-                  </div>
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>No time-off requests yet</EmptyTitle>
+                      <EmptyDescription>Click the New request button to submit a time-off request.</EmptyDescription>
+                    </EmptyHeader>
+                    <EmptyContent>
+                      <Button onClick={() => setIsCreateDialogOpen(true)}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        New request
+                      </Button>
+                    </EmptyContent>
+                  </Empty>
                 </CardContent>
               </Card>
             ) : (

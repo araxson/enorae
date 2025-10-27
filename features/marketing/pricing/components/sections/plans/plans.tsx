@@ -14,39 +14,37 @@ export function Plans() {
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {plansData.plans.map((plan) => (
-            <div
+            <Card
               key={plan.name}
-              className={`relative ${plan.highlighted ? 'rounded-lg border border-primary ring-2 ring-primary/20' : ''}`}
+              className={`relative ${plan.highlighted ? 'border-primary ring-2 ring-primary/20' : ''}`}
             >
               {plan.highlighted && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                   <Badge>Most popular</Badge>
                 </div>
               )}
-              <Card>
-                <CardHeader className="space-y-2">
-                  <CardTitle>{plan.name}</CardTitle>
-                  <CardDescription>{plan.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <div>{plan.price}</div>
-                    <span className="ml-1 text-muted-foreground">{plan.period}</span>
-                  </div>
-                  <ul className="space-y-3 text-muted-foreground">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2">
-                        <Check className="mt-1 h-4 w-4 text-primary" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button className="w-full" variant={plan.highlighted ? 'default' : 'outline'}>
-                    {plan.cta}
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+              <CardHeader className="space-y-2">
+                <CardTitle>{plan.name}</CardTitle>
+                <CardDescription>{plan.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <div>{plan.price}</div>
+                  <span className="ml-1 text-muted-foreground">{plan.period}</span>
+                </div>
+                <ul className="space-y-3 text-muted-foreground">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <Check className="mt-1 h-4 w-4 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full" variant={plan.highlighted ? 'default' : 'outline'}>
+                  {plan.cta}
+                </Button>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

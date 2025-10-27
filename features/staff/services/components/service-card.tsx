@@ -97,14 +97,14 @@ export function ServiceCard({ service }: ServiceCardProps) {
     <Card className={service.is_available === false ? 'opacity-60' : ''}>
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
-          <div className="flex-1">
+          <div className="flex-1 space-y-1">
             <div className="flex items-center gap-2">
               <CardTitle>{service.service_name}</CardTitle>
               {service.is_available === false && <Badge variant="outline">Unavailable</Badge>}
             </div>
             {service.category_name && <p className="text-sm text-muted-foreground">{service.category_name}</p>}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             {service.proficiency_level && (
               <Badge variant={getProficiencyColor(service.proficiency_level)}>
                 {formatLabel(service.proficiency_level)}
@@ -112,8 +112,9 @@ export function ServiceCard({ service }: ServiceCardProps) {
             )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" disabled={isUpdating}>
+                <Button variant="ghost" size="icon" disabled={isUpdating} aria-label="Service actions menu">
                   <MoreVertical className="h-4 w-4" />
+                  <span className="sr-only">Service actions</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">

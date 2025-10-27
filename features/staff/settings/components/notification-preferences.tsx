@@ -1,11 +1,13 @@
 'use client'
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
 import type { NotificationPreferences, NotificationChannel } from '@/features/staff/settings/types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface NotificationPreferencesProps {
   initialPreferences: NotificationPreferences
@@ -56,43 +58,42 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
         <CardTitle>Notification Preferences</CardTitle>
         <CardDescription>Choose how you want to be notified.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="p-2 text-left">Type</th>
+      <div className="px-6">
+        <ScrollArea className="w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Type</TableHead>
                 {channels.map((channel) => (
-                  <th key={channel.value} className="p-2 text-center">
+                  <TableHead key={channel.value} className="text-center">
                     {channel.label}
-                  </th>
+                  </TableHead>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {notificationTypes.map((type) => (
-                <tr key={type.key} className="border-b">
-                  <td className="p-2">{type.label}</td>
+                <TableRow key={type.key}>
+                  <TableCell>{type.label}</TableCell>
                   {channels.map((channel) => (
-                    <td key={channel.value} className="p-2 text-center">
+                    <TableCell key={channel.value} className="text-center">
                       <Checkbox
                         checked={preferences[type.key].includes(channel.value)}
                         onCheckedChange={() => handleToggle(type.key, channel.value)}
                       />
-                    </td>
+                    </TableCell>
                   ))}
-                </tr>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <div className="flex w-full justify-end">
-          <Button onClick={handleSave} disabled={isSaving}>
-            {isSaving ? 'Saving...' : 'Save Changes'}
-          </Button>
-        </div>
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </div>
+      <CardFooter className="flex w-full justify-end">
+        <Button onClick={handleSave} disabled={isSaving}>
+          {isSaving ? 'Saving...' : 'Save Changes'}
+        </Button>
       </CardFooter>
     </Card>
   )

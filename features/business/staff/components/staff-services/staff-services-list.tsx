@@ -1,5 +1,4 @@
 "use client"
-
 import { Scissors, Star, TrendingUp } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -56,7 +55,7 @@ export function StaffServicesList({
             description="Try adjusting your search query"
           />
         ) : (
-          <div className="flex flex-col gap-4">
+          <div className="space-y-3">
             {filteredStaff.map((member) => (
               <StaffMemberCard
                 key={member['id']}
@@ -78,36 +77,38 @@ type StaffMemberCardProps = {
 
 function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
   return (
-    <div className="flex gap-4 items-center pb-4 border-b last:border-0 last:pb-0">
-      <Avatar>
-        {member['avatar_url'] && (
-          <AvatarImage src={member['avatar_url']} alt={member['full_name'] || 'Staff'} />
-        )}
-        <AvatarFallback>
-          {member['full_name']?.slice(0, 2).toUpperCase() || 'ST'}
-        </AvatarFallback>
-      </Avatar>
-
-      <div className="flex flex-col gap-2 flex-1">
-        <h4 className="scroll-m-20 text-xl font-semibold">{member['full_name'] || 'Staff Member'}</h4>
-        {member['title'] && <p className="text-sm text-muted-foreground">{member['title']}</p>}
-
-        <div className="flex flex-wrap gap-2 mt-2">
-          {member.services.length === 0 ? (
-            <p className="text-xs text-muted-foreground">No services assigned</p>
-          ) : (
-            member.services.map((service: StaffMemberWithServices['services'][number]) => (
-              <ServiceBadge key={service['id']} service={service} />
-            ))
+    <Card>
+      <CardContent className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center">
+        <Avatar>
+          {member['avatar_url'] && (
+            <AvatarImage src={member['avatar_url']} alt={member['full_name'] || 'Staff'} />
           )}
-        </div>
-      </div>
+          <AvatarFallback>
+            {member['full_name']?.slice(0, 2).toUpperCase() || 'ST'}
+          </AvatarFallback>
+        </Avatar>
 
-      <Button variant="outline" size="sm" onClick={onManage}>
-        <Scissors className="h-4 w-4 mr-2" />
-        Manage Services
-      </Button>
-    </div>
+        <div className="flex flex-1 flex-col gap-2">
+          <h4 className="scroll-m-20 text-xl font-semibold">{member['full_name'] || 'Staff Member'}</h4>
+          {member['title'] && <p className="text-sm text-muted-foreground">{member['title']}</p>}
+
+          <div className="mt-2 flex flex-wrap gap-2">
+            {member.services.length === 0 ? (
+              <p className="text-xs text-muted-foreground">No services assigned</p>
+            ) : (
+              member.services.map((service: StaffMemberWithServices['services'][number]) => (
+                <ServiceBadge key={service['id']} service={service} />
+              ))
+            )}
+          </div>
+        </div>
+
+        <Button variant="outline" size="sm" onClick={onManage}>
+          <Scissors className="h-4 w-4 mr-2" />
+          Manage Services
+        </Button>
+      </CardContent>
+    </Card>
   )
 }
 

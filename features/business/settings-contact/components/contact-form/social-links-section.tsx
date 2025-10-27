@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -30,27 +29,19 @@ const SOCIAL_FIELDS: Array<{ id: keyof SocialLinks; label: string; placeholder: 
 
 export function SocialLinksSection({ initialValues }: SocialLinksSectionProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Social media links</CardTitle>
-        <CardDescription>Share the platforms where clients can follow your business.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {SOCIAL_FIELDS.map(({ id, label, placeholder }) => (
-            <div key={id} className="flex flex-col gap-3">
-              <Label htmlFor={id}>{label}</Label>
-              <Input
-                id={id}
-                name={id}
-                type="url"
-                defaultValue={initialValues[id] ?? ''}
-                placeholder={placeholder}
-              />
-            </div>
-          ))}
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {SOCIAL_FIELDS.map(({ id, label, placeholder }) => (
+        <div key={id} className="flex flex-col gap-3">
+          <Label htmlFor={id}>{label}</Label>
+          <Input
+            id={id}
+            name={id}
+            type="url"
+            defaultValue={initialValues[id] ?? ''}
+            placeholder={placeholder}
+          />
         </div>
-      </CardContent>
-    </Card>
+      ))}
+    </div>
   )
 }

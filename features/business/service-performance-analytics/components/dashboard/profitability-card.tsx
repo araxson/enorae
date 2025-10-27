@@ -17,20 +17,22 @@ export function ProfitabilityCard({ profitability }: { profitability: ServicePro
       </CardHeader>
       <CardContent className="space-y-3">
         {mostProfitable.map((entry) => (
-          <div key={entry.service_id} className="flex items-center justify-between rounded-md border px-3 py-2">
-            <div>
-              <p className="text-base font-medium">{entry.service_name}</p>
-              <p className="text-xs text-muted-foreground">
-                Margin {Number.isFinite(entry.margin) ? entry.margin.toFixed(1) : '0'}%
-              </p>
-            </div>
-            <div className="text-right text-sm">
-              <p className="text-base font-semibold">{formatCurrency(entry.profit)}</p>
-              <p className="text-muted-foreground">
-                Revenue {formatCurrency(entry.revenue)} · Cost {formatCurrency(entry.cost)}
-              </p>
-            </div>
-          </div>
+          <Card key={entry.service_id}>
+            <CardContent className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-base font-medium">{entry.service_name}</p>
+                <p className="text-xs text-muted-foreground">
+                  Margin {Number.isFinite(entry.margin) ? entry.margin.toFixed(1) : '0'}%
+                </p>
+              </div>
+              <div className="text-right text-sm">
+                <p className="text-base font-semibold">{formatCurrency(entry.profit)}</p>
+                <p className="text-muted-foreground">
+                  Revenue {formatCurrency(entry.revenue)} · Cost {formatCurrency(entry.cost)}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </CardContent>
     </Card>

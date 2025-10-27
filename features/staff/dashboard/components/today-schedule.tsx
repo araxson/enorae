@@ -95,7 +95,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
 
                           <Separator orientation="vertical" className="h-10" />
 
-                          <Avatar className="h-8 w-8 border">
+                          <Avatar className="h-8 w-8">
                             <AvatarFallback className="text-xs font-semibold">
                               {customerInitials}
                             </AvatarFallback>

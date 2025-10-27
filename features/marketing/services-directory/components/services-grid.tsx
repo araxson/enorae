@@ -11,6 +11,14 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { Database } from '@/lib/types/database.types'
 import { Clock, DollarSign, Sparkles } from 'lucide-react'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -22,16 +30,28 @@ interface ServicesGridProps {
 export function ServicesGrid({ services, categoryName }: ServicesGridProps) {
   if (services.length === 0) {
     return (
-      <div className="py-12 text-center">
-        <div className="flex flex-col gap-6">
-          <h3 className="scroll-m-20">No services found</h3>
-          <p className="text-muted-foreground">
-            {categoryName
-              ? `No services available in the ${categoryName} category`
-              : 'Try browsing different categories to find services'}
-          </p>
-        </div>
-      </div>
+      <Card>
+        <CardContent className="py-12">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Sparkles className="h-6 w-6 text-primary" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>No services found</EmptyTitle>
+              <EmptyDescription>
+                {categoryName
+                  ? `No services available in the ${categoryName} category`
+                  : 'Try browsing different categories to find services.'}
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild variant="outline">
+                <Link href="/services-directory">Browse all services</Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 

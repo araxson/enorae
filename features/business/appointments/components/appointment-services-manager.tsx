@@ -12,6 +12,7 @@ import { ConfirmDialog } from '@/features/shared/ui-components'
 import { removeServiceFromAppointment } from '@/features/business/appointments/api/mutations'
 import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import { useToast } from '@/lib/hooks/use-toast'
+import { Separator } from '@/components/ui/separator'
 
 interface AppointmentServicesManagerProps {
   appointmentId: string
@@ -189,7 +190,8 @@ export function AppointmentServicesManager({
                 </TableBody>
               </Table>
 
-              <div className="mt-6 flex justify-between items-center pt-4 border-t">
+              <Separator className="mt-6" />
+              <div className="flex justify-between items-center pt-4">
                 <div className="space-y-1">
                   <p className="text-sm text-muted-foreground">
                     Total Services: {services.length}
