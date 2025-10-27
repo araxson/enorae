@@ -35,6 +35,6 @@ export async function deleteService(serviceId: string, options: DeleteServiceOpt
 
   if (error) throw error
 
-  revalidatePath('/business/services')
+  revalidatePath('/business/services', 'page')
   return { success: true }
 }

@@ -35,7 +35,7 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <h3>Active Blocks</h3>
+            <h3 className="scroll-m-20 text-xl font-semibold tracking-tight mb-2">Active Blocks</h3>
             {violations.length === 0 ? (
               <CardDescription>No identifiers are currently blocked.</CardDescription>
             ) : (
@@ -72,7 +72,7 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
           </div>
 
           <div>
-            <h3>Rule Configuration</h3>
+            <h3 className="scroll-m-20 text-xl font-semibold tracking-tight mb-2">Rule Configuration</h3>
             {rules.length === 0 ? (
               <CardDescription>No rate limiting rules configured.</CardDescription>
             ) : (

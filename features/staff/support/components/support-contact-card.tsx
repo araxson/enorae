@@ -19,35 +19,35 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <Card>
-            <CardHeader className="space-y-1">
+          <div className="flex flex-col gap-3 rounded-lg border p-4">
+            <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-secondary" aria-hidden />
-                <CardTitle id="contact-hotline-title">Hotline</CardTitle>
+                <h3 className="font-semibold" id="contact-hotline-title">Hotline</h3>
               </div>
-              <CardDescription id="contact-hotline-description">
+              <p className="text-sm text-muted-foreground" id="contact-hotline-description">
                 Best for urgent issues that block work.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-end">
+              </p>
+            </div>
+            <div className="flex justify-end">
               <Badge variant="secondary">15 min avg</Badge>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card>
-            <CardHeader className="space-y-1">
+          <div className="flex flex-col gap-3 rounded-lg border p-4">
+            <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 text-primary" aria-hidden />
-                <CardTitle id="contact-chat-title">Chat</CardTitle>
+                <h3 className="font-semibold" id="contact-chat-title">Chat</h3>
               </div>
-              <CardDescription id="contact-chat-description">
+              <p className="text-sm text-muted-foreground" id="contact-chat-description">
                 Great for multi-step troubleshooting.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-end">
+              </p>
+            </div>
+            <div className="flex justify-end">
               <Badge variant="outline">Live 8a–8p</Badge>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <Separator />
 
@@ -64,21 +64,21 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
             </HoverCardContent>
           </HoverCard>
 
-          <Card>
-            <CardHeader className="space-y-1">
-              <CardTitle id="status-alerts-title">Status alerts</CardTitle>
-              <CardDescription id="status-alerts-description">
+          <div className="flex flex-col gap-3 rounded-lg border p-4">
+            <div className="space-y-1">
+              <h3 className="font-semibold" id="status-alerts-title">Status alerts</h3>
+              <p className="text-sm text-muted-foreground" id="status-alerts-description">
                 Receive mobile and email alerts when ticket status changes or a fix is shipped.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-end">
+              </p>
+            </div>
+            <div className="flex justify-end">
               <Switch
                 defaultChecked
                 aria-labelledby="status-alerts-title"
                 aria-describedby="status-alerts-description"
               />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

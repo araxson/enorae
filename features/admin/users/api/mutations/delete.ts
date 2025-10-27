@@ -61,7 +61,7 @@ export async function deleteUserPermanently(formData: FormData) {
       console.error('[Users] Failed to record audit log for permanent deletion', auditError)
     }
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true, message: 'User deleted permanently' }
   } catch (error) {
     return {

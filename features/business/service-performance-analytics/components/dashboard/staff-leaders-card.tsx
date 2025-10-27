@@ -20,7 +20,7 @@ export function StaffLeadersCard({ staffPerformance }: { staffPerformance: Staff
             <CardHeader className="pb-2">
               <CardTitle>{record.service_name}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-1 pt-0 text-sm text-muted-foreground">
+            <CardContent className="space-y-1 pt-0">
               {record.staff.slice(0, 3).map((staff) => (
                 <div key={staff.staff_id} className="flex justify-between">
                   <p className="text-sm text-foreground">{staff.staff_name}</p>

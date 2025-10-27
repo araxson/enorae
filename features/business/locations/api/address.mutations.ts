@@ -85,7 +85,7 @@ export async function updateLocationAddress(
       if (error) throw error
     }
 
-    revalidatePath('/business/locations')
+    revalidatePath('/business/locations', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error updating location address:', error)
@@ -125,7 +125,7 @@ export async function deleteLocationAddress(locationId: string): Promise<ActionR
 
     if (error) throw error
 
-    revalidatePath('/business/locations')
+    revalidatePath('/business/locations', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error deleting location address:', error)

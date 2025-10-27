@@ -71,7 +71,7 @@ export async function reactivateUser(formData: FormData) {
       is_success: true,
     })
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true }
   } catch (error) {
     return {

@@ -60,7 +60,7 @@ type Result = { success: boolean; data?: any; error?: any }
 - Add generics to reusable functions
 - Create proper type definitions for API responses
 - Use `const as const` for literal types
-- Review `docs/stack-patterns/typescript-patterns.md` for strict typing requirements
+- Review `docs/ruls/typescript-patterns.md` for strict typing requirements
 
 ## Output Format
 
@@ -74,7 +74,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/typescript-patterns.md`
-- `docs/stack-patterns/supabase-patterns.md`
+- `docs/ruls/typescript-patterns.md`
+- `docs/ruls/supabase-patterns.md`
 
 Complete type safety audit and report all gaps.

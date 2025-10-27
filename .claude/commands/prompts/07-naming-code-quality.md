@@ -59,7 +59,7 @@ function handle(data) {
 - Remove obsolete TODO/FIXME comments
 - Rename functions to clearly describe their purpose
 - Consolidate duplicated constants
-- Review `docs/stack-patterns/typescript-patterns.md` for naming and readability conventions
+- Review `docs/ruls/typescript-patterns.md` for naming and readability conventions
 
 ## Output Format
 
@@ -73,7 +73,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/typescript-patterns.md`
-- `docs/stack-patterns/file-organization-patterns.md`
+- `docs/ruls/typescript-patterns.md`
+- `docs/ruls/file-organization-patterns.md`
 
 Complete code quality audit and report all naming issues.

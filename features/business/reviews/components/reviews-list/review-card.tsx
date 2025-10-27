@@ -165,7 +165,7 @@ const RatingItem = memo(function RatingItem({ label, rating }: RatingItemProps) 
   const stars = rating || 0
   return (
     <div>
-      <p className="text-sm text-muted-foreground text-xs">{label}</p>
+      <p className="text-xs text-muted-foreground">{label}</p>
       <div className="flex gap-1" role="img" aria-label={`${label}: ${stars} out of 5 stars`}>
         {STAR_INDICES.map((index) => (
           <StarIcon key={index} filled={index < stars} />

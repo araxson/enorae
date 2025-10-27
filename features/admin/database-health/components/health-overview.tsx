@@ -77,7 +77,7 @@ export function HealthOverview({ snapshot }: HealthOverviewProps) {
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             <div className="font-semibold">{metric.value}</div>
-            <Badge variant={metric.variant} className="w-fit">
+            <Badge variant={metric.variant}>
               {metric.value === 0 ? 'None detected' : `${metric.value} found`}
             </Badge>
           </CardContent>

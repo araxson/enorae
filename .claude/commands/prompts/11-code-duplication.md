@@ -59,7 +59,7 @@ const validateEmail = (email: string) => /^[^@]+@[^@]+\.[^@]+$/.test(email)
 - Create reusable query/mutation factories
 - Move common logic to helper functions
 - Use barrel exports for easy imports
-- Review `docs/stack-patterns/architecture-patterns.md` for guidance on shared utilities and feature boundaries
+- Review `docs/ruls/architecture-patterns.md` for guidance on shared utilities and feature boundaries
 
 ## Output Format
 
@@ -74,7 +74,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/architecture-patterns.md`
-- `docs/stack-patterns/react-patterns.md`
+- `docs/ruls/architecture-patterns.md`
+- `docs/ruls/react-patterns.md`
 
 Complete duplication audit and report all opportunities for consolidation.

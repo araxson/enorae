@@ -94,8 +94,8 @@ All fixes must align with ENORAE security standards:
 
 ## Reference Documents
 
-- `docs/stack-patterns/supabase-patterns.md` - Auth, queries, mutations, RLS patterns
-- `docs/stack-patterns/architecture-patterns.md` - Server directives, feature structure
+- `docs/ruls/supabase.md` - Auth, queries, mutations, RLS patterns
+- `docs/ruls/architecture.md` - Server directives, feature structure
 - Supabase docs: https://supabase.com/docs/guides/auth/server-side/nextjs
 
 ## Critical Notes

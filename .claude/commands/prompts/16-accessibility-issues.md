@@ -70,7 +70,7 @@ Identify accessibility violations including missing ARIA labels, poor keyboard n
 - Use aria-describedby for complex inputs
 - Add aria-live for dynamic content
 - Prefer shadcn/ui primitives for buttons, links, dialogs, and form controls to inherit accessible structure
-- Review `docs/stack-patterns/ui-patterns.md` for shadcn accessibility guidance
+- Review `docs/ruls/ui.md` for shadcn accessibility guidance
 
 ## Output Format
 
@@ -84,7 +84,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/ui-patterns.md`
-- `docs/stack-patterns/react-patterns.md`
+- `docs/ruls/ui.md`
+- `docs/ruls/react-patterns.md`
 
 Complete accessibility audit and report all violations.

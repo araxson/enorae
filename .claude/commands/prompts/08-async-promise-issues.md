@@ -73,7 +73,7 @@ useEffect(() => {
 - Use async/await instead of callback chains
 - Add AbortController for cancellable operations
 - Add cleanup functions for timers
-- Review `docs/stack-patterns/react-patterns.md` for async lifecycle guidance
+- Review `docs/ruls/react-patterns.md` for async lifecycle guidance
 
 ## Output Format
 
@@ -87,7 +87,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/react-patterns.md`
-- `docs/stack-patterns/architecture-patterns.md`
+- `docs/ruls/react-patterns.md`
+- `docs/ruls/architecture-patterns.md`
 
 Complete async audit and report all issues.

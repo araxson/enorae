@@ -64,7 +64,7 @@ export async function verifyChain(data: {
       reason,
     })
 
-    revalidatePath('/admin/chains')
+    revalidatePath('/admin/chains', 'page')
     return {
       success: true,
       message: `Chain ${isVerified ? 'verified' : 'unverified'} successfully`,

@@ -221,11 +221,11 @@ List all findings with severity level and specific location:
 ## Pattern Documentation References
 
 Consult these files from ENORAE's stack patterns:
-- `docs/stack-patterns/react-patterns.md` - Error boundaries, async error handling in components
-- `docs/stack-patterns/supabase-patterns.md` - Database error patterns, RLS, authorization
-- `docs/stack-patterns/forms-patterns.md` - Form validation with Zod, error feedback
-- `docs/stack-patterns/typescript-patterns.md` - Type-safe error handling, no `any` types
-- `docs/stack-patterns/architecture-patterns.md` - Server action patterns, error propagation
+- `docs/ruls/react.md` - Error boundaries, async error handling in components
+- `docs/ruls/supabase.md` - Database error patterns, RLS, authorization
+- `docs/ruls/forms.md` - Form validation with Zod, error feedback
+- `docs/ruls/typescript.md` - Type-safe error handling, no `any` types
+- `docs/ruls/architecture.md` - Server action patterns, error propagation
 
 ## Special Considerations for ENORAE
 

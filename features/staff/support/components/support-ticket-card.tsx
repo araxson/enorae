@@ -30,54 +30,48 @@ export function SupportTicketCard() {
           <div className="grid gap-2">
             <Label>Priority</Label>
             <RadioGroup defaultValue="standard" className="grid grid-cols-3 gap-3">
-              <Card>
-                <CardHeader className="space-y-0">
-                  <div className="flex items-start gap-3">
-                    <RadioGroupItem
-                      id="priority-low"
-                      value="low"
-                      aria-labelledby="priority-low-title"
-                      aria-describedby="priority-low-description"
-                    />
-                    <div className="space-y-1">
-                      <CardTitle id="priority-low-title">Low</CardTitle>
-                      <CardDescription id="priority-low-description">Informational</CardDescription>
-                    </div>
+              <div className="flex flex-col gap-2 rounded-lg border p-3">
+                <div className="flex items-start gap-3">
+                  <RadioGroupItem
+                    id="priority-low"
+                    value="low"
+                    aria-labelledby="priority-low-title"
+                    aria-describedby="priority-low-description"
+                  />
+                  <div className="space-y-1">
+                    <h4 className="font-semibold" id="priority-low-title">Low</h4>
+                    <p className="text-sm text-muted-foreground" id="priority-low-description">Informational</p>
                   </div>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader className="space-y-0">
-                  <div className="flex items-start gap-3">
-                    <RadioGroupItem
-                      id="priority-standard"
-                      value="standard"
-                      aria-labelledby="priority-standard-title"
-                      aria-describedby="priority-standard-description"
-                    />
-                    <div className="space-y-1">
-                      <CardTitle id="priority-standard-title">Standard</CardTitle>
-                      <CardDescription id="priority-standard-description">Needs attention</CardDescription>
-                    </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 rounded-lg border p-3">
+                <div className="flex items-start gap-3">
+                  <RadioGroupItem
+                    id="priority-standard"
+                    value="standard"
+                    aria-labelledby="priority-standard-title"
+                    aria-describedby="priority-standard-description"
+                  />
+                  <div className="space-y-1">
+                    <h4 className="font-semibold" id="priority-standard-title">Standard</h4>
+                    <p className="text-sm text-muted-foreground" id="priority-standard-description">Needs attention</p>
                   </div>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader className="space-y-0">
-                  <div className="flex items-start gap-3">
-                    <RadioGroupItem
-                      id="priority-urgent"
-                      value="urgent"
-                      aria-labelledby="priority-urgent-title"
-                      aria-describedby="priority-urgent-description"
-                    />
-                    <div className="space-y-1">
-                      <CardTitle id="priority-urgent-title">Urgent</CardTitle>
-                      <CardDescription id="priority-urgent-description">Blocking work</CardDescription>
-                    </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 rounded-lg border p-3">
+                <div className="flex items-start gap-3">
+                  <RadioGroupItem
+                    id="priority-urgent"
+                    value="urgent"
+                    aria-labelledby="priority-urgent-title"
+                    aria-describedby="priority-urgent-description"
+                  />
+                  <div className="space-y-1">
+                    <h4 className="font-semibold" id="priority-urgent-title">Urgent</h4>
+                    <p className="text-sm text-muted-foreground" id="priority-urgent-description">Blocking work</p>
                   </div>
-                </CardHeader>
-              </Card>
+                </div>
+              </div>
             </RadioGroup>
           </div>
 
@@ -101,22 +95,22 @@ export function SupportTicketCard() {
             <Textarea id="ticket-details" rows={4} placeholder="Share the exact error, steps to reproduce, or screenshots." />
           </div>
 
-          <Card>
-            <CardHeader className="space-y-1">
-              <CardTitle id="attach-logs-title">Attach logs automatically</CardTitle>
-              <CardDescription id="attach-logs-description">
+          <div className="flex flex-col gap-3 rounded-lg border p-4">
+            <div className="space-y-1">
+              <h4 className="font-semibold" id="attach-logs-title">Attach logs automatically</h4>
+              <p className="text-sm text-muted-foreground" id="attach-logs-description">
                 Include the last 10 events from your activity timeline.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-end">
+              </p>
+            </div>
+            <div className="flex justify-end">
               <Switch
                 id="attach-logs"
                 defaultChecked
                 aria-labelledby="attach-logs-title"
                 aria-describedby="attach-logs-description"
               />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div className="flex items-center gap-2">
             <Button type="submit">Submit ticket</Button>

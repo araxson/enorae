@@ -73,7 +73,7 @@ export async function upsertStaffSchedule(
 
     if (error) throw error
 
-    revalidatePath('/business/staff-schedules')
+    revalidatePath('/business/staff-schedules', 'page')
     return { success: true }
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to save schedule'
@@ -98,7 +98,7 @@ export async function deleteStaffSchedule(
 
     if (error) throw error
 
-    revalidatePath('/business/staff-schedules')
+    revalidatePath('/business/staff-schedules', 'page')
     return { success: true }
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to delete schedule'
@@ -124,7 +124,7 @@ export async function toggleScheduleActive(
 
     if (error) throw error
 
-    revalidatePath('/business/staff-schedules')
+    revalidatePath('/business/staff-schedules', 'page')
     return { success: true }
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to update schedule'

@@ -181,13 +181,13 @@ export function AdvancedSearchClient({
       {/* No Results */}
       {results.length === 0 && searchTerm && (
         <Card>
-          <CardHeader className="items-center text-center">
+          <CardHeader className="items-center justify-center">
             <CardTitle>No salons found</CardTitle>
             <CardDescription>
               No salons match your filters right now.
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-sm text-muted-foreground text-center">
+          <CardContent className="flex items-center justify-center">
             Try searching a nearby city or lowering your rating threshold.
           </CardContent>
         </Card>

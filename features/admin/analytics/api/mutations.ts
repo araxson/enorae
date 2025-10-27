@@ -13,6 +13,6 @@ export async function refreshAnalytics() {
   // Verify admin authorization
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  revalidatePath('/admin/analytics')
+  revalidatePath('/admin/analytics', 'page')
   return { success: true }
 }

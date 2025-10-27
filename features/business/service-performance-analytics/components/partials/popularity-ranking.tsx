@@ -35,7 +35,7 @@ export function PopularityRanking({ services, formatCurrency }: PopularityRankin
               <div className="flex items-center gap-3">
                 <Badge variant={index === 0 ? 'default' : 'outline'}>#{index + 1}</Badge>
                 <div>
-                  <h4>{service.service_name}</h4>
+                  <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">{service.service_name}</h4>
                   <p className="text-muted-foreground">
                     Popularity: {service.popularity_score?.toFixed(0) || 0}
                   </p>

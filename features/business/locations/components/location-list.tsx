@@ -58,7 +58,7 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
   if (locations.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>No salon locations found</CardTitle>
           <CardDescription>Add your first location to manage scheduling and staff.</CardDescription>
         </CardHeader>

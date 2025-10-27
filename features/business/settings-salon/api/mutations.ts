@@ -60,8 +60,8 @@ export async function updateSalonInfo(salonId: string, formData: FormData) {
 
     if (error) throw error
 
-    revalidatePath('/business/settings/salon')
-    revalidatePath('/business/dashboard')
+    revalidatePath('/business/settings/salon', 'page')
+    revalidatePath('/business/dashboard', 'layout')
 
     return { success: true }
   } catch (error) {

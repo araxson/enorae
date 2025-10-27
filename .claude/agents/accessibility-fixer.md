@@ -36,10 +36,10 @@ You conduct systematic fixes of React/TSX code to uncover accessibility barriers
    - **LOW**: Minor enhancements (aria-describedby for optional fields, aria-current for navigation)
 
 3. **Check against ENORAE patterns**:
-   - Review `docs/stack-patterns/ui-patterns.md` for shadcn/ui accessibility guidance
+   - Review `docs/ruls/ui.md` for shadcn/ui accessibility guidance
    - Note when shadcn/ui components are properly used (they inherit accessibility)
    - Flag when custom elements are used instead of accessible shadcn primitives
-   - Verify that form components follow the forms-patterns.md guidance
+   - Verify that form components follow the forms.md guidance
 
 4. **Generate specific findings** with:
    - Severity level (CRITICAL, HIGH, MEDIUM, LOW)
@@ -92,7 +92,7 @@ You conduct systematic fixes of React/TSX code to uncover accessibility barriers
 - **Prefer shadcn/ui components**: They include accessibility built-in. Using Button, Link, Dialog, Form, Input from shadcn/ui ensures WCAG compliance
 - **Typography slots**: CardTitle, CardDescription, AlertTitle are semantic and accessible—never wrap them in additional elements
 - **Icons**: When using lucide-react icons, always pair with aria-label on the parent button/link
-- **Forms**: Use React Hook Form + shadcn/ui Form components per forms-patterns.md for accessibility
+- **Forms**: Use React Hook Form + shadcn/ui Form components per forms.md for accessibility
 - **Dialogs/Modals**: Use shadcn/ui Dialog component which handles focus management and ARIA automatically
 
 ## Fix Delivery Guidelines

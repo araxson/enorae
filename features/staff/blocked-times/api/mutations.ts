@@ -39,8 +39,8 @@ export async function createBlockedTime(data: BlockedTimeFormData) {
 
   if (error) throw error
 
-  revalidatePath('/staff/blocked-times')
-  revalidatePath('/staff/schedule')
+  revalidatePath('/staff/blocked-times', 'page')
+  revalidatePath('/staff/schedule', 'page')
 }
 
 export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
@@ -78,8 +78,8 @@ export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
 
   if (error) throw error
 
-  revalidatePath('/staff/blocked-times')
-  revalidatePath('/staff/schedule')
+  revalidatePath('/staff/blocked-times', 'page')
+  revalidatePath('/staff/schedule', 'page')
 }
 
 export async function deleteBlockedTime(id: string) {
@@ -112,6 +112,6 @@ export async function deleteBlockedTime(id: string) {
 
   if (error) throw error
 
-  revalidatePath('/staff/blocked-times')
-  revalidatePath('/staff/schedule')
+  revalidatePath('/staff/blocked-times', 'page')
+  revalidatePath('/staff/schedule', 'page')
 }

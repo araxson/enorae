@@ -56,8 +56,8 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-4 pt-4">
               <div className="space-y-2">
-                <Label className="text-sm">
-                  Price range: ${priceRange[0]} - ${priceRange[1]}
+                <Label>
+                  <span className="text-sm">Price range: ${priceRange[0]} - ${priceRange[1]}</span>
                 </Label>
                 <Slider
                   value={priceRange}

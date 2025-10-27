@@ -41,13 +41,13 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
   if (salons.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>No salons found</CardTitle>
           <CardDescription>
             Try adjusting your search filters or check back later for new salons.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col items-center gap-3 text-sm text-muted-foreground">
+        <CardContent className="flex flex-col items-center justify-center gap-3">
           <Search className="h-12 w-12" aria-hidden="true" />
           <span>Tip: update your filters or expand your search area.</span>
         </CardContent>

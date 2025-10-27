@@ -80,7 +80,7 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
   if (rules.length === 0) {
     return (
       <Card>
-        <CardHeader className="text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>No pricing rules configured yet.</CardTitle>
           <CardDescription>Create your first dynamic pricing rule to optimize revenue.</CardDescription>
         </CardHeader>

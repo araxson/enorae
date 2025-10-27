@@ -77,7 +77,7 @@ export async function upsertBookingRule(formData: FormData) {
 
     if (upsertError) return { error: upsertError.message }
 
-    revalidatePath('/business/services/booking-rules')
+    revalidatePath('/business/services/booking-rules', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to save rule' }

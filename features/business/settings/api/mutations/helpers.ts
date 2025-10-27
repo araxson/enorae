@@ -25,6 +25,6 @@ export async function getSalonContext(salonId: string) {
 }
 
 export function revalidateSettings() {
-  revalidatePath('/business/settings')
-  revalidatePath('/business/dashboard')
+  revalidatePath('/business/settings', 'page')
+  revalidatePath('/business/dashboard', 'layout')
 }

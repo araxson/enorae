@@ -63,7 +63,7 @@ export async function createServiceCategory(formData: FormData) {
 
     if (insertError) return { error: insertError.message }
 
-    revalidatePath('/business/services/categories')
+    revalidatePath('/business/services/categories', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to create category' }
@@ -120,7 +120,7 @@ export async function updateServiceCategory(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/business/services/categories')
+    revalidatePath('/business/services/categories', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to update category' }
@@ -167,7 +167,7 @@ export async function deleteServiceCategory(formData: FormData) {
 
     if (deleteError) return { error: deleteError.message }
 
-    revalidatePath('/business/services/categories')
+    revalidatePath('/business/services/categories', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to delete category' }

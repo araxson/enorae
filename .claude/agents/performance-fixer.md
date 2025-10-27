@@ -122,10 +122,10 @@ export default function Page() {
 ## Stack Pattern Alignment
 
 When fixing issues, reference:
-- `docs/stack-patterns/react-patterns.md` - React hooks, memoization, optimization patterns
-- `docs/stack-patterns/architecture-patterns.md` - Page shells (5-15 lines), feature organization, data flow
-- `docs/stack-patterns/supabase-patterns.md` - Query batching, RLS scoping, avoiding over-fetching
-- `docs/stack-patterns/nextjs-patterns.md` - Server Components for data, lazy loading, route optimization
+- `docs/ruls/react.md` - React hooks, memoization, optimization patterns
+- `docs/ruls/architecture.md` - Page shells (5-15 lines), feature organization, data flow
+- `docs/ruls/supabase.md` - Query batching, RLS scoping, avoiding over-fetching
+- `docs/ruls/nextjs.md` - Server Components for data, lazy loading, route optimization
 
 ## Fix Delivery Guidelines
 

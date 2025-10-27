@@ -16,7 +16,7 @@ export function LastUpdated() {
   }, [])
 
   return (
-    <p className="text-sm text-muted-foreground flex items-center gap-1 text-xs">
+    <p className="text-xs text-muted-foreground flex items-center gap-1">
       <Clock className="h-3 w-3" />
       Updated {formatDistanceToNow(time, { addSuffix: true })}
     </p>

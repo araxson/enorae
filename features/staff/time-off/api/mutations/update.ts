@@ -75,7 +75,7 @@ export async function updateTimeOffRequest(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/staff/time-off')
+    revalidatePath('/staff/time-off', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to update request' }

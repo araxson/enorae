@@ -1,6 +1,13 @@
 import { Fragment } from 'react'
 
 import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -311,21 +318,22 @@ export function ValidityFields({
             Lower numbers execute first when multiple rules apply (current target: {selectedServiceName}).
           </p>
         </div>
-        <div className="flex items-center justify-between rounded-md border px-4 py-3">
-          <div>
-            <Label htmlFor="is_active" className="text-base">
-              Active Rule
-            </Label>
-            <p className="text-sm text-muted-foreground">Deactivate to save rule for later use.</p>
-          </div>
-          <Switch
-            id="is_active"
-            checked={formData.is_active}
-            onCheckedChange={(checked) =>
-              setFormData((current) => ({ ...current, is_active: checked }))
-            }
-          />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle id="active-rule-title">Active rule</CardTitle>
+            <CardDescription>Deactivate to save rule for later use.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-end">
+            <Switch
+              id="is_active"
+              aria-labelledby="active-rule-title"
+              checked={formData.is_active}
+              onCheckedChange={(checked) =>
+                setFormData((current) => ({ ...current, is_active: checked }))
+              }
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

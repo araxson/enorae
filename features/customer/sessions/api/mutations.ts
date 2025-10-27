@@ -61,8 +61,8 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
 
     if (error) throw error
 
-    revalidatePath('/customer/settings/sessions')
-    revalidatePath('/staff/settings/sessions')
+    revalidatePath('/customer/settings/sessions', 'page')
+    revalidatePath('/staff/settings/sessions', 'page')
 
     return { success: true, data: undefined }
   } catch (error) {
@@ -116,8 +116,8 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
 
     if (error) throw error
 
-    revalidatePath('/customer/settings/sessions')
-    revalidatePath('/staff/settings/sessions')
+    revalidatePath('/customer/settings/sessions', 'page')
+    revalidatePath('/staff/settings/sessions', 'page')
 
     return {
       success: true,

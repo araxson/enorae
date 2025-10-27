@@ -31,20 +31,48 @@ export async function getServicePricing(): Promise<ServicePricingWithService[]> 
 
   const { data, error } = await supabase
     .from('service_pricing_view')
-    .select(`
-      *,
-      service:services!fk_service_pricing_service(
-        id,
-        name,
-        description
-      )
-    `)
-    .eq('services.salon_id', staffProfile.salon_id)
+    .select('*')
+    .eq('salon_id', staffProfile.salon_id)
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return data as ServicePricingWithService[]
+
+  // Fetch service details separately for each pricing record
+  if (!data) return []
+
+  const pricingWithServices: ServicePricingWithService[] = []
+  for (const pricing of data) {
+    if (!pricing.service_id) {
+      pricingWithServices.push({
+        ...pricing,
+        service: null,
+      })
+      continue
+    }
+
+    const { data: serviceData } = await supabase
+      .from('services_view')
+      .select('id, name, description, salon_id')
+      .eq('id', pricing.service_id)
+      .single()
+
+    const service = serviceData && serviceData.id && serviceData.name
+      ? {
+          id: serviceData.id,
+          name: serviceData.name,
+          description: serviceData.description,
+          salon_id: serviceData.salon_id,
+        }
+      : null
+
+    pricingWithServices.push({
+      ...pricing,
+      service,
+    })
+  }
+
+  return pricingWithServices
 }
 
 /**
@@ -68,26 +96,34 @@ export async function getServicePricingByServiceId(
 
   const { data, error } = await supabase
     .from('service_pricing_view')
-    .select(`
-      *,
-      service:services!fk_service_pricing_service(
-        id,
-        name,
-        description,
-        salon_id
-      )
-    `)
+    .select('*')
     .eq('service_id', serviceId)
     .is('deleted_at', null)
-    .single<ServicePricingWithService>()
+    .single()
 
   if (error) throw error
+  if (!data) return null
 
-  if (data?.service?.salon_id !== staffProfile.salon_id) {
-    throw new Error('Unauthorized: Service not found for your salon')
+  // Fetch service details
+  let service = null
+  if (data.service_id) {
+    const { data: serviceData } = await supabase
+      .from('services_view')
+      .select('id, name, description, salon_id')
+      .eq('id', data.service_id)
+      .single()
+
+    service = serviceData || null
+
+    if (service?.salon_id !== staffProfile.salon_id) {
+      throw new Error('Unauthorized: Service not found for your salon')
+    }
   }
 
-  return data as ServicePricingWithService
+  return {
+    ...data,
+    service: service || null,
+  } as ServicePricingWithService
 }
 
 /**
@@ -111,24 +147,32 @@ export async function getServicePricingById(
 
   const { data, error } = await supabase
     .from('service_pricing_view')
-    .select(`
-      *,
-      service:services!fk_service_pricing_service(
-        id,
-        name,
-        description,
-        salon_id
-      )
-    `)
+    .select('*')
     .eq('id', id)
     .is('deleted_at', null)
-    .single<ServicePricingWithService>()
+    .single()
 
   if (error) throw error
+  if (!data) return null
 
-  if (data?.service?.salon_id !== staffProfile.salon_id) {
-    throw new Error('Unauthorized: Pricing not found for your salon')
+  // Fetch service details
+  let service = null
+  if (data.service_id) {
+    const { data: serviceData } = await supabase
+      .from('services_view')
+      .select('id, name, description, salon_id')
+      .eq('id', data.service_id)
+      .single()
+
+    service = serviceData || null
+
+    if (service?.salon_id !== staffProfile.salon_id) {
+      throw new Error('Unauthorized: Pricing not found for your salon')
+    }
   }
 
-  return data as ServicePricingWithService
+  return {
+    ...data,
+    service: service || null,
+  } as ServicePricingWithService
 }

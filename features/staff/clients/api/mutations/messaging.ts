@@ -112,7 +112,7 @@ export async function messageClient(
       })
       .eq('id', threadId)
 
-    revalidatePath('/staff/clients')
+    revalidatePath('/staff/clients', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error messaging client:', error)

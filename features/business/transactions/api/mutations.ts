@@ -12,9 +12,7 @@ const manualTransactionSchema = z.object({
   customer_id: z.string().regex(UUID_REGEX, 'Invalid customer ID').optional(),
   staff_id: z.string().regex(UUID_REGEX, 'Invalid staff ID').optional(),
   transaction_at: z.string().min(1, 'Transaction date is required'),
-  transaction_type: z.enum(['payment', 'refund', 'adjustment', 'fee', 'other'], {
-    errorMap: () => ({ message: 'Invalid transaction type' }),
-  }),
+  transaction_type: z.enum(['payment', 'refund', 'adjustment', 'fee', 'other']),
   payment_method: z.string().min(1, 'Payment method is required'),
 })
 
@@ -121,7 +119,7 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
       customerId: validated.customer_id
     })
 
-    revalidatePath('/business/analytics/transactions')
+    revalidatePath('/business/analytics/transactions', 'page')
 
     return { success: true, data }
   } catch (error) {
@@ -214,7 +212,7 @@ export async function deleteManualTransaction(id: string): Promise<ActionResult>
       salonId: staffProfile.salon_id
     })
 
-    revalidatePath('/business/analytics/transactions')
+    revalidatePath('/business/analytics/transactions', 'page')
 
     return { success: true }
   } catch (error) {

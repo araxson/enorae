@@ -28,7 +28,7 @@ export async function DatabaseHealth() {
       <section className="py-12 md:py-16 lg:py-20">
         <div className="container mx-auto">
           <div className="flex flex-col gap-6">
-            <h1>Database Health Monitor</h1>
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Database Health Monitor</h1>
 
             <HealthOverview snapshot={snapshot} />
 

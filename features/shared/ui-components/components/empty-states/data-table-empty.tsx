@@ -20,7 +20,7 @@ export function DataTableEmpty({
 }: DataTableEmptyProps) {
   return (
     <Card>
-      <CardHeader className="text-center">
+      <CardHeader className="items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           {Icon && <Icon className="h-12 w-12 text-muted-foreground" />}
           <CardTitle>{title}</CardTitle>

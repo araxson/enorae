@@ -56,8 +56,8 @@ export async function updateAppointmentStatus(
 
   if (error) throw error
 
-  revalidatePath('/staff/appointments')
-  revalidatePath('/staff')
+  revalidatePath('/staff/appointments', 'page')
+  revalidatePath('/staff', 'layout')
   return { success: true }
 }
 
@@ -117,8 +117,8 @@ export async function cancelAppointment(appointmentId: string) {
 
   if (error) throw error
 
-  revalidatePath('/staff/appointments')
-  revalidatePath('/staff')
+  revalidatePath('/staff/appointments', 'page')
+  revalidatePath('/staff', 'layout')
   return { success: true }
 }
 
@@ -164,6 +164,7 @@ export async function addAppointmentNotes(
 
     // Store notes in message_threads metadata for appointment
     const { data: existingThread } = await supabase
+      .schema('communication')
       .from('message_threads')
       .select('id, metadata')
       .eq('appointment_id', appointmentId)
@@ -213,8 +214,8 @@ export async function addAppointmentNotes(
       if (threadError) throw threadError
     }
 
-    revalidatePath('/staff/appointments')
-    revalidatePath(`/staff/appointments/${appointmentId}`)
+    revalidatePath('/staff/appointments', 'page')
+    revalidatePath(`/staff/appointments/${appointmentId}`, 'page')
     return { success: true }
   } catch (error) {
     console.error('Error adding appointment notes:', error)

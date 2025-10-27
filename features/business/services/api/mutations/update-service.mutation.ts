@@ -203,6 +203,6 @@ export async function updateService(
     }
   }
 
-  revalidatePath('/business/services')
+  revalidatePath('/business/services', 'page')
   return { success: true }
 }

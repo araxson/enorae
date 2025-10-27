@@ -33,7 +33,7 @@ export function CouponServicesSection({
                 const checkboxId = `coupon-service-${service.id}`
                 return (
                   <div key={service.id} className="flex items-center justify-between rounded-md px-2 py-1">
-                    <Label htmlFor={checkboxId} className="text-sm font-medium">
+                    <Label htmlFor={checkboxId}>
                       {service.name}
                     </Label>
                     <Checkbox

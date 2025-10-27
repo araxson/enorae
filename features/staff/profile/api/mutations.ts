@@ -72,7 +72,7 @@ export async function updateStaffInfo(formData: FormData): Promise<ActionRespons
       throw updateError
     }
 
-    revalidatePath('/staff/profile')
+    revalidatePath('/staff/profile', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error updating staff info:', error)
@@ -124,7 +124,7 @@ export async function updateStaffMetadata(
 
     if (error) throw error
 
-    revalidatePath('/staff/profile')
+    revalidatePath('/staff/profile', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error updating staff metadata:', error)
@@ -187,7 +187,7 @@ export async function uploadPortfolioImage(formData: FormData): Promise<ActionRe
     // Portfolio images are stored only in the storage bucket for now
     // A future enhancement would require adding a separate portfolio_images table or extending salon_media
 
-    revalidatePath('/staff/profile')
+    revalidatePath('/staff/profile', 'page')
     return { success: true, data: publicUrl }
   } catch (error) {
     console.error('Error uploading portfolio image:', error)

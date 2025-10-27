@@ -138,14 +138,14 @@ export function RankingList({
                   <div>
                     <div className="font-medium">{item.name}</div>
                     {item.subtitle && (
-                      <p className="text-sm text-muted-foreground text-xs">{item.subtitle}</p>
+                      <p className="text-xs text-muted-foreground">{item.subtitle}</p>
                     )}
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="font-semibold">{formatValue(item.value)}</div>
                   {item.metric && (
-                    <p className="text-sm text-muted-foreground text-xs">{item.metric}</p>
+                    <p className="text-xs text-muted-foreground">{item.metric}</p>
                   )}
                 </div>
               </div>

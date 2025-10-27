@@ -57,7 +57,7 @@ export async function approveTimeOffRequest(requestId: string, notes?: string): 
 
     if (error) throw error
 
-    revalidatePath('/business/time-off')
+    revalidatePath('/business/time-off', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to approve request' }
@@ -114,7 +114,7 @@ export async function rejectTimeOffRequest(requestId: string, notes: string): Pr
 
     if (error) throw error
 
-    revalidatePath('/business/time-off')
+    revalidatePath('/business/time-off', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to reject request' }

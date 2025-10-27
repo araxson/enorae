@@ -26,8 +26,8 @@ export function RegionalSettings({
         Regional Settings
       </Label>
       <div className="flex flex-col gap-4">
-        <div>
-          <Label htmlFor="timezone" className="text-sm mb-2 block">
+        <div className="space-y-2">
+          <Label htmlFor="timezone">
             Timezone
           </Label>
           <Select value={timezone} onValueChange={onTimezoneChange}>
@@ -46,8 +46,8 @@ export function RegionalSettings({
           </Select>
         </div>
 
-        <div>
-          <Label htmlFor="locale" className="text-sm mb-2 block">
+        <div className="space-y-2">
+          <Label htmlFor="locale">
             Language
           </Label>
           <Select value={locale} onValueChange={onLocaleChange}>
@@ -65,8 +65,8 @@ export function RegionalSettings({
           </Select>
         </div>
 
-        <div>
-          <Label htmlFor="currency" className="text-sm mb-2 flex items-center gap-2">
+        <div className="space-y-2">
+          <Label htmlFor="currency" className="flex items-center gap-2">
             <DollarSign className="h-4 w-4" />
             Currency
           </Label>

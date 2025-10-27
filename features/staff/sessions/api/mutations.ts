@@ -32,7 +32,7 @@ export async function revokeSession(sessionId: string) {
 
   if (error) throw error
 
-  revalidatePath('/staff/settings/sessions')
+  revalidatePath('/staff/settings/sessions', 'page')
 }
 
 export async function revokeAllSessions() {
@@ -67,5 +67,5 @@ export async function revokeAllSessions() {
 
   if (error) throw error
 
-  revalidatePath('/staff/settings/sessions')
+  revalidatePath('/staff/settings/sessions', 'page')
 }

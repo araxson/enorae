@@ -28,7 +28,7 @@ export async function updateProfileMetadata(formData: FormData) {
 
   if (error) throw error
 
-  revalidatePath('/customer/profile')
+  revalidatePath('/customer/profile', 'page')
   return { success: true }
 }
 
@@ -47,7 +47,7 @@ export async function updateProfileAvatar(avatarUrl: string) {
 
   if (error) throw error
 
-  revalidatePath('/customer/profile')
+  revalidatePath('/customer/profile', 'page')
   return { success: true }
 }
 
@@ -87,6 +87,6 @@ export async function updateProfilePreferences(formData: FormData) {
 
   if (error) throw error
 
-  revalidatePath('/customer/settings/preferences')
+  revalidatePath('/customer/settings/preferences', 'page')
   return { success: true }
 }

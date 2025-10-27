@@ -61,7 +61,7 @@ export async function getTodayAppointments(staffId: string): Promise<Appointment
     .order('start_time', { ascending: true })
 
   if (error) throw error
-  return data || []
+  return (data || []) as AppointmentWithDetails[]
 }
 
 export async function getUpcomingAppointments(staffId: string): Promise<AppointmentWithDetails[]> {
@@ -83,7 +83,7 @@ export async function getUpcomingAppointments(staffId: string): Promise<Appointm
     .limit(10)
 
   if (error) throw error
-  return data || []
+  return (data || []) as AppointmentWithDetails[]
 }
 
 export async function getStaffMetrics(staffId: string): Promise<StaffMetricsSummary> {

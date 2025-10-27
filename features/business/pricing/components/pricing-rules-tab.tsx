@@ -40,7 +40,7 @@ export function PricingRulesTab({ rules }: PricingRulesTabProps) {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="h-3 w-3" />
-                    <p className="text-base mt-0 text-sm text-muted-foreground">
+                    <p className="text-sm mt-0 text-muted-foreground">
                       {formatTime(rule.hour_start)} - {formatTime(rule.hour_end)}
                     </p>
                   </div>

@@ -11,7 +11,7 @@
 **Key Inputs:**
 - `mcp__supabase__get_advisors`
 - Project configuration references under `supabase/config`
-- Related pattern guides in `docs/stack-patterns/`
+- Related pattern guides in `docs/ruls/`
 
 **Error Remediation Checklist:**
 1. Categorize each advisor warning (security, performance, maintenance).

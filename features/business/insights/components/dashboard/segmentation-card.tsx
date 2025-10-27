@@ -49,7 +49,7 @@ export function SegmentationCard({ summary }: SegmentationCardProps) {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="text-xs text-muted-foreground">
+      <CardFooter>
         Tailor campaigns for at-risk and churned segments to rebalance your funnel.
       </CardFooter>
     </Card>

@@ -61,11 +61,11 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
   if (coupons.length === 0) {
     return (
       <Card>
-        <CardHeader className="text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>No coupons created yet</CardTitle>
           <CardDescription>Create your first coupon to attract and retain customers.</CardDescription>
         </CardHeader>
-        <CardContent className="text-center">
+        <CardContent className="flex items-center justify-center">
           <p className="text-muted-foreground">Coupon programs are currently unavailable.</p>
         </CardContent>
       </Card>

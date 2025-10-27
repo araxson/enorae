@@ -14,7 +14,7 @@ You are a Code Quality Expert specializing in identifying naming violations, cod
 2. **Detect Magic Values** - Locate magic numbers and strings that lack explanation or named constants
 3. **Find Code Smells** - Identify TODO/FIXME comments, overly complex functions, and poor naming patterns
 4. **Check Boolean Conventions** - Ensure boolean variables use "is/has/can" prefixes
-5. **Validate ENORAE Patterns** - Verify code follows standards from `docs/stack-patterns/typescript-patterns.md`
+5. **Validate ENORAE Patterns** - Verify code follows standards from `docs/ruls/typescript.md`
 
 ## Issues to Search For
 
@@ -90,9 +90,9 @@ You are a Code Quality Expert specializing in identifying naming violations, cod
 ## Integration with ENORAE Patterns
 
 Always reference:
-- `docs/stack-patterns/typescript-patterns.md` for naming standards
-- `docs/stack-patterns/file-organization-patterns.md` for structure
-- `docs/stack-patterns/architecture-patterns.md` for function organization
+- `docs/ruls/typescript.md` for naming standards
+- `docs/ruls/file-organization.md` for structure
+- `docs/ruls/architecture.md` for function organization
 
 If code violates these patterns, cite the specific pattern and explain the violation.
 

@@ -1,13 +1,14 @@
 # Next.js Patterns
 
-**Standalone reference for Next.js 15 App Router patterns. No external dependencies.**
+**Standalone reference for Next.js 16 App Router patterns. No external dependencies.**
 
 ---
 
 ## Stack Context
 
-- **Next.js:** 15.5.4 (App Router)
-- **React:** 19.1.0 (Server-first architecture)
+- **Next.js:** 16.0.0 (App Router with Turbopack)
+- **React:** 19.2.0 (Server-first architecture)
+- **Node.js:** 20.9.0+ (Required minimum)
 - **Routing Model:** File-system driven, async `params`, streaming by default
 
 ---
@@ -23,17 +24,19 @@
 7. [Server Actions & Forms](#server-actions--forms)
 8. [Data Fetching & Streaming](#data-fetching--streaming)
 9. [Caching & Revalidation](#caching--revalidation)
-10. [Detection Commands](#detection-commands)
-11. [Complete Examples](#complete-examples)
+10. [Next.js 16 Breaking Changes](#nextjs-16-breaking-changes)
+11. [Detection Commands](#detection-commands)
+12. [Complete Examples](#complete-examples)
 
 ---
 
 ## App Router Fundamentals
 
-- **Async boundaries everywhere.** Route segments, layouts, and pages can be async. `params` and `searchParams` are **promises**—you must `await` or `use()` them before destructuring.
+- **Async boundaries everywhere.** Route segments, layouts, and pages can be async. `params` and `searchParams` are **promises**—you must `await` them before destructuring.
 - **Server Components by default.** The App Router renders React Server Components (RSC) and only hydrates islands that opt into `'use client'`.
 - **Streaming-first.** Every page segment renders inside `Suspense`. Provide fallbacks (`loading.tsx`, `<Suspense fallback={...}>`) to avoid waterfalls.
 - **Colocation-friendly.** Co-locate layouts, error boundaries, and metadata with routes without increasing bundle size.
+- **Turbopack default.** 2-5× faster production builds, up to 10× faster Fast Refresh.
 
 ---
 
@@ -41,17 +44,19 @@
 
 | File | Purpose | Notes |
 | --- | --- | --- |
-| `layout.tsx` | Persistent shell for a segment | Can be async; use `use(params)` to unwrap promises inside synchronous layouts. |
+| `layout.tsx` | Persistent shell for a segment | Can be async; params/searchParams are promises. |
 | `page.tsx` | Route entry point | Keep to imports + JSX; delegate logic to features. |
 | `loading.tsx` | Suspense fallback | Server component; render skeletons. |
 | `error.tsx` | Error boundary UI | Must be `'use client'`; use `useEffect` for logging. |
 | `not-found.tsx` | 404 for a segment | Server component; used by `notFound()`. |
-| `default.tsx` | Parallel route fallback | Return `null` or placeholder while slot is inactive. |
+| `default.tsx` | Parallel route fallback | **REQUIRED** in Next.js 16 for all parallel slots. Return `null` or placeholder. |
 | `route.ts` | API/Route handler | Export HTTP methods (`GET`, `POST`, etc.). |
 | `generateMetadata.ts` (optional) | Segment metadata | Accepts `{ params, searchParams }` (promises). Return `Metadata`. |
 | `template.tsx` | Re-render on navigation | Useful for entry animations; not cached between routes. |
 
 **Rule:** Only create the files you need. Missing files fall back to parents (e.g., no `loading.tsx` uses ancestor fallback).
+
+**⚠️ Next.js 16:** All parallel route slots (@slot) MUST have a `default.tsx` file or build will fail.
 
 ---
 
@@ -67,8 +72,12 @@
   app/
   ├── layout.tsx
   ├── page.tsx
-  ├── @analytics/page.tsx
-  └── @notifications/page.tsx
+  ├── @analytics/
+  │   ├── default.tsx      ← REQUIRED in Next.js 16
+  │   └── page.tsx
+  └── @notifications/
+      ├── default.tsx      ← REQUIRED in Next.js 16
+      └── page.tsx
   ```
   Layout signature must accept each slot: `({ children, analytics, notifications })`.
 
@@ -91,7 +100,9 @@ app/
 ```
 app/
 ├── photos/[id]/page.tsx
-└── @modal/(.)photos/[id]/page.tsx
+├── @modal/
+│   ├── default.tsx        ← REQUIRED in Next.js 16
+│   └── (.)photos/[id]/page.tsx
 ```
 
 - `(.)` intercepts sibling segments.
@@ -125,20 +136,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-### Segment Layout with Params
+### Segment Layout with Params (Next.js 16)
 
 ```tsx
 // app/(business)/[businessId]/layout.tsx
-import { use } from 'react'
-
-export default function BusinessLayout({
+export default async function BusinessLayout({
   children,
   params,
 }: {
   children: React.ReactNode
   params: Promise<{ businessId: string }>
 }) {
-  const { businessId } = use(params)
+  // ✅ Next.js 16: Must await params
+  const { businessId } = await params
 
   return (
     <section data-business={businessId}>{children}</section>
@@ -215,6 +225,20 @@ export default function NotFound() {
 }
 ```
 
+```tsx
+// default.tsx (for parallel routes)
+export default function Default() {
+  return null
+}
+
+// Or with notFound()
+import { notFound } from 'next/navigation'
+
+export default function Default() {
+  notFound()
+}
+```
+
 ---
 
 ## Metadata Patterns
@@ -226,7 +250,12 @@ export default function NotFound() {
 import type { Metadata } from 'next'
 import { getBusinessName } from '@/features/business/metadata'
 
-export async function generateMetadata({ params }: { params: Promise<{ businessId: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ businessId: string }>
+}): Promise<Metadata> {
+  // ✅ Next.js 16: Must await params
   const { businessId } = await params
   const name = await getBusinessName(businessId)
 
@@ -271,7 +300,7 @@ export function NameForm({ initialName }: { initialName: string }) {
 }
 ```
 
-Server Action example:
+Server Action example (Next.js 16):
 
 ```ts
 'use server'
@@ -282,7 +311,10 @@ import { revalidatePath, updateTag } from 'next/cache'
 
 export async function updateName(_: { message: string; value: string }, formData: FormData) {
   const name = formData.get('name')
+
+  // ✅ Next.js 16: Must await createClient()
   const supabase = await createClient()
+
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -303,8 +335,12 @@ export async function updateName(_: { message: string; value: string }, formData
     return { message: error.message, value: payload.data.name }
   }
 
+  // ✅ Next.js 16: Use updateTag for immediate refresh
   updateTag(`profile:${user.id}`)
-  revalidatePath('/settings/profile')
+
+  // ✅ Next.js 16: revalidatePath requires type parameter
+  revalidatePath('/settings/profile', 'page')
+
   return { message: '', value: payload.data.name }
 }
 ```
@@ -320,12 +356,14 @@ export async function updateName(_: { message: string; value: string }, formData
 | `fetch(url)` | Cached until route invalidation (`force-cache`). |
 | `fetch(url, { cache: 'no-store' })` | Always dynamic (SSR each request). |
 | `fetch(url, { next: { revalidate: 300 } })` | Static with background regeneration every 5 minutes. |
-| `fetch(url, { next: { tags: ['customers'] } })` | Cache keyed by tag; revalidate via `revalidateTag('customers')`. |
+| `fetch(url, { next: { tags: ['customers'] } })` | Cache keyed by tag; revalidate via `revalidateTag('customers', 'max')`. |
 
-### Parallel Fetching
+### Parallel Fetching (Next.js 16)
 
 ```ts
+// ✅ Next.js 16: Must await createClient()
 const supabase = await createClient()
+
 const [profile, appointments] = await Promise.all([
   supabase.from('profiles_view').select('*').single(),
   supabase.from('appointments_view').select('*').limit(20),
@@ -356,16 +394,63 @@ export default function Dashboard() {
 
 ## Caching & Revalidation
 
-### Cache Invalidation APIs
+### Cache Invalidation APIs (Next.js 16)
 
-- **`updateTag('tag')`** – Immediately expires tagged cache (Server Actions only)
-- **`revalidateTag('tag')`** – Stale-while-revalidate for all fetches tagged with `tag`
-- **`revalidateTag('tag', 'max')`** – Maximum staleness tolerance
-- **`revalidatePath('/route')`** – Regenerates the entire route subtree on next request
+- **`updateTag('tag')`** – Immediately expires tagged cache, read-your-writes semantics (Server Actions only)
+- **`revalidateTag('tag', 'max')`** – Stale-while-revalidate for all fetches tagged with `tag` (requires cache profile)
+- **`revalidatePath('/route', 'page')`** – Regenerates route on next request (requires type: 'page' | 'layout')
 - **`refresh()`** – Server Action helper to refresh the current client-side router cache
 - **`cacheTag('tag')`** – Attach a tag inside `'use cache'` functions for later invalidation
 
-> ⚠️ `updateTag` throws in Route Handlers—use `revalidateTag(tag, 'max')` there. It is only valid inside Server Actions per Next.js 15 docs.
+> ⚠️ **Next.js 16 Breaking Changes:**
+> - `revalidateTag()` now requires a second parameter: cache profile (`'max'`, `'hours'`, `'days'`, or custom)
+> - `revalidatePath()` now requires a second parameter: type (`'page'` or `'layout'`)
+> - `updateTag()` is new in Next.js 16 and only works in Server Actions
+
+### Cache Profile Options
+
+```ts
+// Built-in profiles
+'max'   // Recommended for most cases - maximum SWR tolerance
+'hours' // Revalidate after hours
+'days'  // Revalidate after days
+
+// Custom profile from next.config.ts
+'salons'    // If defined in config
+'analytics' // If defined in config
+
+// Inline object
+{ revalidate: 3600 } // 1 hour in seconds
+```
+
+### Configure Custom Cache Profiles
+
+```ts
+// next.config.ts
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  cacheLife: {
+    default: {
+      stale: 300,      // 5 minutes
+      revalidate: 900, // 15 minutes
+      expire: 3600,    // 1 hour
+    },
+    salons: {
+      stale: 900,       // 15 minutes
+      revalidate: 3600, // 1 hour
+      expire: 86400,    // 24 hours
+    },
+    analytics: {
+      stale: 3600,      // 1 hour
+      revalidate: 7200, // 2 hours
+      expire: 86400,    // 24 hours
+    },
+  },
+}
+
+export default nextConfig
+```
 
 ### Tag Naming Conventions
 
@@ -383,12 +468,14 @@ export default function Dashboard() {
 'stuff'                           // Meaningless
 ```
 
-### updateTag vs revalidateTag
+### updateTag vs revalidateTag (Next.js 16)
 
 ```ts
 // ✅ updateTag - Immediate consistency (read-your-writes)
 'use server'
 export async function createAppointment(data: AppointmentInput) {
+  const supabase = await createClient()
+
   const { data: appointment } = await supabase
     .from('appointments')
     .insert(data)
@@ -404,19 +491,22 @@ export async function createAppointment(data: AppointmentInput) {
 }
 
 // ✅ revalidateTag - Eventual consistency (background refresh)
+'use server'
 export async function incrementViewCount(appointmentId: string) {
+  const supabase = await createClient()
+
   await supabase
     .from('appointments')
     .update({ view_count: sql`view_count + 1` })
     .eq('id', appointmentId)
 
   // View count can update in background (not critical)
-  revalidateTag(`appointment:${appointmentId}`)
-  // Note: No redirect needed, just fire-and-forget
+  // ✅ Next.js 16: Requires cache profile
+  revalidateTag(`appointment:${appointmentId}`, 'max')
 }
 ```
 
-### cacheTag + 'use cache'
+### cacheTag + 'use cache' (Next.js 16)
 
 ```ts
 import { cacheTag } from 'next/cache'
@@ -428,24 +518,7 @@ export async function getDashboard() {
 }
 ```
 
-### Client Router Cache (staleTimes)
-
-```js
-// next.config.js
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    staleTimes: {
-      dynamic: 30, // seconds
-      static: 180,
-    },
-  },
-}
-
-module.exports = nextConfig
-```
-
-### Complete Cache Strategy Example
+### Complete Cache Strategy Example (Next.js 16)
 
 ```ts
 'use server'
@@ -456,7 +529,9 @@ import { redirect } from 'next/navigation'
 import { appointmentSchema } from '../schema'
 
 export async function createAppointment(input: unknown) {
+  // ✅ Next.js 16: Must await createClient()
   const supabase = await createClient()
+
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
@@ -480,11 +555,13 @@ export async function createAppointment(input: unknown) {
   updateTag(`business:${user.id}:dashboard`)
 
   // 3. Update related caches (background)
-  revalidateTag(`staff:${data.staff_id}:schedule`)
-  revalidateTag(`customer:${data.customer_id}:bookings`)
+  // ✅ Next.js 16: Requires cache profile
+  revalidateTag(`staff:${data.staff_id}:schedule`, 'max')
+  revalidateTag(`customer:${data.customer_id}:bookings`, 'max')
 
   // 4. Optional: Invalidate entire route (use sparingly)
-  // revalidatePath('/business/appointments')
+  // ✅ Next.js 16: Requires type parameter
+  // revalidatePath('/business/appointments', 'layout')
 
   redirect(`/business/appointments/${data.id}`)
 }
@@ -530,8 +607,32 @@ export async function deleteAppointment(id: string) {
   updateTag(`appointments:${user.id}`)
 
   // Redirect after delete
-  revalidatePath('/business/appointments')
+  // ✅ Next.js 16: Requires type parameter
+  revalidatePath('/business/appointments', 'layout')
   redirect('/business/appointments')
+}
+```
+
+### refresh() API (Next.js 16)
+
+```ts
+'use server'
+
+import { refresh } from 'next/cache'
+
+export async function markNotificationAsRead(notificationId: string) {
+  const supabase = await createClient()
+
+  // Update database
+  await supabase
+    .schema('communication')
+    .from('notifications')
+    .update({ read: true })
+    .eq('id', notificationId)
+
+  // Refresh uncached notification count in header
+  // Cached page shells remain fast
+  refresh()
 }
 ```
 
@@ -551,24 +652,199 @@ export const revalidate = 0                // Never cache
 ### Best Practices
 
 1. **Prefer tags over paths** – More granular control
-2. **Use updateTag for writes** – Immediate consistency
-3. **Use revalidateTag for background** – Eventual consistency
-4. **Namespace tags hierarchically** – `resource`, `resource:id`, `resource:id:detail`
-5. **Document tag usage** – Comment which mutations affect which tags
-6. **Test cache invalidation** – Verify data refreshes correctly
-7. **Monitor cache hit rates** – Ensure caching is working
+2. **Use updateTag for writes** – Immediate consistency, read-your-writes
+3. **Use revalidateTag for background** – Eventual consistency, SWR
+4. **Always include cache profile** – `revalidateTag(tag, 'max')` required in Next.js 16
+5. **Always include type parameter** – `revalidatePath(path, 'page')` required in Next.js 16
+6. **Namespace tags hierarchically** – `resource`, `resource:id`, `resource:id:detail`
+7. **Document tag usage** – Comment which mutations affect which tags
+8. **Test cache invalidation** – Verify data refreshes correctly
+9. **Monitor cache hit rates** – Ensure caching is working
 
 Choose the narrowest invalidation surface area possible. Tags beat paths; request-level revalidate beats route-level when only a single fetch changes.
+
+---
+
+## Next.js 16 Breaking Changes
+
+### 1. Async params and searchParams
+
+**Old (Next.js 15):**
+```tsx
+export default function Page({ params }: { params: { id: string } }) {
+  return <div>{params.id}</div>
+}
+```
+
+**New (Next.js 16):**
+```tsx
+export default async function Page({
+  params
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  return <div>{id}</div>
+}
+```
+
+### 2. Async cookies() and headers()
+
+**Old (Next.js 15):**
+```ts
+import { cookies } from 'next/headers'
+
+export function getSession() {
+  const sessionCookie = cookies().get('session')
+  return sessionCookie?.value
+}
+```
+
+**New (Next.js 16):**
+```ts
+import { cookies } from 'next/headers'
+
+export async function getSession() {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get('session')
+  return sessionCookie?.value
+}
+```
+
+### 3. Supabase createClient() must be async
+
+**Old (Next.js 15):**
+```ts
+export function createClient() {
+  const cookieStore = cookies()  // Sync
+  return createServerClient(...)
+}
+
+// Usage
+const supabase = createClient()
+```
+
+**New (Next.js 16):**
+```ts
+export async function createClient() {
+  const cookieStore = await cookies()  // Async
+  return createServerClient(...)
+}
+
+// Usage - must await!
+const supabase = await createClient()
+```
+
+### 4. revalidateTag() requires cache profile
+
+**Old (Next.js 15):**
+```ts
+revalidateTag('appointments')
+```
+
+**New (Next.js 16):**
+```ts
+revalidateTag('appointments', 'max')  // Requires 2nd parameter
+```
+
+### 5. revalidatePath() requires type parameter
+
+**Old (Next.js 15):**
+```ts
+revalidatePath('/dashboard')
+```
+
+**New (Next.js 16):**
+```ts
+revalidatePath('/dashboard', 'layout')  // or 'page'
+```
+
+### 6. Parallel routes require default.tsx
+
+**Old (Next.js 15):**
+```
+app/
+  @modal/
+    login/page.tsx
+```
+
+**New (Next.js 16):**
+```
+app/
+  @modal/
+    default.tsx       ← REQUIRED or build fails
+    login/page.tsx
+```
+
+### 7. middleware.ts → proxy.ts (deprecated)
+
+**Old (Next.js 15):**
+```ts
+// middleware.ts
+export function middleware(request: NextRequest) {
+  return NextResponse.redirect(...)
+}
+
+export const config = {
+  matcher: '/api/:path*'
+}
+```
+
+**New (Next.js 16):**
+```ts
+// proxy.ts
+export default function proxy(request: NextRequest) {
+  return NextResponse.redirect(...)
+}
+
+export const config = {
+  matcher: ['/api/:path*']  // Must be array
+}
+```
+
+### Migration Checklist
+
+- [ ] All page/layout functions with params are async and await params
+- [ ] All searchParams access uses await
+- [ ] All cookies() calls are awaited
+- [ ] All headers() calls are awaited
+- [ ] All draftMode() calls are awaited
+- [ ] All createClient() calls are awaited
+- [ ] All revalidateTag() calls include cache profile
+- [ ] All revalidatePath() calls include type parameter
+- [ ] All parallel route slots have default.tsx files
+- [ ] middleware.ts renamed to proxy.ts (if applicable)
+
+**Detection:** See [Detection Commands](#detection-commands) section below.
 
 ---
 
 ## Detection Commands
 
 ```bash
-# Find page/layout files accessing params without awaiting the promise
-rg "params\." app --type tsx \
-  | grep -v "await params" \
-  | grep -v "use(params)"
+# Find page/layout files accessing params without awaiting
+rg "params\." app --type tsx -B 2 | grep -v "await params"
+
+# Find searchParams access without await
+rg "searchParams\." app --type tsx -B 2 | grep -v "await searchParams"
+
+# Find cookies() without await
+rg "cookies\(\)" --type ts -B 1 | grep -v "await"
+
+# Find headers() without await
+rg "headers\(\)" --type ts -B 1 | grep -v "await"
+
+# Find createClient() without await
+rg "createClient\(\)" --type ts -B 2 | grep -v "await createClient"
+
+# Find revalidateTag without cache profile
+rg "revalidateTag\(['\"][\w-]+['\"]\)(?!\s*,)" --type ts
+
+# Find revalidatePath without type parameter
+rg "revalidatePath\(['\"][^'\"]+['\"]\)(?!\s*,)" --type ts
+
+# Find parallel routes missing default.tsx
+find app -type d -name "@*" -exec sh -c '[ ! -f "$1/default.tsx" ] && echo "Missing: $1/default.tsx"' _ {} \;
 
 # Ensure Server Actions declare 'use server'
 rg --files -g 'actions.ts' app features | xargs -I{} sh -c "grep -L \"'use server'\" {}"
@@ -588,13 +864,38 @@ rg "getServerSideProps|getStaticProps|getInitialProps" --type ts --type tsx app
 
 ## Complete Examples
 
-### Parallel Route with Modal Intercept
+### Dynamic Page with Async Params (Next.js 16)
+
+```tsx
+// app/(business)/appointments/[appointmentId]/page.tsx
+import { Suspense } from 'react'
+import { AppointmentDetail } from '@/features/business/appointments'
+import { Skeleton } from '@/components/ui/skeleton'
+
+export default async function Page({
+  params
+}: {
+  params: Promise<{ appointmentId: string }>
+}) {
+  // ✅ Next.js 16: Must await params
+  const { appointmentId } = await params
+
+  return (
+    <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <AppointmentDetail appointmentId={appointmentId} />
+    </Suspense>
+  )
+}
+```
+
+### Parallel Route with Modal Intercept (Next.js 16)
 
 ```
 app/
 ├── layout.tsx
 ├── page.tsx
 ├── @modal/
+│   ├── default.tsx           ← REQUIRED in Next.js 16
 │   └── (.)photos/
 │       └── [id]/page.tsx
 └── photos/
@@ -602,35 +903,92 @@ app/
 ```
 
 ```tsx
+// app/@modal/default.tsx
+export default function Default() {
+  return null
+}
+```
+
+```tsx
 // app/@modal/(.)photos/[id]/page.tsx
 import { Suspense } from 'react'
 import { PhotoModal } from '@/features/gallery/photo-modal'
 
-export default async function Modal(props: { params: Promise<{ id: string }> }) {
+export default async function Modal({
+  params
+}: {
+  params: Promise<{ id: string }>
+}) {
   return (
     <Suspense fallback={null}>
-      <PhotoModal {...props} />
+      <PhotoModal params={params} />
     </Suspense>
   )
 }
 ```
 
-### Server Action Form
+### Server Action Form (Next.js 16)
 
 ```tsx
 // app/(account)/settings/profile/page.tsx
 import { Suspense } from 'react'
 import { NameForm } from '@/features/profile/components/name-form'
+import { createClient } from '@/lib/supabase/server'
 
-export default function ProfileSettings() {
+export default async function ProfileSettings() {
+  // ✅ Next.js 16: Must await createClient()
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data: profile } = await supabase
+    .from('profiles_view')
+    .select('full_name')
+    .eq('id', user.id)
+    .single()
+
   return (
     <Suspense fallback={<div>Loading…</div>}>
-      <NameForm initialName="" />
+      <NameForm initialName={profile?.full_name ?? ''} />
     </Suspense>
+  )
+}
+```
+
+### Search Page with searchParams (Next.js 16)
+
+```tsx
+// app/search/page.tsx
+import { Suspense } from 'react'
+import { SearchResults } from '@/features/search'
+
+export default async function SearchPage({
+  searchParams
+}: {
+  searchParams: Promise<{ q?: string; page?: string }>
+}) {
+  // ✅ Next.js 16: Must await searchParams
+  const { q, page } = await searchParams
+
+  return (
+    <div className="container py-8">
+      <h1 className="text-3xl font-bold mb-6">Search Results</h1>
+      <Suspense fallback={<div>Searching...</div>}>
+        <SearchResults query={q ?? ''} page={parseInt(page ?? '1')} />
+      </Suspense>
+    </div>
   )
 }
 ```
 
 ---
 
-**Last Updated:** 2025-10-21 (Enhanced caching patterns with updateTag/revalidateTag examples)
+**Last Updated:** 2025-10-26 (Next.js 16 patterns with breaking changes)
+**Next.js Version:** 16.0.0
+**React Version:** 19.2.0
+
+**Related Documentation:**
+- [Next.js 16 Rules](../nextjs16.md)
+- [Supabase Patterns](./supabase-patterns.md)
+- [Architecture Patterns](./architecture-patterns.md)

@@ -61,7 +61,7 @@ export async function updateChainActiveStatus(data: {
       reason,
     })
 
-    revalidatePath('/admin/chains')
+    revalidatePath('/admin/chains', 'page')
     return {
       success: true,
       message: `Chain ${isActive ? 'activated' : 'deactivated'} successfully`,

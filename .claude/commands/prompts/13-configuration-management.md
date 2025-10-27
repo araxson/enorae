@@ -66,7 +66,7 @@ const apiKey = 'sk_live_2024_abc123' // Should be: process.env.STRIPE_API_KEY
 - Create centralized config module
 - Use environment-specific configs
 - Document required env variables
-- Review `docs/stack-patterns/architecture-patterns.md` for configuration management standards
+- Review `docs/ruls/architecture-patterns.md` for configuration management standards
 
 ## Output Format
 
@@ -80,7 +80,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/architecture-patterns.md`
-- `docs/stack-patterns/file-organization-patterns.md`
+- `docs/ruls/architecture-patterns.md`
+- `docs/ruls/file-organization-patterns.md`
 
 Complete configuration audit and report all hardcoded values.

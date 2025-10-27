@@ -20,6 +20,7 @@ export async function verifyReviewAccess(
   const supabase = await createClient()
 
   const { data: review } = await supabase
+    .schema('engagement')
     .from('salon_reviews')
     .select('salon_id')
     .eq('id', reviewId)
@@ -46,6 +47,7 @@ export async function verifyReviewHasResponse(
   const supabase = await createClient()
 
   const { data: review } = await supabase
+    .schema('engagement')
     .from('salon_reviews')
     .select('salon_id, response')
     .eq('id', reviewId)

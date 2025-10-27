@@ -101,7 +101,7 @@ Adhere to these project standards from CLAUDE.md:
 - **Error handling:** Wrap all database operations in error handlers
 - **Environment variables:** All external URLs and credentials use environment variables
 
-Reference: `docs/stack-patterns/supabase-patterns.md`, `docs/stack-patterns/architecture-patterns.md`
+Reference: `docs/ruls/supabase.md`, `docs/ruls/architecture.md`
 
 ## Issue Severity Classification
 

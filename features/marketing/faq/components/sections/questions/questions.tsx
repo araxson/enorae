@@ -4,30 +4,48 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+
 import { questionsData } from './questions.data'
 
 export function Questions() {
   return (
-    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
-      <div className="flex flex-col gap-8 max-w-3xl mx-auto">
-        <h2 className="scroll-m-20 text-center">{questionsData.title}</h2>
-
-        {questionsData.categories.map((category) => (
-          <div key={category.name} className="flex flex-col gap-6">
-            <h3 className="scroll-m-20">{category.name}</h3>
-            <Accordion type="multiple" className="w-full">
-              {category.questions.map((item, idx) => (
-                <AccordionItem key={idx} value={`item-${idx}`}>
-                  <AccordionTrigger>{item.q}</AccordionTrigger>
-                  <AccordionContent>
-                    <p className="leading-7">{item.a}</p>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        ))}
-      </div>
+    <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <Card>
+        <CardHeader className="items-center justify-center">
+          <CardTitle>{questionsData.title}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-6">
+          {questionsData.categories.map((category) => (
+            <Card key={category.name}>
+              <CardHeader>
+                <CardTitle>{category.name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="multiple">
+                  {category.questions.map((item, index) => {
+                    const itemValue = `${category.name.toLowerCase().replace(/\s+/g, '-')}-${index}`
+                    return (
+                      <AccordionItem key={item.q} value={itemValue}>
+                        <AccordionTrigger>{item.q}</AccordionTrigger>
+                        <AccordionContent>
+                          <CardDescription>{item.a}</CardDescription>
+                        </AccordionContent>
+                      </AccordionItem>
+                    )
+                  })}
+                </Accordion>
+              </CardContent>
+            </Card>
+          ))}
+        </CardContent>
+      </Card>
     </section>
   )
 }

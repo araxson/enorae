@@ -75,7 +75,7 @@ export async function updateSalonContactDetails(
       if (error) throw error
     }
 
-    revalidatePath('/business/settings/contact')
+    revalidatePath('/business/settings/contact', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error updating contact details:', error)

@@ -37,7 +37,21 @@ export async function getRecentNotifications(limit: number = 20) {
       .returns<NotificationsPageRow[]>()
 
     if (error) throw error
-    return (data || []) as NotificationListEntry[]
+
+    // Map RPC response to NotificationListEntry format
+    return (data || []).map((row: any): NotificationListEntry => ({
+      id: row.id ?? '',
+      user_id: row.user_id ?? '',
+      channels: row.channels ?? [],
+      status: row.status ?? 'pending',
+      created_at: row.created_at ?? new Date().toISOString(),
+      scheduled_for: row.scheduled_for,
+      sent_at: row.sent_at,
+      notification_type: row.type ?? 'info',
+      payload: null,
+      title: row.title ?? '',
+      message: row.message ?? '',
+    }))
   } catch {
     // RPC not available, return empty list
     return []
@@ -95,8 +109,8 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
     return {
       id: entry.id,
       user_id: entry.user_id ?? user['id'],
-      channels,
-      status: entry.status,
+      channels: channels as unknown as NotificationChannel[],
+      status: entry.status as unknown as NotificationStatus,
       created_at: entry.created_at,
       scheduled_for: null,
       sent_at: entry.sent_at,
@@ -110,6 +124,6 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
       message,
       error: errorMessage,
       data: dataPayload,
-    }
+    } as NotificationEntry
   })
 }

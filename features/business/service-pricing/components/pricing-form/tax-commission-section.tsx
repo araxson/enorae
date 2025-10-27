@@ -34,7 +34,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
                 onChange={(event) => onChange('taxRate', event.target.value)}
                 placeholder="0.00"
               />
-              <p className="text-sm text-muted-foreground text-xs">Sales tax percentage</p>
+              <p className="text-xs text-muted-foreground">Sales tax percentage</p>
             </div>
 
             <div className="space-y-2">
@@ -49,7 +49,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
                 onChange={(event) => onChange('commissionRate', event.target.value)}
                 placeholder="0.00"
               />
-              <p className="text-sm text-muted-foreground text-xs">Staff commission percentage</p>
+              <p className="text-xs text-muted-foreground">Staff commission percentage</p>
             </div>
           </div>
 
@@ -74,7 +74,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
               placeholder="USD"
               maxLength={3}
             />
-            <p className="text-sm text-muted-foreground text-xs">ISO currency code (e.g., USD, EUR)</p>
+            <p className="text-xs text-muted-foreground">ISO currency code (e.g., USD, EUR)</p>
           </div>
         </div>
       </CardContent>

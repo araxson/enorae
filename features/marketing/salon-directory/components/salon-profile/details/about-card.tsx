@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Salon } from '@/features/marketing/salon-directory/components/salon-profile/types'
 
 interface AboutCardProps {
@@ -15,6 +15,7 @@ export function AboutCard({ salon }: AboutCardProps) {
         <CardTitle>About</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
+      <CardContent />
     </Card>
   )
 }

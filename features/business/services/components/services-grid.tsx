@@ -67,7 +67,7 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
                 )}
               </div>
 
-              {service['category_name'] && <p className="text-sm text-muted-foreground text-xs">{service['category_name']}</p>}
+              {service['category_name'] && <p className="text-xs text-muted-foreground">{service['category_name']}</p>}
             </div>
           </CardContent>
 

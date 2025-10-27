@@ -44,7 +44,7 @@ export async function logNotificationActivity(userId: string, action: string, me
 }
 
 export function revalidateNotifications() {
-  revalidatePath('/business/notifications')
-  revalidatePath('/staff/notifications')
-  revalidatePath('/customer/notifications')
+  revalidatePath('/business/notifications', 'page')
+  revalidatePath('/staff/notifications', 'page')
+  revalidatePath('/customer/notifications', 'page')
 }

@@ -57,7 +57,7 @@ const API_KEY = "sk_live_2024_secret_key_123"
 - Add Zod validation to all inputs
 - Add 'use server' to server actions
 - Ensure Supabase writes use `supabase.schema('<schema>').from('<table>')`
-- Review `docs/stack-patterns/supabase-patterns.md` for auth, RLS, and mutation requirements
+- Review `docs/ruls/supabase-patterns.md` for auth, RLS, and mutation requirements
 - Fix every finding directly in code; do not produce additional documentation
 
 ## Output Format
@@ -72,7 +72,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/supabase-patterns.md`
-- `docs/stack-patterns/architecture-patterns.md`
+- `docs/ruls/supabase-patterns.md`
+- `docs/ruls/architecture-patterns.md`
 
 Complete security audit and report all vulnerabilities.

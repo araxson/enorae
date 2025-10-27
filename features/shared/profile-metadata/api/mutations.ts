@@ -43,8 +43,8 @@ export async function updateProfileMetadata(
 
     if (error) throw error
 
-    revalidatePath('/customer/profile')
-    revalidatePath('/staff/profile')
+    revalidatePath('/customer/profile', 'page')
+    revalidatePath('/staff/profile', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error updating profile metadata:', error)

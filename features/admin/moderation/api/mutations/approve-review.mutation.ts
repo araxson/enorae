@@ -72,7 +72,7 @@ export async function approveReview(formData: FormData) {
       target_id: reviewId,
     })
 
-    revalidatePath('/admin/moderation')
+    revalidatePath('/admin/moderation', 'page')
     return { success: true }
   } catch (error) {
     return {

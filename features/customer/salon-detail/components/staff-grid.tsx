@@ -18,10 +18,11 @@ export function StaffGrid({ staff }: StaffGridProps) {
   if (staff.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>Our team</CardTitle>
           <CardDescription>No staff members available</CardDescription>
         </CardHeader>
+        <CardContent />
       </Card>
     )
   }
@@ -52,6 +53,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
                       )}
                     </div>
                   </CardHeader>
+                  <CardContent />
                 </Card>
               </HoverCardTrigger>
               <HoverCardContent className="w-80 space-y-3">

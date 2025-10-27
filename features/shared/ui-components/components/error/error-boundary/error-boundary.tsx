@@ -46,7 +46,7 @@ export function ErrorBoundary({
           <CardHeader>
             <div className="flex gap-6">
               {getErrorIcon(errorType)}
-              <h2>
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
                 {title ?? ERROR_TITLES[errorType]}
               </h2>
             </div>

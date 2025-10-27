@@ -70,8 +70,8 @@ export async function cancelAppointment(appointmentId: string): Promise<ActionRe
 
     if (updateError) throw updateError
 
-    revalidatePath('/customer/appointments')
-    revalidatePath(`/customer/appointments/${appointmentId}`)
+    revalidatePath('/customer/appointments', 'page')
+    revalidatePath(`/customer/appointments/${appointmentId}`, 'page')
 
     return { success: true, data: undefined }
   } catch (error) {
@@ -193,8 +193,8 @@ export async function requestReschedule(
 
     if (updateError) throw updateError
 
-    revalidatePath('/customer/appointments')
-    revalidatePath(`/customer/appointments/${appointmentId}`)
+    revalidatePath('/customer/appointments', 'page')
+    revalidatePath(`/customer/appointments/${appointmentId}`, 'page')
 
     return { success: true, data: undefined }
   } catch (error) {

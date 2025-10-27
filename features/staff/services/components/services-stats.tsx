@@ -1,5 +1,5 @@
 import { Scissors, Star, TrendingUp, Award } from 'lucide-react'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 type StaffService = {
   id: string
   proficiency_level?: string | null
@@ -64,6 +64,7 @@ export function ServicesStats({ services }: ServicesStatsProps) {
               <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
             </div>
           </CardHeader>
+          <CardContent />
         </Card>
       ))}
     </div>

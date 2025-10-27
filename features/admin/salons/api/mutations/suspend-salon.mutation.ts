@@ -92,7 +92,7 @@ export async function suspendSalon(formData: FormData) {
       is_success: true,
     })
 
-    revalidatePath('/admin/salons')
+    revalidatePath('/admin/salons', 'page')
     return { success: true }
   } catch (error) {
     return {

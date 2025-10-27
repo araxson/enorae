@@ -55,7 +55,7 @@ export async function approveTimeOffRequest(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/business/time-off')
+    revalidatePath('/business/time-off', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to approve' }
@@ -112,7 +112,7 @@ export async function rejectTimeOffRequest(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/business/time-off')
+    revalidatePath('/business/time-off', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to reject' }

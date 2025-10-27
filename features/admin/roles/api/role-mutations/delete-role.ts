@@ -31,8 +31,8 @@ export async function deleteRole(formData: FormData): Promise<RoleActionResponse
       deleted_by: session.user.id,
     })
 
-    revalidatePath('/admin/roles')
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/roles', 'page')
+    revalidatePath('/admin/users', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     return {

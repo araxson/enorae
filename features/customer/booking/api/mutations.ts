@@ -310,7 +310,7 @@ export async function createBooking(formData: FormData) {
       totalDuration: totalMinutes
     })
 
-    revalidatePath('/customer/profile')
+    revalidatePath('/customer/profile', 'page')
     redirect('/customer/profile')
   } catch (error) {
     console.error('Booking unexpected error', {

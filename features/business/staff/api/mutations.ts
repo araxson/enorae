@@ -39,6 +39,7 @@ export async function createStaffMember(data: StaffFormData) {
 
   // Check if user exists by email
   const { data: existingProfile } = await supabase
+    .schema('identity')
     .from('profiles')
     .select('id')
     .eq('email', validatedData.email)
@@ -70,7 +71,7 @@ export async function createStaffMember(data: StaffFormData) {
   // Create staff profile
   const { error: staffError } = await supabase
     .schema('organization')
-    .schema('organization').from('staff_profiles')
+    .from('staff_profiles')
     .insert({
       salon_id: salonId,
       user_id: userId,
@@ -93,7 +94,7 @@ export async function createStaffMember(data: StaffFormData) {
       updated_at: new Date().toISOString(),
     })
 
-  revalidatePath('/business/staff')
+  revalidatePath('/business/staff', 'page')
   return { success: true, userId }
 }
 
@@ -156,7 +157,7 @@ export async function updateStaffMember(staffId: string, data: Partial<StaffForm
       })
   }
 
-  revalidatePath('/business/staff')
+  revalidatePath('/business/staff', 'page')
   return { success: true }
 }
 
@@ -189,7 +190,7 @@ export async function deactivateStaffMember(staffId: string) {
 
   if (error) throw error
 
-  revalidatePath('/business/staff')
+  revalidatePath('/business/staff', 'page')
   return { success: true }
 }
 
@@ -222,6 +223,6 @@ export async function reactivateStaffMember(staffId: string) {
 
   if (error) throw error
 
-  revalidatePath('/business/staff')
+  revalidatePath('/business/staff', 'page')
   return { success: true }
 }

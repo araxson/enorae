@@ -46,7 +46,7 @@ export async function upsertUserPreference(formData: FormData) {
 
     if (upsertError) return { error: upsertError.message }
 
-    revalidatePath('/settings/preferences')
+    revalidatePath('/settings/preferences', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to save preference' }
@@ -84,7 +84,7 @@ export async function deleteUserPreference(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/settings/preferences')
+    revalidatePath('/settings/preferences', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to delete preference' }
@@ -145,9 +145,9 @@ export async function updateNotificationPreferences(
 
     if (error) throw error
 
-    revalidatePath('/customer/settings/preferences')
-    revalidatePath('/staff/settings/preferences')
-    revalidatePath('/settings/preferences')
+    revalidatePath('/customer/settings/preferences', 'page')
+    revalidatePath('/staff/settings/preferences', 'page')
+    revalidatePath('/settings/preferences', 'page')
 
     return { success: true, data: undefined }
   } catch (error) {
@@ -193,10 +193,10 @@ export async function updateAdvancedPreferences(
 
     if (error) throw error
 
-    revalidatePath('/customer/settings/preferences')
-    revalidatePath('/staff/settings/preferences')
-    revalidatePath('/business/settings/preferences')
-    revalidatePath('/settings/preferences')
+    revalidatePath('/customer/settings/preferences', 'page')
+    revalidatePath('/staff/settings/preferences', 'page')
+    revalidatePath('/business/settings/preferences', 'page')
+    revalidatePath('/settings/preferences', 'page')
 
     return { success: true, data: undefined }
   } catch (error) {

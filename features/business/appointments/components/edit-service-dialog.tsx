@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {
@@ -140,12 +141,11 @@ export function EditServiceDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label>Service</Label>
-            <div className="p-3 bg-muted rounded-md">
-              <p className="font-medium">Service ID: {service['service_id']}</p>
-            </div>
-          </div>
+          <Alert>
+            <AlertDescription>
+              Service ID: <span className="font-medium">{service['service_id']}</span>
+            </AlertDescription>
+          </Alert>
 
           <StaffSelector
             value={formData.staffId}

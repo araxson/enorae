@@ -6,7 +6,7 @@
 
 **Action Mode:** Audit component trees and land code fixes that realign data flow, component boundaries, and hooks with the schema-driven contract—log any database follow-ups instead of applying them.
 
-**Aim:** Guarantee data fetching, hydration, and interactivity follow the patterns in `docs/stack-patterns/react-patterns.md`.
+**Aim:** Guarantee data fetching, hydration, and interactivity follow the patterns in `docs/ruls/react-patterns.md`.
 
 **Focus Areas:**
 - Server Components performing Supabase reads.

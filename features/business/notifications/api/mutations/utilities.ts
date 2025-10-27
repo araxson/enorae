@@ -54,7 +54,7 @@ export async function getSupabaseClient() {
 }
 
 export function revalidateNotifications() {
-  revalidatePath('/business/notifications')
+  revalidatePath('/business/notifications', 'page')
 }
 
 export async function ensureRecipientAuthorized(

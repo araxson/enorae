@@ -16,9 +16,7 @@ export const serviceIdSchema = z.string().uuid('Invalid service ID format')
  * Schema for proficiency level
  * Must be one of the defined levels
  */
-export const proficiencyLevelSchema = z.enum(['beginner', 'intermediate', 'advanced', 'expert'], {
-  errorMap: () => ({ message: 'Proficiency level must be beginner, intermediate, advanced, or expert' }),
-})
+export const proficiencyLevelSchema = z.enum(['beginner', 'intermediate', 'advanced', 'expert'])
 
 /**
  * Schema for toggling service availability

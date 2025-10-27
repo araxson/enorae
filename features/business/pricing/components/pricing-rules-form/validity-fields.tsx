@@ -86,13 +86,13 @@ export function ValidityFields({
               setFormData((current) => ({ ...current, priority: Number(event.target.value) }))
             }
           />
-          <p className="text-base mt-1 text-xs text-muted-foreground">
+          <p className="text-xs mt-1 text-muted-foreground">
             Lower numbers execute first when multiple rules apply (current target: {selectedServiceName}).
           </p>
         </div>
         <div className="flex items-center justify-between rounded-md border px-4 py-3">
           <div>
-            <Label htmlFor="is_active" className="text-base">
+            <Label htmlFor="is_active">
               Active Rule
             </Label>
             <p className="text-sm text-muted-foreground">Deactivate to save rule for later use.</p>

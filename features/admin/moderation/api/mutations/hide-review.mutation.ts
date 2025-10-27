@@ -70,7 +70,7 @@ export async function hideReview(formData: FormData) {
       is_success: true,
     })
 
-    revalidatePath('/admin/moderation')
+    revalidatePath('/admin/moderation', 'page')
     return { success: true }
   } catch (error) {
     return {

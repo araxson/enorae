@@ -23,7 +23,7 @@ export function ReviewResponseForm({ value, onChange, onCancel, onSubmit, isLoad
           rows={4}
           maxLength={1000}
         />
-        <p className="text-sm text-muted-foreground text-xs">{value.length}/1000 characters</p>
+        <p className="text-xs text-muted-foreground">{value.length}/1000 characters</p>
       </div>
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>

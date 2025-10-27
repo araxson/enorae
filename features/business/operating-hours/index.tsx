@@ -22,7 +22,7 @@ export async function OperatingHoursManagement() {
   }
 
   // Fetch operating hours
-  const operatingHours = await getOperatingHoursBySalon(salon.id)
+  const operatingHours = await getOperatingHoursBySalon(salon.id ?? '')
 
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
@@ -34,7 +34,7 @@ export async function OperatingHoursManagement() {
           </CardHeader>
         </Card>
 
-        <WeeklyScheduleForm salonId={salon.id} initialHours={operatingHours} />
+        <WeeklyScheduleForm salonId={salon.id} initialHours={operatingHours as any} />
       </div>
     </section>
   )

@@ -41,7 +41,7 @@ Refer to ENORAE patterns for configuration standards:
 - Server-only modules in `features/**/api/` can access env vars
 - Client components must not access environment-specific config
 - Database configuration must be externalized (Supabase handles this, but verify no hardcoded URLs)
-- Review `docs/stack-patterns/architecture-patterns.md` for proper configuration patterns
+- Review `docs/ruls/architecture.md` for proper configuration patterns
 
 ## Severity Classification
 

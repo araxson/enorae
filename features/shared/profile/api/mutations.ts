@@ -71,9 +71,9 @@ export async function updateUsername(formData: FormData): Promise<ActionResponse
 
     if (updateError) throw updateError
 
-    revalidatePath('/customer/profile')
-    revalidatePath('/staff/profile')
-    revalidatePath('/business/profile')
+    revalidatePath('/customer/profile', 'page')
+    revalidatePath('/staff/profile', 'page')
+    revalidatePath('/business/profile', 'page')
 
     return { success: true, data: undefined }
   } catch (error) {
@@ -141,9 +141,9 @@ export async function uploadAvatar(formData: FormData): Promise<ActionResponse<{
 
     if (updateError) throw updateError
 
-    revalidatePath('/customer/profile')
-    revalidatePath('/staff/profile')
-    revalidatePath('/business/profile')
+    revalidatePath('/customer/profile', 'page')
+    revalidatePath('/staff/profile', 'page')
+    revalidatePath('/business/profile', 'page')
 
     return { success: true, data: { url: publicUrl } }
   } catch (error) {

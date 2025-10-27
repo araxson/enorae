@@ -76,7 +76,7 @@ export async function suspendUser(formData: FormData) {
       is_success: true,
     })
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true }
   } catch (error) {
     return {
@@ -141,7 +141,7 @@ export async function reactivateUser(formData: FormData) {
       is_success: true,
     })
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true }
   } catch (error) {
     return {
@@ -233,7 +233,7 @@ export async function banUser(formData: FormData) {
       is_success: true,
     })
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true }
   } catch (error) {
     return {
@@ -360,7 +360,7 @@ export async function batchUpdateUserStatus(formData: FormData) {
       is_success: true,
     })
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true, count: userIds.length }
   } catch (error) {
     return {

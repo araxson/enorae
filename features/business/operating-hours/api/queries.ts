@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
-
+type OperatingHour = Database['public']['Views']['operating_hours_view']['Row']
 type DayOfWeek = Database['public']['Enums']['day_of_week']
 
 // Helper to convert number to day name
@@ -19,7 +19,7 @@ function numberToDayName(day: number): DayOfWeek {
 /**
  * Get operating hours for a specific salon
  */
-export async function getOperatingHoursBySalon(salonId: string) {
+export async function getOperatingHoursBySalon(salonId: string): Promise<OperatingHour[]> {
   // SECURITY: Require business role and verify access
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
@@ -35,13 +35,18 @@ export async function getOperatingHoursBySalon(salonId: string) {
     .order('day_of_week', { ascending: true })
 
   if (error) throw error
-  return data
+
+  // Filter out any rows with null IDs
+  const validRows = (data || []).filter((row): row is Exclude<typeof row, null | undefined> => row && row.id !== null)
+
+  // Ensure the type matches what the component expects
+  return validRows as unknown as OperatingHour[]
 }
 
 /**
  * Get operating hours for a specific day
  */
-export async function getOperatingHoursByDay(salonId: string, dayOfWeek: DayOfWeek | number) {
+export async function getOperatingHoursByDay(salonId: string, dayOfWeek: DayOfWeek | number): Promise<OperatingHour | null> {
   // SECURITY: Require business role and verify access
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
@@ -59,7 +64,10 @@ export async function getOperatingHoursByDay(salonId: string, dayOfWeek: DayOfWe
     .eq('day_of_week', dayName)
     .single()
 
-  if (error) throw error
+  if (error) {
+    if (error.code === 'PGRST116') return null
+    throw error
+  }
   return data
 }
 

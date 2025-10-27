@@ -4,6 +4,14 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Edit2, Trash2, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Table,
   TableBody,
@@ -58,10 +66,21 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
 
   if (preferences.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 border rounded-lg">
-        <Settings className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">No preferences configured</p>
-      </div>
+      <Card>
+        <CardContent className="p-6">
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Settings className="h-6 w-6" />
+              </EmptyMedia>
+              <EmptyTitle>No preferences configured</EmptyTitle>
+              <EmptyDescription>
+                Update your profile preferences to tailor notifications and locale settings.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 

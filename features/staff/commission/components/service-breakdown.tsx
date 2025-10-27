@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 
 import type { ServiceRevenue } from '@/features/staff/commission/api/queries'
@@ -29,7 +29,7 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
     <Card>
       <CardHeader>
         <CardTitle>Revenue by Service</CardTitle>
-        <p className="text-sm text-muted-foreground">This month&apos;s performance breakdown</p>
+        <CardDescription>This month&apos;s performance breakdown</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-3">

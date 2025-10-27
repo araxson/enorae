@@ -51,7 +51,7 @@ for (const user of users) {
 - Batch API calls instead of N+1
 - Split large components
 - Use lazy loading for routes/components
-- Review `docs/stack-patterns/react-patterns.md` and `docs/stack-patterns/architecture-patterns.md` for performance guidance
+- Review `docs/ruls/react-patterns.md` and `docs/ruls/architecture-patterns.md` for performance guidance
 - Fix every finding directly in code; do not produce additional documentation
 
 ## Output Format
@@ -66,7 +66,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/react-patterns.md`
-- `docs/stack-patterns/architecture-patterns.md`
+- `docs/ruls/react-patterns.md`
+- `docs/ruls/architecture-patterns.md`
 
 Complete performance audit and report all bottlenecks.

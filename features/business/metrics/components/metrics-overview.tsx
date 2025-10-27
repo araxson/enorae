@@ -21,7 +21,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
   if (!metrics) {
     return (
       <Card>
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>No metrics data available</CardTitle>
           <CardDescription>Metrics will be generated automatically.</CardDescription>
         </CardHeader>
@@ -32,8 +32,8 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
     )
   }
 
-  const formatCurrency = (amount: number | null) => {
-    if (amount === null) return 'N/A'
+  const formatCurrency = (amount: number | null | undefined) => {
+    if (amount === null || amount === undefined) return 'N/A'
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',

@@ -181,9 +181,9 @@ export async function getAvailableStaffForService(
 
   return staffList.map<StaffAvailability>((s) => ({
     id: s.id ?? '',
-    full_name: s.name ?? undefined,
-    title: s.title ?? undefined,
-    avatar_url: s.avatar ?? undefined,
+    full_name: s.name ?? null,
+    title: s.title ?? null,
+    avatar_url: s.avatar ?? null,
     is_available: !busyStaffIds.has(s.id ?? ''),
   }))
 }

@@ -69,28 +69,28 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
         {/* Thumbnail grid */}
         {allImages.length > 1 && (
           <div className="grid grid-cols-4 gap-2">
-            {allImages.slice(1, 5).map((image, index) => (
-              <div
-                key={index}
-                className="relative aspect-square cursor-pointer overflow-hidden rounded-lg"
-                onClick={() => openLightbox(index + 1)}
-              >
-                <Image
-                  src={image}
-                  alt={`Salon photo ${index + 2}`}
-                  fill
-                  className="object-cover transition-transform hover:scale-105"
-                />
-                {index === 3 && allImages.length > 5 && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white">
-                    +{allImages.length - 5} more
+                {allImages.slice(1, 5).map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative aspect-square cursor-pointer overflow-hidden rounded-lg"
+                    onClick={() => openLightbox(index + 1)}
+                  >
+                    <Image
+                      src={image}
+                      alt={`Salon photo ${index + 2}`}
+                      fill
+                      className="object-cover transition-transform hover:scale-105"
+                    />
+                    {index === 3 && allImages.length > 5 && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-background/80 text-foreground">
+                        +{allImages.length - 5} more
+                      </div>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
-      </div>
 
       {/* Lightbox Dialog */}
       <Dialog open={selectedIndex !== null} onOpenChange={(open) => !open && closeLightbox()}>
@@ -124,7 +124,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
                       size="icon"
                       onClick={goToPrevious}
                       disabled={selectedIndex === 0}
-                      className="bg-black/50 text-white hover:bg-black/70"
+                      className="bg-background/80 text-foreground hover:bg-background"
                       aria-label="Previous image"
                     >
                       <ChevronLeft className="h-6 w-6" />
@@ -134,7 +134,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
                       size="icon"
                       onClick={goToNext}
                       disabled={selectedIndex === allImages.length - 1}
-                      className="bg-black/50 text-white hover:bg-black/70"
+                      className="bg-background/80 text-foreground hover:bg-background"
                       aria-label="Next image"
                     >
                       <ChevronRight className="h-6 w-6" />
@@ -142,7 +142,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
                   </div>
                 )}
 
-                <div className="bg-black/80 p-2 text-center text-sm text-white">
+                <div className="bg-background/90 p-2 text-center text-sm text-foreground">
                   {selectedIndex + 1} / {allImages.length}
                 </div>
               </>

@@ -63,7 +63,7 @@ export async function deleteChain(data: {
       reason,
     })
 
-    revalidatePath('/admin/chains')
+    revalidatePath('/admin/chains', 'page')
     return { success: true, message: 'Chain deleted successfully' }
   } catch (error) {
     return {
@@ -102,7 +102,7 @@ export async function restoreChain(chainId: string): Promise<ChainActionResponse
       restored_at: new Date().toISOString(),
     })
 
-    revalidatePath('/admin/chains')
+    revalidatePath('/admin/chains', 'page')
     return { success: true, message: 'Chain restored successfully' }
   } catch (error) {
     return {

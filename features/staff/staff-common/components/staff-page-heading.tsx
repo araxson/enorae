@@ -148,9 +148,9 @@ export function StaffPageHeading({
                 {filters && filters.length > 0 ? (
                   <div className="space-y-2 px-2 py-1.5">
                     {filters.map((filter) => (
-                      <Label key={filter.id} className="flex items-start gap-3 text-sm leading-6">
+                      <Label key={filter.id} className="flex items-start gap-3">
                         <Checkbox defaultChecked={filter.defaultChecked} className="mt-1" />
-                        <div>
+                        <div className="text-sm leading-6">
                           <span>{filter.label}</span>
                           {filter.description ? (
                             <span className="block text-xs text-muted-foreground">{filter.description}</span>

@@ -63,7 +63,7 @@ export async function updateChainSubscription(data: {
       reason,
     })
 
-    revalidatePath('/admin/chains')
+    revalidatePath('/admin/chains', 'page')
     return { success: true, message: 'Subscription tier updated successfully' }
   } catch (error) {
     return {

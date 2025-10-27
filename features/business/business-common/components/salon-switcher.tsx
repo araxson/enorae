@@ -45,8 +45,8 @@ export async function BusinessSalonSwitcher() {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     await setActiveSalonId(salonId)
 
-    revalidatePath('/business')
-    revalidatePath('/staff')
+    revalidatePath('/business', 'page')
+    revalidatePath('/staff', 'page')
   }
 
   return (

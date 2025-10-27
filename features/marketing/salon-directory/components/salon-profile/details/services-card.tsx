@@ -20,7 +20,7 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
           {(Object.entries(servicesByCategory) as Array<[string, Service[]]>).map(
             ([category, categoryServices]) => (
               <div key={category} className="flex flex-col gap-4">
-                <h3>{category}</h3>
+                <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">{category}</h3>
                 <div className="flex flex-col gap-3">
                   {categoryServices.map((service) => (
                     <ServiceRow key={service['id']} service={service} />

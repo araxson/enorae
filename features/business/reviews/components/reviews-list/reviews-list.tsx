@@ -20,7 +20,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
       <div className="flex flex-col gap-4">
         {normalizedReviews.length === 0 ? (
           <Card>
-            <CardHeader className="text-center">
+            <CardHeader className="items-center justify-center">
               <CardTitle>No reviews yet</CardTitle>
               <CardDescription>Reviews will appear once customers share feedback.</CardDescription>
             </CardHeader>

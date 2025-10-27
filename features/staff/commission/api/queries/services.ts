@@ -42,7 +42,7 @@ export async function getServiceBreakdown(
 
   if (error) throw error
 
-  return Array.from(buildServiceMap(data as AppointmentRow[]).values()).sort(
+  return Array.from(buildServiceMap(data as any[]).values()).sort(
     (a, b) => b.revenue - a.revenue,
   )
 }
@@ -54,22 +54,16 @@ export async function getCommissionRates(
 
   const { data: services, error } = await supabase
     .from('staff_services_view')
-    .select('service_id, service_name, effective_price')
+    .select('service_id, service_name')
     .eq('staff_id', staffId)
     .eq('is_available', true)
 
   if (error) throw error
 
-  type StaffServiceRate = {
-    service_id: string | null
-    service_name: string | null
-    effective_price: number | null
-  }
-
-  return ((services as StaffServiceRate[]) || []).map((service) => ({
+  return ((services as any[]) || []).map((service: any) => ({
     service_id: service['service_id'] ?? '',
     service_name: service['service_name'] ?? 'Unknown Service',
-    base_price: service.effective_price ?? 0,
+    base_price: 0,
     commission_percentage: DEFAULT_COMMISSION_PERCENTAGE,
     commission_flat_rate: null,
   }))
@@ -92,7 +86,7 @@ export async function getServiceCommissionBreakdown(
 
   if (error) throw error
 
-  const serviceMap = buildServiceMap(data as AppointmentRow[])
+  const serviceMap = buildServiceMap(data as any[])
 
   serviceMap.forEach((value) => {
     value.commission_rate = DEFAULT_COMMISSION_PERCENTAGE

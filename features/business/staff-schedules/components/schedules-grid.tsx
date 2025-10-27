@@ -158,7 +158,7 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
                             {formatTime(schedule['break_start'])} - {formatTime(schedule['break_end'])}
                           </p>
                         ) : (
-                          <p className="text-sm text-muted-foreground text-sm">No break</p>
+                          <p className="text-sm text-muted-foreground">No break</p>
                         )}
                       </TableCell>
                       <TableCell>

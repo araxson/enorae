@@ -70,7 +70,7 @@ utils.formatDate() // Which utils are needed?
 - Use type-only imports for types
 - Organize imports (React, libraries, local)
 - Import from public APIs, not internals
-- Review `docs/stack-patterns/file-organization-patterns.md` for import boundaries and barrel export rules
+- Review `docs/ruls/file-organization-patterns.md` for import boundaries and barrel export rules
 
 ## Output Format
 
@@ -85,7 +85,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/file-organization-patterns.md`
-- `docs/stack-patterns/architecture-patterns.md`
+- `docs/ruls/file-organization-patterns.md`
+- `docs/ruls/architecture-patterns.md`
 
 Complete import audit and report all issues.

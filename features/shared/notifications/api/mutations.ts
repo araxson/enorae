@@ -20,7 +20,7 @@ export async function markNotificationAsRead(notificationId: string) {
 
   if (error) throw error
 
-  revalidatePath('/notifications')
+  revalidatePath('/notifications', 'page')
   return { success: true }
 }
 
@@ -41,7 +41,7 @@ export async function markAllNotificationsAsRead() {
 
   if (error) throw error
 
-  revalidatePath('/notifications')
+  revalidatePath('/notifications', 'page')
   return { success: true }
 }
 
@@ -59,7 +59,7 @@ export async function deleteNotification(notificationId: string) {
 
   if (error) throw error
 
-  revalidatePath('/notifications')
+  revalidatePath('/notifications', 'page')
   return { success: true }
 }
 
@@ -92,6 +92,6 @@ export async function sendNotification(
     return { success: false }
   }
 
-  revalidatePath('/notifications')
+  revalidatePath('/notifications', 'page')
   return { success: true }
 }

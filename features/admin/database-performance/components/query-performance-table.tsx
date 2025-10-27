@@ -64,7 +64,7 @@ export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
                 <TableCell className="text-sm">{formatBytes(query.buffer_usage_bytes)}</TableCell>
                 <TableCell>
                   {query.recommended_index ? (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline">
                       {query.recommended_index}
                     </Badge>
                   ) : (

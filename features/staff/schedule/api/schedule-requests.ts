@@ -74,7 +74,7 @@ export async function requestScheduleChange(
     reason,
   })
 
-  revalidatePath('/staff/schedule')
+  revalidatePath('/staff/schedule', 'page')
   return { success: true }
 }
 
@@ -137,7 +137,7 @@ export async function requestShiftSwap(
     message,
   })
 
-  revalidatePath('/staff/schedule')
+  revalidatePath('/staff/schedule', 'page')
   return { success: true }
 }
 
@@ -186,7 +186,7 @@ export async function createRecurringSchedule(
 
   if (error) throw error
 
-  revalidatePath('/staff/schedule')
+  revalidatePath('/staff/schedule', 'page')
   return { success: true }
 }
 
@@ -249,6 +249,6 @@ export async function updateRecurringSchedule(
 
   if (error) throw error
 
-  revalidatePath('/staff/schedule')
+  revalidatePath('/staff/schedule', 'page')
   return { success: true }
 }

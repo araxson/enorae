@@ -108,8 +108,8 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
                     <div className="grid gap-4 grid-cols-1 md:grid-cols-4 items-end">
-                      <div>
-                        <Label htmlFor={`open-${index}`} className="text-sm">
+                      <div className="space-y-2">
+                        <Label htmlFor={`open-${index}`}>
                           Open Time
                         </Label>
                         <Input
@@ -121,8 +121,8 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
                         />
                       </div>
 
-                      <div>
-                        <Label htmlFor={`close-${index}`} className="text-sm">
+                      <div className="space-y-2">
+                        <Label htmlFor={`close-${index}`}>
                           Close Time
                         </Label>
                         <Input

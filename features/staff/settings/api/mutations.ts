@@ -32,5 +32,5 @@ export async function updateUserPreferences(preferences: Partial<UserPreferences
 
   if (error) throw error
 
-  revalidatePath('/staff/settings/preferences')
+  revalidatePath('/staff/settings/preferences', 'page')
 }

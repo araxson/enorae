@@ -35,7 +35,7 @@ export async function submitContactMessage(input: z.infer<typeof contactSchema>)
       timestamp: new Date().toISOString(),
     })
 
-    revalidatePath('/contact')
+    revalidatePath('/contact', 'page')
     return {
       success: true,
       // Return success to not break UI, but data is not persisted

@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import type { ReactNode, ComponentType } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import { formatCurrency, formatPercentage, calculateGrowthRate } from '@/features/business/business-common/components/value-formatters'
 
@@ -166,10 +167,11 @@ export function RevenueCard({
 
           {/* Breakdown */}
           {breakdown && breakdown.length > 0 && (
-            <div className="pt-2 border-t">
+            <>
+              <Separator />
               <div className="flex flex-col gap-2">
                 {breakdown.map((item) => (
-                  <div key={item.label} className="flex gap-4 items-center justify-between">
+                  <div key={item.label} className="flex items-center justify-between gap-4">
                     <div className="text-xs text-muted-foreground">{item.label}</div>
                     <div className="text-sm font-medium">
                       {formatCurrency(item.amount, { currency })}
@@ -177,7 +179,7 @@ export function RevenueCard({
                   </div>
                 ))}
               </div>
-            </div>
+            </>
           )}
 
           {/* Subtitle */}

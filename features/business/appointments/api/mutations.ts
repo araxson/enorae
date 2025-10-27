@@ -150,7 +150,7 @@ export async function updateAppointmentStatus(
     salonId: appointmentSalonId
   })
 
-  revalidatePath('/business/appointments')
+  revalidatePath('/business/appointments', 'page')
   return { success: true }
 }
 

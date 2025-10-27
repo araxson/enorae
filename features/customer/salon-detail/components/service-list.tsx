@@ -20,10 +20,11 @@ export function ServiceList({ services }: ServiceListProps) {
   if (services.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>Services</CardTitle>
           <CardDescription>No services available</CardDescription>
         </CardHeader>
+        <CardContent />
       </Card>
     )
   }

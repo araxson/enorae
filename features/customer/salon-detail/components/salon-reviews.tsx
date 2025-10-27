@@ -85,11 +85,11 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
   if (reviews.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>No reviews yet</CardTitle>
           <CardDescription>Be the first to leave a review for this salon.</CardDescription>
         </CardHeader>
-        <CardContent className="text-sm text-muted-foreground text-center">
+        <CardContent className="flex items-center justify-center">
           Reviews from verified customers will appear here once submitted.
         </CardContent>
       </Card>
@@ -111,7 +111,7 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
+        <CardContent>
           Feedback from recent salon visits helps other customers choose with confidence.
         </CardContent>
       </Card>

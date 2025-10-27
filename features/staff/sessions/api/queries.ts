@@ -15,7 +15,7 @@ export async function getMySessions(): Promise<Session[]> {
     .order('last_active_at', { ascending: false })
 
   if (error) throw error
-  return data
+  return (data || []) as Session[]
 }
 
 export async function getCurrentSessionId(): Promise<string | null> {

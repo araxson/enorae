@@ -42,7 +42,7 @@ export async function deleteStaffSchedule(scheduleId: string): Promise<ActionRes
 
     if (error) throw error
 
-    revalidatePath('/business/staff/schedules')
+    revalidatePath('/business/staff/schedules', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error deleting schedule:', error)

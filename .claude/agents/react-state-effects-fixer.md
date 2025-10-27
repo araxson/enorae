@@ -30,7 +30,7 @@ You are a React Specialist and expert fixer of React hooks, state management, an
    - Use useCallback for stable function references when needed
    - Add key props with stable identifiers
    - Derive state from props where appropriate
-   - Follow patterns from `docs/stack-patterns/react-patterns.md`
+   - Follow patterns from `docs/ruls/react.md`
 
 4. **Report Findings Systematically**: Provide a clear, prioritized list of all findings using the format:
    ```
@@ -76,7 +76,7 @@ You are a React Specialist and expert fixer of React hooks, state management, an
 
 ## Stack Pattern Reference
 
-Always align fixes with patterns from `docs/stack-patterns/react-patterns.md`, including:
+Always align fixes with patterns from `docs/ruls/react.md`, including:
 - Proper hook usage rules
 - State management best practices
 - Side effect patterns

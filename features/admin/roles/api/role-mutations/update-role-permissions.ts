@@ -34,7 +34,7 @@ export async function updateRolePermissions(formData: FormData): Promise<RoleAct
       permissions,
     })
 
-    revalidatePath('/admin/roles')
+    revalidatePath('/admin/roles', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     return {

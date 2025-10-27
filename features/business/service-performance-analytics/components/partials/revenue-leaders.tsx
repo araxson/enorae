@@ -35,7 +35,7 @@ export function RevenueLeaders({ services, formatCurrency }: RevenueLeadersProps
               <div className="flex items-center gap-3">
                 <Badge variant={index === 0 ? 'default' : 'secondary'}>#{index + 1}</Badge>
                 <div>
-                  <h4>{service.service_name}</h4>
+                  <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">{service.service_name}</h4>
                   <p className="text-muted-foreground">{service.total_bookings} bookings</p>
                 </div>
               </div>

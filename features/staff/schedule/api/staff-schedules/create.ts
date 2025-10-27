@@ -54,7 +54,7 @@ export async function createStaffSchedule(
 
     if (error) throw error
 
-    revalidatePath('/business/staff/schedules')
+    revalidatePath('/business/staff/schedules', 'page')
     return { success: true, data: schedule }
   } catch (error) {
     console.error('Error creating schedule:', error)

@@ -103,7 +103,7 @@ export function ServicePerformanceDashboard({
               <div key={service.service_id} className="border rounded-lg p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h4>{service.service_name}</h4>
+                    <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">{service.service_name}</h4>
                     <div className="flex items-center gap-2 mt-1">
                       {getPerformanceIcon(service.cancellation_rate || 0)}
                       <span className="text-muted-foreground">

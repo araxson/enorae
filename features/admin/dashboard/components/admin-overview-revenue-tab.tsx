@@ -49,7 +49,7 @@ export function AdminOverviewRevenueTab({ revenue, windowSize }: RevenueTabProps
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="outline" className="gap-1 text-xs">
+          <Badge variant="outline" className="gap-1">
             {windowSize || '0'} day window
           </Badge>
           <Tooltip>

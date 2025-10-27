@@ -133,7 +133,7 @@ export function CreateRequestDialog({
                 checked={isAutoReschedule}
                 onCheckedChange={(checked) => setIsAutoReschedule(!!checked)}
               />
-              <Label htmlFor="isAutoReschedule" className="text-sm font-normal">
+              <Label htmlFor="isAutoReschedule">
                 Automatically reschedule affected appointments
               </Label>
             </div>
@@ -143,7 +143,7 @@ export function CreateRequestDialog({
                 checked={isNotifyCustomers}
                 onCheckedChange={(checked) => setIsNotifyCustomers(!!checked)}
               />
-              <Label htmlFor="isNotifyCustomers" className="text-sm font-normal">
+              <Label htmlFor="isNotifyCustomers">
                 Notify customers about affected appointments
               </Label>
             </div>

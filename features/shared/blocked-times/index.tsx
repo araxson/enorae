@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getBlockedTimesBySalon, getBlockedTimesSalon } from './api/queries'
 import { BlockedTimesList } from './components/blocked-times-list'
 import { BlockedTimeForm } from './components/blocked-time-form'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function BlockedTimesManagement() {
   try {
@@ -16,6 +16,7 @@ export async function BlockedTimesManagement() {
             <CardTitle>Blocked times</CardTitle>
             <CardDescription>Manage blocked time slots to prevent bookings during specific periods.</CardDescription>
           </CardHeader>
+          <CardContent />
         </Card>
 
         <div className="space-y-6">

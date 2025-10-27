@@ -21,15 +21,16 @@ interface FormFieldsProps {
   staff: StaffOption[]
 }
 
+import { Alert, AlertDescription } from '@/components/ui/alert'
+
 export function FormFields({ service, formData, setFormData, isLoadingStaff, staff }: FormFieldsProps) {
   return (
     <>
-      <div className="space-y-2">
-        <Label>Service</Label>
-        <div className="p-3 bg-muted rounded-md">
-          <p className="text-base font-medium">Service ID: {service['service_id']}</p>
-        </div>
-      </div>
+      <Alert>
+        <AlertDescription>
+          Service ID: <span className="font-medium">{service['service_id']}</span>
+        </AlertDescription>
+      </Alert>
 
       <div className="space-y-2">
         <Label htmlFor="staff">Staff</Label>

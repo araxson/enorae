@@ -47,7 +47,7 @@ export async function respondToReview(
 
     if (error) throw error
 
-    revalidatePath('/business/reviews')
+    revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error responding to review:', error)
@@ -96,7 +96,7 @@ export async function flagReview(
 
     if (error) throw error
 
-    revalidatePath('/business/reviews')
+    revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error flagging review:', error)
@@ -144,7 +144,7 @@ export async function toggleFeaturedReview(
 
     if (error) throw error
 
-    revalidatePath('/business/reviews')
+    revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error toggling featured review:', error)
@@ -198,7 +198,7 @@ export async function updateReviewResponse(
 
     if (error) throw error
 
-    revalidatePath('/business/reviews')
+    revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error updating review response:', error)
@@ -251,7 +251,7 @@ export async function deleteReviewResponse(
 
     if (error) throw error
 
-    revalidatePath('/business/reviews')
+    revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error deleting review response:', error)

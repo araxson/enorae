@@ -52,7 +52,7 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
 
     if (error) throw error
 
-    revalidatePath('/business/settings/webhooks')
+    revalidatePath('/business/settings/webhooks', 'page')
 
     return { success: true, data: undefined }
   } catch (error) {
@@ -97,7 +97,7 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
 
     if (error) throw error
 
-    revalidatePath('/business/settings/webhooks')
+    revalidatePath('/business/settings/webhooks', 'page')
 
     return { success: true, data: undefined }
   } catch (error) {
@@ -131,7 +131,7 @@ export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: 
 
     if (error) throw error
 
-    revalidatePath('/business/settings/webhooks')
+    revalidatePath('/business/settings/webhooks', 'page')
 
     return {
       success: true,
@@ -168,7 +168,7 @@ export async function clearCompletedWebhooks(): Promise<ActionResponse<{ count: 
 
     if (error) throw error
 
-    revalidatePath('/business/settings/webhooks')
+    revalidatePath('/business/settings/webhooks', 'page')
 
     return {
       success: true,

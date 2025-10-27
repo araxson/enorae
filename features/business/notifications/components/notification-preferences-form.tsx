@@ -106,7 +106,7 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
                       className="flex items-center justify-between rounded-md border px-3 py-2"
                     >
                       <div>
-                        <Label className="text-sm font-medium capitalize">
+                        <Label className="capitalize">
                           {event.replace(/_/g, ' ')}
                         </Label>
                         <p className="text-xs text-muted-foreground">

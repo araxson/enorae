@@ -23,16 +23,37 @@ export async function fetchAppointments(
       customer_id,
       staff_id,
       created_at,
-      status,
-      profiles:customer_id (
-        username
-      )
+      status
     `)
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return (data ?? []) as AppointmentWithProfile[]
+
+  const appointments = (data ?? []) as any[]
+
+  // Fetch customer profiles separately
+  const customerIds = [...new Set(appointments.map((a) => a.customer_id).filter(Boolean))]
+  let profilesMap = new Map<string, { username: string | null }>()
+
+  if (customerIds.length > 0) {
+    const { data: profiles } = await client
+      .schema('identity')
+      .from('profiles')
+      .select('id, username')
+      .in('id', customerIds)
+
+    if (profiles) {
+      profiles.forEach((p: any) => {
+        profilesMap.set(p.id, { username: p.username })
+      })
+    }
+  }
+
+  return appointments.map((a) => ({
+    ...a,
+    profiles: a.customer_id ? profilesMap.get(a.customer_id) || null : null,
+  })) as AppointmentWithProfile[]
 }
 
 export async function fetchReviewAggregation(

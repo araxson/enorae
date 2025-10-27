@@ -59,8 +59,8 @@ export async function bulkAdjustPricing(input: BulkPricingAdjustmentInput) {
     updated += 1
   }
 
-  revalidatePath('/business/services/pricing')
-  revalidatePath('/business/pricing')
+  revalidatePath('/business/services/pricing', 'page')
+  revalidatePath('/business/pricing', 'page')
   return { updated }
 }
 

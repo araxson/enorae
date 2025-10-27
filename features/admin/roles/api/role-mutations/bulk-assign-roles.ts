@@ -68,8 +68,8 @@ export async function bulkAssignRoles(
       errors: results.errors,
     })
 
-    revalidatePath('/admin/roles')
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/roles', 'page')
+    revalidatePath('/admin/users', 'page')
 
     return { success: true, data: results }
   } catch (error) {

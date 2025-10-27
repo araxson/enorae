@@ -63,7 +63,7 @@ export default function Page() {
 - Follow canonical feature structure
 - Keep Next.js pages as 5-15 line shells that only render feature components
 - Use proper layer separation
-- Review `docs/stack-patterns/architecture-patterns.md` for feature structure and server/client rules
+- Review `docs/ruls/architecture-patterns.md` for feature structure and server/client rules
 
 ## Output Format
 
@@ -77,7 +77,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/architecture-patterns.md`
-- `docs/stack-patterns/nextjs-patterns.md`
+- `docs/ruls/architecture-patterns.md`
+- `docs/ruls/nextjs-patterns.md`
 
 Complete architecture audit and report all violations.

@@ -56,7 +56,7 @@ export async function createSalonLocation(formData: FormData) {
 
     if (insertError) return { error: insertError.message }
 
-    revalidatePath('/business/locations')
+    revalidatePath('/business/locations', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to create location' }
@@ -106,7 +106,7 @@ export async function updateSalonLocation(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/business/locations')
+    revalidatePath('/business/locations', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to update location' }
@@ -148,7 +148,7 @@ export async function deleteSalonLocation(formData: FormData) {
 
     if (deleteError) return { error: deleteError.message }
 
-    revalidatePath('/business/locations')
+    revalidatePath('/business/locations', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to delete location' }

@@ -128,12 +128,12 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
           {isLoading ? 'Updating...' : 'Update Subscription'}
         </Button>
 
-        <div className="rounded-lg bg-muted p-4">
-          <p className="mb-2 text-sm font-medium">Note</p>
-          <p className="text-muted-foreground">
+        <Alert>
+          <AlertTitle>Note</AlertTitle>
+          <AlertDescription>
             Subscription changes take effect immediately. Chains will be notified of any tier changes.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       </CardContent>
     </Card>
   )

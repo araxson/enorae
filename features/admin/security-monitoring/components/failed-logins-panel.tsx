@@ -9,7 +9,7 @@ interface FailedLoginsPanelProps {
 
 const TopList = ({ title, items }: { title: string; items: FailedLoginSummary['byIp'] }) => (
   <div>
-    <h3>{title}</h3>
+    <h3 className="scroll-m-20 text-xl font-semibold tracking-tight mb-2">{title}</h3>
     {items.length === 0 ? (
       <CardDescription>No data</CardDescription>
     ) : (
@@ -54,7 +54,7 @@ export function FailedLoginsPanel({ summary }: FailedLoginsPanelProps) {
         <div>
           <div className="mb-2 flex items-center gap-2">
             <Users className="h-4 w-4" aria-hidden="true" />
-            <h3>Recent Attempts</h3>
+            <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Recent Attempts</h3>
           </div>
           {summary.attempts.length === 0 ? (
             <CardDescription>No failed logins recorded.</CardDescription>

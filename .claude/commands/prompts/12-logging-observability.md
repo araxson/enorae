@@ -72,7 +72,7 @@ setTimeout(() => {
 - Log API requests and responses (sanitized)
 - Add logging to error handlers
 - Log state changes and side effects
-- Review `docs/stack-patterns/architecture-patterns.md` for logging guidance in server actions and queries
+- Review `docs/ruls/architecture-patterns.md` for logging guidance in server actions and queries
 
 ## Output Format
 
@@ -86,7 +86,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/architecture-patterns.md`
-- `docs/stack-patterns/supabase-patterns.md`
+- `docs/ruls/architecture-patterns.md`
+- `docs/ruls/supabase-patterns.md`
 
 Complete observability audit and report all logging gaps.

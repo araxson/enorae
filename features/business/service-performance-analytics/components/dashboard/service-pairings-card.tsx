@@ -14,7 +14,7 @@ export function ServicePairingsCard({ pairings }: { pairings: ServicePairing[] }
           <CardTitle>Service Pairings</CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-2 text-sm">
+      <CardContent className="space-y-2">
         {pairings.map((pair) => (
           <div key={`${pair.primary}-${pair.paired}`} className="flex items-center justify-between rounded-md border px-3 py-2">
             <div>

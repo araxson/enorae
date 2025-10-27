@@ -6,7 +6,7 @@
 
 **Action Mode:** Inspect every form and ship frontend/server-action fixes that harmonize validation, UI feedback, and submissions with the authoritative schema—document database follow-ups separately.
 
-**Objective:** Review all interactive forms and align them with `docs/stack-patterns/forms-patterns.md`.
+**Objective:** Review all interactive forms and align them with `docs/ruls/forms-patterns.md`.
 
 **Audit Targets:**
 - Form components using React Hook Form and Zod.

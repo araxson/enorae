@@ -353,6 +353,6 @@ export async function createService(
     userId: session.user.id
   })
 
-  revalidatePath('/business/services')
+  revalidatePath('/business/services', 'page')
   return service
 }

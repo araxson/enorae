@@ -35,7 +35,7 @@ export async function bulkUpdateAddresses(
     throw new Error(errors.join(', '))
   }
 
-  revalidatePath('/business/locations')
+  revalidatePath('/business/locations', 'page')
   return { success: true, updated: locationIds.length }
 }
 
@@ -47,7 +47,7 @@ export async function geocodeAllAddresses(salonId: string) {
   // Get all locations for this salon without coordinates
   const { data: locations, error: locationsError } = await supabase
     .from('salon_locations_view')
-    .select('id, street_address, city, state_province, postal_code, country_code')
+    .select('id')
     .eq('salon_id', salonId)
     .is('latitude', null)
 
@@ -68,6 +68,6 @@ export async function geocodeAllAddresses(salonId: string) {
     results.errors.push(`Location ${location.id} needs manual geocoding`)
   }
 
-  revalidatePath('/business/locations')
+  revalidatePath('/business/locations', 'page')
   return results
 }

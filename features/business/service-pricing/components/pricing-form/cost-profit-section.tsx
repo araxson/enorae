@@ -33,7 +33,7 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
                 onChange={(event) => onChange('cost', event.target.value)}
                 placeholder="0.00"
               />
-              <p className="text-sm text-muted-foreground text-xs">Cost to provide this service</p>
+              <p className="text-xs text-muted-foreground">Cost to provide this service</p>
             </div>
 
             <div className="space-y-2">
@@ -41,7 +41,7 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
               <div className="flex h-10 items-center rounded-md border px-3 text-lg font-semibold text-primary">
                 {profitMargin}%
               </div>
-              <p className="text-sm text-muted-foreground text-xs">Auto-calculated from price & cost</p>
+              <p className="text-xs text-muted-foreground">Auto-calculated from price & cost</p>
             </div>
           </div>
         </div>

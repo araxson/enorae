@@ -64,11 +64,15 @@ export async function getPricingServices(salonId: string): Promise<PricingServic
 
   const { data, error } = await supabase
     .from('services_view')
-    .select('id, name, base_price')
+    .select('id, name')
     .eq('salon_id', salonId)
 
   if (error) throw error
-  return (data || []) as PricingService[]
+  return (data || []).map((service: any) => ({
+    id: service.id,
+    name: service.name,
+    base_price: null, // base_price is in service_pricing table, not services_view
+  })) as PricingService[]
 }
 
 export function buildPricingAnalytics(

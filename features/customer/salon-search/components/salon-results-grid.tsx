@@ -36,20 +36,17 @@ function SalonCard({ salon, featured = false }: SalonCardProps) {
     >
       <Card className="h-full">
         <CardHeader>
-          <CardTitle>
-            <span className="flex items-start justify-between gap-2">
-              <span>{salon.name}</span>
-              <span className="flex gap-1">
-                {salon.is_verified && <Shield className="h-4 w-4 text-secondary" />}
-                {(featured || salon.is_featured) && <Sparkles className="h-4 w-4 text-accent" />}
-              </span>
-            </span>
-          </CardTitle>
+          <div className="flex items-start justify-between gap-2">
+            <CardTitle>{salon.name}</CardTitle>
+            <div className="flex gap-1">
+              {salon.is_verified && <Shield className="h-4 w-4 text-secondary" aria-label="Verified salon" />}
+              {(featured || salon.is_featured) && <Sparkles className="h-4 w-4 text-accent" aria-label="Featured salon" />}
+            </div>
+          </div>
           <CardDescription>
-            <span className="flex items-center gap-1">
-              <MapPin className="h-3 w-3 text-muted-foreground" />
-              {formatAddress(salon.address)}
-            </span>
+            <MapPin className="h-3 w-3 text-muted-foreground inline" aria-hidden="true" />
+            {' '}
+            {formatAddress(salon.address)}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -83,7 +80,7 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
         <div>
           <div className="mb-4 flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-accent" />
-            <h2>Featured Salons</h2>
+            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Featured Salons</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {featuredSalons.map((salon) => (
@@ -98,7 +95,7 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
         <div>
           <div className="mb-4 flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
-            <h2>Search Results ({results.length})</h2>
+            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Search Results ({results.length})</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {results.map((salon) => (
@@ -111,13 +108,9 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {/* No Results */}
       {showNoResults && (
         <Card>
-          <CardHeader>
-            <CardTitle>
-              <span className="block text-center">No salons found</span>
-            </CardTitle>
-            <CardDescription>
-              <span className="block text-center">Nothing matches your current filters.</span>
-            </CardDescription>
+          <CardHeader className="text-center">
+            <CardTitle>No salons found</CardTitle>
+            <CardDescription>Nothing matches your current filters.</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground text-center">

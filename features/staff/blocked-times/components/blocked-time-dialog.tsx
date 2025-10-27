@@ -1,5 +1,5 @@
 'use client'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { BlockedTimeForm } from './blocked-time-form'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
@@ -17,6 +17,9 @@ export function BlockedTimeDialog({ open, onOpenChange, blockedTime }: BlockedTi
           <DialogTitle>
             {blockedTime ? 'Edit Blocked Time' : 'Create Blocked Time'}
           </DialogTitle>
+          <DialogDescription>
+            {blockedTime ? 'Update the blocked time details' : 'Create a new blocked time period'}
+          </DialogDescription>
         </DialogHeader>
         <BlockedTimeForm
           blockedTime={blockedTime}

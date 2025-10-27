@@ -42,7 +42,7 @@ import { calculateMetric } from '@/utils/unused'
 - Delete orphaned files
 - Clean up dead imports
 - Consolidate duplicate implementations
-- Review `docs/stack-patterns/file-organization-patterns.md` to confirm file placement and export hygiene align with project standards
+- Review `docs/ruls/file-organization-patterns.md` to confirm file placement and export hygiene align with project standards
 - Fix every finding directly in code; do not produce additional documentation
 
 ## Output Format
@@ -57,7 +57,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/file-organization-patterns.md`
-- `docs/stack-patterns/architecture-patterns.md`
+- `docs/ruls/file-organization-patterns.md`
+- `docs/ruls/architecture-patterns.md`
 
 Scan entire codebase for dead code and report all findings.

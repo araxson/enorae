@@ -70,13 +70,13 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
                 Breakdown by platform role with relative share.
               </CardDescription>
             </div>
-            <Badge variant="outline" className="gap-1 text-xs">
+            <Badge variant="outline" className="gap-1">
               <Users className="h-3 w-3" />
               {stats.totalUsers.toLocaleString()} users
             </Badge>
           </div>
           {topRoleLabel && (
-            <Badge variant="secondary" className="w-fit text-xs font-semibold">
+            <Badge variant="secondary" className="w-fit">
               Most common: {topRoleLabel}
             </Badge>
           )}
@@ -93,7 +93,7 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between gap-3">
                         <CardTitle>{label}</CardTitle>
-                        <Badge variant="outline" className="gap-1 text-xs">
+                        <Badge variant="outline" className="gap-1">
                           {count.toLocaleString()}
                         </Badge>
                       </div>

@@ -61,8 +61,8 @@ export async function updateAppointmentStatus(
       new_status: status,
     })
 
-    revalidatePath('/admin')
-    revalidatePath('/admin/appointments')
+    revalidatePath('/admin', 'layout')
+    revalidatePath('/admin/appointments', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     return {

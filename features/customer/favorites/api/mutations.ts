@@ -58,8 +58,8 @@ export async function toggleFavorite(
 
         if (error) throw error
 
-        revalidatePath('/customer/favorites')
-        revalidatePath('/customer/salons')
+        revalidatePath('/customer/favorites', 'page')
+        revalidatePath('/customer/salons', 'page')
         return { success: true, data: { favorited: true } }
       }
 
@@ -72,8 +72,8 @@ export async function toggleFavorite(
 
       if (error) throw error
 
-      revalidatePath('/customer/favorites')
-      revalidatePath('/customer/salons')
+      revalidatePath('/customer/favorites', 'page')
+      revalidatePath('/customer/salons', 'page')
       return { success: true, data: { favorited: false } }
     }
 
@@ -88,8 +88,8 @@ export async function toggleFavorite(
 
     if (error) throw error
 
-    revalidatePath('/customer/favorites')
-    revalidatePath('/customer/salons')
+    revalidatePath('/customer/favorites', 'page')
+    revalidatePath('/customer/salons', 'page')
     return { success: true, data: { favorited: true } }
   } catch (error) {
     console.error('Toggle favorite error:', error)
@@ -139,9 +139,9 @@ export async function addToFavorites(salonId: string): Promise<ActionResponse> {
 
     if (error) throw error
 
-    revalidatePath('/customer/favorites')
-    revalidatePath('/customer/salons')
-    revalidatePath(`/customer/salons/${salonId}`)
+    revalidatePath('/customer/favorites', 'page')
+    revalidatePath('/customer/salons', 'page')
+    revalidatePath(`/customer/salons/${salonId}`, 'page')
 
     return { success: true, data: undefined }
   } catch (error) {
@@ -191,10 +191,10 @@ export async function removeFromFavorites(favoriteId: string): Promise<ActionRes
 
     if (error) throw error
 
-    revalidatePath('/customer/favorites')
-    revalidatePath('/customer/salons')
+    revalidatePath('/customer/favorites', 'page')
+    revalidatePath('/customer/salons', 'page')
     if (favorite.salon_id) {
-      revalidatePath(`/customer/salons/${favorite.salon_id}`)
+      revalidatePath(`/customer/salons/${favorite.salon_id}`, 'page')
     }
 
     return { success: true, data: undefined }

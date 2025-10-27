@@ -73,7 +73,7 @@ function AppointmentCard({
 - Replace bespoke markup with shadcn/ui primitives and follow documented compositions
 - Keep shadcn slots as plain text (no className overrides) and apply layout with parent containers
 - Create reusable component families
-- Review `docs/stack-patterns/ui-patterns.md` and `docs/stack-patterns/react-patterns.md` for component composition standards
+- Review `docs/ruls/ui.md` and `docs/ruls/react-patterns.md` for component composition standards
 
 ## Output Format
 
@@ -87,8 +87,8 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/ui-patterns.md`
-- `docs/stack-patterns/react-patterns.md`
-- `docs/stack-patterns/architecture-patterns.md`
+- `docs/ruls/ui.md`
+- `docs/ruls/react-patterns.md`
+- `docs/ruls/architecture-patterns.md`
 
 Complete component composition audit and report all issues.

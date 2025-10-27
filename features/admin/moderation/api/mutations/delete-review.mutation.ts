@@ -50,7 +50,7 @@ export async function deleteReview(formData: FormData) {
       console.error('[Moderation] Failed to record audit log for review deletion', auditError)
     }
 
-    MODERATION_PATHS.forEach((path) => revalidatePath(path))
+    MODERATION_PATHS.forEach((path) => revalidatePath(path, 'page'))
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to delete review' }

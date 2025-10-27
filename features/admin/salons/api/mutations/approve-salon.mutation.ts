@@ -86,7 +86,7 @@ export async function approveSalon(formData: FormData) {
     //   p_data: { salon_id: salonId }
     // })
 
-    revalidatePath('/admin/salons')
+    revalidatePath('/admin/salons', 'page')
     return { success: true }
   } catch (error) {
     return {

@@ -24,7 +24,7 @@ export async function featureReview(formData: FormData) {
       return { error: error.message }
     }
 
-    MODERATION_PATHS.forEach((path) => revalidatePath(path))
+    MODERATION_PATHS.forEach((path) => revalidatePath(path, 'page'))
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to feature review' }

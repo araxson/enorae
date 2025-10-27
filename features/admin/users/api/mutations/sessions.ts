@@ -29,7 +29,7 @@ export async function terminateSession(formData: FormData) {
 
     if (error) return { error: error.message }
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true }
   } catch (error) {
     return {
@@ -61,7 +61,7 @@ export async function terminateAllUserSessions(formData: FormData) {
 
     if (error) return { error: error.message }
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true }
   } catch (error) {
     return {

@@ -9,7 +9,7 @@
 **Task:** Eradicate `any`, `@ts-ignore`, and shape mismatches while keeping compiler errors at zero.
 
 **Inputs:**
-- Pattern reference: `docs/stack-patterns/typescript-patterns.md`
+- Pattern reference: `docs/ruls/typescript-patterns.md`
 - Detection commands for `any`, implicit `any`, and unsafe casts.
 - Generated Supabase types for reliable defaults.
 

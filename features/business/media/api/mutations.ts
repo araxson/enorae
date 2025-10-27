@@ -81,7 +81,7 @@ export async function updateSalonMedia(formData: FormData) {
 
     if (error) throw error
 
-    revalidatePath('/business/settings/media')
+    revalidatePath('/business/settings/media', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to update media' }
@@ -127,7 +127,7 @@ export async function addGalleryImage(formData: FormData) {
 
     if (error) throw error
 
-    revalidatePath('/business/settings/media')
+    revalidatePath('/business/settings/media', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to add image' }
@@ -173,7 +173,7 @@ export async function removeGalleryImage(formData: FormData) {
 
     if (error) throw error
 
-    revalidatePath('/business/settings/media')
+    revalidatePath('/business/settings/media', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to remove image' }

@@ -45,7 +45,7 @@ export async function getOperationalMetrics(salonId: string) {
   }
 
   const appointments = (appointmentsResult.data || []) as Appointment[]
-  const staff = (staffResult.data || []) as Staff[]
+  const staff = (staffResult.data || []) as Array<{ id: string | null; status: string | null; is_active: boolean | null }>
 
   // Calculate appointments per day (last 30 days)
   const daysInPeriod = 30

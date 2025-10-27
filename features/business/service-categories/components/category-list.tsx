@@ -53,7 +53,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
   if (categories.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>No service categories found</CardTitle>
           <CardDescription>Create a category to organize your services.</CardDescription>
         </CardHeader>

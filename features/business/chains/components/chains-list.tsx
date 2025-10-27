@@ -61,7 +61,7 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
   if (chains.length === 0) {
     return (
       <Card>
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-center">
           <CardTitle>No salon chains found</CardTitle>
           <CardDescription>Chains appear here once created.</CardDescription>
         </CardHeader>

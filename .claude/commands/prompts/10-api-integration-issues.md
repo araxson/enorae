@@ -64,7 +64,7 @@ appointments.forEach(a => a.startTime) // What if API changed structure?
 - Use correct HTTP methods
 - Add retry logic for transient failures
 - Document API contracts
-- Review `docs/stack-patterns/supabase-patterns.md` and `docs/stack-patterns/architecture-patterns.md` for integration rules
+- Review `docs/ruls/supabase-patterns.md` and `docs/ruls/architecture-patterns.md` for integration rules
 
 ## Output Format
 
@@ -78,8 +78,8 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/supabase-patterns.md`
-- `docs/stack-patterns/architecture-patterns.md`
-- `docs/stack-patterns/typescript-patterns.md`
+- `docs/ruls/supabase-patterns.md`
+- `docs/ruls/architecture-patterns.md`
+- `docs/ruls/typescript-patterns.md`
 
 Complete integration audit and report all issues.

@@ -24,7 +24,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
             {summary.active_customers} active
           </p>
         </CardContent>
-        <CardFooter className="text-xs text-muted-foreground">
+        <CardFooter>
           Grow by converting recent leads into first appointments.
         </CardFooter>
       </Card>
@@ -45,7 +45,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
             {summary.avg_visits_per_customer.toFixed(1)} avg visits
           </p>
         </CardContent>
-        <CardFooter className="text-xs text-muted-foreground">
+        <CardFooter>
           Increase with membership bundles and targeted upsells.
         </CardFooter>
       </Card>
@@ -66,7 +66,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
             Customer retention
           </p>
         </CardContent>
-        <CardFooter className="text-xs text-muted-foreground">
+        <CardFooter>
           Keep momentum with loyalty rewards and targeted outreach.
         </CardFooter>
       </Card>
@@ -87,7 +87,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
             {summary.segmentation.churned} churned customers
           </p>
         </CardContent>
-        <CardFooter className="text-xs text-muted-foreground">
+        <CardFooter>
           Trigger win-back campaigns for churned guests to restore revenue.
         </CardFooter>
       </Card>

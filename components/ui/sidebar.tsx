@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { PanelLeft } from "lucide-react"
 
 import { useIsMobile } from "@/lib/hooks/use-mobile"
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils/index"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
@@ -25,7 +25,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-export const SIDEBAR_COOKIE_NAME = "sidebar_state"
+const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
@@ -770,8 +770,4 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
-}
-export function isSidebarOpenFromCookie(value: string | undefined | null): boolean {
-  if (!value) return true
-  return value !== "false"
 }

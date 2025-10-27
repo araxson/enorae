@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { Separator } from '@/components/ui/separator'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
 
@@ -114,19 +115,24 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
           )}
 
           {request['reviewed_at'] && request['reviewed_by_name'] && (
-            <div className="pt-2 border-t">
-              <p className="text-muted-foreground">
-                Reviewed by {request['reviewed_by_name']} on{' '}
-                {format(new Date(request['reviewed_at']), 'MMM dd, yyyy')}
-              </p>
-              {request['review_notes'] && (
-                <p className="mt-1">{request['review_notes']}</p>
-              )}
-            </div>
+            <>
+              <Separator />
+              <div>
+                <p className="text-muted-foreground">
+                  Reviewed by {request['reviewed_by_name']} on{' '}
+                  {format(new Date(request['reviewed_at']), 'MMM dd, yyyy')}
+                </p>
+                {request['review_notes'] && (
+                  <p className="mt-1">{request['review_notes']}</p>
+                )}
+              </div>
+            </>
           )}
 
           {request['status'] === 'pending' && (
-            <div className="pt-2 border-t">
+            <>
+              <Separator />
+              <div>
               {!showRejectForm ? (
                 <div className="flex gap-3">
                   <Button
@@ -176,7 +182,8 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
                   </div>
                 </div>
               )}
-            </div>
+              </div>
+            </>
           )}
         </div>
       </CardContent>

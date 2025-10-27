@@ -1,162 +1,248 @@
 import Link from 'next/link'
+import {
+  Calendar,
+  Users,
+  Sparkles,
+  TrendingUp,
+  Clock,
+  Shield,
+  Store,
+  Award,
+} from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, Users, Sparkles, TrendingUp, Clock, Shield, Store, Award } from 'lucide-react'
-import { TestimonialCard, StatBadge, TrustBadge } from '@/features/marketing/common-components'
+import {
+  ButtonGroup,
+  ButtonGroupSeparator,
+} from '@/components/ui/button-group'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs'
+import {
+  MarketingHero,
+  StatBadge,
+  TestimonialCard,
+  TrustBadge,
+} from '@/features/marketing/common-components'
+
+const stats = [
+  { icon: Store, value: '500+', label: 'Partner salons' },
+  { icon: Users, value: '10,000+', label: 'Active users' },
+  { icon: Calendar, value: '50,000+', label: 'Bookings made' },
+  { icon: Award, value: '4.8★', label: 'Average rating' },
+]
+
+const customerFeatures = [
+  {
+    icon: Calendar,
+    title: 'Easy booking',
+    description:
+      'Find and book appointments in seconds with real-time availability and instant confirmations.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Service discovery',
+    description:
+      'Browse curated service catalogs with pricing, duration, and detailed descriptions.',
+  },
+  {
+    icon: Shield,
+    title: 'Secure access',
+    description:
+      'Simple account creation with privacy controls and protected payment options.',
+  },
+]
+
+const businessFeatures = [
+  {
+    icon: Users,
+    title: 'Staff management',
+    description:
+      'Coordinate schedules, assign services, and track performance in one workspace.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Business analytics',
+    description:
+      'Monitor revenue, appointments, and trends to make data-driven decisions.',
+  },
+  {
+    icon: Clock,
+    title: 'Operating control',
+    description:
+      'Manage operating hours, block times, and automate reminders for every location.',
+  },
+]
+
+const testimonials = [
+  {
+    author: 'Sarah Johnson',
+    role: 'Regular customer',
+    content:
+      'Enorae makes booking so easy! I can find the perfect salon, book my appointment, and even reschedule if needed - all from my phone.',
+    rating: 5,
+  },
+  {
+    author: 'Michael Chen',
+    role: 'Salon owner, Luxe Hair Studio',
+    content:
+      'Since using Enorae, our bookings have increased by 40%. The platform is intuitive and our clients love how easy it is to book appointments.',
+    rating: 5,
+  },
+  {
+    author: 'Emily Rodriguez',
+    role: 'Spa manager',
+    content:
+      "The analytics dashboard helps us optimize our scheduling and staff allocation. It's been a game-changer for our operations.",
+    rating: 5,
+  },
+]
 
 export function HomePageClient() {
   return (
-    <main className="space-y-0">
-      <section className="bg-gradient-to-b from-primary/5 to-background">
-        <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 px-4 pb-16 pt-20 text-center sm:px-6 lg:px-8">
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <h1 className="scroll-m-20 text-primary">
-                Enorae
-              </h1>
-              <p className="text-muted-foreground">Your Beauty Appointments, Simplified</p>
-              <p className="mx-auto max-w-2xl text-muted-foreground">
-                The modern platform connecting clients with premier salons. Book appointments, manage your business, and grow your beauty brand.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <TrustBadge type="verified" text="500+ Verified Salons" />
-              <TrustBadge type="rated" text="4.8★ Average Rating" />
-              <TrustBadge type="popular" text="10,000+ Happy Customers" />
-              <TrustBadge type="secure" />
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Button asChild size="lg" className="px-8">
-                <Link href="/explore">Find salons</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="px-8">
-                <Link href="/signup">Get started free</Link>
-              </Button>
-            </div>
+    <main className="flex flex-col gap-12 pb-16">
+      <MarketingHero
+        title="Enorae"
+        subtitle="Your Beauty Appointments, Simplified"
+        description="The modern platform connecting clients with premier salons. Book appointments, manage your business, and grow your beauty brand."
+      >
+        <div className="flex w-full flex-col items-center gap-6">
+          <ButtonGroup className="flex flex-wrap justify-center gap-2 px-2">
+            <Button asChild size="lg">
+              <Link href="/explore">Find salons</Link>
+            </Button>
+            <ButtonGroupSeparator className="hidden sm:flex" />
+            <Button asChild variant="outline" size="lg">
+              <Link href="/signup">Get started free</Link>
+            </Button>
+          </ButtonGroup>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <TrustBadge type="verified" text="500+ Verified Salons" />
+            <TrustBadge type="rated" text="4.8★ Average Rating" />
+            <TrustBadge type="popular" text="10,000+ Happy Customers" />
+            <TrustBadge type="secure" />
           </div>
         </div>
-      </section>
+      </MarketingHero>
 
-      <section className="bg-muted/30">
-        <div className="mx-auto grid max-w-6xl gap-6 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4 sm:px-6 lg:px-8">
-          <StatBadge icon={Store} value="500+" label="Partner salons" color="primary" />
-          <StatBadge icon={Users} value="10,000+" label="Active users" color="success" />
-          <StatBadge icon={Calendar} value="50,000+" label="Bookings made" color="secondary" />
-          <StatBadge icon={Award} value="4.8★" label="Average rating" color="warning" />
-        </div>
-      </section>
-
-      <section className="bg-background">
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="scroll-m-20">Everything you need</h2>
-            <p className="mt-4 text-muted-foreground">Powerful features for clients and salon businesses</p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                icon: Calendar,
-                title: 'Easy booking',
-                description:
-                  'Find and book appointments at your favorite salons in seconds. Real-time availability and instant confirmations.',
-              },
-              {
-                icon: Users,
-                title: 'Staff management',
-                description: 'Manage your team, schedules, and services. Track performance and optimize your salon operations.',
-              },
-              {
-                icon: Sparkles,
-                title: 'Service catalog',
-                description:
-                  "Showcase your services with detailed descriptions, pricing, and duration. Let clients choose what's right for them.",
-              },
-              {
-                icon: TrendingUp,
-                title: 'Business analytics',
-                description:
-                  'Track revenue, appointments, and performance. Make data-driven decisions to grow your business.',
-              },
-              {
-                icon: Clock,
-                title: 'Flexible scheduling',
-                description:
-                  'Set operating hours, block times, and manage staff availability. Full control over your calendar.',
-              },
-              {
-                icon: Shield,
-                title: 'Secure & reliable',
-                description:
-                  'Enterprise-grade security with role-based access control. Your data is safe and always available.',
-              },
-            ].map(({ icon: Icon, title, description }) => (
-              <Card key={title}>
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                    <Icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle>{title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{description}</CardDescription>
-                </CardContent>
-              </Card>
+      <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Card>
+          <CardHeader className="items-center justify-center">
+            <CardTitle>Trusted by beauty professionals</CardTitle>
+            <CardDescription>Key platform metrics updated weekly</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat) => (
+              <StatBadge key={stat.label} icon={stat.icon} value={stat.value} label={stat.label} />
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </section>
 
-      <section className="bg-background">
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="scroll-m-20">What our users say</h2>
-            <p className="mt-4 text-muted-foreground">Trusted by thousands of customers and salon professionals</p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <TestimonialCard
-              author="Sarah Johnson"
-              role="Regular customer"
-              content="Enorae makes booking so easy! I can find the perfect salon, book my appointment, and even reschedule if needed - all from my phone."
-              rating={5}
-            />
-            <TestimonialCard
-              author="Michael Chen"
-              role="Salon owner, Luxe Hair Studio"
-              content="Since using Enorae, our bookings have increased by 40%. The platform is intuitive and our clients love how easy it is to book appointments."
-              rating={5}
-            />
-            <TestimonialCard
-              author="Emily Rodriguez"
-              role="Spa manager"
-              content="The analytics dashboard helps us optimize our scheduling and staff allocation. It's been a game-changer for our operations."
-              rating={5}
-            />
-          </div>
-        </div>
+      <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Card>
+          <CardHeader className="items-center justify-center">
+            <CardTitle>Everything you need</CardTitle>
+            <CardDescription>Powerful tools for both clients and salon teams</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-6">
+            <Tabs defaultValue="customers" className="w-full">
+              <TabsList className="justify-center">
+                <TabsTrigger value="customers">For customers</TabsTrigger>
+                <TabsTrigger value="business">For salons</TabsTrigger>
+              </TabsList>
+              <TabsContent value="customers" className="mt-6">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {customerFeatures.map(({ icon: Icon, title, description }) => (
+                    <Card key={title}>
+                      <CardHeader className="flex flex-row items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+                          <Icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <CardTitle>{title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription>{description}</CardDescription>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+              <TabsContent value="business" className="mt-6">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {businessFeatures.map(({ icon: Icon, title, description }) => (
+                    <Card key={title}>
+                      <CardHeader className="flex flex-row items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+                          <Icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <CardTitle>{title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription>{description}</CardDescription>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </section>
 
-      <section className="bg-primary/5">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-16 text-center sm:px-6 lg:px-8">
-          <div className="space-y-4">
-            <h2 className="scroll-m-20">Ready to get started?</h2>
-            <p className="text-muted-foreground">
-              Join thousands of salons and clients using Enorae to streamline their beauty appointments.
-            </p>
-          </div>
+      <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Card>
+          <CardHeader className="items-center justify-center">
+            <CardTitle>What our users say</CardTitle>
+            <CardDescription>
+              Trusted by thousands of customers and salon professionals
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.author} {...testimonial} />
+            ))}
+          </CardContent>
+        </Card>
+      </section>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button asChild size="lg" className="px-8">
-              <Link href="/signup">Start free trial</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="px-8">
-              <Link href="/pricing">View pricing</Link>
-            </Button>
-          </div>
-        </div>
+      <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Empty>
+          <EmptyHeader>
+            <EmptyTitle>Ready to get started?</EmptyTitle>
+            <EmptyDescription>
+              Join thousands of salons and clients using Enorae to streamline their beauty
+              appointments.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <ButtonGroup className="w-full flex-col gap-2 sm:w-auto sm:flex-row sm:justify-center">
+              <Button asChild size="lg">
+                <Link href="/signup">Start free trial</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/pricing">View pricing</Link>
+              </Button>
+            </ButtonGroup>
+          </EmptyContent>
+        </Empty>
       </section>
     </main>
   )

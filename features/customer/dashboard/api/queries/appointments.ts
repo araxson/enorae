@@ -74,7 +74,8 @@ export async function getUpcomingAppointments(): Promise<DashboardAppointment[]>
 
   if (error) throw error
 
-  const grouped = reduceAppointments(data || [])
+  const rows = (data || []) as Array<{ id: string | null; salon_name: string | null; start_time: string | null; end_time: string | null; status: AppointmentStatus | null; service_name: string | null }>
+  const grouped = reduceAppointments(rows as AppointmentOverviewRow[])
   return sortAppointments(grouped, 'asc').slice(0, UPCOMING_LIMIT)
 }
 
@@ -92,6 +93,7 @@ export async function getPastAppointments(): Promise<DashboardAppointment[]> {
 
   if (error) throw error
 
-  const grouped = reduceAppointments(data || [])
+  const rows = (data || []) as Array<{ id: string | null; salon_name: string | null; start_time: string | null; end_time: string | null; status: AppointmentStatus | null; service_name: string | null }>
+  const grouped = reduceAppointments(rows as AppointmentOverviewRow[])
   return sortAppointments(grouped, 'desc').slice(0, PAST_LIMIT)
 }

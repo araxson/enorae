@@ -40,14 +40,14 @@ async function fetchChainLocations(
   if (overviewError) throw overviewError
 
   const sanitizedOverview = (overviewData || []).filter(
-    (row) => typeof row['id'] === 'string' && row['id'] !== null
+    (row): row is SalonOverview & { id: string } => typeof row['id'] === 'string' && row['id'] !== null
   )
 
   if (sanitizedOverview.length === 0) {
     return []
   }
 
-  const salonIds = sanitizedOverview.map((row) => row['id'])
+  const salonIds = sanitizedOverview.map((row) => row.id)
   const { data: detailData, error: detailError } = await supabase
     .from('salons_view')
     .select('id, name, formatted_address, city, state_province, is_verified')
@@ -62,10 +62,10 @@ async function fetchChainLocations(
   )
 
   return sanitizedOverview.map<ChainSalonLocation>((row) => {
-    const detail = detailMap.get(row['id'])
+    const detail = detailMap.get(row.id)
 
     return {
-      id: row['id'],
+      id: row.id,
       name: row['name'] ?? detail?.['name'] ?? null,
       slug: row['slug'] ?? null,
       formatted_address: detail?.['formatted_address'] ?? null,

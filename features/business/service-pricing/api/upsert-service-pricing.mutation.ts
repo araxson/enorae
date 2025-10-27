@@ -124,8 +124,8 @@ export async function upsertServicePricing(formData: FormData) {
       }
     }
 
-    revalidatePath(PRICING_PATH)
-    revalidatePath(SERVICES_PATH)
+    revalidatePath(PRICING_PATH, 'page')
+    revalidatePath(SERVICES_PATH, 'page')
     return { success: true }
   } catch (error) {
     console.error('Error upserting service pricing:', error)

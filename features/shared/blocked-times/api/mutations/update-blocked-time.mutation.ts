@@ -63,7 +63,7 @@ export async function updateBlockedTime(id: string, input: Partial<z.infer<typeo
       return { error: error.message }
     }
 
-    BLOCKED_TIMES_PATHS.forEach((path) => revalidatePath(path))
+    BLOCKED_TIMES_PATHS.forEach((path) => revalidatePath(path, 'page'))
 
     return { data, error: null }
   } catch (error) {

@@ -67,7 +67,7 @@ export async function bulkCreateSchedules(
 
     if (error) throw error
 
-    revalidatePath('/business/staff/schedules')
+    revalidatePath('/business/staff/schedules', 'page')
     return { success: true, data: created }
   } catch (error) {
     console.error('Error creating bulk schedules:', error)

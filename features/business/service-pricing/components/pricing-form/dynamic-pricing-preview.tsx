@@ -116,7 +116,7 @@ export function DynamicPricingPreview({ serviceId, currencyCode }: DynamicPricin
           {error && <p className="text-sm font-medium text-destructive">{error}</p>}
 
           {!serviceId && (
-            <p className="text-sm text-muted-foreground text-xs">
+            <p className="text-xs text-muted-foreground">
               Choose a service to enable dynamic pricing calculations.
             </p>
           )}

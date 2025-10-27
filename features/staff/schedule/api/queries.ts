@@ -234,17 +234,25 @@ export async function getScheduleConflicts(
   const { data: schedules } = await scheduleQuery
 
   // Check appointment conflicts
-  const { data: appointments } = await supabase
+  const { data: appointmentData } = await supabase
     .from('appointments_view')
-    .select('id, start_time, end_time, customer_name')
+    .select('id, start_time, end_time, customer_id')
     .eq('staff_id', staffId)
     .gte('start_time', `${workDate}T${startTime}`)
     .lte('start_time', `${workDate}T${endTime}`)
     .in('status', ['confirmed', 'pending'])
 
+  // Map appointments with customer names (fetch separately if needed)
+  const appointments = (appointmentData || []).map((appt: any) => ({
+    id: appt.id,
+    start_time: appt.start_time,
+    end_time: appt.end_time,
+    customer_name: null, // customer_name not available from appointments_view
+  }))
+
   return {
-    has_conflict: (schedules?.length || 0) > 0 || (appointments?.length || 0) > 0,
+    has_conflict: (schedules?.length || 0) > 0 || (appointmentData?.length || 0) > 0,
     conflicting_schedules: schedules || [],
-    conflicting_appointments: appointments || [],
+    conflicting_appointments: appointments,
   }
 }

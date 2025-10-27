@@ -49,7 +49,7 @@ export function AdjustmentFields({
                     }))
                   }
                 />
-                <p className="text-base mt-1 text-xs text-muted-foreground">
+                <p className="text-xs mt-1 text-muted-foreground">
                   1.0 = no change, 1.3 = 30% increase, 0.8 = 20% decrease
                 </p>
               </div>
@@ -68,7 +68,7 @@ export function AdjustmentFields({
                     }))
                   }
                 />
-                <p className="text-base mt-1 text-xs text-muted-foreground">
+                <p className="text-xs mt-1 text-muted-foreground">
                   Add or subtract a fixed amount per booking.
                 </p>
               </div>

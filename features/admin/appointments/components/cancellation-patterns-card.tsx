@@ -29,7 +29,7 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
                   <CardTitle>{pattern.label}</CardTitle>
                   <CardDescription>{pattern.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="pt-0 text-xs">
+                <CardContent className="pt-0">
                   <Badge variant="outline">
                     {pattern.count} · {formatPercent(pattern.share)}
                   </Badge>

@@ -40,7 +40,7 @@ export async function assignRole(formData: FormData): Promise<RoleActionResponse
       role_id: appliedRoleId,
     })
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     return {

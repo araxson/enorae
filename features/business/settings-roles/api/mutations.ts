@@ -114,7 +114,7 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
       return { error: error.message }
     }
 
-    revalidatePath('/business/settings/roles')
+    revalidatePath('/business/settings/roles', 'page')
 
     return { success: true, data }
   } catch (error) {
@@ -190,7 +190,7 @@ export async function updateUserRole(
       return { error: error.message }
     }
 
-    revalidatePath('/business/settings/roles')
+    revalidatePath('/business/settings/roles', 'page')
 
     return { success: true, data }
   } catch (error) {
@@ -248,7 +248,7 @@ export async function deactivateUserRole(id: string): Promise<ActionResult> {
       return { error: error.message }
     }
 
-    revalidatePath('/business/settings/roles')
+    revalidatePath('/business/settings/roles', 'page')
 
     return { success: true }
   } catch {
@@ -303,7 +303,7 @@ export async function reactivateUserRole(id: string): Promise<ActionResult> {
       return { error: error.message }
     }
 
-    revalidatePath('/business/settings/roles')
+    revalidatePath('/business/settings/roles', 'page')
 
     return { success: true }
   } catch {

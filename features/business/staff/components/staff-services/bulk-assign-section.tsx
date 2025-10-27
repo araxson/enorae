@@ -46,7 +46,7 @@ export function BulkAssignSection({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 max-h-96 overflow-y-auto border rounded-md p-4">
+      <div className="grid grid-cols-2 gap-2 max-h-96 overflow-y-auto border-border border p-4">
         {availableServices.map((service) => (
           <div key={service.id} className="flex items-center gap-2">
             <Checkbox
@@ -54,8 +54,8 @@ export function BulkAssignSection({
               checked={selectedServices.has(service.id!)}
               onCheckedChange={() => onToggleService(service.id!)}
             />
-            <Label htmlFor={`service-${service.id}`} className="text-sm cursor-pointer flex-1">
-              <span className="flex items-center gap-2">
+            <Label htmlFor={`service-${service.id}`} className="cursor-pointer flex-1">
+              <span className="text-sm flex items-center gap-2">
                 <span className="truncate">{service.name}</span>
                 {assignedServiceIds.has(service.id) && <Badge variant="outline">Assigned</Badge>}
               </span>

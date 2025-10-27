@@ -106,20 +106,20 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                       </TableCell>
                       <TableCell>
                         <div className="font-medium leading-tight">{thread['salon_name']}</div>
-                        <p className="text-sm text-muted-foreground text-xs">{thread['salon_id']}</p>
+                        <p className="text-xs text-muted-foreground">{thread['salon_id']}</p>
                       </TableCell>
                       <TableCell>
                         <div className="font-medium leading-tight">{thread['customer_name']}</div>
-                        <p className="text-sm text-muted-foreground text-xs">{thread['customer_email']}</p>
+                        <p className="text-xs text-muted-foreground">{thread['customer_email']}</p>
                       </TableCell>
                       <TableCell>
                         {thread['staff_name'] ? (
                           <div>
                             <div className="font-medium leading-tight">{thread['staff_name']}</div>
-                            <p className="text-sm text-muted-foreground text-xs">{thread['staff_email']}</p>
+                            <p className="text-xs text-muted-foreground">{thread['staff_email']}</p>
                           </div>
                         ) : (
-                          <p className="text-sm text-muted-foreground text-xs">Unassigned</p>
+                          <p className="text-xs text-muted-foreground">Unassigned</p>
                         )}
                       </TableCell>
                       <TableCell>
@@ -141,7 +141,7 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                             <Badge variant="secondary">Reports {thread.unresolvedReports}</Badge>
                           ) : null}
                           {!thread.hasFlaggedMessages && thread.unresolvedReports === 0 ? (
-                            <p className="text-sm text-muted-foreground text-xs">None</p>
+                            <p className="text-xs text-muted-foreground">None</p>
                           ) : null}
                         </div>
                       </TableCell>
@@ -154,7 +154,7 @@ export function MessagesTable({ threads }: MessagesTableProps) {
                             <Badge variant="outline">S: {staffUnread}</Badge>
                           ) : null}
                           {customerUnread === 0 && staffUnread === 0 ? (
-                            <p className="text-sm text-muted-foreground text-xs">—</p>
+                            <p className="text-xs text-muted-foreground">—</p>
                           ) : null}
                         </div>
                       </TableCell>

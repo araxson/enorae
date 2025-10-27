@@ -35,7 +35,7 @@ export async function deleteBlockedTime(id: string) {
       return { error: error.message }
     }
 
-    BLOCKED_TIMES_PATHS.forEach((path) => revalidatePath(path))
+    BLOCKED_TIMES_PATHS.forEach((path) => revalidatePath(path, 'page'))
 
     return { success: true, error: null }
   } catch (error) {

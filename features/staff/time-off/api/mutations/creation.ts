@@ -58,7 +58,7 @@ export async function createTimeOffRequest(formData: FormData) {
 
     if (insertError) return { error: insertError.message }
 
-    revalidatePath('/business/time-off')
+    revalidatePath('/business/time-off', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to create request' }

@@ -52,7 +52,7 @@ export async function createRecommendedIndex(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/database-health')
+    revalidatePath('/admin/database-health', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error creating index:', error)

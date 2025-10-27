@@ -54,7 +54,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
 
         {rules.length === 0 ? (
           <Card>
-            <CardHeader className="items-center text-center">
+            <CardHeader className="items-center justify-center">
               <CardTitle>No Booking Rules</CardTitle>
               <CardDescription>
                 Configure service durations, buffers, and advance notice requirements.

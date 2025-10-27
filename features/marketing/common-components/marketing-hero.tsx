@@ -1,3 +1,6 @@
+import { type ReactNode } from 'react'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 type MarketingHeroProps = {
@@ -6,10 +9,13 @@ type MarketingHeroProps = {
   description: string
   align?: 'center' | 'start'
   variant?: 'stacked' | 'simple'
+  children?: ReactNode
 }
 
-const baseSectionClasses = 'bg-muted/30'
-const baseContainerClasses = 'mx-auto w-full px-4 sm:px-6 lg:px-8'
+const sectionSpacing = {
+  simple: 'py-12',
+  stacked: 'py-16 md:py-24 lg:py-28',
+} as const
 
 export function MarketingHero({
   title,
@@ -17,32 +23,32 @@ export function MarketingHero({
   description,
   align = 'center',
   variant = 'stacked',
+  children,
 }: MarketingHeroProps) {
   const headerAlignment = align === 'center' ? 'items-center text-center' : 'items-start text-left'
-  const contentAlignment = align === 'center' ? 'mx-auto text-center' : 'text-left'
-
-  if (variant === 'simple') {
-    return (
-      <section className={baseSectionClasses}>
-        <div className={cn('max-w-4xl py-16', baseContainerClasses)}>
-          <div className={cn('space-y-4', headerAlignment)}>
-            <h1 className="scroll-m-20">{title}</h1>
-            <p className="text-muted-foreground">{subtitle}</p>
-            <p className="text-muted-foreground">{description}</p>
-          </div>
-        </div>
-      </section>
-    )
-  }
+  const contentAlignment =
+    align === 'center'
+      ? 'items-center text-center'
+      : 'items-start text-left'
 
   return (
-    <section className={cn(baseSectionClasses, 'py-16 md:py-24 lg:py-32')}>
-      <div className={cn('max-w-6xl', baseContainerClasses)}>
-        <div className={cn('space-y-6', headerAlignment)}>
-          <h1 className="scroll-m-20">{title}</h1>
-          <p className="text-muted-foreground">{subtitle}</p>
-          <p className="text-muted-foreground">{description}</p>
-        </div>
+    <section className="w-full">
+      <div
+        className={cn(
+          'mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8',
+          sectionSpacing[variant],
+        )}
+      >
+        <Card>
+          <CardHeader className={cn('gap-4 md:gap-6', headerAlignment)}>
+            <CardTitle>{title}</CardTitle>
+            <CardDescription>{subtitle}</CardDescription>
+          </CardHeader>
+          <CardContent className={cn('flex w-full flex-col gap-6', contentAlignment)}>
+            <CardDescription>{description}</CardDescription>
+            {children}
+          </CardContent>
+        </Card>
       </div>
     </section>
   )

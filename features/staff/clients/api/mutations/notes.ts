@@ -103,7 +103,7 @@ export async function addClientNote(
       if (threadError) throw threadError
     }
 
-    revalidatePath('/staff/clients')
+    revalidatePath('/staff/clients', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error adding client note:', error)

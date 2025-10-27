@@ -86,7 +86,7 @@ export function MarketingExploreView({ salons }: MarketingExploreViewProps) {
 
       {filteredSalons.length === 0 ? (
         <Card>
-          <CardContent className="space-y-3 py-12 text-center">
+          <CardContent className="space-y-3 py-12 flex flex-col items-center justify-center">
             <Search className="mx-auto h-10 w-10 text-muted-foreground" />
             <h2 className="scroll-m-20">No salons match your search</h2>
             <p className="text-muted-foreground">Try a different city or service to discover more locations.</p>

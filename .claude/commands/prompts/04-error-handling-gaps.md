@@ -55,7 +55,7 @@ const name = user.profile.name.toUpperCase() // Crashes if user/profile null
 - Implement proper catch block handling
 - Add validation with Zod schemas
 - Log errors appropriately
-- Review `docs/stack-patterns/react-patterns.md` for error-handling guidance in async flows
+- Review `docs/ruls/react-patterns.md` for error-handling guidance in async flows
 - Fix every finding directly in code; do not produce additional documentation
 
 ## Output Format
@@ -70,7 +70,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/react-patterns.md`
-- `docs/stack-patterns/supabase-patterns.md`
+- `docs/ruls/react-patterns.md`
+- `docs/ruls/supabase-patterns.md`
 
 Complete error handling audit and report all gaps.

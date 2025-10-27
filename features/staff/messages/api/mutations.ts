@@ -47,7 +47,7 @@ export async function sendMessage(data: MessageFormData) {
 
   if (error) throw error
 
-  revalidatePath('/staff/messages')
+  revalidatePath('/staff/messages', 'page')
 }
 
 export async function sendThreadMessage(threadId: string, data: ThreadMessageFormData) {
@@ -90,8 +90,8 @@ export async function sendThreadMessage(threadId: string, data: ThreadMessageFor
 
   if (error) throw error
 
-  revalidatePath(`/staff/messages/${threadId}`)
-  revalidatePath('/staff/messages')
+  revalidatePath(`/staff/messages/${threadId}`, 'page')
+  revalidatePath('/staff/messages', 'page')
 }
 
 export async function markThreadAsRead(threadId: string) {
@@ -126,8 +126,8 @@ export async function markThreadAsRead(threadId: string) {
 
   if (error) throw error
 
-  revalidatePath(`/staff/messages/${threadId}`)
-  revalidatePath('/staff/messages')
+  revalidatePath(`/staff/messages/${threadId}`, 'page')
+  revalidatePath('/staff/messages', 'page')
 }
 
 export async function archiveThread(threadId: string) {
@@ -160,5 +160,5 @@ export async function archiveThread(threadId: string) {
 
   if (error) throw error
 
-  revalidatePath('/staff/messages')
+  revalidatePath('/staff/messages', 'page')
 }

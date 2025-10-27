@@ -49,8 +49,8 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
 
     if (error) throw error
 
-    revalidatePath('/customer/reviews')
-    revalidatePath(`/customer/salons/${validated.salonId}`)
+    revalidatePath('/customer/reviews', 'page')
+    revalidatePath(`/customer/salons/${validated.salonId}`, 'page')
 
     return { success: true }
   } catch (error) {
@@ -129,9 +129,9 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
 
     if (error) throw error
 
-    revalidatePath('/customer/reviews')
+    revalidatePath('/customer/reviews', 'page')
     if (review.salon_id) {
-      revalidatePath(`/customer/salons/${review.salon_id}`)
+      revalidatePath(`/customer/salons/${review.salon_id}`, 'page')
     }
 
     return { success: true }
@@ -179,8 +179,8 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
 
     if (error) throw error
 
-    revalidatePath('/customer/reviews')
-    revalidatePath(`/customer/salons/${salonId}`)
+    revalidatePath('/customer/reviews', 'page')
+    revalidatePath(`/customer/salons/${salonId}`, 'page')
 
     return { success: true }
   } catch (error) {

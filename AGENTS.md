@@ -8,22 +8,22 @@ NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 
 **Complete, standalone pattern files for the ENORAE tech stack.**
 
-- **Start here:** `docs/stack-patterns/00-INDEX.md`
-- **Main architecture:** `docs/stack-patterns/architecture-patterns.md`
+- **Start here:** `docs/ruls/00-INDEX.md`
+- **Main architecture:** `docs/ruls/architecture-patterns.md`
 - **All patterns are standalone** - Each file is completely portable with full context
 
 ### Quick Navigation
 
 | Task | Read this pattern file |
 | --- | --- |
-| **New feature** | `docs/stack-patterns/architecture-patterns.md` |
-| **New page/route** | `docs/stack-patterns/nextjs-patterns.md` |
-| **UI components** | `docs/stack-patterns/ui-patterns.md` |
-| **Database queries** | `docs/stack-patterns/supabase-patterns.md` |
-| **Forms & validation** | `docs/stack-patterns/forms-patterns.md` |
-| **Type safety** | `docs/stack-patterns/typescript-patterns.md` |
-| **React components** | `docs/stack-patterns/react-patterns.md` |
-| **File organization** | `docs/stack-patterns/file-organization-patterns.md` |
+| **New feature** | `docs/ruls/architecture-patterns.md` |
+| **New page/route** | `docs/ruls/nextjs-patterns.md` |
+| **UI components** | `docs/ruls/ui.md` |
+| **Database queries** | `docs/ruls/supabase-patterns.md` |
+| **Forms & validation** | `docs/ruls/forms-patterns.md` |
+| **Type safety** | `docs/ruls/typescript-patterns.md` |
+| **React components** | `docs/ruls/react-patterns.md` |
+| **File organization** | `docs/ruls/file-organization-patterns.md` |
 
 **💡 Tip:** Each pattern file is self-contained with complete examples, detection commands, and best practices. No cross-references needed.
 
@@ -45,7 +45,7 @@ NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 - **No arbitrary styling** - No custom Tailwind utilities, no arbitrary colors
 - **Never edit `app/globals.css`**
 
-**Reference:** `docs/stack-patterns/ui-patterns.md`
+**Reference:** `docs/ruls/ui.md`
 
 ---
 
@@ -58,7 +58,7 @@ NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 - **Revalidate paths** - Call `revalidatePath()` after mutations
 - **RLS tenant scoping** - Filter by tenant/user ID in all queries
 
-**Reference:** `docs/stack-patterns/supabase-patterns.md`
+**Reference:** `docs/ruls/supabase-patterns.md`
 
 ---
 
@@ -70,7 +70,7 @@ NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 - **Canonical structure** - `components/`, `api/`, `types.ts`, `schema.ts`, `index.tsx`
 - **Feature organization** - `features/{portal}/{feature}/`
 
-**Reference:** `docs/stack-patterns/architecture-patterns.md`
+**Reference:** `docs/ruls/architecture-patterns.md`
 
 ---
 
@@ -83,9 +83,9 @@ NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 - **Type safety everywhere** - Use generated database types, Zod inference
 
 **Reference:**
-- `docs/stack-patterns/nextjs-patterns.md`
-- `docs/stack-patterns/react-patterns.md`
-- `docs/stack-patterns/typescript-patterns.md`
+- `docs/ruls/nextjs-patterns.md`
+- `docs/ruls/react-patterns.md`
+- `docs/ruls/typescript-patterns.md`
 
 ---
 
@@ -103,7 +103,7 @@ NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 10. ❌ Using `any` type → ✅ TypeScript strict mode always
 11. ❌ Missing `revalidatePath()` → ✅ Call after all mutations
 
-**When stuck:** Read the relevant pattern file in `docs/stack-patterns/`
+**When stuck:** Read the relevant pattern file in `docs/ruls/`
 
 ---
 
@@ -130,7 +130,7 @@ export async function getSalonDashboard(userId: string) {
 }
 ```
 
-**Full patterns:** `docs/stack-patterns/supabase-patterns.md`
+**Full patterns:** `docs/ruls/supabase-patterns.md`
 
 ---
 
@@ -160,7 +160,7 @@ export function EmptyAppointments() {
 }
 ```
 
-**Full patterns:** `docs/stack-patterns/ui-patterns.md`
+**Full patterns:** `docs/ruls/ui.md`
 
 ---
 
@@ -179,7 +179,7 @@ export default function Page() {
 }
 ```
 
-**Full patterns:** `docs/stack-patterns/nextjs-patterns.md`
+**Full patterns:** `docs/ruls/nextjs-patterns.md`
 
 ---
 
@@ -227,7 +227,7 @@ export async function createUser(formData: FormData) {
 }
 ```
 
-**Full patterns:** `docs/stack-patterns/supabase-patterns.md` + `docs/stack-patterns/forms-patterns.md`
+**Full patterns:** `docs/ruls/supabase-patterns.md` + `docs/ruls/forms-patterns.md`
 
 ---
 
@@ -261,7 +261,7 @@ features/{portal}/{feature}/
 - `analytics` - Metrics, reports
 - `engagement` - Marketing, campaigns
 
-**Full details:** `docs/stack-patterns/architecture-patterns.md`
+**Full details:** `docs/ruls/architecture-patterns.md`
 
 ---
 
@@ -284,7 +284,7 @@ features/{portal}/{feature}/
 
 Before committing code:
 
-1. ✅ **Read relevant pattern file** from `docs/stack-patterns/`
+1. ✅ **Read relevant pattern file** from `docs/ruls/`
 2. ✅ **Run type check** - `npm run typecheck` (must pass)
 3. ✅ **Verify auth guards** - All queries/mutations check user
 4. ✅ **Check server directives** - `'server-only'` in queries, `'use server'` in mutations
@@ -332,7 +332,7 @@ find app -name 'page.tsx' -exec sh -c 'lines=$(wc -l < "$1"); [ $lines -gt 15 ] 
 
 ### Creating a New Feature
 
-1. Read `docs/stack-patterns/architecture-patterns.md`
+1. Read `docs/ruls/architecture-patterns.md`
 2. Create: `features/{portal}/{feature}/`
 3. Add structure: `components/`, `api/`, `types.ts`, `schema.ts`, `index.tsx`
 4. Write queries in `api/queries.ts` (with `import 'server-only'`)
@@ -342,7 +342,7 @@ find app -name 'page.tsx' -exec sh -c 'lines=$(wc -l < "$1"); [ $lines -gt 15 ] 
 
 ### Adding a Database Query
 
-1. Read `docs/stack-patterns/supabase-patterns.md`
+1. Read `docs/ruls/supabase-patterns.md`
 2. Add to `features/{portal}/{feature}/api/queries.ts`
 3. Include `import 'server-only'` at top
 4. Verify auth with `getUser()`
@@ -352,14 +352,14 @@ find app -name 'page.tsx' -exec sh -c 'lines=$(wc -l < "$1"); [ $lines -gt 15 ] 
 
 ### Building a Form
 
-1. Read `docs/stack-patterns/forms-patterns.md`
+1. Read `docs/ruls/forms-patterns.md`
 2. Define Zod schema in `schema.ts`
 3. Create form with `useForm` + `zodResolver`
 4. Add shadcn Form components
 5. Handle submission with server action
 6. Display success/error feedback
 
-**All workflows in:** `docs/stack-patterns/00-INDEX.md`
+**All workflows in:** `docs/ruls/00-INDEX.md`
 
 ---
 
@@ -484,17 +484,17 @@ Reports use standardized task tracking:
 
 ## Getting Help
 
-**Need pattern examples?** → Read `docs/stack-patterns/{topic}-patterns.md`
+**Need pattern examples?** → Read `docs/ruls/{topic}-patterns.md`
 
-**Unsure which file to read?** → Start with `docs/stack-patterns/00-INDEX.md`
+**Unsure which file to read?** → Start with `docs/ruls/00-INDEX.md`
 
-**Building a feature?** → `docs/stack-patterns/architecture-patterns.md`
+**Building a feature?** → `docs/ruls/architecture-patterns.md`
 
-**Working with database?** → `docs/stack-patterns/supabase-patterns.md`
+**Working with database?** → `docs/ruls/supabase-patterns.md`
 
-**Creating UI?** → `docs/stack-patterns/ui-patterns.md`
+**Creating UI?** → `docs/ruls/ui.md`
 
-**Building forms?** → `docs/stack-patterns/forms-patterns.md`
+**Building forms?** → `docs/ruls/forms-patterns.md`
 
 **Database/code out of sync?** → Use `database-schema-analyzer` then `database-schema-fixer`
 
@@ -517,7 +517,7 @@ Reports use standardized task tracking:
 
 **Maintained by:** Development Team
 **Last Updated:** 2025-10-22
-**Pattern Files:** `docs/stack-patterns/` (8 files, 100% standalone)
+**Pattern Files:** `docs/ruls/` (8 files, 100% standalone)
 **Agents:** `.claude/agents/` (Database schema sync, pattern validation, UI enforcement)
 
 Stay within these patterns to keep ENORAE consistent, accessible, secure, and maintainable.

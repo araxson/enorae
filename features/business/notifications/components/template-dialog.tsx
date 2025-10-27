@@ -61,8 +61,8 @@ export function TemplateDialog({
         </DialogHeader>
         <div className="flex flex-col gap-8">
           <div className="grid gap-6 md:grid-cols-2">
-            <div>
-              <Label className="text-sm font-medium" htmlFor={nameFieldId}>
+            <div className="space-y-2">
+              <Label htmlFor={nameFieldId}>
                 Name
               </Label>
               <Input
@@ -72,8 +72,8 @@ export function TemplateDialog({
                 placeholder="e.g. Review Request"
               />
             </div>
-            <div>
-              <Label className="text-sm font-medium" htmlFor={eventFieldId}>
+            <div className="space-y-2">
+              <Label htmlFor={eventFieldId}>
                 Event
               </Label>
               <Select
@@ -96,8 +96,8 @@ export function TemplateDialog({
             </div>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            <div>
-              <Label className="text-sm font-medium" htmlFor={channelFieldId}>
+            <div className="space-y-2">
+              <Label htmlFor={channelFieldId}>
                 Channel
               </Label>
               <Select
@@ -118,8 +118,8 @@ export function TemplateDialog({
                 </SelectContent>
               </Select>
             </div>
-            <div>
-              <Label className="text-sm font-medium" htmlFor={subjectFieldId}>
+            <div className="space-y-2">
+              <Label htmlFor={subjectFieldId}>
                 Subject
               </Label>
               <Input
@@ -130,8 +130,8 @@ export function TemplateDialog({
               />
             </div>
           </div>
-          <div>
-            <Label className="text-sm font-medium" htmlFor={descriptionFieldId}>
+          <div className="space-y-2">
+            <Label htmlFor={descriptionFieldId}>
               Description
             </Label>
             <Input
@@ -141,8 +141,8 @@ export function TemplateDialog({
               placeholder="Internal description"
             />
           </div>
-          <div>
-            <Label className="text-sm font-medium" htmlFor={bodyFieldId}>
+          <div className="space-y-2">
+            <Label htmlFor={bodyFieldId}>
               Body
             </Label>
             <Textarea

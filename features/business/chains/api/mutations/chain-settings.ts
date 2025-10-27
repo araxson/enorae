@@ -128,7 +128,7 @@ export async function updateChainSettings(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/business/chains')
+    revalidatePath('/business/chains', 'page')
     return { success: true, updatedCount: salonList.length }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to update settings' }

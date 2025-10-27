@@ -108,9 +108,9 @@ Before reporting results:
 
 ## Related Documentation
 
-- **File Organization:** `docs/stack-patterns/file-organization-patterns.md` - Import boundaries and barrel export rules
-- **Architecture:** `docs/stack-patterns/architecture-patterns.md` - Feature structure and layer organization
-- **TypeScript:** `docs/stack-patterns/typescript-patterns.md` - Type imports and strict patterns
+- **File Organization:** `docs/ruls/file-organization.md` - Import boundaries and barrel export rules
+- **Architecture:** `docs/ruls/architecture.md` - Feature structure and layer organization
+- **TypeScript:** `docs/ruls/typescript.md` - Type imports and strict patterns
 
 ## Additional Context
 

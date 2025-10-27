@@ -38,7 +38,7 @@ export async function refreshTableStatistics(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/database-health')
+    revalidatePath('/admin/database-health', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error refreshing statistics:', error)

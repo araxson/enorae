@@ -20,15 +20,12 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="p-6 pb-4">
-          <div className="flex gap-3 items-center">
-            <Clock className="h-5 w-5" />
-            <CardTitle>Operating Hours</CardTitle>
-          </div>
+        <div className="flex gap-3 items-center">
+          <Clock className="h-5 w-5" aria-hidden="true" />
+          <CardTitle>Operating Hours</CardTitle>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-3 p-6 pt-0">
+      <CardContent className="flex flex-col gap-3">
           {sortedHours.map((hour) => {
             const isToday = hour['day_of_week'] === today
 
@@ -52,13 +49,10 @@ export function OperatingHoursCard({ hours }: OperatingHoursCardProps) {
               </div>
             )
           })}
-        </div>
       </CardContent>
       {sortedHours[0]?.['salon_name'] && (
-        <CardFooter>
-          <div className="border-t p-6 pt-4">
-            <p className="text-xs text-muted-foreground">{sortedHours[0]['salon_name']}</p>
-          </div>
+        <CardFooter className="border-t">
+          <p className="text-xs text-muted-foreground">{sortedHours[0]['salon_name']}</p>
         </CardFooter>
       )}
     </Card>

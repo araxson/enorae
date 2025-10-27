@@ -15,6 +15,8 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 import type { TrendInsight, BusinessRecommendation, AnomalyAlert } from '@/features/business/insights/api/business-insights'
 
@@ -38,14 +40,14 @@ export function BusinessInsightsDashboard({
 }: BusinessInsightsDashboardProps) {
   return (
     <div className="flex flex-col gap-10">
-      {/* Alerts Section */}
+      {/* Alerts Section - Proper Alert usage */}
       {alerts.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Active alerts</CardTitle>
-            <CardDescription>Review anomalies that need immediate attention.</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-6">
+        <div className="space-y-4">
+          <div>
+            <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Active alerts</h2>
+            <p className="text-sm text-muted-foreground">Review anomalies that need immediate attention.</p>
+          </div>
+          <div className="flex flex-col gap-4">
             {alerts.map((alert) => {
               const Icon =
                 alert.severity === 'critical'
@@ -59,63 +61,68 @@ export function BusinessInsightsDashboard({
                   key={alert.id}
                   variant={alert.severity === 'critical' ? 'destructive' : 'default'}
                 >
-                  <div className="flex flex-wrap items-center gap-4">
-                    <Icon
-                      className={`h-5 w-5 ${
-                        alert.severity === 'critical'
-                          ? ''
-                          : alert.severity === 'warning'
-                          ? 'text-accent'
-                          : 'text-secondary'
-                      }`}
-                    />
-                    <div className="flex-1">
-                      <AlertTitle>{alert.metric}</AlertTitle>
-                      <AlertDescription>{alert.message}</AlertDescription>
+                  <Icon className="h-4 w-4" />
+                  <AlertTitle>{alert.metric}</AlertTitle>
+                  <AlertDescription>
+                    <div className="flex items-center justify-between">
+                      <span>{alert.message}</span>
+                      <Badge variant="outline">{alert.severity}</Badge>
                     </div>
-                    <Badge variant="outline">{alert.severity}</Badge>
-                  </div>
+                  </AlertDescription>
                 </Alert>
               )
             })}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      {/* Trend Insights */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Trend analysis</CardTitle>
-          <CardDescription>Track movement across your key business metrics.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+      {/* Main Content - Use Tabs for better organization */}
+      <Tabs defaultValue="trends" className="w-full">
+        <TabsList>
+          <TabsTrigger value="trends">Trend Analysis</TabsTrigger>
+          <TabsTrigger value="recommendations">
+            AI Recommendations ({recommendations.length})
+          </TabsTrigger>
+          {opportunities.length > 0 && (
+            <TabsTrigger value="opportunities">Growth Opportunities</TabsTrigger>
+          )}
+        </TabsList>
+
+        {/* Trend Analysis Tab */}
+        <TabsContent value="trends" className="space-y-4">
+          <div>
+            <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Trend analysis</h3>
+            <p className="text-sm text-muted-foreground">Track movement across your key business metrics.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {trends.map((trend, idx) => (
               <Card key={idx}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle>{trend.metric}</CardTitle>
-                      <CardDescription>{trend.message}</CardDescription>
-                    </div>
-                    {trend.trend === 'up' ? (
-                      <TrendingUp
-                        className={`h-6 w-6 ${
-                          trend.status === 'positive' ? 'text-primary' : 'text-destructive'
-                        }`}
-                      />
-                    ) : trend.trend === 'down' ? (
-                      <TrendingDown
-                        className={`h-6 w-6 ${
-                          trend.status === 'negative' ? 'text-destructive' : 'text-primary'
-                        }`}
-                      />
-                    ) : (
-                      <Minus className="h-6 w-6 text-muted-foreground" />
-                    )}
+                <CardContent className="pt-6">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-between">
+                  <div>
+                    <h4 className="font-semibold">{trend.metric}</h4>
+                    <p className="text-sm text-muted-foreground">{trend.message}</p>
                   </div>
-                </CardHeader>
-                <CardContent className="flex items-baseline gap-2 pt-0">
+                  {trend.trend === 'up' ? (
+                    <TrendingUp
+                      className={`h-6 w-6 ${
+                        trend.status === 'positive' ? 'text-primary' : 'text-destructive'
+                      }`}
+                      aria-hidden="true"
+                    />
+                  ) : trend.trend === 'down' ? (
+                    <TrendingDown
+                      className={`h-6 w-6 ${
+                        trend.status === 'negative' ? 'text-destructive' : 'text-primary'
+                      }`}
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <Minus className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
+                  )}
+                </div>
+                <div className="flex items-baseline gap-2">
                   <span
                     className={`text-2xl font-bold ${
                       trend.status === 'positive'
@@ -138,113 +145,111 @@ export function BusinessInsightsDashboard({
                   >
                     {trend.status}
                   </Badge>
+                </div>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </TabsContent>
 
-      {/* AI Recommendations */}
-      <Card>
-        <CardHeader className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <CardTitle>AI-powered recommendations</CardTitle>
-            <CardDescription>Data-driven actions to improve your performance.</CardDescription>
-          </div>
-          <Badge variant="outline">
-            <span className="flex items-center gap-1">
-              <Lightbulb className="h-3 w-3" />
+        {/* AI Recommendations Tab - Use Accordion for better UX */}
+        <TabsContent value="recommendations" className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">AI-powered recommendations</h3>
+              <p className="text-sm text-muted-foreground">Data-driven actions to improve your performance.</p>
+            </div>
+            <Badge variant="outline">
+              <Lightbulb className="mr-1 h-3 w-3" aria-hidden="true" />
               {recommendations.length} insights
-            </span>
-          </Badge>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-8">
-          {recommendations.map((rec) => (
-            <Card key={rec.id}>
-              <CardHeader>
-                <div className="flex flex-wrap items-center gap-4">
-                  <CardTitle>{rec.title}</CardTitle>
-                  <Badge
-                    variant={
-                      rec.priority === 'high'
-                        ? 'destructive'
-                        : rec.priority === 'medium'
-                        ? 'default'
-                        : 'secondary'
-                    }
-                  >
-                    {rec.priority} priority
-                  </Badge>
-                  <Badge variant="outline">{rec.category}</Badge>
-                </div>
-                <CardDescription>{rec.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6 pt-0">
-                <div className="rounded-md bg-muted/50 p-3">
-                  <div className="flex items-center gap-4">
-                    <Target className="h-4 w-4 text-primary" />
-                    <span className="text-sm font-medium text-muted-foreground">
-                      Impact: {rec.impact}
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <p className="mb-2 text-sm font-medium text-muted-foreground">Action items</p>
-                  <ul className="space-y-1.5">
-                    {rec.actionItems.map((item, idx) => (
-                      <li key={idx} className="flex gap-2 text-sm">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+            </Badge>
+          </div>
 
-          {recommendations.length === 0 && (
-            <Card>
-              <CardHeader className="items-center text-center">
-                <CheckCircle2 className="h-12 w-12 text-primary" />
-                <CardTitle>All systems optimal</CardTitle>
-                <CardDescription>
-                  Your business metrics are performing well. Keep up the great work!
-                </CardDescription>
-              </CardHeader>
-            </Card>
+          {recommendations.length > 0 ? (
+            <Accordion type="single" collapsible className="w-full">
+              {recommendations.map((rec, idx) => (
+                <AccordionItem key={rec.id} value={`item-${idx}`}>
+                  <AccordionTrigger>
+                    <div className="flex flex-wrap items-center gap-2 text-left">
+                      <span>{rec.title}</span>
+                      <Badge
+                        variant={
+                          rec.priority === 'high'
+                            ? 'destructive'
+                            : rec.priority === 'medium'
+                            ? 'default'
+                            : 'secondary'
+                        }
+                      >
+                        {rec.priority}
+                      </Badge>
+                      <Badge variant="outline">{rec.category}</Badge>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="space-y-4">
+                    <p className="text-sm">{rec.description}</p>
+                    <div className="flex items-center gap-2 rounded-md border p-3">
+                      <Target className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <span className="text-sm font-medium">Impact: {rec.impact}</span>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-sm font-medium">Action items</p>
+                      <ul className="space-y-1.5">
+                        {rec.actionItems.map((item, idx) => (
+                          <li key={idx} className="flex gap-2 text-sm">
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          ) : (
+            <Alert>
+              <CheckCircle2 className="h-4 w-4" />
+              <AlertTitle>All systems optimal</AlertTitle>
+              <AlertDescription>
+                Your business metrics are performing well. Keep up the great work!
+              </AlertDescription>
+            </Alert>
           )}
-        </CardContent>
-      </Card>
+        </TabsContent>
 
-      {/* Growth Opportunities */}
-      {opportunities.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Growth opportunities</CardTitle>
-            <CardDescription>Focus areas with the highest projected upside.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        {/* Growth Opportunities Tab */}
+        {opportunities.length > 0 && (
+          <TabsContent value="opportunities" className="space-y-4">
+            <div>
+              <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Growth opportunities</h3>
+              <p className="text-sm text-muted-foreground">Focus areas with the highest projected upside.</p>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {opportunities.map((opp, idx) => (
                 <Card key={idx}>
                   <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <TrendingUpIcon className="h-5 w-5 text-primary" />
+                    <div className="flex items-center gap-2">
+                      <TrendingUpIcon className="h-5 w-5" aria-hidden="true" />
                       <CardTitle>{opp.title}</CardTitle>
                     </div>
                     <CardDescription>{opp.description}</CardDescription>
                   </CardHeader>
-                  <CardContent className="rounded-md bg-primary/10 p-2 pt-0 text-sm font-medium text-primary">
-                    {opp.potential}
+                  <CardContent>
+                    <Alert>
+                      <Lightbulb className="h-4 w-4" />
+                      <AlertDescription className="font-medium">
+                        {opp.potential}
+                      </AlertDescription>
+                    </Alert>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </TabsContent>
+        )}
+      </Tabs>
     </div>
   )
 }

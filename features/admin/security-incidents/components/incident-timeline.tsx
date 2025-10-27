@@ -68,7 +68,7 @@ export function IncidentTimeline({ incidents }: IncidentTimelineProps) {
                   <p className="text-sm font-semibold mb-1">Impacted Resources:</p>
                   <div className="flex flex-wrap gap-2">
                     {incident.impacted_resources.map((resource) => (
-                      <Badge key={resource} variant="outline" className="text-xs">
+                      <Badge key={resource} variant="outline">
                         {resource}
                       </Badge>
                     ))}

@@ -111,7 +111,7 @@ export function CustomerList({
             )}
           </div>
         </CardContent>
-        <CardFooter className="text-xs text-muted-foreground">
+        <CardFooter>
           Use these insights to tailor perks and retain high-value clients.
         </CardFooter>
       </Card>

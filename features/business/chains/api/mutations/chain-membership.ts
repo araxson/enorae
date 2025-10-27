@@ -57,8 +57,8 @@ export async function assignSalonToChain(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/business/chains')
-    revalidatePath('/business')
+    revalidatePath('/business/chains', 'page')
+    revalidatePath('/business', 'layout')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to assign salon' }

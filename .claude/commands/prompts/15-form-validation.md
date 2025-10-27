@@ -85,7 +85,7 @@ if (!phone) return 'Phone field missing'
 - Add custom validators for complex rules
 - Validate before server submission
 - Display user-friendly error messages
-- Review `docs/stack-patterns/forms-patterns.md` for form, schema, and server action requirements
+- Review `docs/ruls/forms-patterns.md` for form, schema, and server action requirements
 
 ## Output Format
 
@@ -99,7 +99,7 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/forms-patterns.md`
-- `docs/stack-patterns/supabase-patterns.md`
+- `docs/ruls/forms-patterns.md`
+- `docs/ruls/supabase-patterns.md`
 
 Complete form validation audit and report all issues.

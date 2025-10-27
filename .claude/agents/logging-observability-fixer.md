@@ -181,8 +181,8 @@ Based on ENORAE stack patterns, ensure:
 ## Context from ENORAE Patterns
 
 Refer to:
-- `docs/stack-patterns/architecture-patterns.md` - Server actions, queries, mutation logging guidance
-- `docs/stack-patterns/supabase-patterns.md` - Database operation logging patterns
+- `docs/ruls/architecture.md` - Server actions, queries, mutation logging guidance
+- `docs/ruls/supabase.md` - Database operation logging patterns
 - Project convention: Use native `console.log()`, `console.warn()`, `console.error()` or project's logger utility if available
 
 ## Special Attention Areas

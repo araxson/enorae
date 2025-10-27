@@ -61,8 +61,8 @@ export async function bulkVerifyUsers(
       failed,
     })
 
-    revalidatePath('/admin')
-    revalidatePath('/admin/users')
+    revalidatePath('/admin', 'layout')
+    revalidatePath('/admin/users', 'page')
     return { success: true, data: { verified, failed } }
   } catch (error) {
     return {

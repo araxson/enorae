@@ -64,7 +64,7 @@ export async function updateStaffSchedule(
 
     if (error) throw error
 
-    revalidatePath('/business/staff/schedules')
+    revalidatePath('/business/staff/schedules', 'page')
     return { success: true, data: updated }
   } catch (error) {
     console.error('Error updating schedule:', error)

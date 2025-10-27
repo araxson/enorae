@@ -143,7 +143,7 @@ function InsightCard({ title, emptyLabel, items, renderBadge }: InsightCardProps
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-xs">{emptyLabel}</p>
+          <p className="text-xs text-muted-foreground">{emptyLabel}</p>
         ) : (
           items.map((review) => (
             <div key={review['id'] ?? `${review['salon_id']}-${review['created_at']}`} className="flex items-center justify-between gap-3">

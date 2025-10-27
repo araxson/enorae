@@ -36,8 +36,8 @@ export async function revokeRole(formData: FormData): Promise<RoleActionResponse
       revoked_by: session.user.id,
     })
 
-    revalidatePath('/admin/roles')
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/roles', 'page')
+    revalidatePath('/admin/users', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     return {

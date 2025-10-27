@@ -52,8 +52,8 @@ export async function deleteServicePricing(formData: FormData) {
       return { error: deleteError.message }
     }
 
-    revalidatePath(PRICING_PATH)
-    revalidatePath(SERVICES_PATH)
+    revalidatePath(PRICING_PATH, 'page')
+    revalidatePath(SERVICES_PATH, 'page')
     return { success: true }
   } catch (error) {
     console.error('Error deleting service pricing:', error)

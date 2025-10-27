@@ -20,18 +20,58 @@ export async function getStaffSchedules(): Promise<StaffScheduleWithDetails[]> {
 
   const { data, error } = await supabase
     .schema('scheduling').from('staff_schedules')
-    .select('*, staff:staff_id(full_name, title)')
+    .select('*')
     .eq('salon_id', salonId)
     .order('staff_id')
     .order('day_of_week')
 
   if (error) throw error
 
-  return (data || []).map((schedule: StaffSchedule & { staff: { full_name: string | null; title: string | null } | null }) => ({
-    ...schedule,
-    staff_name: schedule.staff?.full_name || null,
-    staff_title: schedule.staff?.title || null,
-  })) as StaffScheduleWithDetails[]
+  if (!data) return []
+
+  // Fetch staff details separately
+  const staffMap = new Map<string, { full_name: string | null; title: string | null }>()
+
+  const staffIds = [...new Set(data.map((s) => s.staff_id).filter(Boolean) as string[])]
+  if (staffIds.length > 0) {
+    const { data: staffData } = await supabase
+      .schema('organization')
+      .from('staff_profiles')
+      .select('id, title, user_id')
+      .in('id', staffIds)
+
+    if (staffData) {
+      // Get profiles for all staff
+      const userIds = staffData.map((s: any) => s.user_id).filter(Boolean)
+      if (userIds.length > 0) {
+        const { data: profilesMetadata } = await supabase
+          .schema('identity')
+          .from('profiles_metadata')
+          .select('profile_id, full_name')
+          .in('profile_id', userIds)
+
+        const profileMap = new Map<string, string | null>()
+        if (profilesMetadata) {
+          profilesMetadata.forEach((p: any) => {
+            profileMap.set(p.profile_id, p.full_name)
+          })
+        }
+
+        staffData.forEach((staff: any) => {
+          staffMap.set(staff.id, { full_name: profileMap.get(staff.user_id) || null, title: staff.title })
+        })
+      }
+    }
+  }
+
+  return (data || []).map((schedule) => {
+    const staff = schedule.staff_id ? staffMap.get(schedule.staff_id) : null
+    return {
+      ...schedule,
+      staff_name: staff?.full_name || null,
+      staff_title: staff?.title || null,
+    }
+  }) as StaffScheduleWithDetails[]
 }
 
 /**
@@ -50,17 +90,42 @@ export async function getStaffSchedulesByStaffId(
 
   const { data, error } = await supabase
     .schema('scheduling').from('staff_schedules')
-    .select('*, staff:staff_id(full_name, title)')
+    .select('*')
     .eq('staff_id', staffId)
     .eq('salon_id', salonId)
     .order('day_of_week')
 
   if (error) throw error
 
-  return (data || []).map((schedule: StaffSchedule & { staff: { full_name: string | null; title: string | null } | null }) => ({
+  if (!data) return []
+
+  // Fetch staff details
+  const { data: staffData } = await supabase
+    .schema('organization')
+    .from('staff_profiles')
+    .select('id, title, user_id')
+    .eq('id', staffId)
+    .single()
+
+  let staff_name: string | null = null
+  let staff_title: string | null = null
+
+  if (staffData && staffData.user_id) {
+    const { data: profileMetadata } = await supabase
+      .schema('identity')
+      .from('profiles_metadata')
+      .select('profile_id, full_name')
+      .eq('profile_id', staffData.user_id)
+      .single()
+
+    staff_name = profileMetadata?.full_name || null
+    staff_title = staffData.title || null
+  }
+
+  return (data || []).map((schedule) => ({
     ...schedule,
-    staff_name: schedule.staff?.full_name || null,
-    staff_title: schedule.staff?.title || null,
+    staff_name,
+    staff_title,
   })) as StaffScheduleWithDetails[]
 }
 
@@ -75,11 +140,38 @@ export async function getStaffForScheduling(): Promise<
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('staff_profiles_view')
-    .select('id, full_name, title')
+    .schema('organization')
+    .from('staff_profiles')
+    .select('id, title, user_id')
     .eq('salon_id', salonId)
-    .order('full_name')
 
   if (error) throw error
-  return data || []
+
+  if (!data) return []
+
+  // Get profiles for staff members
+  const userIds = data.map((s) => s.user_id).filter(Boolean)
+  if (userIds.length === 0) return []
+
+  const { data: profilesMetadata } = await supabase
+    .schema('identity')
+    .from('profiles_metadata')
+    .select('profile_id, full_name')
+    .in('profile_id', userIds)
+    .order('full_name')
+
+  const profileMap = new Map<string, string | null>()
+  if (profilesMetadata) {
+    profilesMetadata.forEach((p: any) => {
+      profileMap.set(p.profile_id, p.full_name)
+    })
+  }
+
+  return data
+    .map((staff) => ({
+      id: staff.id,
+      full_name: profileMap.get(staff.user_id) || null,
+      title: staff.title,
+    }))
+    .sort((a, b) => (a.full_name || '').localeCompare(b.full_name || ''))
 }

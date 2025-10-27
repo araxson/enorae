@@ -40,7 +40,7 @@ export async function updateSalon(formData: FormData) {
 
     if (error) return { error: error.message }
 
-    revalidatePath('/admin/salons')
+    revalidatePath('/admin/salons', 'page')
     return { success: true }
   } catch (error) {
     return {

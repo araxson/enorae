@@ -30,7 +30,7 @@ export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
                 {isNearLimit && (
                   <div className="mt-1 flex items-center gap-4">
                     <AlertCircle className="h-3 w-3 text-destructive" />
-                    <p className="text-sm text-muted-foreground text-xs text-destructive">
+                    <p className="text-xs text-muted-foreground text-destructive">
                       Approaching limit - consider upgrading
                     </p>
                   </div>

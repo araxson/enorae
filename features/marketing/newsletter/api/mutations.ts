@@ -30,7 +30,7 @@ export async function subscribeToNewsletter(input: unknown) {
       timestamp: new Date().toISOString(),
     })
 
-    revalidatePath('/')
+    revalidatePath('/', 'page')
     return {
       success: true,
       // Return success to not break UI, but data is not persisted

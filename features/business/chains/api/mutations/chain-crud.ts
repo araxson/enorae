@@ -43,7 +43,7 @@ export async function createSalonChain(formData: FormData) {
 
     if (insertError) return { error: insertError.message }
 
-    revalidatePath('/admin/chains')
+    revalidatePath('/admin/chains', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to create chain' }
@@ -82,7 +82,7 @@ export async function updateSalonChain(formData: FormData) {
 
     if (updateError) return { error: updateError.message }
 
-    revalidatePath('/admin/chains')
+    revalidatePath('/admin/chains', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to update chain' }
@@ -123,8 +123,8 @@ export async function deleteSalonChain(formData: FormData) {
 
     if (deleteError) return { error: deleteError.message }
 
-    revalidatePath('/business/chains')
-    revalidatePath('/admin/chains')
+    revalidatePath('/business/chains', 'page')
+    revalidatePath('/admin/chains', 'page')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to delete chain' }

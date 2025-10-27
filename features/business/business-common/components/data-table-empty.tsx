@@ -27,16 +27,12 @@ export function DataTableEmpty({
 }: DataTableEmptyProps) {
   return (
     <Card>
-      <CardHeader className="items-center text-center">
+      <CardHeader className="items-center justify-center">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4 py-8 text-center">
-        {Icon && (
-          <div className="rounded-full bg-muted p-4">
-            <Icon className="h-8 w-8 text-muted-foreground" aria-hidden="true" />
-          </div>
-        )}
+      <CardContent className="flex flex-col items-center justify-center gap-4 py-8">
+        {Icon && <Icon className="h-16 w-16 text-muted-foreground" aria-hidden="true" />}
       </CardContent>
       {action && (
         <CardFooter className="justify-center">

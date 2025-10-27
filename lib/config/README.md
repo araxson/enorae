@@ -503,7 +503,7 @@ jest.mock('@/lib/config', () => ({
 ## Related Documentation
 
 - [Configuration Management Fix Report](../../CONFIGURATION_MANAGEMENT_FIX_REPORT.md)
-- [Stack Patterns - Architecture](../../docs/stack-patterns/architecture-patterns.md)
+- [Stack Patterns - Architecture](../../docs/ruls/architecture-patterns.md)
 - [Environment Variables Guide](../../docs/environment-variables.md) _(if exists)_
 
 ---

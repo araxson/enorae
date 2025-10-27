@@ -131,12 +131,12 @@ export function BlockedTimesCalendar({ blockedTimes, appointments = [], weekStar
                     {(blocked.length > 0 || dayApts.length > 0) && (
                       <div className="flex gap-1 pt-1 border-t">
                         {dayApts.length > 0 && (
-                          <Badge variant="outline" className="text-xs h-5">
+                          <Badge variant="outline">
                             {dayApts.length} apt{dayApts.length !== 1 ? 's' : ''}
                           </Badge>
                         )}
                         {blocked.length > 0 && (
-                          <Badge variant="destructive" className="text-xs h-5">
+                          <Badge variant="destructive">
                             {blocked.length} blocked
                           </Badge>
                         )}

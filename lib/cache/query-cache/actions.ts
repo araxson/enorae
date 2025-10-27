@@ -2,8 +2,11 @@
 
 import { revalidateTag as nextRevalidateTag } from 'next/cache'
 
-export async function revalidateCacheTags(tags: string[]) {
-  tags.forEach((tag) => nextRevalidateTag(tag))
+export function revalidateCacheTags(tags: string[]): void {
+  tags.forEach((tag: string) => {
+    // Next.js 16 requires a second parameter for cache lifecycle
+    nextRevalidateTag(tag, 'auto')
+  })
 }
 
 export function withRevalidation<T extends (...args: never[]) => Promise<unknown>>(
@@ -12,7 +15,7 @@ export function withRevalidation<T extends (...args: never[]) => Promise<unknown
 ): T {
   return (async (...args: Parameters<T>) => {
     const result = await mutationFn(...args)
-    await revalidateCacheTags(tagsToRevalidate)
+    revalidateCacheTags(tagsToRevalidate)
     return result
   }) as T
 }

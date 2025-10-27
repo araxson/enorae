@@ -69,6 +69,7 @@ export async function getThreadMessages(threadId: string): Promise<Message[]> {
 
   // Verify thread access
   const { data: thread } = await supabase
+    .schema('communication')
     .from('message_threads')
     .select('staff_id')
     .eq('id', threadId)
@@ -99,6 +100,7 @@ export async function getUnreadCount(): Promise<number> {
   if (!staffId) return 0
 
   const { data, error } = await supabase
+    .schema('communication')
     .from('message_threads')
     .select('unread_count_staff')
     .eq('staff_id', staffId)

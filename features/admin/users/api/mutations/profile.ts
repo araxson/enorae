@@ -53,7 +53,7 @@ export async function updateUserProfile(formData: FormData) {
       if (metadataError) return { error: metadataError.message }
     }
 
-    revalidatePath('/admin/users')
+    revalidatePath('/admin/users', 'page')
     return { success: true }
   } catch (error) {
     return {

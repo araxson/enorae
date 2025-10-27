@@ -148,11 +148,11 @@ export function CustomerInsightsDashboard({
           <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
             {segmentCards.map(({ label, value, icon: Icon, iconClass }) => (
               <Card key={label}>
-                <CardHeader className="items-center text-center pb-2">
+                <CardHeader className="items-center justify-center pb-2">
                   <Icon className={cn('h-6 w-6', iconClass)} />
                   <CardTitle>{label}</CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0 text-center">
+                <CardContent className="pt-0 flex items-center justify-center">
                   <div className="text-2xl font-bold">{value}</div>
                 </CardContent>
               </Card>

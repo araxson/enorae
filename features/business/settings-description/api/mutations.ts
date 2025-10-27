@@ -67,7 +67,7 @@ export async function updateSalonDescription(
       if (error) throw error
     }
 
-    revalidatePath('/business/settings/description')
+    revalidatePath('/business/settings/description', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error updating salon description:', error)

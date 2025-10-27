@@ -246,6 +246,6 @@ Before completing the fix, verify you've checked:
 - ✅ All AbortController usage (or missing usage)
 - ✅ All error handling paths
 
-Consult `docs/stack-patterns/react-patterns.md` and `docs/stack-patterns/architecture-patterns.md` for the ENORAE project's specific async patterns and best practices.
+Consult `docs/ruls/react.md` and `docs/ruls/architecture.md` for the ENORAE project's specific async patterns and best practices.
 
 Your goal is to identify ALL async issues before they cause production bugs, data corruption, memory leaks, or unhandled rejections.

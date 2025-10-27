@@ -74,7 +74,7 @@ export async function getAppointmentsByStatus(salonId: string, status: string) {
     .from('appointments_view')
     .select('*')
     .eq('salon_id', salonId)
-    .eq('status', status)
+    .eq('status', status as 'draft' | 'pending' | 'confirmed' | 'checked_in' | 'in_progress' | 'completed' | 'cancelled' | 'no_show' | 'rescheduled')
     .order('start_time', { ascending: false })
 
   if (error) {

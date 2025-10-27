@@ -84,7 +84,7 @@ export async function createRateLimitRule(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security')
+    revalidatePath('/admin/security', 'page')
     return { success: true, ruleId: newRule?.id }
   } catch (error) {
     console.error('Error creating rate limit rule:', error)
@@ -139,7 +139,7 @@ export async function updateRateLimitRule(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security')
+    revalidatePath('/admin/security', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error updating rate limit rule:', error)
@@ -183,7 +183,7 @@ export async function toggleRateLimitRule(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security')
+    revalidatePath('/admin/security', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error toggling rate limit rule:', error)
@@ -225,7 +225,7 @@ export async function deleteRateLimitRule(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security')
+    revalidatePath('/admin/security', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error deleting rate limit rule:', error)

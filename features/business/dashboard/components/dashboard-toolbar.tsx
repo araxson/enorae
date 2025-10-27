@@ -3,6 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { LayoutDashboard, Target } from 'lucide-react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -50,24 +57,22 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
   const [timeframe, setTimeframe] = useState<'7' | '30' | '90'>('30')
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border bg-card/40 px-4 py-3 shadow-sm md:px-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <Card>
+      <CardHeader className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <Avatar className="h-9 w-9">
             <AvatarFallback>{salonName.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <div className="flex min-w-0 flex-col gap-1">
-            <span className="text-sm font-semibold text-foreground">{salonName}</span>
-            <p className="text-sm font-medium text-muted-foreground">
+          <div className="min-w-0 space-y-1">
+            <CardTitle>{salonName}</CardTitle>
+            <CardDescription>
               Review bookings, revenue, and reputation signals at a glance.
-            </p>
+            </CardDescription>
           </div>
           {isTenantOwner && totalLocations ? (
-            <Badge variant="secondary">
-              <span className="flex items-center gap-1">
-                <LayoutDashboard className="h-3 w-3" />
-                {totalLocations} locations
-              </span>
+            <Badge variant="secondary" className="flex items-center gap-1">
+              <LayoutDashboard className="h-3 w-3" aria-hidden="true" />
+              {totalLocations} locations
             </Badge>
           ) : null}
         </div>
@@ -85,43 +90,45 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
             <TooltipContent>Contact support or browse help center</TooltipContent>
           </Tooltip>
         </div>
-      </div>
+      </CardHeader>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <p className="text-sm font-medium text-muted-foreground">Timeframe</p>
-          <Select value={timeframe} onValueChange={(value) => setTimeframe(value as typeof timeframe)}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Select timeframe" />
-            </SelectTrigger>
-            <SelectContent>
-              {TIMEFRAME_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <CardContent className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <p className="text-sm font-medium text-muted-foreground">Timeframe</p>
+            <Select value={timeframe} onValueChange={(value) => setTimeframe(value as typeof timeframe)}>
+              <SelectTrigger className="w-40">
+                <SelectValue placeholder="Select timeframe" />
+              </SelectTrigger>
+              <SelectContent>
+                {TIMEFRAME_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <Badge variant="outline" className="flex items-center gap-1">
+              Timeframe {timeframe} days
+            </Badge>
+            <Badge variant="outline" className="flex items-center gap-1">
+              {isTenantOwner ? 'Tenant owner' : 'Team member'}
+            </Badge>
+          </div>
         </div>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <Badge variant="outline">
-            <span className="flex items-center gap-1">Timeframe {timeframe} days</span>
-          </Badge>
-          <Badge variant="outline">
-            <span className="flex items-center gap-1">{isTenantOwner ? 'Tenant owner' : 'Team member'}</span>
-          </Badge>
-        </div>
-      </div>
 
-      <Separator />
+        <Separator />
 
-      <Alert>
-        <Target className="h-4 w-4 text-primary" />
-        <AlertTitle>Weekly momentum</AlertTitle>
-        <AlertDescription>
-          Confirmation rate is holding steady. Encourage stylists to respond to pending bookings to keep the momentum.
-        </AlertDescription>
-      </Alert>
-    </div>
+        <Alert>
+          <Target className="h-4 w-4 text-primary" aria-hidden="true" />
+          <AlertTitle>Weekly momentum</AlertTitle>
+          <AlertDescription>
+            Confirmation rate is holding steady. Encourage stylists to respond to pending bookings to keep the momentum.
+          </AlertDescription>
+        </Alert>
+      </CardContent>
+    </Card>
   )
 }

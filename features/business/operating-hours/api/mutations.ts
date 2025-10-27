@@ -75,8 +75,8 @@ export async function upsertOperatingHours(input: z.infer<typeof operatingHourSc
         return { error: error.message }
       }
 
-      revalidatePath('/business/settings')
-      revalidatePath('/business/operating-hours')
+      revalidatePath('/business/settings', 'page')
+      revalidatePath('/business/operating-hours', 'page')
 
       return { data, error: null }
     } else {
@@ -100,8 +100,8 @@ export async function upsertOperatingHours(input: z.infer<typeof operatingHourSc
         return { error: error.message }
       }
 
-      revalidatePath('/business/settings')
-      revalidatePath('/business/operating-hours')
+      revalidatePath('/business/settings', 'page')
+      revalidatePath('/business/operating-hours', 'page')
 
       return { data, error: null }
     }

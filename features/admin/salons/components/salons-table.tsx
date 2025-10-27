@@ -161,7 +161,7 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                 {salon['created_at'] ? format(new Date(salon['created_at']), 'MMM dd, yyyy') : 'Created date unavailable'}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3 pt-0 text-sm">
+            <CardContent className="space-y-3 pt-0">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <span className="block font-medium">Type</span>

@@ -74,7 +74,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
               },
             ].map((metric) => (
               <Card key={metric.description}>
-                <CardHeader className="items-center space-y-2 text-center">
+                <CardHeader className="items-center space-y-2 justify-center">
                   <div className="flex items-center justify-center">{metric.icon}</div>
                   <CardTitle>{metric.title}</CardTitle>
                   <CardDescription>{metric.description}</CardDescription>

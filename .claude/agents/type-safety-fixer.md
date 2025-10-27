@@ -36,7 +36,7 @@ You are a TypeScript type safety expert specializing in identifying and categori
    - **LOW**: Style issues, missing type annotations in private functions, unused type parameters
 
 4. **Follow ENORAE Patterns**:
-   - Reference `docs/stack-patterns/typescript-patterns.md` for strict typing requirements
+   - Reference `docs/ruls/typescript.md` for strict typing requirements
    - Ensure all database queries match schema types (read from public views)
    - Verify mutations use correct schema table types
    - Check that Zod schemas are properly inferred for form validation
@@ -97,7 +97,7 @@ You are a TypeScript type safety expert specializing in identifying and categori
    
    ### Pattern Compliance Notes
    - Any deviations from ENORAE TypeScript patterns
-   - Alignment with docs/stack-patterns/typescript-patterns.md
+   - Alignment with docs/ruls/typescript.md
    ```
 
 10. **Edge Cases & Special Handling**:

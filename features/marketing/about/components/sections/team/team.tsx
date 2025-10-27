@@ -13,7 +13,7 @@ export function Team() {
         <div className="grid gap-6 grid-cols-2 md:grid-cols-4">
           {teamData.stats.map((stat) => (
             <Card key={stat.label}>
-              <CardHeader className="items-center text-center">
+              <CardHeader className="items-center justify-center">
                 <CardTitle>{stat.value}</CardTitle>
                 <CardDescription>{stat.label}</CardDescription>
               </CardHeader>

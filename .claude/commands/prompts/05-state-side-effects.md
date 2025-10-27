@@ -58,7 +58,7 @@ useEffect(() => {
 - Add cleanup functions for subscriptions/listeners
 - Use useCallback for stable function references
 - Use key prop with stable identifiers
-- Review `docs/stack-patterns/react-patterns.md` for hook and state management rules
+- Review `docs/ruls/react-patterns.md` for hook and state management rules
 - Fix every finding directly in code; do not produce additional documentation
 
 ## Output Format
@@ -73,6 +73,6 @@ List findings as:
 ## Stack Pattern Reference
 
 Review:
-- `docs/stack-patterns/react-patterns.md`
+- `docs/ruls/react-patterns.md`
 
 Complete React audit and report all state/effect issues.

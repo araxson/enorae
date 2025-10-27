@@ -1,14 +1,16 @@
 'use client'
 
 import { useId } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
+import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
 import { Search } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface SearchFiltersProps {
   searchTerm: string
@@ -54,6 +56,7 @@ export function SearchFilters({
   availableStates,
 }: SearchFiltersProps) {
   const searchInputId = useId()
+  const router = useRouter()
 
   return (
     <Card>
@@ -96,32 +99,36 @@ export function SearchFilters({
             />
 
             {suggestions.length > 0 && (
-              <div
-                id={suggestionsListId}
-                role="listbox"
-                aria-label="Salon suggestions"
-                className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border bg-background shadow-lg"
-              >
-                {suggestions.map((suggestion, index) => {
-                  const optionId = `${suggestionsListId}-option-${index}`
-                  const isFocused = focusedIndex === index
-                  return (
-                    <Link
-                      key={suggestion.slug}
-                      id={optionId}
-                      role="option"
-                      aria-selected={isFocused}
-                      tabIndex={-1}
-                      onMouseEnter={() => setFocusedIndex(index)}
-                      href={`/customer/salons/${suggestion.slug}`}
-                      className={`block px-4 py-2 text-sm ${
-                        isFocused ? 'bg-muted text-foreground' : 'hover:bg-muted/80'
-                      }`}
-                    >
-                      {suggestion.name}
-                    </Link>
-                  )
-                })}
+              <div className="absolute left-0 right-0 top-full z-10 mt-1">
+                <Command aria-label="Salon suggestions">
+                  <CommandList id={suggestionsListId} role="listbox">
+                    <CommandGroup heading="Suggested salons">
+                      {suggestions.map((suggestion, index) => {
+                        const optionId = `${suggestionsListId}-option-${index}`
+                        const isFocused = focusedIndex === index
+
+                        return (
+                          <CommandItem
+                            key={suggestion.slug}
+                            id={optionId}
+                            value={suggestion.slug}
+                            aria-selected={isFocused}
+                            data-selected={isFocused ? 'true' : undefined}
+                            onMouseEnter={() => setFocusedIndex(index)}
+                            onSelect={() => {
+                              setSearchTerm(suggestion.name)
+                              setFocusedIndex(-1)
+                              router.push(`/customer/salons/${suggestion.slug}`)
+                            }}
+                            className={cn(isFocused && 'bg-muted text-foreground')}
+                          >
+                            {suggestion.name}
+                          </CommandItem>
+                        )
+                      })}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
               </div>
             )}
           </div>
@@ -184,7 +191,7 @@ export function SearchFilters({
                   checked={verifiedOnly}
                   onCheckedChange={(checked) => setVerifiedOnly(Boolean(checked))}
                 />
-                <Label htmlFor="verified" className="cursor-pointer text-sm">
+                <Label htmlFor="verified" className="cursor-pointer">
                   Verified only
                 </Label>
               </div>

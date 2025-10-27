@@ -18,11 +18,11 @@ function InsightList({ title, description, items }: { title: string; description
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <p className="text-sm text-muted-foreground text-xs">{description}</p>
+        <p className="text-xs text-muted-foreground">{description}</p>
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-xs">No records</p>
+          <p className="text-xs text-muted-foreground">No records</p>
         ) : (
           items.slice(0, 5).map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-3">
@@ -47,11 +47,11 @@ function TopPerformerList({ items }: { items: StaffPerformanceBenchmark[] }) {
     <Card>
       <CardHeader>
         <CardTitle>Top performers</CardTitle>
-        <p className="text-sm text-muted-foreground text-xs">Sorted by customer rating and compliance</p>
+        <p className="text-xs text-muted-foreground">Sorted by customer rating and compliance</p>
       </CardHeader>
       <CardContent className="space-y-3">
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-xs">No performers yet</p>
+          <p className="text-xs text-muted-foreground">No performers yet</p>
         ) : (
           items.slice(0, 5).map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-3">

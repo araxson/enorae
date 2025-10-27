@@ -99,8 +99,8 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               Regional Settings
             </Label>
             <div className="flex flex-col gap-4">
-              <div>
-                <Label htmlFor="timezone" className="text-sm mb-2 block">
+              <div className="space-y-2">
+                <Label htmlFor="timezone">
                   Timezone
                 </Label>
                 <Select value={timezone} onValueChange={setTimezone}>
@@ -119,8 +119,8 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
                 </Select>
               </div>
 
-              <div>
-                <Label htmlFor="locale" className="text-sm mb-2 block">
+              <div className="space-y-2">
+                <Label htmlFor="locale">
                   Language
                 </Label>
                 <Select value={locale} onValueChange={setLocale}>
@@ -138,8 +138,8 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
                 </Select>
               </div>
 
-              <div>
-                <Label htmlFor="currency" className="text-sm mb-2 flex items-center gap-2">
+              <div className="space-y-2">
+                <Label htmlFor="currency" className="flex items-center gap-2">
                   <DollarSign className="h-4 w-4" />
                   Currency
                 </Label>
@@ -171,7 +171,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="email-notifications">Email Notifications</Label>
-                  <p className="text-sm text-muted-foreground text-xs">Receive updates via email</p>
+                  <p className="text-xs text-muted-foreground">Receive updates via email</p>
                 </div>
                 <Switch
                   id="email-notifications"
@@ -183,7 +183,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="sms-notifications">SMS Notifications</Label>
-                  <p className="text-sm text-muted-foreground text-xs">Receive text message alerts</p>
+                  <p className="text-xs text-muted-foreground">Receive text message alerts</p>
                 </div>
                 <Switch
                   id="sms-notifications"
@@ -195,7 +195,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="appointment-reminders">Appointment Reminders</Label>
-                  <p className="text-sm text-muted-foreground text-xs">Get reminders before appointments</p>
+                  <p className="text-xs text-muted-foreground">Get reminders before appointments</p>
                 </div>
                 <Switch
                   id="appointment-reminders"
@@ -207,7 +207,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="marketing-emails">Marketing Emails</Label>
-                  <p className="text-sm text-muted-foreground text-xs">Receive promotional offers and news</p>
+                  <p className="text-xs text-muted-foreground">Receive promotional offers and news</p>
                 </div>
                 <Switch
                   id="marketing-emails"

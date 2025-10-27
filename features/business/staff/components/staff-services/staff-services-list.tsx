@@ -89,12 +89,12 @@ function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
       </Avatar>
 
       <div className="flex flex-col gap-2 flex-1">
-        <h4 className="scroll-m-20 text-xl font-semibold text-base">{member['full_name'] || 'Staff Member'}</h4>
-        {member['title'] && <p className="text-sm text-muted-foreground text-sm">{member['title']}</p>}
+        <h4 className="scroll-m-20 text-xl font-semibold">{member['full_name'] || 'Staff Member'}</h4>
+        {member['title'] && <p className="text-sm text-muted-foreground">{member['title']}</p>}
 
         <div className="flex flex-wrap gap-2 mt-2">
           {member.services.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-xs">No services assigned</p>
+            <p className="text-xs text-muted-foreground">No services assigned</p>
           ) : (
             member.services.map((service: StaffMemberWithServices['services'][number]) => (
               <ServiceBadge key={service['id']} service={service} />

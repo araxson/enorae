@@ -62,7 +62,7 @@ export async function updateProfileBasicsAction(payload: unknown): Promise<Actio
     }
   }
 
-  revalidatePath('/admin/profile')
+  revalidatePath('/admin/profile', 'page')
   return success('Profile details updated')
 }
 
@@ -95,7 +95,7 @@ export async function updateProfileMetadataAction(payload: unknown): Promise<Act
     return failure(error.message)
   }
 
-  revalidatePath('/admin/profile')
+  revalidatePath('/admin/profile', 'page')
   return success('Profile metadata updated')
 }
 
@@ -153,7 +153,7 @@ export async function updateProfilePreferencesAction(payload: unknown): Promise<
     return failure(error.message)
   }
 
-  revalidatePath('/admin/profile')
+  revalidatePath('/admin/profile', 'page')
   return success('Preferences updated')
 }
 
@@ -241,6 +241,6 @@ export async function anonymizeProfileAction(profileId: string): Promise<ActionR
     is_success: true,
   })
 
-  revalidatePath('/admin/profile')
+  revalidatePath('/admin/profile', 'page')
   return success('User profile anonymized')
 }

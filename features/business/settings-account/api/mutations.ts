@@ -80,7 +80,7 @@ export async function updateProfile(data: {
       .eq('profile_id', session.user.id)
   }
 
-  revalidatePath('/business/settings/account')
+  revalidatePath('/business/settings/account', 'page')
   return { success: true }
 }
 

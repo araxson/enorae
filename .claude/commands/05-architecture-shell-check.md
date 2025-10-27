@@ -11,7 +11,7 @@
 **Inspection Scope:**
 - `app/(*)/**/page.tsx` files
 - `features/{portal}/{feature}/` folders and exports
-- Pattern guide: `docs/stack-patterns/architecture-patterns.md`
+- Pattern guide: `docs/ruls/architecture-patterns.md`
 
 **Review Steps (Code-Only):**
 1. Verify each page stays within the 5–15 line shell guideline.

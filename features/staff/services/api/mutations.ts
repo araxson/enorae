@@ -11,6 +11,7 @@ export async function toggleServiceAvailability(staffServiceId: string, isAvaila
 
   // Verify ownership
   const { data: staffProfile } = await supabase
+    .schema('organization')
     .from('staff_profiles')
     .select('id')
     .eq('user_id', session.user.id)
@@ -21,7 +22,8 @@ export async function toggleServiceAvailability(staffServiceId: string, isAvaila
   }
 
   const { data: staffService } = await supabase
-    .from('staff_services_with_metrics')
+    .schema('catalog')
+    .from('staff_services')
     .select('staff_id')
     .eq('id', staffServiceId)
     .maybeSingle<{ staff_id: string | null }>()
@@ -38,13 +40,13 @@ export async function toggleServiceAvailability(staffServiceId: string, isAvaila
 
   const { error } = await supabase
     .schema('catalog')
-    .schema('organization').from('staff_services')
+    .from('staff_services')
     .update(updatePayload)
     .eq('id', staffServiceId)
 
   if (error) throw error
 
-  revalidatePath('/staff/services')
+  revalidatePath('/staff/services', 'page')
   return { success: true }
 }
 
@@ -57,6 +59,7 @@ export async function updateServiceProficiency(
 
   // Verify ownership
   const { data: staffProfile } = await supabase
+    .schema('organization')
     .from('staff_profiles')
     .select('id')
     .eq('user_id', session.user.id)
@@ -67,7 +70,8 @@ export async function updateServiceProficiency(
   }
 
   const { data: staffService } = await supabase
-    .from('staff_services_with_metrics')
+    .schema('catalog')
+    .from('staff_services')
     .select('staff_id')
     .eq('id', staffServiceId)
     .maybeSingle<{ staff_id: string | null }>()
@@ -84,13 +88,13 @@ export async function updateServiceProficiency(
 
   const { error } = await supabase
     .schema('catalog')
-    .schema('organization').from('staff_services')
+    .from('staff_services')
     .update(proficiencyUpdate)
     .eq('id', staffServiceId)
 
   if (error) throw error
 
-  revalidatePath('/staff/services')
+  revalidatePath('/staff/services', 'page')
   return { success: true }
 }
 
@@ -100,6 +104,7 @@ export async function requestServiceAddition(serviceId: string, notes?: string) 
 
   // Get staff profile
   const { data: staffProfile } = await supabase
+    .schema('organization')
     .from('staff_profiles')
     .select('id, salon_id')
     .eq('user_id', session.user.id)
@@ -112,7 +117,8 @@ export async function requestServiceAddition(serviceId: string, notes?: string) 
 
   // Check if service already exists
   const { data: existing } = await supabase
-    .from('staff_services_with_metrics')
+    .schema('catalog')
+    .from('staff_services')
     .select('id')
     .eq('staff_id', staffId)
     .eq('service_id', serviceId)
@@ -129,6 +135,6 @@ export async function requestServiceAddition(serviceId: string, notes?: string) 
     notes,
   })
 
-  revalidatePath('/staff/services')
+  revalidatePath('/staff/services', 'page')
   return { success: true }
 }

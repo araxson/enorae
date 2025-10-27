@@ -87,7 +87,7 @@ export async function unblockIdentifier(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security-monitoring')
+    revalidatePath('/admin/security-monitoring', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error unblocking identifier:', error)
@@ -194,7 +194,7 @@ export async function adjustRateLimit(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security-monitoring')
+    revalidatePath('/admin/security-monitoring', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error adjusting rate limit:', error)
@@ -249,7 +249,7 @@ export async function purgeStaleRecords(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security-monitoring')
+    revalidatePath('/admin/security-monitoring', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error purging stale records:', error)

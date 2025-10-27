@@ -49,7 +49,7 @@ export async function createBlockedTime(input: z.infer<typeof blockedTimeSchema>
       return { error: error.message }
     }
 
-    BLOCKED_TIMES_PATHS.forEach((path) => revalidatePath(path))
+    BLOCKED_TIMES_PATHS.forEach((path) => revalidatePath(path, 'page'))
 
     return { data, error: null }
   } catch (error) {

@@ -79,8 +79,8 @@ export async function searchSalons(filters: SearchFilters): Promise<SalonSearchR
     is_featured: boolean | null
   }
 
-  const data = (salons || []).map((salon: SalonRow) => ({
-    id: salon.id,
+  const data = (salons || []).map((salon: any) => ({
+    id: salon.id || '',
     name: salon.name || '',
     slug: salon.slug || '',
     address: salon.address || null,
@@ -177,7 +177,10 @@ export async function getSalonSearchSuggestions(
 
   if (error) throw error
 
-  return data || []
+  return (data || []).map((salon: any) => ({
+    name: salon.name || '',
+    slug: salon.slug || '',
+  }))
 }
 
 export async function getPopularCities(): Promise<{ city: string; count: number }[]> {
@@ -254,7 +257,15 @@ export async function getFeaturedSalons(limit = 6): Promise<SalonSearchResult[]>
 
   if (error) throw error
 
-  return data || []
+  return (data || []).map((salon: any) => ({
+    id: salon.id || '',
+    name: salon.name || '',
+    slug: salon.slug || '',
+    address: salon.address || null,
+    rating_average: salon.rating_average || 0,
+    is_verified: salon.is_verified || false,
+    is_featured: salon.is_featured || false,
+  })) as SalonSearchResult[]
 }
 
 export async function getNearbyServices(

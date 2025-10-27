@@ -72,11 +72,9 @@ export function VerifyOTPForm({
   return (
     <div className="w-full max-w-md">
       <Card>
-        <CardHeader className="space-y-4 text-center">
+        <CardHeader className="space-y-4 items-center justify-center">
           <div className="mb-4 flex items-center justify-center">
-            <div className="rounded-full bg-primary/10 p-3">
-              <Shield className="h-6 w-6 text-primary" />
-            </div>
+            <Shield className="h-12 w-12 text-primary" aria-hidden="true" />
           </div>
           <CardTitle>Verify your email</CardTitle>
           <CardDescription>

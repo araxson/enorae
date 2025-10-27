@@ -67,7 +67,7 @@ export async function updateIncidentStatus(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security/incidents')
+    revalidatePath('/admin/security/incidents', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error updating incident:', error)
@@ -112,7 +112,7 @@ export async function logSecurityIncident(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security/incidents')
+    revalidatePath('/admin/security/incidents', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error logging incident:', error)

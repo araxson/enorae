@@ -57,6 +57,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
                 </div>
                 <CardTitle>{stats[metric.key]}</CardTitle>
               </CardHeader>
+              <CardContent />
             </Card>
           )
         })}

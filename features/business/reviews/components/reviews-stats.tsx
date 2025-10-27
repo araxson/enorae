@@ -78,9 +78,9 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
           <div className="flex flex-col gap-2">
             {stats.ratingDistribution.map((dist) => (
               <div key={dist.rating} className="flex gap-3 items-center">
-                <p className="text-sm text-muted-foreground text-xs w-8">{dist.rating} ★</p>
+                <p className="text-xs text-muted-foreground w-8">{dist.rating} ★</p>
                 <Progress value={(dist.count / maxCount) * 100} className="flex-1 h-2" />
-                <p className="text-sm text-muted-foreground text-xs w-8 text-right">{dist.count}</p>
+                <p className="text-xs text-muted-foreground w-8 text-right">{dist.count}</p>
               </div>
             ))}
           </div>

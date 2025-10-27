@@ -90,7 +90,7 @@ export async function rejectSalon(formData: FormData) {
     //   p_data: { salon_id: salonId }
     // })
 
-    revalidatePath('/admin/salons')
+    revalidatePath('/admin/salons', 'page')
     return { success: true }
   } catch (error) {
     return {

@@ -34,6 +34,7 @@ export async function updateClientPreferences(
 
     // Find or create thread
     const { data: existingThread } = await supabase
+      .schema('communication')
       .from('message_threads')
       .select('id, metadata')
       .eq('salon_id', staff.salon_id)
@@ -80,7 +81,7 @@ export async function updateClientPreferences(
       if (threadError) throw threadError
     }
 
-    revalidatePath(`/staff/clients/${customerId}`)
+    revalidatePath(`/staff/clients/${customerId}`, 'page')
     return { success: true, data: undefined }
   } catch (error) {
     console.error('Error updating client preferences:', error)

@@ -89,7 +89,7 @@ export async function quarantineSession(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/settings/sessions')
+    revalidatePath('/admin/settings/sessions', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error quarantining session:', error)
@@ -138,7 +138,7 @@ export async function requireMfaForUser(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/settings/sessions')
+    revalidatePath('/admin/settings/sessions', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error requiring MFA:', error)
@@ -199,7 +199,7 @@ export async function evictSession(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/settings/sessions')
+    revalidatePath('/admin/settings/sessions', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error evicting session:', error)
@@ -273,7 +273,7 @@ export async function overrideSeverity(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/settings/sessions')
+    revalidatePath('/admin/settings/sessions', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error overriding severity:', error)

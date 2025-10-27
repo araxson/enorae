@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 type ProfileImagesSectionProps = {
   avatarUrl: string
   coverUrl: string
@@ -65,9 +66,9 @@ export function ProfileImagesSection({
       <div className="flex flex-col gap-3">
         <Label>Cover Image</Label>
         {coverUrl && (
-          <div className="w-full h-48 rounded-lg overflow-hidden bg-muted relative">
-            <Image src={coverUrl} alt="Cover" fill className="object-cover" />
-          </div>
+          <AspectRatio ratio={3}>
+            <Image src={coverUrl} alt="Cover" fill className="rounded-lg object-cover" />
+          </AspectRatio>
         )}
         <div className="flex flex-col gap-3">
           <Input

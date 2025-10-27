@@ -118,7 +118,7 @@ export function UsersTable({
                         <div className="flex flex-wrap gap-1">
                           {user.roles.length > 0 ? (
                             user.roles.map((role) => (
-                              <Badge key={role} variant="outline" className="text-xs" title={role.replace(/_/g, ' ')}>
+                              <Badge key={role} variant="outline" title={role.replace(/_/g, ' ')}>
                                 <Shield className="mr-1 h-3 w-3" />
                                 {role.replace('_', ' ')}
                               </Badge>
@@ -195,7 +195,7 @@ export function UsersTable({
                 </div>
                 <CardDescription>Created {createdLabel}</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 pt-0 text-sm">
+              <CardContent className="space-y-3 pt-0">
                 <div>
                   <span className="font-medium">Email:</span>{' '}
                   <span>{user.email || 'No email'}</span>
@@ -206,7 +206,7 @@ export function UsersTable({
                   <div className="flex flex-wrap gap-1">
                     {user.roles.length > 0 ? (
                       user.roles.map((role) => (
-                        <Badge key={role} variant="outline" className="text-xs" title={role.replace(/_/g, ' ')}>
+                        <Badge key={role} variant="outline" title={role.replace(/_/g, ' ')}>
                           <Shield className="mr-1 h-3 w-3" />
                           {role.replace('_', ' ')}
                         </Badge>

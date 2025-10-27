@@ -29,7 +29,7 @@ export function ServiceCategoriesClient({ initialCategories }: ServiceCategories
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2>Service Categories</h2>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Service Categories</h2>
           <p className="text-muted-foreground mt-1">
             Organize your services with categories
           </p>

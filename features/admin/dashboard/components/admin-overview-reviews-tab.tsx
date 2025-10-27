@@ -44,7 +44,7 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between gap-3">
                     <CardTitle>{review['salon_name'] || 'Unknown salon'}</CardTitle>
-                    <Badge variant="outline" className="gap-1 text-xs">
+                    <Badge variant="outline" className="gap-1">
                       <Star className="h-3 w-3 text-accent" fill="currentColor" />
                       {review['rating'] || 0}/5
                     </Badge>

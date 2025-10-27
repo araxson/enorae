@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Separator } from '@/components/ui/separator'
 import { StaffInfoForm } from './staff-info-form'
 import { MetadataForm } from '@/features/shared/profile-metadata/components/metadata-form'
 import { UsernameForm } from '@/features/shared/profile/components/username-form'
@@ -105,10 +106,13 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
                 </div>
 
                 {profile.salon_name && (
-                  <div className="w-full space-y-1 border-t pt-4">
-                    <p className="text-sm font-medium">Salon</p>
-                    <p className="text-sm text-muted-foreground">{profile.salon_name}</p>
-                  </div>
+                  <>
+                    <Separator />
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">Salon</p>
+                      <p className="text-sm text-muted-foreground">{profile.salon_name}</p>
+                    </div>
+                  </>
                 )}
               </div>
             </CardContent>

@@ -32,8 +32,8 @@ export async function verifyUserEmail(formData: FormData): Promise<ActionRespons
       target_user_id: userId,
     })
 
-    revalidatePath('/admin')
-    revalidatePath('/admin/users')
+    revalidatePath('/admin', 'layout')
+    revalidatePath('/admin/users', 'page')
     return { success: true, data: undefined }
   } catch (error) {
     return {

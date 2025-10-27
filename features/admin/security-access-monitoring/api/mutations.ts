@@ -65,7 +65,7 @@ export async function acknowledgeSecurityAlert(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security/monitoring')
+    revalidatePath('/admin/security/monitoring', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error acknowledging alert:', error)
@@ -112,7 +112,7 @@ export async function dismissSecurityAlert(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security/monitoring')
+    revalidatePath('/admin/security/monitoring', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error dismissing alert:', error)
@@ -185,7 +185,7 @@ export async function suppressSecurityAlert(formData: FormData) {
       },
     })
 
-    revalidatePath('/admin/security/monitoring')
+    revalidatePath('/admin/security/monitoring', 'page')
     return { success: true }
   } catch (error) {
     console.error('Error suppressing alert:', error)

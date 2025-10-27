@@ -68,8 +68,8 @@ export async function createThread(input: z.infer<typeof createThreadSchema>) {
       return { error: error.message }
     }
 
-    revalidatePath('/customer/messages')
-    revalidatePath('/business/messages')
+    revalidatePath('/customer/messages', 'page')
+    revalidatePath('/business/messages', 'page')
 
     return { data, error: null }
   } catch (error) {
@@ -115,8 +115,8 @@ export async function sendMessage(input: z.infer<typeof sendMessageSchema>) {
       return { error: error.message }
     }
 
-    revalidatePath('/customer/messages')
-    revalidatePath('/business/messages')
+    revalidatePath('/customer/messages', 'page')
+    revalidatePath('/business/messages', 'page')
 
     return { data, error: null }
   } catch (error) {
@@ -158,7 +158,7 @@ export async function markMessagesAsRead(fromUserId: string) {
       return { error: error.message }
     }
 
-    revalidatePath('/customer/messages')
+    revalidatePath('/customer/messages', 'page')
 
     return { success: true, error: null }
   } catch {
@@ -210,9 +210,9 @@ export async function deleteMessage(messageId: string) {
       return { error: error.message }
     }
 
-    revalidatePath('/customer/messages')
-    revalidatePath('/business/messages')
-    revalidatePath('/staff/messages')
+    revalidatePath('/customer/messages', 'page')
+    revalidatePath('/business/messages', 'page')
+    revalidatePath('/staff/messages', 'page')
 
     return { success: true, error: null }
   } catch {
@@ -248,8 +248,8 @@ export async function archiveThread(threadId: string) {
       return { error: error.message }
     }
 
-    revalidatePath('/customer/messages')
-    revalidatePath('/business/messages')
+    revalidatePath('/customer/messages', 'page')
+    revalidatePath('/business/messages', 'page')
 
     return { success: true, error: null }
   } catch {
@@ -285,8 +285,8 @@ export async function markThreadAsUnread(threadId: string) {
       return { error: error.message }
     }
 
-    revalidatePath('/customer/messages')
-    revalidatePath('/business/messages')
+    revalidatePath('/customer/messages', 'page')
+    revalidatePath('/business/messages', 'page')
 
     return { success: true, error: null }
   } catch {

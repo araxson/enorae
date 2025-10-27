@@ -4,6 +4,7 @@ import { Loader2 } from 'lucide-react'
 
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ServiceBasicSection } from './service-basic-section'
 import { ServiceDurationSection } from './service-duration-section'
 import { ServicePricingSection } from './service-pricing-section'
@@ -106,7 +107,9 @@ export function ServiceFormContent({ service, state, actions, handlers }: Servic
           />
 
           {error && (
-            <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">{error}</div>
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
           )}
         </div>
 

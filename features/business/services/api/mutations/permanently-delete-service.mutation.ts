@@ -52,6 +52,6 @@ export async function permanentlyDeleteService(
 
   if (error) throw error
 
-  revalidatePath('/business/services')
+  revalidatePath('/business/services', 'page')
   return { success: true }
 }

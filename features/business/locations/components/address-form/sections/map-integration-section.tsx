@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
 import { MapPin, Search, Check, AlertCircle } from 'lucide-react'
 import { EXTERNAL_APIS } from '@/lib/config/env'
 import {
@@ -172,29 +173,39 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
 
           <div className="flex flex-col gap-3">
             <Label htmlFor="address-search">Search Address</Label>
-            <div className="flex gap-3">
-              <div className="flex-1 relative">
-                <Input
-                  id="address-search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Start typing to search for an address..."
-                />
-                {suggestions.length > 0 && (
-                  <div className="absolute z-10 w-full mt-1 bg-background border rounded-md shadow-lg">
-                    {suggestions.map((suggestion) => (
-                      <button
-                        key={suggestion.place_id}
-                        type="button"
-                        className="w-full text-left px-4 py-2 hover:bg-muted transition-colors text-sm"
-                        onClick={() => handleSuggestionClick(suggestion.place_id, suggestion['description'])}
-                      >
-                        {suggestion['description']}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <div className="flex gap-3">
+                <div className="flex-1 relative">
+                  <Input
+                    id="address-search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Start typing to search for an address..."
+                  />
+                  {suggestions.length > 0 && (
+                    <div className="absolute left-0 right-0 top-full z-10 mt-1">
+                      <Command aria-label="Address suggestions">
+                        <CommandList>
+                          <CommandGroup heading="Suggested addresses">
+                            {suggestions.map((suggestion) => (
+                              <CommandItem
+                                key={suggestion.place_id}
+                                value={suggestion.place_id}
+                                onSelect={() =>
+                                  handleSuggestionClick(
+                                    suggestion.place_id,
+                                    suggestion['description'],
+                                  )
+                                }
+                              >
+                                {suggestion['description']}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </div>
+                  )}
+                </div>
               <Button
                 type="button"
                 variant="outline"
@@ -221,7 +232,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
           )}
 
           {address?.['latitude'] && address?.['longitude'] && EXTERNAL_APIS.GOOGLE_MAPS.isEnabled() && (
-            <div className="border rounded-md overflow-hidden">
+            <div className="overflow-hidden rounded-lg border">
               <iframe
                 width="100%"
                 height="300"

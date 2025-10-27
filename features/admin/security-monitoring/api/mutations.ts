@@ -13,6 +13,6 @@ export async function refreshSecurityMonitoring() {
   // Verify admin authorization
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  revalidatePath('/admin/security-monitoring')
+  revalidatePath('/admin/security-monitoring', 'page')
   return { success: true }
 }
